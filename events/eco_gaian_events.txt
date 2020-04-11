@@ -1,0 +1,197 @@
+namespace = eco_gaian
+
+# Gaian Arc 1
+fleet_event = {
+    id = eco_gaian.100
+	title = eco_gaian.100.name
+	desc = eco_gaian.100.desc
+	picture = GFX_evt_archaeological_dig
+	show_sound = event_ship_thrusters
+	location = from
+	
+	archaeology = yes
+
+   	is_triggered_only = yes
+
+   	immediate = {
+		from = { set_site_progress_locked = yes }
+	}
+
+	after = { 
+		from = { set_site_progress_locked = no } 
+	}
+
+    option = {
+    	name = CURIOUS
+		owner = { add_resource = { society_research = 500 } }
+	}
+}
+
+# Gaian Arc 2
+fleet_event = {
+    id = eco_gaian.110
+	title = eco_gaian.110.name
+	desc = eco_gaian.110.desc
+	picture = GFX_evt_archaeology_camp
+	show_sound = event_wind_ruins
+	location = from
+	
+	archaeology = yes
+
+   	is_triggered_only = yes
+
+   	immediate = {
+		from = { set_site_progress_locked = yes }
+	}
+
+	after = { 
+		from = { set_site_progress_locked = no } 
+	}
+
+    option = {
+    	name = CURIOUS
+		owner = { add_resource = { society_research = 500 } }
+		from.planet = {
+			add_modifier = { modifier = eco_controversy days = -1 }
+		}
+	}
+}
+
+# Gaian Arc 3
+fleet_event = {
+    id = eco_gaian.120
+	title = eco_gaian.120.name
+	desc = eco_gaian.120.desc
+	picture = GFX_evt_habitable_dig_site
+	show_sound = event_archaeological_dig
+	location = from
+	
+	archaeology = yes
+
+   	is_triggered_only = yes
+
+   	immediate = {
+		from = { set_site_progress_locked = yes }
+	}
+
+	after = { 
+		from = { set_site_progress_locked = no } 
+	}
+
+    option = {
+    	name = INTERESTING
+    	small_artifact_reward = yes
+	}
+}
+
+# Gaian Arc 4
+fleet_event = {
+    id = eco_gaian.130
+	title = eco_gaian.130.name
+	desc = eco_gaian.130.desc
+	picture = GFX_evt_habitable_dig_site
+	show_sound = event_default
+	location = from
+	
+	archaeology = yes
+
+   	is_triggered_only = yes
+
+   	immediate = {
+		from = { set_site_progress_locked = yes }
+	}
+
+	after = { 
+		from = { set_site_progress_locked = no } 
+	}
+
+    option = {
+    	name = INTERESTING
+    	medium_artifact_reward = yes
+	}
+}
+
+# Gaian Arc 5
+fleet_event = {
+    id = eco_gaian.140
+	title = eco_gaian.140.name
+	desc = eco_gaian.140.desc
+	picture = GFX_evt_habitable_dig_site
+	show_sound = event_default
+	location = from
+	
+	archaeology = yes
+
+   	is_triggered_only = yes
+
+   	immediate = {
+		from = { set_site_progress_locked = yes }
+	}
+
+	after = { 
+		from = { set_site_progress_locked = no } 
+	}
+
+    option = {
+    	name = INTERESTING
+    	large_artifact_reward = yes
+	}
+}
+
+# Gaian Arc 6
+fleet_event = {
+    id = eco_gaian.150
+	title = eco_gaian.150.name
+	desc = eco_gaian.150.desc
+	picture = GFX_evt_habitable_dig_site
+	show_sound = event_default
+	location = from
+	
+	archaeology = yes
+
+   	is_triggered_only = yes
+
+   	immediate = {
+		from = { set_site_progress_locked = yes }
+	}
+
+	after = { 
+		from = { set_site_progress_locked = no } 
+	}
+
+    option = {
+    	name = INTERESTING
+    	owner = {
+			if = {
+				limit = {
+					has_tech_option = eco_tech_waste_recycling_3
+				}
+				add_tech_progress = {
+					tech = eco_tech_waste_recycling_3
+					progress = 0.5
+				}
+			}
+			else_if = {
+				limit = {
+					NOT = { has_technology = eco_tech_waste_recycling_3 }
+				}
+				add_research_option = eco_tech_waste_recycling_3
+				add_tech_progress = {
+					tech = eco_tech_waste_recycling_3
+					progress = 0.1
+				}
+			}
+			else = {
+				add_monthly_resource_mult = {
+     				resource = society_research
+     				value = @tier5researchreward
+     				min = @tier5researchmin
+     				max = @tier5researchmax
+     			}
+			}
+ 		}
+		from.planet = {
+			remove_modifier = eco_controversy
+		}
+	}
+}

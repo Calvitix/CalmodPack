@@ -1,0 +1,339 @@
+namespace = eco_colony
+
+# Gaian Chain #1 - Gaian Ruins Discovered
+planet_event = {
+	id = eco_colony.100
+	title = eco_colony.100.name
+	desc = eco_colony.100.desc
+	picture = GFX_evt_alien_ruins
+	show_sound = event_default
+	location = from
+	
+	is_triggered_only = yes
+	
+	trigger = {
+		has_owner = yes
+		original_owner = yes
+		is_capital = no
+		NOT = { is_planet_class = pc_gaia }
+		NOT = { is_planet_class = pc_city }
+		NOT = { is_planet_class = pc_relic }
+		NOT = { is_planet_class = pc_hive }
+		NOT = { is_planet_class = pc_nuked }
+		NOT = { is_planet_class = pc_habitat }
+		NOT = { is_planet_class = pc_machine }
+		NOT = { is_planet_class = pc_cybrex }
+		NOT = { is_planet_class = pc_ringworld_habitable }
+		NOT = { has_planet_flag = eco_no_pollution }
+		NOT = { exists = archaeological_site }
+		owner = { is_ai = no }
+		NOR = { 
+			owner = { has_country_flag = eco_gaian_colony_event }
+			has_planet_flag = colony_event
+		}
+	}
+	
+	immediate = {
+		owner = { 
+			begin_event_chain = {
+				event_chain = "eco_gaian_chain"
+				target = ROOT
+			}
+			set_country_flag = eco_gaian_colony_event
+		}
+		set_planet_flag = colony_event
+	}
+	
+	option = {
+		name = eco_colony.100.a
+		if = {
+			limit = { host_has_dlc = "Ancient Relics Story Pack" }
+			create_archaeological_site = site_gaian_ruins
+			add_deposit = d_archaeological_site
+		}
+		enable_special_project = {
+			name = "ECO_RUINS_STUDY"
+			location = this
+			owner = root
+		}
+	}
+	
+	option = {
+		name = eco_colony.100.b
+		add_deposit = d_eco_gaian_ruins
+		owner = { add_resource = { influence = 100 } }
+		owner = { end_event_chain = "eco_gaian_chain" }
+	}
+}
+
+# Gaian Chain #2 - Conduct Gaian Study
+planet_event = {
+	id = eco_colony.110
+	title = eco_colony.110.name
+	desc = eco_colony.110.desc
+	picture = GFX_evt_eco_conference
+	show_sound = event_conversation
+	location = from
+	
+	is_triggered_only = yes
+	
+	trigger = {
+		owner = {
+			is_ai = no
+		}
+	}
+	
+	immediate = {
+		add_modifier = { modifier = planet_uncertain_past days = -1 }
+	}
+	
+	option = {
+		name = eco_colony.110.a
+		owner = { add_resource = { society_research = 1000 } }
+		owner = { add_resource = { physics_research = 1000 } }
+		owner = { add_resource = { engineering_research = 1000 } }
+		enable_special_project = {
+			name = "ECO_GAIAN_ENG"
+			location = this
+			owner = root
+		}
+	}
+	
+	option = {
+		name = eco_colony.110.b
+		owner = { add_resource = { society_research = 1000 } }
+		owner = { add_resource = { physics_research = 1000 } }
+		owner = { add_resource = { engineering_research = 1000 } }
+		enable_special_project = {
+			name = "ECO_GAIAN_PHY"
+			location = this
+			owner = root
+		}
+	}
+}
+
+# Gaian Chain #3a (Engineering) - Geoengineering Research
+planet_event = {
+	id = eco_colony.120
+	title = eco_colony.120.name
+	desc = eco_colony.120.desc
+	picture = GFX_evt_alien_ruins
+	show_sound = event_ship_bridge
+	location = from
+	
+	is_triggered_only = yes
+	
+	trigger = {
+		owner = {
+			is_ai = no
+		}
+	}
+	
+	option = {
+		name = eco_colony.120.a
+		enable_special_project = {
+			name = "ECO_GAIAN_TECH"
+			location = this
+			owner = root
+		}
+		if = {
+			limit = { has_modifier = eco_fragile_ecosystem }
+			remove_modifier = eco_fragile_ecosystem
+		} else = {
+			add_modifier = { modifier = eco_resilient_ecosystem days = -1 }
+		}
+		if = {
+			limit = { has_modifier = eco_species_poor }
+			remove_modifier = eco_species_poor
+		} else = {
+			add_modifier = { modifier = eco_species_rich days = -1 }
+		}
+	}
+	
+	option = {
+		name = eco_colony.120.b
+		if = {
+			limit = { has_modifier = eco_fragile_ecosystem }
+			remove_modifier = eco_fragile_ecosystem
+		} else = {
+			add_modifier = { modifier = eco_resilient_ecosystem days = -1 }
+		}
+		if = {
+			limit = { has_modifier = eco_species_poor }
+			remove_modifier = eco_species_poor
+		} else = {
+			add_modifier = { modifier = eco_species_rich days = -1 }
+		}
+		owner = { end_event_chain = "eco_gaian_chain" }
+	}
+}
+
+# Gaian Chain #3b (Physics) - Renewable Energy Study
+planet_event = {
+	id = eco_colony.121
+	title = eco_colony.121.name
+	desc = eco_colony.121.desc
+	picture = GFX_evt_alien_ruins
+	show_sound = event_ship_bridge
+	location = from
+	
+	is_triggered_only = yes
+	
+	trigger = {
+		owner = {
+			is_ai = no
+		}
+	}
+	
+	option = {
+		name = eco_colony.120.a
+		add_deposit = d_betharian_deposit
+		enable_special_project = {
+			name = "ECO_GAIAN_TECH"
+			location = this
+			owner = root
+		}
+	}
+	
+	option = {
+		name = eco_colony.120.b
+		add_deposit = d_betharian_deposit
+		owner = { end_event_chain = "eco_gaian_chain" }
+	}
+}
+
+# Gaian Chain #4 - Abandoned Climate Control System
+planet_event = {
+	id = eco_colony.130
+	title = eco_colony.130.name
+	desc = eco_colony.130.desc
+	picture = GFX_evt_alien_ruins
+	show_sound = event_ship_bridge
+	location = from
+	
+	is_triggered_only = yes
+	
+	trigger = {
+		owner = {
+			is_ai = no
+		}
+	}
+	
+	option = {
+		name = eco_colony.130.a
+		owner = { add_resource = { society_research = 1000 } }
+		owner = { add_resource = { physics_research = 1000 } }
+		owner = { add_resource = { engineering_research = 1000 } }
+		add_deposit = d_eco_unstable_climate
+		enable_special_project = {
+			name = "ECO_ACTIVATE"
+			location = this
+			owner = root
+		}
+	}
+	
+	option = {
+		name = eco_colony.130.b
+		owner = { add_resource = { society_research = 1000 } }
+		owner = { add_resource = { physics_research = 1000 } }
+		owner = { add_resource = { engineering_research = 1000 } }
+		add_deposit = d_eco_unstable_climate
+		enable_special_project = {
+			name = "ECO_DISASSEMBLE"
+			location = this
+			owner = root
+		}
+	}
+}
+
+# Gaian Chain #5a - Gaia World Restoration
+planet_event = {
+	id = eco_colony.140
+	title = eco_colony.140.name
+	desc = eco_colony.140.desc
+	picture = GFX_evt_eco_environmentalism
+	show_sound = event_celebration
+	location = from
+	
+	is_triggered_only = yes
+	
+	trigger = {
+		owner = {
+			is_ai = no
+		}
+	}
+	
+	immediate = {
+		remove_modifier = planet_uncertain_past
+	}
+	
+	option = {
+		name = EXCELLENT
+		change_pc = "pc_gaia"
+		add_deposit = d_hyperfertile_valley
+	}
+}
+
+# Gaian Chain #5b - Terraforming Catastrophe
+planet_event = {
+	id = eco_colony.141
+	title = eco_colony.141.name
+	desc = eco_colony.141.desc
+	picture = GFX_evt_nuclear_explosion
+	show_sound = event_super_explosion
+	location = from
+	
+	is_triggered_only = yes
+	
+	trigger = {
+		owner = {
+			is_ai = no
+		}
+	}
+	
+	immediate = {
+		remove_modifier = planet_uncertain_past
+	}
+	
+	option = {
+		name = CURSES
+		add_planet_devastation = 20
+		random_pop = {
+			kill_pop = yes 
+		}
+		change_pc = "pc_nuked"
+		remove_deposit = d_archaeological_site
+		add_deposit = d_junk_wastes
+		add_deposit = d_junk_hollows
+	}
+}
+
+# Gaian Chain #5c - Climate System Salvage
+planet_event = {
+	id = eco_colony.142
+	title = eco_colony.142.name
+	desc = eco_colony.142.desc
+	picture = GFX_evt_resource_cache
+	show_sound = event_administrative_work
+	location = from
+	
+	is_triggered_only = yes
+	
+	trigger = {
+		owner = {
+			is_ai = no
+		}
+	}
+	
+	immediate = {
+		remove_modifier = planet_uncertain_past
+	}
+	
+	option = {
+		name = INTERESTING
+		owner = { add_resource = { society_research = 1000 } }
+		owner = { add_resource = { physics_research = 1000 } }
+		owner = { add_resource = { engineering_research = 1000 } }
+		add_deposit = d_metal_boneyard
+	}
+}

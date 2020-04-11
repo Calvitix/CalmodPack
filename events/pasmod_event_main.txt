@@ -1,0 +1,176 @@
+namespace = pas
+
+event = {
+	id = pas.0
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		set_global_flag = pasmod_set_devastation_25
+	}
+}
+fleet_event = {
+	id = pas.05
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		from = { planet_event = { id = pas.1 } }
+	}
+}
+planet_event = {
+	id = pas.1
+	hide_window = yes
+	is_triggered_only = yes
+
+	pre_triggers = {
+		has_ground_combat = no
+	}
+
+	trigger = {
+		NOT = { is_planet_class = pc_ai }
+		if = {
+			limit = { has_global_flag = pasmod_set_devastation_25 }
+			planet_devastation >= 25
+		}
+		if = {
+			limit = { has_global_flag = pasmod_set_devastation_50 }
+			planet_devastation >= 50
+		}
+		if = {
+			limit = { has_global_flag = pasmod_set_devastation_75 }
+			planet_devastation >= 75
+		}
+		if = {
+			limit = { has_global_flag = pasmod_set_devastation_100 }
+			planet_devastation >= 100
+		}
+		solar_system = {
+			any_ship_in_system = {
+				exists = orbit
+				orbit = { is_same_value = root }
+				NOT = { has_ship_flag = pasmod_army_drop_done }
+				OR = {
+					has_component = pasmod_assault_army_1_unit
+					has_component = pasmod_assault_army_2_unit
+					has_component = pasmod_assault_army_3_unit
+					has_component = pasmod_orbital_drop_pod_default
+					has_component = pasmod_orbital_drop_pod_clone
+					has_component = pasmod_orbital_drop_pod_gene
+					has_component = pasmod_orbital_drop_pod_drop_pod
+					has_component = pasmod_orbital_drop_pod_artillery_drone
+					has_component = pasmod_orbital_drop_pod_psionic_force
+				}
+			}
+		}
+	}
+
+	immediate = {
+		every_ship = {
+			limit = {
+				exists = orbit
+				orbit = { is_same_value = root }
+				NOT = { has_ship_flag = pasmod_army_drop_done }
+				OR = {
+					has_component = pasmod_assault_army_1_unit
+					has_component = pasmod_assault_army_2_unit
+					has_component = pasmod_assault_army_3_unit
+					has_component = pasmod_orbital_drop_pod_default
+					has_component = pasmod_orbital_drop_pod_clone
+					has_component = pasmod_orbital_drop_pod_gene
+					has_component = pasmod_orbital_drop_pod_drop_pod
+					has_component = pasmod_orbital_drop_pod_artillery_drone
+					has_component = pasmod_orbital_drop_pod_psionic_force
+				}
+			}
+			ship_event = { id = pas.2 }
+			set_timed_ship_flag = { flag = pasmod_army_drop_done days = 90 }
+		}
+	}
+}
+ship_event = {
+	id = pas.2
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		pasmod_automatic_invasion_process = yes
+	}
+}
+country_event = {
+	id = pas.3
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		any_owned_planet = {
+			any_planet_army = {
+				prev = { has_ground_combat = no }
+				OR = {
+					army_type = pasmod_assault_army_default
+					army_type = pasmod_assault_army_clone
+					army_type = pasmod_assault_army_gene
+					army_type = pasmod_assault_army_drop_pod
+					army_type = pasmod_assault_army_artillery_drone
+					army_type = pasmod_assault_army_psionic_force
+				}
+			}
+		}
+	}
+
+	immediate = {
+		every_owned_planet = {
+			limit = {
+				any_planet_army = {
+					prev = { has_ground_combat = no }
+					OR = {
+						army_type = pasmod_assault_army_default
+						army_type = pasmod_assault_army_clone
+						army_type = pasmod_assault_army_gene
+						army_type = pasmod_assault_army_drop_pod
+						army_type = pasmod_assault_army_artillery_drone
+						army_type = pasmod_assault_army_psionic_force
+					}
+				}
+			}
+			every_planet_army = {
+				limit = {
+					prev = { has_ground_combat = no }
+					OR = {
+						army_type = pasmod_assault_army_default
+						army_type = pasmod_assault_army_clone
+						army_type = pasmod_assault_army_gene
+						army_type = pasmod_assault_army_drop_pod
+						army_type = pasmod_assault_army_artillery_drone
+						army_type = pasmod_assault_army_psionic_force
+					}
+				}
+				remove_army = yes
+			}
+		}
+	}
+}
+planet_event = {
+	id = pas.4
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		fromfrom = {
+			every_owned_army = {
+				limit = {
+					this.planet = { is_same_value = root }
+					OR = {
+						army_type = pasmod_assault_army_default
+						army_type = pasmod_assault_army_clone
+						army_type = pasmod_assault_army_gene
+						army_type = pasmod_assault_army_drop_pod
+						army_type = pasmod_assault_army_artillery_drone
+						army_type = pasmod_assault_army_psionic_force
+					}
+				}
+				remove_army = yes
+			}
+		}
+	}
+}

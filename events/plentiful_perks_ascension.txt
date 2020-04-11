@@ -1,0 +1,262 @@
+###########################
+# Utopia On-Action Events #
+###########################
+
+namespace = plentiful_perks_ascension
+
+
+# Synthetic Evolution
+country_event = {
+	id =  plentiful_perks_ascension.1000 #2550
+	title = "plentiful_perks_ascension.1000.name"
+	desc = "plentiful_perks_ascension.1000.desc"
+	picture = GFX_evt_circuitry_modification
+	show_sound = event_laboratory_sound
+	trackable = yes
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = "plentiful_perks_ascension.1000.a"
+		hidden_effect = { 
+			save_event_target_as = hive_evo_owner
+		}
+		capital_scope = {
+			enable_special_project = {
+				name = "HIVE_EVOLUTION_PROJECT"
+				location = this
+				owner = root
+			}
+		}
+	}
+}
+
+# The Synthetic Age
+country_event = {
+	id = plentiful_perks_ascension.1001 #2551
+	title = "plentiful_perks_ascension.1001.name"
+	desc = "plentiful_perks_ascension.1001.desc"
+	picture = GFX_evt_circuitry_modification
+	show_sound = event_laboratory_sound
+	
+	is_triggered_only = yes
+	
+	immediate = {
+		set_country_flag = hive_empire
+		
+		#give_technology = { tech = tech_bio_reactor message = no }
+		
+		every_owned_pop = {
+			limit = {
+				is_same_species = owner_species
+				is_robot_pop = no
+				is_sapient = yes
+			}
+			modify_species = {
+				species = this
+				add_trait = trait_hive_mind
+				add_traits_at_start_of_list = yes
+			}
+		}
+
+		every_owned_ship = {
+			limit = {
+				is_ship_class = shipclass_colonizer
+				is_same_species = owner_species
+				is_robot_pop = no
+				is_sapient = yes
+			}
+			modify_species = {
+				species = this
+				add_trait = trait_hive_mind
+				add_traits_at_start_of_list = yes
+			}
+			change_species = event_target:new_hive_species
+		}
+		every_owned_pop = {
+			limit = {
+				NOT = { is_same_species = owner_species }
+				is_robot_pop = no
+				is_sapient = yes
+				species = {
+					NOT = { has_trait = trait_cybernetic }
+				}
+			}
+			
+			set_citizenship_type = {
+				type = citizenship_assimilation
+				cooldown = yes
+			}
+		}
+		
+		shift_ethic = "ethic_gestalt_consciousness"
+				
+		change_government = {
+			authority = auth_hive_mind
+		}
+
+		every_country = {
+			limit = { 
+				is_ai = no 
+				NOT = { is_same_value = root }
+				has_communications = root
+			}
+			country_event = { id = plentiful_perks_ascension.1003 days = 5 }
+			country_event = { id = plentiful_perks_ascension.1004 days = 10 }
+		}
+		if = {
+			limit = {
+				any_country = {
+					OR = {
+						is_country_type = fallen_empire
+						is_country_type = awakened_fallen_empire
+					}
+					has_ethic = ethic_fanatic_spiritualist
+					has_communications = root
+					NOT = { is_same_value = root }
+				}
+			}
+			random_country = {
+				limit = {
+					OR = {
+						is_country_type = fallen_empire
+						is_country_type = awakened_fallen_empire
+					}
+					has_ethic = ethic_fanatic_spiritualist
+					has_communications = root
+					NOT = { is_same_value = root }
+				}
+				country_event = { id = plentiful_perks_ascension.1004 days = 15 }
+			}
+		}
+
+		ROOT = {
+			set_country_flag = hive_age
+		}
+	}
+	
+	option = {
+		name = "plentiful_perks_ascension.1001.a"
+
+		change_government = {
+			authority = auth_hive_mind
+			civics = {
+				civic = civic_hive_subspace_ephapse
+				civic = civic_hive_natural_neural_network
+			}
+		}
+
+		country_event = { id = plentiful_perks_ascension.1002 days = 3 }
+		custom_tooltip = HIVE_ASSIMILATION_CITIZENSHIP_ENABLED
+	}
+}
+
+
+# Diplomatic Response (HIDDEN)
+country_event = {
+	id = plentiful_perks_ascension.1002
+	hide_window = yes
+	
+	is_triggered_only = yes
+	
+	immediate = {
+
+		every_owned_pop = {
+			limit = {
+				NOT = { is_same_species = owner_species }
+				species = {
+					has_trait = trait_cybernetic 
+				}
+			}
+			set_citizenship_type = { type = citizenship_slavery cooldown = yes }
+		}
+	}
+}
+
+# Notification for Other Nations
+country_event = {
+	id = plentiful_perks_ascension.1003
+	title = "plentiful_perks_ascension.1003.name"
+	desc = {
+		text = plentiful_perks_ascension.1003.1.desc
+		trigger = {
+			has_authority = auth_hive_mind
+		}
+	}
+	desc = {
+		text = plentiful_perks_ascension.1003.2.desc
+		trigger = {
+			NOT = {
+				has_authority = auth_hive_mind
+			}
+		}
+	}
+	picture = GFX_evt_circuitry_modification
+	show_sound = event_laboratory_sound
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = "plentiful_perks_ascension.1003.a"
+		trigger = {
+			has_authority = auth_hive_mind
+		}
+	}
+	option = {
+		name = "plentiful_perks_ascension.1003.b"
+		trigger = {
+			NOT = {
+				has_authority = auth_hive_mind
+			}
+		}
+	}
+}
+
+# Diplomatic Announcement
+country_event = {
+	id = plentiful_perks_ascension.1004
+	title = TRANSMISSION
+	desc = "plentiful_perks_ascension.1004.desc"
+	
+	diplomatic = yes
+	
+	is_triggered_only = yes
+	
+	picture_event_data = {
+		portrait = from
+		room = from.ruler
+	}
+	
+	option = {
+		name = plentiful_perks_ascension.1004.a
+		trigger = {
+			has_authority = auth_hive_mind
+			NOT = { is_at_war_with = from }
+		}
+	}
+	option = {
+		name = plentiful_perks_ascension.1004.b
+		trigger = {
+			NOT = {
+				has_authority = auth_hive_mind
+			}
+			NOT = { is_at_war_with = from }
+		}
+	}
+	option = {
+		name = plentiful_perks_ascension.1004.c
+		trigger = {
+			is_at_war_with = from
+		}
+	}
+	option = {
+		name = plentiful_perks_ascension.1004.d
+		trigger = {
+			NOR = { 
+				is_at_war_with = from
+				has_authority = auth_hive_mind
+			}
+		}
+	}
+}
+

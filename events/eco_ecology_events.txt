@@ -1,0 +1,340 @@
+namespace = ecology
+
+# City Worlds Fix
+planet_event = {
+	id = ecology.100
+	is_triggered_only = yes
+	hide_window = yes
+	
+	immediate = {
+		if = {
+			limit = { is_planet_class = pc_city }
+			remove_modifier = "natural_beauty"
+			remove_modifier = "atmospheric_aphrodisiac"
+			remove_modifier = "atmospheric_hallucinogen"
+			remove_modifier = "lush_planet"
+			remove_modifier = dangerous_wildlife
+			remove_modifier = bleak_planet
+			remove_modifier = predatory_plants
+			remove_modifier = eco_resilient_ecosystem
+			remove_modifier = eco_fragile_ecosystem
+			remove_modifier = eco_species_rich
+			remove_modifier = eco_species_poor
+			remove_modifier = eco_climate_change
+			remove_modifier = eco_collapse
+			remove_modifier = eco_air_success
+			remove_modifier = eco_air_fail
+			remove_modifier = eco_soil_success
+			remove_modifier = eco_soil_fail
+			remove_modifier = eco_water_success
+			remove_modifier = eco_water_fail		
+		} else_if = {
+			limit = { 
+				OR = {
+					is_planet_class = pc_machine 
+					is_planet_class = pc_hive
+				}
+			}
+			remove_modifier = dangerous_wildlife
+			remove_modifier = bleak_planet
+			remove_modifier = predatory_plants
+			remove_modifier = eco_resilient_ecosystem
+			remove_modifier = eco_fragile_ecosystem
+			remove_modifier = eco_species_rich
+			remove_modifier = eco_species_poor
+			remove_modifier = eco_climate_change
+			remove_modifier = eco_collapse
+			remove_modifier = eco_air_success
+			remove_modifier = eco_air_fail
+			remove_modifier = eco_soil_success
+			remove_modifier = eco_soil_fail
+			remove_modifier = eco_water_success
+			remove_modifier = eco_water_fail
+		}
+	}
+}
+
+# Junkheap Removal
+planet_event = {
+	id = ecology.110
+	title = ecology.110.name
+	desc = ecology.110.desc
+	picture = GFX_evt_animal_wildlife
+	show_sound = event_celebration
+	location = from
+
+	is_triggered_only = yes
+	
+	trigger = {
+		has_owner = yes
+		original_owner = yes
+		owner = {
+			is_ai = no
+		}
+		num_pops > 4
+	}
+
+	
+	immediate = { remove_planet_flag = eco_trash_event }
+
+	option = {
+		name = EXCELLENT
+		remove_deposit = d_eco_junkheap
+	}
+}
+
+# Improved Resilience
+planet_event = {
+	id = ecology.120
+	title = ecology.120.name
+	desc = ecology.120.desc
+	picture = GFX_evt_animal_wildlife
+	show_sound = event_celebration
+	location = from
+	
+	is_triggered_only = yes
+	
+	trigger = {
+		has_owner = yes
+		original_owner = yes
+		NOT = { has_modifier = eco_resilient_ecosystem }
+		owner = {
+			is_ai = no
+		}
+		num_pops > 19
+	}
+	
+	option = {
+		name = EXCELLENT
+		if = {
+			limit = { has_modifier = eco_fragile_ecosystem }
+			remove_modifier = eco_fragile_ecosystem
+		} else = {
+			add_modifier = { modifier = eco_resilient_ecosystem days = -1 }
+		}
+	}
+}
+
+# Reduced Resilience
+planet_event = {
+	id = ecology.130
+	title = ecology.130.name
+	desc = ecology.130.desc
+	picture = GFX_evt_alien_nature
+	show_sound = event_planetary_riot
+	location = from
+	
+	is_triggered_only = yes
+	
+	trigger = {
+		has_owner = yes
+		original_owner = yes
+		NOT = { has_modifier = eco_fragile_ecosystem }
+		owner = {
+			is_ai = no
+		}
+		num_pops > 19
+	}
+	
+	option = {
+		name = WORRYING
+		if = {
+			limit = { has_modifier = eco_resilient_ecosystem }
+			remove_modifier = eco_resilient_ecosystem
+		} else = {
+			add_modifier = { modifier = eco_fragile_ecosystem days = -1 }
+		}
+	}
+}
+
+# Agricultural Bounty
+planet_event = {
+	id = ecology.140
+	title = ecology.140.name
+	desc = ecology.140.desc
+	picture = GFX_evt_treasure_pile
+	show_sound = event_administrative_work
+	location = from
+	
+	is_triggered_only = yes
+	
+	trigger = {
+		has_owner = yes
+		original_owner = yes
+		num_pops > 9
+	}
+	
+	option = {
+		name = EXCELLENT
+		if = {
+			limit = { num_districts = { type = district_farming value <= 1 } }
+			owner = { add_resource = { food = 25 } }
+		} else_if = {
+			limit = { num_districts = { type = district_farming value = 2 } }
+			owner = { add_resource = { food = 50 } }
+		} else_if = {
+			limit = { num_districts = { type = district_farming value = 3 } }
+			owner = { add_resource = { food = 75 } }
+		} else_if = {
+			limit = { num_districts = { type = district_farming value = 4 } }
+			owner = { add_resource = { food = 100 } }
+		} else_if = {
+			limit = { num_districts = { type = district_farming value = 5 } }
+			owner = { add_resource = { food = 125 } }
+		} else_if = {
+			limit = { num_districts = { type = district_farming value = 6 } }
+			owner = { add_resource = { food = 150 } }
+		} else_if = {
+			limit = { num_districts = { type = district_farming value = 7 } }
+			owner = { add_resource = { food = 175 } }
+		} else_if = {
+			limit = { num_districts = { type = district_farming value = 8 } }
+			owner = { add_resource = { food = 200 } }
+		} else_if = {
+			limit = { num_districts = { type = district_farming value = 9 } }
+			owner = { add_resource = { food = 225 } }
+		} else_if = {
+			limit = { num_districts = { type = district_farming value = 10 } }
+			owner = { add_resource = { food = 250 } }
+		} else_if = {
+			limit = { num_districts = { type = district_farming value = 11 } }
+			owner = { add_resource = { food = 275 } }
+		} else_if = {
+			limit = { num_districts = { type = district_farming value = 12 } }
+			owner = { add_resource = { food = 300 } }
+		} else_if = {
+			limit = { num_districts = { type = district_farming value = 13 } }
+			owner = { add_resource = { food = 325 } }
+		} else_if = {
+			limit = { num_districts = { type = district_farming value = 14 } }
+			owner = { add_resource = { food = 350 } }
+		} else_if = {
+			limit = { num_districts = { type = district_farming value = 15 } }
+			owner = { add_resource = { food = 375 } }
+		} else_if = {
+			limit = { num_districts = { type = district_farming value = 16 } }
+			owner = { add_resource = { food = 400 } }
+		} else_if = {
+			limit = { num_districts = { type = district_farming value = 17 } }
+			owner = { add_resource = { food = 425 } }
+		} else_if = {
+			limit = { num_districts = { type = district_farming value = 18 } }
+			owner = { add_resource = { food = 450 } }
+		} else_if = {
+			limit = { num_districts = { type = district_farming value = 19 } }
+			owner = { add_resource = { food = 475 } }
+		} else_if = {
+			limit = { num_districts = { type = district_farming value >= 20 } }
+			owner = { add_resource = { food = 500 } }
+		}
+		if = {
+			limit = { 
+				OR = {
+					has_deposit = d_eco_city_park
+					has_deposit = d_eco_city_park_hive
+				}
+			}
+			owner = { add_resource = { influence = 50 } }
+		}
+		if = {
+			limit = { 
+				OR = {
+					has_deposit = d_eco_park
+					has_deposit = d_eco_park_hive
+				}
+			}
+			owner = { add_resource = { unity = 100 } }
+		}
+		if = {
+			limit = { 
+				OR = {
+					has_deposit = d_eco_preserve
+					has_deposit = d_eco_preserve_hive
+				}
+			}
+			owner = { add_resource = { society_research = 100 } }
+		}
+	}
+}
+
+# [Planet] Day
+planet_event = {
+	id = ecology.150
+	title = ecology.150.name
+	desc = ecology.150.desc
+	picture = GFX_evt_eco_environmentalism
+	show_sound = event_celebration
+	location = from
+	
+	is_triggered_only = yes
+	
+	trigger = {
+		has_owner = yes
+		original_owner = yes
+		num_pops > 19
+	}
+	
+	option = {
+		name = EXCELLENT
+		if = {
+			limit = { num_pops > 199 }
+			owner = { add_resource = { unity = 1000 } }
+		} else_if = {
+			limit = { num_pops > 179 }
+			owner = { add_resource = { unity = 900 } }
+		} else_if = {
+			limit = { num_pops > 159 }
+			owner = { add_resource = { unity = 800 } }
+		} else_if = {
+			limit = { num_pops > 139 }
+			owner = { add_resource = { unity = 700 } }
+		} else_if = {
+			limit = { num_pops > 119 }
+			owner = { add_resource = { unity = 600 } }
+		} else_if = {
+			limit = { num_pops > 99 }
+			owner = { add_resource = { unity = 500 } }
+		} else_if = {
+			limit = { num_pops > 79 }
+			owner = { add_resource = { unity = 400 } }
+		} else_if = {
+			limit = { num_pops > 59 }
+			owner = { add_resource = { unity = 300 } }
+		} else_if = {
+			limit = { num_pops > 39 }
+			owner = { add_resource = { unity = 200 } }
+		} else = {
+			owner = { add_resource = { unity = 100 } }
+		}
+	}
+}
+
+# Fossil Discovered
+planet_event = {
+	id = ecology.160
+	title = ecology.160.name
+	desc = ecology.160.desc
+	picture = GFX_evt_scanning_remains
+	show_sound = event_laboratory_sound
+	location = from
+	
+	is_triggered_only = yes
+	
+	trigger = {
+		has_owner = yes
+		original_owner = yes
+		host_has_dlc = "Ancient Relics Story Pack"
+		NOT = { has_planet_flag = eco_fossil_event }
+	}
+	
+	option = {
+		name = EXCELLENT
+		owner = { add_resource = { minor_artifacts = 1 } }
+		hidden_effect = {
+			random_list = {
+				50 = { set_planet_flag = eco_fossil_event }
+				50 = { }
+			}
+		}
+	}
+}

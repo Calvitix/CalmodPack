@@ -1,0 +1,154 @@
+# scope has opinion towards FROM. FROM sees that opinion in diplomacy
+
+m_opinion_hw_vs_pacifist = {
+	opinion = {
+		modifier = {
+			add = -100
+			mt_has_ai_personality_honorbound_warriors = yes
+			FROM = { has_ethic = "ethic_fanatic_pacifist" }
+		}
+		modifier = {
+			add = -50
+			mt_has_ai_personality_honorbound_warriors = yes
+			FROM = { has_ethic = "ethic_pacifist" }
+		}			
+	}
+}
+
+m_triggered_organic_opinion_of_machine_empires = {
+	trigger = {
+		is_country_type = default
+		is_mechanical_empire = no
+		is_cyborg_empire = no
+		NOT = { 
+			has_ethic = ethic_gestalt_consciousness
+			has_ethic = ethic_materialist
+			has_ethic = ethic_fanatic_materialist
+			has_ethic = ethic_spiritualist
+			has_ethic = ethic_fanatic_spiritualist
+		}
+		FROM = {
+			has_authority = auth_machine_intelligence
+			NOR = {
+				has_civic = civic_machine_terminator
+				has_civic = civic_machine_assimilator
+			}
+		}
+		AND = {
+			NOR = {
+				has_ethic = ethic_gestalt_consciousness
+				owner_species = { has_trait = trait_decadent }
+			}
+			OR = {
+				mt_has_ai_personality_decadent_hierarchy = yes
+				mt_has_ai_personality_slaving_despots = yes
+				mt_has_ai_personality_democratic_crusaders = yes
+			}
+			FROM = {
+				has_civic = civic_machine_servitor
+			}
+		}
+	}
+
+	opinion = {
+		base = 30
+	}
+}
+
+m_triggered_dc_opinion_of_servitors = {
+	trigger = {
+		mt_has_ai_personality_democratic_crusaders = yes
+		FROM = {
+			has_civic = civic_machine_servitor
+		}
+	}
+
+	opinion = {
+		base = -100
+	}
+}
+
+m_triggered_dc_opinion_of_assimilators = {
+	trigger = {
+		mt_has_ai_personality_democratic_crusaders = yes
+		FROM = {
+			has_civic = civic_machine_assimilator
+		}
+	}
+
+	opinion = {
+		base = -1000
+	}
+}
+
+#m_triggered_negative_opinion_of_assimilators = {
+#	trigger = {
+#		is_country_type = default	
+#		NOR = { 	
+#			has_ethic = ethic_spiritualist
+#			has_ethic = ethic_fanatic_spiritualist		
+#			has_ethic = ethic_gestalt_consciousness
+#			mt_has_ai_personality_democratic_crusaders = yes
+#		}
+#		FROM = { has_civic = civic_machine_assimilator }
+#	}
+#
+#	opinion = {
+#		base = -100
+#	}
+#}
+
+m_triggered_decadent_opinion_of_servitors = {
+	trigger = {
+		is_country_type = default
+		OR = {
+			owner_species = { has_trait = trait_decadent }
+			mt_has_ai_personality_decadent_hierarchy = yes
+			mt_has_ai_personality_slaving_despots = yes
+		}
+		FROM = {
+			has_civic = civic_machine_servitor
+		}
+	}
+	opinion = {
+		base = 20
+	}
+}
+
+m_opinion_dc_vs_democratic = {
+	opinion = {
+		modifier = {
+			add = 25
+			mt_has_ai_personality_democratic_crusaders = yes
+			FROM = { has_authority = auth_democratic }
+		}		
+	}
+}
+
+m_opinion_dc_vs_oligarchic = {
+	opinion = {
+		modifier = {
+			add = -50
+			mt_has_ai_personality_democratic_crusaders = yes
+			OR = {
+				FROM = { has_authority = auth_oligarchic }
+				FROM = { has_authority = auth_corporate }
+			}		
+		}	
+	}
+}
+
+m_opinion_dc_vs_autocracy = {
+	opinion = {
+		modifier = {
+			add = -100
+			mt_has_ai_personality_democratic_crusaders = yes
+			FROM = { 
+				OR = {
+					has_authority = auth_imperial
+					has_authority = auth_dictatorial
+				}
+			}
+		}
+	}
+}

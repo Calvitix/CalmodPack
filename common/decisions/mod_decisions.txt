@@ -1,0 +1,538 @@
+####flower deregulation decisions (both hive and not-hive)
+
+decision_deregulate_flowers = {
+	owned_planets_only = yes
+	sound = event_administrative_work
+
+	resources = {
+		category = decisions
+		cost = {
+			influence = 100
+		}
+	}
+	
+	potential = {
+	    NOT = { has_modifier = deregulated_flowers }
+		OR = {
+			has_building = building_silence_flowers
+			has_building = building_silence_flowers2
+		}
+		owner = { is_regular_empire = yes }
+		
+		}
+		
+		
+	
+	effect = {
+		add_modifier = { modifier = "deregulated_flowers" days = -1 }
+		}
+	
+	ai_weight = {
+		weight = 0
+	}
+}
+
+decision_deregulate_flowers_reverse = {
+	owned_planets_only = yes
+	sound = event_administrative_work
+
+	resources = {
+		category = decisions
+		cost = {
+			influence = 100
+		}
+	}
+	potential = {
+	    has_modifier = deregulated_flowers
+		owner = { 
+			is_regular_empire = yes} 
+			
+		}
+		
+		
+	
+	effect = {
+		remove_modifier = deregulated_flowers
+		}
+	
+	ai_weight = {
+		weight = 0
+	}
+}
+
+decision_deregulate_flowers_hive = {
+	owned_planets_only = yes
+	sound = event_administrative_work
+
+	resources = {
+		category = decisions
+		cost = {
+			influence = 100
+		}
+	}
+	
+	potential = {
+	    NOT = { has_modifier = deregulated_flowers }
+		OR = {
+			has_building = building_silence_flowers
+			has_building = building_silence_flowers2
+		}
+		owner = { 
+			is_hive_empire = yes} 
+		}
+		
+		
+	
+	effect = {
+		add_modifier = { modifier = "deregulated_flowers_hive" days = -1 }
+		}
+	
+	ai_weight = {
+		weight = 0
+	}
+}
+
+decision_deregulate_flowers_hive_reverse = {
+	owned_planets_only = yes
+	sound = event_administrative_work
+
+	resources = {
+		category = decisions
+		cost = {
+			influence = 100
+		}
+	}
+	potential = {
+	has_modifier = deregulated_flowers_hive 
+		owner = { 
+			is_hive_empire = yes} 
+		    
+		}
+		
+		
+	
+	effect = {
+		remove_modifier = deregulated_flowers_hive
+		}
+	
+	ai_weight = {
+		weight = 0
+	}
+}
+
+###stellar gardens decisions
+
+# initial decision to open options or abandon 
+
+decision_stellar_gardens = {
+	owned_planets_only = yes
+	
+	prerequisites = {
+		"tech_garden_world"
+	}
+	potential = {
+	NOR = {
+	has_modifier = fortress_garden
+	has_modifier = environment_garden
+	has_modifier = paradise_garden
+	has_modifier = hive_garden
+	has_modifier = machine_garden 
+	has_modifier = garden_plans
+	has_modifier = pale_garden
+	has_modifier = communal_garden
+	has_modifier = industrial_garden
+	}
+	
+	}
+
+	resources = {
+		category = decisions
+		cost = {
+			influence = 50
+		}
+	}
+	
+	effect = {
+		add_modifier = {
+			modifier = garden_plans
+			days = -1
+		}	
+	
+	ai_weight = {
+		weight = 0
+	}
+}
+}
+
+decision_stellar_gardens_abandon = {
+	owned_planets_only = yes
+
+	resources = {
+		category = decisions
+		cost = {
+			influence = 50
+		}
+	}
+	
+	potential = {
+		has_modifier = garden_plans
+
+	}
+	
+	effect = {
+	 remove_modifier = garden_plans
+		}	
+	
+	ai_weight = {
+		weight = 0
+	}
+}
+
+#decisions for gardens available to all
+
+decision_fortress_garden = {
+    enactment_time = 800
+	owned_planets_only = yes
+
+	resources = {
+		category = decisions
+		cost = {
+			energy = 1500
+			food = 2000
+			influence = 100
+		}
+	}
+	
+	potential = {
+		has_modifier = garden_plans
+		NOR = {
+	has_modifier = fortress_garden
+	has_modifier = environment_garden
+	has_modifier = paradise_garden
+	has_modifier = hive_garden
+	has_modifier = machine_garden 
+	has_modifier = pale_garden
+	has_modifier = communal_garden
+	has_modifier = industrial_garden
+			owner = { 
+				any_owned_planet = { has_modifier = fortress_garden }
+			}
+		}
+	}
+	
+	effect = {
+	 add_modifier = {modifier = "fortress_garden" days = -1}
+	 remove_modifier = garden_plans
+	 
+		}	
+	
+	ai_weight = {
+		weight = 0
+	}
+}
+
+decision_environment_garden = {
+    enactment_time = 800
+	owned_planets_only = yes
+
+	resources = {
+		category = decisions
+		cost = {
+			energy = 1500
+			food = 2000
+			influence = 100
+		}
+	}
+	
+	potential = {
+	has_modifier = garden_plans
+		NOR = {
+	has_modifier = fortress_garden
+	has_modifier = environment_garden
+	has_modifier = paradise_garden
+	has_modifier = hive_garden
+	has_modifier = machine_garden 
+	has_modifier = pale_garden
+	has_modifier = communal_garden
+	has_modifier = industrial_garden
+			owner = { 
+				any_owned_planet = { has_modifier = environment_garden }
+			}
+		}
+	}
+	
+	effect = {
+	 add_modifier = {modifier = "environment_garden" days = -1}
+	 remove_modifier = garden_plans
+		}	
+	
+	ai_weight = {
+		weight = 0
+	}
+}
+
+# gardens available to regular empires
+
+decision_paradise_garden = {
+    enactment_time = 800
+	owned_planets_only = yes
+
+	resources = {
+		category = decisions
+		cost = {
+			energy = 1500
+			food = 2000
+			influence = 100
+		}
+	}
+	
+	potential = {
+	has_modifier = garden_plans
+		owner = {
+		is_regular_empire = yes}
+		NOR = {
+	has_modifier = fortress_garden
+	has_modifier = environment_garden
+	has_modifier = paradise_garden
+	has_modifier = hive_garden
+	has_modifier = machine_garden 
+	has_modifier = pale_garden
+	has_modifier = communal_garden
+	has_modifier = industrial_garden
+			owner = { 
+				any_owned_planet = { has_modifier = paradise_garden }
+			}
+		}
+	}
+	
+	effect = {
+	 add_modifier = {modifier = "paradise_garden" days = -1}
+	 remove_modifier = garden_plans
+		}	
+	
+	ai_weight = {
+		weight = 0
+	}
+}
+
+# gardens for hives
+
+decision_hive_garden = {
+    enactment_time = 800
+	owned_planets_only = yes
+	
+
+	resources = {
+		category = decisions
+		cost = {
+			energy = 1000
+			food = 2500
+			influence = 100
+		}
+	}
+	
+	potential = {
+	has_modifier = garden_plans
+		owner = {
+		is_hive_empire = yes}
+		NOR = {
+	has_modifier = fortress_garden
+	has_modifier = environment_garden
+	has_modifier = paradise_garden
+	has_modifier = hive_garden
+	has_modifier = machine_garden 
+	has_modifier = pale_garden
+	has_modifier = communal_garden
+	has_modifier = industrial_garden
+			owner = { 
+				any_owned_planet = { has_modifier = hive_garden }
+			}
+		}
+	}
+	
+	effect = {
+	 add_modifier = {modifier = "hive_garden" days = -1}
+	 remove_modifier = garden_plans
+		}	
+	
+	ai_weight = {
+		weight = 0
+	}
+}
+
+# gardens of machines
+
+decision_machine_garden = {
+    enactment_time = 800
+	owned_planets_only = yes
+	
+
+	resources = {
+		category = decisions
+		cost = {
+			energy = 1500
+			food = 1000
+			influence = 100
+		}
+	}
+	
+	potential = {
+	has_modifier = garden_plans
+		owner = {
+		is_machine_empire = yes}
+		NOR = {
+	has_modifier = fortress_garden
+	has_modifier = environment_garden
+	has_modifier = paradise_garden
+	has_modifier = hive_garden
+	has_modifier = machine_garden 
+	has_modifier = pale_garden
+	has_modifier = communal_garden
+	has_modifier = industrial_garden
+			owner = { 
+				any_owned_planet = { has_modifier = machine_garden }
+			}
+		}
+	}
+	
+	effect = {
+	 add_modifier = {modifier = "machine_garden" days = -1}
+	 remove_modifier = garden_plans
+		}	
+	
+	ai_weight = {
+		weight = 0
+	}
+}
+
+# gardens locked by civics
+
+decision_communal_garden = {
+    enactment_time = 800
+	owned_planets_only = yes
+	
+
+	resources = {
+		category = decisions
+		cost = {
+			energy = 1500
+			food = 1000
+			influence = 100
+		}
+	}
+	
+	potential = {
+	has_modifier = garden_plans
+		owner = {
+		has_valid_civic = civic_agricultural_cooperatives}
+		NOR = {
+	has_modifier = fortress_garden
+	has_modifier = environment_garden
+	has_modifier = paradise_garden
+	has_modifier = hive_garden
+	has_modifier = machine_garden 
+	has_modifier = pale_garden
+	has_modifier = communal_garden
+	has_modifier = industrial_garden
+			owner = { 
+				any_owned_planet = { has_modifier = communal_garden }
+			}
+		}
+	}
+	
+	effect = {
+	 add_modifier = {modifier = "communal_garden" days = -1}
+	 remove_modifier = garden_plans
+		}	
+	
+	ai_weight = {
+		weight = 0
+	}
+}
+
+decision_industrial_garden = {
+    enactment_time = 800
+	owned_planets_only = yes
+	
+
+	resources = {
+		category = decisions
+		cost = {
+			energy = 1500
+			food = 1000
+			influence = 100
+		}
+	}
+	
+	potential = {
+	has_modifier = garden_plans
+		owner = {
+		has_valid_civic = civic_biological_industries}
+		NOR = {
+	has_modifier = fortress_garden
+	has_modifier = environment_garden
+	has_modifier = paradise_garden
+	has_modifier = hive_garden
+	has_modifier = machine_garden 
+	has_modifier = pale_garden
+	has_modifier = communal_garden
+	has_modifier = industrial_garden
+			owner = { 
+				any_owned_planet = { has_modifier = industrial_garden }
+			}
+		}
+	}
+	
+	effect = {
+	 add_modifier = {modifier = "industrial_garden" days = -1}
+	 remove_modifier = garden_plans
+		}	
+	
+	ai_weight = {
+		weight = 0
+	}
+}
+
+decision_pale_garden = {
+    enactment_time = 800
+	owned_planets_only = yes
+	
+
+	resources = {
+		category = decisions
+		cost = {
+			energy = 1500
+			food = 1000
+			influence = 100
+		}
+	}
+	
+	potential = {
+	has_modifier = garden_plans
+		owner = {
+		has_valid_civic = civic_tree_cult}
+		NOR = {
+	has_modifier = fortress_garden
+	has_modifier = environment_garden
+	has_modifier = paradise_garden
+	has_modifier = hive_garden
+	has_modifier = machine_garden 
+	has_modifier = pale_garden
+	has_modifier = communal_garden
+	has_modifier = industrial_garden
+			owner = { 
+				any_owned_planet = { has_modifier = pale_garden }
+			}
+		}
+	}
+	
+	effect = {
+	 add_modifier = {modifier = "pale_garden" days = -1}
+	 remove_modifier = garden_plans
+		}	
+	
+	ai_weight = {
+		weight = 0
+	}
+}
+
