@@ -6,6 +6,7 @@ event = {
 	is_triggered_only = yes
 
 	immediate = {
+		set_global_flag = pasmod_main_feature
 		set_global_flag = pasmod_set_devastation_25
 	}
 }
@@ -13,6 +14,10 @@ fleet_event = {
 	id = pas.05
 	hide_window = yes
 	is_triggered_only = yes
+
+	trigger = {
+		has_global_flag = pasmod_main_feature
+	}
 
 	immediate = {
 		from = { planet_event = { id = pas.1 } }
@@ -28,6 +33,7 @@ planet_event = {
 	}
 
 	trigger = {
+		has_global_flag = pasmod_main_feature
 		NOT = { is_planet_class = pc_ai }
 		if = {
 			limit = { has_global_flag = pasmod_set_devastation_25 }
@@ -60,6 +66,8 @@ planet_event = {
 					has_component = pasmod_orbital_drop_pod_drop_pod
 					has_component = pasmod_orbital_drop_pod_artillery_drone
 					has_component = pasmod_orbital_drop_pod_psionic_force
+					has_component = pasmod_orbital_drop_pod_slave_army
+					has_component = pasmod_orbital_drop_pod_droid_army
 				}
 			}
 		}
@@ -81,6 +89,8 @@ planet_event = {
 					has_component = pasmod_orbital_drop_pod_drop_pod
 					has_component = pasmod_orbital_drop_pod_artillery_drone
 					has_component = pasmod_orbital_drop_pod_psionic_force
+					has_component = pasmod_orbital_drop_pod_slave_army
+					has_component = pasmod_orbital_drop_pod_droid_army
 				}
 			}
 			ship_event = { id = pas.2 }
@@ -94,7 +104,19 @@ ship_event = {
 	is_triggered_only = yes
 
 	immediate = {
-		pasmod_automatic_invasion_process = yes
+		if = {
+			limit = { has_component = pasmod_assault_army_1_unit }
+			pasmod_automatic_invasion_process = yes
+		}
+		else_if = {
+			limit = { has_component = pasmod_assault_army_2_unit }
+			pasmod_automatic_invasion_process_2 = yes
+		}
+		else_if = {
+			limit = { has_component = pasmod_assault_army_3_unit }
+			pasmod_automatic_invasion_process_3 = yes
+		}
+		pasmod_automatic_invasion_process_drop_pod = yes
 	}
 }
 country_event = {
@@ -113,6 +135,8 @@ country_event = {
 					army_type = pasmod_assault_army_drop_pod
 					army_type = pasmod_assault_army_artillery_drone
 					army_type = pasmod_assault_army_psionic_force
+					army_type = pasmod_assault_army_slave_army
+					army_type = pasmod_assault_army_droid_army
 				}
 			}
 		}
@@ -130,6 +154,8 @@ country_event = {
 						army_type = pasmod_assault_army_drop_pod
 						army_type = pasmod_assault_army_artillery_drone
 						army_type = pasmod_assault_army_psionic_force
+						army_type = pasmod_assault_army_slave_army
+						army_type = pasmod_assault_army_droid_army
 					}
 				}
 			}
@@ -143,6 +169,8 @@ country_event = {
 						army_type = pasmod_assault_army_drop_pod
 						army_type = pasmod_assault_army_artillery_drone
 						army_type = pasmod_assault_army_psionic_force
+						army_type = pasmod_assault_army_slave_army
+						army_type = pasmod_assault_army_droid_army
 					}
 				}
 				remove_army = yes
@@ -167,6 +195,8 @@ planet_event = {
 						army_type = pasmod_assault_army_drop_pod
 						army_type = pasmod_assault_army_artillery_drone
 						army_type = pasmod_assault_army_psionic_force
+						army_type = pasmod_assault_army_slave_army
+						army_type = pasmod_assault_army_droid_army
 					}
 				}
 				remove_army = yes
