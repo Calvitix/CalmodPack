@@ -704,11 +704,25 @@ civic_exalted_priesthood = {
 
 
 
+civic_parliamentary_system = {
+	potential = {
+		ethics = { NOT = { value = ethic_gestalt_consciousness } }
+		authority = { NOT = { value = auth_corporate } }
+	}
+	possible = {
+		authority = {
+			value = auth_democratic
+		}
+	}
+	random_weight = { base = 5 }
+	modifier = {
+		pop_factions_produces_mult = 0.25
+	}
+}
 
 
 
 #Keepers of Harmony - Altruist/Spiritualist - Paradise Dome +amenities/unity - can profit/negate climate anomalies - stary with tech_climate_restoration? - true asceticism
-
 civic_keepers_harmony = {
 
 	potential = {
@@ -719,18 +733,17 @@ civic_keepers_harmony = {
 
 		ethics = {
 
-
 			OR = {
-				text = civic_tooltip_socialism
-				 value = ethic_socialism
-				 value = ethic_fanatic_socialism
-			}
-
-			OR = {
-				text = civic_tooltip_spiritualist
-				 value = ethic_spiritualist
 				 value = ethic_fanatic_spiritualist
+			}		
+
+			NOR = {
+				text = civic_tooltip_not_capitalism
+				 value = ethic_capitalism
+				 value = ethic_fanatic_capitalism
 			}
+
+
 
 		}
 
@@ -738,6 +751,7 @@ civic_keepers_harmony = {
 			NOR = {
 				 value = civic_mining_guilds
 				 value = civic_consumerism
+				 value = civic_environmentalist
 			}
 		}
 
@@ -747,20 +761,18 @@ civic_keepers_harmony = {
 
 	random_weight = { base = 5 }
 	modifier = {
-
+				
                 pop_environment_tolerance = 0.1
-				country_unity_produces_mult = 0.1
-                planet_pops_consumer_goods_upkeep_mult = -0.1
-				planet_miners_minerals_produces_mult = -0.05
+                planet_pops_organics_food_upkeep_mult = -0.1
+                planet_pops_consumer_goods_upkeep_mult = -0.15				
+				pop_amenities_usage_mult = -0.2	
+				planet_building_refund_mult = 0.15
+                planet_miners_minerals_produces_mult = -0.1				
 				planet_max_districts_add = -1
 
 
 	}
 }
-
-
-
-
 
 
 
@@ -786,20 +798,23 @@ civic_idealistic_foundation = {
 }
 
 
-#Ecological Economy - bio-chemist job (food to energy), power plants from environmental PM
+
+#Ecological Economy -> Environmentalism
 civic_environmentalist = {
 	potential = {
 		ethics = { NOT = {  value = ethic_gestalt_consciousness } }
 	}
 
 	possible = {
-		ethics = {
-		}
+			NOR = {
+				 value = ethic_fanatic_capitalism
+			}
 
 		civics = {
 			NOR = {
 				 value = civic_industrial_economy
                  value = civic_consumerism
+				 value = civic_keepers_harmony
 			}
 		}
 
@@ -808,11 +823,10 @@ civic_environmentalist = {
 
 	random_weight = { base = 5 }
 	modifier = {
-		planet_structures_cost_mult = -0.1
-		planet_structures_upkeep_mult = -0.1
-		planet_building_refund_mult = 0.2
-		planet_jobs_consumer_goods_produces_mult = -0.05
-
+	
+        pop_environment_tolerance = 0.05
+        planet_pops_consumer_goods_upkeep_mult = -0.1
+        planet_building_refund_mult = 0.15			
 
 
 	}
@@ -820,7 +834,54 @@ civic_environmentalist = {
 
 
 
-#Environmental Engineer +additional planet space? advanced terraforming options
+
+
+
+#Asceticism -> Harmonious Collective
+civic_asceticism = {
+	potential = {
+		ethics = { NOT = {  value = ethic_gestalt_consciousness } }
+		authority = { NOT = {  value = auth_corporate } }
+	}
+	possible = {
+		ethics = {
+
+			OR = {
+			     text = civic_tooltip_spiritualist
+				 value = ethic_spiritualist
+				 value = ethic_fanatic_spiritualist
+			}		
+
+			OR = {
+				text = civic_tooltip_socialism
+				 value = ethic_socialism
+				 value = ethic_fanatic_socialism
+			}
+		}
+
+
+	}
+
+
+	random_weight = { base = 5 }
+	modifier = {
+               country_unity_produces_mult = 0.05
+			   empire_size_pops_mult = -0.1
+               planet_crime_mult = -0.15
+			   
+
+	}
+}
+
+
+
+
+
+
+
+
+
+#Ecological Engineers +additional planet space? advanced terraforming options
 civic_terraforming = {
 	potential = {
 		ethics = { NOT = {  value = ethic_gestalt_consciousness } }
@@ -968,6 +1029,7 @@ civic_peacekeepers = {
 		civics = {
 			NOR = {
 				value = civic_diplomatic_corps
+				value = civic_public_relations_specialists
 			}
 		}
 	}
@@ -1075,11 +1137,10 @@ civic_star_settlers = {
 				country_starbase_influence_cost_mult = -0.2
 				planet_colony_development_speed_mult = 0.33
 				colony_start_num_pops_add = 1
-	            pop_environment_tolerance = 0.05
                 category_new_worlds_research_speed_mult	= 0.1
                 category_voidcraft_research_speed_mult = 0.1
 				pop_growth_from_immigration = 0.25
-				planet_emigration_push_add = 3
+				planet_emigration_push_add = 5
 
 
 
@@ -1119,9 +1180,8 @@ civic_distributism = {
 	modifier = {
 				planet_metallurgists_produces_mult = 0.1
 				planet_artisans_produces_mult = 0.1
-				job_foundry_per_pop = 0.03
-				job_artisan_per_pop = 0.03
-                pop_cat_worker_happiness = 0.05
+				planet_farmers_produces_mult = 0.1
+                
 
 
 	}
@@ -1244,8 +1304,7 @@ civic_symbiotic_race = {
 	}
 
 	modifier = {
-	         country_unity_produces_mult = 0.05
-			 planet_jobs_society_research_produces_mult = 0.1
+			 planet_jobs_society_research_produces_mult = 0.15
 			 
 
 	}
@@ -1306,7 +1365,7 @@ civic_slave_race = {
 
 	modifier = {
 			 BIOLOGICAL_species_trait_points_add = 1
-			 modify_species_cost_mult = -0.15
+			 modify_species_cost_mult = -0.25
 	}
 
 	has_secondary_species = {
@@ -1389,7 +1448,7 @@ civic_exploration = {
 				station_researchers_produces_mult = 0.15             		
 				ship_hyperlane_range_add = 1
 				station_researchers_upkeep_mult = 0.15
-				ship_fire_rate_mult = -0.1
+				ship_armor_mult = -0.15
 
 
 
@@ -1423,8 +1482,8 @@ civic_spiritual_seekers = {
 	random_weight = { base = 5 }
 	modifier = {
 
-			    biological_pop_happiness = 0.1
-				LITHOID_POP_HAPPINESS = 0.1
+			    biological_pop_happiness = 0.05
+				LITHOID_POP_HAPPINESS = 0.05
                 category_psionics_research_speed_mult = 1
 				job_transcend_per_pop = 0.02
 				max_rivalries = -2
@@ -1460,10 +1519,11 @@ civic_enlightment = {
 	}
 	random_weight = { base = 5 }
 	modifier = {
-				planet_culture_workers_produces_mult = 0.1
-				planet_priests_produces_mult = 0.1
-                planet_artisans_produces_mult = 0.05
-				planet_farmers_produces_mult = 0.05
+	            country_unity_produces_mult = 0.05
+				country_energy_produces_mult = 0.1
+				planet_amenities_mult = 0.15
+				army_damage_mult = -0.2
+				
 
 
 
@@ -1591,7 +1651,7 @@ civic_divine_order = {
 	random_weight = { base = 5 }
 	modifier = {
 
-             pop_cat_ruler_happiness = 0.1
+             pop_cat_ruler_happiness = 0.05
 			 pop_government_ethic_attraction = 0.25
 			 planet_jobs_worker_produces_mult = 0.05
 			 planet_jobs_slave_produces_mult = 0.05
@@ -1599,6 +1659,7 @@ civic_divine_order = {
 			 pop_demotion_time_mult = 1.5
              country_leader_pool_size = -1
 			 num_tech_alternatives_add = -1
+			 pop_cat_worker_happiness = -0.1
 
 	}
 }
@@ -1699,9 +1760,9 @@ civic_ultimate_collective = {
 	random_weight = { base = 5 }
 	modifier = {
 
-               pop_government_ethic_attraction = 0.2
-			   empire_size_pops_mult = -0.1			   
+               pop_government_ethic_attraction = 0.2	   
 			   planet_stability_add = 5
+			   country_base_influence_produces_add = 0.5				   
 			   trade_value_mult = -0.1
 
 	}
@@ -2145,41 +2206,6 @@ civic_welfare_state = {
 
 
 
-#Asceticism
-civic_asceticism = {
-	potential = {
-		ethics = { NOT = {  value = ethic_gestalt_consciousness } }
-		authority = { NOT = {  value = auth_corporate } }
-	}
-	possible = {
-		ethics = {
-
-			OR = {
-				 value = ethic_fanatic_spiritualist
-			}
-
-			NOR = {
-				 value = ethic_fanatic_capitalism
-			}
-		}
-
-
-	}
-
-
-	random_weight = { base = 5 }
-	modifier = {
-
-	            leader_age = 10
-                planet_pops_organics_food_upkeep_mult = -0.1
-                planet_pops_consumer_goods_upkeep_mult = -0.1
-				pop_amenities_usage_mult = -0.1
-
-	}
-}
-
-
-
 
 
 
@@ -2347,7 +2373,7 @@ civic_inwards_perfection = {
 	random_weight = { base = 1000 }
 	modifier = {
 
-				country_unity_produces_mult = 0.1
+				country_unity_produces_mult = 0.05
 				pop_growth_speed = 0.1
 				leader_age = 15
 				envoys_add = -1
@@ -2741,10 +2767,10 @@ civic_executive_committee = {
 	}
 	random_weight = { base = 5 }
 	modifier = {
-		        country_base_influence_produces_mult = 0.1
+		        country_base_influence_produces_mult = 0.15
 				campaigns_cost_mult = -0.2
 				job_supervisor_per_pop = 0.02
-				category_military_theory_research_speed_mult = -0.25
+				category_military_theory_research_speed_mult = -0.5
 
 
 	}
@@ -2852,11 +2878,13 @@ civic_globalism = {
 	modifier = {
 
 		country_trade_attractiveness = 0.5
-		country_trade_fee = -0.15
-		DIPLO_WEIGHT_ECONOMY_MULT = 0.15
+		country_trade_fee = -0.05
+		DIPLO_WEIGHT_ECONOMY_MULT = 0.2
 
 	}
 }
 
 
 
+
+################################

@@ -1,0 +1,508 @@
+﻿###_z modmenu	#####################################################################
+###_[button effects 只读 root的东西]
+
+###_无尽群星modmenu按钮			-需要 [UI Overhaul Dynamic – Modmenu Toolbar]
+z_modmenu_button_effect = {
+    potential = {
+		exists = from
+        has_global_flag = z_modmenu_installed
+    }
+	allow = {
+		hidden_trigger = { z_mm_menu_locked = no }
+	}
+	effect = {
+		hidden_effect = {
+			z_mm_lock_menu = yes
+			country_event = { id = z_modmenu.1 }
+		}
+		custom_tooltip = z_modmenu_button
+	}
+}
+###_无尽群星 misc modmenu按钮	-需要 [UI Overhaul Dynamic – Modmenu Toolbar]
+z_misc_modmenu_button_effect = {
+	potential = {
+		exists = from
+		has_global_flag = infinite_collection
+	}
+	allow = {
+		hidden_trigger = { z_mm_menu_locked = no }
+	}
+	effect = {
+		hidden_effect = {
+			z_mm_lock_menu = yes
+			country_event = { id = z_misc_modmenu.1 }
+		}
+		custom_tooltip = z_misc_modmenu_button
+	}
+}
+
+
+
+
+
+
+
+
+###_utilities	############################################################################
+z_mm_framework_button_1 = {
+	potential = { always = yes }
+	#allow = {
+	#	custom_tooltip = {
+    #        hidden_trigger = {
+    #           z_mm_menu_button_locked = no
+    #        }
+    #        fail_text = z_mm_sub_modmenu_on
+    #    }
+	#}
+	
+	effect = {
+		hidden_effect = {
+		#	z_mm_lock_menu_button = yes		#_锁定按钮
+		}
+		custom_tooltip = z_tooltip_wip
+	}
+}
+z_mm_misc_modmenu_button = {
+	potential = { always = yes }
+	allow = {
+		custom_tooltip = {
+            hidden_trigger = {
+               z_mm_menu_button_locked = no
+            }
+            fail_text = z_mm_sub_modmenu_on
+        }
+	}
+	
+	effect = {
+		hidden_effect = {
+			z_mm_lock_menu_button = yes		#_锁定按钮
+			country_event = { id = z_misc_modmenu.1 }
+		}
+		custom_tooltip = z_misc_modmenu_desc
+	}
+}
+###_关闭
+z_modmenu_close_effect = {
+    potential = { always = yes }
+	effect = {
+		hidden_effect = {
+			z_mm_unlock_menu = yes
+			z_mm_unlock_menu_button = yes
+		}
+	}
+}
+
+
+
+
+
+
+
+
+###_无尽群星子mod	############################################################################
+#_[pf]
+z_mm_pf_button = {
+	potential = { always = yes }
+	allow = {
+		hidden_trigger = { z_mm_menu_button_locked = no }
+		custom_tooltip = {
+            hidden_trigger = {
+                has_global_flag = z_performance_installed
+            }
+            fail_text = z_mm_sub_mod_not_activited
+        }
+	}
+	effect = {
+		hidden_effect = {
+			z_mm_lock_menu_button = yes		#_锁定按钮
+			country_event = { id = z_performance.11 }
+		}
+		custom_tooltip = z_mm_performance_desc
+	}
+}
+#_[pf]手动检测
+z_mm_pf_button_manual = {
+	potential = { always = yes }
+	allow = {
+		custom_tooltip = {#_手动检测中
+            hidden_trigger = {
+                NOT = { has_global_flag = z_manual_job_check }
+            }
+            fail_text = z_mm_pf_manual_job_checking
+        }
+		custom_tooltip = {
+            hidden_trigger = {
+                has_global_flag = z_performance_installed
+            }
+            fail_text = z_mm_sub_mod_not_activited
+        }
+	}
+	effect = {
+		hidden_effect = {
+			set_timed_global_flag = { flag = z_manual_job_check days = 7 }
+			z_mm_eft_pf_manual_check = yes
+		}
+		custom_tooltip = z_mm_pf_manual_job_check_button
+	}
+}
+
+#_[pf2]
+z_mm_pf2_button = {
+	potential = { always = yes }
+	allow = {
+		hidden_trigger = { z_mm_menu_button_locked = no }
+		custom_tooltip = {
+            hidden_trigger = {
+                has_global_flag = z_performance2_installed
+            }
+            fail_text = z_mm_sub_mod_not_activited
+        }
+	}
+	effect = {
+		hidden_effect = {
+			z_mm_lock_menu_button = yes		#_锁定按钮
+			country_event = { id = z_performance_misc.11 }
+		}
+		custom_tooltip = z_mm_pf2_desc
+	}
+}
+#_[pf2]合并ai物种
+z_mm_pf2_button_merge_ai_species = {
+	potential = { always = yes }
+	allow = {
+		custom_tooltip = {#_ai物种合并中
+            hidden_trigger = {
+                NOT = { has_global_flag = z_mm_pf2_merge_ai_species_cd }
+            }
+            fail_text = z_mm_pf2_ai_species_merging
+        }
+		custom_tooltip = {
+            hidden_trigger = {
+                has_global_flag = z_performance2_installed
+            }
+            fail_text = z_mm_sub_mod_not_activited
+        }
+	}
+	effect = {
+		hidden_effect = {
+			set_timed_global_flag = { flag = z_mm_pf2_merge_ai_species_cd days = 1 }	#_冷却
+			z_mm_eft_pf2_merge_ai_species = yes
+		}
+		custom_tooltip = z_mm_pf2_merge_ai_species_button
+	}
+}
+
+#_statistic
+z_mm_statistic_button = {
+	potential = { always = yes }
+	allow = {
+		hidden_trigger = { z_mm_menu_button_locked = no }
+		custom_tooltip = {
+            hidden_trigger = {
+                has_global_flag = z_statistic_installed
+            }
+            fail_text = z_mm_sub_mod_not_activited
+        }
+	}
+	effect = {
+		hidden_effect = {
+			z_mm_lock_menu_button = yes		#_锁定按钮
+			country_event = { id = z_statistic.11 }
+		}
+		custom_tooltip = z_mm_statistic_desc
+	}
+}
+
+#_crisis master
+z_mm_cm_button = {
+	potential = { always = yes }
+	allow = {
+		#hidden_trigger = { z_mm_menu_button_locked = no }
+		custom_tooltip = {
+            hidden_trigger = {
+                has_global_flag = z_cm_installed
+            }
+            fail_text = z_mm_sub_mod_not_activited
+        }
+	}
+	effect = {
+		hidden_effect = {
+			#z_mm_lock_menu_button = yes		#_锁定按钮
+			country_event = { id = z_crisis_master.11 }
+		}
+		custom_tooltip = z_mm_cm_desc
+	}
+}
+
+
+
+
+
+
+
+
+###_supported mods	############################################################################
+#_DDUC
+z_mm_dduc_button_1 = {
+	potential = {
+		exists = from
+		has_global_flag = custom_difficulty_active
+	}
+	effect = {
+		hidden_effect = {
+			country_event = { id = custom_difficulty.0 }
+		}
+		custom_tooltip = z_mm_sm_dduc_desc
+	}
+}
+z_mm_dduc_button_2 = {
+	potential = {
+		exists = from
+		NOT = { has_global_flag = custom_difficulty_active }
+	}
+	effect = {
+		hidden_effect = {
+			country_event = { id = custom_difficulty.0 }
+		}
+		custom_tooltip = z_mm_sm_dduc_desc
+	}
+}
+#_mem
+z_mm_mem_button_1 = {
+	potential = {
+		exists = from
+		has_global_flag = mem_more_events_mod
+	}
+	effect = {
+		hidden_effect = {
+			country_event = { id = mem_options.4 }
+		}
+		custom_tooltip = z_mm_sm_mem_desc
+	}
+}
+z_mm_mem_button_2 = {
+	potential = {
+		exists = from
+		NOT = { has_global_flag = mem_more_events_mod }
+	}
+	effect = {
+		hidden_effect = {
+			country_event = { id = mem_options.4 }
+		}
+		custom_tooltip = z_mm_sm_mem_desc
+	}
+}
+#_ESC
+z_mm_esc_button_1 = {
+	potential = {
+		exists = from
+		has_global_flag = nhsc_v30
+	}
+	effect = {
+		hidden_effect = {
+			country_event = { id = esc_options.1 }
+		}
+		custom_tooltip = z_mm_sm_esc_desc
+	}
+}
+z_mm_esc_button_2 = {
+	potential = {
+		exists = from
+		NOT = { has_global_flag = nhsc_v30 }
+	}
+	effect = {
+		hidden_effect = {
+			country_event = { id = esc_options.1 }
+		}
+		custom_tooltip = z_mm_sm_esc_desc
+	}
+}
+#_RLS
+z_mm_rls_button_1 = {
+    potential = {
+		exists = from
+		has_global_flag = play_as_ruler_started
+    }
+    allow = {
+		if = {
+            limit = {
+                NOR = {
+                    has_authority = auth_hive_mind
+                    has_authority = auth_machine_intelligence
+                    has_authority = auth_ancient_machine_intelligence
+                }
+            }
+            custom_tooltip = tab_ruler_hobbies_tooltip
+        }
+        if = {
+            limit = {
+                OR = {
+                    has_authority = auth_hive_mind
+                }
+            }
+            custom_tooltip = tab_ruler_hobbies_tooltip_hivemind
+        }
+        if = {
+            limit = {
+                OR = {
+                    has_authority = auth_machine_intelligence
+                    has_authority = auth_ancient_machine_intelligence
+                }
+            }
+            custom_tooltip = tab_ruler_hobbies_tooltip_machine
+        }
+		custom_tooltip = {
+			fail_text = play_as_ruler.9499.tooltip2
+			hidden_trigger = {
+				any_owned_leader = {
+					leader_class = ruler
+					has_leader_flag = play_as_ruler_ruler_itself
+				}
+			}
+		}
+		custom_tooltip = {
+			fail_text = play_as_ruler.9499.tooltip3
+			hidden_trigger = {
+				NOT = {
+					has_country_flag = ruler_hobby_view_opened
+				}	
+			}
+		}
+    }
+    effect = {
+        if = {
+            limit = {
+                NOR = {
+                    has_authority = auth_hive_mind
+                    has_authority = auth_machine_intelligence
+                    has_authority = auth_ancient_machine_intelligence
+                }
+            }
+            custom_tooltip = tab_ruler_hobbies_tooltip
+        }
+        if = {
+            limit = {
+                OR = {
+                    has_authority = auth_hive_mind
+                }
+            }
+            custom_tooltip = tab_ruler_hobbies_tooltip_hivemind
+        }
+        if = {
+            limit = {
+                OR = {
+                    has_authority = auth_machine_intelligence
+                    has_authority = auth_ancient_machine_intelligence
+                }
+            }
+            custom_tooltip = tab_ruler_hobbies_tooltip_machine
+        }
+        hidden_effect = {
+            set_country_flag = ruler_hobby_view_opened
+            if = {
+                limit = {
+                    NOR = {
+                        has_authority = auth_hive_mind
+                        has_authority = auth_machine_intelligence
+                        has_authority = auth_ancient_machine_intelligence
+                    }
+                }
+                country_event = {
+                    id = play_as_ruler.42689
+                }
+            }
+            if = {
+                limit = {
+                    OR = {
+                        has_authority = auth_hive_mind
+                    }
+                }
+                country_event = {
+                    id = play_as_ruler.42690
+                }
+            }
+            if = {
+                limit = {
+                    OR = {
+                        has_authority = auth_machine_intelligence
+                        has_authority = auth_ancient_machine_intelligence
+                    }
+                }
+                country_event = {
+                    id = play_as_ruler.42691
+                }
+            }
+        }
+		custom_tooltip = z_mm_sm_rls_desc
+    }
+}
+z_mm_rls_button_2 = {
+	potential = {
+		exists = from
+		NOT = { has_global_flag = play_as_ruler_started }
+	}
+	effect = {
+		hidden_effect = {
+            if = {
+                limit = {
+                    NOR = {
+                        has_authority = auth_hive_mind
+                        has_authority = auth_machine_intelligence
+                        has_authority = auth_ancient_machine_intelligence
+                    }
+                }
+                country_event = {
+                    id = play_as_ruler.42689
+                }
+            }
+            if = {
+                limit = {
+                    OR = {
+                        has_authority = auth_hive_mind
+                    }
+                }
+                country_event = {
+                    id = play_as_ruler.42690
+                }
+            }
+            if = {
+                limit = {
+                    OR = {
+                        has_authority = auth_machine_intelligence
+                        has_authority = auth_ancient_machine_intelligence
+                    }
+                }
+                country_event = {
+                    id = play_as_ruler.42691
+                }
+            }
+		}
+		custom_tooltip = z_mm_sm_rls_desc
+	}
+}
+#_ACOT
+z_mm_acot_button_1 = {
+	potential = {
+		exists = from
+		has_global_flag = acot_activated
+	}
+	effect = {
+		hidden_effect = {
+			country_event = { id = acot_mod_options.1 }
+		}
+		custom_tooltip = z_mm_sm_acot_desc
+	}
+}
+z_mm_acot_button_2 = {
+	potential = {
+		exists = from
+		NOT = { has_global_flag = acot_activated }
+	}
+	effect = {
+		hidden_effect = {
+			country_event = { id = acot_mod_options.1 }
+		}
+		custom_tooltip = z_mm_sm_acot_desc
+	}
+}
+

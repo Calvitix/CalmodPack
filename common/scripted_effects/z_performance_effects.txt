@@ -1,0 +1,100 @@
+###_z performance	##################################################################################
+
+#_[z_pf_eft_pop_degrade]
+#_[z_pf_eft_handle_excess][z_pf_eft_handle_excess_resettle_cycle][z_pf_eft_handle_excess_resettle_kill_cycle][z_pf_eft_handle_excess_kill_cycle][z_pf_eft_handle_excess_job_check]
+
+
+
+
+#_[planet]
+z_pf_eft_pop_degrade = {
+	if = {#_全部
+		limit = { has_global_flag = z_pf_pop_degrade }
+		every_owned_pop = {
+			limit = {
+				is_unemployed = yes
+				OR = {
+					is_pop_category = ruler
+					is_pop_category = specialist
+				}
+			}
+			clear_pop_category = yes
+		}
+	}
+	else_if = {#_玩家
+		limit = {
+			has_global_flag = z_pf_pop_degrade_noai
+			owner = { is_ai = no }
+		}
+		every_owned_pop = {
+			limit = {
+				is_unemployed = yes
+				OR = {
+					is_pop_category = ruler
+					is_pop_category = specialist
+				}
+			}
+			clear_pop_category = yes
+		}
+	}
+}
+
+
+
+
+###_[planet]处理多余人口
+z_pf_eft_handle_excess = {
+	###_设定迁移上限
+	if = {
+		limit = { has_global_flag = z_pf_handle_excess_max_10 }
+		set_variable = { which = z_pf_excess_resettle_max_var value = 10 }	#_[planet]最大迁移人次
+	}
+	else_if = {
+		limit = { has_global_flag = z_pf_handle_excess_max_20 }
+		set_variable = { which = z_pf_excess_resettle_max_var value = 20 }	#_[planet]最大迁移人次
+	}
+	else = {
+		set_variable = { which = z_pf_excess_resettle_max_var value = 5 }	#_[planet]最大迁移人次
+	}
+	###_执行多余人口处理
+	#_AI
+	if = {
+		limit = { owner = { is_ai = yes } }
+		if = {
+			limit = { has_global_flag = z_pf_excess_ai_resettle }
+			planet_event = { id = z_performance.151 }	#_迁移循环
+		}
+		else_if = {
+			limit = { has_global_flag = z_pf_excess_ai_resettle_kill }
+			planet_event = { id = z_performance.152 }	#_迁移+清理循环
+		}
+		else_if = {
+			limit = { has_global_flag = z_pf_excess_ai_kill }
+			planet_event = { id = z_performance.153 }	#_清理循环
+		}
+	}
+	#_玩家
+	else_if = {
+		limit = { owner = { is_ai = no } }
+		if = {
+			limit = { has_global_flag = z_pf_excess_pc_resettle }
+			planet_event = { id = z_performance.151 }	#_迁移循环
+		}
+		else_if = {
+			limit = { has_global_flag = z_pf_excess_pc_resettle_kill }
+			planet_event = { id = z_performance.152 }	#_迁移+清理循环
+		}
+		else_if = {
+			limit = { has_global_flag = z_pf_excess_pc_kill }
+			planet_event = { id = z_performance.153 }	#_清理循环
+		}
+	}
+}
+#_[planet]处理多余人口-target planet job checking
+z_pf_eft_handle_excess_job_check = {
+	if = {
+		limit = { NOT = { has_planet_flag = z_pf_job_checker_uep } }
+		set_timed_planet_flag = { flag = z_pf_job_checker_uep days = 2 }	#_unemployed trigger
+		planet_event = { id = z_performance.15 days = 1 }
+	}
+}

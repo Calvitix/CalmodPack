@@ -1,0 +1,261 @@
+namespace = z_modmenu
+#_on_game_start installed flag
+event = {
+	id = z_modmenu.10
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		set_global_flag = z_modmenu_installed
+		#set_global_flag = z_monthly_check_1
+		every_country = {
+			limit = { is_ai = no }
+			country_event = { id = z_modmenu.12  days = 4 }
+		}
+	}
+}
+###_万用初始化
+country_event = {
+	id = z_modmenu.101
+	hide_window = yes
+	fire_only_once = yes
+	trigger = { is_ai = no }
+	mean_time_to_happen = { days = 13 }
+
+	immediate = {
+		if = {
+			limit = { NOT = { has_global_flag = z_modmenu_installed } }
+			set_global_flag = z_modmenu_installed
+			every_country = {
+				limit = { is_ai = no }
+				country_event = { id = z_modmenu.12  days = 1 }
+			}
+		}
+	}
+}
+
+#_测试
+country_event = {
+	id = z_modmenu.11
+	title = z_modmenu.11.name
+	desc = z_modmenu.11.desc
+	picture = GFX_evt_z_modmenu
+	is_triggered_only = yes
+	
+	#_unemploy
+	option = {
+		name = z_modmenu_test_1
+		trigger = {
+			any_owned_pop = { is_unemployed = yes }
+		}
+		hidden_effect = {
+			every_owned_pop = { limit = { is_unemployed = yes } unemploy_pop = yes }
+			country_event = { id = z_modmenu.11 }
+		}
+	}
+	#_去掉分类
+	option = {
+		name = z_modmenu_test_2
+		trigger = {
+			any_owned_pop = { is_unemployed = yes }
+		}
+		hidden_effect = {
+			every_owned_pop = { limit = { is_unemployed = yes } clear_pop_category = yes }
+			country_event = { id = z_modmenu.11 }
+		}
+	}
+	#_改物种
+	option = {
+		name = z_modmenu_test_3
+		trigger = {
+			any_owned_pop = { is_unemployed = yes }
+		}
+		hidden_effect = {
+			every_owned_pop = {
+				limit = { is_unemployed = yes }
+				modify_species = {
+					species = this
+					add_trait = trait_cybernetic
+					add_traits_at_start_of_list = yes
+					remove_trait = trait_cybernetic
+					change_scoped_species = yes # change only this pop's species
+				}
+			}
+			country_event = { id = z_modmenu.11 }
+		}
+	}
+	#_强制检测阵营
+	option = {
+		name = z_modmenu_test_4
+		trigger = {
+			any_owned_pop = { is_unemployed = yes }
+		}
+		hidden_effect = {
+			every_owned_pop = { limit = { is_unemployed = yes } force_faction_evaluation = yes }
+			country_event = { id = z_modmenu.11 }
+		}
+	}
+	#_kill and restore
+	option = {
+		name = z_modmenu_test_5
+		trigger = {
+			any_owned_pop = { is_unemployed = yes }
+		}
+		hidden_effect = {
+			every_owned_pop = {
+				limit = { is_unemployed = yes }
+				save_event_target_as = z_refresh_pop
+				species = { save_event_target_as = z_refresh_species }
+				planet = {
+					create_pop = {
+						species = z_refresh_species
+						ethos = z_refresh_pop
+					}
+				}
+			}
+			country_event = { id = z_modmenu.11 }
+		}
+	}
+	
+	option = {
+		name = z_modmenu_exit
+	}
+}
+	
+	
+	
+	
+#_提示-无尽整合菜单按钮
+country_event = {
+	id = z_modmenu.12
+	title = z_modmenu_start_title
+	desc = z_modmenu_start_title_desc
+	picture = GFX_evt_z_modmenu_restoration
+	is_triggered_only = yes
+	
+	immediate = {
+		if = {
+			limit = { has_global_flag = infinite_collection }
+			begin_event_chain = { event_chain = z_chain_main target = this }	#_开启检视事件链
+		}
+	}
+	#_确定
+	option = {
+		name = z_modmenu.12.a
+	}
+}
+
+
+#_modmenu
+country_event = {
+	id = z_modmenu.1
+	title = z_modmenu.1.name
+	#desc = "none"
+	#picture = GFX_evt_z_modmenu
+	is_triggered_only = yes
+	trigger = { NOT = { has_country_flag = z_modmenu_opened } }
+	
+	diplomatic = yes
+	custom_gui = "z_modmenu_window"
+}
+
+
+#_modmenu-old
+country_event = {
+	id = z_modmenu.13
+	title = z_modmenu.1.name
+	desc = z_modmenu.1.desc
+	#picture = GFX_evt_z_modmenu
+	is_triggered_only = yes
+	
+	diplomatic = yes
+	custom_gui = "z_modmenu_window"
+
+	#_POTE
+	option = {
+		name = z_modmenu_sb_ench
+		trigger = {
+			has_global_flag = z_sb_ench_installed
+		}
+		hidden_effect = {
+			country_event = {
+				id = z_starbase_enhancement.11
+			}
+		}
+	}
+	#_科技爆炸
+	option = {
+		name = z_modmenu_asr
+		trigger = {
+			has_global_flag = z_tl_installed
+		}
+		hidden_effect = {
+			country_event = {
+				id = z_astro_resources.1
+			}
+		}
+	}
+	#_特殊敌人难度设置
+	option = {
+		name = z_modmenu_sp_enemy
+		trigger = {
+			has_global_flag = z_tl_installed
+		}
+		hidden_effect = {
+			country_event = {
+				id = z_sp_enemy.1
+			}
+		}
+	}
+	#_天灾之主
+	option = {
+		name = z_modmenu_cm
+		trigger = {
+			has_global_flag = z_cm_installed
+		}
+		hidden_effect = {
+			country_event = {
+				id = z_crisis_master.11
+			}
+		}
+	}
+	#_工作检测优化
+	option = {
+		name = z_modmenu_performance
+		trigger = {
+			has_global_flag = z_performance_installed
+		}
+		hidden_effect = {
+			country_event = {
+				id = z_performance.11
+			}
+		}
+	}
+	#_额外优化
+	option = {
+		name = z_modmenu_performance2
+		trigger = {
+			has_global_flag = z_performance2_installed
+		}
+		hidden_effect = {
+			country_event = {
+				id = z_performance_misc.11
+			}
+		}
+	}
+	#_数据检视
+	option = {
+		name = z_modmenu_statistic
+		trigger = {
+			has_global_flag = z_statistic_installed
+		}
+		hidden_effect = {
+			country_event = {
+				id = z_statistic.11
+			}
+		}
+	}
+	option = {
+		name = z_modmenu_exit
+	}
+}

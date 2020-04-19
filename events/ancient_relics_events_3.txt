@@ -625,12 +625,7 @@ fleet_event = {
 # A hissy old dragon appears!
 fleet_event = {
 	id = ancrel.4018
-	title = ancrel.4018.name
-	desc = ancrel.4018.desc
-	picture = GFX_evt_space_dragon_blue
-	show_sound = event_dangerous_animals
-	location = from
-
+	hide_window = yes
 	is_triggered_only = yes
 
 	immediate = {
@@ -666,34 +661,54 @@ fleet_event = {
 				every_playable_country = {
 					establish_communications_no_message = event_target:rubricator_dragon_country
 				}
-				create_fleet = {
-					name = "NAME_Shard"
-					settings = {
-						spawn_debris = no
-						is_boss = yes
-					}
-					effect = {
-						set_owner = event_target:rubricator_dragon_country
-						create_ship = {
-							name = "NAME_Grand_Dragon"
-							design = "NAME_Shard_Dragon"
-							effect = {
-								set_ship_flag = rubricator_dragon_ship
-								save_global_event_target_as = rubricator_dragon_ship
-								set_disabled = no
-							}
+			}
+		}
+		fleet_event = {
+			id = ancrel.40180
+			days = 1
+		}
+	}
+}
+
+fleet_event = {
+	id = ancrel.40180
+	title = ancrel.4018.name
+	desc = ancrel.4018.desc
+	picture = GFX_evt_space_dragon_blue
+	show_sound = event_dangerous_animals
+	location = fromfrom
+
+	is_triggered_only = yes
+
+	immediate = {
+		event_target:rubricator_dragon_country = {
+			create_fleet = {
+				name = "NAME_Shard"
+				settings = {
+					spawn_debris = no
+					is_boss = yes
+				}
+				effect = {
+					set_owner = event_target:rubricator_dragon_country
+					create_ship = {
+						name = "NAME_Grand_Dragon"
+						design = "NAME_Shard_Dragon"
+						effect = {
+							set_ship_flag = rubricator_dragon_ship
+							save_global_event_target_as = rubricator_dragon_ship
+							set_disabled = no
 						}
-						save_global_event_target_as = rubricator_dragon_fleet
-						set_location = {
-							target = root
-							distance = 10
-							angle = 90
-							direction = in_system
-						}
-						set_fleet_stance = passive
-						set_aggro_range_measure_from = self
-						set_aggro_range = 350
 					}
+					save_global_event_target_as = rubricator_dragon_fleet
+					set_location = {
+						target = root
+						distance = 10
+						angle = 90
+						direction = in_system
+					}
+					set_fleet_stance = passive
+					set_aggro_range_measure_from = self
+					set_aggro_range = 350
 				}
 			}
 		}
