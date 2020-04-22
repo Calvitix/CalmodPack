@@ -1,0 +1,239 @@
+#_去军事化
+z_fw_wg_demilitarize = {
+	casus_belli = z_fw_cb_demilitarize
+	hide_if_no_cb = yes
+	release_occupied_systems_on_status_quo = yes
+	surrender_acceptance = -50
+
+	potential = {
+		has_global_flag = z_framework_core	#_z fw
+		NOR = {
+			has_valid_civic = civic_inwards_perfection
+			has_authority = auth_corporate
+		}
+		has_total_war_cb = no
+		from = {
+			NOT = { has_modifier = z_fw_demilitarized }
+		}
+	}
+	possible = {
+		has_global_flag = z_framework_core	#_z fw
+		#always = yes
+	}
+	on_accept = {
+        custom_tooltip = z_fw_demilitarize_accept
+        hidden_effect = {
+            add_resource = { influence = 100 }
+            from = {
+				add_modifier = { modifier = z_fw_demilitarized days = 7200 }
+				set_policy = {
+					policy = war_philosophy
+					option = no_wars	#_防御战争
+					cooldown = yes
+				}
+			}
+			guarantee_country = {
+				target = from
+				free_guarantee_days = 7200
+			}
+        }
+	}
+		
+	ai_weight = {
+		weight = 25
+	}
+}
+
+#_夺取一件圣遗物
+z_fw_plunder_one_relic = {
+	casus_belli = z_fw_cb_plunder_relic
+	hide_if_no_cb = yes
+	release_occupied_systems_on_status_quo = yes
+	surrender_acceptance = -35
+
+	potential = {
+		has_global_flag = z_framework_core	#_z fw
+		#has_total_war_cb = no
+	}
+
+	possible = {
+		has_global_flag = z_framework_core	#_z fw
+		#always = yes
+	}
+
+	on_accept = {
+		#_winner
+		steal_relic = {
+			target = from
+			relic = random
+		}
+		country_event = { id = z_fw1_misc.21 }
+		#_loser
+		from = {
+			add_threat = {
+				who = root
+				amount = 1
+ 			}
+			add_opinion_modifier = { modifier = z_fw_opinion_wg_relic who = root }
+			add_modifier = { modifier = humiliated days = 3600 }
+			hidden_effect = { country_event = { id = z_fw1_misc.22 } }
+		}
+	}
+	#_保持现状
+	on_status_quo = {
+		from = {
+			set_closed_borders = {
+				who = prev
+				status = no
+			}
+		}
+	}
+	ai_weight = {
+		weight = 100
+		modifier = {
+			factor = 0.5
+			has_ethic = ethic_gestalt_consciousness
+		}
+	}
+}
+#_夺取全部圣遗物
+z_fw_plunder_all_relics = {
+	casus_belli = z_fw_cb_plunder_relic_all
+	hide_if_no_cb = yes
+	release_occupied_systems_on_status_quo = yes
+	surrender_acceptance = -100
+
+	potential = {
+		has_global_flag = z_framework_core	#_z fw
+		#has_total_war_cb = no
+	}
+
+	possible = {
+		has_global_flag = z_framework_core	#_z fw
+		#always = yes
+	}
+
+	on_accept = {
+		#_winner
+		add_modifier = { modifier = z_fw_relic_obtained days = 3600 }
+		steal_relic = {
+			target = from
+			relic = all
+		}
+		country_event = { id = z_fw1_misc.23 }
+		#_loser
+		from = {
+			add_threat = {
+				who = root
+				amount = 1
+ 			}
+			add_opinion_modifier = { modifier = z_fw_opinion_wg_relic_all who = root }
+			add_modifier = { modifier = humiliated days = 3600 }
+			country_event = { id = z_fw1_misc.24 }
+		}
+		#_其他国家
+		every_country = {
+			limit = { 	
+				NOR = {
+					is_country = from				#_战败国
+					is_in_federation_with = root 	#_我的盟友
+					AND = {#_我的附庸
+						is_subject = yes
+						exists = overlord
+						overlord = { is_same_value = root }
+					}
+				}
+			}
+			add_opinion_modifier = { modifier = z_fw_opinion_wg_relic_all_others who = root }	#_引起其它文明敌视
+		}
+	}
+	on_status_quo = {
+		from = {
+			set_closed_borders = {
+				who = prev
+				status = no
+			}
+		}
+	}
+	ai_weight = {
+		weight = 100
+		modifier = {
+			factor = 0.5
+			has_ethic = ethic_gestalt_consciousness
+		}
+	}
+}
+
+#_开放边境
+z_fw_wg_open_border = {
+	casus_belli = z_fw_cb_border
+	hide_if_no_cb = yes
+	set_defender_wargoal = z_wg_open_border
+	defender_default = yes
+	release_occupied_systems_on_status_quo = yes
+	surrender_acceptance = 25
+	
+	potential = {
+		has_global_flag = z_framework_core	#_z fw
+		#has_total_war_cb = no
+	}
+	possible = {
+		has_global_flag = z_framework_core	#_z fw
+		#always = yes
+	}
+	on_accept = {
+        custom_tooltip = z_fw_open_border_tooltip
+        hidden_effect = {
+            add_resource = { influence = 100 }
+            from = {
+				set_closed_borders = {
+				   who = root
+				   status = no
+				   forced = 20
+				}
+			}
+        }
+	}
+		
+	ai_weight = {
+		weight = 25
+	}
+}
+#_开放边境-长期
+z_fw_wg_open_border_long = {
+	casus_belli = z_fw_cb_border
+	hide_if_no_cb = yes
+	set_defender_wargoal = z_wg_open_border_long
+	defender_default = yes
+	release_occupied_systems_on_status_quo = yes
+	surrender_acceptance = -30
+	
+	potential = {
+		has_global_flag = z_framework_core	#_z fw
+		#has_total_war_cb = no
+	}
+	possible = {
+		has_global_flag = z_framework_core	#_z fw
+		#always = yes
+	}
+	on_accept = {
+		custom_tooltip = z_fw_open_border_long_tooltip
+		hidden_effect = {
+			add_resource = { influence = 150 }
+			end_rivalry = from
+			from = {
+				set_closed_borders = {
+				   who = root
+				   status = no
+				   forced = 40
+				}
+				end_rivalry = root
+				add_opinion_modifier = { modifier = z_fw_opinion_wg_open_boder_long who = root }
+			}
+        }
+	}
+		
+	ai_weight = {
+		weight = 50
+	}
+}

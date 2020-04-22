@@ -1,7 +1,7 @@
-﻿###_z modmenu	#####################################################################
-###_[button effects 只读 root的东西]
+###_z modmenu	#####################################################################
+###_[button effects ?? root???]
 
-###_无尽群星modmenu按钮			-需要 [UI Overhaul Dynamic – Modmenu Toolbar]
+###_????modmenu??			-?? [UI Overhaul Dynamic � Modmenu Toolbar]
 z_modmenu_button_effect = {
     potential = {
 		exists = from
@@ -18,7 +18,7 @@ z_modmenu_button_effect = {
 		custom_tooltip = z_modmenu_button
 	}
 }
-###_无尽群星 misc modmenu按钮	-需要 [UI Overhaul Dynamic – Modmenu Toolbar]
+###_???? misc modmenu??	-?? [UI Overhaul Dynamic � Modmenu Toolbar]
 z_misc_modmenu_button_effect = {
 	potential = {
 		exists = from
@@ -44,24 +44,30 @@ z_misc_modmenu_button_effect = {
 
 
 ###_utilities	############################################################################
+#_????
 z_mm_framework_button_1 = {
 	potential = { always = yes }
-	#allow = {
-	#	custom_tooltip = {
-    #        hidden_trigger = {
-    #           z_mm_menu_button_locked = no
-    #        }
-    #        fail_text = z_mm_sub_modmenu_on
-    #    }
-	#}
+	allow = {
+		hidden_trigger = {
+		   z_mm_framework_locked = no
+		}
+		custom_tooltip = {
+            hidden_trigger = {
+				NOT = { has_global_flag = z_framework_disabled }
+            }
+            fail_text = z_mm_tips_framework_disabled
+        }
+	}
 	
 	effect = {
 		hidden_effect = {
-		#	z_mm_lock_menu_button = yes		#_锁定按钮
+			z_mm_lock_framework = yes		#_??????
+			country_event = { id = z_modmenu.13 }
 		}
-		custom_tooltip = z_tooltip_wip
+		custom_tooltip = z_mm_desc_framework
 	}
 }
+#_misc mod??
 z_mm_misc_modmenu_button = {
 	potential = { always = yes }
 	allow = {
@@ -69,19 +75,19 @@ z_mm_misc_modmenu_button = {
             hidden_trigger = {
                z_mm_menu_button_locked = no
             }
-            fail_text = z_mm_sub_modmenu_on
+            fail_text = z_mm_tips_sub_modmenu_on
         }
 	}
 	
 	effect = {
 		hidden_effect = {
-			z_mm_lock_menu_button = yes		#_锁定按钮
+			z_mm_lock_menu_button = yes		#_????
 			country_event = { id = z_misc_modmenu.1 }
 		}
 		custom_tooltip = z_misc_modmenu_desc
 	}
 }
-###_关闭
+###_??
 z_modmenu_close_effect = {
     potential = { always = yes }
 	effect = {
@@ -99,7 +105,7 @@ z_modmenu_close_effect = {
 
 
 
-###_无尽群星子mod	############################################################################
+###_?????mod	############################################################################
 #_[pf]
 z_mm_pf_button = {
 	potential = { always = yes }
@@ -109,24 +115,24 @@ z_mm_pf_button = {
             hidden_trigger = {
                 has_global_flag = z_performance_installed
             }
-            fail_text = z_mm_sub_mod_not_activited
+            fail_text = z_mm_tips_sub_mod_not_activited
         }
 	}
 	effect = {
 		hidden_effect = {
-			z_mm_lock_menu_button = yes		#_锁定按钮
+			z_mm_lock_menu_button = yes		#_????
 			country_event = { id = z_performance.11 }
 		}
 		custom_tooltip = z_mm_performance_desc
 	}
 }
-#_[pf]手动检测
+#_[pf]????
 z_mm_pf_button_manual = {
 	potential = { always = yes }
 	allow = {
-		custom_tooltip = {#_手动检测中
+		custom_tooltip = {#_?????
             hidden_trigger = {
-                NOT = { has_global_flag = z_manual_job_check }
+                NOT = { has_global_flag = z_pf_manual_checking_cd }
             }
             fail_text = z_mm_pf_manual_job_checking
         }
@@ -134,12 +140,12 @@ z_mm_pf_button_manual = {
             hidden_trigger = {
                 has_global_flag = z_performance_installed
             }
-            fail_text = z_mm_sub_mod_not_activited
+            fail_text = z_mm_tips_sub_mod_not_activited
         }
 	}
 	effect = {
 		hidden_effect = {
-			set_timed_global_flag = { flag = z_manual_job_check days = 7 }
+			set_timed_global_flag = { flag = z_pf_manual_checking_cd days = 10 }
 			z_mm_eft_pf_manual_check = yes
 		}
 		custom_tooltip = z_mm_pf_manual_job_check_button
@@ -155,22 +161,22 @@ z_mm_pf2_button = {
             hidden_trigger = {
                 has_global_flag = z_performance2_installed
             }
-            fail_text = z_mm_sub_mod_not_activited
+            fail_text = z_mm_tips_sub_mod_not_activited
         }
 	}
 	effect = {
 		hidden_effect = {
-			z_mm_lock_menu_button = yes		#_锁定按钮
+			z_mm_lock_menu_button = yes		#_????
 			country_event = { id = z_performance_misc.11 }
 		}
 		custom_tooltip = z_mm_pf2_desc
 	}
 }
-#_[pf2]合并ai物种
+#_[pf2]??ai??
 z_mm_pf2_button_merge_ai_species = {
 	potential = { always = yes }
 	allow = {
-		custom_tooltip = {#_ai物种合并中
+		custom_tooltip = {#_ai?????
             hidden_trigger = {
                 NOT = { has_global_flag = z_mm_pf2_merge_ai_species_cd }
             }
@@ -180,12 +186,12 @@ z_mm_pf2_button_merge_ai_species = {
             hidden_trigger = {
                 has_global_flag = z_performance2_installed
             }
-            fail_text = z_mm_sub_mod_not_activited
+            fail_text = z_mm_tips_sub_mod_not_activited
         }
 	}
 	effect = {
 		hidden_effect = {
-			set_timed_global_flag = { flag = z_mm_pf2_merge_ai_species_cd days = 1 }	#_冷却
+			set_timed_global_flag = { flag = z_mm_pf2_merge_ai_species_cd days = 1 }	#_??
 			z_mm_eft_pf2_merge_ai_species = yes
 		}
 		custom_tooltip = z_mm_pf2_merge_ai_species_button
@@ -201,12 +207,12 @@ z_mm_statistic_button = {
             hidden_trigger = {
                 has_global_flag = z_statistic_installed
             }
-            fail_text = z_mm_sub_mod_not_activited
+            fail_text = z_mm_tips_sub_mod_not_activited
         }
 	}
 	effect = {
 		hidden_effect = {
-			z_mm_lock_menu_button = yes		#_锁定按钮
+			z_mm_lock_menu_button = yes		#_????
 			country_event = { id = z_statistic.11 }
 		}
 		custom_tooltip = z_mm_statistic_desc
@@ -222,12 +228,12 @@ z_mm_cm_button = {
             hidden_trigger = {
                 has_global_flag = z_cm_installed
             }
-            fail_text = z_mm_sub_mod_not_activited
+            fail_text = z_mm_tips_sub_mod_not_activited
         }
 	}
 	effect = {
 		hidden_effect = {
-			#z_mm_lock_menu_button = yes		#_锁定按钮
+			#z_mm_lock_menu_button = yes		#_????
 			country_event = { id = z_crisis_master.11 }
 		}
 		custom_tooltip = z_mm_cm_desc
@@ -503,6 +509,56 @@ z_mm_acot_button_2 = {
 			country_event = { id = acot_mod_options.1 }
 		}
 		custom_tooltip = z_mm_sm_acot_desc
+	}
+}
+#_?????
+z_mm_cmn_button_1 = {
+	potential = {
+		exists = from
+		has_global_flag = CmtFlagActivated
+	}
+	effect = {
+		hidden_effect = {
+			country_event = { id = CrisisManagerMenu.3 }
+		}
+		custom_tooltip = z_mm_sm_cmn_desc
+	}
+}
+z_mm_cmn_button_2 = {
+	potential = {
+		exists = from
+		NOT = { has_global_flag = CmtFlagActivated }
+	}
+	effect = {
+		hidden_effect = {
+			country_event = { id = CrisisManagerMenu.3 }
+		}
+		custom_tooltip = z_mm_sm_cmn_desc
+	}
+}
+#_????
+z_mm_tgu_button_1 = {
+	potential = {
+		exists = from
+		has_global_flag = eac_empire_university_installed
+	}
+	effect = {
+		hidden_effect = {
+			country_event = { id = eac_university.1 }
+		}
+		custom_tooltip = z_mm_sm_tgu_desc
+	}
+}
+z_mm_tgu_button_2 = {
+	potential = {
+		exists = from
+		NOT = { has_global_flag = eac_empire_university_installed }
+	}
+	effect = {
+		hidden_effect = {
+			country_event = { id = eac_university.1 }
+		}
+		custom_tooltip = z_mm_sm_tgu_desc
 	}
 }
 

@@ -1,0 +1,519 @@
+namespace = z_fw1_misc
+
+###_公用flag
+#_[]
+
+
+
+
+###_[main] [id=1]	########################################################################################
+#_on_game_start installed flag
+event = {
+	id = z_fw1_misc.10
+	hide_window = yes
+	is_triggered_only = yes
+	
+	immediate = {
+		every_country = {
+			limit = { is_ai = no }
+			#_开局选项
+			set_country_flag = z_fw1_start_monument
+			remove_country_flag = z_fw1_start_preparation
+			country_event = { id = z_fw1_misc.1  days = 4 }
+		}
+	}
+}
+
+###_开始
+country_event = {
+	id = z_fw1_misc.1
+	title = z_fw_start_title
+	desc = z_fw_start_desc
+	picture = GFX_evt_z_modmenu
+	is_triggered_only = yes
+	
+	#_星辰大海的渴望
+	option = {
+		name = z_fw1_misc.1.a1
+		custom_tooltip = z_fw1_misc.1.a1.tooltip
+		trigger = {
+			has_country_flag = z_fw1_start_monument
+		}
+		hidden_effect = {
+			remove_country_flag = z_fw1_start_monument
+			country_event = { id = z_fw1_misc.1 }
+		}
+	}
+	option = {
+		name = z_fw1_misc.1.a2
+		custom_tooltip = z_fw1_misc.1.a2.tooltip
+		trigger = {
+			NOT = { has_country_flag = z_fw1_start_monument }
+		}
+		hidden_effect = {
+			set_country_flag = z_fw1_start_monument
+			country_event = { id = z_fw1_misc.1 }
+		}
+	}
+	
+	#_未雨绸缪
+	option = {
+		name = z_fw1_misc.1.b1
+		custom_tooltip = z_fw1_misc.1.b1.tooltip
+		trigger = {
+			has_country_flag = z_fw1_start_preparation
+		}
+		hidden_effect = {
+			remove_country_flag = z_fw1_start_preparation
+			country_event = { id = z_fw1_misc.1 }
+		}
+	}
+	option = {
+		name = z_fw1_misc.1.b2
+		custom_tooltip = z_fw1_misc.1.b2.tooltip
+		trigger = {
+			NOT = { has_country_flag = z_fw1_start_preparation }
+		}
+		hidden_effect = {
+			set_country_flag = z_fw1_start_preparation
+			country_event = { id = z_fw1_misc.1 }
+		}
+	}
+	
+	#_complete
+	option = {
+		name = z_fw1_misc.1.c
+		hidden_effect = {
+			#_开局科技
+			z_fw_eft_start_tech = yes
+			#_渴望
+			if = {
+				limit = { has_country_flag = z_fw1_start_monument }
+				remove_country_flag = z_fw1_start_monument
+				if = {
+					limit = { NOT = { has_relic = z_fw_r_monument } }
+					add_relic = z_fw_r_monument
+				}
+				set_variable = { which = z_fw_desire_point_var value = 6 }
+				#_母星buff
+				if = {
+					limit = { is_gestalt = no }
+					capital_scope = {
+						add_modifier = { modifier = z_fw_mod_desire_growth_normal days = 7700 }
+					}
+				}
+				else_if = {
+					limit = { is_hive_empire = yes }
+					capital_scope = {
+						add_modifier = { modifier = z_fw_mod_desire_growth_hive days = 7700 }
+					}
+				}
+				else_if = {
+					limit = { is_machine_empire = yes }
+					capital_scope = {
+						add_modifier = { modifier = z_fw_mod_desire_assembly_machine days = 7700 }
+					}
+				}
+			}
+			#_未雨绸缪
+			if = {
+				limit = { has_country_flag = z_fw1_start_preparation }
+				remove_country_flag = z_fw1_start_preparation
+				if = {
+					limit = {
+						NOT = { any_owned_planet = { has_planet_flag = ringworld_start } }
+					}
+					add_resource = {
+						energy = 9900
+						minerals = 9900
+						food = 4900
+						alloys = 4900
+						consumer_goods = 4900
+						influence = 400
+					}
+				}
+			}
+		}
+	}
+}
+
+#_[warleader]星辰大海的渴望点+1
+country_event = {
+	id = z_fw1_misc.11
+	title = z_fw_desire_point_add_war_title
+	desc = z_fw_desire_point_add_war_desc
+	picture = GFX_evt_z_fw_desire_point_added
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+		has_relic = z_fw_r_monument
+	}
+	
+	immediate = {
+		change_variable = { which = z_fw_desire_point_var value = 1 }
+	}
+	option = {
+		name = z_fw_evt_good
+	}
+}
+
+###_[misc all]
+
+
+
+
+
+
+
+
+###_[war] [id=2]	########################################################################################
+#_夺取一个圣遗物
+country_event = {
+	id = z_fw1_misc.21
+	title = z_fw_relic_wars.name
+	desc = z_fw_relic_wars.desc
+	picture = GFX_evt_z_fw_relic_war
+	show_sound = relic_activation_ether_drake_trophy
+	is_triggered_only = yes
+
+	option = {
+		name = z_fw1_misc.2.a
+	}
+}
+#_被夺走一个圣遗物
+country_event = {
+	id = z_fw1_misc.22
+	title = z_fw_relic_wars_lost.name
+	desc = z_fw_relic_wars_lost.desc
+	picture = GFX_evt_z_fw_relic_war_lost
+	show_sound = event_life_support_fail
+	is_triggered_only = yes
+
+	immediate = {
+	}
+	option = {
+		name = z_fw1_misc.22.a
+		tooltip = { add_modifier = { modifier = humiliated days = 3600 } }
+	}
+}
+#_夺取全部圣遗物
+country_event = {
+	id = z_fw1_misc.23
+	title = z_fw_relic_wars_all.name
+	desc = z_fw_relic_wars_all.desc
+	picture = GFX_evt_z_fw_relic_war
+	show_sound = relic_activation_ether_drake_trophy
+	is_triggered_only = yes
+
+	option = {
+		name = z_fw1_misc.23.a
+	}
+}
+###_损失全部圣遗物
+country_event = {
+	id = z_fw1_misc.24
+	title = z_fw_relic_wars_all_lost.name
+	desc = z_fw_relic_wars_all_lost.desc
+	picture = GFX_evt_z_fw_relic_war_lost
+	show_sound = event_life_support_fail
+	is_triggered_only = yes
+
+	immediate = {
+	}
+	option = {
+		name = z_fw1_misc.24.a
+		tooltip = { add_modifier = { modifier = humiliated days = 3600 } }
+	}
+}
+
+
+
+
+
+
+
+
+###_[relic] [id=3]	###########################################################################################
+
+###_璀璨星图
+#_选择引爆方式 day1-3特效 day4引爆
+#_planet_flag	[z_fw_plnt_r_co_ignore]
+#_global_event_target	[z_fw_tgt_plnt_r_co]
+#_country_flag [z_fw_r_co_country_destroyed]
+country_event = {
+	id = z_fw1_misc.31
+	title = z_fw_r_co_choice_power.name
+	desc = z_fw_r_co_choice_power.desc
+	picture = GFX_evt_z_fw_r_co_necron_1
+	show_sound = event_air_raid_siren
+	#location = root
+	is_triggered_only = yes
+
+	option = {#_引爆这颗恒星
+		name = z_fw1_misc.31.a1
+		hidden_effect = {
+			event_target:z_fw_tgt_plnt_r_co = {
+				planet_event = { id = z_fw1_planet_destruction.311 }			#_FX-mega
+				planet_event = { id = z_fw1_planet_destruction.312 days = 2 }	#_FX-mega
+				planet_event = { id = z_fw1_planet_destruction.313 days = 3 }	#_FX-mega
+				planet_event = { id = z_fw1_planet_destruction.21 days = 4 }	#_超新星诞生
+				planet_event = { id = z_fw1_planet_destruction.22 days = 4 }	#_毁灭星系
+				planet_event = { id = z_fw1_planet_destruction.23 days = 89 random = 29 }	#_超新星冷却
+			}
+			clear_global_event_target = z_fw_tgt_plnt_r_co
+		}
+	}
+	option = {#_毁灭这个星系
+		name = z_fw1_misc.31.a2
+		hidden_effect = {
+			event_target:z_fw_tgt_plnt_r_co = {
+				planet_event = { id = z_fw1_planet_destruction.311 }			#_FX-mega
+				planet_event = { id = z_fw1_planet_destruction.312 days = 2 }	#_FX-mega
+				planet_event = { id = z_fw1_planet_destruction.313 days = 3 }	#_FX-mega
+				planet_event = { id = z_fw1_planet_destruction.21 days = 4 }	#_超新星诞生
+				planet_event = { id = z_fw1_planet_destruction.22 days = 4 }	#_毁灭星系
+				planet_event = { id = z_fw1_planet_destruction.23 days = 89 random = 29 }	#_超新星冷却
+				set_timed_planet_flag = { flag = z_fw_plnt_r_co_ignore days = 41 }	#_近期执行标签
+				solar_system = {
+					random_system_planet = {
+						limit = {
+							is_star = yes
+							#z_is_destructible_stars = yes
+							NOT = { has_planet_flag = z_fw_plnt_r_co_ignore }	#_近期执行过碎星, 不再检测
+						}
+						set_timed_planet_flag = { flag = z_fw_plnt_r_co_ignore days = 41 }	#_近期执行标签
+						planet_event = { id = z_fw1_misc.311 days = 2 }	#_自循环
+					}
+				}
+			}
+			clear_global_event_target = z_fw_tgt_plnt_r_co
+		}
+	}
+	option = {#_毁灭附近星域
+		name = z_fw1_misc.31.a3
+		hidden_effect = {
+			event_target:z_fw_tgt_plnt_r_co = {
+				planet_event = { id = z_fw1_planet_destruction.311 }			#_FX-mega
+				planet_event = { id = z_fw1_planet_destruction.312 days = 2 }	#_FX-mega
+				planet_event = { id = z_fw1_planet_destruction.313 days = 3 }	#_FX-mega
+				planet_event = { id = z_fw1_planet_destruction.21 days = 4 }	#_超新星诞生
+				planet_event = { id = z_fw1_planet_destruction.22 days = 4 }	#_毁灭星系
+				planet_event = { id = z_fw1_planet_destruction.23 days = 89 random = 29 }	#_超新星冷却
+				set_timed_planet_flag = { flag = z_fw_plnt_r_co_ignore days = 41 }	#_近期执行标签
+				solar_system = {
+					random_system_planet = {
+						limit = {
+							is_star = yes
+							#z_is_destructible_stars = yes
+							NOT = { has_planet_flag = z_fw_plnt_r_co_ignore }	#_近期执行过碎星, 不再检测
+						}
+						set_timed_planet_flag = { flag = z_fw_plnt_r_co_ignore days = 41 }	#_近期执行标签
+						planet_event = { id = z_fw1_misc.311 days = 2 }	#_自循环
+					}
+				}
+				solar_system = {
+					every_neighbor_system = {#_附近星系
+						random_system_planet = {
+							limit = { is_star = yes }
+							planet_event = { id = z_fw1_planet_destruction.22 days = 9 random = 4 }	#_毁灭星系
+						}
+						every_system_planet = {
+							limit = { is_star = yes }
+							planet_event = { id = z_fw1_planet_destruction.21 days = 9 random = 4 }		#_超新星诞生
+							planet_event = { id = z_fw1_planet_destruction.23 days = 89 random = 29 }	#_超新星冷却
+						}
+					}
+				}
+			}
+			clear_global_event_target = z_fw_tgt_plnt_r_co
+		}
+	}
+	option = {#_毁灭整个国家 所有有殖民地星系的随机恒星
+		name = z_fw1_misc.31.a4
+		#trigger = {
+		#	exists = owner
+		#	owner = { z_is_playable_country = yes }	#_全mod普通国家
+		#}
+		hidden_effect = {
+			event_target:z_fw_tgt_plnt_r_co = {
+				planet_event = { id = z_fw1_planet_destruction.311 }			#_FX-mega
+				planet_event = { id = z_fw1_planet_destruction.312 days = 2 }	#_FX-mega
+				planet_event = { id = z_fw1_planet_destruction.313 days = 3 }	#_FX-mega
+				planet_event = { id = z_fw1_planet_destruction.21 days = 4 }	#_超新星诞生
+				planet_event = { id = z_fw1_planet_destruction.22 days = 4 }	#_毁灭星系
+				planet_event = { id = z_fw1_planet_destruction.23 days = 89 random = 29 }	#_超新星冷却
+				solar_system = {
+					space_owner = {
+						every_country = {
+							limit = { NOT = { is_country = prev } }
+							remove_country_flag = z_fw_r_co_country_destroyed
+						}
+						set_country_flag = z_fw_r_co_country_destroyed
+						every_system_within_border = {
+							limit = {
+								NOT = { any_system_planet = { is_planet = event_target:z_fw_tgt_plnt_r_co } }
+								any_system_planet = { is_colony = yes }
+							}
+							random_system_planet = {
+								limit = { is_star = yes }
+								planet_event = { id = z_fw1_planet_destruction.21 days = 9 random = 4 }		#_超新星诞生
+								planet_event = { id = z_fw1_planet_destruction.22 days = 9 random = 4 }		#_毁灭星系
+								planet_event = { id = z_fw1_planet_destruction.23 days = 89 random = 29 }	#_超新星冷却
+							}
+						}
+					}
+				}
+			}
+			clear_global_event_target = z_fw_tgt_plnt_r_co
+		}
+	}
+	#option = {#_毁灭整个国家内全部恒星
+	#	name = z_fw1_misc.31.a5
+	#	trigger = {
+	#		exists = owner
+	#		owner = { z_is_playable_country = yes }	#_全mod普通国家
+	#	}
+	#	hidden_effect = {
+	#		planet_event = { id = z_fw1_planet_destruction.21 days = 4 }	#_超新星诞生
+	#		planet_event = { id = z_fw1_planet_destruction.22 days = 4 }	#_毁灭星系
+	#		planet_event = { id = z_fw1_planet_destruction.23 days = 89 random = 29 }	#_超新星冷却
+	#		solar_system = {
+	#			every_system_planet = {
+	#				limit = {
+	#					is_star = yes
+	#					NOT = { is_planet = root }
+	#				}
+	#				planet_event = { id = z_fw1_planet_destruction.21 days = 7 random = 2 }		#_超新星诞生
+	#				planet_event = { id = z_fw1_planet_destruction.23 days = 89 random = 29 }	#_超新星冷却
+	#			}
+	#		}
+	#		owner = {
+	#			every_system_within_border = {
+	#				limit = { NOT = { any_system_planet = { is_planet = root } } }
+	#				random_system_planet = {
+	#					limit = { is_star = yes }
+	#					planet_event = { id = z_fw1_planet_destruction.22 days = 9 random = 4 }	#_毁灭星系
+	#				}
+	#				every_system_planet = {
+	#					limit = { is_star = yes }
+	#					planet_event = { id = z_fw1_planet_destruction.21 days = 9 random = 4 }		#_超新星诞生
+	#					planet_event = { id = z_fw1_planet_destruction.23 days = 89 random = 29 }	#_超新星冷却
+	#				}
+	#			}
+	#		}
+	#	}
+	#}
+}
+#_毁灭下一个恒星
+planet_event = {
+	id = z_fw1_misc.311
+	hide_window = yes
+	is_triggered_only = yes
+	
+	immediate = {
+		planet_event = { id = z_fw1_planet_destruction.311 }			#_FX
+		planet_event = { id = z_fw1_planet_destruction.312 days = 2 }	#_FX
+		planet_event = { id = z_fw1_planet_destruction.313 days = 3 }	#_FX
+		planet_event = { id = z_fw1_planet_destruction.21 days = 4 }		#_超新星诞生
+		planet_event = { id = z_fw1_planet_destruction.23 days = 89 random = 29 }	#_超新星冷却
+		solar_system = {
+			random_system_planet = {
+				limit = {
+					is_star = yes
+					#z_is_destructible_stars = yes
+					NOT = { has_planet_flag = z_fw_plnt_r_co_ignore }	#_近期执行过碎星, 不再检测
+				}
+				set_timed_planet_flag = { flag = z_fw_plnt_r_co_ignore days = 41 }	#_近期执行标签
+				planet_event = { id = z_fw1_misc.311 days = 2 }	#_自循环
+			}
+		}
+	}
+}
+#_文明灭亡
+country_event = {
+	id = z_fw1_misc.312
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = { has_country_flag = z_fw_r_co_country_destroyed }
+	immediate = {
+		every_country = {
+			limit = {
+				is_ai = no
+				NOT = { is_country = root }
+			}
+			country_event = { id = z_fw1_misc.313 }
+		}
+	}
+}
+#_警告通知
+country_event = {
+	id = z_fw1_misc.313
+	title = z_fw1_misc.313.name
+	#desc = z_fw1_misc.313.desc
+	picture = GFX_evt_z_fw_star_explosion
+	is_triggered_only = yes
+	desc = {
+		trigger = {
+			success_text = {#_普通
+				text = z_fw1_misc.313.desc.1
+				#exists = event_target:z_fw_tgt_r_co_country_destroyed
+				has_communications = event_target:z_fw_tgt_r_co_country_destroyed
+				event_target:z_fw_tgt_r_co_country_destroyed = {
+					z_is_playable_country_normal = yes
+				}
+			}
+			success_text = {#_堕落
+				text = z_fw1_misc.313.desc.2
+				#exists = event_target:z_fw_tgt_r_co_country_destroyed
+				has_communications = event_target:z_fw_tgt_r_co_country_destroyed
+				event_target:z_fw_tgt_r_co_country_destroyed = { z_is_playable_country_fallen = yes }
+			}
+			success_text = {
+				text = z_fw1_misc.313.desc.3
+				#exists = event_target:z_fw_tgt_r_co_country_destroyed
+				NOR = {
+					has_communications = event_target:z_fw_tgt_r_co_country_destroyed
+					event_target:z_fw_tgt_r_co_country_destroyed = { z_is_playable_country_normal = yes }
+					event_target:z_fw_tgt_r_co_country_destroyed = { z_is_playable_country_fallen = yes }
+				}
+			}
+		}
+	}
+	immediate = {
+		random_country = {
+			limit = { has_country_flag = z_fw_r_co_country_destroyed }
+			save_event_target_as = z_fw_tgt_r_co_country_destroyed
+		}
+	}
+	option = {
+		name = z_fw_evt_terrible
+		trigger = {
+			NOT = { has_relic = z_fw_r_celestial_orrey }
+		}
+	}
+	option = {
+		name = z_fw_evt_incredible
+		trigger = { has_relic = z_fw_r_celestial_orrey }
+	}
+}
+
+#_清理r_co mega
+planet_event = {
+	id = z_fw1_misc.321
+	hide_window = yes
+	is_triggered_only = yes
+	immediate = {
+		solar_system = {
+			every_system_megastructure = {
+				limit = {
+					exists = this
+					OR = {
+						is_megastructure_type = z_mm_mega_target_marker_co_1
+						is_megastructure_type = z_mm_mega_target_marker_co_2
+					}
+				}
+				remove_megastructure = this
+			}
+		}
+	}
+}

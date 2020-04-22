@@ -22,6 +22,10 @@ diplomatic_stance = {
 		}
 	}
 
+	allow = {
+		is_at_war = no # Not allowed to change policies in this group while at war
+	}
+
 	option = {
 		name = "diplo_stance_belligerent"
 		icon = "GFX_diplomatic_stance_belligerent"
@@ -1880,6 +1884,18 @@ robot_pop_policy = {
 			robots_outlawed
 		}
 
+		on_enabled = {
+			hidden_effect = {
+				every_owned_species = {
+					limit = { is_robotic_species = yes }
+					set_citizenship_type = {
+						type = citizenship_purge
+						country = root
+					}
+				}
+			}
+		}
+
 		AI_weight = {
 			factor = 1
 			modifier = {
@@ -2173,6 +2189,15 @@ population_controls = {
 
 		AI_weight = {
 			factor = 10
+			modifier = {
+				factor = 0
+				OR = {
+					has_ethic = ethic_egalitarian
+					has_ethic = ethic_fanatic_egalitarian
+					has_ethic = ethic_xenophile
+					has_ethic = ethic_fanatic_xenophile
+				}
+			}
 		}
 	}
 }
@@ -2315,7 +2340,7 @@ purge = {
 				has_ethic = ethic_xenophile
 				has_ethic = ethic_fanatic_xenophile
 			}
-			NOT = { has_valid_civic = "civic_fanatic_purifiers" }
+			is_homicidal = no
 		}
 
 		AI_weight = {
@@ -2348,8 +2373,9 @@ purge = {
 		AI_weight = {
 			factor = 10
 			modifier = {
-				factor = 50
+				factor = 40
 				has_ethic = ethic_gestalt_consciousness
+				NOT = { has_valid_civic = civic_hive_empath }
 			}
 			modifier = {
 				factor = 0
@@ -2361,7 +2387,10 @@ purge = {
 			modifier = {
 				factor = 0
 				has_valid_ai_personality = yes
-				NOT = { has_ai_personality_behaviour = purger }
+				NOR = {
+					has_ai_personality_behaviour = purger
+					has_ethic = ethic_gestalt_consciousness
+				}
 			}
 			modifier = {
 				factor = 0.1

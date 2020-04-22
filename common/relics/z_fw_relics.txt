@@ -1,0 +1,115 @@
+###_z fw---relics	##########################################################################
+
+#_星辰纪念碑
+z_fw_r_monument = {
+	activation_duration = 3600
+	portrait = "GFX_z_fw_r_monument"
+	sound = "relic_activation_khans_throne"
+
+	ai_weight = {
+		weight = 0
+	}
+	
+	#resources = {
+	#	category = relics
+	#	cost = {
+	#	}
+	#}
+
+	#triggered_country_modifier = {
+	#	potential = {
+	#		always = yes
+	#	}
+	#	country_claim_influence_cost_mult = -0.20
+	#}
+
+	score = 0
+
+	active_effect = {
+		custom_tooltip = z_fw_r_monument_effect
+		hidden_effect = {
+			change_variable = { which = z_fw_desire_point_var value = -3 }
+			set_timed_country_flag = { flag = z_fw_r_monument_activited days = 3600 }
+			if = {
+				limit = { mid_game_years_passed < -1 }
+				add_modifier = {
+					modifier = "z_fw_mod_desire_crusade_early"
+					days = 3600
+				}
+			}
+			else_if = {
+				limit = {
+					mid_game_years_passed >= -1
+					end_game_years_passed < -1	
+				}
+				add_modifier = {
+					modifier = "z_fw_mod_desire_crusade_mid"
+					days = 3600
+				}
+			}
+			else_if = {
+				limit = { end_game_years_passed >= -1 }
+				add_modifier = {
+					modifier = "z_fw_mod_desire_crusade_late"
+					days = 3600
+				}
+			}
+		}
+	}
+
+	# Possible check for activation
+	possible = {
+		custom_tooltip = {
+			fail_text = "z_fw_r_monument_activited"
+			hidden_trigger = {
+				NOT = { has_country_flag = z_fw_r_monument_activited }
+			}
+		}
+		custom_tooltip = {
+			fail_text = "z_fw_desire_point_required"
+			hidden_trigger = {
+				is_ai = no
+				check_variable = { which = z_fw_desire_point_var value >= 3 }
+			}
+		}
+	}
+}
+
+
+
+
+#_璀璨星图
+z_fw_r_celestial_orrey = {
+	activation_duration = 360
+	portrait = "GFX_z_fw_r_celestial_orrey"
+	sound = "relic_activation_blade_of_the_huntress"
+
+	ai_weight = {
+		weight = 0
+	}
+
+	score = 0
+
+	active_effect = {
+		custom_tooltip = z_fw_r_celestial_orrey_effect
+		hidden_effect = {
+			every_planet = {
+				limit = {
+					is_star = yes
+					z_is_destructible_stars = yes
+				}
+			}
+			set_timed_country_flag = { flag = z_fw_r_celestial_orrey_activited days = 360 }
+		}
+	}
+
+	# Possible check for activation
+	possible = {
+		custom_tooltip = {
+			fail_text = "z_fw_r_celestial_orrey_activited"
+			hidden_trigger = {
+				NOT = { has_country_flag = z_fw_r_celestial_orrey_activited }
+			}
+		}
+	}
+}

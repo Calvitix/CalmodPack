@@ -1,0 +1,186 @@
+###_z mm framework FX megastructure	######################################################################
+
+#my_piquant_megastructure = {
+#	entity = "bawling_pink_rainbow_graphics"
+#	construction_entity = "bawling_pink_rainbow_graphics_construction"
+#	portrait = "GFX_my_piquant_megastructure_background"
+#	upgrade_desc = default|hide		# default: 'default'. Use 'hide' to hide to hide this stage from the upgrade list.
+#	upgrade_from = {
+#		my_flamboyant_megastructure
+#	}
+#	prerequisites = { "tech" }		# required technologies
+#	potential = {}					# trigger, scope: country
+#	possible = {}					# trigger, scope: galactic object, from: country
+#	build_time = 5					# days
+#	build_cost = {
+#		minerals = 8
+#		energy = 13
+#		influence = 21
+#	}
+#	monthly_production = {
+#		energy = 34
+#	}
+#	maintenance = {
+#		energy = 10
+#	}
+#	country_modifier = {}
+#
+#	placement_rules = {
+#		planet_possible = {}		# trigger, scope: planet
+#	}
+#
+#	on_build_start = {}				# effects, scope: galactic object, from: country, fromfrom: megastructure instance (when upgrading existing megastructure)
+#	on_build_cancel = {}			# effects, scope: galactic object, from: country
+#	on_build_complete = {}			# effects, scope: galactic object, from: country, fromfrom: megastructure instance
+#
+#	ai_weight = {					# scope = country, default = 100
+#		modifier = {
+#			weight = 0
+#			NOT = {
+#				has_ethic = ethic_militarist
+#			}
+#		}
+#	}
+#
+#	construction_blocked_by_others = no # default yes, set to no if other constructions in same system
+#										should block construction of this type
+#}
+
+
+###_star target marker [co]可破坏恒星 璀璨星图-星核引爆信标
+z_mm_mega_target_marker_co_1 = {
+	entity = ""
+	construction_entity = ""
+	portrait = "GFX_z_mm_mega_star_target_marker_bg"
+	construction_blocks_others = no
+	entity_offset = { x = 0 y = 0 }
+	build_time = 0
+	
+	#resources = {
+	#	category = megastructures
+	#	cost = {
+	#	}
+	#}
+	
+	potential = {
+		has_relic = z_fw_r_celestial_orrey
+	}
+	
+	possible = {
+		custom_tooltip = {#_璀璨星图激活
+			fail_text = "z_fw_r_celestial_orrey_not_activited"
+			hidden_trigger = {
+				from  = {
+					is_ai = no
+					has_country_flag = z_fw_r_celestial_orrey_activited
+				}
+			}
+		}
+		custom_tooltip = {#_每个月同一个星系只能存在唯一的信标
+			fail_text = "z_fw_target_marker_co_ongoing"
+			hidden_trigger = {
+				NOR = {
+					has_megastructure = z_mm_mega_target_marker_co_1
+					has_megastructure = z_mm_mega_target_marker_co_2
+				}
+				from  = { NOT = { has_country_flag = z_fw_target_marker_co_ongoing } }
+			}
+		}
+	}
+	
+	placement_rules = {#_this = planet
+		planet_possible = {
+			custom_tooltip = {
+				fail_text = "z_fw_target_marker_co_1_placement"
+				is_star = yes
+				z_is_destructible_stars = yes
+			}
+		}
+	}
+	
+	ai_weight = {
+		factor = 0
+	}
+	
+	on_build_start = {
+	}
+	on_build_cancel = {
+	}
+	on_build_complete = {
+		from = {#_建设者国家
+			set_timed_country_flag = { flag = z_fw_target_marker_co_ongoing days = 30 }
+			country_event = { id = z_fw1_misc.31 }	#_选择引爆方式
+		}
+		fromfrom.planet = {#_planet of this megastructure
+			save_global_event_target_as = z_fw_tgt_plnt_r_co
+			planet_event = { id = z_fw1_misc.321 days = 29 }	#_debug自动清理信标, 星系毁灭也将清理信标
+		}
+	}
+}
+###_star target marker [co]不可破坏恒星 璀璨星图-引力冲击信标
+z_mm_mega_target_marker_co_2 = {
+	entity = ""
+	construction_entity = ""
+	portrait = "GFX_z_mm_mega_star_target_marker_bg"
+	construction_blocks_others = no
+	entity_offset = { x = 0 y = 0 }
+	build_time = 0
+	
+	potential = {
+		has_relic = z_fw_r_celestial_orrey
+	}
+	
+	possible = {
+		custom_tooltip = {#_璀璨星图激活
+			fail_text = "z_fw_r_celestial_orrey_not_activited"
+			hidden_trigger = {
+				from  = {
+					is_ai = no
+					has_country_flag = z_fw_r_celestial_orrey_activited
+				}
+			}
+		}
+		custom_tooltip = {#_每个月同一个星系只能存在唯一的信标
+			fail_text = "z_fw_target_marker_co_ongoing"
+			hidden_trigger = {
+				NOR = {
+					has_megastructure = z_mm_mega_target_marker_co_1
+					has_megastructure = z_mm_mega_target_marker_co_2
+				}
+				from  = { NOT = { has_country_flag = z_fw_target_marker_co_ongoing } }
+			}
+		}
+	}
+	
+	placement_rules = {#_this = planet
+		planet_possible = {
+			custom_tooltip = {
+				fail_text = "z_fw_target_marker_co_2_placement"
+				OR = {
+					is_star = yes
+					is_planet_class = pc_black_hole
+				}
+				z_is_destructible_stars = no
+			}
+		}
+	}
+	
+	ai_weight = {
+		factor = 0
+	}
+	
+	on_build_start = {
+	}
+	on_build_cancel = {
+	}
+	on_build_complete = {
+		from = {#_建设者国家
+			set_timed_country_flag = { flag = z_fw_target_marker_co_ongoing days = 30 }
+			country_event = { id = z_fw1_misc.31 }	#_选择引爆方式
+		}
+		fromfrom.planet = {#_planet of this megastructure
+			save_global_event_target_as = z_fw_tgt_plnt_r_co
+			planet_event = { id = z_fw1_misc.321 days = 29 }	#_一个月后清理信标
+		}
+	}
+}
