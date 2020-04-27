@@ -1,23 +1,9 @@
 namespace = pas
 
-event = {
+fleet_event = {
 	id = pas.0
 	hide_window = yes
 	is_triggered_only = yes
-
-	immediate = {
-		set_global_flag = pasmod_main_feature
-		set_global_flag = pasmod_set_devastation_25
-	}
-}
-fleet_event = {
-	id = pas.05
-	hide_window = yes
-	is_triggered_only = yes
-
-	trigger = {
-		has_global_flag = pasmod_main_feature
-	}
 
 	immediate = {
 		from = { planet_event = { id = pas.1 } }
@@ -29,51 +15,44 @@ planet_event = {
 	is_triggered_only = yes
 
 	pre_triggers = {
-		has_ground_combat = no
+		has_ground_combat = no #I set this 'no' so the ship will not spawn army when ground combat is happening
 	}
 
 	trigger = {
-		has_global_flag = pasmod_main_feature
 		NOR = { #Shouldn't spawn army in Scourge / Contingency's planet, because it will cause a critical bug (dropped army will stuck there and the invasion won't end forever)
 			is_planet_class = pc_infested
 			is_planet_class = pc_ai 
 		}
-		if = {
-			limit = { has_global_flag = pasmod_set_devastation_25 }
-			planet_devastation >= 25
-		}
-		if = {
-			limit = { has_global_flag = pasmod_set_devastation_50 }
-			planet_devastation >= 50
-		}
-		if = {
-			limit = { has_global_flag = pasmod_set_devastation_75 }
-			planet_devastation >= 75
-		}
-		if = {
-			limit = { has_global_flag = pasmod_set_devastation_100 }
-			planet_devastation >= 100
-		}
+		planet_devastation >= 30 #the event will happens only when planet's devastation is reach or over this percentage #current one is 30%
 		solar_system = {
 			any_ship_in_system = {
 				exists = orbit
 				orbit = { is_same_value = root }
-				NOT = { has_ship_flag = pasmod_army_drop_done }
+				NOT = { has_ship_flag = pasmod_army_drop_done } #will not drop army when ship has this flag
 				OR = {
-					has_component = pasmod_assault_army_1_unit
-					has_component = pasmod_assault_army_2_unit
-					has_component = pasmod_assault_army_3_unit
-
+					#tier I
 					has_component = pasmod_orbital_drop_pod_default
 					has_component = pasmod_orbital_drop_pod_clone
 					has_component = pasmod_orbital_drop_pod_gene
-
-					has_component = pasmod_orbital_drop_pod_drop_pod
-					has_component = pasmod_orbital_drop_pod_artillery_drone
-
 					has_component = pasmod_orbital_drop_pod_psionic_force
 					has_component = pasmod_orbital_drop_pod_slave_army
 					has_component = pasmod_orbital_drop_pod_droid_army
+
+					#tier II
+					has_component = pasmod_orbital_drop_pod_default_2
+					has_component = pasmod_orbital_drop_pod_clone_2
+					has_component = pasmod_orbital_drop_pod_gene_2
+					has_component = pasmod_orbital_drop_pod_psionic_force_2
+					has_component = pasmod_orbital_drop_pod_slave_army_2
+					has_component = pasmod_orbital_drop_pod_droid_army_2
+
+					#tier III
+					has_component = pasmod_orbital_drop_pod_default_3
+					has_component = pasmod_orbital_drop_pod_clone_3
+					has_component = pasmod_orbital_drop_pod_gene_3
+					has_component = pasmod_orbital_drop_pod_psionic_force_3
+					has_component = pasmod_orbital_drop_pod_slave_army_3
+					has_component = pasmod_orbital_drop_pod_droid_army_3
 				}
 			}
 		}
@@ -82,28 +61,37 @@ planet_event = {
 	immediate = {
 		every_ship = {
 			limit = {
-				exists = orbit
-				orbit = { is_same_value = root }
-				NOT = { has_ship_flag = pasmod_army_drop_done }
-				OR = {
-					has_component = pasmod_assault_army_1_unit
-					has_component = pasmod_assault_army_2_unit
-					has_component = pasmod_assault_army_3_unit
-
+				exists = orbit #ship should in planet's orbit
+				orbit = { is_same_value = root } #and the orbit should be orbit of the planet (the planet where orbital bombardment is happening)
+				NOT = { has_ship_flag = pasmod_army_drop_done } #will not drop army when ship has this flag
+				OR = { #ship in the orbit should has 'one of' this component
+					#tier I
 					has_component = pasmod_orbital_drop_pod_default
 					has_component = pasmod_orbital_drop_pod_clone
 					has_component = pasmod_orbital_drop_pod_gene
-
-					has_component = pasmod_orbital_drop_pod_drop_pod
-					has_component = pasmod_orbital_drop_pod_artillery_drone
-
 					has_component = pasmod_orbital_drop_pod_psionic_force
 					has_component = pasmod_orbital_drop_pod_slave_army
 					has_component = pasmod_orbital_drop_pod_droid_army
+
+					#tier II
+					has_component = pasmod_orbital_drop_pod_default_2
+					has_component = pasmod_orbital_drop_pod_clone_2
+					has_component = pasmod_orbital_drop_pod_gene_2
+					has_component = pasmod_orbital_drop_pod_psionic_force_2
+					has_component = pasmod_orbital_drop_pod_slave_army_2
+					has_component = pasmod_orbital_drop_pod_droid_army_2
+
+					#tier III
+					has_component = pasmod_orbital_drop_pod_default_3
+					has_component = pasmod_orbital_drop_pod_clone_3
+					has_component = pasmod_orbital_drop_pod_gene_3
+					has_component = pasmod_orbital_drop_pod_psionic_force_3
+					has_component = pasmod_orbital_drop_pod_slave_army_3
+					has_component = pasmod_orbital_drop_pod_droid_army_3
 				}
 			}
-			ship_event = { id = pas.2 }
-			set_timed_ship_flag = { flag = pasmod_army_drop_done days = 90 }
+			ship_event = { id = pas.2 } #execute ship event
+			set_timed_ship_flag = { flag = pasmod_army_drop_done days = 90 } #will not drop army when ship has this flag #ship will not start another invasion for 3 months
 		}
 	}
 }
@@ -114,37 +102,62 @@ ship_event = {
 
 	immediate = {
 		if = {
-			limit = { has_component = pasmod_assault_army_1_unit }
-			pasmod_automatic_invasion_process = yes
+			limit = {
+				OR = {
+					#tier I
+					has_component = pasmod_orbital_drop_pod_default
+					has_component = pasmod_orbital_drop_pod_clone
+					has_component = pasmod_orbital_drop_pod_gene
+					has_component = pasmod_orbital_drop_pod_psionic_force
+					has_component = pasmod_orbital_drop_pod_slave_army
+					has_component = pasmod_orbital_drop_pod_droid_army
+				}
+			}
+			pasmod_automatic_invasion_process = yes #actual army spawn process #'scripted_effect' is used here, since the code is quite long one
 		}
-		else_if = {
-			limit = { has_component = pasmod_assault_army_2_unit }
+		if = {
+			limit = {
+				OR = {
+					#tier II
+					has_component = pasmod_orbital_drop_pod_default_2
+					has_component = pasmod_orbital_drop_pod_clone_2
+					has_component = pasmod_orbital_drop_pod_gene_2
+					has_component = pasmod_orbital_drop_pod_psionic_force_2
+					has_component = pasmod_orbital_drop_pod_slave_army_2
+					has_component = pasmod_orbital_drop_pod_droid_army_2
+				}
+			}
 			pasmod_automatic_invasion_process_2 = yes
 		}
-		else_if = {
-			limit = { has_component = pasmod_assault_army_3_unit }
+		if = {
+			limit = {
+				OR = {
+					#tier III
+					has_component = pasmod_orbital_drop_pod_default_3
+					has_component = pasmod_orbital_drop_pod_clone_3
+					has_component = pasmod_orbital_drop_pod_gene_3
+					has_component = pasmod_orbital_drop_pod_psionic_force_3
+					has_component = pasmod_orbital_drop_pod_slave_army_3
+					has_component = pasmod_orbital_drop_pod_droid_army_3
+				}
+			}
 			pasmod_automatic_invasion_process_3 = yes
 		}
-		pasmod_automatic_invasion_process_drop_pod = yes
 	}
 }
 country_event = {
-	id = pas.3
+	id = pas.3 #this event is executed when ground combat is over, and remove remaining armies (not manually dropped one, but only armies in this mod)
 	hide_window = yes
 	is_triggered_only = yes
 
 	trigger = {
 		any_owned_planet = {
 			any_planet_army = {
-				prev = { has_ground_combat = no }
+				prev = { has_ground_combat = no } #we shoudn't remove armies when they still in combat
 				OR = {
 					army_type = pasmod_assault_army_default
 					army_type = pasmod_assault_army_clone
 					army_type = pasmod_assault_army_gene
-
-					army_type = pasmod_assault_army_drop_pod
-					army_type = pasmod_assault_army_artillery_drone
-
 					army_type = pasmod_assault_army_psionic_force
 					army_type = pasmod_assault_army_slave_army
 					army_type = pasmod_assault_army_droid_army
@@ -162,10 +175,6 @@ country_event = {
 						army_type = pasmod_assault_army_default
 						army_type = pasmod_assault_army_clone
 						army_type = pasmod_assault_army_gene
-
-						army_type = pasmod_assault_army_drop_pod
-						army_type = pasmod_assault_army_artillery_drone
-
 						army_type = pasmod_assault_army_psionic_force
 						army_type = pasmod_assault_army_slave_army
 						army_type = pasmod_assault_army_droid_army
@@ -179,10 +188,6 @@ country_event = {
 						army_type = pasmod_assault_army_default
 						army_type = pasmod_assault_army_clone
 						army_type = pasmod_assault_army_gene
-
-						army_type = pasmod_assault_army_drop_pod
-						army_type = pasmod_assault_army_artillery_drone
-
 						army_type = pasmod_assault_army_psionic_force
 						army_type = pasmod_assault_army_slave_army
 						army_type = pasmod_assault_army_droid_army
@@ -194,7 +199,7 @@ country_event = {
 	}
 }
 planet_event = {
-	id = pas.4
+	id = pas.4 #this event is executed when war is over, and remove remaining armies (only armies in this mod)
 	hide_window = yes
 	is_triggered_only = yes
 
@@ -202,15 +207,11 @@ planet_event = {
 		fromfrom = {
 			every_owned_army = {
 				limit = {
-					this.planet = { is_same_value = root }
+					planet = { is_same_value = root }
 					OR = {
 						army_type = pasmod_assault_army_default
 						army_type = pasmod_assault_army_clone
 						army_type = pasmod_assault_army_gene
-
-						army_type = pasmod_assault_army_drop_pod
-						army_type = pasmod_assault_army_artillery_drone
-						
 						army_type = pasmod_assault_army_psionic_force
 						army_type = pasmod_assault_army_slave_army
 						army_type = pasmod_assault_army_droid_army

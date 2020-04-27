@@ -246,7 +246,7 @@ explorationship = {
 	empire_limit = {
 		base = 1
 		max = 8
-		naval_cap_div = 50
+		naval_cap_div = 100
 	}
 
 	resources = {
@@ -735,9 +735,37 @@ Flagship = {
 	required_component_set = "special_ship_slot"
 	required_component_set = "nsc_flagship_aura"
 	
-	#possible_starbase = {    #calvitix : generate error
-	#	has_starbase_size >= starbase_citadel
-	#}
+	potential_construction = {
+		OR = {
+				is_scope_type = starbase
+			AND = {
+				is_scope_type = megastructure
+				OR = {
+					is_megastructure_type = mega_shipyard_3
+					is_megastructure_type = mega_shipyard_restored
+				}
+			}
+		}
+	}
+
+	possible_construction = {
+		custom_tooltip = {
+			fail_text = starbase_citadel_trigger
+			OR = {
+				AND = {
+					is_scope_type = megastructure
+					OR = {
+						is_megastructure_type = mega_shipyard_3
+						is_megastructure_type = mega_shipyard_restored
+					}
+				}
+				AND = {
+					is_scope_type = starbase
+					has_starbase_size >= starbase_citadel
+				}
+			}
+		}
+	}
 
 	empire_limit = {
 		base = 1
@@ -1014,9 +1042,9 @@ sponsored_colonizer = {
 	auto_upgrade = yes
 
 	resources = {
-		category = colonies
+		category = ships
 		cost = {
-			energy = 500
+			energy = 500			
 		}
 
 		upkeep = {
