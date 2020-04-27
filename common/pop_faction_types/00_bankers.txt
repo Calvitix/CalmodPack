@@ -142,30 +142,6 @@ bankers = {
 	}		
 	
 	
-	demand = {
-		title = "NO_INCREASED_WAGE"
-		unfulfilled_title = "NO_INCREASED_WAGE"
-		desc = "NO_INCREASED_WAGE_DESC"
-
-		unfulfilled_effect = -10
-
-		potential = {
-			exists = owner
-			owner = {
-				OR = {
-					has_policy_flag = minimal_wage_increased
-				}
-			}
-		}
-
-		trigger = {
-			owner = {
-				NOR = {
-					has_policy_flag = minimal_wage_increased
-				}
-			}
-		}
-	}		
 	
 	demand = {
 		title = "INDUSTRIAL_PRODUCTIVISM"
@@ -227,7 +203,6 @@ bankers = {
 		desc = "TOTALITARIAN_STRATIFICATION_DESC"
 
 		fulfilled_effect = 10
-		unfulfilled_effect = -10
 
 		potential = {
 			exists = owner			
@@ -247,6 +222,38 @@ bankers = {
 			}
 		}
 	}
+	
+	demand = {
+		title = "PROGRESSIVE_NO_WELFARE"
+		unfulfilled_title = "NO_PROGRESSIVE_NO_WELFARE"
+		desc = "PROGRESSIVE_NO_WELFARE_DESC"
+
+		unfulfilled_effect = -15
+		fulfilled_effect = 0.001
+
+		potential = {
+			exists = owner
+		}
+
+		trigger = {
+			owner = {
+				NOR = {
+					any_owned_pop = {
+						has_living_standard = { type = living_standard_good }
+					}
+					any_owned_pop = {
+						has_living_standard = { type = living_standard_shared_burden }
+					}
+					any_owned_pop = {
+						has_living_standard = { type = living_standard_utopian }
+					}						
+				}
+			}
+		}
+	}	
+	
+	
+	
 	
 
 	
@@ -349,44 +356,6 @@ bankers = {
 	}			
 
 
-	demand = {
-		title = "PROGRESSIVE_GUN_RIGHTS"
-		unfulfilled_title = "PROGRESSIVE_NO_GUN_RIGHTS"
-		desc = "PROGRESSIVE_GUN_RIGHTS_DESC"
-
-		fulfilled_effect = 5
-
-	potential = {
-			exists = owner
-		}
-
-		trigger = {
-				owner = { has_policy_flag = gun_rights_allowed }
-		}
-	}	
-	
-	
-
-	demand = {
-		title = "PROGRESSIVE_DRUG_RIGHTS"
-		unfulfilled_title = "PROGRESSIVE_NO_DRUG_RIGHTS"
-		desc = "PROGRESSIVE_DRUG_RIGHTS_DESC"
-
-		fulfilled_effect = 5
-
-	potential = {
-			exists = owner
-			owner = {  NOT = { has_valid_civic = civic_spiritual_democracy } }
-		}
-
-		trigger = {
-				owner = { has_policy_flag = drug_rights_allowed }
-		}
-	}		
-
-
-	
-	
 
 
 
@@ -516,36 +485,6 @@ bankers = {
 						exists = this
 						root.owner = { has_commercial_pact = prev }
 					}
-				}
-			}
-		}
-	}	
-	
-	
-	demand = {
-		title = "PROGRESSIVE_NO_WELFARE"
-		unfulfilled_title = "NO_PROGRESSIVE_NO_WELFARE"
-		desc = "PROGRESSIVE_NO_WELFARE_DESC"
-
-		unfulfilled_effect = -25
-		fulfilled_effect = 0.001
-
-		potential = {
-			exists = owner
-		}
-
-		trigger = {
-			owner = {
-				NOR = {
-					any_owned_pop = {
-						has_living_standard = { type = living_standard_good }
-					}
-					any_owned_pop = {
-						has_living_standard = { type = living_standard_shared_burden }
-					}
-					any_owned_pop = {
-						has_living_standard = { type = living_standard_utopian }
-					}						
 				}
 			}
 		}

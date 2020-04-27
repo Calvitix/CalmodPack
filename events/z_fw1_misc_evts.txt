@@ -157,6 +157,13 @@ country_event = {
 	}
 }
 
+
+
+
+
+
+
+
 ###_[misc all]
 
 
@@ -235,7 +242,7 @@ country_event = {
 
 ###_[relic] [id=3]	###########################################################################################
 
-###_璀璨星图
+###_璀璨星图[id=31]
 #_选择引爆方式 day1-3特效 day4引爆
 #_planet_flag	[z_fw_plnt_r_co_ignore]
 #_global_event_target	[z_fw_tgt_plnt_r_co]
@@ -367,42 +374,6 @@ country_event = {
 			clear_global_event_target = z_fw_tgt_plnt_r_co
 		}
 	}
-	#option = {#_毁灭整个国家内全部恒星
-	#	name = z_fw1_misc.31.a5
-	#	trigger = {
-	#		exists = owner
-	#		owner = { z_is_playable_country = yes }	#_全mod普通国家
-	#	}
-	#	hidden_effect = {
-	#		planet_event = { id = z_fw1_planet_destruction.21 days = 4 }	#_超新星诞生
-	#		planet_event = { id = z_fw1_planet_destruction.22 days = 4 }	#_毁灭星系
-	#		planet_event = { id = z_fw1_planet_destruction.23 days = 89 random = 29 }	#_超新星冷却
-	#		solar_system = {
-	#			every_system_planet = {
-	#				limit = {
-	#					is_star = yes
-	#					NOT = { is_planet = root }
-	#				}
-	#				planet_event = { id = z_fw1_planet_destruction.21 days = 7 random = 2 }		#_超新星诞生
-	#				planet_event = { id = z_fw1_planet_destruction.23 days = 89 random = 29 }	#_超新星冷却
-	#			}
-	#		}
-	#		owner = {
-	#			every_system_within_border = {
-	#				limit = { NOT = { any_system_planet = { is_planet = root } } }
-	#				random_system_planet = {
-	#					limit = { is_star = yes }
-	#					planet_event = { id = z_fw1_planet_destruction.22 days = 9 random = 4 }	#_毁灭星系
-	#				}
-	#				every_system_planet = {
-	#					limit = { is_star = yes }
-	#					planet_event = { id = z_fw1_planet_destruction.21 days = 9 random = 4 }		#_超新星诞生
-	#					planet_event = { id = z_fw1_planet_destruction.23 days = 89 random = 29 }	#_超新星冷却
-	#				}
-	#			}
-	#		}
-	#	}
-	#}
 }
 #_毁灭下一个恒星
 planet_event = {
@@ -436,55 +407,71 @@ country_event = {
 	is_triggered_only = yes
 	trigger = { has_country_flag = z_fw_r_co_country_destroyed }
 	immediate = {
-		every_country = {
-			limit = {
-				is_ai = no
-				NOT = { is_country = root }
+		if = {#_普通
+			limit = { z_is_playable_country_normal = yes }
+			every_playable_country = {
+				limit = {
+					is_ai = no
+					has_communications = root
+					NOT = { is_same_value = root }
+				}
+				country_event = { id = z_fw1_misc.313 }
 			}
-			country_event = { id = z_fw1_misc.313 }
+			every_playable_country = {
+				limit = {
+					is_ai = no
+					NOT = { has_communications = root }
+					NOT = { is_same_value = root }
+				}
+				country_event = { id = z_fw1_misc.316 }
+			}
+		}
+		else_if = {#_堕落
+			limit = { z_is_playable_country_fallen = yes }
+			every_playable_country = {
+				limit = {
+					is_ai = no
+					has_communications = root
+					NOT = { is_same_value = root }
+				}
+				country_event = { id = z_fw1_misc.314 }
+			}
+			every_playable_country = {
+				limit = {
+					is_ai = no
+					NOT = { has_communications = root }
+					NOT = { is_same_value = root }
+				}
+				country_event = { id = z_fw1_misc.316 }
+			}
+		}
+		else = {#_其他
+			every_playable_country = {
+				limit = {
+					is_ai = no
+					has_communications = root
+					NOT = { is_same_value = root }
+				}
+				country_event = { id = z_fw1_misc.315 }
+			}
+			every_playable_country = {
+				limit = {
+					is_ai = no
+					NOT = { has_communications = root }
+					NOT = { is_same_value = root }
+				}
+				country_event = { id = z_fw1_misc.316 }
+			}
 		}
 	}
 }
-#_警告通知
+#_警告通知-普通
 country_event = {
 	id = z_fw1_misc.313
 	title = z_fw1_misc.313.name
-	#desc = z_fw1_misc.313.desc
+	desc = z_fw1_misc.313.desc
 	picture = GFX_evt_z_fw_star_explosion
 	is_triggered_only = yes
-	desc = {
-		trigger = {
-			success_text = {#_普通
-				text = z_fw1_misc.313.desc.1
-				#exists = event_target:z_fw_tgt_r_co_country_destroyed
-				has_communications = event_target:z_fw_tgt_r_co_country_destroyed
-				event_target:z_fw_tgt_r_co_country_destroyed = {
-					z_is_playable_country_normal = yes
-				}
-			}
-			success_text = {#_堕落
-				text = z_fw1_misc.313.desc.2
-				#exists = event_target:z_fw_tgt_r_co_country_destroyed
-				has_communications = event_target:z_fw_tgt_r_co_country_destroyed
-				event_target:z_fw_tgt_r_co_country_destroyed = { z_is_playable_country_fallen = yes }
-			}
-			success_text = {
-				text = z_fw1_misc.313.desc.3
-				#exists = event_target:z_fw_tgt_r_co_country_destroyed
-				NOR = {
-					has_communications = event_target:z_fw_tgt_r_co_country_destroyed
-					event_target:z_fw_tgt_r_co_country_destroyed = { z_is_playable_country_normal = yes }
-					event_target:z_fw_tgt_r_co_country_destroyed = { z_is_playable_country_fallen = yes }
-				}
-			}
-		}
-	}
-	immediate = {
-		random_country = {
-			limit = { has_country_flag = z_fw_r_co_country_destroyed }
-			save_event_target_as = z_fw_tgt_r_co_country_destroyed
-		}
-	}
 	option = {
 		name = z_fw_evt_terrible
 		trigger = {
@@ -496,10 +483,63 @@ country_event = {
 		trigger = { has_relic = z_fw_r_celestial_orrey }
 	}
 }
-
+#_警告通知-堕落
+country_event = {
+	id = z_fw1_misc.314
+	title = z_fw1_misc.314.name
+	desc = z_fw1_misc.314.desc
+	picture = GFX_evt_z_fw_star_explosion
+	is_triggered_only = yes
+	option = {
+		name = z_fw_evt_terrible
+		trigger = {
+			NOT = { has_relic = z_fw_r_celestial_orrey }
+		}
+	}
+	option = {
+		name = z_fw_evt_incredible
+		trigger = { has_relic = z_fw_r_celestial_orrey }
+	}
+}
+#_警告通知-其他
+country_event = {
+	id = z_fw1_misc.315
+	title = z_fw1_misc.315.name
+	desc = z_fw1_misc.315.desc
+	picture = GFX_evt_z_fw_star_explosion
+	is_triggered_only = yes
+	option = {
+		name = z_fw_evt_terrible
+		trigger = {
+			NOT = { has_relic = z_fw_r_celestial_orrey }
+		}
+	}
+	option = {
+		name = z_fw_evt_incredible
+		trigger = { has_relic = z_fw_r_celestial_orrey }
+	}
+}
+#_警告通知-位置
+country_event = {
+	id = z_fw1_misc.316
+	title = z_fw1_misc.316.name
+	desc = z_fw1_misc.316.desc
+	picture = GFX_evt_z_fw_star_explosion
+	is_triggered_only = yes
+	option = {
+		name = z_fw_evt_terrible
+		trigger = {
+			NOT = { has_relic = z_fw_r_celestial_orrey }
+		}
+	}
+	option = {
+		name = z_fw_evt_incredible
+		trigger = { has_relic = z_fw_r_celestial_orrey }
+	}
+}
 #_清理r_co mega
 planet_event = {
-	id = z_fw1_misc.321
+	id = z_fw1_misc.317
 	hide_window = yes
 	is_triggered_only = yes
 	immediate = {
@@ -515,5 +555,286 @@ planet_event = {
 				remove_megastructure = this
 			}
 		}
+	}
+}
+
+
+
+
+###_凯露的头颅karyl[id=32]
+#_参考	[utopia.2551]
+#_planet_flag	[z_fw_plnt_r_hok_assimilattion_positive][z_fw_plnt_r_hok_assimilattion_negative]
+#_trait	[z_fw_trait_r_hok_kayrl_positive][z_fw_trait_r_hok_kayrl_negative]
+#_evt_targets	[]
+
+#_enemy planet negative
+planet_event = {
+	id = z_fw1_misc.320
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = { NOT = { owner = { has_relic = z_fw_r_head_of_karyl } } }
+	
+	immediate = {
+		#_设定species
+		owner = {
+			#_通知
+			country_event = { id = z_fw1_misc.325 }
+			#_有合适的karyl species
+			if = {
+				limit = {
+					any_owned_species = {
+						is_species_class = Z_KARYL
+						has_trait = z_fw_trait_r_hok_kayrl_negative
+					}
+				}
+				random_owned_species = {
+					limit = {
+						is_species_class = Z_KARYL
+						has_trait = z_fw_trait_r_hok_kayrl_negative
+					}
+					save_event_target_as = z_fw_tgt_species_kayrl
+				}
+			}
+			#_没有合适的karyl species
+			else = {
+				create_species = {
+					is_mod = no
+					name = this
+					namelist = this
+					plural = this
+					class = "Z_KARYL"
+					portrait = random
+					traits = {
+						trait = z_fw_trait_r_hok_kayrl_negative
+					}
+					effect = {
+						rename_species = {
+							prompt_country = root.owner #If targeted country is a player they will get a popup asking for a name/plural/adjective combo. Otherwise the species will get a random name from the specified name_list
+							name_list = ascension_list
+						}
+						save_event_target_as = z_fw_tgt_species_kayrl
+					}
+				}
+			}
+		}
+		while = {
+			count = 5
+			random_pop = {
+				limit = {
+					NAND = {
+						is_species_class = Z_KARYL
+						has_trait = z_fw_trait_r_hok_kayrl_negative
+					}
+				}
+				change_species = z_fw_tgt_species_kayrl
+			}
+		}
+		remove_planet_flag = z_fw_plnt_r_hok_assimilattion_positive
+		set_planet_flag = z_fw_plnt_r_hok_assimilattion_negative
+		planet_event = { id = z_fw1_misc.321 days = 47 random = 17 }
+	}
+}
+#_enemy planet karyl assimilation negative
+planet_event = {
+	id = z_fw1_misc.321
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		has_planet_flag = z_fw_plnt_r_hok_assimilattion_negative
+		NOT = { owner = { has_relic = z_fw_r_head_of_karyl } }
+	}
+	
+	immediate = {
+		if = {
+			limit = {
+				any_pop = {
+					is_species_class = Z_KARYL
+					has_trait = z_fw_trait_r_hok_kayrl_negative
+				}
+				any_pop = {
+					NAND = {
+						is_species_class = Z_KARYL
+						has_trait = z_fw_trait_r_hok_kayrl_negative
+					}
+				}
+			}
+			random_pop = {
+				limit = {
+					is_species_class = Z_KARYL
+					has_trait = z_fw_trait_r_hok_kayrl_negative
+				}
+				species = { save_event_target_as = z_fw_tgt_species_kayrl }
+			}
+			random_pop = {
+				limit = {
+					NAND = {
+						is_species_class = Z_KARYL
+						has_trait = z_fw_trait_r_hok_kayrl_negative
+					}
+				}
+				change_species = z_fw_tgt_species_kayrl
+			}
+			planet_event = { id = z_fw1_misc.321 days = 47 random = 17 }
+		}
+		else = {
+			remove_planet_flag = z_fw_plnt_r_hok_assimilattion_negative
+			owner = { country_event = { id = z_fw1_misc.324 } }
+		}
+	}
+}
+#_own planet positive
+planet_event = {
+	id = z_fw1_misc.322
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = { owner = { has_relic = z_fw_r_head_of_karyl } }
+	
+	immediate = {
+		#_设定species
+		owner = {
+			#_有合适的karyl species
+			if = {
+				limit = {
+					any_owned_species = {
+						is_species_class = Z_KARYL
+						has_trait = z_fw_trait_r_hok_kayrl_positive
+					}
+				}
+				random_owned_species = {
+					limit = {
+						is_species_class = Z_KARYL
+						has_trait = z_fw_trait_r_hok_kayrl_positive
+					}
+					save_event_target_as = z_fw_tgt_species_kayrl
+				}
+			}
+			#_没有合适的karyl species
+			else = {
+				create_species = {
+					is_mod = no
+					name = this
+					namelist = this
+					plural = this
+					class = "Z_KARYL"
+					portrait = random
+					traits = {
+						trait = z_fw_trait_r_hok_kayrl_positive
+					}
+					effect = {
+						rename_species = {
+							prompt_country = root.owner #If targeted country is a player they will get a popup asking for a name/plural/adjective combo. Otherwise the species will get a random name from the specified name_list
+							name_list = ascension_list
+						}
+						save_event_target_as = z_fw_tgt_species_kayrl
+					}
+				}
+			}
+		}
+		while = {
+			count = 5
+			random_pop = {
+				limit = {
+					NAND = {
+						is_species_class = Z_KARYL
+						has_trait = z_fw_trait_r_hok_kayrl_positive
+					}
+				}
+				change_species = z_fw_tgt_species_kayrl
+			}
+		}
+		remove_planet_flag = z_fw_plnt_r_hok_assimilattion_negative
+		set_planet_flag = z_fw_plnt_r_hok_assimilattion_positive
+		planet_event = { id = z_fw1_misc.323 days = 47 random = 17 }
+	}
+}
+#_own planet karyl assimilation positive
+planet_event = {
+	id = z_fw1_misc.323
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		has_planet_flag = z_fw_plnt_r_hok_assimilattion_positive
+		owner = { has_relic = z_fw_r_head_of_karyl }
+	}
+	
+	immediate = {
+		if = {
+			limit = {
+				any_pop = {
+					is_species_class = Z_KARYL
+					has_trait = z_fw_trait_r_hok_kayrl_positive
+				}
+				any_pop = {
+					NAND = {
+						is_species_class = Z_KARYL
+						has_trait = z_fw_trait_r_hok_kayrl_positive
+					}
+				}
+			}
+			random_pop = {
+				limit = {
+					is_species_class = Z_KARYL
+					has_trait = z_fw_trait_r_hok_kayrl_positive
+				}
+				species = { save_event_target_as = z_fw_tgt_species_kayrl }
+			}
+			random_pop = {
+				limit = {
+					NAND = {
+						is_species_class = Z_KARYL
+						has_trait = z_fw_trait_r_hok_kayrl_positive
+					}
+				}
+				change_species = z_fw_tgt_species_kayrl
+			}
+			planet_event = { id = z_fw1_misc.323 days = 47 random = 17 }
+		}
+		else = {
+			remove_planet_flag = z_fw_plnt_r_hok_assimilattion_positive
+			owner = { country_event = { id = z_fw1_misc.324 } }
+		}
+	}
+}
+#_通知-全部同化
+country_event = {
+	id = z_fw1_misc.324
+	title = z_fw1_misc.324.name
+	#desc = z_fw1_misc.324.desc
+	picture = GFX_evt_z_fw_r_hok_1
+	is_triggered_only = yes
+	trigger = { is_ai = no }
+	desc = {
+		trigger = {
+			success_text = {
+				text = z_fw1_misc.324.desc.1
+				has_relic = z_fw_r_head_of_karyl
+			}
+		}
+		trigger = {
+			success_text = {
+				text = z_fw1_misc.324.desc.2
+				NOT = { has_relic = z_fw_r_head_of_karyl }
+			}
+		}
+	}
+	option = {
+		trigger = { has_relic = z_fw_r_head_of_karyl }
+		name = z_fw_evt_good_karyl
+	}
+	option = {
+		trigger = { NOT = { has_relic = z_fw_r_head_of_karyl } }
+		name = z_fw_evt_terrible_karyl
+	}
+}
+#_通知-被下了蛊
+country_event = {
+	id = z_fw1_misc.325
+	title = z_fw1_misc.325.name
+	desc = z_fw1_misc.325.desc
+	picture = GFX_evt_z_fw_r_hok_2
+	is_triggered_only = yes
+	trigger = { is_ai = no }
+	option = {
+		name = z_fw_evt_terrible
 	}
 }

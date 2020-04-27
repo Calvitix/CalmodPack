@@ -34,7 +34,10 @@ planet_event = {
 
 	trigger = {
 		has_global_flag = pasmod_main_feature
-		NOT = { is_planet_class = pc_ai }
+		NOR = { #Shouldn't spawn army in Scourge / Contingency's planet, because it will cause a critical bug (dropped army will stuck there and the invasion won't end forever)
+			is_planet_class = pc_infested
+			is_planet_class = pc_ai 
+		}
 		if = {
 			limit = { has_global_flag = pasmod_set_devastation_25 }
 			planet_devastation >= 25

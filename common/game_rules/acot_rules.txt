@@ -1,0 +1,42 @@
+#Tooltips will be generated from these rules when they fail. Use of custom_tooltip is recommended
+#There are still multiple hard-coded rules that apply in addition to these.
+#If rules here evaluate to true, there might still be other rules that make the action unavailable.
+#If a rule here evaluates to false the action will become unavailable
+
+#This rule is a condition for bombarding planets
+#Root = fleet, potential attacker
+#From = planet, potential target
+
+# this = starbase
+can_orbitable_repair_ships = {
+	OR = {
+		AND = {
+			is_scope_type = starbase
+			OR = {
+				has_starbase_size >= starbase_starport
+				has_starbase_size = juggernaut
+				has_starbase_size >= ls_starbase_starport		
+				has_starbase_size = origin_super_citadel_playable
+				has_starbase_size = origin_super_citadel
+				has_starbase_size >= acot_precusor_starbase
+				has_starbase_size >= acot_precusor_sigma_starbase		
+				has_starbase_size >= acot_precusor_phanon_starcitadel			
+				has_starbase_size >= precursor_colossus		
+			}
+			fleet = {
+				is_disabled = no
+			}
+		}
+		AND = {
+			is_scope_type = megastructure
+			OR = {
+				is_megastructure_type = mega_shipyard_1
+				is_megastructure_type = mega_shipyard_2
+				is_megastructure_type = mega_shipyard_3
+				is_megastructure_type = acot_precursor_colossus_base
+				is_megastructure_type = acot_precursor_colossus_stage_two
+				is_megastructure_type = acot_amerigo
+			}
+		}
+	}
+}
