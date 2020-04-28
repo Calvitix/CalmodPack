@@ -19,6 +19,12 @@ can_destroy_planet_with_PLANET_KILLER_CRACKER = {
 			is_planet_class = pc_habitat_shielded
 		}
 	}
+	custom_tooltip = {
+		fail_text = is_training_with_colossus
+		NOT = { 
+			num_buildings = { type = building_training_colossus value > 0 } 
+		}
+	}
 	#custom_tooltip = {
 		#fail_text = is_not_hostile
 		OR = {
@@ -134,6 +140,12 @@ can_destroy_planet_with_PLANET_KILLER_SHIELDER = {
 			is_planet_class = pc_habitat_shielded
 		}
 	}
+	custom_tooltip = {
+		fail_text = is_training_with_colossus
+		NOT = { 
+			num_buildings = { type = building_training_colossus value > 0 } 
+		}
+	}
 }
 
 can_destroy_planet_with_PLANET_KILLER_NEUTRON = {
@@ -147,6 +159,12 @@ can_destroy_planet_with_PLANET_KILLER_NEUTRON = {
 			is_planet_class = pc_shielded
 			is_planet_class = pc_ringworld_shielded
 			is_planet_class = pc_habitat_shielded
+		}
+	}
+	custom_tooltip = {
+		fail_text = is_training_with_colossus
+		NOT = { 
+			num_buildings = { type = building_training_colossus value > 0 } 
 		}
 	}
 	custom_tooltip = {
@@ -225,6 +243,26 @@ can_destroy_planet_with_PLANET_KILLER_GODRAY = {
 			}
 		}
 	}
+	#master of the planet
+	if = {
+		limit = {
+			OR = {
+				planet_is_hostile = yes
+				AND = {
+					exists = owner
+					owner = { is_country_type = primitive }
+				}
+			}
+			exists = owner
+		}
+		custom_tooltip = {
+			fail_text = is_training_with_colossus
+			exists = owner
+			NOT = { 
+				num_buildings = { type = building_training_colossus value > 0 } 
+			}
+		}
+	}
 	# target own colony
 	if = {
 		limit = {
@@ -261,6 +299,12 @@ can_destroy_planet_with_PLANET_KILLER_NANOBOTS = {
 			is_planet_class = pc_shielded
 			is_planet_class = pc_ringworld_shielded
 			is_planet_class = pc_habitat_shielded
+		}
+	}
+	custom_tooltip = {
+		fail_text = is_training_with_colossus
+		NOT = { 
+			num_buildings = { type = building_training_colossus value > 0 } 
 		}
 	}
 	custom_tooltip = {
@@ -340,8 +384,9 @@ is_a_planet_megastructure = {
 
 is_a_habitable_planet_megastructure = {
 	OR = {
+		is_planet_class = pc_nuked
 		is_planet_class = pc_infested
-		colonizeable_planet = yes
+		habitable_planet = yes
 		habitable_structure = yes
 	}
 }
