@@ -9,6 +9,9 @@
 @EdictDuration = 3600
 @ambitionDuration = 3600
 
+@campaignCost = 1000
+@campaignDuration = 3600
+
 scientific_revolution = {
 	length = @ambitionDuration
 	
@@ -29,6 +32,90 @@ scientific_revolution = {
 	
 	ai_weight = {
 		weight = 1
+	}
+}
+
+
+education_campaign = {
+	length = @campaignDuration
+	resources = {
+		category = campaigns
+		cost = {
+			energy = @campaignCost
+		}
+	}
+
+	modifier = {
+		species_leader_exp_gain = 0.25
+	}
+
+	potential = {
+		NOR = { has_ethic = ethic_gestalt_consciousness  has_ethic = ethic_fanatic_capitalism }
+		has_technology = tech_planetary_unification
+	}
+
+	ai_weight = {
+		weight = 0
+		modifier = {
+			weight = 1
+			has_edict = healthcare_campaign
+		}
+	}
+}
+
+
+healthcare_campaign = {
+	length = @campaignDuration
+	resources = {
+		category = campaigns
+		cost = {
+			energy = @campaignCost
+		}
+	}
+
+	modifier = {
+		pop_growth_speed = 0.10
+	}
+
+	potential = {
+		NOR = { has_ethic = ethic_gestalt_consciousness  has_ethic = ethic_fanatic_capitalism }
+		has_technology = tech_planetary_unification
+	}
+
+	ai_weight = {
+		weight = @EdictMedPrio
+	}
+}
+
+
+
+recycling_campaign = {
+	length = @campaignDuration
+	resources = {
+		category = campaigns
+		cost = {
+			energy = @campaignCost
+		}
+	}
+
+	modifier = {
+		planet_pops_consumer_goods_upkeep_mult = -0.10
+	}
+
+	potential = {
+		NOR = { has_ethic = ethic_gestalt_consciousness  has_valid_civic = civic_industrial_economy }
+		has_technology = tech_planetary_unification
+	}
+
+	ai_weight = {
+		weight = 0
+		modifier = {
+			weight = @EdictLowPrio
+			has_monthly_income = {
+				resource = consumer_goods
+				value < 0
+			}
+		}
 	}
 }
 
