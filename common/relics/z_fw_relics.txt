@@ -1,8 +1,12 @@
 ###_z fw---relics	##########################################################################
+
+#_vanila variables
 @activation_cost = 150
 @triumph_duration = 3600
 @triumph_duration_short = 1800
 @triumph_duration_veryshort = 900
+
+
 
 
 #_星辰纪念碑
@@ -83,7 +87,7 @@ z_fw_r_monument = {
 
 
 
-#_璀璨星图
+#_cheat-璀璨星图
 z_fw_r_celestial_orrey = {
 	activation_duration = 360
 	portrait = "GFX_z_fw_r_celestial_orrey"
@@ -119,6 +123,77 @@ z_fw_r_celestial_orrey = {
 		}
 	}
 }
+
+
+#_cheat-量子星炬
+z_fw_r_cheat_quantum_beacon = {
+	activation_duration = 3600
+	portrait = "GFX_z_fw_r_cheat_quantum_beacon"
+	sound = "relic_activation_blade_of_the_huntress"
+
+	ai_weight = {
+		weight = 0
+	}
+
+	score = 0
+
+	#_默认
+	triggered_country_modifier = {
+		potential = {
+			NOT = { has_country_flag = z_fw_r_cheat_quantum_beacon_activited }
+		}
+		modifier = {
+			ship_speed_mult = 0.1
+			ship_emergency_ftl_mult = -0.1
+			ship_disengage_chance_mult = 0.1
+			ship_windup_mult = -0.1
+			ship_winddown_mult = -0.1
+			ship_jumpdrive_cooldown_mult = -0.1
+			ship_ftl_jumpdrive_range_mult = 1.0
+		}
+	}
+	#_开启
+	triggered_country_modifier = {
+		potential = {
+			has_country_flag = z_fw_r_cheat_quantum_beacon_activited
+		}
+		modifier = {
+			ship_speed_mult = 1
+			ship_emergency_ftl_mult = -1
+			ship_disengage_chance_mult = 1
+			ship_windup_mult = -0.5
+			ship_winddown_mult = -0.5
+			ship_jumpdrive_cooldown_mult = -0.9
+			ship_ftl_jumpdrive_range_mult = 10
+		}
+	}
+
+	active_effect = {
+		custom_tooltip = z_fw_r_cheat_quantum_beacon_effect
+		hidden_effect = {
+			every_country = {
+				set_closed_borders = {
+					who = root
+					status = no
+					forced = 10
+				}
+			}
+			set_timed_country_flag = { flag = z_fw_r_cheat_quantum_beacon_activited days = 3600 }
+		}
+	}
+
+	# Possible check for activation
+	possible = {
+		custom_tooltip = {
+			fail_text = "z_fw_r_cheat_quantum_beacon_activited"
+			hidden_trigger = {
+				NOT = { has_country_flag = z_fw_r_cheat_quantum_beacon_activited }
+			}
+		}
+	}
+}
+
+
 
 
 #_head of karyl

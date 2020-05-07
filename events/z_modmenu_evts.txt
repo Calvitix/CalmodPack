@@ -6,7 +6,8 @@ event = {
 	is_triggered_only = yes
 
 	immediate = {
-		set_global_flag = z_modmenu_installed
+		set_global_flag = z_modmenu_installed	#_安装
+		set_global_flag = z_fw_new_relic		#_新relic, 执行后删除
 		every_country = {
 			limit = { is_ai = no }
 			country_event = { id = z_modmenu.12  days = 2 }
@@ -133,10 +134,39 @@ country_event = {
 					entity_scale_to_size = yes
 					scale = 2.0
 				}
+				last_created_ambient_object = {
+					set_ambient_object_flag = z_fw_fx_ambient_ongoing
+				}
 			}
 			country_event = { id = z_modmenu.11 }
 		}
 	}
+	#_获取relic-koh
+	option = {
+		name = z_modmenu_test_7
+		hidden_effect = {
+			add_relic = z_fw_r_head_of_karyl
+			country_event = { id = z_modmenu.11 }
+		}
+	}
+# Desactivé par Calvitix	#_获得10级科学家
+#	option = {
+#		name = z_modmenu_test_8
+#		hidden_effect = {
+#	#		create_leader = {
+###				name = random
+#				species = root.owner_species
+#				class = scientist
+#				skill = 10
+#				immortal = yes
+#				traits = {
+#					trait = z_fw_trait_leader_test_ancrel
+#				}
+#				
+#			}
+#			country_event = { id = z_modmenu.11 }
+#		}
+#	}
 	
 	option = {
 		name = z_modmenu_exit
@@ -171,7 +201,7 @@ country_event = {
 				limit = { has_global_flag = z_framework_core }
 				#_开局选项
 				set_country_flag = z_fw1_start_monument
-				remove_country_flag = z_fw1_start_preparation
+				set_country_flag = z_fw1_start_relic
 				country_event = { id = z_fw1_misc.1 }	#_开局事件
 			}
 		}
@@ -291,16 +321,32 @@ country_event = {
 			country_event = { id = z_modmenu.13 }
 		}
 	}
+	#_新relic
+	option = {
+		name = z_modmenu.13.c4
+		custom_tooltip = z_modmenu.13.c4.tooltip
+		trigger = {
+			has_global_flag = z_fw_new_relic
+		}
+		hidden_effect = {
+			country_event = { id = z_fw1_misc.10 }
+		}
+	}
 
 	#_cheat on
 	option = {
 		name = z_modmenu.13.a1
 		trigger = {
-			has_relic = z_fw_r_celestial_orrey
+			OR = {
+				has_relic = z_fw_r_celestial_orrey
+				has_relic = z_fw_r_cheat_quantum_beacon
+			}
 		}
 		hidden_effect = {
 			remove_relic = z_fw_r_celestial_orrey
-			remove_country_flag = z_fw_r_celestial_orrey_activited	#_debug 清除开启flag
+			remove_country_flag = z_fw_r_celestial_orrey_activited		#_debug 清除开启flag
+			remove_relic = z_fw_r_cheat_quantum_beacon
+			remove_country_flag = z_fw_r_cheat_quantum_beacon_activited	#_debug 清除开启flag
 			country_event = { id = z_modmenu.13 }
 		}
 	}
@@ -308,11 +354,15 @@ country_event = {
 	option = {
 		name = z_modmenu.13.a2
 		trigger = {
-			NOT = { has_relic = z_fw_r_celestial_orrey }
+			NOR = {
+				has_relic = z_fw_r_celestial_orrey
+				has_relic = z_fw_r_cheat_quantum_beacon
+			}
 		}
 		hidden_effect = {
-			add_country_flag = z_fw_last_cheater		#
+			add_country_flag = z_fw_last_cheater		#_上一个打开cheat menu的
 			add_relic = z_fw_r_celestial_orrey
+			add_relic = z_fw_r_cheat_quantum_beacon
 			every_country = {#_清除last flag
 				limit = { NOT = { is_country = root } }
 				remove_country_flag = z_fw_last_cheater
@@ -363,19 +413,6 @@ country_event = {
 		}
 	}
 	
-	#_IS difficulty
-	#option = {
-	#	name = z_modmenu_sp_enemy
-	#	trigger = {
-	#		has_global_flag = z_tl_installed
-	#	}
-	#	hidden_effect = {
-	#		country_event = {
-	#			id = z_sp_enemy.1
-	#		}
-	#	}
-	#}
-	
 	option = {
 		name = z_modmenu_exit
 	}
@@ -385,7 +422,7 @@ country_event = {
 	id = z_modmenu.130
 	title = z_modmenu.130.name
 	desc = z_modmenu.130.desc
-	picture = GFX_evt_z_fw_r_co_necron_1
+	picture = GFX_evt_z_modmenu_no_mod
 	is_triggered_only = yes
 	option = {
 		name = z_fw_evt_good

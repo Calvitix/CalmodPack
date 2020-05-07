@@ -1,12 +1,292 @@
 ###_	z modmenu-framework-misc effects	###############################################################
 
 
-###_[country]	###################################################
+###_[misc]	########################################################################################
 
-#_[start tech]
+###_[main]	###########################################
+#_[all]	????
+z_fw_eft_start = {
+	#_????NPC
+	create_country = {
+		name = "NAME_z_fw_npc_1"
+		type = z_fw_npc_global
+		flag = {
+			icon = {
+				category = "z_fw"
+				file = "infinite_stellaris_0.dds"
+			}
+			background= {
+				category = "backgrounds"
+				file = "00_solid.dds"
+			}
+			colors={
+				"black"
+				"black"
+				"null"
+				"null"
+			}
+		}
+		effect = {
+			save_global_event_target_as = z_fw_tgt_npc_1
+			#_????????
+			create_ship_design = { design = "NAME_z_fw_autostation_ship" }
+			add_ship_design = last_created_design
+			every_country = {
+				limit = { is_ai = no }
+				establish_communications_no_message = event_target:z_fw_tgt_npc_1
+			}
+		}
+	}
+}
+
+
+#_[country]	[start tech]
 z_fw_eft_start_tech = {
 	if = {
 		limit = { NOT = { has_technology = tech_automated_exploration } }
 		give_technology = { tech = tech_automated_exploration message = yes }
 	}	
+}
+
+
+
+
+#_[????-?????]
+#_[fleet]
+#_from = planet
+#_FromFrom = ?
+#_tgt??	[z_fw_tgt_plnt_autostation]
+z_fw_eft_autostation_executing = {
+	if = {
+		limit = {
+			from = {
+				has_deposit_for = shipclass_mining_station
+				has_mining_station = no
+			}
+		}
+		from = { create_mining_station = { owner = solar_system.space_owner } }
+		solar_system.space_owner = {
+			add_resource = { minerals = -100 }
+			set_timed_country_flag = { flag = z_fw_autostation_debug_cd days = 42 }
+		}
+	}
+	#else_if = {
+	#	limit = {
+	#		from = {
+	#			has_deposit_for = shipclass_research_station
+	#			has_research_station = no
+	#		}
+	#	}
+	#	create_research_station = { owner = solar_system.space_owner } 
+	#	}
+	#	solar_system.space_owner = {
+	#		add_resource = { minerals = -100 }
+	#		set_timed_country_flag = { flag = z_fw_autostation_debug_cd days = 42 }
+	#	}
+	#}
+	solar_system = {#_solar_system
+		random_system_planet = {
+			limit = {#_???,?????,???,???
+				is_surveyed = { who = solar_system.space_owner status = yes }
+				is_colony = no
+				has_deposit_for = shipclass_mining_station
+				#has_deposit_for = shipclass_research_station
+				NOR = {
+					has_deposit = d_trade_value_1
+					has_deposit = d_trade_value_2
+					has_deposit = d_trade_value_3
+					has_deposit = d_trade_value_4
+					has_deposit = d_trade_value_5
+					has_deposit = d_trade_value_6
+					has_deposit = d_trade_value_7
+					has_deposit = d_trade_value_8
+					has_deposit = d_trade_value_9
+					has_deposit = d_trade_value_10
+				}
+				NOR = {
+					has_mining_station = yes
+					has_research_station = yes 
+				}
+			}
+			set_planet_flag = z_fw_autostation_plnt		#_????
+		}
+	}
+	fleet_event = { id = z_fw1_misc.124 days = 42 random = 7 }
+}
+
+
+
+
+
+
+
+
+###_[relic]	############################################################################################
+
+###_relic	[z_fw_r_HOK]
+#_[country]	????leader
+#_????	[has_owner][event_target:z_fw_tgt_species_kayrl]
+#_tgt		[z_fw_tgt_r_hok_assimilated_leader]
+z_fw_eft_r_hok_leader_assimilation = {
+	every_owned_leader = {
+		limit = { NOT = { is_same_species = z_fw_tgt_species_kayrl } }
+		change_species = event_target:z_fw_tgt_species_kayrl
+	}
+	every_pool_leader = {
+		limit = { NOT = { is_same_species = z_fw_tgt_species_kayrl } }
+		change_species = event_target:z_fw_tgt_species_kayrl
+	}
+	#_??
+	ruler = {
+		if = {
+			limit = { NOT = { is_same_species = z_fw_tgt_species_kayrl } }
+			change_species = event_target:z_fw_tgt_species_kayrl
+		}
+		change_leader_portrait = species
+	}
+}
+
+#_[species] ????-AI
+#_country	[root]
+z_fw_eft_r_hok_citizenship = {
+	if = {
+		limit = {
+			OR = {
+				has_citizenship_type = {
+					type = citizenship_slavery
+					country = root
+				}
+				has_citizenship_type = {
+					type = citizenship_robot_servitude
+					country = root
+				}
+			}
+		}
+		set_citizenship_type = {
+			type = citizenship_limited
+			country = root
+			cooldown = no
+		}
+	}
+}
+
+#_[country] ?????
+z_fw_eft_r_hok_change_dominant_spcs = {
+	if = {
+		limit = {
+			NOT = { owner_species = { is_same_species = z_fw_tgt_species_kayrl } }
+			pop_percentage = {
+				percentage >= 0.65
+				limit = { is_same_species = event_target:z_fw_tgt_species_kayrl } 
+			}
+		}
+		#owner_species = { save_event_target_as = z_fw_tgt_r_hok_old_main_species }
+		change_dominant_species = { species = event_target:z_fw_tgt_species_kayrl }
+		country_event = { id = z_fw1_relic_koh.1011 days = 7 }
+	}
+}
+
+#_[fleet] ??karyl????,scientist??
+z_fw_eft_r_hok_site_modify_leader = {
+	#_regular
+	if = {
+		limit = {
+			exists = leader
+			exists = owner
+			owner = {
+				is_regular_empire = yes
+				NOT = { any_owned_species = { z_fw_r_koh_is_pop_pos_regular = yes } }
+			}
+		}
+		owner = {
+			create_species = {
+				is_mod = no
+				name = z_karyl_1
+				namelist = this
+				plural = this
+				class = "Z_KARYL"
+				portrait = z_fw_spcs_karyl
+				traits = {
+					trait = z_fw_trait_r_hok_kayrl_positive
+					trait = random_traits
+				}
+				extra_trait_points = 4
+				allow_negative_traits = no
+			}
+			last_created_species = { save_event_target_as = z_fw_tgt_species_kayrl }
+		}
+		leader = {
+			change_species = event_target:z_fw_tgt_species_kayrl
+			add_experience = 500
+			add_trait = z_fw_trait_leader_r_hok
+		}
+	}
+	#_hive
+	else_if = {
+		limit = {
+			exists = leader
+			exists = owner
+			owner = {
+				is_hive_empire = yes
+				NOT = { any_owned_species = { z_fw_r_koh_is_pop_pos_hive = yes } }
+			}
+		}
+		owner = {
+			create_species = {
+				is_mod = no
+				name = z_karyl_1
+				namelist = this
+				plural = this
+				class = "Z_KARYL"
+				portrait = z_fw_spcs_karyl
+				traits = {
+					trait = z_fw_trait_r_hok_kayrl_positive
+					trait = trait_hive_mind
+					trait = random_traits
+				}
+				extra_trait_points = 4
+				allow_negative_traits = no
+			}
+			last_created_species = { save_event_target_as = z_fw_tgt_species_kayrl }
+		}
+		leader = {
+			change_species = event_target:z_fw_tgt_species_kayrl
+			add_experience = 500
+			add_trait = z_fw_trait_leader_r_hok
+		}
+	}
+	#_??
+	else_if = {
+		limit = {
+			exists = leader
+			exists = owner
+			owner = {
+				is_machine_empire = yes
+				NOT = { any_owned_species = { z_fw_r_koh_is_pop_pos_machine = yes } }
+			}
+		}
+		owner = {
+			create_species = {
+				is_mod = no
+				name = z_karyl_machine_1
+				namelist = this
+				plural = this
+				class = "Z_KARYL_MACHINE"
+				portrait = z_fw_spcs_karyl
+				traits = {
+					trait = z_fw_trait_r_hok_kayrl_positive
+					trait = trait_machine_unit
+					trait = random_traits
+				}
+				extra_trait_points = 4
+				allow_negative_traits = no
+			}
+			last_created_species = { save_event_target_as = z_fw_tgt_species_kayrl }
+		}
+		leader = {
+			change_species = event_target:z_fw_tgt_species_kayrl
+			add_experience = 500
+			add_trait = z_fw_trait_leader_r_hok
+		}
+	}
 }

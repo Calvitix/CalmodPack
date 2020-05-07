@@ -53,7 +53,7 @@ honorbound_warriors = {
 	colony_spending = 0.9
 
 	federation_acceptance = -10
-	nap_acceptance = -50
+	nap_acceptance = -100
 	defensive_pact_acceptance = 20
 	migration_pact_acceptance = -30
 	commercial_pact_acceptance = -20
@@ -104,7 +104,7 @@ honorbound_warriors = {
 				has_ethic = "ethic_militarist"
 			}
 		}
-
+		mt_has_no_other_defense_flags = yes
 	}
 
 	weight_modifier = {
@@ -176,6 +176,7 @@ evangelising_zealots = {
 			has_ethic = "ethic_spiritualist"
 			has_ethic = "ethic_fanatic_spiritualist"
 		}
+		mt_has_no_other_defense_flags = yes
 	}
 
 	weight_modifier = {
@@ -220,7 +221,7 @@ erudite_explorers = {
 	federation_acceptance = 0
 	nap_acceptance = 5
 	commercial_pact_acceptance = 10
-	research_agreement_acceptance = 50	
+	research_agreement_acceptance = 50
 	defensive_pact_acceptance = 5
 	migration_pact_acceptance = 0
 
@@ -268,6 +269,7 @@ erudite_explorers = {
 			has_ethic = "ethic_materialist"
 			has_ethic = "ethic_fanatic_materialist"
 		}
+		mt_has_no_other_defense_flags = yes
 	}
 
 	weight_modifier = {
@@ -358,7 +360,7 @@ spiritual_seekers = {
 
 	allow = {
 		is_country_type = default
-		NOT = {
+		NOR = {
 			has_ethic = "ethic_xenophobe"
 			has_ethic = "ethic_fanatic_xenophobe"
 			has_ethic = "ethic_militarist"
@@ -370,13 +372,13 @@ spiritual_seekers = {
 			has_ethic = "ethic_pacifist"
 			has_ethic = "ethic_fanatic_pacifist"
 			has_ethic = "ethic_xenophile"
-			has_ethic = "ethic_fanatic_xenophile"			
-			
+			has_ethic = "ethic_fanatic_xenophile"
 		}
 		OR = {
 			has_ethic = "ethic_spiritualist"
 			has_ethic = "ethic_fanatic_spiritualist"
 		}
+		mt_has_no_other_defense_flags = yes
 	}
 
 	weight_modifier = {
@@ -466,13 +468,18 @@ ruthless_capitalists = {
 			has_ethic = "ethic_fanatic_pacifist"
 		}
 		OR = {
-			has_ethic = "ethic_fanatic_capitalism"
-		}	
-		
-		NOR = {	
-			has_ethic = "ethic_fanatic_xenophobe"				
+			has_ethic = "ethic_militarist"
+			has_ethic = "ethic_fanatic_militarist"
+			NOR = {
+				has_ethic = "ethic_xenophile"
+				has_ethic = "ethic_fanatic_xenophile"					
+			}		
 		}
-			
+		OR = {
+			has_authority = auth_corporate
+			has_valid_civic = civic_corporate_dominion
+		}
+		mt_has_no_other_defense_flags = yes
 	}
 
 	weight_modifier = {
@@ -555,12 +562,19 @@ peaceful_traders = {
 	allow = {
 		is_country_type = default
 		OR = {
-			has_ethic = "ethic_capitalism"
-			has_ethic = "ethic_fanatic_capitalism"
-			has_ethic = "ethic_egalitarian"
-			has_ethic = "ethic_fanatic_egalitarian"				
+			has_ethic = "ethic_pacifist"
+			has_ethic = "ethic_fanatic_pacifist"
+			AND = {
+				NOR = {
+					has_ethic = "ethic_militarist"
+					has_ethic = "ethic_fanatic_militarist"
+				}
+				OR = {
+					has_ethic = "ethic_xenophile"
+					has_ethic = "ethic_fanatic_xenophile"				
+				}				
+			}
 		}		
-		
 		OR = {
 			has_authority = auth_corporate
 			has_valid_civic = civic_corporate_dominion
@@ -572,6 +586,7 @@ peaceful_traders = {
 			has_ethic = "ethic_xenophobe"
 			has_ethic = "ethic_fanatic_xenophobe"		
 		}
+		mt_has_no_other_defense_flags = yes
 	}
 
 	weight_modifier = {
@@ -593,7 +608,7 @@ hegemonic_imperialists = {
 	commercial_pact_acceptance = -10
 	research_agreement_acceptance = -10
 	defensive_pact_acceptance = 10
-	migration_pact_acceptance = -50
+	migration_pact_acceptance = 0 # -50
 
 	advanced_start_chance = 50
 
@@ -638,8 +653,9 @@ hegemonic_imperialists = {
 			has_ethic = "ethic_authoritarian"
 			has_ethic = "ethic_fanatic_authoritarian"
 			has_ethic = "ethic_xenophobe"
-			has_ethic = "ethic_fanatic_xenophobe"		
+			has_ethic = "ethic_fanatic_xenophobe"
 		}
+		mt_has_no_other_defense_flags = yes
 	}
 
 	weight_modifier = {
@@ -717,6 +733,7 @@ slaving_despots = {
 			has_ethic = "ethic_egalitarian"
 			has_ethic = "ethic_fanatic_egalitarian"
 		}
+		mt_has_no_other_defense_flags = yes		
 
 	}
 
@@ -779,10 +796,7 @@ decadent_hierarchy = {
 
 	allow = {
 		is_country_type = default
-		OR = {
-			has_ethic = "ethic_authoritarian"
-			has_ethic = "ethic_fanatic_authoritarian"
-		}
+		has_valid_civic = civic_slaver_guilds
 		OR = {
 			has_ethic = "ethic_pacifist"
 			has_ethic = "ethic_fanatic_pacifist"
@@ -794,6 +808,7 @@ decadent_hierarchy = {
 			has_ethic = "ethic_xenophobe"
 			has_ethic = "ethic_fanatic_xenophobe"			
 		}
+		mt_has_no_other_defense_flags = yes
 	}
 
 	weight_modifier = {
@@ -862,6 +877,7 @@ democratic_crusaders = {
 			has_ethic = "ethic_fanatic_xenophobe"
 		}
 		has_election_type = democratic
+		mt_has_no_other_defense_flags = yes
 	}
 
 	weight_modifier = {
@@ -931,11 +947,10 @@ harmonious_hierarchy = {
 		}
 		OR = {
 			has_ethic = "ethic_authoritarian"
-			has_ethic = "ethic_fanatic_authoritarian"				
+			has_ethic = "ethic_fanatic_authoritarian"
 		}
+		mt_has_no_other_defense_flags = yes
 	}
-	
-	
 
 	weight_modifier = {
 		weight = 10
@@ -1054,6 +1069,7 @@ federation_builders = {
 				}
 			}			
 		}
+		mt_has_no_other_defense_flags = yes
 	}
 
 	weight_modifier = {
@@ -1119,6 +1135,7 @@ xenophobic_isolationists = {
 			has_ethic = "ethic_xenophobe"
 			has_ethic = "ethic_fanatic_xenophobe"
 		}
+		mt_has_no_other_defense_flags = yes
 	}
 
 	weight_modifier = {
@@ -1137,7 +1154,6 @@ xenophobic_isolationists = {
 				has_ethic = "ethic_fanatic_pacifist"
 			}
 		}
-			
 		modifier = {
 			factor = 1
 			has_trait = "trait_repugnant"
@@ -1155,8 +1171,8 @@ xenophobic_isolationists = {
 			has_trait = "trait_charismatic"
 		}
 		modifier = {
-			factor = 10
-			has_valid_civic = civic_isolationism
+			factor = 1000
+			has_valid_civic = civic_inwards_perfection
 		}
 	}
 }
@@ -1217,6 +1233,7 @@ fanatic_purifiers = {
 				has_valid_civic = "civic_fanatic_purifiers"
 			}
 		}
+		mt_has_no_other_defense_flags = yes
 	}
 
 	weight_modifier = {
@@ -1274,6 +1291,7 @@ hive_mind = {
 		is_country_type = default
 		has_authority = "auth_hive_mind"
 		NOT = { has_valid_civic = civic_hive_devouring_swarm }
+		mt_has_no_other_defense_flags = yes
 	}
 
 	weight_modifier = {
@@ -1332,6 +1350,7 @@ devouring_swarm = {
 		is_country_type = default
 		has_authority = "auth_hive_mind"
 		has_valid_civic = civic_hive_devouring_swarm
+		mt_has_no_other_defense_flags = yes
 	}
 
 	weight_modifier = {
@@ -1400,6 +1419,7 @@ migrating_flock = {
 			has_trait = "trait_nomadic"
 			has_trait = "trait_fertile"
 		}
+		mt_has_no_other_defense_flags = yes
 	}
 
 	weight_modifier = {
@@ -1457,6 +1477,7 @@ metalhead = {
 	allow = {
 		is_country_type = default
 		has_ethic = "ethic_militarist"
+		has_ethic = "ethic_materialist"
 		has_ethic = "ethic_xenophobe"
 		has_trait = "trait_industrious"
 		has_trait = "trait_strong"
@@ -1521,6 +1542,7 @@ machine_intelligence = {
 			has_valid_civic = "civic_machine_assimilator"
 			has_valid_civic = "civic_machine_terminator"
 		}
+		mt_has_no_other_defense_flags = yes
 	}
 
 	weight_modifier = {
@@ -1575,6 +1597,7 @@ assimilators = {
 			host_has_dlc = "Synthetic Dawn Story Pack"
 			has_valid_civic = "civic_machine_assimilator"
 		}
+		mt_has_no_other_defense_flags = yes
 	}
 
 	weight_modifier = {
@@ -1628,11 +1651,12 @@ exterminators = {
 			host_has_dlc = "Synthetic Dawn Story Pack"
 			has_valid_civic = "civic_machine_terminator"
 		}
+		mt_has_no_other_defense_flags = yes
 	}
 
 	weight_modifier = {
 		weight = 1000
-		}
+	}
 }
 
 servitors = {
@@ -1686,6 +1710,7 @@ servitors = {
 			host_has_dlc = "Synthetic Dawn Story Pack"
 			has_valid_civic = "civic_machine_servitor"
 		}
+		mt_has_no_other_defense_flags = yes
 	}
 
 	weight_modifier = {
@@ -1746,6 +1771,7 @@ fanatic_befrienders = {
 		has_trait = "trait_repugnant"
 		has_trait = "trait_solitary"
 		has_trait = "trait_venerable"
+		mt_has_no_other_defense_flags = yes
 	}
 
 	weight_modifier = {

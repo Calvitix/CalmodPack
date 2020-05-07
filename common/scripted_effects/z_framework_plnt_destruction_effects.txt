@@ -210,13 +210,17 @@ z_fw_eft_star_explosion = {
 	}
 }
 
-#_清理轨道的行星
+#_清理星系中的物体
 #_planet_flag=	[[z_fw_plent_devastation_1/2/3]]
 z_fw_eft_planet_annihilation = {
 	#_所在星系
 	solar_system = {
-		#_清理小行星
+		#_清理环境物体
 		set_asteroid_belt = { radius = 0 }
+		every_system_ambient_object = {
+			limit = { NOT = { has_ambient_object_flag = z_fw_fx_ambient_ongoing } }
+			destroy_ambient_object = this
+		}
 		#_摧毁舰队
 		every_fleet_in_system = {
 			#limit = { <triggers> }

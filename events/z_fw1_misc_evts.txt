@@ -1,30 +1,48 @@
 namespace = z_fw1_misc
 
-###
-#
+###_公用flag
+#_global_tgt	[z_fw_tgt_npc_1]
 
 
 
 
-###_[main] [id=1]	########################################################################################
-#_on_game_start installed flag
+###_[main] [id=101]	########################################################################################
+
+###_开始	[id=101]
 event = {
-	id = z_fw1_misc.10
+	id = z_fw1_misc.101
 	hide_window = yes
 	is_triggered_only = yes
+	immediate = {
+		if = {
+			limit = { NOT = { has_global_flag = z_fw1_initialized } }
+			set_global_flag = z_fw1_initialized
+		}
+		z_fw_eft_start = yes	#_开场eft
+	}
+}
+###_万用初始化
+country_event = {
+	id = z_fw1_misc.102
+	hide_window = yes
+	fire_only_once = yes
+	trigger = { is_ai = no }
+	mean_time_to_happen = { days = 23 }
 	
 	immediate = {
-		every_country = {
-			limit = { is_ai = no }
-			#_开局选项
-			set_country_flag = z_fw1_start_monument
-			remove_country_flag = z_fw1_start_preparation
-			country_event = { id = z_fw1_misc.1  days = 4 }
+		if = {
+			limit = { NOT = { has_global_flag = z_fw1_initialized } }
+			set_global_flag = z_fw1_initialized
+			z_fw_eft_start = yes	#_开场eft
 		}
 	}
 }
 
-###_开始
+	
+	
+	
+	
+###_开始选项	[id=1]
 country_event = {
 	id = z_fw1_misc.1
 	title = z_fw_start_title
@@ -80,10 +98,36 @@ country_event = {
 		}
 	}
 	
+	#_新遗物
+	option = {
+		name = z_fw1_misc.1.c1
+		custom_tooltip = z_fw1_misc.1.c1.tooltip
+		trigger = {
+			has_country_flag = z_fw1_start_relic
+		}
+		hidden_effect = {
+			remove_country_flag = z_fw1_start_relic
+			country_event = { id = z_fw1_misc.1 }
+		}
+	}
+	option = {
+		name = z_fw1_misc.1.c2
+		custom_tooltip = z_fw1_misc.1.c2.tooltip
+		trigger = {
+			NOT = { has_country_flag = z_fw1_start_relic }
+		}
+		hidden_effect = {
+			set_country_flag = z_fw1_start_relic
+			country_event = { id = z_fw1_misc.1 }
+		}
+	}
+	
 	#_complete
 	option = {
 		name = z_fw1_misc.1.c
 		hidden_effect = {
+			#_开局flag
+			set_country_flag = z_fw_autostation_600
 			#_开局科技
 			z_fw_eft_start_tech = yes
 			#_渴望
@@ -133,11 +177,39 @@ country_event = {
 					}
 				}
 			}
+			if = {
+				limit = { has_country_flag = z_fw1_start_relic }
+				remove_country_flag = z_fw1_start_relic
+				country_event = { id = z_fw1_misc.10 }
+			}
 		}
 	}
 }
 
-#_[warleader]星辰大海的渴望点+1
+#_新遗物初始化	[id=10]
+event = {
+	id = z_fw1_misc.10
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = { has_global_flag = z_fw_new_relic }	#_只触发1次
+	
+	immediate = {
+		remove_global_flag = z_fw_new_relic
+		random_country = {#_1 koh
+			limit = {
+				is_ai = no
+				NOT = { has_country_flag = z_fw_country_new_relic }
+			}
+			if = {#_防止relic集中
+				limit = { count_country = { limit = { is_ai = no } count > 1 } }
+				set_timed_country_flag = { flag = z_fw_country_new_relic days = 2 }
+			}
+			country_event = { id = z_fw1_relic_koh.2 }
+		}
+	}
+}
+
+#_[warleader]星辰大海的渴望点+1	[id=11]
 country_event = {
 	id = z_fw1_misc.11
 	title = z_fw_desire_point_add_war_title
@@ -165,6 +237,250 @@ country_event = {
 
 
 ###_[misc all]
+#_自动矿站[id=12]	触发自动工程船
+#_country_flag	[z_fw_autostation_under_progress]国家执行自动矿站中	[z_fw_autostation_debug_cd]debug_cd
+#_fleet_flag	[z_fw_autostaion_fleet]触发事件时检测是否是自动工程船
+#_planet_tgt	[z_fw_tgt_plnt_autostation]
+#_planet_flag	[z_fw_autostation_plnt]
+country_event = {
+	id = z_fw1_misc.12
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+		NOR = {
+			has_country_flag = z_fw_autostation_under_progress #_进行中
+			has_country_flag = z_fw_autostation_cd
+		}
+		OR = {#_设置
+			has_country_flag = z_fw_autostation_100
+			has_country_flag = z_fw_autostation_600
+		}
+	}
+	
+	immediate = {
+		random_planet_within_border = {
+			limit = {#_探索过,可建造矿站,可到达,无威胁
+				is_surveyed = { who = root status = yes }
+				is_colony = no
+				has_deposit_for = shipclass_mining_station
+				#has_deposit_for = shipclass_research_station
+				NOR = {
+					has_deposit = d_trade_value_1
+					has_deposit = d_trade_value_2
+					has_deposit = d_trade_value_3
+					has_deposit = d_trade_value_4
+					has_deposit = d_trade_value_5
+					has_deposit = d_trade_value_6
+					has_deposit = d_trade_value_7
+					has_deposit = d_trade_value_8
+					has_deposit = d_trade_value_9
+					has_deposit = d_trade_value_10
+				}
+				NOR = {
+					has_mining_station = yes
+					has_research_station = yes 
+				}
+				solar_system = {
+					exists = starbase
+					#has_access_fleet = root
+					NOT = { any_ship_in_system = { exists = owner owner = { is_hostile_to = root } } }
+				}
+			}
+			set_planet_flag = z_fw_autostation_plnt		#_星球标记
+		}
+		#_在标记的星系创建自动工程船并设置country_flag=[z_fw_autostation_under_progress]
+		if = {
+			limit = { any_planet_within_border = { has_planet_flag = z_fw_autostation_plnt } }
+			random_planet_within_border = {
+				limit = { has_planet_flag = z_fw_autostation_plnt }
+				solar_system.starbase = { save_event_target_as = z_fw_tgt_autostation_starbase }
+			}
+			create_fleet = {
+				name = "NAME_z_fw_misc_autostation_fleet"
+				settings = {
+					spawn_debris = no
+				}
+				effect = {
+					set_owner = event_target:z_fw_tgt_npc_1		#_z_fw默认中立NPC
+					set_location = {
+						target = event_target:z_fw_tgt_autostation_starbase
+						distance = 7
+						angle = random
+					}
+					create_ship = {
+						name = random
+						design = "NAME_z_fw_autostation_ship"
+						graphical_culture = root	#_玩家
+					}
+					set_fleet_flag = z_fw_autostaion_fleet			#_自动空间站任务中
+					fleet_event = { id = z_fw1_misc.124 }
+				}
+			}
+			set_country_flag = z_fw_autostation_under_progress		#_自动空间站建设中
+		}
+		#_没有可建造矿站,检测频率降低到每4个月
+		else = { set_timed_country_flag = { flag = z_fw_autostation_cd days = 110 } }
+	}
+}
+
+#_建设舰队被毁-清理flag
+country_event = {
+	id = z_fw1_misc.121
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = { FromFrom = { has_fleet_flag = z_fw_autostaion_fleet } }
+	immediate = {
+		FromFrom.solar_system.space_owner = { remove_country_flag = z_fw_autostation_under_progress }
+	}
+}
+#_建设舰队解散-清理flag
+country_event = {
+	id = z_fw1_misc.122
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = { From = { has_fleet_flag = z_fw_autostaion_fleet } }
+	immediate = {
+		remove_country_flag = z_fw_autostation_under_progress
+		add_resource = { minerals = 100 }	#_资源补偿
+	}
+}
+#_建设舰队接敌-清理移动目标与flag
+fleet_event = {
+	id = z_fw1_misc.123
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = { has_fleet_flag = z_fw_autostaion_fleet }
+	immediate = {
+		if = {
+			limit = { has_auto_move_target = yes }
+			remove_auto_move_target = yes
+		}
+		remove_fleet_flag = z_fw_autostaion_fleet
+		owner = {
+			remove_country_flag = z_fw_autostation_under_progress
+			add_resource = { minerals = 100 }	#_资源补偿
+		}
+	}
+}
+#_建设舰队到达目的地
+#_tgt	[z_fw_tgt_plnt_autostation]
+#_planet_flag	[z_fw_autostation_plnt]
+#_fleet_flag	[z_fw_autostaion_fleet]
+fleet_event = {
+	id = z_fw1_misc.124
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = { has_fleet_flag = z_fw_autostaion_fleet }	#_自动工程船
+	
+	immediate = {
+		#_debug 星系不符合条件=清除fleet
+		if = {
+			limit = {
+				OR = {
+					#_不再采用自动矿站
+					solar_system.space_owner = {
+						is_ai = no
+						NOR = {
+							has_country_flag = z_fw_autostation_100
+							has_country_flag = z_fw_autostation_600
+						}
+					}
+					#_星系所有者不符合条件=失去星系
+					solar_system.space_owner = { is_ai = yes }
+				}
+			}
+			destroy_fleet = this
+		}
+		#_600余额建造
+		else_if = {
+			limit = {
+				solar_system.space_owner = {
+					has_country_flag = z_fw_autostation_600
+					has_resource = { type = minerals amount >= 600 }
+				}
+				solar_system = { any_system_planet = { has_planet_flag = z_fw_autostation_plnt } }
+			}
+			solar_system = {
+				random_system_planet = {#_planet_1
+					limit = { has_planet_flag = z_fw_autostation_plnt }
+					remove_planet_flag = z_fw_autostation_plnt
+					save_event_target_as = z_fw_tgt_plnt_autostation
+				}
+			}
+			auto_move_to_planet = {
+				target = event_target:z_fw_tgt_plnt_autostation
+				clear_auto_move_on_arrival = no
+				arrival_effect = z_fw_eft_autostation_executing		#_到达/检测建设条件
+			}
+		}
+		#_100余额建造
+		else_if = {
+			limit = {
+				solar_system.space_owner = {
+					has_country_flag = z_fw_autostation_100
+					has_resource = { type = minerals amount >= 100 }
+				}
+				solar_system = { any_system_planet = { has_planet_flag = z_fw_autostation_plnt } }
+			}
+			solar_system = {
+				random_system_planet = { 
+					limit = { has_planet_flag = z_fw_autostation_plnt }
+					remove_planet_flag = z_fw_autostation_plnt
+					save_event_target_as = z_fw_tgt_plnt_autostation
+				}
+			}
+			auto_move_to_planet = {
+				target = event_target:z_fw_tgt_plnt_autostation
+				clear_auto_move_on_arrival = no
+				arrival_effect = z_fw_eft_autostation_executing		#_到达/检测建设条件
+			}
+		}
+		#_资金不够,延时循环
+		else_if = {
+			limit = {
+				solar_system.space_owner = {
+					NOR = {
+						AND = {
+							has_country_flag = z_fw_autostation_600
+							has_resource = { type = minerals amount >= 600 }
+						}
+						AND = {
+							has_country_flag = z_fw_autostation_100
+							has_resource = { type = minerals amount >= 100 }
+						}
+					}
+				}
+				solar_system = { any_system_planet = { has_planet_flag = z_fw_autostation_plnt } }
+			}
+			solar_system.space_owner = { set_timed_country_flag = { flag = z_fw_autostation_debug_cd days = 42 } }
+			fleet_event = { id = z_fw1_misc.124 days = 42 random = 7 }	#_星系内循环执行
+		}
+		#_全部不符,自我清除
+		else = {
+			destroy_fleet = this
+		}
+	}
+}
+
+#_debug	清除国家flag和舰队flag
+#_country_flag	[z_fw_autostation_under_progress]
+#_fleet_flag	[z_fw_autostaion_fleet]
+country_event = {
+	id = z_fw1_misc.125
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no 	#_玩家
+		has_country_flag = z_fw_autostation_under_progress	#_进行中
+		NOT = { has_country_flag = z_fw_autostation_debug_cd }	#_debug cd
+		NOT = { any_system_within_border = { any_fleet_in_system = { has_fleet_flag = z_fw_autostaion_fleet } } }	#_领土内没有自动工程船
+	}
+	
+	immediate = {
+		remove_country_flag = z_fw_autostation_under_progress
+	}
+}
 
 
 
@@ -470,7 +786,7 @@ country_event = {
 	id = z_fw1_misc.313
 	title = z_fw1_misc.313.name
 	desc = z_fw1_misc.313.desc
-	picture = GFX_evt_z_fw_star_explosion
+	picture = GFX_evt_z_fw_misc_star_explosion_1
 	is_triggered_only = yes
 	option = {
 		name = z_fw_evt_terrible
@@ -488,7 +804,7 @@ country_event = {
 	id = z_fw1_misc.314
 	title = z_fw1_misc.314.name
 	desc = z_fw1_misc.314.desc
-	picture = GFX_evt_z_fw_star_explosion
+	picture = GFX_evt_z_fw_misc_star_explosion_1
 	is_triggered_only = yes
 	option = {
 		name = z_fw_evt_terrible
@@ -506,7 +822,7 @@ country_event = {
 	id = z_fw1_misc.315
 	title = z_fw1_misc.315.name
 	desc = z_fw1_misc.315.desc
-	picture = GFX_evt_z_fw_star_explosion
+	picture = GFX_evt_z_fw_misc_star_explosion_1
 	is_triggered_only = yes
 	option = {
 		name = z_fw_evt_terrible
@@ -524,7 +840,7 @@ country_event = {
 	id = z_fw1_misc.316
 	title = z_fw1_misc.316.name
 	desc = z_fw1_misc.316.desc
-	picture = GFX_evt_z_fw_star_explosion
+	picture = GFX_evt_z_fw_misc_star_explosion_1
 	is_triggered_only = yes
 	option = {
 		name = z_fw_evt_terrible
@@ -559,48 +875,3 @@ planet_event = {
 }
 
 
-
-
-#_
-country_event = {
-	id = z_fw1_misc.324
-	title = z_fw1_misc.324.name
-	#desc = z_fw1_misc.324.desc
-	picture = GFX_evt_z_fw_r_hok_1
-	is_triggered_only = yes
-	trigger = { is_ai = no }
-	desc = {
-		trigger = {
-			success_text = {
-				text = z_fw1_misc.324.desc.1
-				has_relic = z_fw_r_head_of_karyl
-			}
-		}
-		trigger = {
-			success_text = {
-				text = z_fw1_misc.324.desc.2
-				NOT = { has_relic = z_fw_r_head_of_karyl }
-			}
-		}
-	}
-	option = {
-		trigger = { has_relic = z_fw_r_head_of_karyl }
-		name = z_fw_evt_good_karyl
-	}
-	option = {
-		trigger = { NOT = { has_relic = z_fw_r_head_of_karyl } }
-		name = z_fw_evt_terrible_karyl
-	}
-}
-#_通知-被下了蛊
-country_event = {
-	id = z_fw1_misc.325
-	title = z_fw1_misc.325.name
-	desc = z_fw1_misc.325.desc
-	picture = GFX_evt_z_fw_r_hok_2
-	is_triggered_only = yes
-	trigger = { is_ai = no }
-	option = {
-		name = z_fw_evt_terrible
-	}
-}
