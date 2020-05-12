@@ -1,3 +1,4 @@
+#Calvitix check 2.7.1 update
 ethic_categories = {
 	col = {}
 
@@ -675,7 +676,8 @@ ethic_xenophobe = {
 		trigger = {
 			any_relation = {
 				is_subject = no
-				has_migration_access = root
+				has_migration_access = root				
+				NOT = { is_same_species = root }
 			}
 		}
 	}
@@ -746,7 +748,8 @@ ethic_xenophobe = {
 			factor = 0.75
 			any_relation = {
 				is_subject = no
-				has_migration_access = root
+				has_migration_access = root				
+				NOT = { is_same_species = root }
 			}
 		}
 		modifier = {
@@ -1351,8 +1354,10 @@ ethic_militarist = {
 	pop_attraction_tag = {
 		desc = POP_ATTRACTION_WEAK_NEG
 		trigger = {
-			any_owned_species = {
-				has_trait = "trait_weak"
+			any_owned_planet = {
+				any_owned_species = {
+					has_trait = "trait_weak"
+				}
 			}
 		}
 	}
@@ -1493,7 +1498,7 @@ ethic_militarist = {
 			}
 		}
 		modifier = {
-			factor = 1.25
+			factor = 2 #If the empire is losing planets, militarism should increase
 			any_relation = {
 				any_owned_planet = {
 					is_original_owner = root
@@ -1662,6 +1667,17 @@ ethic_pacifist = {
 		trigger = {
 			has_valid_civic = civic_inwards_perfection
 		}
+	}	
+	
+	pop_attraction_tag = {
+		desc = POP_ATTRACTION_WEAK_POS
+		trigger = {
+			any_owned_planet = {
+				any_owned_species = {
+					has_trait = "trait_weak"
+				}
+			}
+		}
 	}
 
 	pop_attraction_tag = {
@@ -1813,6 +1829,10 @@ ethic_pacifist = {
 			has_trait = trait_hive_mind
 		}
 		modifier = {
+			factor = 1.1
+			has_trait = "trait_weak"
+		}
+		modifier = {
 			factor = 0.5
 			OR = {
 				has_citizenship_rights = yes
@@ -1916,8 +1936,9 @@ ethic_spiritualist = {
 		desc = POP_ATTRACTION_PSIONICS_POS
 		trigger = {
 			OR = {
-				has_technology = "tech_telepathy"
 				has_technology = "tech_psionic_theory"
+				has_ascension_perk = ap_mind_over_matter
+				has_ascension_perk = ap_transcendence
 			}
 		}
 	}
@@ -2043,7 +2064,7 @@ ethic_spiritualist = {
 			has_ethic = ethic_fanatic_spiritualist
 		}
 		modifier = {
-			factor = 1.25
+			factor = 1.1
 			is_country_type = default
 			has_technology = "tech_psionic_theory"
 		}
@@ -2106,6 +2127,14 @@ ethic_spiritualist = {
 		modifier = {
 			factor = 0
 			has_trait = trait_hive_mind
+		}
+		modifier = {
+			factor = 1.1
+			has_trait = trait_latent_psionic
+		}
+		modifier = {
+			factor = 1.2
+			has_trait = trait_psionic
 		}
 		modifier = {
 			factor = 0.25

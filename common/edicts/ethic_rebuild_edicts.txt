@@ -12,8 +12,11 @@
 @campaignCost = 1000
 @campaignDuration = 3600
 
+@EdictPerpetual = -1
+
 scientific_revolution = {
 	length = @ambitionDuration
+	icon = "GFX_edict_type_time"
 	
 	is_ambition = yes 		# Costs Unity scaled to tradition cost
 	resources = {
@@ -38,6 +41,7 @@ scientific_revolution = {
 
 education_campaign = {
 	length = @campaignDuration
+	icon = "GFX_edict_type_time"
 	resources = {
 		category = campaigns
 		cost = {
@@ -64,33 +68,59 @@ education_campaign = {
 }
 
 
-healthcare_campaign = {
-	length = @campaignDuration
+nutritional_plenitude = {
+	length = @EdictPerpetual
+	icon = "GFX_edict_type_policy"
+	edict_cap_usage = 1
+
 	resources = {
-		category = campaigns
-		cost = {
-			energy = @campaignCost
+		category = edicts
+		cost = { #Activation Cost
+			trigger = {
+				NOT = { has_edict = nutritional_plenitude }			
+			}
+			influence = 200
+		}
+		cost = { #Deactivation Cost
+			trigger = {
+				has_edict = nutritional_plenitude
+			}
+			influence = 100
 		}
 	}
 
 	modifier = {
 		pop_growth_speed = 0.10
+		biological_pop_happiness = 0.05
+		lithoid_pop_happiness = 0.05
+		empire_size_pops_mult = 0.10
+		planet_pops_organics_food_upkeep_mult = 0.25
+		planet_pops_organics_minerals_upkeep_mult = 0.25
 	}
 
 	potential = {
 		NOR = { has_ethic = ethic_gestalt_consciousness  has_ethic = ethic_fanatic_capitalism }
-		has_technology = tech_planetary_unification
+	}
+
+	prerequisites = {
+		"tech_gene_crops"
+	}
+
+	show_tech_unlock_if = {
+		is_gestalt = no
 	}
 
 	ai_weight = {
-		weight = @EdictMedPrio
+		weight = @EdictHighPrio
 	}
 }
 
 
 
+
 recycling_campaign = {
 	length = @campaignDuration
+	icon = "GFX_edict_type_time"
 	resources = {
 		category = campaigns
 		cost = {
@@ -123,6 +153,7 @@ recycling_campaign = {
 #Immortal Ruler
 immortal_ruler = {
 	length = 0
+	icon = "GFX_edict_type_time"
 	resources = {
 		category = edicts
 		cost = {
@@ -152,7 +183,9 @@ immortal_ruler = {
 
 #Patriotic Call
 patriotic_call = {
-	length = @EdictDuration
+	length = @EdictPerpetual
+	icon = "GFX_edict_type_time"
+	edict_cap_usage = 1
 	resources = {
 		category = edicts
 		cost = {
@@ -182,6 +215,7 @@ patriotic_call = {
 #Divine Crusade
 div_crusade = {
 	length = @ambitionDuration
+	icon = "GFX_edict_type_time"
 	
 	is_ambition = yes
 	

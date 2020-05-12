@@ -83,6 +83,8 @@ spawning_drone = {
 		}
 		modifier = {
 			factor = 0.01 # crisis purge
+			exists = planet
+			exists = planet.controller
 			planet.controller = {
 				OR = {
 					is_country_type = swarm
@@ -138,6 +140,7 @@ replicator = {
 		weight = @spawner_drone_job_weight
 		modifier = {
 			factor = 0.01 # crisis purge
+			exists = planet
 			exists = planet.controller
 			planet.controller = {
 				OR = {
@@ -265,6 +268,13 @@ evaluator = {
 			owner = { has_valid_civic = civic_machine_assimilator }
 			has_trait = trait_cybernetic
 		}
+		modifier = {
+			factor = 1.25
+			OR = {
+				has_trait = trait_traditional
+				has_trait = trait_robot_propaganda_machines
+			}
+		}
 	}
 }
 
@@ -335,6 +345,13 @@ synapse_drone = {
 
 	weight = {
 		weight = @synapse_drone_job_weight
+		modifier = {
+			factor = 1.25
+			OR = {
+				has_trait = trait_traditional
+				has_trait = trait_robot_propaganda_machines
+			}
+		}
 	}
 }
 
@@ -367,6 +384,15 @@ brain_drone = {
 		}
 		upkeep = {
 			minerals = 6
+		}
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = {
+					has_edict = research_subsidies
+				}
+			}
+			energy = 1
 		}
 	}
 
@@ -448,6 +474,15 @@ calculator = {
 		upkeep = {
 			energy = 4
 		}
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = {
+					has_edict = research_subsidies
+				}
+			}
+			energy = 1
+		}
 	}
 
 	weight = {
@@ -522,6 +557,15 @@ artisan_drone = {
 		upkeep = {
 			minerals = 8
 		}
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = {
+					has_edict = industrial_subsidies
+				}
+			}
+			energy = 1
+		}
 	}
 
 	weight = {
@@ -532,6 +576,14 @@ artisan_drone = {
 			years_passed < 1
 			owner = { has_valid_civic = civic_machine_assimilator }
 			has_trait = trait_cybernetic
+		}
+		modifier = {
+			factor = 2
+			has_job = artisan_drone
+			OR = {
+				has_trait = trait_robust
+				has_trait = trait_robot_efficient_processors
+			}
 		}
 	}
 }
@@ -564,6 +616,15 @@ fabricator = {
 		upkeep = {
 			minerals = 8
 		}
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = {
+					has_edict = forge_subsidies
+				}
+			}
+			energy = 1
+		}
 	}
 
 	weight = {
@@ -574,6 +635,14 @@ fabricator = {
 			years_passed < 1
 			owner = { has_valid_civic = civic_machine_assimilator }
 			has_trait = trait_cybernetic
+		}
+		modifier = {
+			factor = 5
+			has_job = fabricator
+			OR = {
+				has_trait = trait_robust
+				has_trait = trait_robot_efficient_processors
+			}
 		}
 	}
 }
@@ -606,10 +675,27 @@ alloy_drone = {
 		upkeep = {
 			minerals = 6
 		}
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = {
+					has_edict = forge_subsidies
+				}
+			}
+			energy = 1
+		}
 	}
 
 	weight = {
 		weight = @complex_drone_job_weight
+		modifier = {
+			factor = 5
+			has_job = alloy_drone
+			OR = {
+				has_trait = trait_robust
+				has_trait = trait_robot_efficient_processors
+			}
+		}
 	}
 }
 
@@ -651,6 +737,14 @@ chemist_drone = {
 			years_passed < 1
 			owner = { has_valid_civic = civic_machine_assimilator }
 			has_trait = trait_cybernetic
+		}
+		modifier = {
+			factor = 5
+			has_job = chemist_drone
+			OR = {
+				has_trait = trait_robust
+				has_trait = trait_robot_efficient_processors
+			}
 		}
 	}
 }
@@ -694,6 +788,14 @@ translucer_drone = {
 			owner = { has_valid_civic = civic_machine_assimilator }
 			has_trait = trait_cybernetic
 		}
+		modifier = {
+			factor = 5
+			has_job = translucer_drone
+			OR = {
+				has_trait = trait_robust
+				has_trait = trait_robot_efficient_processors
+			}
+		}
 	}
 }
 
@@ -735,6 +837,14 @@ gas_refiner_drone = {
 			years_passed < 1
 			owner = { has_valid_civic = civic_machine_assimilator }
 			has_trait = trait_cybernetic
+		}
+		modifier = {
+			factor = 5
+			has_job = gas_refiner_drone
+			OR = {
+				has_trait = trait_robust
+				has_trait = trait_robot_efficient_processors
+			}
 		}
 	}
 }
@@ -803,6 +913,21 @@ patrol_drone = {
 			factor = 0.5
 			has_trait = trait_weak
 		}
+		modifier = {
+			factor = 1.1
+			OR = {
+				has_trait = trait_traditional
+				has_trait = trait_robot_propaganda_machines
+			}
+		}
+		modifier = {
+			factor = 2
+			has_trait = trait_lithoid
+		}
+		modifier = {
+			factor = 1.2
+			has_trait = trait_cybernetic
+		}
 	}
 }
 
@@ -827,7 +952,7 @@ crystal_mining_drone = {
 	}
 
 	resources = {
-		category = planet_jobs
+		category = planet_miners
 		produces = {
 			rare_crystals = 2
 		}
@@ -844,6 +969,14 @@ crystal_mining_drone = {
 			years_passed < 1
 			owner = { has_valid_civic = civic_machine_assimilator }
 			has_trait = trait_cybernetic
+		}
+		modifier = {
+			factor = 5
+			has_job = crystal_mining_drone
+			OR = {
+				has_trait = trait_robust
+				has_trait = trait_robot_efficient_processors
+			}
 		}
 	}
 }
@@ -869,7 +1002,7 @@ mote_harvesting_drone = {
 	}
 
 	resources = {
-		category = planet_jobs
+		category = planet_miners
 		produces = {
 			volatile_motes = 2
 		}
@@ -886,6 +1019,14 @@ mote_harvesting_drone = {
 			years_passed < 1
 			owner = { has_valid_civic = civic_machine_assimilator }
 			has_trait = trait_cybernetic
+		}
+		modifier = {
+			factor = 5
+			has_job = mote_harvesting_drone
+			OR = {
+				has_trait = trait_robust
+				has_trait = trait_robot_efficient_processors
+			}
 		}
 	}
 }
@@ -911,7 +1052,7 @@ gas_extraction_drone = {
 	}
 
 	resources = {
-		category = planet_jobs
+		category = planet_miners
 		produces = {
 			exotic_gases = 2
 		}
@@ -928,6 +1069,14 @@ gas_extraction_drone = {
 			years_passed < 1
 			owner = { has_valid_civic = civic_machine_assimilator }
 			has_trait = trait_cybernetic
+		}
+		modifier = {
+			factor = 5
+			has_job = gas_extraction_drone
+			OR = {
+				has_trait = trait_robust
+				has_trait = trait_robot_efficient_processors
+			}
 		}
 	}
 }
@@ -956,6 +1105,15 @@ mining_drone = {
 		category = planet_miners
 		produces = {
 			minerals = 4
+		}
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = {
+					has_edict = mining_subsidies
+				}
+			}
+			energy = 0.5
 		}
 	}
 
@@ -1033,6 +1191,15 @@ agri_drone = {
 				}
 			}
 			food = -1
+		}
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = {
+					has_edict = farming_subsidies
+				}
+			}
+			energy = 0.5
 		}
 	}
 
@@ -1126,6 +1293,15 @@ technician_drone = {
 				}
 			}
 			energy = 2
+		}
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = {
+					has_edict = capacity_subsidies
+				}
+			}
+			energy = 0.5
 		}
 	}
 
@@ -1257,6 +1433,17 @@ maintenance_drone = {
 				free_amenities > 5
 			}
 		}
+		modifier = {
+			factor = 1.1
+			OR = {
+				has_trait = trait_traditional
+				has_trait = trait_robot_propaganda_machines
+			}
+			exists = owner
+			owner = {
+				has_valid_civic = civic_machine_maintenance_protocols
+			}
+		}
 	}
 }
 
@@ -1358,6 +1545,14 @@ warrior_drone = {
 			planet = { count_pops = { limit = { } count < 12 } }
 			owner = { is_ai = yes }
 		}
+		modifier = {
+			factor = 2
+			has_trait = trait_lithoid
+		}
+		modifier = {
+			factor = 1.2
+			has_trait = trait_cybernetic
+		}
 	}
 }
 
@@ -1409,5 +1604,15 @@ bluelotus_drone = {
 		}
 	}
 
-	weight = { weight = @specialist_job_weight }
+	weight = {
+		weight = @complex_drone_job_weight
+		modifier = {
+			factor = 5
+			has_job = bluelotus_drone
+			OR = {
+				has_trait = trait_robust
+				has_trait = trait_robot_efficient_processors
+			}
+		}
+	}
 }

@@ -262,9 +262,31 @@ country_event = {
 		random_planet_within_border = {
 			limit = {#_探索过,可建造矿站,可到达,无威胁
 				is_surveyed = { who = root status = yes }
-				is_colony = no
-				has_deposit_for = shipclass_mining_station
-				#has_deposit_for = shipclass_research_station
+				is_colony = no		#_非殖民地
+				has_orbital_station = no
+				#has_mining_station = no
+				#has_research_station = no
+				NOR = {#_防止途中被码了巨建
+					has_planet_flag = megastructure
+					has_planet_flag = has_megastructure
+					has_any_megastructure = yes
+				}
+				NOT = {
+					solar_system = {
+						any_fleet_in_system = {
+							OR = {
+								is_constructing = megastructure
+								is_constructing = mining_station
+								is_constructing = research_station
+								#is_constructing = observation_post
+							}
+						}
+					}
+				}
+				OR = {
+					has_deposit_for = shipclass_mining_station
+					has_deposit_for = shipclass_research_station
+				}
 				NOR = {
 					has_deposit = d_trade_value_1
 					has_deposit = d_trade_value_2
@@ -276,10 +298,6 @@ country_event = {
 					has_deposit = d_trade_value_8
 					has_deposit = d_trade_value_9
 					has_deposit = d_trade_value_10
-				}
-				NOR = {
-					has_mining_station = yes
-					has_research_station = yes 
 				}
 				solar_system = {
 					exists = starbase
@@ -332,6 +350,14 @@ country_event = {
 	trigger = { FromFrom = { has_fleet_flag = z_fw_autostaion_fleet } }
 	immediate = {
 		FromFrom.solar_system.space_owner = { remove_country_flag = z_fw_autostation_under_progress }
+		if = {
+			limit = {
+				exists = form
+				from = { is_ai = no }
+			}
+			set_faction_hostility = { target = from set_friendly = yes }
+			from = { set_faction_hostility = { target = root set_friendly = yes } }
+		}
 	}
 }
 #_建设舰队解散-清理flag
@@ -453,8 +479,8 @@ fleet_event = {
 				}
 				solar_system = { any_system_planet = { has_planet_flag = z_fw_autostation_plnt } }
 			}
-			solar_system.space_owner = { set_timed_country_flag = { flag = z_fw_autostation_debug_cd days = 42 } }
-			fleet_event = { id = z_fw1_misc.124 days = 42 random = 7 }	#_星系内循环执行
+			solar_system.space_owner = { set_timed_country_flag = { flag = z_fw_autostation_debug_cd days = @z_fw_autostation_cd } }
+			fleet_event = { id = z_fw1_misc.124 days = @z_fw_autostation_cd random = 7 }	#_星系内循环执行
 		}
 		#_全部不符,自我清除
 		else = {
