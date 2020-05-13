@@ -1,0 +1,100 @@
+###_z fw---行星决策	##########################################################################
+
+###_星辰大海的渴望-人口增长
+z_fw_dec_desire_for_stars = {
+	owned_planets_only = yes
+	sound = event_administrative_work
+	
+	resources = {
+		category = decisions
+		cost = { influence = 10 }
+	}
+	
+	potential = {
+		owner = {
+			is_ai = no
+			check_variable = { which = z_fw_desire_point_var value >= 1 }	#_点数足够
+		}
+	}
+	allow = {
+		NOR = {
+			has_modifier =  z_fw_mod_desire_growth_normal
+			has_modifier =  z_fw_mod_desire_growth_hive
+			has_modifier =  z_fw_mod_desire_assembly_machine
+		}
+	}	
+	
+	effect = {
+		custom_tooltip = z_fw_dec_desire_for_stars_effect
+		hidden_effect = {
+			if = {
+				limit = { owner = { is_gestalt = no } }
+				add_modifier = { modifier = z_fw_mod_desire_growth_normal days = 5400 }
+			}
+			else_if = {
+				limit = { owner = { is_hive_empire = yes } }
+				add_modifier = { modifier = z_fw_mod_desire_growth_hive days = 5400 }
+			}
+			else_if = {
+				limit = { owner = { is_machine_empire = yes } }
+				add_modifier = { modifier = z_fw_mod_desire_assembly_machine days = 5400 }
+			}
+			owner = {
+				change_variable = { which = z_fw_desire_point_var value = -1 }
+			}
+		}
+	}
+	
+	ai_weight = { weight = 0 }
+}
+
+
+
+
+
+
+
+
+#_璀璨星图-boom
+z_fw_dec_detonate_star = {
+	sound = event_air_raid_siren	#_警报声
+
+	#resources = {
+	#	category = decisions
+	#	cost = {
+	#	}
+	#}
+	
+	potential = {
+		always = no
+		#is_star = yes
+		#z_is_destructible_stars = yes
+		#from = { has_relic = z_fw_r_celestial_orrey }
+	}
+	allow = {
+		always = no
+		#from = {
+		#	is_ai = no
+		#	has_country_flag = z_fw_r_celestial_orrey_activited
+		#}
+	}
+	
+	effect = {
+		custom_tooltip = z_fw_dec_detonate_star_effect
+		hidden_effect = {
+			create_ambient_object = {
+				type = z_fw_star_explosion_green
+				scale = 200
+				location = this
+				duration = 5
+			}
+			#_z super nova
+			planet_event = { id = z_fw1_planet_destruction.21 days = 4 }	#_nova
+			#planet_event = { id = z_fw1_planet_destruction.22 days = 100 random = 25 }	#_aftermath
+		}
+	}
+	
+	ai_weight = {
+		weight = 0
+	}
+}
