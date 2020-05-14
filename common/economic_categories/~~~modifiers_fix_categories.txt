@@ -445,61 +445,7 @@ ships = {
 		}
 	}
 ###Extended stations###	
-	#triggered_cost_modifier = {
-		#key = ship_extended_military_station_medium
-		#use_parent_icon = yes
-		#modifier_types = {
-			#mult
-            #add
-		#}
-
-		#trigger = {
-			#is_scope_valid = yes #When called from ship designer the design is not valid yet.
-			#is_ship_size = extended_military_station_medium
-		#}
-	#}
-    
-    #triggered_upkeep_modifier = {
-		#key = ship_extended_military_station_medium
-		#use_parent_icon = yes
-		#modifier_types = {
-			#mult
-			#add
-		#}
-
-		#trigger = {
-			#is_scope_valid = yes #When called from ship designer the design is not valid yet.
-			#is_ship_size = extended_military_station_medium
-		#}
-	#}
-
-	#triggered_cost_modifier = {
-		#key = ship_extended_military_station_large 
-		#use_parent_icon = yes
-		#modifier_types = {
-			#mult
-            #add
-		#}
-
-		#trigger = {
-			#is_scope_valid = yes #When called from ship designer the design is not valid yet.
-			#is_ship_size = extended_military_station_large
-		#}
-	#}
-    
-    #triggered_upkeep_modifier = {
-		#key = ship_extended_military_station_large 
-		#use_parent_icon = yes
-		#modifier_types = {
-			#mult
-			#add
-		#}
-
-		#trigger = {
-			#is_scope_valid = yes #When called from ship designer the design is not valid yet.
-			#is_ship_size = extended_military_station_large
-		#}
-	#}
+#Calvitix deleted
 ###End of Extended stations###	
 	triggered_cost_modifier = {
 		key = ship_science
@@ -1546,7 +1492,7 @@ planet_districts = {
 }
 ###From Unoffical synthetic dawn DLC###
 planet_districts_machinedlc = {
-	parent = planet_structures
+	parent = planet_districts
 
 	generate_add_modifiers = {
 		cost
@@ -1562,7 +1508,7 @@ planet_districts_machinedlc = {
 }
 ###End of Unoffical synthetic dawn DLC###
 planet_districts_cities = {
-	parent = planet_structures
+	parent = planet_districts
 
 	generate_add_modifiers = {
 		cost
@@ -2459,6 +2405,7 @@ planet_jobs_machinedlcmod_clerk = {
 #	}
 #}
 
+###planet_pops, used for pop's upkeeps###
 planet_pops = {
 	parent = planets
 	
@@ -2599,104 +2546,7 @@ pop_category_robot = {
 	}
 }
 ###From Unoffical synthetic dawn DLC mod###
-#calvitix Comment
-#pop_category_drones = {
-	#parent = planet_pops
-    #generate_add_modifiers = {
-		#produces
-		#upkeep
-	#}
-    #generate_mult_modifiers = {
-        #produces
-		#upkeep
-	#}
-	#triggered_produces_modifier = {
-		#key = planet_pops_complex_drone_machine
-		#modifier_types = {
-			#add
-			#mult
-		#}
-		#trigger = {
-			#is_pop_category = complex_drone
-		#}
-	#}
-	#triggered_upkeep_modifier = {
-		#key = planet_pops_complex_drone_machine
-		#modifier_types = {
-			#add
-			#mult
-		#}
-		#trigger = {
-			#is_pop_category = complex_drone
-		#}
-	#}
-	#triggered_produces_modifier = {
-		#key = planet_pops_simple_drone_machine
-		#modifier_types = {
-			#add
-			#mult
-		#}
-		#trigger = {
-			#is_pop_category = simple_drone
-		#}
-	#}
-	#triggered_upkeep_modifier = {
-		#key = planet_pops_simple_drone_machine
-		#modifier_types = {
-			#add
-			#mult
-		#}
-		#trigger = {
-			#is_pop_category = simple_drone
-		#}
-	#}
-	#triggered_upkeep_modifier = {
-		#key = planet_pops_complex_drone_machinedlc_processing
-		#modifier_types = {
-			#add
-			#mult
-		#}
-		#trigger = {
-			#is_pop_category = complex_drone
-			#has_global_flag = machinedlc_new_feature_1
-			#NOT = { has_job = machinedlc_drone_processor }
-			#owner = {
-				#NOR = {
-					#has_valid_civic = civic_machine_clockwork
-					#has_modifier = mod_civic_machine_clockwork
-				#}
-			#}
-		#}
-	#}
-	#triggered_upkeep_modifier = {
-		#key = planet_pops_simple_drone_machinedlc_processing
-		#modifier_types = {
-			#add
-			#mult
-		#}
-		#trigger = {
-			#is_pop_category = simple_drone
-			#has_global_flag = machinedlc_new_feature_1
-			#NOT = { has_job = machinedlc_drone_inactive }
-			#owner = { 
-				#NOR = {
-					#has_valid_civic = civic_machine_clockwork
-					#has_modifier = mod_civic_machine_clockwork
-				#}
-			#}
-		#}
-	#}
-	#triggered_upkeep_modifier = {
-		#key = planet_pops_drone_hyrbid_machine
-		#modifier_types = {
-			#add
-			#mult
-		#}
-		#trigger = {
-			#has_trait = trait_biorobot
-		#}
-	#}
-#}
+#calvitix deleted Comment
 ####End of unoffical synthetic dawn DLC###
 pop_category_workers = {
 	parent = planet_pops
@@ -2707,6 +2557,29 @@ pop_category_workers = {
     generate_mult_modifiers = {
         produces
 		upkeep
+	}
+	
+	triggered_produces_modifier = {
+		key = pop_category_robot_workers
+		modifier_types = {
+			add
+			mult
+		}
+		trigger = {
+			is_robot_pop = yes
+		}
+	}
+	
+	triggered_produces_modifier = {
+		key = pop_category_robot_psionic_workers
+		modifier_types = {
+			add
+			mult
+		}
+		trigger = {
+			is_robot_pop = yes
+			has_trait = trait_psionic
+		}
 	}
 }
 
@@ -2720,6 +2593,29 @@ pop_category_specialists = {
         produces
 		upkeep
 	}
+	
+	triggered_produces_modifier = {
+		key = pop_category_robot_specialists
+		modifier_types = {
+			add
+			mult
+		}
+		trigger = {
+			is_robot_pop = yes
+		}
+	}
+	
+	triggered_produces_modifier = {
+		key = pop_category_robot_psionic_specialists
+		modifier_types = {
+			add
+			mult
+		}
+		trigger = {
+			is_robot_pop = yes
+			has_trait = trait_psionic
+		}
+	}
 }
 
 pop_category_rulers = {
@@ -2731,6 +2627,29 @@ pop_category_rulers = {
     generate_mult_modifiers = {
         produces
 		upkeep
+	}
+	
+	triggered_produces_modifier = {
+		key = pop_category_robot_rulers
+		modifier_types = {
+			add
+			mult
+		}
+		trigger = {
+			is_robot_pop = yes
+		}
+	}
+	
+	triggered_produces_modifier = {
+		key = pop_category_robot_psionic_rulers
+		modifier_types = {
+			add
+			mult
+		}
+		trigger = {
+			is_robot_pop = yes
+			has_trait = trait_psionic
+		}
 	}
 }
 
