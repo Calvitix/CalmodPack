@@ -1500,23 +1500,7 @@ country_event = {
 		name = action.1.a
 		trigger = {
 			NOR = {
-				has_ethic = ethic_xenophobe
-				has_ethic = ethic_fanatic_xenophobe
-				has_ethic = ethic_xenophile
-				has_ethic = ethic_fanatic_xenophile
-				has_ethic = ethic_egalitarian
-				has_ethic = ethic_fanatic_egalitarian
-				has_ethic = ethic_authoritarian
-				has_ethic = ethic_fanatic_authoritarian
-				has_ethic = ethic_militarist
-				has_ethic = ethic_fanatic_militarist
-				has_ethic = ethic_pacifist
-				has_ethic = ethic_fanatic_pacifist
-				has_ethic = ethic_materialist
-				has_ethic = ethic_fanatic_materialist
-				has_ethic = ethic_spiritualist
-				has_ethic = ethic_fanatic_spiritualist
-				has_ethic = ethic_gestalt_consciousness
+
 			}
 		}
 	}
@@ -3650,23 +3634,7 @@ country_event = {
 		name = action.1.a
 		trigger = {
 			NOR = {
-				has_ethic = ethic_xenophobe
-				has_ethic = ethic_fanatic_xenophobe
-				has_ethic = ethic_xenophile
-				has_ethic = ethic_fanatic_xenophile
-				has_ethic = ethic_egalitarian
-				has_ethic = ethic_fanatic_egalitarian
-				has_ethic = ethic_authoritarian
-				has_ethic = ethic_fanatic_authoritarian
-				has_ethic = ethic_militarist
-				has_ethic = ethic_fanatic_militarist
-				has_ethic = ethic_pacifist
-				has_ethic = ethic_fanatic_pacifist
-				has_ethic = ethic_materialist
-				has_ethic = ethic_fanatic_materialist
-				has_ethic = ethic_spiritualist
-				has_ethic = ethic_fanatic_spiritualist
-				has_ethic = ethic_gestalt_consciousness
+
 			}
 		}
 	}
@@ -5284,7 +5252,7 @@ country_event = {
 			}
 		}
 		is_country_type = default
-	#	is_ai = no
+		is_ai = no
 		NOT = { has_country_flag = crystal_encountered }
 	}
 
@@ -5331,7 +5299,7 @@ country_event = {
 			}
 		}
 		is_country_type = default
-	#	is_ai = no
+		is_ai = no
 		NOT = { has_country_flag = drone_encountered }
 	}
 
@@ -5373,7 +5341,7 @@ country_event = {
 	trigger = {
 		FROM = { is_country_type = cloud }
 		is_country_type = default
-	#	is_ai = no
+		is_ai = no
 		NOT = { has_country_flag = cloud_encountered }
 	}
 
@@ -5420,7 +5388,7 @@ country_event = {
 			}
 		}
 		is_country_type = default
-	#	is_ai = no
+		is_ai = no
 		NOT = { has_country_flag = tiyanki_encountered }
 	}
 
@@ -7602,6 +7570,18 @@ country_event = {
 
 	immediate = {
 		if = {
+			limit = { last_changed_policy = artificial_intelligence_policy has_policy_flag = ai_outlawed }
+			every_owned_army = {
+				limit = {
+					OR = {
+						army_type = robotic_army
+						army_type = robotic_defense_army
+					}
+				}
+				remove_army = yes
+			}
+		}
+		else_if = {
 			limit = { last_changed_policy = robot_pop_policy has_policy_flag = robots_outlawed }
 			every_owned_army = {
 				limit = {

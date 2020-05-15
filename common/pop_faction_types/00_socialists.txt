@@ -5,16 +5,29 @@
 socialists = {
 	election_header = "GFX_faction_header_yellow"
 	guiding_ethic = ethic_socialism
-	
+
 	unique = yes
 	support_multiplier = 1
-	
+
+	resources = {
+		category = pop_factions
+		produces = {
+			influence = 2
+		}
+	}
+
 	is_potential = {
 		years_passed > 10
 		has_encountered_other_species = yes
 		NOT = { has_authority = auth_hive_mind }
+		count_owned_pops = {
+			count >= 5
+			limit = {
+				has_ethic = ethic_socialism
+			}
+		}
 	}
-	
+
 	parameters = {
 		empire = {
 			type = country
@@ -23,18 +36,14 @@ socialists = {
 			}
 		}
 	}
-	
-	resources = {
-		category = pop_factions
-		produces = {
-			influence = 2
-		}		
-	}		
+
+	can_join_pre_triggers = {
+		is_enslaved = no
+		is_being_purged = no
+	}
 
 	can_join_faction = {
-		is_enslaved = no
 		is_shackled_robot = no
-		is_being_purged = no
 		has_culture_shock = no
 		NOT = { has_trait = trait_nerve_stapled }
 		OR = {
@@ -43,15 +52,10 @@ socialists = {
 		}
 
 	}
-	
-	can_join_pre_triggers = {
-		is_enslaved = no
-		is_being_purged = no
-	}	
-	
+
 	attraction = {
 		base = 150
-		
+
 		modifier = {
 			factor = 1.25
 			exists = from
@@ -60,7 +64,7 @@ socialists = {
 				leader = { leader_class = ruler }
 			}
 		}
-		
+
 		modifier = {
 			factor = 0.75
 			exists = from
@@ -68,20 +72,39 @@ socialists = {
 				NOT = { exists = leader }
 			}
 		}
-		
-		
+
+
 	}
-	
+
 	leader = {
 		base = 100
 		modifier = {
 			factor = 0.0
 			is_event_leader = yes
-		}			
+		}
 	}
-	
 
-	
+	demand = {
+		title = "REGULATED_TRADE"
+		unfulfilled_title = "REGULATED_TRADE"
+		desc = "REGULATED_TRADE_DESC"
+
+		fulfilled_effect = 10
+
+		potential = {
+			exists = owner
+		}
+
+		trigger = {
+			owner = {
+				OR = {
+					has_policy_flag = trade_policy_growth_dev
+					has_policy_flag = trade_policy_development
+				}
+			}
+		}
+	}
+
 	demand = {
 		title = "INDUSTRIAL_EFFICIENCY"
 		unfulfilled_title = "NO_INDUSTRIAL_EFFICIENCY"
@@ -106,10 +129,10 @@ socialists = {
 				}
 			}
 		}
-	}		
-	
-	
-	
+	}
+
+
+
 	demand = {
 		title = "SOCIAL_WELFARE"
 		unfulfilled_title = "NO_SOCIAL_WELFARE"
@@ -117,7 +140,7 @@ socialists = {
 
 		fulfilled_effect = 15
 
-		potential = { 
+		potential = {
 			exists = owner
 		}
 
@@ -132,13 +155,13 @@ socialists = {
 					}
 					any_owned_pop = {
 						has_living_standard = { type = living_standard_utopian }
-					}					
+					}
 				}
 			}
 		}
 	}
-	
-	
+
+
 	demand = {
 		title = "SOCIAL_SECURITY"
 		unfulfilled_title = "NO_SOCIAL_SECURITY"
@@ -147,30 +170,30 @@ socialists = {
 		unfulfilled_effect = -15
 		fulfilled_effect = 0.001
 
-		potential = { 
+		potential = {
 			exists = owner
 		}
 
 		trigger = {
 			owner = {
-				NOR = {			
+				NOR = {
 					any_owned_pop = {
 						has_living_standard = { type = living_standard_stratified }
 					}
 					any_owned_pop = {
 						has_living_standard = { type = living_standard_academic_privilege }
 					}
-					
+
 				}
 			}
 		}
 	}
-	
-	
-	
-		
-	
-	
+
+
+
+
+
+
 	demand = {
 		title = "PROGRESSIVE_NO_ELITISM"
 		unfulfilled_title = "PROGRESSIVE_ELITISM"
@@ -198,45 +221,45 @@ socialists = {
 			}
 		}
 	}
-		
-		
+
+
 	demand = {
 		title = "HEALTHCARE_CAMPAIGN"
 		unfulfilled_title = "NO_HEALTHCARE_CAMPAIGN"
 		desc = "HEALTHCARE_CAMPAIGN_DESC"
-		
+
 		fulfilled_effect = 10
-		
+
 		potential = {
 			exists = owner
 		}
-		
+
 		trigger = {
 			owner = {
 				has_edict = nutritional_plenitude
 			}
 		}
-	}		
-	
+	}
+
 	demand = {
 		title = "EDUCATION_CAMPAIGN"
 		unfulfilled_title = "NO_EDUCATION_CAMPAIGN"
 		desc = "EDUCATION_CAMPAIGN_DESC"
-		
+
 		fulfilled_effect = 10
-		
+
 		potential = {
 			exists = owner
 		}
-		
+
 		trigger = {
 			owner = {
 				has_edict = education_campaign
 			}
 		}
-	}	
-	
-	
+	}
+
+
 	demand = {
 		title = "LABOUR_POWER"
 		unfulfilled_title = "NO_LABOUR_POWER"
@@ -256,10 +279,10 @@ socialists = {
 				}
 			}
 		}
-	}	
-	
-	
-	
+	}
+
+
+
 	demand = {
 		title = "PUBLIC_EDUCATION"
 		unfulfilled_title = "NO_PUBLIC_EDUCATION"
@@ -278,7 +301,7 @@ socialists = {
 				}
 			}
 		}
-	}	
+	}
 
 
 
@@ -295,7 +318,7 @@ socialists = {
 				OR = {
 					has_policy_flag = private_education
 				}
-			}			
+			}
 		}
 
 		trigger = {
@@ -305,20 +328,20 @@ socialists = {
 				}
 			}
 		}
-	}	
-		
-
-		
-	
+	}
 
 
-	
-	
-	
 
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
 	demand = {
 		title = "NO_FREE_MARKET"
 		unfulfilled_title = "FREE_MARKET"
@@ -330,7 +353,7 @@ socialists = {
 			exists = owner
 			owner = {
 				OR = {
-				    has_policy_flag = economic_stance_market					
+				    has_policy_flag = economic_stance_market
 				}
 			}
 		}
@@ -343,8 +366,8 @@ socialists = {
 			}
 		}
 	}
-	
-	
+
+
 	demand = {
 		title = "PLANNED_ECONOMY"
 		unfulfilled_title = "NO_PLANNED_ECONOMY"
@@ -358,7 +381,7 @@ socialists = {
 			owner = {
 				NOR = {
 					has_policy_flag = economic_stance_planned
-				}				
+				}
 			}
 		}
 
@@ -369,10 +392,10 @@ socialists = {
 				}
 			}
 		}
-	}	
-	
-	
-	
+	}
+
+
+
 	demand = {
 		title = "PUBLIC_MEDICINE"
 		unfulfilled_title = "NO_PUBLIC_MEDICINE"
@@ -392,7 +415,7 @@ socialists = {
 				}
 			}
 		}
-	}	
+	}
 
 
 
@@ -419,18 +442,18 @@ socialists = {
 				}
 			}
 		}
-	}	
-	
+	}
 
 
-	
-		
-	
-	
+
+
+
+
+
 	on_create = {
 		pop_faction_event = { id = factions.1 }
 	}
-	
+
 	on_destroy = {
 		if = {
 			limit = {
@@ -444,18 +467,18 @@ socialists = {
 			}
 			remove_modifier = suppressed_socialism
 		}
-	}	
+	}
 
 
 	actions = {
 		embrace_faction = {
 			title = "EMBRACE_FACTION"
 			description = "EMBRACE_FACTION_DESC"
-			
+
 			cost = {
 				influence = 500
 			}
-			
+
 			potential = {
 				exists = owner
 				owner = {
@@ -465,7 +488,7 @@ socialists = {
 					}
 				}
 			}
-			
+
 			valid = {
 				custom_tooltip = {
 					fail_text = EMBRACE_FACTION_COOLDOWN
@@ -497,15 +520,15 @@ socialists = {
 						every_relation = {
 							limit = {
 								is_ai = no
-								is_country_type = default			
+								is_country_type = default
 								has_communications = prev
 							}
 							country_event = { id = factions.2000 }
 						}
-					}				
-				}				
+					}
+				}
 			}
-			
+
 			ai_weight = {
 				base = 1
 				modifier = {
@@ -517,7 +540,7 @@ socialists = {
 				}
 				modifier = {
 					factor = 0
-					NOT = { 
+					NOT = {
 						owner = {
 							exists = ruler
 							ruler = {
@@ -531,22 +554,22 @@ socialists = {
 					owner = {
 						count_pop_faction = {
 							count < 4
-						}					
+						}
 					}
-				}				
+				}
 			}
 		}
 		promote_faction = {
 			title = "PROMOTE_FACTION"
 			description = "PROMOTE_FACTION_DESC"
-			
+
 			potential = {
 				exists = owner
-				parameter:empire = { 
-					NOR = { 
+				parameter:empire = {
+					NOR = {
 						has_modifier = suppressed_socialism
 						has_modifier = promoted_socialism
-					}			
+					}
 				}
 			}
 
@@ -555,7 +578,7 @@ socialists = {
 					add_modifier = { modifier = promoted_socialism days = -1 }
 				}
 			}
-			
+
 			ai_weight = {
 				base = 0
 			}
@@ -563,10 +586,10 @@ socialists = {
 		cancel_promote_faction = {
 			title = "CANCEL_PROMOTE_FACTION"
 			description = "CANCEL_PROMOTE_FACTION_DESC"
-			
+
 			potential = {
 				exists = owner
-				parameter:empire = { 
+				parameter:empire = {
 					has_modifier = promoted_socialism
 				}
 			}
@@ -576,21 +599,21 @@ socialists = {
 					remove_modifier = promoted_socialism
 				}
 			}
-			
+
 			ai_weight = {
 				base = 0
 			}
-		}		
+		}
 		suppress_faction = {
 			title = "SUPPRESS_FACTION"
 			description = "SUPPRESS_FACTION_DESC"
-			
+
 			potential = {
 				exists = owner
-				parameter:empire = { 
-					NOR = { 
+				parameter:empire = {
+					NOR = {
 						has_modifier = suppressed_socialism
-						has_modifier = promoted_socialism 
+						has_modifier = promoted_socialism
 					}
 				}
 			}
@@ -601,7 +624,7 @@ socialists = {
 					add_modifier = { modifier = suppressed_socialism days = -1 }
 				}
 			}
-			
+
 			ai_weight = {
 				base = 0
 			}
@@ -609,10 +632,10 @@ socialists = {
 		cancel_suppress_faction = {
 			title = "CANCEL_SUPPRESS_FACTION"
 			description = "CANCEL_SUPPRESS_FACTION_DESC"
-			
+
 			potential = {
 				exists = owner
-				parameter:empire = { 
+				parameter:empire = {
 					has_modifier = suppressed_socialism
 				}
 			}
@@ -623,10 +646,10 @@ socialists = {
 					remove_modifier = suppressed_socialism
 				}
 			}
-			
+
 			ai_weight = {
 				base = 0
 			}
-		}	
+		}
 	}
 }

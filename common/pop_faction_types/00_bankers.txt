@@ -5,16 +5,29 @@
 bankers = {
 	election_header = "GFX_faction_header_yellow"
 	guiding_ethic = ethic_capitalism
-	
+
 	unique = yes
 	support_multiplier = 1
-	
+
+	resources = {
+		category = pop_factions
+		produces = {
+			influence = 2
+		}
+	}
+
 	is_potential = {
 		years_passed > 10
 		has_encountered_other_species = yes
 		NOT = { has_authority = auth_hive_mind }
+		count_owned_pops = {
+			count >= 5
+			limit = {
+				has_ethic = ethic_capitalism
+			}
+		}
 	}
-	
+
 	parameters = {
 		empire = {
 			type = country
@@ -23,18 +36,14 @@ bankers = {
 			}
 		}
 	}
-	
-	resources = {
-		category = pop_factions
-		produces = {
-			influence = 2
-		}		
-	}	
+
+	can_join_pre_triggers = {
+		is_enslaved = no
+		is_being_purged = no
+	}
 
 	can_join_faction = {
-		is_enslaved = no
 		is_shackled_robot = no
-		is_being_purged = no
 		has_culture_shock = no
 		NOT = { has_trait = trait_nerve_stapled }
 		OR = {
@@ -42,15 +51,11 @@ bankers = {
 			has_ethic = ethic_fanatic_capitalism
 		}
 	}
-	
-	can_join_pre_triggers = {
-		is_enslaved = no
-		is_being_purged = no
-	}	
-	
+
+
 	attraction = {
 		base = 150
-		
+
 		modifier = {
 			factor = 1.25
 			exists = from
@@ -59,7 +64,7 @@ bankers = {
 				leader = { leader_class = ruler }
 			}
 		}
-		
+
 		modifier = {
 			factor = 0.75
 			exists = from
@@ -67,10 +72,10 @@ bankers = {
 				NOT = { exists = leader }
 			}
 		}
-		
+
 		modifier = {
 			factor = 1.5
-			
+
 			OR = {
 				has_ethic = ethic_capitalism
 				has_ethic = ethic_fanatic_capitalism
@@ -80,20 +85,40 @@ bankers = {
 		modifier = {
 			factor = 0.25
 			NOT = { is_same_species = owner_species }
-		}		
-		
+		}
+
 
 	}
-	
+
 	leader = {
 		base = 100
 		modifier = {
 			factor = 0.0
 			is_event_leader = yes
-		}		
+		}
 	}
-	
-	
+
+	demand = {
+		title = "TRADE_LEAGUE"
+		unfulfilled_title = "TRADE_LEAGUE"
+		desc = "TRADE_LEAGUE_DESC"
+
+		fulfilled_effect = 10
+
+		potential = {
+			exists = owner
+			owner = { has_federation = yes }
+		}
+
+		trigger = {
+			owner = {
+				OR = {
+					has_policy_flag = trade_conversion_trade_league
+				}
+			}
+		}
+	}
+
 	demand = {
 		title = "MERCANTILE_DIPLO_STANCE"
 		unfulfilled_title = "MERCANTILE_DIPLO_STANCE"
@@ -142,11 +167,11 @@ bankers = {
 					}
 			}
 		}
-	}	
-	
+	}
 
-	
-	
+
+
+
 	demand = {
 		title = "CONSUMER_MARKETS"
 		unfulfilled_title = "CONSUMER_MARKETS"
@@ -166,10 +191,10 @@ bankers = {
 				}
 			}
 		}
-	}		
-	
-	
-	
+	}
+
+
+
 	demand = {
 		title = "INDUSTRIAL_PRODUCTIVISM"
 		unfulfilled_title = "NO_INDUSTRIAL_PRODUCTIVISM"
@@ -194,9 +219,9 @@ bankers = {
 				}
 			}
 		}
-	}			
-	
-	
+	}
+
+
 	demand = {
 		title = "NO_EFFICIENCY"
 		unfulfilled_title = "NO_EFFICIENCY_NO"
@@ -221,8 +246,8 @@ bankers = {
 				}
 			}
 		}
-	}	
-	
+	}
+
 
 	demand = {
 		title = "TOTALITARIAN_STRATIFICATION"
@@ -232,7 +257,7 @@ bankers = {
 		fulfilled_effect = 15
 
 		potential = {
-			exists = owner			
+			exists = owner
 		}
 
 		trigger = {
@@ -243,12 +268,12 @@ bankers = {
 								has_living_standard = { type = living_standard_academic_privilege }
 								has_living_standard = { type = living_standard_subsistence }
 							}
-						}				
+						}
 
 			}
 		}
 	}
-	
+
 	demand = {
 		title = "PROGRESSIVE_NO_WELFARE"
 		unfulfilled_title = "NO_PROGRESSIVE_NO_WELFARE"
@@ -272,17 +297,17 @@ bankers = {
 					}
 					any_owned_pop = {
 						has_living_standard = { type = living_standard_utopian }
-					}						
+					}
 				}
 			}
 		}
-	}	
-	
-	
-	
-	
+	}
 
-	
+
+
+
+
+
 	demand = {
 		title = "TOTALITARIAN_ELITISM"
 		unfulfilled_title = "TOTALITARIAN_NO_ELITISM"
@@ -309,8 +334,8 @@ bankers = {
 				}
 			}
 		}
-	}	
-	
+	}
+
 	demand = {
 		title = "ALLOWED_LOBBY"
 		unfulfilled_title = "NO_ALLOWED_LOBBY"
@@ -330,9 +355,9 @@ bankers = {
 				}
 			}
 		}
-	}	
-	
-	
+	}
+
+
 	demand = {
 		title = "PRIVATE_EDUCATION"
 		unfulfilled_title = "NO_PRIVATE_EDUCATION"
@@ -352,7 +377,7 @@ bankers = {
 				}
 			}
 		}
-	}	
+	}
 
 
 
@@ -379,7 +404,7 @@ bankers = {
 				}
 			}
 		}
-	}			
+	}
 
 
 
@@ -410,8 +435,8 @@ bankers = {
 			}
 		}
 	}
-	
-	
+
+
 	demand = {
 		title = "NO_PLANNED_ECONOMY"
 		unfulfilled_title = "PLANNED_ECONOMY"
@@ -435,10 +460,10 @@ bankers = {
 				}
 			}
 		}
-	}	
-	
-	
-	
+	}
+
+
+
 	demand = {
 		title = "PRIVATE_MEDICINE"
 		unfulfilled_title = "NO_PRIVATE_MEDICINE"
@@ -458,7 +483,7 @@ bankers = {
 				}
 			}
 		}
-	}	
+	}
 
 
 
@@ -486,8 +511,8 @@ bankers = {
 			}
 		}
 	}
-	
-	
+
+
 	demand = {
 		title = "COMMERCIAL_PACTS"
 		unfulfilled_title = "NO_COMMERCIAL_PACTS"
@@ -505,24 +530,32 @@ bankers = {
 
 		trigger = {
 			owner = {
-				count_country = {
-					count > 1
-					limit = {
-						exists = this
-						root.owner = { has_commercial_pact = prev }
+				OR = {
+					AND = {
+						has_federation = yes
+						federation = {
+							has_federation_perk = trade_federation_passive
+						}
+					}
+					count_playable_country = {
+						count > 1
+						limit = {
+							exists = this
+							root.owner = { has_commercial_pact = prev }
+						}
 					}
 				}
 			}
 		}
-	}	
-	
-	
+	}
 
 
 
-	
-	
-	
+
+
+
+
+
 	on_create = {
 		pop_faction_event = { id = factions.1 }
 	}
@@ -541,16 +574,16 @@ bankers = {
 			remove_modifier = suppressed_capitalism
 		}
 	}
-	
+
 	actions = {
 		embrace_faction = {
 			title = "EMBRACE_FACTION"
 			description = "EMBRACE_FACTION_DESC"
-			
+
 			cost = {
 				influence = 500
 			}
-			
+
 			potential = {
 				exists = owner
 				owner = {
@@ -560,7 +593,7 @@ bankers = {
 					}
 				}
 			}
-			
+
 			valid = {
 				custom_tooltip = {
 					fail_text = EMBRACE_FACTION_COOLDOWN
@@ -592,15 +625,15 @@ bankers = {
 						every_relation = {
 							limit = {
 								is_ai = no
-								is_country_type = default			
+								is_country_type = default
 								has_communications = prev
 							}
 							country_event = { id = factions.2000 }
 						}
-					}				
-				}				
+					}
+				}
 			}
-			
+
 			ai_weight = {
 				base = 1
 				modifier = {
@@ -612,7 +645,7 @@ bankers = {
 				}
 				modifier = {
 					factor = 0
-					NOT = { 
+					NOT = {
 						owner = {
 							exists = ruler
 							ruler = {
@@ -626,22 +659,22 @@ bankers = {
 					owner = {
 						count_pop_faction = {
 							count < 4
-						}					
+						}
 					}
-				}				
+				}
 			}
 		}
 		promote_faction = {
 			title = "PROMOTE_FACTION"
 			description = "PROMOTE_FACTION_DESC"
-			
+
 			potential = {
 				exists = owner
-				parameter:empire = { 
-					NOR = { 
+				parameter:empire = {
+					NOR = {
 						has_modifier = suppressed_capitalism
 						has_modifier = promoted_capitalism
-					}					
+					}
 				}
 			}
 
@@ -650,7 +683,7 @@ bankers = {
 					add_modifier = { modifier = promoted_capitalism days = -1 }
 				}
 			}
-			
+
 			ai_weight = {
 				base = 0
 			}
@@ -658,10 +691,10 @@ bankers = {
 		cancel_promote_faction = {
 			title = "CANCEL_PROMOTE_FACTION"
 			description = "CANCEL_PROMOTE_FACTION_DESC"
-			
+
 			potential = {
 				exists = owner
-				parameter:empire = { 
+				parameter:empire = {
 					has_modifier = promoted_capitalism
 				}
 			}
@@ -671,21 +704,21 @@ bankers = {
 					remove_modifier = promoted_capitalism
 				}
 			}
-			
+
 			ai_weight = {
 				base = 0
 			}
-		}		
+		}
 		suppress_faction = {
 			title = "SUPPRESS_FACTION"
 			description = "SUPPRESS_FACTION_DESC"
-			
+
 			potential = {
 				exists = owner
-				parameter:empire = { 
-					NOR = { 
+				parameter:empire = {
+					NOR = {
 						has_modifier = suppressed_capitalism
-						has_modifier = promoted_capitalism 
+						has_modifier = promoted_capitalism
 					}
 				}
 			}
@@ -696,7 +729,7 @@ bankers = {
 					add_modifier = { modifier = suppressed_capitalism days = -1 }
 				}
 			}
-			
+
 			ai_weight = {
 				base = 0
 			}
@@ -704,10 +737,10 @@ bankers = {
 		cancel_suppress_faction = {
 			title = "CANCEL_SUPPRESS_FACTION"
 			description = "CANCEL_SUPPRESS_FACTION_DESC"
-			
+
 			potential = {
 				exists = owner
-				parameter:empire = { 
+				parameter:empire = {
 					has_modifier = suppressed_capitalism
 				}
 			}
@@ -718,10 +751,10 @@ bankers = {
 					remove_modifier = suppressed_capitalism
 				}
 			}
-			
+
 			ai_weight = {
 				base = 0
 			}
-		}	
+		}
 	}
 }

@@ -21,8 +21,8 @@
 #	harmful = yes/no # if the AI should consider this harmful when choosing target
 #	modifier = {} # modifier to be applied to all community members if passed
 #	triggered_modifier = {} # triggered modifier to be applied, scope is country
-#	effect = {} # effect to be applied if passed, scope is country
-#	fail_effects = {} # effect to be applied if failed, scope is country
+#	effect = {} # effect to be applied if passed, scope is proposer unless there is a target country - then scope is target country, with proposer in from scope
+#	fail_effects = {} # effect to be applied if failed, scope is proposer unless there is a target country - then scope is target country, with proposer in from scope
 #	potential = {} # potential trigger, scope is country
 #	allow = {} # allow trigger, scope is country
 #	ai_weight = {} # ai weight modifiers, scope is country
@@ -52,13 +52,26 @@ resolution_galactic_market_form = {
 			set_global_flag = galactic_community_resolution_passed
 
 			set_timed_country_flag = { flag = galactic_community_resolution_passed_general days = @resolution_flag_timer }
+
+			add_modifier = {
+				modifier = resolution_passed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
 	fail_effects = {
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_failed_general days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_failed_diplomatic_weight
+				days = 2200
+			}
 		}
+	}
+
+	modifier = {
+		country_resource_max_add = 10000
 	}
 
 	potential = {
@@ -85,13 +98,13 @@ resolution_galactic_market_form = {
 			factor = 2
 			has_authority = auth_corporate
 		}
-		
+
 		modifier = {
 			factor = 1.5
 			OR = {
 			has_valid_civic = civic_globalism
 			}
-		}		
+		}
 
 		modifier = {
 			factor = 1.25
@@ -146,12 +159,20 @@ resolution_ecology_repeal_1 = {
 
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_passed_ecology_repeal days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_passed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
 	fail_effects = {
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_failed_ecology_repeal days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_failed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
@@ -165,8 +186,8 @@ resolution_ecology_repeal_1 = {
 		modifier = {
 			factor = 0
 			OR = {
-			has_valid_civic = civic_environmentalist
-			has_valid_civic = civic_keepers_harmony
+				has_valid_civic = civic_environmentalist
+				has_valid_civic = civic_keepers_harmony
 			}
 		}
 
@@ -212,12 +233,20 @@ resolution_ecology_repeal_2 = {
 		hidden_effect = {
 			pass_resolution = "resolution_ecology_recycling_initiatives"
 			set_timed_country_flag = { flag = galactic_community_resolution_passed_ecology_repeal days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_passed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
 	fail_effects = {
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_failed_ecology_repeal days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_failed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
@@ -237,8 +266,8 @@ resolution_ecology_repeal_2 = {
 		modifier = {
 			factor = 0
 			OR = {
-			has_valid_civic = civic_environmentalist
-			has_valid_civic = civic_keepers_harmony
+				has_valid_civic = civic_environmentalist
+				has_valid_civic = civic_keepers_harmony
 			}
 		}
 
@@ -284,12 +313,20 @@ resolution_ecology_repeal_3 = {
 		hidden_effect = {
 			pass_resolution = "resolution_ecology_natural_sanctuaries"
 			set_timed_country_flag = { flag = galactic_community_resolution_passed_ecology_repeal days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_passed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
 	fail_effects = {
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_failed_ecology_repeal days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_failed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
@@ -310,8 +347,8 @@ resolution_ecology_repeal_3 = {
 		modifier = {
 			factor = 0
 			OR = {
-			has_valid_civic = civic_environmentalist
-			has_valid_civic = civic_keepers_harmony
+				has_valid_civic = civic_environmentalist
+				has_valid_civic = civic_keepers_harmony
 			}
 		}
 
@@ -361,12 +398,20 @@ resolution_ecology_repeal_4 = {
 		hidden_effect = {
 			pass_resolution = "resolution_ecology_integrated_gardens"
 			set_timed_country_flag = { flag = galactic_community_resolution_passed_ecology_repeal days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_passed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
 	fail_effects = {
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_failed_ecology_repeal days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_failed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
@@ -388,9 +433,14 @@ resolution_ecology_repeal_4 = {
 		modifier = {
 			factor = 0
 			OR = {
-			has_valid_civic = civic_environmentalist
-			has_valid_civic = civic_keepers_harmony
+				has_valid_civic = civic_environmentalist
+				has_valid_civic = civic_keepers_harmony
 			}
+		}
+
+		modifier = {
+			factor = 10
+			in_breach_of = resolution_ecology_environmental_control_board
 		}
 
 		modifier = {
@@ -439,6 +489,10 @@ resolution_ecology_repeal_5 = {
 		hidden_effect = {
 			pass_resolution = "resolution_ecology_environmental_control_board"
 			set_timed_country_flag = { flag = galactic_community_resolution_passed_ecology_repeal days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_passed_diplomatic_weight
+				days = 2200
+			}
 		}
 		custom_tooltip = resolution_ecology_environmental_control_board_tooltip
 	}
@@ -446,6 +500,10 @@ resolution_ecology_repeal_5 = {
 	fail_effects = {
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_failed_ecology_repeal days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_failed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
@@ -469,8 +527,8 @@ resolution_ecology_repeal_5 = {
 		modifier = {
 			factor = 0
 			OR = {
-			has_valid_civic = civic_environmentalist
-			has_valid_civic = civic_keepers_harmony
+				has_valid_civic = civic_environmentalist
+				has_valid_civic = civic_keepers_harmony
 			}
 		}
 
@@ -510,6 +568,7 @@ resolution_ecology_recycling_initiatives = {
 		}
 	}
 	target = no
+	level = 1
 
 	modifier = {
 		resolution_ecology_recycling_initiatives = 1
@@ -519,12 +578,20 @@ resolution_ecology_recycling_initiatives = {
 		hidden_effect = {
 			set_global_flag = galactic_community_resolution_passed
 			set_timed_country_flag = { flag = galactic_community_resolution_passed_ecology days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_passed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
 	fail_effects = {
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_failed_ecology days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_failed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
@@ -581,6 +648,7 @@ resolution_ecology_natural_sanctuaries = {
 		}
 	}
 	target = no
+	level = 2
 
 	modifier = {
 		resolution_ecology_recycling_initiatives = 1
@@ -594,12 +662,20 @@ resolution_ecology_natural_sanctuaries = {
 	effect = {
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_passed_ecology days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_passed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
 	fail_effects = {
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_failed_ecology days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_failed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
@@ -618,7 +694,7 @@ resolution_ecology_natural_sanctuaries = {
 		}
 
 		modifier = {
-			factor = 0.6
+			factor = 0.5
 			OR = {
 				has_valid_civic = civic_mining_guilds
 				has_valid_civic = civic_machine_rockbreakers
@@ -648,6 +724,7 @@ resolution_ecology_integrated_gardens = {
 		}
 	}
 	target = no
+	level = 3
 
 	modifier = {
 		resolution_ecology_recycling_initiatives = 1
@@ -662,12 +739,20 @@ resolution_ecology_integrated_gardens = {
 	effect = {
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_passed_ecology days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_passed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
 	fail_effects = {
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_failed_ecology days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_failed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
@@ -676,8 +761,10 @@ resolution_ecology_integrated_gardens = {
 
 		modifier = {
 			factor = 2
-			has_valid_civic = civic_environmentalist
-			has_valid_civic = civic_keepers_harmony
+			OR = {
+				has_valid_civic = civic_environmentalist
+				has_valid_civic = civic_keepers_harmony
+			}
 		}
 
 		modifier = {
@@ -686,7 +773,7 @@ resolution_ecology_integrated_gardens = {
 		}
 
 		modifier = {
-			factor = 0.6
+			factor = 0.4
 			OR = {
 				has_valid_civic = civic_mining_guilds
 				has_valid_civic = civic_machine_rockbreakers
@@ -720,18 +807,27 @@ resolution_ecology_environmental_control_board = {
 		}
 	}
 	target = no
+	level = 4
 
 	effect = {
 		custom_tooltip = resolution_ecology_environmental_control_board_tooltip
 		hidden_effect = {
 			set_global_flag = resolution_with_breach_effect_passed
 			set_timed_country_flag = { flag = galactic_community_resolution_passed_ecology days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_passed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
 	fail_effects = {
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_failed_ecology days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_failed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
@@ -754,9 +850,16 @@ resolution_ecology_environmental_control_board = {
 		weight = @resolution_weight_unpopular
 
 		modifier = {
+			factor = 0
+			in_breach_of = resolution_ecology_environmental_control_board
+		}
+
+		modifier = {
 			factor = 2
-			has_valid_civic = civic_environmentalist
-			has_valid_civic = civic_keepers_harmony
+			OR = {
+				has_valid_civic = civic_environmentalist
+				has_valid_civic = civic_keepers_harmony
+			}
 		}
 
 		modifier = {
@@ -765,7 +868,7 @@ resolution_ecology_environmental_control_board = {
 		}
 
 		modifier = {
-			factor = 0.6
+			factor = 0
 			OR = {
 				has_valid_civic = civic_mining_guilds
 				has_valid_civic = civic_machine_rockbreakers
@@ -799,6 +902,7 @@ resolution_ecology_paradise_initiative = {
 		}
 	}
 	target = no
+	level = 5
 
 	modifier = {
 		resolution_ecology_recycling_initiatives = 1
@@ -811,12 +915,20 @@ resolution_ecology_paradise_initiative = {
 	effect = {
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_passed_ecology days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_passed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
 	fail_effects = {
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_failed_ecology days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_failed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
@@ -829,8 +941,10 @@ resolution_ecology_paradise_initiative = {
 
 		modifier = {
 			factor = 2
-			has_valid_civic = civic_environmentalist
-			has_valid_civic = civic_keepers_harmony
+			OR ={
+				has_valid_civic = civic_environmentalist
+				has_valid_civic = civic_keepers_harmony
+			}
 		}
 
 		modifier = {
@@ -869,12 +983,20 @@ resolution_commerce_repeal_1 = {
 		custom_tooltip = resolution_commerce_repeal_1_effect_success
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_passed_commerce_repeal days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_passed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
 	fail_effects = {
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_failed_commerce_repeal days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_failed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
@@ -930,12 +1052,20 @@ resolution_commerce_repeal_2 = {
 		hidden_effect = {
 			pass_resolution = "resolution_commerce_buzzword_standardization"
 			set_timed_country_flag = { flag = galactic_community_resolution_passed_commerce_repeal days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_passed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
 	fail_effects = {
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_failed_commerce_repeal days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_failed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
@@ -995,12 +1125,20 @@ resolution_commerce_repeal_3 = {
 		hidden_effect = {
 			pass_resolution = "resolution_commerce_leveraged_privateering"
 			set_timed_country_flag = { flag = galactic_community_resolution_passed_commerce_repeal days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_passed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
 	fail_effects = {
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_failed_commerce_repeal days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_failed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
@@ -1065,6 +1203,10 @@ resolution_commerce_repeal_4 = {
 		hidden_effect = {
 			pass_resolution = "resolution_commerce_underdeveloped_system_utilization"
 			set_timed_country_flag = { flag = galactic_community_resolution_passed_commerce_repeal days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_passed_diplomatic_weight
+				days = 2200
+			}
 		}
 
 		custom_tooltip = resolution_commerce_underdeveloped_system_utilization_tooltip
@@ -1073,6 +1215,10 @@ resolution_commerce_repeal_4 = {
 	fail_effects = {
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_failed_commerce_repeal days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_failed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
@@ -1138,12 +1284,20 @@ resolution_commerce_repeal_5 = {
 		hidden_effect = {
 			pass_resolution = "resolution_commerce_holistic_asset_coordination"
 			set_timed_country_flag = { flag = galactic_community_resolution_passed_commerce_repeal days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_passed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
 	fail_effects = {
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_failed_commerce_repeal days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_failed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
@@ -1162,6 +1316,7 @@ resolution_commerce_repeal_5 = {
 
 	ai_weight = {
 		weight = @resolution_weight_unpopular
+
 		modifier = {
 			factor = 0
 			OR = {
@@ -1198,6 +1353,7 @@ resolution_commerce_buzzword_standardization = {
 		}
 	}
 	target = no
+	level = 1
 
 	modifier = {
 		resolution_commerce_buzzword_standardization = 1
@@ -1207,12 +1363,20 @@ resolution_commerce_buzzword_standardization = {
 		hidden_effect = {
 			set_global_flag = galactic_community_resolution_passed
 			set_timed_country_flag = { flag = galactic_community_resolution_passed_commerce days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_passed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
 	fail_effects = {
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_failed_commerce days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_failed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
@@ -1247,7 +1411,7 @@ resolution_commerce_buzzword_standardization = {
 				has_valid_civic = civic_free_traders
 				has_valid_civic = civic_trading_posts
 				has_valid_civic = civic_corporate_dominion
-				has_valid_civic = civic_beacon_of_liberty				
+				has_valid_civic = civic_beacon_of_liberty
 			}
 		}
 
@@ -1268,6 +1432,7 @@ resolution_commerce_leveraged_privateering = {
 		}
 	}
 	target = no
+	level = 2
 
 	modifier = {
 		resolution_commerce_buzzword_standardization = 1
@@ -1277,12 +1442,20 @@ resolution_commerce_leveraged_privateering = {
 	effect = {
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_passed_commerce days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_passed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
 	fail_effects = {
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_failed_commerce days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_failed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
@@ -1324,6 +1497,7 @@ resolution_commerce_underdeveloped_system_utilization = {
 		}
 	}
 	target = no
+	level = 3
 
 	modifier = {
 		resolution_commerce_buzzword_standardization = 1
@@ -1336,12 +1510,20 @@ resolution_commerce_underdeveloped_system_utilization = {
 		hidden_effect = {
 			set_global_flag = galactic_community_resolution_passed
 			set_timed_country_flag = { flag = galactic_community_resolution_passed_commerce days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_passed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
 	fail_effects = {
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_failed_commerce days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_failed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
@@ -1365,11 +1547,11 @@ resolution_commerce_underdeveloped_system_utilization = {
 			factor = 1.2
 			is_xenophile = yes
 		}
-		
+
 		modifier = {
 			factor = 1.3
 			is_capitalism = yes
-		}			
+		}
 
 		modifier = {
 			factor = 0.1
@@ -1392,6 +1574,7 @@ resolution_commerce_holistic_asset_coordination = {
 		}
 	}
 	target = no
+	level = 4
 
 	modifier = {
 		resolution_commerce_buzzword_standardization = 1
@@ -1404,12 +1587,20 @@ resolution_commerce_holistic_asset_coordination = {
 		hidden_effect = {
 			set_global_flag = galactic_community_resolution_passed
 			set_timed_country_flag = { flag = galactic_community_resolution_passed_commerce days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_passed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
 	fail_effects = {
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_failed_commerce days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_failed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
@@ -1450,6 +1641,7 @@ resolution_commerce_profit_maximization_engines = {
 		}
 	}
 	target = no
+	level = 5
 
 	modifier = {
 		resolution_commerce_buzzword_standardization = 1
@@ -1463,12 +1655,20 @@ resolution_commerce_profit_maximization_engines = {
 		hidden_effect = {
 			set_global_flag = galactic_community_resolution_passed
 			set_timed_country_flag = { flag = galactic_community_resolution_passed_commerce days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_passed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
 	fail_effects = {
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_failed_commerce days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_failed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
@@ -1492,11 +1692,11 @@ resolution_commerce_profit_maximization_engines = {
 			factor = 1.5
 			is_authoritarian = yes
 		}
-		
+
 		modifier = {
 			factor = 1.5
 			is_capitalism = yes
-		}		
+		}
 
 		modifier = {
 			factor = 0.5
@@ -1528,12 +1728,20 @@ resolution_industry_repeal_1 = {
 		custom_tooltip = resolution_industry_repeal_1_effect_success
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_passed_industry_repeal days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_passed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
 	fail_effects = {
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_failed_industry_repeal days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_failed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
@@ -1559,8 +1767,8 @@ resolution_industry_repeal_1 = {
 		modifier = {
 			factor = 2
 			OR = {
-			has_valid_civic = civic_environmentalist
-			has_valid_civic = civic_keepers_harmony
+				has_valid_civic = civic_environmentalist
+				has_valid_civic = civic_keepers_harmony
 			}
 		}
 
@@ -1587,12 +1795,20 @@ resolution_industry_repeal_2 = {
 		hidden_effect = {
 			pass_resolution = "resolution_industry_regulatory_facilitation"
 			set_timed_country_flag = { flag = galactic_community_resolution_passed_industry_repeal days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_passed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
 	fail_effects = {
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_failed_industry_repeal days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_failed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
@@ -1622,8 +1838,8 @@ resolution_industry_repeal_2 = {
 		modifier = {
 			factor = 2
 			OR = {
-			has_valid_civic = civic_environmentalist
-			has_valid_civic = civic_keepers_harmony
+				has_valid_civic = civic_environmentalist
+				has_valid_civic = civic_keepers_harmony
 			}
 		}
 
@@ -1650,12 +1866,20 @@ resolution_industry_repeal_3 = {
 		hidden_effect = {
 			pass_resolution = "resolution_industry_collective_waste_management"
 			set_timed_country_flag = { flag = galactic_community_resolution_passed_industry_repeal days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_passed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
 	fail_effects = {
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_failed_industry_repeal days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_failed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
@@ -1686,8 +1910,8 @@ resolution_industry_repeal_3 = {
 		modifier = {
 			factor = 2
 			OR = {
-			has_valid_civic = civic_environmentalist
-			has_valid_civic = civic_keepers_harmony
+				has_valid_civic = civic_environmentalist
+				has_valid_civic = civic_keepers_harmony
 			}
 		}
 
@@ -1718,12 +1942,20 @@ resolution_industry_repeal_4 = {
 		hidden_effect = {
 			pass_resolution = "resolution_industry_building_a_better_tomorrow"
 			set_timed_country_flag = { flag = galactic_community_resolution_passed_industry_repeal days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_passed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
 	fail_effects = {
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_failed_industry_repeal days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_failed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
@@ -1755,8 +1987,8 @@ resolution_industry_repeal_4 = {
 		modifier = {
 			factor = 2
 			OR = {
-			has_valid_civic = civic_environmentalist
-			has_valid_civic = civic_keepers_harmony
+				has_valid_civic = civic_environmentalist
+				has_valid_civic = civic_keepers_harmony
 			}
 		}
 
@@ -1787,6 +2019,10 @@ resolution_industry_repeal_5 = {
 		hidden_effect = {
 			pass_resolution = "resolution_industry_environmental_ordinance_waivers"
 			set_timed_country_flag = { flag = galactic_community_resolution_passed_industry_repeal days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_passed_diplomatic_weight
+				days = 2200
+			}
 		}
 		custom_tooltip = resolution_industry_environmental_ordinance_waivers_tooltip
 	}
@@ -1794,6 +2030,10 @@ resolution_industry_repeal_5 = {
 	fail_effects = {
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_failed_industry_repeal days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_failed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
@@ -1826,8 +2066,8 @@ resolution_industry_repeal_5 = {
 		modifier = {
 			factor = 2
 			OR = {
-			has_valid_civic = civic_environmentalist
-			has_valid_civic = civic_keepers_harmony
+				has_valid_civic = civic_environmentalist
+				has_valid_civic = civic_keepers_harmony
 			}
 		}
 
@@ -1848,6 +2088,7 @@ resolution_industry_regulatory_facilitation = {
 		}
 	}
 	target = no
+	level = 1
 
 	modifier = {
 		resolution_industry_regulatory_facilitation = 1
@@ -1857,12 +2098,20 @@ resolution_industry_regulatory_facilitation = {
 		hidden_effect = {
 			set_global_flag = galactic_community_resolution_passed
 			set_timed_country_flag = { flag = galactic_community_resolution_passed_industry days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_passed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
 	fail_effects = {
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_failed_industry days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_failed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
@@ -1895,8 +2144,8 @@ resolution_industry_regulatory_facilitation = {
 		modifier = {
 			factor = 0.5
 			OR = {
-			has_valid_civic = civic_environmentalist
-			has_valid_civic = civic_keepers_harmony
+				has_valid_civic = civic_environmentalist
+				has_valid_civic = civic_keepers_harmony
 			}
 		}
 
@@ -1917,6 +2166,7 @@ resolution_industry_collective_waste_management = {
 		}
 	}
 	target = no
+	level = 2
 
 	modifier = {
 		resolution_industry_regulatory_facilitation = 1
@@ -1926,12 +2176,20 @@ resolution_industry_collective_waste_management = {
 	effect = {
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_passed_industry days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_passed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
 	fail_effects = {
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_failed_industry days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_failed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
@@ -1955,8 +2213,8 @@ resolution_industry_collective_waste_management = {
 		modifier = {
 			factor = 0.5
 			OR = {
-			has_valid_civic = civic_environmentalist
-			has_valid_civic = civic_keepers_harmony
+				has_valid_civic = civic_environmentalist
+				has_valid_civic = civic_keepers_harmony
 			}
 		}
 
@@ -1977,6 +2235,7 @@ resolution_industry_building_a_better_tomorrow = {
 		}
 	}
 	target = no
+	level = 3
 
 	modifier = {
 		resolution_industry_regulatory_facilitation = 1
@@ -1987,12 +2246,20 @@ resolution_industry_building_a_better_tomorrow = {
 	effect = {
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_passed_industry days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_passed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
 	fail_effects = {
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_failed_industry days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_failed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
@@ -2016,8 +2283,8 @@ resolution_industry_building_a_better_tomorrow = {
 		modifier = {
 			factor = 0.5
 			OR = {
-			has_valid_civic = civic_environmentalist
-			has_valid_civic = civic_keepers_harmony
+				has_valid_civic = civic_environmentalist
+				has_valid_civic = civic_keepers_harmony
 			}
 		}
 
@@ -2042,6 +2309,7 @@ resolution_industry_environmental_ordinance_waivers = {
 		}
 	}
 	target = no
+	level = 4
 
 	modifier = {
 		resolution_industry_regulatory_facilitation = 1
@@ -2054,12 +2322,20 @@ resolution_industry_environmental_ordinance_waivers = {
 		custom_tooltip = resolution_industry_environmental_ordinance_waivers_tooltip
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_passed_industry days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_passed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
 	fail_effects = {
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_failed_industry days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_failed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
@@ -2083,8 +2359,8 @@ resolution_industry_environmental_ordinance_waivers = {
 		modifier = {
 			factor = 0.5
 			OR = {
-			has_valid_civic = civic_environmentalist
-			has_valid_civic = civic_keepers_harmony
+				has_valid_civic = civic_environmentalist
+				has_valid_civic = civic_keepers_harmony
 			}
 		}
 
@@ -2109,6 +2385,7 @@ resolution_industry_project_cornucopia = {
 		}
 	}
 	target = no
+	level = 5
 
 	modifier = {
 		resolution_industry_regulatory_facilitation = 1
@@ -2122,7 +2399,10 @@ resolution_industry_project_cornucopia = {
 		custom_tooltip = resolution_industry_project_cornucopia_tooltip
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_passed_industry days = @resolution_flag_timer }
-
+			add_modifier = {
+				modifier = resolution_passed_diplomatic_weight
+				days = 2200
+			}
 			every_playable_country = {
 				limit = { is_galactic_community_member = yes }
 				country_event = { id = federations.10000 days = 3 }
@@ -2133,6 +2413,10 @@ resolution_industry_project_cornucopia = {
 	fail_effects = {
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_failed_industry days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_failed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
@@ -2156,8 +2440,8 @@ resolution_industry_project_cornucopia = {
 		modifier = {
 			factor = 0.5
 			OR = {
-			has_valid_civic = civic_environmentalist
-			has_valid_civic = civic_keepers_harmony
+				has_valid_civic = civic_environmentalist
+				has_valid_civic = civic_keepers_harmony
 			}
 		}
 
@@ -2185,12 +2469,20 @@ resolution_greatergood_repeal_1 = {
 		custom_tooltip = resolution_greatergood_repeal_1_effect_success
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_passed_greatergood_repeal days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_passed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
 	fail_effects = {
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_failed_greatergood_repeal days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_failed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
@@ -2203,11 +2495,11 @@ resolution_greatergood_repeal_1 = {
 	ai_weight = {
 		weight = @resolution_weight_unpopular
 
-		
+
 		modifier = {
 			factor = 0
 			is_socialism = yes
-		}		
+		}
 
 		modifier = {
 			factor = 0.5
@@ -2233,8 +2525,6 @@ resolution_greatergood_repeal_1 = {
 	}
 }
 
-
-
 resolution_greatergood_repeal_2 = {
 	icon = "GFX_resolution_council_veto"
 
@@ -2251,12 +2541,20 @@ resolution_greatergood_repeal_2 = {
 		hidden_effect = {
 			pass_resolution = "resolution_greatergood_workers_rights"
 			set_timed_country_flag = { flag = galactic_community_resolution_passed_greatergood_repeal days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_passed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
 	fail_effects = {
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_failed_greatergood_repeal days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_failed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
@@ -2276,6 +2574,11 @@ resolution_greatergood_repeal_2 = {
 		modifier = {
 			factor = 0
 			is_egalitarian = yes
+		}
+
+		modifier = {
+			factor = 10
+			in_breach_of = resolution_greatergood_five_year_plans
 		}
 
 		modifier = {
@@ -2301,7 +2604,6 @@ resolution_greatergood_repeal_2 = {
 	}
 }
 
-
 resolution_greatergood_repeal_3 = {
 	icon = "GFX_resolution_council_veto"
 
@@ -2318,6 +2620,10 @@ resolution_greatergood_repeal_3 = {
 		hidden_effect = {
 			pass_resolution = "resolution_greatergood_five_year_plans"
 			set_timed_country_flag = { flag = galactic_community_resolution_passed_greatergood_repeal days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_passed_diplomatic_weight
+				days = 2200
+			}
 		}
 		custom_tooltip = resolution_greatergood_five_year_plans_tooltip
 	}
@@ -2325,6 +2631,10 @@ resolution_greatergood_repeal_3 = {
 	fail_effects = {
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_failed_greatergood_repeal days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_failed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
@@ -2342,11 +2652,15 @@ resolution_greatergood_repeal_3 = {
 	ai_weight = {
 		weight = @resolution_weight_unpopular
 
-		
 		modifier = {
 			factor = 0
 			is_socialism = yes
-		}		
+		}
+
+		modifier = {
+			factor = 10
+			in_breach_of = resolution_greatergood_greater_than_ourselves
+		}
 
 		modifier = {
 			factor = 0.5
@@ -2392,6 +2706,10 @@ resolution_greatergood_repeal_4 = {
 		hidden_effect = {
 			pass_resolution = "resolution_greatergood_greater_than_ourselves"
 			set_timed_country_flag = { flag = galactic_community_resolution_passed_greatergood_repeal days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_passed_diplomatic_weight
+				days = 2200
+			}
 		}
 		custom_tooltip = resolution_greatergood_greater_than_ourselves_tooltip
 	}
@@ -2399,6 +2717,10 @@ resolution_greatergood_repeal_4 = {
 	fail_effects = {
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_failed_greatergood_repeal days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_failed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
@@ -2420,6 +2742,11 @@ resolution_greatergood_repeal_4 = {
 		modifier = {
 			factor = 0
 			is_socialism = yes
+		}
+
+		modifier = {
+			factor = 10
+			in_breach_of = resolution_greatergood_balance_in_the_middle
 		}
 
 		modifier = {
@@ -2466,6 +2793,10 @@ resolution_greatergood_repeal_5 = {
 		hidden_effect = {
 			pass_resolution = "resolution_greatergood_balance_in_the_middle"
 			set_timed_country_flag = { flag = galactic_community_resolution_passed_greatergood_repeal days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_passed_diplomatic_weight
+				days = 2200
+			}
 		}
 		custom_tooltip = resolution_greatergood_balance_in_the_middle_tooltip
 	}
@@ -2473,6 +2804,10 @@ resolution_greatergood_repeal_5 = {
 	fail_effects = {
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_failed_greatergood_repeal days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_failed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
@@ -2496,11 +2831,16 @@ resolution_greatergood_repeal_5 = {
 			factor = 0
 			is_socialism = yes
 		}
-		
+
 		modifier = {
 			factor = 0
 			is_egalitarian = yes
-		}		
+		}
+
+		modifier = {
+			factor = 10
+			in_breach_of = resolution_greatergood_universal_prosperity_mandate
+		}
 
 		modifier = {
 			factor = 0.5
@@ -2536,6 +2876,7 @@ resolution_greatergood_workers_rights = {
 		}
 	}
 	target = no
+	level = 1
 
 	modifier = {
 		resolution_greatergood_workers_rights = 1
@@ -2545,12 +2886,20 @@ resolution_greatergood_workers_rights = {
 		hidden_effect = {
 			set_global_flag = galactic_community_resolution_passed
 			set_timed_country_flag = { flag = galactic_community_resolution_passed_greatergood days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_passed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
 	fail_effects = {
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_failed_greatergood days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_failed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
@@ -2579,11 +2928,11 @@ resolution_greatergood_workers_rights = {
 			factor = 0.5
 			is_megacorp = yes
 		}
-		
+
 		modifier = {
 			factor = 0.5
 			is_capitalism = yes
-		}		
+		}
 
 		modifier = {
 			factor = 1.2
@@ -2640,6 +2989,7 @@ resolution_greatergood_five_year_plans = {
 		}
 	}
 	target = no
+	level = 2
 
 	modifier = {
 		resolution_greatergood_workers_rights = 1
@@ -2651,12 +3001,31 @@ resolution_greatergood_five_year_plans = {
 		hidden_effect = {
 			set_global_flag = resolution_with_breach_effect_passed
 			set_timed_country_flag = { flag = galactic_community_resolution_passed_greatergood days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_passed_diplomatic_weight
+				days = 2200
+			}
+			every_playable_country = {
+				limit = {
+					is_galactic_community_member = yes
+					is_gestalt = no
+					any_owned_species = {
+						is_sapient = yes
+						has_living_standard = { type = living_standard_subsistence country = prev }
+					}
+				}
+				country_event = { id = federations.10200 }
+			}
 		}
 	}
 
 	fail_effects = {
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_failed_greatergood days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_failed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
@@ -2665,10 +3034,10 @@ resolution_greatergood_five_year_plans = {
 	}
 
 	breach = {
-		NOT = { is_gestalt = yes }
-		any_owned_pop = {
+		is_gestalt = no
+		any_owned_species = {
 			is_sapient = yes
-			has_living_standard = { type = living_standard_subsistence }
+			has_living_standard = { type = living_standard_subsistence country = prev }
 		}
 	}
 
@@ -2677,22 +3046,27 @@ resolution_greatergood_five_year_plans = {
 
 		modifier = {
 			factor = 1.2
-			is_egalitarian = yes
+			is_socialism = yes
+		}
+
+		modifier = {
+			factor = 0
+			in_breach_of = resolution_greatergood_five_year_plans
 		}
 
 		modifier = {
 			factor = 0.5
 			is_megacorp = yes
 		}
-		
+
 		modifier = {
 			factor = 0.5
 			is_capitalism = yes
-		}		
+		}
 
 		modifier = {
 			factor = 1.2
-			has_ethic = ethic_fanatic_egalitarian
+			has_ethic = ethic_fanatic_socialism
 		}
 
 		modifier = {
@@ -2714,9 +3088,9 @@ resolution_greatergood_five_year_plans = {
 				has_valid_civic = civic_slaver_guilds
 				has_valid_civic = civic_indentured_assets
 				is_slaver = yes
-				any_owned_pop = {
+				any_owned_species = {
 					is_sapient = yes
-					has_living_standard = { type = living_standard_subsistence }
+					has_living_standard = { type = living_standard_subsistence country = prev }
 				}
 			}
 		}
@@ -2752,6 +3126,7 @@ resolution_greatergood_greater_than_ourselves = {
 		}
 	}
 	target = no
+	level = 3
 
 	modifier = {
 		resolution_greatergood_workers_rights = 1
@@ -2765,16 +3140,50 @@ resolution_greatergood_greater_than_ourselves = {
 		hidden_effect = {
 			every_playable_country = {
 				limit = { is_galactic_community_member = yes }
-				country_event = { id = federations.10010 days = 3 }
+				country_event = { id = federations.10010 days = 15 }
 			}
+			every_playable_country = {
+				limit = {
+					is_galactic_community_member = yes
 
+					OR = {
+						any_enslaved_species = {
+							is_sapient = yes
+							OR = {
+								has_slavery_type = { type = slavery_normal country = prev  }
+								has_slavery_type = { type = slavery_livestock country = prev }
+								has_slavery_type = { type = slavery_matrix country = prev }
+							}
+						}
+						AND = {
+							is_gestalt = no
+							any_owned_species = {
+								is_sapient = yes
+								OR = {
+									has_living_standard = { type = living_standard_subsistence country = prev }
+									has_living_standard = { type = living_standard_stratified country = prev }
+								}
+							}
+						}
+					}
+				}
+				country_event = { id = federations.10210 }
+			}
 			set_timed_country_flag = { flag = galactic_community_resolution_passed_greatergood days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_passed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
 	fail_effects = {
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_failed_greatergood days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_failed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
@@ -2784,44 +3193,25 @@ resolution_greatergood_greater_than_ourselves = {
 
 	breach = {
 		OR = {
-			AND = {
-				is_gestalt = no
-				any_owned_pop = {
-					is_sapient = yes
-					OR = {
-						has_living_standard = { type = living_standard_stratified }
-						AND = {
-							is_enslaved = yes
-							OR = {
-								has_slavery_type = { type = slavery_normal }
-								has_slavery_type = { type = slavery_livestock }
-								has_slavery_type = { type = slavery_matrix }
-							}
-						}
-					}
+			any_enslaved_species = {
+				is_sapient = yes
+				OR = {
+					has_slavery_type = { type = slavery_normal country = prev }
+					has_slavery_type = { type = slavery_livestock country = prev }
+					has_slavery_type = { type = slavery_matrix country = prev }
 				}
 			}
 			AND = {
-				is_gestalt = yes
-				any_owned_pop = {
+				is_gestalt = no
+				any_owned_species = {
 					is_sapient = yes
-					NOR = {
-						has_trait = trait_machine_unit
-						has_trait = trait_mechanical
-					}
-					AND = {
-						is_enslaved = yes
-						OR = {
-							has_slavery_type = { type = slavery_normal }
-							has_slavery_type = { type = slavery_livestock }
-							has_slavery_type = { type = slavery_matrix }
-						}
+					OR = {
+						has_living_standard = { type = living_standard_subsistence country = prev }
+						has_living_standard = { type = living_standard_stratified country = prev }
 					}
 				}
 			}
 		}
-
-
 	}
 
 	ai_weight = {
@@ -2833,14 +3223,19 @@ resolution_greatergood_greater_than_ourselves = {
 		}
 
 		modifier = {
+			factor = 0
+			in_breach_of = resolution_greatergood_greater_than_ourselves
+		}
+
+		modifier = {
 			factor = 0.5
 			is_megacorp = yes
 		}
-		
+
 		modifier = {
 			factor = 0.5
 			is_capitalism = yes
-		}		
+		}
 
 		modifier = {
 			factor = 1.2
@@ -2869,11 +3264,11 @@ resolution_greatergood_greater_than_ourselves = {
 				has_valid_civic = civic_slaver_guilds
 				has_valid_civic = civic_indentured_assets
 				is_slaver = yes
-				any_owned_pop = {
+				any_owned_species = {
 					is_sapient = yes
 					OR = {
-						has_living_standard = { type = living_standard_subsistence }
-						has_living_standard = { type = living_standard_stratified }
+						has_living_standard = { type = living_standard_subsistence country = prev }
+						has_living_standard = { type = living_standard_stratified country = prev }
 					}
 				}
 			}
@@ -2913,6 +3308,7 @@ resolution_greatergood_balance_in_the_middle = {
 		}
 	}
 	target = no
+	level = 4
 
 	modifier = {
 		resolution_greatergood_workers_rights = 1
@@ -2925,12 +3321,45 @@ resolution_greatergood_balance_in_the_middle = {
 		custom_tooltip = resolution_greatergood_balance_in_the_middle_tooltip
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_passed_greatergood days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_passed_diplomatic_weight
+				days = 2200
+			}
+			every_playable_country = {
+				limit = {
+					is_galactic_community_member = yes
+
+					OR = {
+						any_owned_species = {
+							is_sapient = yes
+							has_citizenship_type = { type = citizenship_slavery country = prev }
+						}
+						AND = {
+							is_gestalt = no
+							any_owned_species = {
+								is_sapient = yes
+								OR = {
+									has_living_standard = { type = living_standard_subsistence country = prev }
+									has_living_standard = { type = living_standard_stratified country = prev }
+									has_living_standard = { type = living_standard_normal country = prev }
+									has_living_standard = { type = living_standard_academic_privilege country = prev }
+								}
+							}
+						}
+					}
+				}
+				country_event = { id = federations.10220 }
+			}
 		}
 	}
 
 	fail_effects = {
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_failed_greatergood days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_failed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
@@ -2940,22 +3369,22 @@ resolution_greatergood_balance_in_the_middle = {
 
 	breach = {
 		OR = {
-			AND = {
-				is_gestalt = no
-				any_owned_pop = {
-					is_sapient = yes
-					OR = {
-						has_living_standard = { type = living_standard_normal }
-						has_living_standard = { type = living_standard_academic_privilege }
-						is_enslaved = yes
-					}
-				}
+			has_valid_civic = civic_indentured_assets
+			has_valid_civic = civic_slaver_guilds
+			any_owned_species = {
+				is_sapient = yes
+				has_citizenship_type = { type = citizenship_slavery country = prev }
 			}
 			AND = {
-				is_gestalt = yes
-				any_owned_pop = {
+				is_gestalt = no
+				any_owned_species = {
 					is_sapient = yes
-					is_enslaved = yes
+					OR = {
+						has_living_standard = { type = living_standard_subsistence country = prev }
+						has_living_standard = { type = living_standard_stratified country = prev }
+						has_living_standard = { type = living_standard_normal country = prev }
+						has_living_standard = { type = living_standard_academic_privilege country = prev }
+					}
 				}
 			}
 		}
@@ -2970,14 +3399,19 @@ resolution_greatergood_balance_in_the_middle = {
 		}
 
 		modifier = {
+			factor = 0
+			in_breach_of = resolution_greatergood_balance_in_the_middle
+		}
+
+		modifier = {
 			factor = 0.5
 			is_megacorp = yes
 		}
-		
+
 		modifier = {
 			factor = 0.5
 			is_capitalism = yes
-		}			
+		}
 
 		modifier = {
 			factor = 1.2
@@ -2995,7 +3429,7 @@ resolution_greatergood_balance_in_the_middle = {
 		modifier = {
 			factor = 0.6
 			OR = {
-				is_authoritarian = yes			
+				is_authoritarian = yes
 				is_gestalt = yes
 			}
 		}
@@ -3006,13 +3440,13 @@ resolution_greatergood_balance_in_the_middle = {
 				has_valid_civic = civic_slaver_guilds
 				has_valid_civic = civic_indentured_assets
 				is_slaver = yes
-				any_owned_pop = {
+				any_owned_species = {
 					is_sapient = yes
 					OR = {
-						has_living_standard = { type = living_standard_subsistence }
-						has_living_standard = { type = living_standard_stratified }
-						has_living_standard = { type = living_standard_normal }
-						has_living_standard = { type = living_standard_academic_privilege }
+						has_living_standard = { type = living_standard_subsistence country = prev }
+						has_living_standard = { type = living_standard_stratified country = prev }
+						has_living_standard = { type = living_standard_normal country = prev }
+						has_living_standard = { type = living_standard_academic_privilege country = prev }
 					}
 				}
 			}
@@ -3052,6 +3486,7 @@ resolution_greatergood_universal_prosperity_mandate = {
 		}
 	}
 	target = no
+	level = 5
 
 	modifier = {
 		resolution_greatergood_workers_rights = 1
@@ -3065,12 +3500,55 @@ resolution_greatergood_universal_prosperity_mandate = {
 		custom_tooltip = resolution_greatergood_universal_prosperity_mandate_tooltip
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_passed_greatergood days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_passed_diplomatic_weight
+				days = 2200
+			}
+			every_playable_country = {
+				limit = {
+					is_galactic_community_member = yes
+
+					OR = {
+						any_owned_species = {
+							is_sapient = yes
+							has_citizenship_type = { type = citizenship_slavery country = prev }
+						}
+						AND = {
+							is_gestalt = no
+							any_owned_species = {
+								is_sapient = yes
+								OR = {
+									has_living_standard = { type = living_standard_subsistence country = prev }
+									has_living_standard = { type = living_standard_stratified country = prev }
+									has_living_standard = { type = living_standard_normal country = prev }
+									has_living_standard = { type = living_standard_academic_privilege country = prev }
+									has_living_standard = { type = living_standard_good country = prev }
+								}
+							}
+						}
+						AND = {
+							is_gestalt = yes
+							any_owned_species = {
+								is_sapient = yes
+								OR = {
+									has_living_standard = { type = living_standard_ego_assimilation country = prev }
+								}
+							}
+						}
+					}
+				}
+				country_event = { id = federations.10230 }
+			}
 		}
 	}
 
 	fail_effects = {
 		hidden_effect = {
 			set_timed_country_flag = { flag = galactic_community_resolution_failed_greatergood days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_failed_diplomatic_weight
+				days = 2200
+			}
 		}
 	}
 
@@ -3080,28 +3558,33 @@ resolution_greatergood_universal_prosperity_mandate = {
 
 	breach = {
 		OR = {
+			has_valid_civic = civic_indentured_assets
+			has_valid_civic = civic_slaver_guilds
 			AND = {
 				is_gestalt = no
-				any_owned_pop = {
+				any_owned_species = {
 					is_sapient = yes
 					OR = {
-						has_living_standard = { type = living_standard_subsistence }
-						has_living_standard = { type = living_standard_stratified }
-						has_living_standard = { type = living_standard_normal }
-						has_living_standard = { type = living_standard_academic_privilege }
-						has_living_standard = { type = living_standard_good }
+						has_living_standard = { type = living_standard_subsistence country = prev }
+						has_living_standard = { type = living_standard_stratified country = prev }
+						has_living_standard = { type = living_standard_normal country = prev }
+						has_living_standard = { type = living_standard_academic_privilege country = prev }
+						has_living_standard = { type = living_standard_good country = prev }
 					}
 				}
 			}
+			any_owned_species = {
+				is_sapient = yes
+				has_citizenship_type = { type = citizenship_slavery country = prev }
+			}
 			AND = {
 				is_gestalt = yes
-				any_owned_pop = {
+				any_owned_species = {
 					is_sapient = yes
-					has_living_standard = { type = living_standard_ego_assimilation }
+					has_living_standard = { type = living_standard_ego_assimilation country = prev }
 				}
 			}
 		}
-
 	}
 
 	ai_weight = {
@@ -3113,14 +3596,19 @@ resolution_greatergood_universal_prosperity_mandate = {
 		}
 
 		modifier = {
+			factor = 0
+			in_breach_of = resolution_greatergood_universal_prosperity_mandate
+		}
+
+		modifier = {
 			factor = 0.5
 			is_megacorp = yes
 		}
-		
+
 		modifier = {
 			factor = 0
 			is_capitalism = yes
-		}			
+		}
 
 		modifier = {
 			factor = 1.2
@@ -3151,5 +3639,3 @@ resolution_greatergood_universal_prosperity_mandate = {
 		}
 	}
 }
-
-

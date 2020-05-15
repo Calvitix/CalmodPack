@@ -634,9 +634,9 @@ economic_stance = {
 		}
 
 		modifier = {
-		    job_mogul_per_pop = 0.02
-			job_merchant_per_pop = 0.03
-            job_clerk_per_pop = 0.04
+		    job_mogul_per_pop = 0.03
+			job_merchant_per_pop = 0.04
+            job_clerk_per_pop = 0.06
 			country_trade_fee = -0.1
 			country_trade_attractiveness = 0.33
 			country_base_influence_produces_add = -0.5
@@ -724,8 +724,10 @@ economic_stance = {
 		valid = {
 			is_country_type = default
 			or = {
-			has_policy_flag = trade_conversion_growth_dev
-			has_policy_flag = trade_conversion_development
+				has_policy_flag = trade_conversion_growth_dev
+				has_policy_flag = trade_conversion_development
+				has_policy_flag = trade_policy_mining
+				has_policy_flag = trade_policy_growth
 			}
 			or = {
 				has_ethic = "ethic_socialism"
@@ -754,6 +756,7 @@ economic_stance = {
 
 trade_policy = {
 	potential = {
+		is_country_type = default
 		NOT = { has_ethic = ethic_gestalt_consciousness }
 	}
 
@@ -774,7 +777,6 @@ trade_policy = {
 		}
 
 		valid = {
-			is_country_type = default
 			NOR = {
 				has_policy_flag = "economic_stance_planned"
 				has_ethic = "ethic_fanatic_socialism"
@@ -804,7 +806,6 @@ trade_policy = {
 		}
 
 		valid = {
-			is_country_type = default
 			NOR = {
 				has_policy_flag = "economic_stance_planned"
 				has_ethic = "ethic_fanatic_socialism"
@@ -836,7 +837,6 @@ trade_policy = {
 
 
 		valid = {
-			is_country_type = default
 			NOR = {
 				has_policy_flag = "economic_stance_market"
 				has_policy_flag = "economic_stance_planned"
@@ -880,8 +880,6 @@ trade_policy = {
 		}
 
 		valid = {
-			is_country_type = default
-
 			NOR = {
 				has_policy_flag = "economic_stance_market"
 				has_ethic = "ethic_fanatic_capitalism"
@@ -912,7 +910,6 @@ trade_policy = {
 		}
 
 		valid = {
-			is_country_type = default
 			NOR = {
 				has_policy_flag = "economic_stance_market"
 				has_ethic = "ethic_fanatic_capitalism"
@@ -934,7 +931,6 @@ trade_policy = {
 		}
 
 		valid = {
-			is_country_type = default
 			or = {
 			has_technology = tech_innovations
 			}
@@ -967,13 +963,11 @@ trade_policy = {
 		}
 
 		valid = {
-			is_country_type = default
 			or = {
 			has_technology = tech_agri_consortium
              }
 			NOR = {
 				has_policy_flag = "economic_stance_market"
-				has_policy_flag = "economic_stance_planned"
 			}
 		}
 
@@ -994,13 +988,11 @@ trade_policy = {
 		}
 
 		valid = {
-			is_country_type = default
 			or = {
 			has_technology = tech_mining_consortium
              }
 			NOR = {
 				has_policy_flag = "economic_stance_market"
-				has_policy_flag = "economic_stance_planned"
 			}
 		}
 
@@ -1291,7 +1283,7 @@ education = {
 		modifier = {
 
 
-		planet_jobs_specialist_produces_mult = 0.15	
+		planet_jobs_specialist_produces_mult = 0.15
 		planet_crime_add = 10
 		pop_ethic_capitalism_attraction_mult = 0.1
 
@@ -1943,6 +1935,12 @@ orbital_bombardment = {
 	option = {
 		name = "orbital_bombardment_indiscriminate"
 
+		in_breach_of = {
+			{
+				key = resolution_rulesofwar_independent_tribunals
+			}
+		}
+
 		policy_flags = {
 			orbital_bombardment_indiscriminate
 		}
@@ -1968,6 +1966,12 @@ orbital_bombardment = {
 	}
 	option = {
 		name = "orbital_bombardment_armageddon"
+
+		in_breach_of = {
+			{
+				key = resolution_rulesofwar_independent_tribunals
+			}
+		}
 
 		potential = {
 			OR = {
@@ -2038,6 +2042,12 @@ economic_policy = {
 
 	option = {
 		name = "economic_policy_military"
+
+		in_breach_of = {
+			{
+				key = resolution_rulesofwar_demobilization_initiative
+			}
+		}
 
 		valid = {
 			NOR = {
@@ -2180,6 +2190,12 @@ artificial_intelligence_policy = {
 			ai_outlawed
 		}
 
+		in_breach_of = {
+			{
+				key = resolution_galacticstudies_advanced_xenostudies
+			}
+		}
+
 		AI_weight = {
 			modifier = {
 				factor = 0
@@ -2240,15 +2256,7 @@ artificial_intelligence_policy = {
 					has_ethic = "ethic_spiritualist"
 					has_ethic = "ethic_fanatic_spiritualist"
 				}
-				not = { has_valid_civic = civic_machine_cult }
-
-			}
-			modifier = {
-				factor = 0
-				OR = {
-					has_ethic = "ethic_spiritualist"
-					has_ethic = "ethic_fanatic_spiritualist"
-				}
+				NOT = { has_valid_civic = civic_machine_cult }
 				NOT = {
 					has_valid_ai_personality = yes
 					is_ai = yes
@@ -2531,6 +2539,18 @@ leader_enhancement = {
 			leader_enhancement_natural_selection
 		}
 
+		in_breach_of = {
+			{
+				key = resolution_galacticstudies_ethical_guideline_refactoring
+				trigger = {
+					OR = {
+						has_technology = tech_selected_lineages
+						has_technology = tech_capacity_boosters
+					}
+				}
+			}
+		}
+
 		on_enabled = {
 			# custom_tooltip = "policy_allow_slavery_effect_disable"
 		}
@@ -2549,6 +2569,15 @@ leader_enhancement = {
 			leader_skill_levels = 1
 			leader_age = 10
 			leaders_cost_mult = 0.5
+		}
+
+		in_breach_of = {
+			{
+				key = resolution_galacticstudies_ethical_guideline_refactoring
+				trigger = {
+					has_technology = tech_capacity_boosters
+				}
+			}
 		}
 
 		valid = {
