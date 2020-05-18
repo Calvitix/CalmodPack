@@ -1,4 +1,10 @@
+### ###################################################### ###
+###      Overriding vanilla file to establish upgrade      ###
+###     chain from vanilla components to ESC components    ###
+### ###################################################### ###
+#calvitix merged with ASB mod (old ?)
 @attack_range = 10
+@engagement_range = 100
 @launch_time = 1.5
 
 @fire_rate = 3.5  #ORig stel. 2.3,  #Mod ASB = 1.4
@@ -7,9 +13,9 @@
 @accelerationspeed = 0.2
 
 @speed1 = 250 #200
-@speed2 = 250
-@speed3 = 250
-
+@speed2 = 400
+@speed3 = 650
+@speed4 = 700
 @count = 8
 @regen = 0.26
 
@@ -22,7 +28,6 @@ strike_craft_component_template = {
 	key = "LARGE_SCOUT_HANGAR_1"
 	size = LARGE
 	entity = "fighter_entity"
-	
 	weapon_type = point_defence
 	projectile_gfx = "scout_laser_1"
 	power = @power1
@@ -36,21 +41,19 @@ strike_craft_component_template = {
 			alloys = @l_t1_upkeep_alloys
 		}
 	}
-	
 	count = @count
 	regeneration_per_day = @regen
 	launch_time = @launch_time
-	
 	damage = { min = 3 max = 6 }
 	cooldown = @fire_rate
 	range = @attack_range
+	engagement_range = @engagement_range
 	accuracy = 1.00
-	tracking = 0.50
-	
+	tracking = 0.70
 	health = 30
 	armor = 0
 	shield = 0
-	evasion = 0.50
+	evasion = 0.60
 	
 	speed = @speed2
 	rotation_speed = @rotationspeed
@@ -60,7 +63,6 @@ strike_craft_component_template = {
 	armor_damage = 1.50
 	
 	ship_behavior = "fighters_behavior"
-	
 	icon = "GFX_ship_part_strike_craft_scout_1"
 	icon_frame = 1
 	component_set = "SCOUT_HANGAR_1"
@@ -72,6 +74,7 @@ strike_craft_component_template = {
 	key = "STRIKE_CRAFT_HANGAR_1"
 	size = LARGE
 	entity = "bomber_entity"
+
 	power = @power2
 	resources = {
 		category = ship_components
@@ -83,22 +86,24 @@ strike_craft_component_template = {
 			alloys = @l_t3_upkeep_alloys
 		}
 	}
-		
+
 	count = @count
 	regeneration_per_day = @regen
 	launch_time = @launch_time
-	
-	damage = { min = 4 max = 12 }
+
+	damage = { min = 4 max = 10 }
 	cooldown = @fire_rate
 	range = @attack_range
-	accuracy = 1.0
-	tracking = 0.60
-	
+	engagement_range = @engagement_range
+	accuracy = 1.00
+	tracking = 0.80
+
 	health = 35
 	armor = 0
 	shield = 10
-	evasion = 0.55
-	
+	evasion = 0.65
+
+	speed = @speed2
 	speed = @speed1
 	rotation_speed = @rotationspeed
 	acceleration = @accelerationspeed
@@ -106,24 +111,30 @@ strike_craft_component_template = {
 	shield_penetration = 1
 	armor_damage = 1.50
 	
-	ship_behavior = "bombers_behavior"
+	ship_behavior = "fighters_behavior"
 	
 	weapon_type = instant
 	projectile_gfx = "scout_laser_1"
-	
-	icon = "GFX_ship_part_strike_craft_bomber_1"
+
+	icon = "GFX_ship_part_strike_craft_fighter_1"
 	icon_frame = 1
 	component_set = "STRIKE_CRAFT_HANGAR_1"
 	prerequisites = { "tech_strike_craft_1" }
 	upgrades_to = "STRIKE_CRAFT_HANGAR_2"
+
 	tags = { weapon_type_strike_craft }
-	upgrades_to = "STRIKE_CRAFT_HANGAR_2"
+	ai_tags = { weapon_role_point_defense }
+
 }
 
 strike_craft_component_template = {
 	key = "STRIKE_CRAFT_HANGAR_2"
 	size = LARGE
 	entity = "bomber_entity"
+
+	weapon_type = point_defence
+	projectile_gfx = "strike_craft_laser_2"
+
 	power = @power3
 	resources = {
 		category = ship_components
@@ -135,46 +146,51 @@ strike_craft_component_template = {
 			alloys = @l_t4_upkeep_alloys
 		}
 	}
-		
+
 	count = @count
 	regeneration_per_day = @regen
 	launch_time = @launch_time
-	
-	damage = { min = 6 max = 13 }
+
+	damage = { min = 5 max = 13 }
 	cooldown = @fire_rate
 	range = @attack_range
-	accuracy = 1.0
-	tracking = 0.70
-	
+	engagement_range = @engagement_range
+	accuracy = 1.00
+	tracking = 0.90
+
 	health = 40
 	armor = 0
 	shield = 20
 	evasion = 0.80
-	
-	speed = @speed2
-	rotation_speed = @rotationspeed
-	acceleration = @accelerationspeed
-	
-	shield_penetration = 1
-	armor_damage = 1.50
-	
-	ship_behavior = "bombers_behavior"
-	
-	weapon_type = instant
-	projectile_gfx = "scout_laser_1"
-	
-	icon = "GFX_ship_part_strike_craft_bomber_2"
+
+	speed = @speed3
+	rotation_speed = 0.8
+	acceleration = 1
+
+	shield_penetration = 1.0
+	armor_damage = 1.5
+
+	ship_behavior = "fighters_behavior"
+
+	icon = "GFX_ship_part_strike_craft_fighter_2"
 	icon_frame = 1
 	component_set = "STRIKE_CRAFT_HANGAR_2"
 	prerequisites = { "tech_strike_craft_2" }
-	tags = { weapon_type_strike_craft }
 	upgrades_to = "STRIKE_CRAFT_HANGAR_3"
+
+	tags = { weapon_type_strike_craft }
+	ai_tags = { weapon_role_point_defense }
+
 }
 
 strike_craft_component_template = {
 	key = "STRIKE_CRAFT_HANGAR_3"
 	size = LARGE
 	entity = "bomber_entity"
+
+	weapon_type = point_defence
+	projectile_gfx = "strike_craft_laser_3"
+
 	power = @power4
 	resources = {
 		category = ship_components
@@ -186,39 +202,39 @@ strike_craft_component_template = {
 			alloys = @l_t5_upkeep_alloys
 		}
 	}
-		
+
 	count = @count
 	regeneration_per_day = @regen
 	launch_time = @launch_time
-	
-	damage = { min = 9 max = 18 }
+
+	damage = { min = 6 max = 17 }
 	cooldown = @fire_rate
 	range = @attack_range
-	accuracy = 1.0
-	tracking = 0.70
-	
+	engagement_range = @engagement_range
+	accuracy = 1.00
+	tracking = 1.00
+
 	health = 45
 	armor = 0
 	shield = 30
 	evasion = 0.80
-	
-	speed = @speed3
-	rotation_speed = @rotationspeed
-	acceleration = @accelerationspeed
-	
-	shield_penetration = 1
-	armor_damage = 1.50
-	
-	ship_behavior = "bombers_behavior"
-	
-	weapon_type = instant
-	projectile_gfx = "scout_laser_1"
-	
-	icon = "GFX_ship_part_strike_craft_bomber_3"
+
+	speed = @speed4
+	rotation_speed = 0.8
+	acceleration = 1
+
+	shield_penetration = 1.0
+	armor_damage = 1.5
+
+	ship_behavior = "fighters_behavior"
+
+	icon = "GFX_ship_part_strike_craft_fighter_3"
 	icon_frame = 1
 	component_set = "STRIKE_CRAFT_HANGAR_3"
 	prerequisites = { "tech_strike_craft_3" }
 	upgrades_to = "NHSC_FIGHTERS_HANGAR_4"
 
 	tags = { weapon_type_strike_craft }
+	ai_tags = { weapon_role_point_defense }
+
 }

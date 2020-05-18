@@ -1,0 +1,573 @@
+namespace = distar
+
+#################################
+#
+# Anomaly Events
+# by Dee Majek
+# distar.1 - distar.999
+#
+#################################
+
+# root = ship scope
+# from = planet scope
+
+country_event = { # Helpful relocation was a success
+	id = distar.3016
+	title = "distar.3016.name"
+	desc = "distar.3016.desc"
+	picture = GFX_evt_alien_city
+	show_sound = event_scanner
+	location = event_target:nivlac_planet
+
+	is_triggered_only = yes
+
+	trigger = {
+		any_system = {
+			any_system_planet = {
+				is_colonizable = yes
+				has_owner = no
+				is_colony = no
+				habitable_planet = yes
+				has_anomaly = no
+				NOR = {
+					has_modifier = "holy_planet"
+					solar_system = {
+						has_star_flag = hostile_system
+					}
+				}
+				distance = {
+					source = root.owner.capital_scope
+					max_distance <= 300
+					min_distance >= 50
+				}
+				solar_system = {
+					NOT = { exists = starbase }
+				}
+			}
+		}
+	}
+
+	immediate = {
+		random_planet = {
+			limit = {
+				is_colonizable = yes
+				has_owner = no
+				is_colony = no
+				habitable_planet = yes
+				has_anomaly = no
+				NOR = {
+					has_modifier = "holy_planet"
+					solar_system = {
+						has_star_flag = hostile_system
+					}
+				}
+				distance = {
+					source = root.owner.capital_scope
+					max_distance <= 300
+					min_distance >= 50
+				}
+				solar_system = {
+					NOT = { exists = starbase }
+				}
+			}
+			save_global_event_target_as = nivlac_planet
+		}
+		create_species = {
+			name = "NAME_Nivlac"
+			plural = "NAME_Nivlacs"
+			class = FUN
+			portrait = "fun15"
+			namelist = "FUN4"
+			traits = {
+				trait = "trait_nivlac"
+				trait = "trait_quick_learners"
+			}
+			homeworld = event_target:nivlac_planet
+			effect = {
+				save_global_event_target_as = nivlac_species
+			}
+		}
+		if = {
+			limit = { 
+				root = { is_xenophobe = yes }
+			}
+			create_country = {
+				name = NAME_Nivlac_Circle
+				authority = random
+				civics = random
+				species = event_target:nivlac_species
+				ignore_initial_colony_error = yes
+				type = default
+				ethos = random
+				flag = random
+				effect = {
+					save_global_event_target_as = nivlac_country
+					add_resource = { minerals = 2000 }
+					add_resource = { energy = 2000 }
+					add_resource = { alloys = 2000 }
+					add_resource = { food = 200 }
+					add_resource = { influence = 100 }
+					establish_communications_no_message = root
+				}
+			}
+		}
+		else_if = {
+			limit = { 
+				root = { is_spiritualist = yes }
+			}
+			create_country = {
+				name = NAME_Nivlac_Circle
+				authority = random
+				civics = random
+				species = event_target:nivlac_species
+				ignore_initial_colony_error = yes
+				type = default
+				ethos = {
+					ethic = "ethic_fanatic_xenophile"
+					ethic = "ethic_spiritualist"
+				}
+				flag = random
+				effect = {
+					save_global_event_target_as = nivlac_country
+					add_resource = { minerals = 2000 }
+					add_resource = { energy = 2000 }
+					add_resource = { alloys = 2000 }
+					add_resource = { food = 200 }
+					add_resource = { influence = 100 }
+					establish_communications_no_message = root
+				}
+			}
+		}
+		else_if = {
+			limit = { 
+				root = {
+					OR = {
+						is_materialist = yes
+						is_robot_empire = yes
+					}
+				}
+			}
+			create_country = {
+				name = NAME_Nivlac_Circle
+				authority = random
+				civics = random
+				species = event_target:nivlac_species
+				ignore_initial_colony_error = yes
+				type = default
+				ethos = {
+					ethic = "ethic_fanatic_xenophile"
+					ethic = "ethic_materialist"
+				}
+				flag = random
+				effect = {
+					save_global_event_target_as = nivlac_country
+					add_resource = { minerals = 2000 }
+					add_resource = { energy = 2000 }
+					add_resource = { alloys = 2000 }
+					add_resource = { food = 200 }
+					add_resource = { influence = 100 }
+					establish_communications_no_message = root
+				}
+			}
+		}
+		else_if = {
+			limit = { 
+				root = { is_egalitarian = yes }
+			}
+			create_country = {
+				name = NAME_Nivlac_Circle
+				authority = random
+				civics = random
+				species = event_target:nivlac_species
+				ignore_initial_colony_error = yes
+				type = default
+				ethos = {
+					ethic = "ethic_fanatic_xenophile"
+					ethic = "ethic_egalitarian"
+				}
+				flag = random
+				effect = {
+					save_global_event_target_as = nivlac_country
+					add_resource = { minerals = 2000 }
+					add_resource = { energy = 2000 }
+					add_resource = { alloys = 2000 }
+					add_resource = { food = 200 }
+					add_resource = { influence = 100 }
+					establish_communications_no_message = root
+				}
+			}
+		}
+		else_if = {
+			limit = { 
+				root = { is_pacifist = yes }
+			}
+			create_country = {
+				name = NAME_Nivlac_Circle
+				authority = random
+				civics = random
+				species = event_target:nivlac_species
+				ignore_initial_colony_error = yes
+				type = default
+				ethos = {
+					ethic = "ethic_fanatic_xenophile"
+					ethic = "ethic_pacifist"
+				}
+				flag = random
+				effect = {
+					save_global_event_target_as = nivlac_country
+					add_resource = { minerals = 2000 }
+					add_resource = { energy = 2000 }
+					add_resource = { alloys = 2000 }
+					add_resource = { food = 200 }
+					add_resource = { influence = 100 }
+					establish_communications_no_message = root
+				}
+			}
+		}
+		else_if = {
+			limit = { 
+				root = {
+					OR = {
+						is_authoritarian = yes
+						is_hive_empire = yes
+					}
+				}
+			}
+			create_country = {
+				name = NAME_Nivlac_Circle
+				authority = random
+				civics = random
+				species = event_target:nivlac_species
+				ignore_initial_colony_error = yes
+				type = default
+				ethos = {
+					ethic = "ethic_fanatic_xenophile"
+					ethic = "ethic_authoritarian"
+				}
+				flag = random
+				effect = {
+					save_global_event_target_as = nivlac_country
+					add_resource = { minerals = 2000 }
+					add_resource = { energy = 2000 }
+					add_resource = { alloys = 2000 }
+					add_resource = { food = 200 }
+					add_resource = { influence = 100 }
+					establish_communications_no_message = root
+				}
+			}
+		}
+		else_if = {
+			limit = { 
+				root = { is_militarist = yes }
+			}
+			create_country = {
+				name = NAME_Nivlac_Circle
+				authority = random
+				civics = random
+				species = event_target:nivlac_species
+				ignore_initial_colony_error = yes
+				type = default
+				ethos = {
+					ethic = "ethic_fanatic_xenophile"
+					ethic = "ethic_militarist"
+				}
+				flag = random
+				effect = {
+					save_global_event_target_as = nivlac_country
+					add_resource = { minerals = 2000 }
+					add_resource = { energy = 2000 }
+					add_resource = { alloys = 2000 }
+					add_resource = { food = 200 }
+					add_resource = { influence = 100 }
+					establish_communications_no_message = root
+				}
+			}
+		}
+		event_target:nivlac_planet = {
+			solar_system = {
+				create_starbase = {
+					size = starbase_starport
+					owner = event_target:nivlac_country
+					module = shipyard
+					building = crew_quarters
+					effect = {
+						set_starbase_module = {
+							slot = 1
+							module = trading_hub
+						}
+					}
+				}
+			}
+			set_owner = event_target:nivlac_country
+			set_capital = yes
+			clear_blockers = yes
+			while = {
+				count = 22
+				create_pop = {
+					species = event_target:nivlac_species
+				}
+			}
+			add_district = district_city
+			add_district = district_city
+			add_district = district_city
+			add_district = district_city
+			add_district = district_farming
+			add_district = district_farming
+			add_district = district_farming
+			add_district = district_mining
+			add_district = district_mining
+			add_district = district_generator
+			add_district = district_generator
+			add_building = building_capital
+			add_building = building_research_lab_1
+			add_building = building_foundry_1
+			add_building = building_factory_1
+			while = {
+				count = 2
+				create_army = {
+					name = random
+					owner = event_target:nivlac_country
+					species = event_target:nivlac_species
+					type = defense_army
+				}
+			}
+			solar_system = {
+				every_system_planet = {
+					surveyed = {
+						set_surveyed = yes
+						surveyor = root.owner
+					}
+				}
+			}
+		}
+		create_fleet = {
+				effect = {
+					set_owner = prev
+
+					create_ship = {
+						name = random
+						random_existing_design = science
+					}
+
+					set_fleet_stance = evasive				
+					#set_location = prev.capital_star
+					set_location = prev.capital_scope.star
+					
+					owner = {
+						create_leader = {
+							class = scientist
+							species = owner_main_species
+							name = random
+							skill = 2
+						}
+					}
+					set_leader = last_created_leader
+				}			
+			}
+				
+			#constructor
+			create_fleet = {
+				effect = {
+					set_owner = prev
+					
+					create_ship = {
+						name = random
+						random_existing_design = constructor
+					}
+					
+					set_fleet_stance = evasive
+					set_location = prev.capital_star
+				}
+			}
+			
+			#military
+			create_fleet = {
+				set_take_point = yes
+				effect = {
+					set_owner = prev
+					
+					while = {
+						count = 2
+						create_ship = {
+							name = random
+							random_existing_design = corvette
+						}
+					}
+					
+					set_location = prev.capital_star
+				}
+			}
+			create_leader = {
+				class = scientist
+				species = owner_main_species
+				name = random
+				skill = 2
+			}
+			create_leader = {
+				class = scientist
+				species = owner_main_species
+				name = random
+				skill = 2
+			}
+			create_leader = {
+				class = scientist
+				species = owner_main_species
+				name = random
+				skill = 2
+			}
+			create_leader = {
+				class = governor
+				species = owner_main_species
+				name = random
+				skill = 2
+			}
+		event_target:nivlac_country = {
+			add_opinion_modifier = {
+				who = root
+				modifier = opinion_nurtured
+			}
+		}
+	}
+
+	option = {
+		name = EXCELLENT
+		hidden_effect = {
+			if = {
+				limit = { has_event_chain = mandate_uplift_chain }
+				country_event = { id = moremandate.82 }
+			}
+		}
+	}
+}
+
+country_event = { # Releasing fungoids into society as pops was successful
+	id = distar.3017
+	title = "distar.3017.name"
+	desc = {
+		trigger = {
+			NOR = {
+				has_civic = civic_machine_assimilator
+				has_civic = civic_machine_servitor
+			}
+		}
+		text = "distar.3017.desc"
+	}
+	desc = {
+		trigger = {
+			has_civic = civic_machine_assimilator
+		}
+		text = "distar.3017.desc.assim"
+	}
+	picture = GFX_evt_colony_settlement
+	show_sound = event_scanner
+	location = event_target:nivlac_joint_planet
+
+	is_triggered_only = yes
+
+	option = {
+		name = EXCELLENT
+		custom_tooltip = distar.3017.a.tooltip
+		hidden_effect = {
+			if = {
+				limit = { has_event_chain = mandate_uplift_chain }
+				country_event = { id = moremandate.82 }
+			}
+		}
+	}
+	option = {
+		exclusive_trigger = {
+			has_civic = civic_machine_assimilator
+		}
+		name = EXCELLENT
+		custom_tooltip = distar.3017.a.assi.tooltip
+		hidden_effect = {
+			if = {
+				limit = { has_event_chain = mandate_uplift_chain }
+				country_event = { id = moremandate.82 }
+			}
+		}
+	}
+	option = {
+		exclusive_trigger = {
+			has_civic = civic_machine_servitor
+		}
+		name = EXCELLENT
+		custom_tooltip = distar.3017.a.serv.tooltip
+		hidden_effect = {
+			if = {
+				limit = { has_event_chain = mandate_uplift_chain }
+				country_event = { id = moremandate.82 }
+			}
+		}
+	}
+}
+
+country_event = { # Integration into our society complete
+	id = distar.3032
+	title = "distar.3032.name"
+	desc = "distar.3032.desc"
+	picture = GFX_evt_colony_settlement
+	show_sound = event_scanner
+	location = from
+
+	is_triggered_only = yes
+
+	immediate = {
+		create_species = {
+			name = random
+			class = MOL
+			portrait = "mol6"
+			namelist = "MOL2"
+			traits = {
+				trait = "trait_slow_learners"
+				trait = "trait_industrious"
+				trait = "trait_uplifted"
+			}
+			homeworld = root.capital_scope
+			effect = {
+				save_global_event_target_as = molluscoid_miners_species
+			}
+		}
+		capital_scope = {
+			while = {
+				count = 10
+				# housing cache doesn't update frequently enough atm
+				#limit = {
+				#	free_housing > 0
+				#}
+				create_pop = {
+					species = event_target:molluscoid_miners_species
+				}
+			}
+		}
+		#else = {
+		#	set_country_flag = no_space_for_miners
+		#}
+	}
+
+	option = {
+		name = EXCELLENT
+		custom_tooltip = distar.3032.a.tooltip
+		hidden_effect = {
+			if = {
+				limit = { has_event_chain = mandate_uplift_chain }
+				country_event = { id = moremandate.82 }
+			}
+		}
+		#trigger = {
+		#	hidden_trigger = {
+		#		NOT = { has_country_flag = no_space_for_miners }
+		#	}
+		#}
+	}
+
+	#option = {
+	#	name = distar.3032.b
+	#	custom_tooltip = distar.3032.b.tooltip
+		#trigger = {
+		#	hidden_trigger = {
+		#		has_country_flag = no_space_for_miners
+		#	}
+		#}
+	#}
+}
