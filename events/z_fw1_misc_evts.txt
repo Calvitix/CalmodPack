@@ -18,7 +18,7 @@ event = {
 			limit = { NOT = { has_global_flag = z_fw1_initialized } }
 			set_global_flag = z_fw1_initialized
 		}
-		z_fw_eft_start = yes	#_开场eft
+		#z_fw_eft_start = yes	#_开场eft
 	}
 }
 ###_万用初始化
@@ -33,7 +33,7 @@ country_event = {
 		if = {
 			limit = { NOT = { has_global_flag = z_fw1_initialized } }
 			set_global_flag = z_fw1_initialized
-			z_fw_eft_start = yes	#_开场eft
+			#z_fw_eft_start = yes	#_开场eft
 		}
 	}
 }
@@ -129,7 +129,7 @@ country_event = {
 			#_开局flag
 			set_country_flag = z_fw_autostation_600
 			#_开局科技
-			z_fw_eft_start_tech = yes
+			#z_fw_eft_start_tech = yes
 			#_渴望
 			if = {
 				limit = { has_country_flag = z_fw1_start_monument }
@@ -314,13 +314,45 @@ country_event = {
 				limit = { has_planet_flag = z_fw_autostation_plnt }
 				solar_system.starbase = { save_event_target_as = z_fw_tgt_autostation_starbase }
 			}
+			###_创建automatic建设者
+			#_暂时NPC<每艘船重新建立npc,防止被攻击变成敌对以后新的自动工程船也处于敌对状态>
+			create_country = {
+				name = "NAME_z_fw_npc_1"
+				type = z_fw_npc_temp_neutral
+				flag = {
+					icon = {
+						category = "z_fw"
+						file = "infinite_stellaris_0.dds"
+					}
+					background= {
+						category = "backgrounds"
+						file = "00_solid.dds"
+					}
+					colors={
+						"black"
+						"black"
+						"null"
+						"null"
+					}
+				}
+				effect = {
+					#_添加基础舰船设计
+					create_ship_design = { design = "NAME_z_fw_autostation_ship" }
+					add_ship_design = last_created_design
+					every_country = {
+						limit = { is_ai = no }
+						establish_communications_no_message = prev
+						prev = { set_faction_hostility = { target = prev set_friendly = yes } }
+					}
+				}
+			}
 			create_fleet = {
 				name = "Constructeur auto. de Stations"
 				settings = {
 					spawn_debris = no
 				}
 				effect = {
-					set_owner = event_target:z_fw_tgt_npc_1		#_z_fw默认中立NPC
+					set_owner = last_created_country				#_[temp_npc]
 					set_location = {
 						target = event_target:z_fw_tgt_autostation_starbase
 						distance = 7
@@ -350,14 +382,27 @@ country_event = {
 	trigger = { FromFrom = { has_fleet_flag = z_fw_autostaion_fleet } }
 	immediate = {
 		FromFrom.solar_system.space_owner = { remove_country_flag = z_fw_autostation_under_progress }
-		if = {
-			limit = {
+		destroy_country = yes	#_直接清除[全自动工程船]所有者<刷新关系-清除敌对关系>
 				exists = from
-				from = { is_ai = no }
-			}
-			set_faction_hostility = { target = from set_friendly = yes }
-			from = { set_faction_hostility = { target = root set_friendly = yes } }
-		}
+		###_互相消除敌意<无效>
+		#if = {
+		#	limit = {
+		#		exists = form
+		#		from = { is_ai = no }
+		#	}
+		#	set_faction_hostility = {
+		#		set_hostile = no
+		#		set_friendly = yes
+		#		target = from
+		#	}
+		#	from = {
+		#		set_faction_hostility = {
+		#			set_hostile = no
+		#			set_friendly = yes
+		#			target = root
+		#		}
+		#	}
+		#}
 	}
 }
 #_建设舰队解散-清理flag
@@ -424,6 +469,7 @@ fleet_event = {
 				solar_system.space_owner = {
 					has_country_flag = z_fw_autostation_600
 					has_resource = { type = minerals amount >= 600 }
+					income > 4	#_检测energy收入
 				}
 				solar_system = { any_system_planet = { has_planet_flag = z_fw_autostation_plnt } }
 			}
@@ -446,6 +492,7 @@ fleet_event = {
 				solar_system.space_owner = {
 					has_country_flag = z_fw_autostation_100
 					has_resource = { type = minerals amount >= 100 }
+					income > 4	#_检测energy收入
 				}
 				solar_system = { any_system_planet = { has_planet_flag = z_fw_autostation_plnt } }
 			}
