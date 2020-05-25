@@ -1,0 +1,53 @@
+# I spent a lot of time on this mod out of my own free time, and nobody would like it if someone took their creation
+# and stole it, and tried to claim it as thier's. If you want to learn to mod Stellaris, I'm not the best person to
+# ask, but I'm always open to help and if you'd like to make new features or add-ons to this mod, send me a message,
+# and we'll discuss together about either integrating them into this mod, or creating an add-on to this one.
+
+
+# Mjölnir ##################################################
+r_mjolnir = {
+	activation_duration = 360
+	portrait = "GFX_relic_mjolnir"
+	sound = "relic_activation_mjolnir"
+
+	resources = {
+		category = relics
+		# Activation cost
+		cost = {
+			influence = 100
+		}
+	}
+	
+	ai_weight = {
+		weight = 250
+	}
+	
+	triggered_country_modifier = {
+		potential = {
+			always = yes
+		}
+		country_energy_produces_mult = 0.10
+	}
+
+	score = 5000
+
+	active_effect = {
+		custom_tooltip = mjolnir_activated
+		custom_tooltip = reality_stone_triumph_cooldown
+		hidden_effect = {
+			add_modifier = {
+				modifier = "relic_activation_cooldown"
+				days = 360
+			}
+			country_event = { id = svartalfheim.89 days = 7 random = 21 }
+		}
+	}
+
+	# Possible check for activation
+	possible = {
+		custom_tooltip = {
+			fail_text = "requires_relic_no_cooldown"
+			NOT = { has_modifier = relic_activation_cooldown }
+		}
+	}
+}

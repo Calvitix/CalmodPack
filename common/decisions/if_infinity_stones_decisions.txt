@@ -1,0 +1,249 @@
+# I spent a lot of time on this mod out of my own free time, and nobody would like it if someone took their creation
+# and stole it, and tried to claim it as thier's. If you want to learn to mod Stellaris, I'm not the best person to
+# ask, but I'm always open to help and if you'd like to make new features or add-ons to this mod, send me a message,
+# and we'll discuss together about either integrating them into this mod, or creating an add-on to this one.
+
+
+##########################################################################
+# Decisions
+##########################################################################
+decision_planet_time_stone = {
+	owned_planets_only = yes
+	sound = event_administrative_work
+	icon = decision_if_planet_time_stone
+
+	resources = {
+		category = decisions
+		cost = {
+			#influence = 50
+		}
+	}
+
+	potential = {
+		exists = owner
+		owner = { has_country_flag = relic_time_stone_activated }
+	}
+
+	allow = {
+		NOT = { has_modifier = planet_time_stone_boost }
+	}
+
+	effect = {
+		add_modifier = { modifier = "planet_time_stone_boost" days = 3590 }
+		hidden_effect = {
+			owner = { remove_country_flag = relic_time_stone_activated }
+		}
+	}
+
+	ai_weight = {
+		weight = 20
+		modifier = {
+			factor = 10
+			is_capital = yes
+		}
+	}
+}
+
+# Reality Stone Terraform Gaia
+decision_planet_reality_stone = {
+	owned_planets_only = yes
+	sound = event_laboratory_sound
+	icon = decision_terraform_gaia
+
+	resources = {
+		category = decisions
+		cost = {
+			#influence = 50
+		}
+	}
+
+	potential = {
+		NOT = {
+			is_planet_class = pc_city
+			is_planet_class = pc_machine
+			is_planet_class = pc_relic
+			is_planet_class = pc_hive
+			has_modifier = planet_reality_stone_boost
+		}
+		habitable_structure = no
+		exists = owner
+		owner = { has_country_flag = relic_reality_stone_activated }
+	}
+
+	allow = { }
+
+	effect = {
+		custom_tooltip = decision_reality_stone
+		hidden_effect = {
+			owner = { remove_country_flag = relic_reality_stone_activated }
+			change_pc = pc_gaia
+			add_modifier = {
+				modifier = planet_reality_stone_boost
+			days = -1
+			}
+		}
+	}
+
+	ai_weight = {
+		weight = 50
+		modifier = {
+			factor = 0
+			owner = { OR = { is_machine_empire = yes is_hive_empire = yes } }
+		}
+	}
+}
+
+# Reality Stone Terraform Machine
+decision_planet_reality_stone_machine = {
+	owned_planets_only = yes
+	sound = event_laboratory_sound
+	icon = decision_if_terraform_machine
+
+	resources = {
+		category = decisions
+		cost = {
+			influence = 50
+		}
+	}
+
+	potential = {
+		NOT = {
+			is_planet_class = pc_city
+			is_planet_class = pc_machine
+			is_planet_class = pc_relic
+			is_planet_class = pc_hive
+			has_modifier = planet_reality_stone_boost
+			has_global_flag = menu_reality_stone_disabled
+		}
+		habitable_structure = no
+		exists = owner
+		owner = { has_country_flag = relic_reality_stone_activated }
+		owner = { is_machine_empire = yes }
+	}
+
+	allow = { }
+
+	effect = {
+		custom_tooltip = decision_reality_stone_machine
+		hidden_effect = {
+			owner = { remove_country_flag = relic_reality_stone_activated }
+			change_pc = pc_machine
+			add_modifier = {
+				modifier = planet_reality_stone_boost
+			days = -1
+			}
+		}
+	}
+
+	ai_weight = {
+		weight = 50
+		modifier = {
+			factor = 0
+			owner = {
+				has_civic = civic_machine_servitor
+			}
+		}
+	}
+}
+
+
+# Reality Stone Terraform Hive
+decision_planet_reality_stone_hive = {
+	owned_planets_only = yes
+	sound = event_laboratory_sound
+	icon = decision_if_terraform_hive
+
+	resources = {
+		category = decisions
+		cost = {
+			influence = 50
+		}
+	}
+
+	potential = {
+		NOT = {
+			is_planet_class = pc_city
+			is_planet_class = pc_machine
+			is_planet_class = pc_relic
+			is_planet_class = pc_hive
+			has_modifier = planet_reality_stone_boost
+			has_global_flag = menu_reality_stone_disabled
+		}
+		habitable_structure = no
+		exists = owner
+		owner = { has_country_flag = relic_reality_stone_activated }
+		owner = { is_hive_empire = yes }
+	}
+
+	allow = { }
+
+	effect = {
+		custom_tooltip = decision_reality_stone_hive
+		hidden_effect = {
+			owner = { remove_country_flag = relic_reality_stone_activated }
+			change_pc = pc_hive
+			add_modifier = {
+				modifier = planet_reality_stone_boost
+			days = -1
+			}
+		}
+	}
+
+	ai_weight = {
+		weight = 50
+	}
+}
+
+# Reality Stone Terraform City
+decision_planet_reality_stone_city = {
+	owned_planets_only = yes
+	sound = event_laboratory_sound
+	icon = decision_terraform_arcology
+	enactment_time = 720
+
+	resources = {
+		category = decisions
+		cost = {
+			influence = 50
+		}
+	}
+
+	potential = {
+		NOT = {
+			is_planet_class = pc_city
+			is_planet_class = pc_machine
+			is_planet_class = pc_relic
+			is_planet_class = pc_hive
+			has_modifier = planet_reality_stone_boost
+			owner = { is_machine_empire = yes }
+			owner = { is_hive_empire = yes }
+			has_global_flag = menu_reality_stone_disabled
+		}
+		habitable_structure = no
+		exists = owner
+		owner = {
+			has_country_flag = relic_reality_stone_activated
+			has_country_flag = reality_stone_city_allowed
+		}
+	}
+
+	allow = {
+		has_building = building_reality_stone_terraformer
+	}
+
+	effect = {
+		custom_tooltip = decision_reality_stone_city
+		hidden_effect = {
+			owner = { remove_country_flag = relic_reality_stone_activated }
+			change_pc = pc_city
+			add_modifier = {
+				modifier = planet_reality_stone_boost
+				days = -1
+			}
+		}
+	}
+
+	ai_weight = {
+		weight = 0
+	}
+}
