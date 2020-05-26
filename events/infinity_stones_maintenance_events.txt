@@ -1,0 +1,461 @@
+# I spent a lot of time on this mod out of my own free time, and nobody would like it if someone took their creation
+# and stole it, and tried to claim it as thier's. If you want to learn to mod Stellaris, I'm not the best person to
+# ask, but I'm always open to help and if you'd like to make new features or add-ons to this mod, send me a message,
+# and we'll discuss together about either integrating them into this mod, or creating an add-on to this one.
+
+
+namespace = ig_maintenance
+
+#Destroyed Nation Has Infinity Stone
+
+country_event = {
+    id = ig_maintenance.0
+    hide_window = yes
+    is_triggered_only = yes
+
+    immediate = {
+        if = {
+            limit = { has_relic = r_power_stone }
+            distribute_power_stone = yes
+        }
+        if = {
+            limit = { has_relic = r_time_stone }
+            distribute_time_stone = yes
+        }
+        if = {
+            limit = { has_relic = r_reality_stone }
+            distribute_reality_stone = yes
+        }
+        if = {
+            limit = { has_relic = r_soul_stone }
+            distribute_soul_stone = yes
+        }
+        if = {
+            limit = { has_relic = r_mind_stone }
+            distribute_mind_stone = yes
+        }
+        if = {
+            limit = { has_relic = r_space_stone }
+            distribute_space_stone = yes
+        }
+    }
+}
+
+event = {
+    id = ig_maintenance.1
+    hide_window = yes
+    is_triggered_only = yes
+
+    immediate = {
+        if = {
+            limit = {
+                any_country = {
+                    has_stone_modifier_but_not_the_stone = yes
+                }
+            }
+            every_playable_country = {
+                limit = { has_stone_modifier_but_not_the_stone = yes }
+                country_event = { id = ig_maintenance.2 }
+            }
+        }
+    }
+}
+
+country_event = {
+    id = ig_maintenance.2
+    hide_window = yes
+    is_triggered_only = yes
+
+    immediate = {
+        remove_infinity_stone_modifiers_on_stone_lost = yes
+    }
+}
+
+
+############################################################################################################################################################################
+
+# Kill all soulborns
+country_event = {
+    id = "ig_maintenance.25"
+    title = "ig_maintenance.25.name"
+    desc = "ig_maintenance.25.desc"
+    show_sound = event_bad_omen
+    picture = "GFX_evt_emergency_workers"
+
+    trigger = {
+        any_owned_leader = {
+            is_soulborn = yes
+        }
+        NOT = { has_relic = r_soul_stone }
+    }
+
+    mean_time_to_happen = {
+        days = 14
+    }
+
+    immediate = {
+        every_owned_leader = {
+            limit = {
+                is_soulborn = yes
+            }
+            kill_leader = {
+                show_notification = yes
+            }
+        }
+    }
+    option = {
+        name = ig_maintenance.25.a
+    }
+}
+
+# Ruler gets soulborn trait back when no longer ruler
+country_event = {
+    id = ig_maintenance.30
+    is_triggered_only = yes
+    hide_window = yes
+
+    trigger = {
+        from = {
+            is_soulborn = yes
+        }
+    }
+
+    immediate = {
+        from = {
+            if = {
+                limit = { leader_class = admiral }
+                add_trait = leader_trait_admiral_soulborn
+                break = yes
+            }
+            if = {
+                limit = { leader_class = general }
+                add_trait = leader_trait_general_soulborn
+                break = yes
+            }
+            if = {
+                limit = { leader_class = governor }
+                add_trait = leader_trait_governor_soulborn
+                break = yes
+            }
+            if = {
+                limit = { leader_class = scientist }
+                add_trait = leader_trait_scientist_soulborn
+                break = yes
+            }
+        }
+    }
+}
+
+############################################################################################################################################################################
+
+#Subject Has Infinity Stone
+
+country_event = {
+    id = ig_maintenance.50
+    hide_window = yes
+
+    trigger = {
+        has_an_infinity_stone = yes
+        not_valid_to_own_infinity_stone = yes
+    }
+
+    mean_time_to_happen = {
+        days = 14
+    }
+
+    immediate = {
+        if = {
+            limit = { has_relic = r_power_stone }
+            country_event = { id = ig_maintenance.52 }
+        }
+        if = {
+            limit = { has_relic = r_time_stone }
+            country_event = { id = ig_maintenance.55 }
+        }
+        if = {
+            limit = { has_relic = r_reality_stone }
+            country_event = { id = ig_maintenance.58 }
+        }
+        if = {
+            limit = { has_relic = r_soul_stone }
+            country_event = { id = ig_maintenance.61 }
+        }
+        if = {
+            limit = { has_relic = r_mind_stone }
+            country_event = { id = ig_maintenance.64 }
+        }
+        if = {
+            limit = { has_relic = r_space_stone }
+            country_event = { id = ig_maintenance.67 }
+        }
+    }
+}
+
+####################################################
+
+ country_event = {
+    id = ig_maintenance.52
+    title = ig_maintenance.52.name
+    desc = ig_maintenance.52.desc
+    picture = GFX_evt_resource_cache
+    show_sound = event_administrative_work
+
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = ig_maintenance.52.a
+        remove_relic = r_power_stone
+        add_modifier = {
+            modifier = "stone_lost"
+            days = 360
+        }
+        hidden_effect = {
+            distribute_power_stone = yes
+        }
+    }
+ }
+
+# Country subject Power Stone Maintenance give stone
+country_event = {
+    id = "ig_maintenance.53"
+    title = "ig_maintenance.53.name"
+    desc = "ig_maintenance.53.desc"
+    show_sound = event_default
+    picture = "GFX_evt_smugglers_in_bar"
+    is_triggered_only = yes
+
+    option = {
+        name = ig_maintenance.53.a
+        add_relic = r_power_stone
+        add_modifier = {
+            modifier = "bought_power_stone"
+            days = 360
+        }
+    }
+}
+
+############################################################################################################################################################################
+
+ country_event = {
+    id = ig_maintenance.55
+    title = ig_maintenance.55.name
+    desc = ig_maintenance.55.desc
+    picture = GFX_evt_resource_cache
+    show_sound = event_administrative_work
+
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = ig_maintenance.55.a
+        remove_relic = r_time_stone
+        add_modifier = {
+            modifier = "stone_lost"
+            days = 360
+        }
+        hidden_effect = {
+            distribute_time_stone = yes
+        }
+    }
+ }
+
+# Country subject Time Stone Maintenance give stone
+country_event = {
+    id = "ig_maintenance.56"
+    title = "ig_maintenance.56.name"
+    desc = "ig_maintenance.56.desc"
+    show_sound = event_default
+    picture = "GFX_evt_smugglers_in_bar"
+    is_triggered_only = yes
+
+    option = {
+        name = ig_maintenance.56.a
+        add_relic = r_time_stone
+        add_modifier = {
+            modifier = "bought_time_stone"
+            days = 360
+        }
+    }
+}
+
+############################################################################################################################################################################
+
+ country_event = {
+    id = ig_maintenance.58
+    title = ig_maintenance.58.name
+    desc = ig_maintenance.58.desc
+    picture = GFX_evt_resource_cache
+    show_sound = event_administrative_work
+
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = ig_maintenance.58.a
+        remove_relic = r_reality_stone
+        add_modifier = {
+            modifier = "stone_lost"
+            days = 360
+        }
+        hidden_effect = {
+            distribute_reality_stone = yes
+        }
+    }
+ }
+
+# Country subject Reality Stone Maintenance give stone
+country_event = {
+    id = "ig_maintenance.59"
+    title = "ig_maintenance.59.name"
+    desc = "ig_maintenance.59.desc"
+    show_sound = event_default
+    picture = "GFX_evt_smugglers_in_bar"
+    is_triggered_only = yes
+
+    option = {
+        name = ig_maintenance.59.a
+        add_relic = r_reality_stone
+        add_modifier = {
+            modifier = "bought_reality_stone"
+            days = 360
+        }
+    }
+}
+
+############################################################################################################################################################################
+
+ country_event = {
+    id = ig_maintenance.61
+    title = ig_maintenance.61.name
+    desc = ig_maintenance.61.desc
+    picture = GFX_evt_resource_cache
+    show_sound = event_administrative_work
+
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = ig_maintenance.61.a
+        remove_relic = r_soul_stone
+        add_modifier = {
+            modifier = "stone_lost"
+            days = 360
+        }
+        hidden_effect = {
+            hidden_effect = {
+                distribute_soul_stone = yes
+            }
+        }
+    }
+ }
+
+# Country subject Soul Stone Maintenance give stone
+country_event = {
+    id = "ig_maintenance.62"
+    title = "ig_maintenance.62.name"
+    desc = "ig_maintenance.62.desc"
+    show_sound = event_default
+    picture = "GFX_evt_smugglers_in_bar"
+    is_triggered_only = yes
+
+    option = {
+        name = ig_maintenance.62.a
+        add_relic = r_soul_stone
+    }
+}
+
+
+############################################################################################################################################################################
+
+ country_event = {
+    id = ig_maintenance.64
+    title = ig_maintenance.64.name
+    desc = ig_maintenance.64.desc
+    picture = GFX_evt_resource_cache
+    show_sound = event_administrative_work
+
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = ig_maintenance.64.a
+        remove_relic = r_mind_stone
+        add_modifier = {
+            modifier = "stone_lost"
+            days = 360
+        }
+        hidden_effect = {
+            distribute_mind_stone = yes
+        }
+    }
+ }
+
+# Country subject Mind Stone Maintenance give stone
+country_event = {
+    id = "ig_maintenance.65"
+    title = "ig_maintenance.65.name"
+    desc = "ig_maintenance.65.desc"
+    show_sound = event_default
+    picture = "GFX_evt_smugglers_in_bar"
+    is_triggered_only = yes
+
+    option = {
+        name = ig_maintenance.65.a
+        add_relic = r_mind_stone
+    }
+}
+
+############################################################################################################################################################################
+
+ country_event = {
+    id = ig_maintenance.67
+    title = ig_maintenance.67.name
+    desc = ig_maintenance.67.desc
+    picture = GFX_evt_resource_cache
+    show_sound = event_administrative_work
+
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = ig_maintenance.67.a
+        remove_relic = r_space_stone
+        add_modifier = {
+            modifier = "stone_lost"
+            days = 360
+        }
+        hidden_effect = {
+            distribute_space_stone = yes
+        }
+    }
+ }
+
+# Country subject Space Stone Maintenance give stone
+country_event = {
+    id = "ig_maintenance.68"
+    title = "ig_maintenance.68.name"
+    desc = "ig_maintenance.68.desc"
+    show_sound = event_default
+    picture = "GFX_evt_smugglers_in_bar"
+    is_triggered_only = yes
+
+    option = {
+        name = ig_maintenance.68.a
+        add_relic = r_space_stone
+    }
+}
+
+ country_event = {
+    id = ig_maintenance.100
+    hide_window = yes
+    fire_only_once = yes
+
+    trigger = {
+        NOT = { has_global_flag = zero_infinity_stones_installed }
+    }
+
+    immediate = {
+        set_global_flag = zero_infinity_stones_installed
+    }
+ }

@@ -1,0 +1,267 @@
+# I spent a lot of time on this mod out of my own free time, and nobody would like it if someone took their creation
+# and stole it, and tried to claim it as thier's. If you want to learn to mod Stellaris, I'm not the best person to
+# ask, but I'm always open to help and if you'd like to make new features or add-ons to this mod, send me a message,
+# and we'll discuss together about either integrating them into this mod, or creating an add-on to this one.
+
+
+namespace = space_stone
+
+ #Space Stone Captain Marvel Check
+ country_event = {
+    id = space_stone.0
+    hide_window = yes
+    is_triggered_only = yes
+
+    immediate = {
+        if = {
+            limit = {
+                has_relic = r_space_stone
+                owner = { NOT = { has_authority = auth_machine_intelligence has_authority = auth_hive_mind } }
+                NOT = { has_global_flag = menu_captain_marvel_disabled }
+            }
+            country_event = { id = space_stone.1 }
+        }
+        if = {
+            limit = {
+                has_relic = r_space_stone
+                OR = {
+                    owner = { has_authority = auth_machine_intelligence }
+                    owner = { has_authority = auth_hive_mind }
+                }
+                NOT = { has_global_flag = menu_captain_marvel_disabled }
+            }
+            country_event = { id = space_stone.4 }
+        }
+    }
+}
+
+#Space Stone Captain Marvel
+ country_event = {
+    id = space_stone.1
+    title = space_stone.1.name
+    desc = space_stone.1.desc
+    picture = GFX_evt_infinity_stones_space_stone_captain_marvel
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = space_stone.1.a
+        custom_tooltip = space_stone_get_captain_marvel
+        zero_choose_random_owned_species_for_leader = yes
+        create_captain_marvel_leader = yes
+        set_country_flag = captain_marvel_creator_flag
+        random_playable_country = {
+            limit = { has_country_flag = captain_marvel_creator_flag }
+            save_global_event_target_as = captain_marvel_creator
+        }
+    }
+ }
+
+ #Space Stone Drive Check
+ event = {
+    id = space_stone.2
+    hide_window = yes
+    is_triggered_only = yes
+
+    immediate = {
+        every_country = {
+            limit = {
+                has_relic = r_space_stone
+                NOT = { has_technology = tech_space_stone_jump_drive_1 }
+                NOT = { has_tech_option = tech_space_stone_jump_drive_1 }
+                NOT = { has_global_flag = menu_infinity_drive_disabled }
+            }
+            country_event = { id = space_stone.3 days = 180 random = 540 }
+        }
+    }
+}
+
+ #Space Stone Drive Get
+ country_event = {
+    id = space_stone.3
+    title = space_stone.3.name
+    desc = space_stone.3.desc
+    picture = GFX_evt_physics_research
+    hide_window = no
+    is_triggered_only = yes
+
+    trigger = {
+        has_relic = r_space_stone
+        NOT = { has_technology = tech_space_stone_jump_drive_1 }
+        NOT = { has_tech_option = tech_space_stone_jump_drive_1 }
+        NOT = { has_global_flag = menu_infinity_drive_disabled }
+    }
+
+    option = {
+        name = space_stone.3.a
+        add_research_option = tech_space_stone_jump_drive_1
+                add_tech_progress = {
+                    tech = tech_space_stone_jump_drive_1
+                    progress = 0.5
+                }
+    }
+ }
+
+ #Space Stone Captain Marvel
+ country_event = {
+    id = space_stone.4
+    title = space_stone.4.name
+    desc = space_stone.4.desc
+    picture = GFX_evt_infinity_stones_space_stone_captain_marvel
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = space_stone.4.a
+        custom_tooltip = space_stone_get_captain_marvel
+        zero_choose_random_owned_species_for_leader = yes
+        create_captain_marvel_leader_gestalt = yes
+        set_country_flag = captain_marvel_creator_flag
+        random_playable_country = {
+            limit = { has_country_flag = captain_marvel_creator_flag }
+            save_global_event_target_as = captain_marvel_creator
+        }
+    }
+ }
+
+########################### MOONSTONE ###############################
+
+ #Space Stone Moonstone Check
+ event = {
+    id = space_stone.10
+    hide_window = yes
+    is_triggered_only = yes
+
+    immediate = {
+        every_playable_country = {
+            limit = {
+                has_relic = r_space_stone
+                NOT = { has_global_flag = menu_captain_marvel_disabled }
+                NOT = { has_country_flag = space_stone_original_owner }
+                NOT = { has_country_flag = captain_marvel_creator_flag }
+                NOT = { has_country_flag = moonstone_creator_flag }
+            }
+            country_event = { id = space_stone.11 days = 7 random = 353 }
+        }
+    }
+}
+
+#Space Stone Moonstone give special project
+ country_event = {
+    id = space_stone.11
+    title = space_stone.11.name
+    desc = space_stone.11.desc
+    picture = GFX_evt_infinity_stones_space_stone_special
+    hide_window = no
+    is_triggered_only = yes
+
+    trigger = {
+        has_relic = r_space_stone
+    }
+
+    option = {
+        name = space_stone.11.a
+        set_country_flag = moonstone_creator_flag
+        enable_special_project = {
+            name = "IG_MOONSTONE_CREATION"
+            location = capital_scope
+            owner = ROOT
+        }
+    }
+ }
+
+ #Space Stone Moonstone give moonstone
+ country_event = {
+    id = space_stone.12
+    title = space_stone.12.name
+    desc = {
+        trigger = { NOT = { has_authority = auth_machine_intelligence has_authority = auth_hive_mind } }
+        text = "space_stone.12.descnotgestalt"
+    }
+    desc = {
+        trigger = {
+            OR = {
+                has_authority = auth_machine_intelligence
+                has_authority = auth_hive_mind
+            }
+        }
+        text = "space_stone.12.descgestalt"
+    }
+    picture = GFX_evt_infinity_stones_space_stone_moonstone
+    hide_window = no
+    is_triggered_only = yes
+
+    immediate = {
+        zero_choose_random_owned_species_for_leader = yes
+    }
+
+    option = {
+        name = space_stone.12.a
+        custom_tooltip = space_stone_get_moonstone
+        trigger = {
+            NOT = { has_authority = auth_machine_intelligence has_authority = auth_hive_mind }
+        }
+        create_moonstone_leader = yes
+    }
+
+    option = {
+        name = space_stone.12.b
+        custom_tooltip = space_stone_get_moonstone
+        trigger = {
+            OR = {
+                has_authority = auth_machine_intelligence
+                has_authority = auth_hive_mind
+            }
+        }
+        create_moonstone_leader_gestalt = yes
+    }
+ }
+
+
+# Ruler gets Captain Marvel traits back when no longer ruler
+country_event = {
+    id = space_stone.200
+    is_triggered_only = yes
+    hide_window = yes
+
+    trigger = {
+        from = {
+            has_leader_flag = captain_marvel
+        }
+    }
+
+    immediate = {
+        from = {
+            if = {
+                limit = { leader_class = admiral }
+                add_trait = leader_trait_admiral_space_stone_infused
+                add_trait = leader_trait_admiral_space_stone_stubborn
+                break = yes
+            }
+        }
+    }
+}
+
+# Ruler gets moonstone traits back when no longer ruler
+country_event = {
+    id = space_stone.201
+    is_triggered_only = yes
+    hide_window = yes
+
+    trigger = {
+        from = {
+            has_leader_flag = moonstone
+        }
+    }
+
+    immediate = {
+        from = {
+            if = {
+                limit = { leader_class = admiral }
+                add_trait = leader_trait_admiral_space_stone_infused_weaker
+                add_trait = leader_trait_admiral_space_stone_mad_with_power
+                break = yes
+            }
+        }
+    }
+}

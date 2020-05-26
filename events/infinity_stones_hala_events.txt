@@ -1,0 +1,152 @@
+# I spent a lot of time on this mod out of my own free time, and nobody would like it if someone took their creation
+# and stole it, and tried to claim it as thier's. If you want to learn to mod Stellaris, I'm not the best person to
+# ask, but I'm always open to help and if you'd like to make new features or add-ons to this mod, send me a message,
+# and we'll discuss together about either integrating them into this mod, or creating an add-on to this one.
+
+
+namespace = hala
+
+ # physics_research = 1000
+ # society_research = 1000
+ # engineering_research = 1000
+
+ship_event = {
+    id = hala.0
+    title = "hala.0.name"
+    desc = "hala.0.desc"
+    picture = GFX_evt_hala_space
+    location = ROOT
+    is_triggered_only = yes
+    trigger = {
+        FROM = {
+            has_star_flag = space_stone_system
+        }
+        NOT = { owner = { has_country_flag = space_stone_system_visited } }
+    }
+    immediate = {
+        owner = {
+            set_country_flag = space_stone_system_visited
+        }
+    }
+    option = {
+        name = "hala.0.a"
+    }
+}
+
+# hala Digsite
+fleet_event = {
+    id = hala.1
+    title = "hala.1.name"
+    desc = hala.1.desc
+    picture = GFX_evt_hala_city
+    show_sound = event_scanner
+    location = from
+
+    archaeology = yes
+
+    is_triggered_only = yes
+
+    option = {
+        name = hala.1.a
+        owner = {
+            add_resource = { minor_artifacts = 10 }
+        }
+    }
+}
+
+fleet_event = {
+    id = hala.2
+    title = "hala.2.name"
+    desc = hala.2.desc
+    picture = GFX_evt_hala_window
+    show_sound = event_scanner
+    location = from
+
+    archaeology = yes
+
+    is_triggered_only = yes
+
+    option = {
+        name = hala.2.a
+        owner = {
+            add_resource = {
+                physics_research = 1000
+                society_research = 1000
+                engineering_research = 1000
+             }
+        }
+    }
+}
+
+fleet_event = {
+    id = hala.3
+    title = "hala.3.name"
+    desc = hala.3.desc
+    picture = GFX_evt_starforce
+    show_sound = event_finding_loot
+    location = from
+
+    archaeology = yes
+
+    is_triggered_only = yes
+
+    option = {
+        name = hala.3.a
+        owner = {
+            add_resource = {
+                physics_research = 1000
+                society_research = 1000
+                engineering_research = 1000
+             }
+        }
+    }
+}
+
+fleet_event = {
+    id = hala.4
+    title = "hala.4.name"
+    desc = hala.4.desc
+    picture = GFX_evt_kree_supreme_intelligence
+    show_sound = event_finding_loot
+    location = from
+
+    archaeology = yes
+
+    is_triggered_only = yes
+
+    option = {
+        name = hala.4.a
+    }
+}
+
+fleet_event = {
+    id = hala.5
+    title = "hala.5.name"
+    desc = hala.5.desc
+    picture = GFX_evt_hala_cosmic_cube
+    show_sound = event_mystic_reveal
+    location = from
+
+    archaeology = yes
+
+    is_triggered_only = yes
+
+    option = {
+        name = hala.5.a
+        owner = {
+            add_relic = r_space_stone
+            add_resource = { unity = 1000 }
+            hidden_effect = {
+                set_country_flag = space_stone_original_owner
+                country_event = { id = space_stone.0 days = 180 random = 180 }
+                #country_event = { id = space_stone.2 days = 360 random = 360 }
+            }
+        }
+        hidden_effect = {
+            every_country = {
+                limit = { is_country_type = default }
+                set_country_flag = space_stone_system_visited
+            }
+        }
+    }
+}

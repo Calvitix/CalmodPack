@@ -1,0 +1,1279 @@
+# I spent a lot of time on this mod out of my own free time, and nobody would like it if someone took their creation
+# and stole it, and tried to claim it as thier's. If you want to learn to mod Stellaris, I'm not the best person to
+# ask, but I'm always open to help and if you'd like to make new features or add-ons to this mod, send me a message,
+# and we'll discuss together about either integrating them into this mod, or creating an add-on to this one.
+
+
+namespace = ig_debug
+
+#Space Stone Drive Get
+ country_event = {
+    id = ig_debug.0
+    title = ig_debug.0.name
+    desc = ig_debug.0.desc
+    picture = GFX_evt_physics_research
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = ig_debug.0.a
+        give_technology = { tech = tech_space_stone_jump_drive_1 }
+        create_leader = {
+            class = scientist
+            species = owner_main_species
+            name = random
+            skill = 10
+            leader_age_min = 18
+            leader_age_max = 19
+            immortal = yes
+            traits = {
+                trait = random_trait
+                trait = random_trait
+                trait = random_trait
+            }
+        }
+        add_resource = { influence = 1000 }
+        add_modifier = { modifier = infinity_circuit_space_time }
+    }
+    option = {
+        name = ig_debug.0.b
+    }
+ }
+
+# Give all 6 stones
+ country_event = {
+    id = ig_debug.1
+    title = ig_debug.1.name
+    desc = ig_debug.1.desc
+    picture = GFX_evt_ig_wip
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = ig_debug.0.a
+        add_resource = { influence = 1000 }
+        add_relic = r_power_stone
+        add_relic = r_time_stone
+        add_relic = r_reality_stone
+        add_relic = r_soul_stone
+        add_relic = r_mind_stone
+        add_relic = r_space_stone
+    }
+
+    option = {
+        name = ig_debug.1.b
+    }
+ }
+
+# removes all 6 stones
+ country_event = {
+    id = ig_debug.2
+    title = ig_debug.2.name
+    desc = ig_debug.2.desc
+    picture = GFX_evt_ig_wip
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = ig_debug.2.a
+        remove_relic = r_power_stone
+        remove_relic = r_time_stone
+        remove_relic = r_reality_stone
+        remove_relic = r_soul_stone
+        remove_relic = r_mind_stone
+        remove_relic = r_space_stone
+    }
+    option = {
+        name = ig_debug.2.b
+    }
+ }
+
+ # Kill ruler
+ country_event = {
+    id = ig_debug.5
+    picture = GFX_evt_ig_wip
+    hide_window = yes
+    is_triggered_only = yes
+
+    immediate = {
+        kill_leader = {
+            type = ruler
+            show_notification = yes
+        }
+    }
+ }
+
+#Where Stones Menu
+ country_event = {
+    id = ig_debug.10
+    title = ig_debug.10.name
+    desc = ig_debug.10.desc
+    picture = GFX_evt_stone_insert_6_mind
+    hide_window = no
+    is_triggered_only = yes
+
+    immediate = {
+        set_country_flag = stonemenu_open
+        random_playable_country = {
+            limit = { has_relic = r_power_stone }
+            save_event_target_as = power_stone_holder
+        }
+        random_playable_country = {
+            limit = { has_relic = r_time_stone }
+            save_event_target_as = time_stone_holder
+        }
+        random_playable_country = {
+            limit = { has_relic = r_reality_stone }
+            save_event_target_as = reality_stone_holder
+        }
+        random_playable_country = {
+            limit = { has_relic = r_soul_stone }
+            save_event_target_as = soul_stone_holder
+        }
+        random_playable_country = {
+            limit = { has_relic = r_mind_stone }
+            save_event_target_as = mind_stone_holder
+        }
+        random_playable_country = {
+            limit = { has_relic = r_space_stone }
+            save_event_target_as = space_stone_holder
+        }
+    }
+
+    option = {
+        name = ig_menu.0.g
+        remove_country_flag = stonemenu_open
+    }
+
+    option = {
+        name = ig_debug.10.powerstone
+        trigger = {
+            any_country = {
+                has_relic = r_power_stone
+            }
+        }
+        allow = {
+            if = {
+                limit = { ROOT = { NOT = { is_same_value = event_target:power_stone_holder } } }
+                resource_stockpile_compare = { resource = energy value >= 20000 }
+                resource_stockpile_compare = { resource = influence value >= 500 }
+            }
+        }
+        if = {
+            limit = { ROOT = { NOT = { is_same_value = event_target:power_stone_holder } } }
+            add_resource = { energy = -20000 influence = -500 }
+            random_playable_country = {
+                limit = { is_same_value = event_target:power_stone_holder }
+                country_event = { id = ig_debug.11 }
+            }
+        }
+        remove_country_flag = stonemenu_open
+    }
+    option = {
+        name = ig_debug.10.timestone
+        trigger = {
+            any_country = {
+                has_relic = r_time_stone
+            }
+        }
+        allow = {
+            if = {
+                limit = { ROOT = { NOT = { is_same_value = event_target:time_stone_holder } } }
+                resource_stockpile_compare = { resource = energy value >= 20000 }
+                resource_stockpile_compare = { resource = influence value >= 500 }
+            }
+        }
+        if = {
+            limit = { ROOT = { NOT = { is_same_value = event_target:time_stone_holder } } }
+            add_resource = { energy = -20000 influence = -500 }
+            random_playable_country = {
+                limit = { is_same_value = event_target:time_stone_holder }
+                country_event = { id = ig_debug.14 }
+            }
+        }
+        remove_country_flag = stonemenu_open
+    }
+    option = {
+        name = ig_debug.10.realitystone
+        trigger = {
+            any_country = {
+                has_relic = r_reality_stone
+            }
+        }
+        allow = {
+            if = {
+                limit = { ROOT = { NOT = { is_same_value = event_target:reality_stone_holder } } }
+                resource_stockpile_compare = { resource = energy value >= 20000 }
+                resource_stockpile_compare = { resource = influence value >= 500 }
+            }
+        }
+        if = {
+            limit = { ROOT = { NOT = { is_same_value = event_target:reality_stone_holder } } }
+            add_resource = { energy = -20000 influence = -500 }
+            random_playable_country = {
+                limit = { is_same_value = event_target:reality_stone_holder }
+                country_event = { id = ig_debug.17 }
+            }
+        }
+        remove_country_flag = stonemenu_open
+    }
+    option = {
+        name = ig_debug.10.soulstone
+        trigger = {
+            any_country = {
+                has_relic = r_soul_stone
+            }
+        }
+        allow = {
+            if = {
+                limit = { ROOT = { NOT = { is_same_value = event_target:soul_stone_holder } } }
+                resource_stockpile_compare = { resource = energy value >= 20000 }
+                resource_stockpile_compare = { resource = influence value >= 500 }
+            }
+        }
+        if = {
+            limit = { ROOT = { NOT = { is_same_value = event_target:soul_stone_holder } } }
+            add_resource = { energy = -20000 influence = -500 }
+            random_playable_country = {
+                limit = { is_same_value = event_target:soul_stone_holder }
+                country_event = { id = ig_debug.20 }
+            }
+        }
+        remove_country_flag = stonemenu_open
+    }
+    option = {
+        name = ig_debug.10.mindstone
+        trigger = {
+            any_country = {
+                has_relic = r_mind_stone
+            }
+        }
+        allow = {
+            if = {
+                limit = { ROOT = { NOT = { is_same_value = event_target:mind_stone_holder } } }
+                resource_stockpile_compare = { resource = energy value >= 20000 }
+                resource_stockpile_compare = { resource = influence value >= 500 }
+            }
+        }
+        if = {
+            limit = { ROOT = { NOT = { is_same_value = event_target:mind_stone_holder } } }
+            add_resource = { energy = -20000 influence = -500 }
+            random_playable_country = {
+                limit = { is_same_value = event_target:mind_stone_holder }
+                country_event = { id = ig_debug.23 }
+            }
+        }
+        remove_country_flag = stonemenu_open
+    }
+    option = {
+        name = ig_debug.10.spacestone
+        trigger = {
+            any_country = {
+                has_relic = r_space_stone
+            }
+        }
+        allow = {
+            if = {
+                limit = { ROOT = { NOT = { is_same_value = event_target:space_stone_holder } } }
+                resource_stockpile_compare = { resource = energy value >= 20000 }
+                resource_stockpile_compare = { resource = influence value >= 500 }
+            }
+        }
+        if = {
+            limit = { ROOT = { NOT = { is_same_value = event_target:space_stone_holder } } }
+            add_resource = { energy = -20000 influence = -500 }
+            random_playable_country = {
+                limit = { is_same_value = event_target:space_stone_holder }
+                country_event = { id = ig_debug.26 }
+            }
+        }
+        remove_country_flag = stonemenu_open
+    }
+ }
+
+# Ask for power stone
+ country_event = {
+    id = ig_debug.11
+    title = ig_debug.11.name
+    desc = ig_debug.11.desc
+    picture = GFX_evt_power_stone_notify
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = ig_debug.11.no
+        ai_chance = {
+            factor = 100
+        }
+        FROM = {
+            country_event = { id = ig_debug.12 }
+        }
+    }
+    option = {
+        name = ig_debug.11.yes
+        ai_chance = {
+            factor = 10
+            modifier = {
+                factor = 100
+                root = { opinion = { who = from value >= 350 } }
+                is_in_federation_with = from
+            }
+        }
+        remove_relic = r_power_stone
+        add_resource = { energy = 20000 influence = 500 }
+        add_favors = {
+            target = FROM
+            value = 10
+        }
+        hidden_effect = {
+            remove_infinity_stone_modifiers_on_stone_lost = yes
+        }
+        FROM = {
+            country_event = { id = ig_debug.13 }
+        }
+    }
+ }
+
+# Reply no power stone
+ country_event = {
+    id = ig_debug.12
+    title = ig_debug.11.name
+    desc = ig_debug.12.desc
+    picture = GFX_evt_power_stone_notify
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = ig_debug.12.a
+        add_resource = { energy = 20000 influence = 500 }
+    }
+ }
+
+# Reply yes power stone
+ country_event = {
+    id = ig_debug.13
+    title = ig_debug.11.name
+    desc = ig_debug.13.desc
+    picture = GFX_evt_power_stone_notify
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = ig_debug.13.a
+        add_relic = r_power_stone
+    }
+ }
+
+# Ask for Time stone
+ country_event = {
+    id = ig_debug.14
+    title = ig_debug.14.name
+    desc = ig_debug.14.desc
+    picture = GFX_evt_time_stone_notify
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = ig_debug.11.no
+        ai_chance = {
+            factor = 100
+        }
+        FROM = {
+            country_event = { id = ig_debug.15 }
+        }
+    }
+    option = {
+        name = ig_debug.11.yes
+        ai_chance = {
+            factor = 10
+            modifier = {
+                factor = 100
+                root = { opinion = { who = from value >= 350 } }
+                is_in_federation_with = from
+            }
+        }
+        remove_relic = r_time_stone
+        add_resource = { energy = 20000 influence = 500 }
+        add_favors = {
+            target = FROM
+            value = 10
+        }
+        hidden_effect = {
+            remove_infinity_stone_modifiers_on_stone_lost = yes
+        }
+        FROM = {
+            country_event = { id = ig_debug.16 }
+        }
+    }
+ }
+
+# Reply no Time stone
+ country_event = {
+    id = ig_debug.15
+    title = ig_debug.14.name
+    desc = ig_debug.15.desc
+    picture = GFX_evt_time_stone_notify
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = ig_debug.12.a
+        add_resource = { energy = 20000 influence = 500 }
+    }
+ }
+
+# Reply yes Time stone
+ country_event = {
+    id = ig_debug.16
+    title = ig_debug.14.name
+    desc = ig_debug.16.desc
+    picture = GFX_evt_time_stone_notify
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = ig_debug.13.a
+        add_relic = r_time_stone
+    }
+ }
+
+# Ask for Reality stone
+ country_event = {
+    id = ig_debug.17
+    title = ig_debug.17.name
+    desc = ig_debug.17.desc
+    picture = GFX_evt_reality_stone_notify
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = ig_debug.11.no
+        ai_chance = {
+            factor = 100
+        }
+        FROM = {
+            country_event = { id = ig_debug.18 }
+        }
+    }
+    option = {
+        name = ig_debug.11.yes
+        ai_chance = {
+            factor = 10
+            modifier = {
+                factor = 100
+                root = { opinion = { who = from value >= 350 } }
+                is_in_federation_with = from
+            }
+        }
+        remove_relic = r_reality_stone
+        add_resource = { energy = 20000 influence = 500 }
+        add_favors = {
+            target = FROM
+            value = 10
+        }
+        hidden_effect = {
+            remove_infinity_stone_modifiers_on_stone_lost = yes
+        }
+        FROM = {
+            country_event = { id = ig_debug.19 }
+        }
+    }
+ }
+
+# Reply no Reality stone
+ country_event = {
+    id = ig_debug.18
+    title = ig_debug.17.name
+    desc = ig_debug.18.desc
+    picture = GFX_evt_reality_stone_notify
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = ig_debug.12.a
+        add_resource = { energy = 20000 influence = 500 }
+    }
+ }
+
+# Reply yes Reality stone
+ country_event = {
+    id = ig_debug.19
+    title = ig_debug.17.name
+    desc = ig_debug.19.desc
+    picture = GFX_evt_reality_stone_notify
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = ig_debug.13.a
+        add_relic = r_reality_stone
+    }
+ }
+
+# Ask for Soul stone
+ country_event = {
+    id = ig_debug.20
+    title = ig_debug.20.name
+    desc = ig_debug.20.desc
+    picture = GFX_evt_soul_stone_notify
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = ig_debug.11.no
+        ai_chance = {
+            factor = 100
+        }
+        FROM = {
+            country_event = { id = ig_debug.21 }
+        }
+    }
+    option = {
+        name = ig_debug.11.yes
+        ai_chance = {
+            factor = 10
+            modifier = {
+                factor = 100
+                root = { opinion = { who = from value >= 350 } }
+                is_in_federation_with = from
+            }
+        }
+        remove_relic = r_soul_stone
+        add_resource = { energy = 20000 influence = 500 }
+        add_favors = {
+            target = FROM
+            value = 10
+        }
+        hidden_effect = {
+            remove_infinity_stone_modifiers_on_stone_lost = yes
+        }
+        FROM = {
+            country_event = { id = ig_debug.22 }
+        }
+    }
+ }
+
+# Reply no Soul stone
+ country_event = {
+    id = ig_debug.21
+    title = ig_debug.20.name
+    desc = ig_debug.21.desc
+    picture = GFX_evt_soul_stone_notify
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = ig_debug.12.a
+        add_resource = { energy = 20000 influence = 500 }
+    }
+ }
+
+# Reply yes Soul stone
+ country_event = {
+    id = ig_debug.22
+    title = ig_debug.20.name
+    desc = ig_debug.22.desc
+    picture = GFX_evt_soul_stone_notify
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = ig_debug.13.a
+        add_relic = r_soul_stone
+    }
+ }
+
+# Ask for Mind stone
+ country_event = {
+    id = ig_debug.23
+    title = ig_debug.23.name
+    desc = ig_debug.23.desc
+    picture = GFX_evt_mind_stone_notify
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = ig_debug.11.no
+        ai_chance = {
+            factor = 100
+        }
+        FROM = {
+            country_event = { id = ig_debug.24 }
+        }
+    }
+    option = {
+        name = ig_debug.11.yes
+        ai_chance = {
+            factor = 10
+            modifier = {
+                factor = 100
+                root = { opinion = { who = from value >= 350 } }
+                is_in_federation_with = from
+            }
+        }
+        remove_relic = r_mind_stone
+        add_resource = { energy = 20000 influence = 500 }
+        add_favors = {
+            target = FROM
+            value = 10
+        }
+        hidden_effect = {
+            remove_infinity_stone_modifiers_on_stone_lost = yes
+        }
+        FROM = {
+            country_event = { id = ig_debug.25 }
+        }
+    }
+ }
+
+# Reply no Mind stone
+ country_event = {
+    id = ig_debug.24
+    title = ig_debug.23.name
+    desc = ig_debug.24.desc
+    picture = GFX_evt_mind_stone_notify
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = ig_debug.12.a
+        add_resource = { energy = 20000 influence = 500 }
+    }
+ }
+
+# Reply yes Mind stone
+ country_event = {
+    id = ig_debug.25
+    title = ig_debug.23.name
+    desc = ig_debug.25.desc
+    picture = GFX_evt_mind_stone_notify
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = ig_debug.13.a
+        add_relic = r_mind_stone
+    }
+ }
+
+# Ask for Space stone
+ country_event = {
+    id = ig_debug.26
+    title = ig_debug.26.name
+    desc = ig_debug.26.desc
+    picture = GFX_evt_space_stone_notify
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = ig_debug.11.no
+        ai_chance = {
+            factor = 100
+        }
+        FROM = {
+            country_event = { id = ig_debug.27 }
+        }
+    }
+    option = {
+        name = ig_debug.11.yes
+        ai_chance = {
+            factor = 10
+            modifier = {
+                factor = 100
+                root = { opinion = { who = from value >= 350 } }
+                is_in_federation_with = from
+            }
+        }
+        remove_relic = r_space_stone
+        add_resource = { energy = 20000 influence = 500 }
+        add_favors = {
+            target = FROM
+            value = 10
+        }
+        hidden_effect = {
+            remove_infinity_stone_modifiers_on_stone_lost = yes
+        }
+        FROM = {
+            country_event = { id = ig_debug.28 }
+        }
+    }
+ }
+
+# Reply no Space stone
+ country_event = {
+    id = ig_debug.27
+    title = ig_debug.26.name
+    desc = ig_debug.27.desc
+    picture = GFX_evt_space_stone_notify
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = ig_debug.12.a
+        add_resource = { energy = 20000 influence = 500 }
+    }
+ }
+
+# Reply yes Space stone
+ country_event = {
+    id = ig_debug.28
+    title = ig_debug.26.name
+    desc = ig_debug.28.desc
+    picture = GFX_evt_space_stone_notify
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = ig_debug.13.a
+        add_relic = r_space_stone
+    }
+ }
+
+
+
+    # removes gauntlet
+ country_event = {
+    id = ig_debug.50
+    title = ig_debug.50.name
+    desc = ig_debug.50.desc
+    picture = GFX_evt_ig_wip
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = ig_debug.50.a
+        every_country = {
+            country_event = { id = infinity_gauntlet.3 }
+            country_event = { id = ig_debug.2 }
+            }
+    }
+    option = {
+        name = ig_debug.50.b
+    }
+ }
+
+ country_event = {
+    id = ig_debug.51
+    picture = GFX_evt_ig_wip
+    hide_window = yes
+    is_triggered_only = yes
+
+    immediate = {
+        remove_modifier = "relic_activation_cooldown"
+    }
+ }
+
+ #Destroy Nation test
+country_event = {
+    id = ig_debug.99
+    title = ig_debug.99.name
+    desc = ig_debug.99.desc
+    picture = GFX_evt_ig_wip
+    show_sound = relic_activation_vultaum_real_perforator
+
+    hide_window = no
+    is_triggered_only = yes
+
+    immediate = {
+        random_owned_planet = {
+            limit = {
+                is_colony = yes
+            }
+            while = {
+                count = 200
+                random_pop = {
+                    kill_pop = yes
+                }
+            }
+        }
+    }
+    option = {
+        name = ig_debug.99.a
+    }
+}
+
+#Destroy Planet Flag
+country_event = {
+    id = ig_debug.100
+    picture = GFX_evt_ig_wip
+
+    hide_window = yes
+    is_triggered_only = yes
+
+    immediate = {
+        set_country_flag = gauntlet_shatter_world
+    }
+}
+
+#Set crisis global flag
+country_event = {
+    id = ig_debug.101
+    picture = GFX_evt_ig_wip
+    hide_window = yes
+    is_triggered_only = yes
+
+    immediate = {
+        set_global_flag = galactic_crisis_happened
+    }
+}
+
+#Spawn pops for debug timestone
+country_event = {
+    id = ig_debug.102
+
+    hide_window = yes
+    is_triggered_only = yes
+
+    immediate = {
+        owner = {
+            random_owned_planet = {
+                create_pop = {
+                    species = owner_main_species
+                }
+            }
+        }
+        country_event = { id = ig_debug.102 days = 1}
+    }
+}
+
+#Spawn leaders for debug soul stone
+country_event = {
+    id = ig_debug.103
+
+    hide_window = yes
+    is_triggered_only = yes
+
+    immediate = {
+        create_soulborn_species = yes
+        random_list = {
+            10 = {
+                create_soulborn_leader_governor = yes
+            }
+            10 = {
+                create_soulborn_leader_scientist = yes
+            }
+            10 = {
+                create_soulborn_leader_admiral = yes
+            }
+            10 = {
+                create_soulborn_leader_general = yes
+            }
+        }
+        country_event = { id = ig_debug.103 days = 1}
+    }
+}
+
+#Spawn in systems debug
+country_event = {
+    id = ig_debug.104
+
+    hide_window = yes
+    is_triggered_only = yes
+
+    immediate = {
+        random_system = {
+            spawn_system = { initializer = "aarch_system_initializer" }
+        }
+        random_system = {
+            spawn_system = { initializer = "pama_initializer" }
+        }
+        random_system = {
+            spawn_system = { initializer = "morag_system_initializer" }
+        }
+        random_system = {
+            spawn_system = { initializer = "malekith_system_initializer" }
+        }
+        random_system = {
+            spawn_system = { initializer = "time_displaced_sol_system_initializer" }
+        }
+        random_system = {
+            spawn_system = { initializer = "helgentara_system_initializer" }
+        }
+    }
+}
+
+#Spawn in stones debug
+country_event = {
+    id = ig_debug.105
+
+    hide_window = yes
+    is_triggered_only = yes
+
+    immediate = {
+        distribute_power_stone = yes
+        distribute_time_stone = yes
+        distribute_reality_stone = yes
+        distribute_soul_stone = yes
+        distribute_mind_stone = yes
+        distribute_space_stone = yes
+    }
+}
+
+#country_event = {
+#    id = ig_debug.200
+#    title = ig_debug.200.name
+#    desc = ig_debug.200.desc
+#    picture = GFX_evt_ig_wip
+#    is_triggered_only = yes
+#
+#    immediate = {
+#        set_country_flag = max_soulborn
+#        random_country = {
+#            limit = { has_country_flag = max_soulborn }             # I feel like this bit of code is wrong but I am currently sat with my head in my hands so i'm not going to change it
+#            save_event_target_as = max_soulborn_nation
+#        }
+#        remove_country_flag = max_soulborn
+#    }
+#
+#    option = {
+#        name = ig_debug.200.a
+#        create_fleet = {
+#            name = "NAME_The_End"
+#            settings = {
+#                spawn_debris = no
+#            }
+#            effect = {
+#                set_owner = event_target:max_soulborn_nation
+#                create_ship = {
+#                    name = "NAME_Reckoning"
+#                    design = "NAME_Warped_Consciousness"
+#                }
+#                set_location = event_target:max_soulborn_nation.capital_scope
+#                set_fleet_stance = aggressive
+#                set_aggro_range_measure_from = return_point
+#                set_aggro_range = 3000
+#                add_modifier = {
+#                    modifier = "infinity_gauntlet_max_soulborn"
+#                    days = -1
+#                }
+#            }
+#        }
+#    }
+#}
+
+#country_event = {
+#    id = ig_debug.201
+#    title = ig_debug.201.name
+#    desc = ig_debug.201.desc
+#    picture = GFX_evt_ig_wip
+#    is_triggered_only = yes
+#
+#    immediate = {
+#        random_owned_leader = {
+#            limit = { leader_class = ruler }
+#            save_event_target_as = ruler_species
+#        }
+#        create_leader = {
+#            class = admiral
+#            species = event_target:ruler_species.species
+#            #portrait = event_target:ruler_species.portrait
+#            name = "[Root.GetRulerName]"
+#            skill = 10
+#            leader_age_min = 30
+#            leader_age_max = 30
+#            gender = male
+#            traits = {
+#                trait = leader_trait_admiral_the_inevitable
+#            }
+#            effect = {
+#                set_leader_flag = the_inevitable
+#            }
+#        }
+#        create_leader = {
+#            class = ruler
+#            species = event_target:ruler_species.species
+#            #portrait = event_target:ruler_species.portrait
+#            name = "[Root.GetRulerName]"
+#            skill = 10
+#            leader_age_min = 30
+#            leader_age_max = 30
+#            gender = male
+#            traits = {
+#                trait = leader_trait_ruler_the_inevitable
+#            }
+#            effect = {
+#                set_leader_flag = the_inevitable
+#            }
+#        }
+#        kill_leader = {
+#            type = ruler
+#            show_notification = no
+#            heir = yes
+#        }
+#        kill_leader = {
+#            type = ruler
+#            show_notification = no
+#            heir = no
+#        }
+#        assign_leader = last_created_leader
+#    }
+#
+#    option = {
+#        name = ig_debug.200.a
+#    }
+#}
+
+# inevitable dies
+country_event = {
+    id = ig_debug.202
+
+    hide_window = yes
+    is_triggered_only = yes
+
+    trigger = {
+        from = {
+            has_leader_flag = the_inevitable
+        }
+    }
+
+    immediate = {
+        every_owned_leader = {
+            limit = { has_leader_flag = the_inevitable }
+            kill_leader = { show_notification = no }
+        }
+        distribute_power_stone = yes
+        distribute_time_stone = yes
+        distribute_reality_stone = yes
+        distribute_soul_stone = yes
+        distribute_mind_stone = yes
+        distribute_space_stone = yes
+    }
+ }
+
+
+# delete every ship
+country_event = {
+    id = ig_debug.203
+
+    hide_window = yes
+    is_triggered_only = yes
+
+    immediate = {
+        every_country = {
+             limit = {
+                OR = {
+                    is_country_type = default
+                    is_country_type = fallen_empire
+                    is_country_type = awakened_fallen_empire
+                }
+             }
+            every_owned_ship = {
+                limit = {
+                    OR = {
+                            is_ship_class = shipclass_military
+                            is_ship_class = shipclass_military_station
+                            is_ship_class = shipclass_transport
+                            is_ship_class = shipclass_military_special
+                            #is_ship_class = shipclass_starbase #Can't destroy Juggernauts, need to look into this
+                    }
+                }
+                delete_ship = this
+            }
+        }
+    }
+ }
+
+
+#Space Stone Drive Get
+ country_event = {
+    id = ig_debug.250
+    title = ig_debug.250.name
+    desc = ig_debug.250.desc
+    picture = GFX_evt_gauntlet_snap
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = ig_debug.250.a
+        snap_ruler_death_chance = yes
+    }
+    option = {
+        name = ig_debug.0.b
+    }
+ }
+
+#Snap testing
+ country_event = {
+    id = ig_debug.251
+    title = infinity_stones_new_gauntlet.11.name
+    desc = infinity_stones_new_gauntlet.11.desc
+    picture = GFX_evt_gauntlet_get
+    hide_window = no
+    is_triggered_only = yes
+
+    #REGULAR SNAP
+    option = {
+        name = infinity_stones_new_gauntlet.11.a
+        custom_tooltip = gauntlet_option_one
+        hidden_effect = {
+            country_event = { id = infinity_gauntlet.66 }
+        }
+    }
+    #DESTROY THE STONES
+    option = {
+        name = infinity_stones_new_gauntlet.11.q
+        custom_tooltip = gauntlet_option_seventeen
+        hidden_effect = {
+            country_event = { id = infinity_gauntlet.187 }
+        }
+    }
+    #50% Snap with immunity
+    option = {
+        name = infinity_stones_new_gauntlet.11.b
+        custom_tooltip = gauntlet_option_two
+        hidden_effect = {
+            country_event = { id = infinity_gauntlet.67 }
+        }
+    }
+    #10% snap
+    option = {
+        name = infinity_stones_new_gauntlet.11.c
+        custom_tooltip = gauntlet_option_three
+        hidden_effect = {
+            country_event = { id = infinity_gauntlet.68 }
+        }
+    }
+    #90% snap
+    option = {
+        name = infinity_stones_new_gauntlet.11.d
+        custom_tooltip = gauntlet_option_four
+        hidden_effect = {
+            country_event = { id = infinity_gauntlet.69 }
+        }
+    }
+    #The Purge
+    option = {
+        name = infinity_stones_new_gauntlet.11.e
+        custom_tooltip = gauntlet_option_five
+        hidden_effect = {
+            country_event = { id = infinity_gauntlet.70 }
+        }
+    }
+    #DESTROY BAD GUYS
+    option = {
+        name = infinity_stones_new_gauntlet.11.f
+        custom_tooltip = gauntlet_option_six
+        hidden_effect = {
+            country_event = { id = infinity_gauntlet.71 }
+        }
+    }
+    #END HUNGER
+    option = {
+        name = infinity_stones_new_gauntlet.11.g
+        custom_tooltip = gauntlet_option_seven
+        hidden_effect = {
+            country_event = { id = infinity_gauntlet.163 }
+        }
+    }
+    #The Enlightenment
+    option = {
+        name = infinity_stones_new_gauntlet.11.h
+        custom_tooltip = gauntlet_option_eight
+        hidden_effect = {
+            country_event = { id = infinity_gauntlet.166 }
+        }
+    }
+    #The Pacification
+    option = {
+        name = infinity_stones_new_gauntlet.11.i
+        custom_tooltip = gauntlet_option_nine
+        hidden_effect = {
+            country_event = { id = infinity_gauntlet.169 }
+        }
+    }
+    #The Embrace
+    option = {
+        name = infinity_stones_new_gauntlet.11.j
+        custom_tooltip = gauntlet_option_ten
+        hidden_effect = {
+            country_event = { id = infinity_gauntlet.172 }
+        }
+    }
+    #The Greater Good
+    option = {
+        name = infinity_stones_new_gauntlet.11.m
+        custom_tooltip = gauntlet_option_thirteen
+        hidden_effect = {
+            country_event = { id = infinity_gauntlet.178 }
+        }
+    }
+    #Cripple The Crisis
+    option = {
+        name = infinity_stones_new_gauntlet.11.k
+        custom_tooltip = gauntlet_option_eleven
+        hidden_effect = {
+            country_event = { id = infinity_gauntlet.175 }
+        }
+    }
+    #Infinite Wealth
+    option = {
+        name = infinity_stones_new_gauntlet.11.l
+        custom_tooltip = gauntlet_option_twelve
+        hidden_effect = {
+            country_event = { id = infinity_gauntlet.177 }
+        }
+    }
+    #The End
+    option = {
+        name = infinity_stones_new_gauntlet.11.n
+        custom_tooltip = gauntlet_option_fourteen
+        hidden_effect = {
+            country_event = { id = infinity_gauntlet.181 }
+        }
+    }
+    #The Inevitable
+    option = {
+        name = infinity_stones_new_gauntlet.11.o
+        custom_tooltip = gauntlet_option_fifteen
+        hidden_effect = {
+            country_event = { id = infinity_gauntlet.182 }
+        }
+    }
+    #Disarm the galaxy
+    option = {
+        name = infinity_stones_new_gauntlet.11.p
+        custom_tooltip = gauntlet_option_sixteen
+        hidden_effect = {
+            country_event = { id = infinity_gauntlet.183 }
+        }
+    }
+    option = {
+        name = infinity_stones_new_gauntlet.10.b
+        add_resource = { influence = 50 }
+        hidden_effect = {
+            remove_country_flag = gauntlet_in_use
+        }
+    }
+ }
+
+ # Potentially undo the snap
+country_event = {
+    id = ig_debug.500
+
+    hide_window = yes
+    is_triggered_only = yes
+
+    immediate = {
+        every_country = {
+            limit = {
+                OR = {
+                    is_country_type = default
+                    is_country_type = fallen_empire
+                    is_country_type = awakened_fallen_empire
+                }
+            }
+            every_owned_planet = {
+                limit = { num_pops > 1 }
+                save_event_target_as = current_unblip_planet
+                every_owned_pop = {
+                    limit = { NOT = { has_pop_flag = ig_cloned_pop } }
+                    event_target:current_unblip_planet = {
+                        create_pop = {
+                            species = prev
+                        }
+                    }
+                }
+            }
+        }
+    }
+ }

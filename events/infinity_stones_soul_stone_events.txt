@@ -1,0 +1,174 @@
+# I spent a lot of time on this mod out of my own free time, and nobody would like it if someone took their creation
+# and stole it, and tried to claim it as thier's. If you want to learn to mod Stellaris, I'm not the best person to
+# ask, but I'm always open to help and if you'd like to make new features or add-ons to this mod, send me a message,
+# and we'll discuss together about either integrating them into this mod, or creating an add-on to this one.
+
+
+namespace = soul_stone
+
+#Soul Stone uno
+country_event = {
+    id = soul_stone.0
+    hide_window = yes
+    is_triggered_only = yes
+
+    immediate = {
+        if = {
+            limit = {
+                owner = { NOT = { has_authority = auth_machine_intelligence } }
+                owner = { NOT = { has_authority = auth_hive_mind } }
+            }
+            country_event = { id = soul_stone.1 }
+        }
+        else = {
+            country_event = { id = soul_stone.2 }
+        }
+    }
+}
+
+#Soul Stone leader spawn
+country_event = {
+    id = soul_stone.1
+    title = soul_stone.1.name
+    desc = soul_stone.1.desc
+    picture = GFX_evt_infinity_stones_soul_stone
+
+    hide_window = no
+    is_triggered_only = yes
+
+    immediate = {
+        create_soulborn_species = yes
+    }
+
+    option = {
+        name = soul_stone.1.a
+        create_soulborn_leader_governor = yes
+    }
+    option = {
+        name = soul_stone.1.b
+        create_soulborn_leader_scientist = yes
+    }
+    option = {
+        name = soul_stone.1.c
+        create_soulborn_leader_admiral = yes
+    }
+    option = {
+        name = soul_stone.1.d
+        create_soulborn_leader_general = yes
+    }
+}
+
+#Soul Stone gesalt nope
+country_event = {
+    id = soul_stone.2
+    title = soul_stone.2.name
+    desc = soul_stone.2.desc
+    picture = GFX_evt_infinity_stones_soul_stone_gestalt
+
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        trigger = { has_authority = auth_machine_intelligence }
+        name = soul_stone.2.mach
+        add_resource = { influence = 50 }
+        remove_modifier = "relic_activation_cooldown"
+    }
+    option = {
+        trigger = { has_authority = auth_hive_mind }
+        name = soul_stone.2.hive
+        add_resource = { influence = 50 }
+        remove_modifier = "relic_activation_cooldown"
+    }
+ }
+
+ # Soul Stone Psionic Leader random chance
+country_event = {
+    id = soul_stone.10
+    title = "soul_stone.10.name"
+    desc = "soul_stone.10.desc"
+    picture = GFX_evt_psionics
+    show_sound = event_psionic
+
+    trigger = {
+        has_relic = r_soul_stone
+        NOT = { has_global_flag = menu_soul_stone_disabled }
+        NOT = { has_authority = auth_hive_mind }
+        NOT = { has_authority = "auth_machine_intelligence" }
+        any_owned_leader = {
+            NOT = {
+                OR = {
+                    zero_is_any_psionic_leader = yes
+                    zero_is_special_event_leader = yes
+                    zero_is_robo_leader = yes
+                }
+            }
+        }
+    }
+
+    mean_time_to_happen = {
+        months = 180
+    }
+
+    immediate = {
+        random_owned_leader = {
+            limit = {
+                NOT = {
+                    OR = {
+                        zero_is_any_psionic_leader = yes
+                        zero_is_special_event_leader = yes
+                        zero_is_robo_leader = yes
+                    }
+                }
+            }
+            save_event_target_as = psionic_leader
+        }
+    }
+    
+    option = {
+        name = "soul_stone.10.a"
+        event_target:psionic_leader = {
+            if = {
+                limit = { leader_class = admiral }
+                add_trait = leader_trait_admiral_psionic
+                hidden_effect = {
+                    add_ruler_trait = leader_trait_ruler_psionic
+                }
+                break = yes
+            }
+            if = {
+                limit = { leader_class = general }
+                add_trait = leader_trait_general_psionic
+                hidden_effect = {
+                    add_ruler_trait = leader_trait_ruler_psionic
+                }
+                break = yes
+            }
+            if = {
+                limit = { leader_class = governor }
+                add_trait = leader_trait_governor_psionic
+                hidden_effect = {
+                    add_ruler_trait = leader_trait_ruler_psionic
+                }
+                break = yes
+            }
+            if = {
+                limit = { leader_class = scientist }
+                add_trait = leader_trait_scientist_psionic
+                add_trait = leader_trait_expertise_psionics
+                hidden_effect = {
+                    add_ruler_trait = leader_trait_ruler_psionic
+                }
+                break = yes
+            }
+            if = {
+                limit = { leader_class = ruler }
+                add_trait = leader_trait_ruler_psionic
+                hidden_effect = {
+                    add_ruler_trait = leader_trait_ruler_psionic
+                }
+                break = yes
+            }
+        }
+    }
+}

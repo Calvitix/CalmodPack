@@ -1,0 +1,508 @@
+# I spent a lot of time on this mod out of my own free time, and nobody would like it if someone took their creation
+# and stole it, and tried to claim it as thier's. If you want to learn to mod Stellaris, I'm not the best person to
+# ask, but I'm always open to help and if you'd like to make new features or add-ons to this mod, send me a message,
+# and we'll discuss together about either integrating them into this mod, or creating an add-on to this one.
+
+
+namespace = ig_menu
+
+ #Options Menu appearing at game start
+ country_event = {
+    id = ig_menu.0
+    title = ig_menu.0.name
+    desc = ig_menu.0.desc
+    picture = GFX_evt_ig_menu
+    hide_window = no
+    is_triggered_only = yes
+
+    trigger = {
+        is_multiplayer = no
+    }
+
+    immediate = {
+        set_global_flag = ig_menu_opened_first_time
+        set_country_flag = options_menu_open
+    }
+
+    #Keep Default Options
+    option = {
+        name = ig_menu.0.a
+        hidden_effect = {
+            country_event = { id = ig_menu.1 }
+        }
+    }
+
+    #Configure AI opinions
+    option = {
+        name = ig_menu.0.b
+        hidden_effect = {
+            country_event = { id = ig_menu.2 }
+        }
+    }
+
+    #Configure Infinity Gauntlet
+    option = {
+        name = ig_menu.0.c
+        hidden_effect = {
+            country_event = { id = ig_menu.3 }
+        }
+    }
+
+    #Configure Reality Stone
+    option = {
+        name = ig_menu.0.d
+        hidden_effect = {
+            country_event = { id = ig_menu.4 }
+        }
+    }
+
+    #Configure Leaders
+    option = {
+        name = ig_menu.0.e
+        hidden_effect = {
+            country_event = { id = ig_menu.5 }
+        }
+    }
+
+    #Configure Infinity Drive
+    option = {
+        name = ig_menu.0.f
+        hidden_effect = {
+            country_event = { id = ig_menu.0 }
+        }
+    }
+
+    #Enabled Cheat Menu Enabled
+    option = {
+        name = ig_menu.0.cheats.enabled
+        trigger = {
+            has_global_flag = ig_cheats_enabled
+        }
+        custom_tooltip = cheat_menu_tooltip
+        hidden_effect = {
+            country_event = { id = ig_menu.0 }
+            remove_global_flag = ig_cheats_enabled
+        }
+    }
+
+    #Enabled Cheat Menu Disabled
+    option = {
+        name = ig_menu.0.cheats.disabled
+        trigger = {
+            NOT = { has_global_flag = ig_cheats_enabled }
+        }
+        custom_tooltip = cheat_menu_tooltip
+        hidden_effect = {
+            country_event = { id = ig_menu.0 }
+            set_global_flag = ig_cheats_enabled
+        }
+    }
+
+    #Done
+    option = {
+        name = ig_menu.0.g
+        ai_chance = { factor = 100 }
+        remove_country_flag = options_menu_open
+    }
+ }
+
+#Removes all Flags used, setting mod back to default
+country_event = {
+    id = ig_menu.1
+    hide_window = yes
+    is_triggered_only = yes
+
+    immediate = {
+        remove_global_flag = menu_fallen_empire_opinion_disabled
+        remove_global_flag = menu_normal_empire_opinion_disabled
+        remove_global_flag = menu_infinity_gauntlet_disabled
+        remove_global_flag = menu_infinity_circuit_disabled
+        remove_global_flag = menu_reality_stone_disabled
+        remove_global_flag = menu_soul_stone_disabled
+        remove_global_flag = menu_thor_disabled
+        remove_global_flag = menu_captain_marvel_disabled
+        remove_global_flag = menu_vision_disabled
+        remove_global_flag = menu_ultron_disabled
+        remove_global_flag = menu_infinity_drive_disabled
+        remove_global_flag = ig_cheats_enabled
+        country_event = { id = ig_menu.0 }
+    }
+}
+
+#Options Menu for Opinions
+country_event = {
+    id = ig_menu.2
+    title = ig_menu.2.name
+    desc = ig_menu.2.desc
+    picture = GFX_evt_alien_segregation
+    hide_window = no
+    is_triggered_only = yes
+
+    #Fallen Empire Opinion Enabled
+    option = {
+        name = ig_menu.2.fallenempire.enabled
+        trigger = {
+            NOT = { has_global_flag = menu_fallen_empire_opinion_disabled }
+        }
+        hidden_effect = {
+            set_global_flag = menu_fallen_empire_opinion_disabled
+            country_event = { id = ig_menu.2 }
+        }
+    }
+
+    #Fallen Empire Opinion Disabled
+    option = {
+        name = ig_menu.2.fallenempire.disabled
+        trigger = {
+            has_global_flag = menu_fallen_empire_opinion_disabled
+        }
+        hidden_effect = {
+            remove_global_flag = menu_fallen_empire_opinion_disabled
+            country_event = { id = ig_menu.2 }
+        }
+    }
+
+    #normal empires Opinion Enabled
+    option = {
+        name = ig_menu.2.normalempire.enabled
+        trigger = {
+            NOT = { has_global_flag = menu_normal_empire_opinion_disabled }
+        }
+        hidden_effect = {
+            set_global_flag = menu_normal_empire_opinion_disabled
+            country_event = { id = ig_menu.2 }
+        }
+    }
+
+    #normal empires Opinion Disabled
+    option = {
+        name = ig_menu.2.normalempire.disabled
+        trigger = {
+            has_global_flag = menu_normal_empire_opinion_disabled
+        }
+        hidden_effect = {
+            remove_global_flag = menu_normal_empire_opinion_disabled
+            country_event = { id = ig_menu.2 }
+        }
+    }
+
+    #Back
+    option = {
+        name = ig_menu.2.back
+        hidden_effect = {
+            country_event = { id = ig_menu.0 }
+        }
+    }
+ }
+
+#Options Menu for Infinity Gauntlet
+country_event = {
+    id = ig_menu.3
+    title = ig_menu.3.name
+    desc = ig_menu.3.desc
+    picture = GFX_evt_gauntlet_complete
+    hide_window = no
+    is_triggered_only = yes
+
+    #Infinity Gauntlet Enabled
+    option = {
+        name = ig_menu.3.infinitygauntlet.enabled
+        trigger = {
+            NOT = { has_global_flag = menu_infinity_gauntlet_disabled }
+        }
+        hidden_effect = {
+            set_global_flag = menu_infinity_gauntlet_disabled
+            set_global_flag = menu_infinity_circuit_disabled
+            country_event = { id = ig_menu.3 }
+        }
+    }
+
+    #Infinity Gauntlet Disabled
+    option = {
+        name = ig_menu.3.infinitygauntlet.disabled
+        trigger = {
+            has_global_flag = menu_infinity_gauntlet_disabled
+        }
+        hidden_effect = {
+            remove_global_flag = menu_infinity_gauntlet_disabled
+            remove_global_flag = menu_infinity_circuit_disabled
+            country_event = { id = ig_menu.3 }
+        }
+    }
+
+    #Infinity Circuit Enabled
+    option = {
+        name = ig_menu.3.infinitycircuit.enabled
+        trigger = {
+            NOT = { has_global_flag = menu_infinity_circuit_disabled }
+            NOT = { has_global_flag = menu_infinity_gauntlet_disabled }
+        }
+        hidden_effect = {
+            set_global_flag = menu_infinity_circuit_disabled
+            country_event = { id = ig_menu.3 }
+        }
+    }
+
+    #Infinity Circuit Disabled
+    option = {
+        name = ig_menu.3.infinitycircuit.disabled
+        trigger = {
+            has_global_flag = menu_infinity_circuit_disabled
+            NOT = { has_global_flag = menu_infinity_gauntlet_disabled }
+        }
+        hidden_effect = {
+            remove_global_flag = menu_infinity_circuit_disabled
+            country_event = { id = ig_menu.3 }
+        }
+    }
+
+    #Back
+    option = {
+        name = ig_menu.2.back
+        hidden_effect = {
+            country_event = { id = ig_menu.0 }
+        }
+    }
+ }
+
+
+#Options Menu for Reality Stone
+country_event = {
+    id = ig_menu.4
+    title = ig_menu.4.name
+    desc = ig_menu.4.desc
+    picture = GFX_evt_infinity_circuit_reality_soul
+    hide_window = no
+    is_triggered_only = yes
+
+    #Reality Stone Enabled
+    option = {
+        name = ig_menu.4.realitystone.enabled
+        trigger = {
+            NOT = { has_global_flag = menu_reality_stone_disabled }
+        }
+        hidden_effect = {
+            set_global_flag = menu_reality_stone_disabled
+            country_event = { id = ig_menu.4 }
+        }
+    }
+
+    #Reality Stone Disabled
+    option = {
+        name = ig_menu.4.realitystone.disabled
+        trigger = {
+            has_global_flag = menu_reality_stone_disabled
+        }
+        hidden_effect = {
+            remove_global_flag = menu_reality_stone_disabled
+            country_event = { id = ig_menu.4 }
+        }
+    }
+
+    #Soul Stone Enabled
+    option = {
+        name = ig_menu.4.soulstone.enabled
+        trigger = {
+            NOT = { has_global_flag = menu_soul_stone_disabled }
+        }
+        hidden_effect = {
+            set_global_flag = menu_soul_stone_disabled
+            country_event = { id = ig_menu.4 }
+        }
+    }
+
+    #Soul Stone Disabled
+    option = {
+        name = ig_menu.4.soulstone.disabled
+        trigger = {
+            has_global_flag = menu_soul_stone_disabled
+        }
+        hidden_effect = {
+            remove_global_flag = menu_soul_stone_disabled
+            country_event = { id = ig_menu.4 }
+        }
+    }
+
+    #Back
+    option = {
+        name = ig_menu.2.back
+        hidden_effect = {
+            country_event = { id = ig_menu.0 }
+        }
+    }
+ }
+
+#Options Menu for Events Leaders
+country_event = {
+    id = ig_menu.5
+    title = ig_menu.5.name
+    desc = ig_menu.5.desc
+    picture = GFX_evt_ig_menu_leaders
+    hide_window = no
+    is_triggered_only = yes
+
+    #Thor Enabled
+    option = {
+        name = ig_menu.5.thor.enabled
+        trigger = {
+            NOT = { has_global_flag = menu_thor_disabled }
+        }
+        hidden_effect = {
+            set_global_flag = menu_thor_disabled
+            country_event = { id = ig_menu.5 }
+        }
+    }
+
+    #Thor Disabled
+    option = {
+        name = ig_menu.5.thor.disabled
+        trigger = {
+            has_global_flag = menu_thor_disabled
+        }
+        hidden_effect = {
+            remove_global_flag = menu_thor_disabled
+            country_event = { id = ig_menu.5 }
+        }
+    }
+
+    #Captain Marvel Enabled
+    option = {
+        name = ig_menu.5.captainmarvel.enabled
+        trigger = {
+            NOT = { has_global_flag = menu_captain_marvel_disabled }
+        }
+        hidden_effect = {
+            set_global_flag = menu_captain_marvel_disabled
+            country_event = { id = ig_menu.5 }
+        }
+    }
+
+    #Captain Marvel Disabled
+    option = {
+        name = ig_menu.5.captainmarvel.disabled
+        trigger = {
+            has_global_flag = menu_captain_marvel_disabled
+        }
+        hidden_effect = {
+            remove_global_flag = menu_captain_marvel_disabled
+            country_event = { id = ig_menu.5 }
+        }
+    }
+
+    #The Vision Enabled
+    option = {
+        name = ig_menu.5.vision.enabled
+        trigger = {
+            NOT = { has_global_flag = menu_vision_disabled }
+        }
+        hidden_effect = {
+            set_global_flag = menu_vision_disabled
+            country_event = { id = ig_menu.5 }
+        }
+    }
+
+    #The Vision Disabled
+    option = {
+        name = ig_menu.5.vision.disabled
+        trigger = {
+            has_global_flag = menu_vision_disabled
+        }
+        hidden_effect = {
+            remove_global_flag = menu_vision_disabled
+            country_event = { id = ig_menu.5 }
+        }
+    }
+
+    #The Vision Enabled
+    option = {
+        name = ig_menu.5.ultron.enabled
+        trigger = {
+            NOT = { has_global_flag = menu_ultron_disabled }
+        }
+        hidden_effect = {
+            set_global_flag = menu_ultron_disabled
+            country_event = { id = ig_menu.5 }
+        }
+    }
+
+    #The Vision Disabled
+    option = {
+        name = ig_menu.5.ultron.disabled
+        trigger = {
+            has_global_flag = menu_ultron_disabled
+        }
+        hidden_effect = {
+            remove_global_flag = menu_ultron_disabled
+            country_event = { id = ig_menu.5 }
+        }
+    }
+
+    #Back
+    option = {
+        name = ig_menu.2.back
+        hidden_effect = {
+            country_event = { id = ig_menu.0 }
+        }
+    }
+ }
+
+#Options Menu for the Infinity Drive
+country_event = {
+    id = ig_menu.6
+    title = ig_menu.6.name
+    desc = ig_menu.6.desc
+    picture = GFX_evt_physics_research
+    hide_window = no
+    is_triggered_only = yes
+
+    #Infinity Drive Enabled
+    option = {
+        name = ig_menu.6.infinitydrive.enabled
+        trigger = {
+            NOT = { has_global_flag = menu_infinity_drive_disabled }
+        }
+        hidden_effect = {
+            set_global_flag = menu_infinity_drive_disabled
+            country_event = { id = ig_menu.6 }
+        }
+    }
+
+    #Infinity Drive Disabled
+    option = {
+        name = ig_menu.6.infinitydrive.disabled
+        trigger = {
+            has_global_flag = menu_infinity_drive_disabled
+        }
+        hidden_effect = {
+            remove_global_flag = menu_infinity_drive_disabled
+            country_event = { id = ig_menu.6 }
+        }
+    }
+
+    #Back
+    option = {
+        name = ig_menu.2.back
+        hidden_effect = {
+            country_event = { id = ig_menu.0 }
+        }
+    }
+ }
+
+ country_event = {
+    id = ig_menu.100
+    hide_window = yes
+    fire_only_once = yes
+
+    trigger = {
+        NOT = { has_global_flag = ig_menu_opened_first_time }
+        is_multiplayer = no
+    }
+
+    immediate = {
+        set_global_flag = ig_menu_opened_first_time
+        every_country = {
+            limit = { is_ai = no }
+            country_event = { id = ig_menu.0 }
+        }
+    }
+ }

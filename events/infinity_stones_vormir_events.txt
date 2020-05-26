@@ -1,0 +1,214 @@
+# I spent a lot of time on this mod out of my own free time, and nobody would like it if someone took their creation
+# and stole it, and tried to claim it as thier's. If you want to learn to mod Stellaris, I'm not the best person to
+# ask, but I'm always open to help and if you'd like to make new features or add-ons to this mod, send me a message,
+# and we'll discuss together about either integrating them into this mod, or creating an add-on to this one.
+
+
+
+namespace = vormir
+
+ # physics_research = 1000
+ # society_research = 1000
+ # engineering_research = 1000
+
+ship_event = {
+    id = vormir.0
+    title = "vormir.0.name"
+    desc = "vormir.0.desc"
+    picture = GFX_evt_vormir_space
+    location = ROOT
+    is_triggered_only = yes
+    trigger = {
+        FROM = {
+            has_star_flag = soul_stone_system
+        }
+        NOT = { owner = { has_country_flag = soul_stone_system_visited } }
+    }
+    immediate = {
+        owner = {
+            set_country_flag = soul_stone_system_visited
+        }
+    }
+    option = {
+        name = "vormir.0.a"
+    }
+}
+
+# vormir Digsite
+fleet_event = {
+    id = vormir.1
+    title = "vormir.1.name"
+    desc = vormir.1.desc
+    picture = GFX_evt_vormir_shrine
+    show_sound = event_scanner
+    location = from
+
+    archaeology = yes
+
+    is_triggered_only = yes
+
+    option = {
+        name = vormir.1.a
+    }
+}
+
+fleet_event = {
+    id = vormir.2
+    title = "vormir.2.name"
+    desc = vormir.2.desc
+    picture = GFX_evt_vormir_wraith
+    show_sound = event_mystic_reveal
+    location = from
+
+    archaeology = yes
+
+    is_triggered_only = yes
+
+    option = {
+            name = vormir.2.a
+            if = {
+                limit = {
+                    owner = { NOT = { has_authority = auth_machine_intelligence } }
+                    owner = { NOT = { has_authority = auth_hive_mind } }
+                }
+                hidden_effect = {
+                    fleet_event = { id = vormir.11 }
+                }
+            }
+            else = {
+                hidden_effect = {
+                    owner = { country_event = { id = vormir.50 } }
+                }
+            }
+        }
+}
+
+
+ # Choice to kill
+fleet_event = {
+    id = vormir.11
+    title = vormir.11.name
+    desc = vormir.11.desc
+    picture = GFX_evt_vormir_choice
+    show_sound = event_mystic_reveal
+
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = vormir.11.a
+        leader = {  kill_leader = { show_notification = no } }
+        custom_tooltip = soul_stone_get_prodigy
+        hidden_effect = {
+            owner = {
+                zero_choose_random_owned_species_for_leader = yes
+                create_leader = {
+                    class = scientist
+                    species = event_target:zero_random_species
+                    name = random
+                    skill = 1
+                    leader_age_min = 20
+                    leader_age_max = 30
+                    traits = {
+                        trait = leader_trait_scientist_vormir_prodigy
+                        trait = random_trait
+                    }
+                }
+                zero_assign_prescripted_traits_for_leaders = yes
+                country_event = { id = vormir.12 }
+            }
+        }
+    }
+    option = {
+        name = vormir.11.b
+        leader = { add_trait = leader_trait_arrested_development }
+        hidden_effect = {
+            owner = { country_event = { id = vormir.13 } }
+        }
+    }
+ }
+
+ # Scientist Dies
+country_event = {
+    id = vormir.12
+    title = vormir.12.name
+    desc = vormir.12.desc
+    picture = GFX_evt_soul_stone_get
+    show_sound = event_mystic_reveal
+
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = vormir.11.a
+        add_relic = r_soul_stone
+        add_resource = { unity = 1000 }
+        hidden_effect = {
+            every_country = {
+                limit = { is_country_type = default }
+                set_country_flag = soul_stone_system_visited
+            }
+        }
+    }
+ }
+
+ # Scientist's Lover Dies
+country_event = {
+    id = vormir.13
+    title = vormir.12.name
+    desc = vormir.13.desc
+    picture = GFX_evt_soul_stone_get
+    show_sound = event_mystic_reveal
+
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = vormir.12.a
+        add_relic = r_soul_stone
+        add_resource = { unity = 1000 }
+        hidden_effect = {
+            every_country = {
+                limit = { is_country_type = default }
+                set_country_flag = soul_stone_system_visited
+            }
+        }
+    }
+ }
+
+ # Gestalts don't feel love
+country_event = {
+    id = vormir.50
+    title = vormir.50.name
+    desc = vormir.50.desc
+    picture = GFX_evt_soul_stone_get
+    show_sound = event_mystic_reveal
+
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        trigger = { has_authority = auth_machine_intelligence }
+        name = vormir.50.mach
+        add_relic = r_soul_stone
+        add_resource = { unity = 1000 }
+        hidden_effect = {
+            every_country = {
+                limit = { is_country_type = default }
+                set_country_flag = soul_stone_system_visited
+            }
+        }
+    }
+    option = {
+        trigger = { has_authority = auth_hive_mind }
+        name = vormir.50.hive
+        add_relic = r_soul_stone
+        add_resource = { unity = 1000 }
+        hidden_effect = {
+            every_country = {
+                limit = { is_country_type = default }
+                set_country_flag = soul_stone_system_visited
+            }
+        }
+    }
+ }

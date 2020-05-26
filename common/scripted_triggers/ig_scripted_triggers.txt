@@ -1,0 +1,234 @@
+# I spent a lot of time on this mod out of my own free time, and nobody would like it if someone took their creation
+# and stole it, and tried to claim it as thier's. If you want to learn to mod Stellaris, I'm not the best person to
+# ask, but I'm always open to help and if you'd like to make new features or add-ons to this mod, send me a message,
+# and we'll discuss together about either integrating them into this mod, or creating an add-on to this one.
+
+#	Example:
+#
+#	example_trigger = {
+#		is_country_type = default
+#		num_communications > 0
+#	}
+#
+#
+#	In a script file:
+#
+#	trigger = {
+#		example_trigger = yes
+#	}
+#
+
+
+is_soulborn = {
+	OR = {
+        has_leader_flag = soulborn
+        has_trait = leader_trait_admiral_soulborn
+        has_trait = leader_trait_general_soulborn
+        has_trait = leader_trait_governor_soulborn
+        has_trait = leader_trait_scientist_soulborn
+    }
+}
+
+has_two_infinity_stones = {
+	OR = {
+        AND = {
+            has_relic = r_power_stone
+            OR = {
+                has_relic = r_time_stone
+                has_relic = r_reality_stone
+                has_relic = r_soul_stone
+                has_relic = r_mind_stone
+                has_relic = r_space_stone
+            }
+        }
+        AND = {
+            has_relic = r_time_stone
+            OR = {
+                has_relic = r_reality_stone
+                has_relic = r_soul_stone
+                has_relic = r_mind_stone
+                has_relic = r_space_stone
+            }
+        }
+        AND = {
+            has_relic = r_reality_stone
+            OR = {
+                has_relic = r_soul_stone
+                has_relic = r_mind_stone
+                has_relic = r_space_stone
+            }
+        }
+        AND = {
+            has_relic = r_soul_stone
+            OR = {
+                has_relic = r_mind_stone
+                has_relic = r_space_stone
+            }
+        }
+        AND = {
+            has_relic = r_mind_stone
+            OR = {
+                has_relic = r_space_stone
+            }
+        }
+    }
+}
+
+has_six_infinity_stones = {
+	has_relic = r_power_stone
+    has_relic = r_time_stone
+    has_relic = r_reality_stone
+    has_relic = r_soul_stone
+    has_relic = r_mind_stone
+    has_relic = r_space_stone
+}
+
+has_an_infinity_stone = {
+    OR = {
+        has_relic = r_power_stone
+        has_relic = r_time_stone
+        has_relic = r_reality_stone
+        has_relic = r_soul_stone
+        has_relic = r_mind_stone
+        has_relic = r_space_stone
+    }
+}
+
+valid_to_recieve_infinity_stone = {
+    is_country_type = default
+    is_subject = no
+}
+
+not_valid_to_own_infinity_stone = {
+    is_subject = yes
+    NOT = { is_subject_type = scion }
+}
+
+not_has_infinity_circuit_power_space_modifier = {
+    NOT = { has_modifier = infinity_circuit_power_space }
+}
+
+not_has_infinity_circuit_space_time_modifier = {
+    NOT = { has_modifier = infinity_circuit_space_time }
+}
+
+not_has_infinity_circuit_time_reality_modifier = {
+    NOR = {
+        has_modifier = infinity_circuit_time_reality_one
+        has_modifier = infinity_circuit_time_reality_two
+        has_modifier = infinity_circuit_time_reality_three
+    }
+}
+
+not_has_infinity_circuit_reality_soul_modifier = {
+    NOR = {
+        has_modifier = infinity_circuit_reality_soul_one
+        has_modifier = infinity_circuit_reality_soul_two
+        has_modifier = infinity_circuit_reality_soul_three
+        has_modifier = infinity_circuit_reality_soul_four
+        has_modifier = infinity_circuit_reality_soul_five
+    }
+}
+
+not_has_infinity_circuit_soul_mind_modifier = {
+    NOT = { has_modifier = infinity_circuit_soul_mind }
+}
+
+not_has_infinity_circuit_mind_power_modifier = {
+    NOT = { has_modifier = infinity_circuit_mind_power }
+}
+
+can_use_infinity_gauntlet = {
+    has_modifier = infinity_stone_relic_activation_cooldown
+    OR = {
+        AND = {
+            has_relic = r_power_stone
+            NOT = { has_modifier = power_stone }
+        }
+        AND = {
+            has_relic = r_time_stone
+            NOT = { has_modifier = time_stone }
+        }
+        AND = {
+            has_relic = r_reality_stone
+            NOT = { has_modifier = reality_stone }
+        }
+        AND = {
+            has_relic = r_soul_stone
+            NOT = { has_modifier = soul_stone }
+        }
+        AND = {
+            has_relic = r_mind_stone
+            NOT = { has_modifier = mind_stone }
+        }
+        AND = {
+            has_relic = r_space_stone
+            NOT = { has_modifier = space_stone }
+        }
+    }
+}
+
+has_stone_modifier_but_not_the_stone = {
+    OR = {
+        AND = {
+            NOT = { has_relic = r_power_stone }
+            OR = {
+                has_modifier = power_stone
+                has_modifier = infinity_circuit_power_space
+                has_modifier = infinity_circuit_mind_power
+            }
+        }
+        AND = {
+            NOT = { has_relic = r_time_stone }
+            OR = {
+                has_modifier = time_stone
+                has_modifier = infinity_circuit_space_time
+                has_modifier = infinity_circuit_time_reality_one
+                has_modifier = infinity_circuit_time_reality_two
+                has_modifier = infinity_circuit_time_reality_three
+            }
+        }
+        AND = {
+            NOT = { has_relic = r_reality_stone }
+            OR = {
+                has_modifier = reality_stone
+                has_modifier = infinity_circuit_reality_soul_one
+                has_modifier = infinity_circuit_reality_soul_two
+                has_modifier = infinity_circuit_reality_soul_three
+                has_modifier = infinity_circuit_reality_soul_four
+                has_modifier = infinity_circuit_reality_soul_five
+                has_modifier = infinity_circuit_time_reality_one
+                has_modifier = infinity_circuit_time_reality_two
+                has_modifier = infinity_circuit_time_reality_three
+            }
+        }
+        AND = {
+            NOT = { has_relic = r_soul_stone }
+            OR = {
+                has_modifier = soul_stone
+                has_modifier = infinity_circuit_reality_soul_one
+                has_modifier = infinity_circuit_reality_soul_two
+                has_modifier = infinity_circuit_reality_soul_three
+                has_modifier = infinity_circuit_reality_soul_four
+                has_modifier = infinity_circuit_reality_soul_five
+                has_modifier = infinity_circuit_soul_mind
+            }
+        }
+        AND = {
+            NOT = { has_relic = r_mind_stone }
+            OR = {
+                has_modifier = mind_stone
+                has_modifier = infinity_circuit_mind_power
+                has_modifier = infinity_circuit_soul_mind
+            }
+        }
+        AND = {
+            NOT = { has_relic = r_space_stone }
+            OR = {
+                has_modifier = space_stone
+                has_modifier = infinity_circuit_power_space
+                has_modifier = infinity_circuit_space_time
+            }
+        }
+    }
+}

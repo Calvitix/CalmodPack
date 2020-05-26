@@ -1,0 +1,371 @@
+# I spent a lot of time on this mod out of my own free time, and nobody would like it if someone took their creation
+# and stole it, and tried to claim it as thier's. If you want to learn to mod Stellaris, I'm not the best person to
+# ask, but I'm always open to help and if you'd like to make new features or add-ons to this mod, send me a message,
+# and we'll discuss together about either integrating them into this mod, or creating an add-on to this one.
+
+
+
+namespace = svartalfheim
+
+ # physics_research = 1000
+ # society_research = 1000
+ # engineering_research = 1000
+
+ship_event = {
+    id = svartalfheim.0
+    title = "svartalfheim.0.name"
+    desc = "svartalfheim.0.desc"
+    picture = GFX_evt_svartalfheim_space
+    location = ROOT
+    is_triggered_only = yes
+    trigger = {
+        FROM = {
+            has_star_flag = reality_stone_system
+        }
+        NOT = { owner = { has_country_flag = reality_stone_system_visited } }
+    }
+    immediate = {
+        owner = {
+            set_country_flag = reality_stone_system_visited
+        }
+    }
+    option = {
+        name = "svartalfheim.0.a"
+    }
+}
+
+# svartalfheim Digsite
+fleet_event = {
+    id = svartalfheim.1
+    title = "svartalfheim.1.name"
+    desc = svartalfheim.1.desc
+    picture = GFX_evt_svartalfheim_world_2
+    show_sound = event_scanner
+    location = from
+
+    archaeology = yes
+
+    is_triggered_only = yes
+
+    option = {
+        name = svartalfheim.1.a
+        owner = {
+            add_resource = { minor_artifacts = 10 }
+        }
+    }
+}
+
+fleet_event = {
+    id = svartalfheim.2
+    title = "svartalfheim.2.name"
+    desc = svartalfheim.2.desc
+    picture = GFX_evt_svartalfheim_rifts
+    show_sound = event_alien_signal
+    location = from
+
+    archaeology = yes
+
+    is_triggered_only = yes
+
+    option = {
+        name = svartalfheim.2.a
+        owner = {
+            add_resource = { physics_research = 1000 }
+        }
+    }
+}
+
+fleet_event = {
+    id = svartalfheim.3
+    title = "svartalfheim.3.name"
+    desc = svartalfheim.3.desc
+    picture = GFX_evt_asgard
+    show_sound = event_mystic_reveal
+    location = from
+
+    archaeology = yes
+
+    is_triggered_only = yes
+
+    option = {
+        name = svartalfheim.3.a
+        owner = {
+            add_resource = { minor_artifacts = 10 }
+            add_resource = { energy = 10000 }
+            hidden_effect = {
+                if = {
+                    limit = { NOT = { has_global_flag = menu_thor_disabled } }
+                    country_event = { id = svartalfheim.11 days = 14 random = 28 }
+                }
+            }
+        }
+    }
+}
+
+fleet_event = {
+    id = svartalfheim.4
+    title = "svartalfheim.4.name"
+    desc = svartalfheim.4.desc
+    picture = GFX_evt_nine_realms
+    show_sound = event_mystic_reveal
+    location = from
+
+    archaeology = yes
+
+    is_triggered_only = yes
+
+    option = {
+        name = svartalfheim.4.a
+        owner = {
+            add_resource = { minor_artifacts = 25 }
+        }
+        #FROM = {
+        #    set_deposit = d_society_10
+        #    set_deposit = d_physics_10
+        #    set_deposit = d_engineering_10
+        #}
+    }
+}
+
+fleet_event = {
+    id = svartalfheim.5
+    title = "svartalfheim.5.name"
+    desc = svartalfheim.5.desc
+    picture = GFX_evt_aether
+    show_sound = event_mystic_reveal
+    location = from
+
+    archaeology = yes
+
+    is_triggered_only = yes
+
+    option = {
+        name = svartalfheim.5.a
+        owner = {
+            add_relic = r_reality_stone
+            add_resource = { unity = 1000 }
+        }
+        hidden_effect = {
+            every_country = {
+                limit = { is_country_type = default }
+                set_country_flag = reality_stone_system_visited
+            }
+        }
+    }
+}
+
+# Hammer Recieve
+country_event = {
+    id = svartalfheim.11
+    title = svartalfheim.11.name
+    desc = svartalfheim.11.desc
+    picture = GFX_evt_hammer_on_ground
+    show_sound = event_mystic_reveal
+
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = svartalfheim.11.a
+        add_relic = r_mjolnir
+    }
+ }
+
+ #Hammer Drone vs worthy
+ country_event = {
+    id = svartalfheim.89
+    hide_window = yes
+    is_triggered_only = yes
+
+    immediate = {
+        if = {
+            limit = {
+                owner = { NOT = { has_authority = auth_machine_intelligence } }
+                owner = { NOT = { has_authority = auth_hive_mind } }
+            }
+            country_event = { id = svartalfheim.90 }
+        }
+        else =  {
+            country_event = { id = svartalfheim.91 }
+        }
+    }
+}
+
+# Hammer Create Thor mortal
+country_event = {
+    id = svartalfheim.90
+    title = svartalfheim.90.name
+    desc = svartalfheim.90.desc
+    picture = GFX_evt_pick_up_hammer
+    show_sound = event_mystic_reveal
+
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = svartalfheim.90.a
+        remove_relic = r_mjolnir
+        custom_tooltip = svartalfheim_get_thor
+        zero_choose_random_owned_species_for_leader = yes
+        create_thor_leader = yes
+    }
+ }
+
+ # Hammer Create Thor drone
+country_event = {
+    id = svartalfheim.91
+    title = svartalfheim.91.name
+    desc = svartalfheim.91.desc
+    picture = GFX_evt_pick_up_hammer
+    show_sound = event_mystic_reveal
+
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = svartalfheim.91.a
+        remove_relic = r_mjolnir
+        custom_tooltip = svartalfheim_get_thor
+        zero_choose_random_owned_species_for_leader = yes
+        create_thor_leader_gestalt = yes
+    }
+ }
+
+# Thor dies
+country_event = {
+    id = svartalfheim.100
+    title = svartalfheim.100.name
+    desc = svartalfheim.100.desc
+    picture = GFX_evt_hammer_on_ground
+    show_sound = event_mystic_reveal
+
+    hide_window = no
+    is_triggered_only = yes
+
+    trigger = {
+        from = {
+            has_leader_flag = thor_leader
+            leader_class = admiral
+        }
+    }
+
+    immediate = {
+        set_country_flag = has_had_thor_before
+    }
+
+    option = {
+        name = svartalfheim.100.a
+        random_playable_country = {
+            limit = {
+                is_country_type = default
+                is_subject = no
+            }
+            hidden_effect = {
+                country_event = { id = svartalfheim.101 days = 7 random = 7 } #give out hammer
+            }
+        }
+    }
+ }
+
+
+# hammer gifted
+country_event = {
+    id = svartalfheim.101
+    title = svartalfheim.101.name
+    desc = {
+        trigger = { has_country_flag = has_had_thor_before }
+        text = "svartalfheim.101.hadthor"
+    }
+    desc = {
+        trigger = { NOT = { has_country_flag = has_had_thor_before } }
+        text = "svartalfheim.101.nothadthor"
+    }
+    picture = GFX_evt_pick_up_hammer
+    show_sound = event_mystic_reveal
+
+    hide_window = no
+    is_triggered_only = yes
+
+    trigger = {
+        NOT = { has_global_flag = menu_thor_disabled }
+    }
+
+    immediate = {
+        zero_choose_random_owned_species_for_leader = yes
+    }
+
+    option = {
+        name = svartalfheim.101.a
+        custom_tooltip = svartalfheim_get_thor
+        trigger = {
+            NOT = { has_authority = auth_machine_intelligence }
+            NOT = { has_authority = auth_hive_mind }
+        }
+        create_thor_leader = yes
+    }
+    option = {
+        name = svartalfheim.101.b
+        custom_tooltip = svartalfheim_get_thor
+        trigger = {
+            OR = {
+                owner = { has_authority = auth_machine_intelligence }
+                owner = { has_authority = auth_hive_mind }
+            }
+        }
+        create_thor_leader_gestalt = yes
+    }
+}
+
+
+# Ruler gets Thor trait back when no longer ruler
+country_event = {
+    id = svartalfheim.200
+    is_triggered_only = yes
+    hide_window = yes
+
+    trigger = {
+        from = {
+            has_leader_flag = thor_leader
+        }
+    }
+
+    immediate = {
+        from = {
+            if = {
+                limit = { leader_class = admiral }
+                add_trait = leader_trait_admiral_thor
+                break = yes
+            }
+        }
+    }
+}
+
+# Reality Stone City Allow flag
+country_event = {
+    id = svartalfheim.250
+    title = svartalfheim.250.name
+    desc = svartalfheim.250.desc
+    picture = GFX_evt_city_planet
+    show_sound = event_mystic_reveal
+    hide_window = no
+
+    trigger = {
+        has_technology = tech_antimatter_power
+        has_relic = r_reality_stone
+        NOT = {
+            has_country_flag = reality_stone_city_allowed
+            is_machine_empire = yes
+            is_hive_empire = yes
+            has_global_flag = menu_reality_stone_disabled
+        }
+    }
+
+    immediate = {
+        set_country_flag = reality_stone_city_allowed
+    }
+
+    option = {
+        name = svartalfheim.250.a
+        custom_tooltip = reality_stone_upgraded_tooltip
+    }
+ }

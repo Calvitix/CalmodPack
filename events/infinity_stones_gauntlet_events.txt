@@ -1,0 +1,1406 @@
+# I spent a lot of time on this mod out of my own free time, and nobody would like it if someone took their creation
+# and stole it, and tried to claim it as thier's. If you want to learn to mod Stellaris, I'm not the best person to
+# ask, but I'm always open to help and if you'd like to make new features or add-ons to this mod, send me a message,
+# and we'll discuss together about either integrating them into this mod, or creating an add-on to this one.
+
+
+namespace = infinity_gauntlet
+
+event = {
+    id = infinity_gauntlet.0
+    hide_window = yes
+
+    is_triggered_only = yes
+
+    trigger = {
+        any_country = {
+            has_two_infinity_stones = yes
+            NOT = { has_relic = r_infinity_gauntlet has_global_flag = menu_infinity_gauntlet_disabled }
+        }
+    }
+
+    immediate = {
+        every_country = {
+            limit = {
+                has_two_infinity_stones = yes
+                NOT = { has_relic = r_infinity_gauntlet }
+            }
+            country_event = { id = infinity_gauntlet.1 }
+        }
+    }
+}
+
+ country_event = {
+    id = infinity_gauntlet.1
+    title = infinity_gauntlet.1.name
+    desc = infinity_gauntlet.1.desc
+    picture = GFX_evt_gauntlet_get
+    show_sound = event_mystic_reveal
+
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = infinity_gauntlet.1.a
+        add_relic = r_infinity_gauntlet
+    }
+ }
+
+ event = {
+    id = infinity_gauntlet.2
+    hide_window = yes
+
+    is_triggered_only = yes
+
+    trigger = {
+        any_country = {
+            NOT = { has_two_infinity_stones = yes }
+            has_relic = r_infinity_gauntlet
+        }
+    }
+
+    immediate = {
+        every_country = {
+             limit = {
+                has_relic = r_infinity_gauntlet
+                NOT = { has_two_infinity_stones = yes }
+            }
+            country_event = { id = infinity_gauntlet.3 }
+        }
+    }
+}
+
+ country_event = {
+    id = infinity_gauntlet.3
+    title = infinity_gauntlet.3.name
+    desc = infinity_gauntlet.3.desc
+    picture = GFX_evt_gauntlet_get
+    show_sound = event_mystic_reveal
+
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = infinity_gauntlet.3.a
+        remove_relic = r_infinity_gauntlet
+    }
+ }
+
+#Gauntlet Disabled Add Gauntlet
+event = {
+    id = infinity_gauntlet.4
+    hide_window = yes
+
+    is_triggered_only = yes
+
+    trigger = {
+        any_country = {
+            has_six_infinity_stones = yes
+            NOT = { has_relic = r_infinity_gauntlet }
+            has_global_flag = menu_infinity_gauntlet_disabled
+        }
+    }
+
+    immediate = {
+        every_country = {
+            limit = {
+                has_six_infinity_stones = yes
+                NOT = { has_relic = r_infinity_gauntlet }
+                has_global_flag = menu_infinity_gauntlet_disabled
+            }
+            country_event = { id = infinity_gauntlet.1 }
+        }
+    }
+}
+
+ #NORMAL SNAP OPTION
+ country_event = {
+    id = infinity_gauntlet.66
+    title = infinity_gauntlet.66.name
+    desc = infinity_gauntlet.66.desc
+    picture = GFX_evt_gauntlet_snap
+    show_sound = event_snap
+
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = infinity_gauntlet.66.a
+        snap_ruler_death_chance = yes
+        hidden_effect = {
+            set_country_flag = gauntlet_used_for_evil
+            set_global_flag = gauntlet_used_to_purge_pops
+            set_global_flag = can_undo_blip_with_gauntlet
+            set_country_flag = has_used_fully_gauntlet_power
+            remove_country_flag = gauntlet_in_use
+            country_event = { id = infinity_gauntlet.98 }
+        }
+    }
+ }
+
+#NORMAL SNAP PROTECTED
+ country_event = {
+    id = infinity_gauntlet.67
+    title = infinity_gauntlet.67.name
+    desc = infinity_gauntlet.66.desc
+    picture = GFX_evt_gauntlet_snap
+    show_sound = event_snap
+
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = infinity_gauntlet.66.a
+        snap_ruler_death_chance = yes
+        hidden_effect = {
+            set_country_flag = gauntlet_used_for_evil
+            set_global_flag = gauntlet_used_to_purge_pops
+            set_country_flag = has_used_fully_gauntlet_power
+            remove_country_flag = gauntlet_in_use
+            country_event = { id = infinity_gauntlet.150 }
+        }
+    }
+ }
+
+ #10% snap
+ country_event = {
+    id = infinity_gauntlet.68
+    title = infinity_gauntlet.68.name
+    desc = infinity_gauntlet.68.desc
+    picture = GFX_evt_gauntlet_snap
+    show_sound = event_snap
+
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = infinity_gauntlet.68.a
+        snap_ruler_death_chance = yes
+        hidden_effect = {
+            set_country_flag = gauntlet_used_for_mild_evil
+            set_global_flag = gauntlet_used_to_purge_pops
+            set_country_flag = has_used_fully_gauntlet_power
+            remove_country_flag = gauntlet_in_use
+            country_event = { id = infinity_gauntlet.153 }
+        }
+    }
+ }
+
+  #90% SNAP OPTION
+ country_event = {
+    id = infinity_gauntlet.69
+    title = infinity_gauntlet.69.name
+    desc = infinity_gauntlet.69.desc
+    picture = GFX_evt_gauntlet_snap
+    show_sound = event_snap
+
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = infinity_gauntlet.69.a
+        snap_ruler_death_chance = yes
+        hidden_effect = {
+            set_country_flag = gauntlet_used_for_evil
+            set_global_flag = gauntlet_used_to_purge_pops
+            set_country_flag = has_used_fully_gauntlet_power
+            remove_country_flag = gauntlet_in_use
+            distribute_five_random_infinity_stones_and_destroy_one = yes
+            country_event = { id = infinity_gauntlet.155 }
+        }
+    }
+ }
+
+ #THE PURGE OPTION
+ country_event = {
+    id = infinity_gauntlet.70
+    title = infinity_gauntlet.70.name
+    desc = infinity_gauntlet.70.desc
+    picture = GFX_evt_gauntlet_snap
+    show_sound = event_snap
+
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = infinity_gauntlet.70.a
+        trigger = { NOT = { has_civic = civic_machine_terminator } }
+        snap_ruler_death_chance = yes
+        add_modifier = { modifier = purged_galaxy_snap }
+        hidden_effect = {
+            set_country_flag = gauntlet_protected
+            set_global_flag = gauntlet_used_to_purge_pops
+            set_country_flag = has_used_fully_gauntlet_power
+            remove_country_flag = gauntlet_in_use
+            distribute_five_random_infinity_stones_and_destroy_one = yes
+            country_event = { id = infinity_gauntlet.157 }
+        }
+    }
+    option = {
+        name = infinity_gauntlet.70.b
+        trigger = { has_civic = civic_machine_terminator }
+        snap_ruler_death_chance = yes
+        add_modifier = { modifier = purged_galaxy_snap }
+        hidden_effect = {
+            set_country_flag = gauntlet_protected
+            set_global_flag = gauntlet_used_to_purge_pops
+            set_country_flag = has_used_fully_gauntlet_power
+            remove_country_flag = gauntlet_in_use
+            distribute_five_random_infinity_stones_and_destroy_one = yes
+            country_event = { id = infinity_gauntlet.159 }
+        }
+    }
+ }
+
+ #Destroy Enemies
+ country_event = {
+    id = infinity_gauntlet.71
+    title = infinity_gauntlet.71.name
+    desc = infinity_gauntlet.71.desc
+    picture = GFX_evt_gauntlet_snap
+    show_sound = event_snap
+
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = infinity_gauntlet.71.a
+        snap_ruler_death_chance = yes
+        hidden_effect = {
+            set_country_flag = gauntlet_used_for_evil
+            set_country_flag = has_used_fully_gauntlet_power
+            remove_country_flag = gauntlet_in_use
+            country_event = { id = infinity_gauntlet.161 }
+        }
+    }
+ }
+
+#Snapture#########################################################################################################
+
+#SNAP EVENT 50%
+country_event = {
+    id = infinity_gauntlet.98
+    hide_window = yes
+    is_triggered_only = yes
+
+    immediate = {
+        every_galaxy_pop = {
+            random_list = {
+                50 = {
+                    kill_pop = yes
+                }
+                50 = {}
+            }
+        }
+        every_country = {
+            every_owned_leader = {
+                random_list = {
+                    50 = {
+                        kill_leader = {
+                            show_notification = yes
+                        }
+                    }
+                    50 = {}
+                }
+            }
+            add_modifier = {
+                modifier = if_snapture_long
+                days = 3600
+            }
+            add_modifier = {
+                modifier = if_snapture_short
+                days = 360
+            }
+            country_event = { id = infinity_gauntlet.99 }
+        }
+    }
+}
+
+
+#SNAP EVENT 50% NOTIFICATION ALL EMPIRES
+event = {
+    id = infinity_gauntlet.99
+    title = infinity_gauntlet.99.name
+    desc = infinity_gauntlet.99.desc
+    picture = GFX_evt_zro_4
+    show_sound = event_air_raid_siren
+
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = infinity_gauntlet.99.a
+    }
+}
+
+######################################################################################
+
+#SNAP EVENT 50% self protected
+country_event = {
+    id = infinity_gauntlet.150
+    hide_window = yes
+    is_triggered_only = yes
+
+    immediate = {
+        every_galaxy_pop = {
+            limit = { owner = { NOT = { has_country_flag = gauntlet_used_for_evil } } }
+            random_list = {
+                50 = {
+                    kill_pop = yes
+                }
+                50 = {}
+            }
+        }
+        every_country = {
+            limit = { NOT = { has_country_flag = gauntlet_used_for_evil } }
+            every_owned_leader = {
+                random_list = {
+                    50 = {
+                        kill_leader = {
+                            show_notification = yes
+                        }
+                    }
+                    50 = {}
+                }
+            }
+            add_modifier = {
+                modifier = if_snapture_long
+                days = 3600
+            }
+            add_modifier = {
+                modifier = if_snapture_short
+                days = 360
+            }
+            country_event = { id = infinity_gauntlet.151 }
+        }
+        every_country = {
+            limit = { has_country_flag = gauntlet_used_for_evil }
+            country_event = { id = infinity_gauntlet.152 }
+        }
+    }
+}
+
+
+#SNAP EVENT 50% self protected NOTIFICATION ALL EMPIRES
+country_event = {
+    id = infinity_gauntlet.151
+    title = infinity_gauntlet.151.name
+    desc = infinity_gauntlet.99.desc
+    picture = GFX_evt_zro_4
+    show_sound = event_air_raid_siren
+
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = infinity_gauntlet.99.a
+    }
+}
+
+country_event = {
+    id = infinity_gauntlet.152
+    title = infinity_gauntlet.152.name
+    desc = infinity_gauntlet.152.desc
+    picture = GFX_evt_zro_4
+    show_sound = event_air_raid_siren
+
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = infinity_gauntlet.152.a
+    }
+}
+
+##########################################################################################
+
+#SNAP EVENT 10%
+country_event = {
+    id = infinity_gauntlet.153
+    hide_window = yes
+    is_triggered_only = yes
+
+    immediate = {
+        every_galaxy_pop = {
+            random_list = {
+                10 = {
+                    kill_pop = yes
+                }
+                90 = {}
+            }
+        }
+        every_country = {
+            limit = { is_country_type = default }
+            set_timed_country_flag = { flag = ai_no_wars days = 9125 }
+        }
+        every_country = {
+            every_owned_leader = {
+                random_list = {
+                    10 = {
+                        kill_leader = {
+                            show_notification = yes
+                        }
+                    }
+                    90 = {}
+                }
+            }
+            add_modifier = {
+                modifier = if_snapture_long
+                days = 360
+            }
+            country_event = { id = infinity_gauntlet.154 }
+        }
+    }
+}
+
+
+#SNAP EVENT 10% NOTIFICATION ALL EMPIRES
+event = {
+    id = infinity_gauntlet.154
+    title = infinity_gauntlet.154.name
+    desc = infinity_gauntlet.154.desc
+    picture = GFX_evt_zro_4
+    show_sound = event_air_raid_siren
+
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = infinity_gauntlet.154.a
+    }
+}
+#
+#########################################################################################################
+
+#SNAP EVENT 90%
+country_event = {
+    id = infinity_gauntlet.155
+    hide_window = yes
+    is_triggered_only = yes
+
+    immediate = {
+        every_galaxy_pop = {
+            random_list = {
+                90 = {
+                    kill_pop = yes
+                }
+                10 = {}
+            }
+        }
+        every_country = {
+            every_owned_leader = {
+                random_list = {
+                    90 = {
+                        kill_leader = {
+                            show_notification = yes
+                        }
+                    }
+                    10 = {}
+                }
+            }
+            add_modifier = {
+                modifier = if_snapture_long
+                days = 36000
+            }
+            add_modifier = {
+                modifier = if_snapture_short_ninety
+                days = 3600
+            }
+            country_event = { id = infinity_gauntlet.156 }
+        }
+    }
+}
+
+
+#SNAP EVENT 90% NOTIFICATION ALL EMPIRES
+event = {
+    id = infinity_gauntlet.156
+    title = infinity_gauntlet.156.name
+    desc = infinity_gauntlet.156.desc
+    picture = GFX_evt_zro_4
+    show_sound = event_air_raid_siren
+
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = infinity_gauntlet.156.a
+        trigger = { NOT = { has_country_flag = gauntlet_used_for_evil } }
+    }
+    option = {
+        name = infinity_gauntlet.156.b
+        trigger = { has_country_flag = gauntlet_used_for_evil }
+    }
+}
+
+######################################################################################
+
+#SNAP EVENT 100% self protected
+country_event = {
+    id = infinity_gauntlet.157
+    hide_window = yes
+    is_triggered_only = yes
+
+    immediate = {
+        every_galaxy_pop = {
+            limit = { owner = { NOT = { has_country_flag = gauntlet_protected } } }
+            kill_pop = yes
+        }
+        every_country = {
+            limit = { NOT = { has_country_flag = gauntlet_protected } }
+            every_owned_leader = {
+                kill_leader = {
+                    show_notification = yes
+                }
+            }
+        }
+    }
+}
+
+#SNAP EVENT MACHINE 100%
+country_event = {
+    id = infinity_gauntlet.159
+    hide_window = yes
+    is_triggered_only = yes
+
+    immediate = {
+        every_galaxy_pop = {
+            limit = { NOT = { OR = { is_species_class = ROBOT is_species_class = MACHINE } } }
+            kill_pop = yes
+        }
+        every_country = {
+            every_owned_leader = {
+                limit = {
+                    NOT = {
+                        OR = {
+                            species = { has_trait = trait_mechanical }
+                            species = { has_trait = trait_machine_unit }
+                        }
+                    }
+                }
+                    kill_leader = {
+                        show_notification = yes
+                    }
+
+            }
+            add_modifier = { modifier = no_biological_growth_snap }
+            country_event = { id = infinity_gauntlet.160 }
+        }
+    }
+}
+
+#SNAP EVENT MACHINE 100% NOTIFICATION ALL EMPIRES
+country_event = {
+    id = infinity_gauntlet.160
+    title = infinity_gauntlet.160.name
+    desc = infinity_gauntlet.160.desc
+    picture = GFX_evt_zro_4
+    show_sound = event_air_raid_siren
+
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = infinity_gauntlet.160.a
+    }
+}
+
+#######################################################################################################
+
+ #Destroy Enemies
+country_event = {
+    id = infinity_gauntlet.161
+    hide_window = yes
+    is_triggered_only = yes
+
+    immediate = {
+        every_galaxy_pop = {
+            limit = { owner = { is_at_war_with = FROM } }
+            kill_pop = yes
+        }
+        every_country = {
+            limit = { is_at_war_with = FROM }
+            every_owned_leader = {
+                kill_leader = {
+                    show_notification = yes
+                }
+            }
+        }
+        every_country = {
+            country_event = { id = infinity_gauntlet.162 }
+        }
+    }
+}
+
+#Destroy Enemies NOTIFICATION ALL EMPIRES
+country_event = {
+    id = infinity_gauntlet.162
+    title = infinity_gauntlet.162.name
+    desc = infinity_gauntlet.162.desc
+    picture = GFX_evt_zro_4
+    show_sound = event_air_raid_siren
+
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = infinity_gauntlet.162.a
+        trigger = { NOT = { has_country_flag = gauntlet_used_for_evil } }
+    }
+    option = {
+        name = infinity_gauntlet.162.b
+        trigger = { has_country_flag = gauntlet_used_for_evil }
+    }
+}
+
+###################################################################################################
+
+ #END HUNGER
+country_event = {
+    id = infinity_gauntlet.163
+    title = infinity_gauntlet.163.name
+    desc = infinity_gauntlet.163.desc
+    picture = GFX_evt_gauntlet_snap
+    show_sound = event_snap
+
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = infinity_gauntlet.163.a
+        snap_ruler_death_chance = yes
+        hidden_effect = {
+            set_country_flag = gauntlet_used_to_end_hunger
+            set_country_flag = has_used_fully_gauntlet_power
+            set_global_flag = gauntlet_used_to_end_hunger
+            remove_country_flag = gauntlet_in_use
+            country_event = { id = infinity_gauntlet.164 }
+        }
+    }
+ }
+
+ #END HUNGER
+country_event = {
+    id = infinity_gauntlet.164
+    hide_window = yes
+    is_triggered_only = yes
+
+    immediate = {
+        every_country = {
+            add_modifier = { modifier = gauntlet_end_hunger }
+            country_event = { id = infinity_gauntlet.165 }
+        }
+    }
+}
+
+ #END HUNGER NOTIFICATION ALL EMPIRES
+country_event = {
+    id = infinity_gauntlet.165
+    title = infinity_gauntlet.165.name
+    desc = infinity_gauntlet.165.desc
+    picture = GFX_evt_metropolis
+    show_sound = event_celebration
+
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = infinity_gauntlet.165.a
+    }
+}
+
+###################################################################################################
+
+ #The Enlightenment
+country_event = {
+    id = infinity_gauntlet.166
+    title = infinity_gauntlet.166.name
+    desc = infinity_gauntlet.166.desc
+    picture = GFX_evt_gauntlet_snap
+    show_sound = event_snap
+
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+    name = infinity_gauntlet.166.a
+        snap_ruler_death_chance = yes
+        hidden_effect = {
+            set_country_flag = gauntlet_used_to_change_ethics_spiritualist
+            set_country_flag = has_used_fully_gauntlet_power
+            remove_country_flag = gauntlet_in_use
+            country_event = { id = infinity_gauntlet.167 }
+        }
+    }
+ }
+
+ #The Enlightenment
+country_event = {
+    id = infinity_gauntlet.167
+    hide_window = yes
+    is_triggered_only = yes
+
+    immediate = {
+        every_galaxy_pop = {
+            limit = {
+                owner = {
+                    NOT = { has_country_flag = gauntlet_used_to_change_ethics_spiritualist }
+                    NOT = { has_ethic = ethic_gestalt_consciousness }
+                    NOT = { has_ethic = ethic_fanatic_spiritualist }
+                }
+            }
+            pop_change_ethic = ethic_spiritualist
+        }
+        every_country = {
+            limit = {
+                NOT = { has_country_flag = gauntlet_used_to_change_ethics_spiritualist }
+                NOT = { has_ethic = ethic_gestalt_consciousness }
+                NOT = { has_ethic = ethic_fanatic_spiritualist }
+            }
+            shift_ethic = "ethic_fanatic_spiritualist"
+        }
+        every_country = {
+            limit = { NOT = { has_ethic = ethic_gestalt_consciousness } }
+            add_modifier = { modifier = gauntlet_ethics_spiritualist }
+            country_event = { id = infinity_gauntlet.168 }
+        }
+    }
+}
+
+ #The Enlightenment NOTIFICATION ALL EMPIRES
+country_event = {
+    id = infinity_gauntlet.168
+    title = infinity_gauntlet.168.name
+    desc = infinity_gauntlet.168.desc
+    picture = GFX_evt_metropolis
+    show_sound = event_celebration
+
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = infinity_gauntlet.168.a
+    }
+}
+
+###################################################################################################
+
+#The Pacification
+country_event = {
+    id = infinity_gauntlet.169
+    title = infinity_gauntlet.169.name
+    desc = infinity_gauntlet.169.desc
+    picture = GFX_evt_gauntlet_snap
+    show_sound = event_snap
+
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = infinity_gauntlet.169.a
+        snap_ruler_death_chance = yes
+        hidden_effect = {
+            set_country_flag = gauntlet_used_to_change_ethics_pacifist
+            set_country_flag = has_used_fully_gauntlet_power
+            remove_country_flag = gauntlet_in_use
+            country_event = { id = infinity_gauntlet.170 }
+        }
+    }
+ }
+
+#The Pacification
+country_event = {
+    id = infinity_gauntlet.170
+    hide_window = yes
+    is_triggered_only = yes
+
+    immediate = {
+        every_galaxy_pop = {
+            limit = {
+                owner = {
+                    NOT = { has_country_flag = gauntlet_used_to_change_ethics_pacifist }
+                    NOT = { has_ethic = ethic_gestalt_consciousness }
+                    NOT = { has_ethic = ethic_fanatic_pacifist }
+                }
+            }
+            pop_change_ethic = ethic_pacifist
+        }
+        every_country = {
+            limit = {
+                NOT = { has_country_flag = gauntlet_used_to_change_ethics_pacifist }
+                NOT = { has_ethic = ethic_gestalt_consciousness }
+                NOT = { has_ethic = ethic_fanatic_pacifist }
+            }
+            shift_ethic = "ethic_fanatic_pacifist"
+        }
+        every_country = {
+            limit = { NOT = { has_ethic = ethic_gestalt_consciousness } }
+            add_modifier = { modifier = gauntlet_ethics_pacifist }
+            country_event = { id = infinity_gauntlet.171 }
+        }
+    }
+}
+
+#The Pacification NOTIFICATION ALL EMPIRES
+country_event = {
+    id = infinity_gauntlet.171
+    title = infinity_gauntlet.171.name
+    desc = infinity_gauntlet.171.desc
+    picture = GFX_evt_metropolis
+    show_sound = event_celebration
+
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = infinity_gauntlet.171.a
+    }
+}
+
+###################################################################################################
+
+#The Embrace
+country_event = {
+    id = infinity_gauntlet.172
+    title = infinity_gauntlet.172.name
+    desc = infinity_gauntlet.172.desc
+    picture = GFX_evt_gauntlet_snap
+    show_sound = event_snap
+
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = infinity_gauntlet.172.a
+        snap_ruler_death_chance = yes
+        hidden_effect = {
+            set_country_flag = gauntlet_used_to_change_ethics_xenophile
+            set_country_flag = has_used_fully_gauntlet_power
+            remove_country_flag = gauntlet_in_use
+            country_event = { id = infinity_gauntlet.173 }
+        }
+    }
+ }
+
+#The Embrace
+country_event = {
+    id = infinity_gauntlet.173
+    hide_window = yes
+    is_triggered_only = yes
+
+    immediate = {
+        every_galaxy_pop = {
+            limit = {
+                owner = {
+                    NOT = { has_country_flag = gauntlet_used_to_change_ethics_xenophile }
+                    NOT = { has_ethic = ethic_gestalt_consciousness }
+                    NOT = { has_ethic = ethic_fanatic_xenophile }
+                }
+            }
+            pop_change_ethic = ethic_xenophile
+        }
+        every_country = {
+            limit = {
+                NOT = { has_country_flag = gauntlet_used_to_change_ethics_xenophile }
+                NOT = { has_ethic = ethic_gestalt_consciousness }
+                NOT = { has_ethic = ethic_fanatic_xenophile }
+            }
+            shift_ethic = "ethic_fanatic_xenophile"
+        }
+        every_country = {
+            limit = { NOT = { has_ethic = ethic_gestalt_consciousness } }
+            add_modifier = { modifier = gauntlet_ethics_xenophile }
+            country_event = { id = infinity_gauntlet.174 }
+        }
+    }
+}
+
+#The Embrace NOTIFICATION ALL EMPIRES
+country_event = {
+    id = infinity_gauntlet.174
+    title = infinity_gauntlet.174.name
+    desc = infinity_gauntlet.174.desc
+    picture = GFX_evt_metropolis
+    show_sound = event_celebration
+
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = infinity_gauntlet.174.a
+    }
+}
+
+###################################################################################################
+
+#Cripple the Crisis
+country_event = {
+    id = infinity_gauntlet.175
+    title = infinity_gauntlet.175.name
+    desc = infinity_gauntlet.175.desc
+    picture = GFX_evt_gauntlet_snap
+    show_sound = event_snap
+
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = infinity_gauntlet.175.a
+        snap_ruler_death_chance = yes
+        hidden_effect = {
+            set_country_flag = gauntlet_used_to_help_galaxy
+            set_country_flag = has_used_fully_gauntlet_power
+            remove_country_flag = gauntlet_in_use
+            every_country = {
+                country_event = { id = infinity_gauntlet.176 }
+            }
+        }
+    }
+ }
+
+#Cripple the Crisis NOTIFICATION ALL EMPIRES
+country_event = {
+    id = infinity_gauntlet.176
+    title = infinity_gauntlet.176.name
+    desc = infinity_gauntlet.176.desc
+    picture = GFX_evt_small_space_battle
+    show_sound = event_space_battle
+
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = infinity_gauntlet.176.a
+        add_modifier = { modifier = cripple_the_crisis }
+    }
+}
+
+###################################################################################################
+
+#Infinite Wealth
+country_event = {
+    id = infinity_gauntlet.177
+    title = infinity_gauntlet.177.name
+    desc = infinity_gauntlet.177.desc
+    picture = GFX_evt_gauntlet_snap
+    show_sound = event_snap
+
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = infinity_gauntlet.177.a
+        add_modifier = { modifier = gauntlet_money }
+            hidden_effect = {
+                set_country_flag = gauntlet_used_for_evil
+                set_country_flag = has_used_fully_gauntlet_power
+                remove_country_flag = gauntlet_in_use
+            }
+    }
+}
+
+###################################################################################################
+
+ #The Greater Good
+country_event = {
+    id = infinity_gauntlet.178
+    title = infinity_gauntlet.178.name
+    desc = infinity_gauntlet.178.desc
+    picture = GFX_evt_gauntlet_snap
+    show_sound = event_snap
+
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+    name = infinity_gauntlet.178.a
+        snap_ruler_death_chance = yes
+        hidden_effect = {
+            set_country_flag = gauntlet_used_to_change_ethics_egalitarian
+            set_country_flag = has_used_fully_gauntlet_power
+            remove_country_flag = gauntlet_in_use
+            country_event = { id = infinity_gauntlet.179 }
+        }
+    }
+ }
+
+ #The Greater Good
+country_event = {
+    id = infinity_gauntlet.179
+    hide_window = yes
+    is_triggered_only = yes
+
+    immediate = {
+        every_galaxy_pop = {
+            limit = {
+                owner = {
+                    NOT = { has_country_flag = gauntlet_used_to_change_ethics_egalitarian }
+                    NOT = { has_ethic = ethic_gestalt_consciousness }
+                    NOT = { has_ethic = ethic_fanatic_egalitarian }
+                }
+            }
+            pop_change_ethic = ethic_egalitarian
+        }
+        every_country = {
+            limit = {
+                NOT = { has_country_flag = gauntlet_used_to_change_ethics_egalitarian }
+                NOT = { has_ethic = ethic_gestalt_consciousness }
+                NOT = { has_ethic = ethic_fanatic_egalitarian }
+            }
+            shift_ethic = "ethic_fanatic_egalitarian"
+        }
+        every_country = {
+            limit = { NOT = { has_ethic = ethic_gestalt_consciousness } }
+            add_modifier = { modifier = gauntlet_ethics_egalitarian }
+            country_event = { id = infinity_gauntlet.180 }
+        }
+    }
+}
+
+ #The Greater Good NOTIFICATION ALL EMPIRES
+country_event = {
+    id = infinity_gauntlet.180
+    title = infinity_gauntlet.180.name
+    desc = infinity_gauntlet.180.desc
+    picture = GFX_evt_metropolis
+    show_sound = event_celebration
+
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = infinity_gauntlet.180.a
+    }
+}
+
+###################################################################################################
+
+#The End
+country_event = {
+    id = infinity_gauntlet.181
+    title = infinity_gauntlet.181.name
+    desc = infinity_gauntlet.181.desc
+    picture = GFX_evt_gauntlet_snap
+    show_sound = event_snap
+
+    hide_window = no
+    is_triggered_only = yes
+
+    immediate = {
+        set_country_flag = max_soulborn
+        random_country = {
+            limit = { has_country_flag = max_soulborn }             # I feel like this bit of code is wrong but I am currently sat with my head in my hands so i'm not going to change it
+            save_event_target_as = max_soulborn_nation
+        }
+        remove_country_flag = max_soulborn
+    }
+
+    option = {
+        name = infinity_gauntlet.181.a
+        custom_tooltip = ig_the_end_tooltip
+        remove_relic = r_soul_stone
+        hidden_effect = {
+            remove_infinity_stone_modifiers_on_stone_lost = yes
+            #Generic
+            remove_modifier = "infinity_stone_relic_activation_cooldown"
+            hidden_effect = {
+                remove_country_flag = gauntlet_in_use
+                set_country_flag = has_used_fully_gauntlet_power
+            }
+        }
+        snap_ruler_death_chance = yes
+        create_fleet = {
+            name = "NAME_The_End"
+            settings = {
+                spawn_debris = no
+            }
+            effect = {
+                set_owner = event_target:max_soulborn_nation
+                create_ship = {
+                    name = "NAME_Reckoning"
+                    design = "NAME_Warped_Consciousness"
+                }
+                set_location = event_target:max_soulborn_nation.capital_scope
+                set_fleet_stance = aggressive
+                set_aggro_range_measure_from = return_point
+                set_aggro_range = 3000
+                add_modifier = {
+                    modifier = "infinity_gauntlet_max_soulborn"
+                    days = -1
+                }
+            }
+        }
+    }
+}
+
+#########################################################################################################
+
+#I am Inevitable
+country_event = {
+    id = infinity_gauntlet.182
+    title = infinity_gauntlet.182.name
+    desc = infinity_gauntlet.182.desc
+    picture = GFX_evt_gauntlet_snap
+    show_sound = event_snap
+
+    hide_window = no
+    is_triggered_only = yes
+
+    immediate = {
+        random_owned_leader = {
+            limit = { leader_class = ruler }
+            save_event_target_as = ruler_species
+        }
+    }
+
+    option = {
+        name = infinity_gauntlet.182.a
+        custom_tooltip = ig_the_inevitable_tooltip
+        remove_relic = r_power_stone
+        remove_relic = r_time_stone
+        remove_relic = r_reality_stone
+        remove_relic = r_soul_stone
+        remove_relic = r_mind_stone
+        remove_relic = r_space_stone
+        hidden_effect = {
+            set_country_flag = has_used_fully_gauntlet_power
+            kill_leader = {
+                type = ruler
+                show_notification = no
+                heir = yes
+            }
+            kill_leader = {
+                type = ruler
+                show_notification = no
+                heir = no
+            }
+            if = {
+                limit = { event_target:ruler_species = { gender = male } }
+                create_leader = {
+                    class = ruler
+                    species = event_target:ruler_species.species
+                    name = Inevitable
+                    skill = 10
+                    leader_age_min = 30
+                    leader_age_max = 30
+                    gender = male
+                    traits = {
+                        trait = leader_trait_ruler_the_inevitable
+                    }
+                    effect = {
+                        set_leader_flag = the_inevitable
+                    }
+                }
+                assign_leader = last_created_leader
+                create_leader = {
+                    class = admiral
+                    species = event_target:ruler_species.species
+                    name = Inevitable
+                    skill = 10
+                    event_leader = yes
+                    leader_age_min = 30
+                    leader_age_max = 30
+                    gender = male
+                    traits = {
+                        trait = leader_trait_admiral_the_inevitable
+                    }
+                    effect = {
+                        set_leader_flag = the_inevitable
+                    }
+                }
+            }
+            if = {
+                limit = { event_target:ruler_species = { gender = female } }
+                create_leader = {
+                    class = ruler
+                    species = event_target:ruler_species.species
+                    name = Inevitable
+                    skill = 10
+                    leader_age_min = 30
+                    leader_age_max = 30
+                    gender = female
+                    traits = {
+                        trait = leader_trait_ruler_the_inevitable
+                    }
+                    effect = {
+                        set_leader_flag = the_inevitable
+                    }
+                }
+                assign_leader = last_created_leader
+                create_leader = {
+                    class = admiral
+                    species = event_target:ruler_species.species
+                    name = Inevitable
+                    skill = 10
+                    event_leader = yes
+                    leader_age_min = 30
+                    leader_age_max = 30
+                    gender = female
+                    traits = {
+                        trait = leader_trait_admiral_the_inevitable
+                    }
+                    effect = {
+                        set_leader_flag = the_inevitable
+                    }
+                }
+            }
+            remove_infinity_stone_modifiers_on_stone_lost = yes
+            #Generic
+            remove_modifier = "infinity_stone_relic_activation_cooldown"
+            hidden_effect = {
+                remove_country_flag = gauntlet_in_use
+            }
+        }
+    }
+}
+
+#########################################################################################################
+
+  #Disarm the Galaxy
+ country_event = {
+    id = infinity_gauntlet.183
+    title = infinity_gauntlet.183.name
+    desc = infinity_gauntlet.183.desc
+    picture = GFX_evt_gauntlet_snap
+    show_sound = event_snap
+
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = infinity_gauntlet.183.a
+        snap_ruler_death_chance = yes
+        hidden_effect = {
+            set_country_flag = has_used_fully_gauntlet_power
+            remove_country_flag = gauntlet_in_use
+            country_event = { id = infinity_gauntlet.185 }
+        }
+    }
+ }
+
+#Disarm the Galaxy
+country_event = {
+    id = infinity_gauntlet.185
+    hide_window = yes
+    is_triggered_only = yes
+
+    immediate = {
+        every_country = {
+             limit = {
+                NOT = { has_country_flag = gauntlet_used_to_destroy_navy }
+                OR = {
+                    is_country_type = default
+                    is_country_type = fallen_empire
+                    is_country_type = awakened_fallen_empire
+                }
+             }
+            every_owned_ship = {
+                limit = {
+                    OR = {
+                        is_ship_class = shipclass_military
+                        is_ship_class = shipclass_military_station
+                        is_ship_class = shipclass_transport
+                        is_ship_class = shipclass_military_special
+                        #is_ship_class = shipclass_starbase #Can't destroy Juggernauts, need to look into this
+                    }
+                }
+                delete_ship = this
+            }
+        }
+        every_country = {
+            limit = {
+                OR = {
+                    is_country_type = default
+                    is_country_type = fallen_empire
+                    is_country_type = awakened_fallen_empire
+                }
+            }
+            country_event = { id = infinity_gauntlet.186 }
+        }
+    }
+}
+
+
+#Disarm the Galaxy NOTIFICATION ALL EMPIRES
+event = {
+    id = infinity_gauntlet.186
+    title = infinity_gauntlet.186.name
+    desc = infinity_gauntlet.186.desc
+    picture = GFX_evt_exploding_ship
+    show_sound = event_ship_explosion
+
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = infinity_gauntlet.186.a
+        trigger = { NOT = { has_country_flag = gauntlet_used_to_destroy_navy } }
+    }
+    option = {
+        name = infinity_gauntlet.186.b
+        trigger = { has_country_flag = gauntlet_used_to_destroy_navy }
+    }
+}
+
+#########################################################################################################
+
+  #DESTROY THE STONES
+ country_event = {
+    id = infinity_gauntlet.187
+    title = infinity_gauntlet.187.name
+    desc = infinity_gauntlet.187.desc
+    picture = GFX_evt_gauntlet_snap
+    show_sound = event_snap
+
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = infinity_gauntlet.187.a
+        snap_ruler_death_chance = yes
+        destroy_six_infinity_stones = yes
+        remove_relic = r_infinity_gauntlet
+        add_resource = { influence = 1000 }
+        hidden_effect = {
+            remove_country_flag = gauntlet_in_use
+        }
+    }
+ }
+
+ #Undo the snap
+ country_event = {
+    id = infinity_gauntlet.188
+    title = infinity_gauntlet.188.name
+    desc = infinity_gauntlet.188.desc
+    picture = GFX_evt_gauntlet_snap
+    show_sound = event_snap
+
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = infinity_gauntlet.188.a
+        snap_ruler_death_chance = yes
+        hidden_effect = {
+            remove_country_flag = gauntlet_in_use
+            set_country_flag = has_used_fully_gauntlet_power
+            undo_the_snap = yes
+        }
+    }
+ }
+
+ #Undo the snap Annoucement
+ country_event = {
+    id = infinity_gauntlet.189
+    title = infinity_gauntlet.189.name
+    desc = infinity_gauntlet.189.desc
+    picture = GFX_evt_metropolis
+    show_sound = event_celebration
+
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = infinity_gauntlet.189.a
+    }
+ }
