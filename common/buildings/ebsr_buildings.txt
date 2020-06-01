@@ -61,7 +61,7 @@ building_refinery = {
 		"tech_exotic_gases"
 	}
 	
-	upgrades = { eb_refinery }
+	upgrades = { "eb_refinery" }
 
 	triggered_desc = {
 		trigger = {
@@ -927,6 +927,235 @@ eb_crystal_plant2 = {
 
 	ai_resource_production = {
 		rare_crystals = 1
+		trigger = {
+			always = yes
+		}
+	}
+}
+
+eb_dark_matter = {
+	base_buildtime = @b2_time
+
+	category = manufacturing
+
+	potential = {
+		NOT = { has_modifier = resort_colony }
+		NOT = { has_modifier = slave_colony }
+		building_basic_income_check = yes
+	}
+
+	allow = {
+		has_upgraded_capital = yes
+	}
+
+	destroy_trigger = {
+		free_building_slots = 0
+		exists = owner
+		owner = {
+			is_ai = yes
+			has_monthly_income = {
+				resource = sr_dark_matter
+				value > 9
+			}
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_gestalt = no }
+		}
+		modifier = {
+			job_eb_dark_matter_add = 2
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_gestalt = yes }
+		}
+		modifier = {
+			job_eb_dark_matter_drone_add = 2
+		}
+	}
+
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 800
+			rare_crystals = 50
+			exotic_gases = 50
+			volatile_motes = 50
+		}
+		upkeep = {
+			energy = 10
+		}
+	}
+
+	prerequisites = {
+		"eb_more_strategicresource_tech"
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_gestalt = no }
+		}
+		text = job_eb_dark_matter_effect_desc
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_gestalt = yes }
+		}
+		text = job_eb_dark_matter_drone_effect_desc
+	}
+
+	ai_weight = {
+		weight = 0
+		modifier = {
+			factor = 0
+			buildings_build_building = no
+		}
+		modifier = {
+			weight = 30
+			owner = {
+				has_monthly_income = {
+					resource = sr_dark_matter
+					value < 3
+				}#5 is too high since that means 2 extra buildings. Better to just go with 1 extra building
+			}
+		}
+		modifier = {
+			weight = 200
+			owner = {
+				has_monthly_income = {
+					resource = sr_dark_matter
+					value < 0
+				}#5 is too high since that means 2 extra buildings. Better to just go with 1 extra building
+			}
+		}
+	}
+
+	ai_resource_production = {
+		sr_dark_matter = 2
+		trigger = {
+			always = yes
+		}
+	}
+}
+
+eb_nanite_assembly = {
+	base_buildtime = @b2_time
+
+	category = manufacturing
+
+	potential = {
+		NOT = { has_modifier = resort_colony }
+		NOT = { has_modifier = slave_colony }
+		building_basic_income_check = yes
+	}
+
+	allow = {
+		has_upgraded_capital = yes
+	}
+
+	destroy_trigger = {
+		free_building_slots = 0
+		exists = owner
+		owner = {
+			is_ai = yes
+			has_monthly_income = {
+				resource = nanites
+				value > 9
+			}
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_gestalt = no }
+		}
+		modifier = {
+			job_eb_nanite_assembler_add = 2
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_gestalt = yes }
+		}
+		modifier = {
+			job_eb_nanite_assembler_drone_add = 2
+		}
+	}
+
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 800
+			rare_crystals = 50
+			exotic_gases = 50
+			volatile_motes = 50
+		}
+		upkeep = {
+			energy = 10
+			sr_dark_matter = 1
+		}
+	}
+
+	prerequisites = {
+		"tech_nanite_transmutation"
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_gestalt = no }
+		}
+		text = job_eb_nanites_effect_desc
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_gestalt = yes }
+		}
+		text = job_eb_nanites_drone_effect_desc
+	}
+
+	ai_weight = {
+		weight = 0
+		modifier = {
+			factor = 0
+			buildings_build_building = no
+		}
+		modifier = {
+			weight = 30
+			owner = {
+				has_monthly_income = {
+					resource = nanites
+					value < 3
+				}#5 is too high since that means 2 extra buildings. Better to just go with 1 extra building
+			}
+		}
+		modifier = {
+			weight = 200
+			owner = {
+				has_monthly_income = {
+					resource = nanites
+					value < 0
+				}#5 is too high since that means 2 extra buildings. Better to just go with 1 extra building
+			}
+		}
+	}
+
+	ai_resource_production = {
+		nanites = 2
 		trigger = {
 			always = yes
 		}
