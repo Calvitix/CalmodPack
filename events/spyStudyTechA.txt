@@ -11,7 +11,7 @@ country_event = {
                     id = techGeneric.1
                 }
             }
-            5 = { #FULL SUCCESS
+            25 = { #FULL SUCCESS
                 country_event = { id = studyTech.2 } 
             }
         }
@@ -69,9 +69,52 @@ country_event = {
 	show_sound = event_conversation
     picture = GFX_evt_engineering_research
 
+    immediate = {
+        if = {
+            limit = {
+                event_target:alphaNetworkTarget_temp = {
+                    is_ai = no
+                }
+            }
+            event_target:alphaNetworkTarget_temp = {
+                random_list = {
+                    70 = {
+                        random_list = {
+                            30 = {
+                                create_message = { 
+                                    type = EVENT_MESSAGE_TYPE
+                                    localization = TECHSTEAL_NOTE_1_MESSAGE
+                                    days = @messageDisplayLength
+                                    target = event_target:alphaNetworkTarget_temp # the Go To
+                                }
+                            }
+                            30 = {
+                                create_message = { 
+                                    type = EVENT_MESSAGE_TYPE
+                                    localization = TECHSTEAL_NOTE_2_MESSAGE
+                                    days = @messageDisplayLength
+                                    target = event_target:alphaNetworkTarget_temp # the Go To
+                                }
+                            }
+                            30 = {
+                                create_message = { 
+                                    type = EVENT_MESSAGE_TYPE
+                                    localization = TECHSTEAL_NOTE_3_MESSAGE
+                                    days = @messageDisplayLength
+                                    target = event_target:alphaNetworkTarget_temp # the Go To
+                                }
+                            }
+                        }
+                    }
+                    30 = { }
+                }
+            }
+        }
+    }
+
     option = { #REDO
         name = studyTechSuccess.a
-        custom_tooltip = pointsRequiredAlpha.tooltip
+        custom_tooltip = pointsRequired_studyTech.tooltip
         allow = {
             hidden_trigger = {
 				has_resource = { type = sr_alpha_points amount >= @operationCostCheck } 

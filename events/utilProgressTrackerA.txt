@@ -29,7 +29,7 @@ country_event = {
 				country_event = { id = progressTrackerA.2 days = @gatherProgStageOne }  #SHOULD ALWAYS BE ONE LONGER THAN OTHER STAGES TO ALLOW FOR CANCELLATION
 			}
 			else = {
-				add_resource = { sr_alpha_points = @operationCost }
+				operationCostCalAlphaF = yes
 				set_country_flag = gatherProgress_1
 				country_event = { id = progressTrackerA.2 days = @gatherProgStageOne }  #SHOULD ALWAYS BE ONE LONGER THAN OTHER STAGES TO ALLOW FOR CANCELLATION
 			}
@@ -43,7 +43,7 @@ country_event = {
 			country_event = { id = progressTrackerA.2 days = @gatherProgStageOne }  #SHOULD ALWAYS BE ONE LONGER THAN OTHER STAGES TO ALLOW FOR CANCELLATION
 		}
 		else = {
-			add_resource = { sr_alpha_points = @operationCost }
+			operationCostCalAlphaF = yes
 			set_country_flag = gatherProgress_1
 			country_event = { id = progressTrackerA.2 days = @gatherProgStageOne }  #SHOULD ALWAYS BE ONE LONGER THAN OTHER STAGES TO ALLOW FOR CANCELLATION
 		}
@@ -57,8 +57,8 @@ country_event = {     #BEGIN LONGTERM OPERATION - STAGE TWO
 	hide_window = yes
 
 	immediate = {
-		if = {
-			limit = {
+		if = { #ERROR CHECK
+			limit = { 
 				or = {
 					has_country_flag = gatherProgress_2
 					has_country_flag = gatherProgress_3
@@ -97,83 +97,84 @@ country_event = {     #BEGIN LONGTERM OPERATION - STAGE TWO
 
 
 
-#### STAGE THREE CHECKS FOR OPPORUNITY / COMPLICATION ####
+
+
+#### STAGE THREE CHECKS FOR OPPORTUNITY EVENT ####
 country_event = {     #STAGE THREE
 	id = progressTrackerA.3
 	is_triggered_only = yes
 	hide_window = yes
 
 	immediate = { 
-		# CHECKS FOR STUDY TECH OPPORTUNITY #
-		if = { #STUDY TECH OPP EVENTS#
+
+		if = { #ERROR CHECK
 			limit = {
-				has_country_flag = studyTech
-				not = {
-					has_country_flag = opportunityLock
+				or = {
+					has_country_flag = gatherProgress_3
+					has_country_flag = gatherProgress_4
+					has_country_flag = gatherProgress_5
+					has_country_flag = gatherProgress_6
 				}
 			}
-			random_list = {
-				5 = {
-					country_event = { id = spyOpportunity.1 } #ROLLS FOR TYPE OF OPPORTUNITY
-				}
-				90 = {
-					if = {
-						limit = {
-							or = {
-								has_country_flag = gatherProgress_3
-								has_country_flag = gatherProgress_4
-								has_country_flag = gatherProgress_5
-								has_country_flag = gatherProgress_6
-							}
-						}
-						break=yes
-					}
-					else_if = { #STOPS CHAIN IF CANCEL OP HAS BEEN USED
-						limit = {
-							has_country_flag = cancelOngoing
-						}
-						remove_country_flag = cancelOngoing
-					}
-					else_if = {
-						limit = {
-							has_country_flag = gatherIntelAlpha
-						}
-						set_country_flag = gatherProgress_3
-						country_event = { id = progressTrackerA.4 days = @gatherProgGenericStage } 
-					}
-					else = {
-						set_country_flag = gatherProgress_3
-						country_event = { id = progressTrackerA.4 days = @gatherProgGenericStage } 
-					}
-				}
+			break=yes
+		}
+
+		else_if = { #STOPS CHAIN IF CANCEL OP HAS BEEN USED
+			limit = {
+				has_country_flag = cancelOngoing
 			}
-		} 
-		else = {
+			remove_country_flag = cancelOngoing
+		}
+
+		else_if = { #IF GATHERING INTEL, CONTINUE
+			limit = {
+				has_country_flag = gatherIntelAlpha
+			}
+			set_country_flag = gatherProgress_3
+			country_event = { id = progressTrackerA.4 days = @gatherProgGenericStage } 
+		}
+
+		else = { #IF ON OPERATION, ROLL FOR OPPORTUNITY CHECK
 			if = {
 				limit = {
-					or = {
-						has_country_flag = gatherProgress_3
-						has_country_flag = gatherProgress_4
-						has_country_flag = gatherProgress_5
-						has_country_flag = gatherProgress_6
+					nor = {
+						checkIfAlphaOpportunity = yes
+						checkIfBetaOpportunity = yes
+						has_country_flag = opportunityCooldown
 					}
 				}
-				break=yes
-			}
-			else_if = { #STOPS CHAIN IF CANCEL OP HAS BEEN USED
-				limit = {
-					has_country_flag = cancelOngoing
+				random_list = {
+					50 = {
+						modifier = {
+							factor = @opportunityCheckFactor
+						}
+						# CHECKS FOR OPPORTUNITY #
+						if = {
+							limit = { #if not on opportunity cooldown, check for opportunity
+								nor = {
+									checkIfAlphaOpportunity = yes
+									checkIfBetaOpportunity = yes
+									has_country_flag = opportunityCooldown
+								}
+							}
+							assignGlobalOpportunityFlagAlpha = yes 
+							country_event = { id = opportunityManager.0 }
+						}
+						# CONTINUE AS NORMAL #
+						else = {
+							set_country_flag = gatherProgress_3
+							country_event = { id = progressTrackerA.4 days = @gatherProgGenericStage } 
+						}
+					}
+					20 = {
+						# CONTINUE AS NORMAL #
+						set_country_flag = gatherProgress_3
+						country_event = { id = progressTrackerA.4 days = @gatherProgGenericStage } 
+					}
 				}
-				remove_country_flag = cancelOngoing
-			}
-			else_if = {
-				limit = {
-					has_country_flag = gatherIntelAlpha
-				}
-				set_country_flag = gatherProgress_3
-				country_event = { id = progressTrackerA.4 days = @gatherProgGenericStage } 
 			}
 			else = {
+				# CONTINUE AS NORMAL #
 				set_country_flag = gatherProgress_3
 				country_event = { id = progressTrackerA.4 days = @gatherProgGenericStage } 
 			}
@@ -184,12 +185,21 @@ country_event = {     #STAGE THREE
 
 
 
+
+
+
+
+
+
+
+
+
 country_event = {     #STAGE FOUR
 	id = progressTrackerA.4
 	is_triggered_only = yes
 	hide_window = yes
 	immediate = {
-		if = {
+		if = { #ERROR CHECK
 			limit = {
 				or = {
 					has_country_flag = gatherProgress_4
@@ -224,7 +234,7 @@ country_event = {     #STAGE FIVE
 	is_triggered_only = yes
 	hide_window = yes
 	immediate = {
-		if = {
+		if = { #ERROR CHECK
 			limit = {
 				or = {
 					has_country_flag = gatherProgress_5
@@ -258,7 +268,7 @@ country_event = {     #STAGE SIX
 	is_triggered_only = yes
 	hide_window = yes
 	immediate = {
-		if = {
+		if = { #ERROR CHECK
 			limit = {
 				has_country_flag = gatherProgress_6
 			}
@@ -450,7 +460,7 @@ country_event = {
 		}
 		else_if = {
 			limit = { has_country_flag = sowUnrest }
-			country_event = { id = spySowUnrest.10 days = @gatherProgRandomDays random = @gatherProgRandomRandom }
+			country_event = { id = spySowUnrest.1 days = @gatherProgRandomDays random = @gatherProgRandomRandom }
 		}
 	}	
 }

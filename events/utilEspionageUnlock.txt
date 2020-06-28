@@ -170,10 +170,17 @@ country_event = { #
 country_event = {
 	id = espionageUnlock.5
 	title = espionageUnlock.5.title
+	desc = { # CHOICE B FAIL
+		text = studyTech_Opportunity.2.desc.e
+		show_sound = event_cityscape
+		trigger = {
+			is_ai = no
+		}
+	}
 	desc = espionageUnlock.5.desc
 	is_triggered_only = yes
 	picture = GFX_evt_board_meeting
-	show_sound = event_cityscape
+	
 	
 
 	option = {
@@ -261,6 +268,9 @@ country_event = {
 		removeIntelPointsAlpha = yes
 		removeIntelPointsBeta = yes
 
+		remove_country_flag = ongoingRaidAlpha
+		remove_country_flag = ongoingRaidBeta
+
 		remove_country_flag = convertingAlpha-D-to-F
 		remove_country_flag = convertingAlpha-F-to-D
 
@@ -274,6 +284,8 @@ country_event = {
 
 		set_country_flag = espionageAllowed
 
+		remove_country_flag = spyMenuOpen
+
 		country_event = {
 			id = agencyGlobal.3
 		}
@@ -282,3 +294,50 @@ country_event = {
 		}
 	}
 }
+
+
+# ONE TIME FIRE TO CLEAR OPEN MENU BUG
+country_event = {
+	id = espionageUnlock.912
+	is_triggered_only = yes
+	hide_window = yes
+	fire_only_once = yes
+
+	immediate = {
+		remove_country_flag = spyMenuOpen
+	}
+}
+
+
+
+
+### SET EACH COUNTIRES OPERATION COST VARIABLES BASED OFF OF THE SCRIPTED VARS ###
+### MUST BE DONE THIS WAY SO WE CAN REFERENCE IN LOCALISATION ###
+country_event = {
+	id = espionageUnlock.6
+	is_triggered_only = yes
+	hide_window = yes
+
+	immediate = {
+		set_variable = {
+			which = sabRep_OpCostVar
+			value = @sabRepOperationCostCheck
+		}
+		set_variable = {
+			which = studyTech_OpCostVar
+			value = @studyTechOperationCostCheck
+		}
+		set_variable = {
+			which = fundCrime_OpCostVar
+			value = @fundCrimeOperationCostCheck
+		}
+		set_variable = {
+			which = sowUnrest_OpCostVar
+			value = @sowUnrestOperationCostCheck
+		}
+		set_variable = {
+			which = swingEthics_OpCostVar
+			value = @swingEthicsOperationCostCheck
+		}
+	}
+}	

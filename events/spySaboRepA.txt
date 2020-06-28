@@ -5,30 +5,33 @@ country_event = {  #SUCCESS/FAIL ROLL EVENT
     is_triggered_only = yes
     hide_window = yes
     immediate = {
-        random_list = { #CHECKS FOR CRIT
-            # 10 = { #crit table
-            #     country_event = { id = sabRepCrit.1 days = 1 }
-            # }
-
-            40 = { #standard table
-                random_list = {
-                    50 = {
-                        country_event = { id = saboRep.2 } #FULL SUCCESS
-                    }
-                    50 = {
-                        country_event = { id = saboRep.3 } #PARTIAL SUCCESS
-                    }
-                }
-            }   
-        }
+        random_list = {
+            50 = {
+                country_event = { id = saboRep.2 } #FULL SUCCESS
+            }
+            50 = {
+                country_event = { id = saboRep.3 } #PARTIAL SUCCESS
+            }
+        }  
     }
 }
 
 #### FULL SUCCESS #####
 country_event = {
 	id = saboRep.2
-	title = "sabotageRepSuccess.title"
-	desc = "sabotageRepSuccess.desc"
+    title = "sabotageRepSuccess.title"
+    desc = {
+		text = "sabotageRepSuccess.desc.a"
+		trigger = { }
+    }
+    desc = {
+		text = "sabotageRepSuccess.desc.b"
+		trigger = { }
+    }
+    desc = {
+		text = "sabotageRepSuccess.desc.c"
+		trigger = { }
+    }
 	show_sound = event_conversation
 	is_triggered_only = yes
     picture = GFX_evt_alien_segregation
@@ -51,11 +54,46 @@ country_event = {
                 }
             }
         }
+        if = {
+            limit = {
+                event_target:alphaNetworkTarget_temp = {
+                    is_ai = no
+                }
+            }
+            event_target:alphaNetworkTarget_temp = {
+                random_list = {
+                    30 = {
+                        create_message = {
+                            type = EVENT_MESSAGE_TYPE
+                            localization = SABREP_NOTE_1_MESSAGE 
+                            days = @messageDisplayLength
+                            target = event_target:alphaNetworkTarget_temp
+                        }
+                    }
+                    30 = {
+                        create_message = {
+                            type = EVENT_MESSAGE_TYPE
+                            localization = SABREP_NOTE_2_MESSAGE 
+                            days = @messageDisplayLength
+                            target = event_target:alphaNetworkTarget_temp
+                        }
+                    }
+                    30 = {
+                        create_message = {
+                            type = EVENT_MESSAGE_TYPE
+                            localization = SABREP_NOTE_3_MESSAGE 
+                            days = @messageDisplayLength
+                            target = event_target:alphaNetworkTarget_temp
+                        }
+                    }
+                }
+            }
+        }
     }
 
-    option = { #REDO
+    option = { #REDO 
         name = sabotageRepSuccess.a
-        custom_tooltip = pointsRequiredAlpha.tooltip
+        custom_tooltip = pointsRequired_sabRep.tooltip
         allow = {
             hidden_trigger = {
                 has_resource = { type = sr_alpha_points amount >= @operationCostCheck } 
@@ -89,7 +127,18 @@ country_event = {
 country_event = {
 	id = saboRep.3
 	title = "sabotageRepSuccessPartial.title"
-	desc = "sabotageRepSuccessPartial.desc"
+    desc = {
+		text = "sabotageRepSuccessPartial.desc.a"
+		trigger = { }
+    }
+    desc = {
+		text = "sabotageRepSuccessPartial.desc.b"
+		trigger = { }
+    }
+    desc = {
+		text = "sabotageRepSuccessPartial.desc.c"
+		trigger = { }
+    }
 	show_sound = event_conversation
 	is_triggered_only = yes
     picture = GFX_evt_alien_segregation
@@ -112,10 +161,45 @@ country_event = {
                 }
             }
         }
+        if = {
+            limit = {
+                event_target:alphaNetworkTarget_temp = {
+                    is_ai = no
+                }
+            }
+            event_target:alphaNetworkTarget_temp = {
+                random_list = {
+                    30 = {
+                        create_message = {
+                            type = EVENT_MESSAGE_TYPE
+                            localization = SABREP_NOTE_1_MESSAGE 
+                            days = @messageDisplayLength
+                            target = event_target:alphaNetworkTarget_temp
+                        }
+                    }
+                    30 = {
+                        create_message = {
+                            type = EVENT_MESSAGE_TYPE
+                            localization = SABREP_NOTE_2_MESSAGE 
+                            days = @messageDisplayLength
+                            target = event_target:alphaNetworkTarget_temp
+                        }
+                    }
+                    30 = {
+                        create_message = {
+                            type = EVENT_MESSAGE_TYPE
+                            localization = SABREP_NOTE_3_MESSAGE 
+                            days = @messageDisplayLength
+                            target = event_target:alphaNetworkTarget_temp
+                        }
+                    }
+                }
+            }
+        }
     }
     option = { #REDO
         name = sabotageRepSuccess.a
-        custom_tooltip = pointsRequiredAlpha.tooltip
+        custom_tooltip = pointsRequired_sabRep.tooltip
         allow = {
             hidden_trigger = {
                 has_resource = { type = sr_alpha_points amount >= @operationCostCheck } 
@@ -142,3 +226,10 @@ country_event = {
         }
     }
 }
+
+
+
+
+
+
+
