@@ -3,20 +3,20 @@
 acot_wg_mountain_king = {
 	casus_belli = acot_cb_mountain_king
 
-	total_war = no
+	total_war = yes
 
 	hide_if_no_cb = yes
 	defender_default = no
 	
 	cede_claims = occupied_only
 
-	surrender_acceptance = -50
-	war_exhaustion = 0.25
+	surrender_acceptance = -10000
+	war_exhaustion = 0
 
 	set_defender_wargoal = acot_wg_mountain_king
 
 	potential = {
-		always = no # event only
+		always = yes # event only
 	}
 	possible = {
 		always = yes
@@ -28,20 +28,27 @@ acot_wg_mountain_king = {
 			from = { save_event_target_as = mountain_king_loser }	
 			if = {
 				limit = { 
-					OR = {
-						is_country_type = default
-						#is_country_type = ascended_empire
-						#is_country_type = lost_empire		#TODO_renabled #calvitix
-					}
+					is_fallen_empire = no
 				}
-				country_event = { id = acot_war_in_hell.16 days = 1 }
+				country_event = { id = acot_war_in_hell.16 }
+				hidden_effect = {
+					every_playable_country = {
+						limit = {
+							NOT = {
+								is_same_value = root
+							}
+						}
+						country_event = { id = acot_war_in_hell.20 }
+					} 
+				}
 			}
 			if = {
 				limit = { 
-					is_country_type = awakened_fallen_empire
+					is_fallen_empire = yes
 				}
-				from = {
-					country_event = { id = acot_war_in_hell.17 days = 1 }
+				country_event = { id = acot_war_in_hell.17 }
+				every_playable_country = {
+					country_event = { id = acot_war_in_hell.21 }
 				}
 			}
 		}
@@ -49,14 +56,12 @@ acot_wg_mountain_king = {
 
 	allowed_peace_offers = {
 		status_quo
-		surrender
-		demand_surrender
 	}
 	
 	on_status_quo = {
-		set_timed_country_flag = {
-			flag = acot_robbed_of_victory
-			years = 5
+		declare_war = {
+			target = FROM
+			attacker_war_goal = acot_wg_mountain_king
 		}
 	}
 	

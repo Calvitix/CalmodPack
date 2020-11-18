@@ -1,4 +1,3 @@
-#Calvitix Check 2.7.1 update
 #############
 # Resource buildings
 #############
@@ -21,6 +20,19 @@ building_hydroponics_farm = {
 	}
 
 	allow = {
+		OR = {
+			owner = { is_ai = no }
+			AND = {
+				owner = {
+					is_ai = yes
+					has_monthly_income = {
+						resource = food
+						value < 30
+					}
+				}
+				free_district_slots = 0
+			}
+		}
 		buildings_simple_allow = yes
 	}
 
@@ -48,10 +60,23 @@ building_hydroponics_farm = {
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
-			owner = { is_regular_empire = yes }
+			owner = {
+				is_regular_empire = yes
+				is_fallen_empire_spiritualist = no
+			}
 		}
 		modifier = {
 			job_farmer_add = @b1_jobs
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_fallen_empire_spiritualist = yes }
+		}
+		modifier = {
+			job_fe_acolyte_farm_add = @b1_jobs
 		}
 	}
 
@@ -95,9 +120,19 @@ building_hydroponics_farm = {
 	triggered_desc = {
 		trigger = {
 			exists = owner
-			owner = { is_gestalt = no }
+			owner = {
+				is_gestalt = no
+				is_fallen_empire_spiritualist = no
+			}
 		}
 		text = job_farmer_effect_desc
+	}
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_fallen_empire_spiritualist = yes }
+		}
+		text = job_fe_acolyte_farm_effect_desc
 	}
 
 	prerequisites = {
@@ -209,10 +244,23 @@ building_food_processing_facility = {
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
-			owner = { is_regular_empire = yes }
+			owner = {
+				is_regular_empire = yes
+				is_fallen_empire_spiritualist = no
+			}
 		}
 		modifier = {
 			job_farmer_add = 1
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_fallen_empire_spiritualist = yes }
+		}
+		modifier = {
+			job_fe_acolyte_farm_add = 1
 		}
 	}
 
@@ -246,9 +294,19 @@ building_food_processing_facility = {
 	triggered_desc = {
 		trigger = {
 			exists = owner
-			owner = { is_gestalt = no }
+			owner = {
+				is_gestalt = no
+				is_fallen_empire_spiritualist = no
+			}
 		}
 		text = job_farmer_effect_desc
+	}
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_fallen_empire_spiritualist = yes }
+		}
+		text = job_fe_acolyte_farm_effect_desc
 	}
 
 	upgrades = {
@@ -284,7 +342,7 @@ building_food_processing_facility = {
 	}
 
 	ai_resource_production = {
-		food = 1
+		food = 2
 		trigger = {
 			always = yes
 		}
@@ -323,10 +381,23 @@ building_food_processing_center = {
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
-			owner = { is_regular_empire = yes }
+			owner = {
+				is_regular_empire = yes
+				is_fallen_empire_spiritualist = no
+			}
 		}
 		modifier = {
 			job_farmer_add = 2
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_fallen_empire_spiritualist = yes }
+		}
+		modifier = {
+			job_fe_acolyte_farm_add = 2
 		}
 	}
 
@@ -362,9 +433,19 @@ building_food_processing_center = {
 	triggered_desc = {
 		trigger = {
 			exists = owner
-			owner = { is_gestalt = no }
+			owner = {
+				is_gestalt = no
+				is_fallen_empire_spiritualist = no
+			}
 		}
 		text = job_farmer_effect_desc
+	}
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_fallen_empire_spiritualist = yes }
+		}
+		text = job_fe_acolyte_farm_effect_desc
 	}
 
 	prerequisites = {
@@ -394,7 +475,7 @@ building_food_processing_center = {
 	}
 
 	ai_resource_production = {
-		food = 1
+		food = 3
 		trigger = {
 			always = yes
 		}
@@ -434,10 +515,23 @@ building_mineral_purification_plant = {
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
-			owner = { is_regular_empire = yes }
+			owner = {
+				is_regular_empire = yes
+				is_fallen_empire_spiritualist = no
+			}
 		}
 		modifier = {
 			job_miner_add = 1
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_fallen_empire_spiritualist = yes }
+		}
+		modifier = {
+			job_fe_acolyte_mine_add = 1
 		}
 	}
 
@@ -517,9 +611,19 @@ building_mineral_purification_plant = {
 	triggered_desc = {
 		trigger = {
 			exists = owner
-			owner = { is_gestalt = no }
+			owner = {
+				is_gestalt = no
+				is_fallen_empire_spiritualist = no
+			}
 		}
 		text = job_miner_effect_desc
+	}
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_fallen_empire_spiritualist = yes }
+		}
+		text = job_fe_acolyte_mine_effect_desc
 	}
 
 	ai_weight = {
@@ -556,7 +660,7 @@ building_mineral_purification_plant = {
 	}
 
 	ai_resource_production = {
-		minerals = 1
+		minerals = 2
 		trigger = {
 			always = yes
 		}
@@ -587,13 +691,25 @@ building_mineral_purification_hub = {
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
-			owner = { is_regular_empire = yes }
+			owner = {
+				is_regular_empire = yes
+				is_fallen_empire_spiritualist = no
+			}
 		}
 		modifier = {
 			job_miner_add = 2
 		}
 	}
 
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_fallen_empire_spiritualist = yes }
+		}
+		modifier = {
+			job_fe_acolyte_mine_add = 2
+		}
+	}
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
@@ -668,9 +784,19 @@ building_mineral_purification_hub = {
 	triggered_desc = {
 		trigger = {
 			exists = owner
-			owner = { is_gestalt = no }
+			owner = {
+				is_gestalt = no
+				is_fallen_empire_spiritualist = no
+			}
 		}
 		text = job_miner_effect_desc
+	}
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_fallen_empire_spiritualist = yes }
+		}
+		text = job_fe_acolyte_mine_effect_desc
 	}
 
 	ai_weight = {
@@ -692,7 +818,7 @@ building_mineral_purification_hub = {
 	}
 
 	ai_resource_production = {
-		minerals = 1
+		minerals = 3
 		trigger = {
 			always = yes
 		}
@@ -710,6 +836,15 @@ building_energy_grid = {
 
 	potential = {
 		NOT = { has_modifier = resort_colony }
+		or = {
+			owner = { is_ai = no }
+			OR = {
+				num_districts = { type = district_generator value > 2 }
+				num_districts = { type = district_generator_uncapped value > 2 }
+				num_districts = { type = district_hab_energy value > 2 }
+				num_districts = { type = district_rw_generator value >= 1 }
+			}
+		}
 		OR = {
 			NOT = { is_planet_class = pc_habitat }
 			AND = {
@@ -731,10 +866,23 @@ building_energy_grid = {
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
-			owner = { is_regular_empire = yes }
+			owner = {
+				is_regular_empire = yes
+				is_fallen_empire_spiritualist = no
+			}
 		}
 		modifier = {
 			job_technician_add = 1
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_fallen_empire_spiritualist = yes }
+		}
+		modifier = {
+			job_fe_acolyte_generator_add = 1
 		}
 	}
 
@@ -814,9 +962,19 @@ building_energy_grid = {
 	triggered_desc = {
 		trigger = {
 			exists = owner
-			owner = { is_gestalt = no }
+			owner = {
+				is_gestalt = no
+				is_fallen_empire_spiritualist = no
+			}
 		}
 		text = job_technician_effect_desc
+	}
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_fallen_empire_spiritualist = yes }
+		}
+		text = job_fe_acolyte_generator_effect_desc
 	}
 
 	ai_weight = {
@@ -857,7 +1015,7 @@ building_energy_grid = {
 	}
 
 	ai_resource_production = {
-		energy = 1
+		energy = 2
 		trigger = {
 			always = yes
 		}
@@ -887,10 +1045,23 @@ building_energy_nexus = {
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
-			owner = { is_regular_empire = yes }
+			owner = {
+				is_regular_empire = yes
+				is_fallen_empire_spiritualist = no
+			}
 		}
 		modifier = {
 			job_technician_add = 2
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_fallen_empire_spiritualist = yes }
+		}
+		modifier = {
+			job_fe_acolyte_generator_add = 2
 		}
 	}
 
@@ -969,9 +1140,19 @@ building_energy_nexus = {
 	triggered_desc = {
 		trigger = {
 			exists = owner
-			owner = { is_gestalt = no }
+			owner = {
+				is_gestalt = no
+				is_fallen_empire_spiritualist = no
+			}
 		}
 		text = job_technician_effect_desc
+	}
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_fallen_empire_spiritualist = yes }
+		}
+		text = job_fe_acolyte_generator_effect_desc
 	}
 
 	ai_weight = {
@@ -993,7 +1174,7 @@ building_energy_nexus = {
 	}
 
 	ai_resource_production = {
-		energy = 1
+		energy = 3
 		trigger = {
 			always = yes
 		}

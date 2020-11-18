@@ -3,7 +3,7 @@
 
 migration_control_yes = {
 	token = migration_control_yes
-	
+
 	ai_will_do = {
 		factor = 2
 		modifier = {
@@ -31,7 +31,7 @@ migration_control_no = {
 			has_trait = trait_mechanical
 		}
 	}
-	
+
 	allow = {
 		hidden_trigger = { exists = from }
 		custom_tooltip = {
@@ -39,7 +39,7 @@ migration_control_no = {
 				has_citizenship_type = { country = from type = citizenship_purge_machine }
 				has_citizenship_type = { country = from type = citizenship_purge }
 			}
-			text = not_undesirables_tooltip
+			fail_text = is_undesirables_tooltip
 		}
 		NAND = {
 			has_citizenship_type = { country = from type = citizenship_slavery }
@@ -56,23 +56,24 @@ migration_control_no = {
 
 population_control_yes = {
 	token = population_control_yes
-	
+
 	pop_modifier = {
 		pop_happiness = -0.1
 	}
 
 	allow = {
 		hidden_trigger = { exists = from }
-		from = {
-			NOT = { has_policy_flag = population_controls_not_allowed }
-			NOT = { has_policy_flag = eco_reproductive_policy_full }
+		OR = {
+			from = { NOT = { has_policy_flag = population_controls_not_allowed } }
+			has_citizenship_type = { country = from type = citizenship_slavery } 
+			has_citizenship_type = { country = from type = citizenship_robot_servitude }
 		}
-		if = { 
+		if = {
 			limit = {
 				OR = {
 					has_citizenship_type = { country = from type = citizenship_purge }
 					has_citizenship_type = { country = from type = citizenship_purge_machine }
-				}			
+				}
 			}
 			always = yes
 		}
@@ -89,8 +90,8 @@ population_control_yes = {
 						has_ethic = ethic_fanatic_xenophile
 					}
 				}
-			}		
-		}				
+			}
+		}
 	}
 	ai_will_do = {
 		factor = 1
@@ -100,6 +101,12 @@ population_control_yes = {
 			OR = {
 				ariphaos_patch_slaves_rare_trait = no
 				ariphaos_patch_slaves_poor_merit = yes
+			}
+		}
+		modifier = {
+			factor = 0
+			from = {
+				has_origin = origin_necrophage
 			}
 		}
 	}
@@ -119,7 +126,7 @@ population_control_no = {
 				has_citizenship_type = { country = from type = citizenship_purge_machine }
 				has_citizenship_type = { country = from type = citizenship_purge }
 			}
-			text = not_undesirables_tooltip
+			fail_text = is_undesirables_tooltip
 		}
 		custom_tooltip = {
 			fail_text = "HIVE_MIND_SPECIES_CITIZENS_ONLY"
@@ -136,7 +143,7 @@ population_control_no = {
 
 colonization_control_yes = {
 	token = colonization_control_yes
-	
+
 	potential = {
 		NAND = {
 			from = { has_authority = auth_machine_intelligence }
@@ -149,7 +156,7 @@ colonization_control_yes = {
 
 	allow = {
 		hidden_trigger = { exists = from }
-		if = { 
+		if = {
 			limit = {
 				OR = {
 					has_citizenship_type = { country = from type = citizenship_purge }
@@ -172,7 +179,7 @@ colonization_control_yes = {
 		factor = 2
 		modifier = {
 			factor = 0
-			from = { 
+			from = {
 				NOR = {
 					has_ethic = ethic_xenophobe
 					has_ethic = ethic_fanatic_xenophobe
@@ -183,7 +190,7 @@ colonization_control_yes = {
 		modifier = {
 			factor = 0
 			has_trait = trait_cybernetic
-			from = { has_valid_civic = civic_machine_assimilator }		
+			from = { has_valid_civic = civic_machine_assimilator }
 		}
 	}
 }
@@ -197,14 +204,14 @@ colonization_control_no = {
 			from = { has_authority = auth_machine_intelligence }
 			NOR = {
 				has_trait = trait_machine_unit
-				has_trait = trait_mechanical	
+				has_trait = trait_mechanical
 				AND = {
 					has_trait = trait_cybernetic
-					from = { has_valid_civic = civic_machine_assimilator }		
+					from = { has_valid_civic = civic_machine_assimilator }
 				}
 				from = { has_valid_civic = civic_machine_servitor }
-			}			
-		}	
+			}
+		}
 	}
 
 	allow = {
@@ -214,7 +221,7 @@ colonization_control_no = {
 				has_citizenship_type = { country = from type = citizenship_purge_machine }
 				has_citizenship_type = { country = from type = citizenship_purge }
 			}
-			text = not_undesirables_tooltip
+			fail_text = is_undesirables_tooltip
 		}
 		custom_tooltip = {
 			fail_text = "HIVE_MIND_SPECIES_CITIZENS_ONLY"
@@ -224,7 +231,7 @@ colonization_control_no = {
 			}
 		}
 		custom_tooltip = {
-			fail_text = "ROBOTS_CANNOT_COLONIZE"		
+			fail_text = "ROBOTS_CANNOT_COLONIZE"
 			OR = {
 				NOT = { has_trait = trait_mechanical }
 				from = { has_technology = tech_droid_workers }
@@ -232,24 +239,31 @@ colonization_control_no = {
 			}
 		}
 		custom_tooltip = {
-			fail_text = "SPECIES_CANNOT_COLONIZE"		
-			NOR = { 
+			fail_text = "SPECIES_CANNOT_COLONIZE"
+			NOR = {
 				has_trait = trait_syncretic_proles
-				has_trait = trait_nerve_stapled 
-			}	
-		}	
-		custom_tooltip = {
-			fail_text = is_slaves_not_battle_thralls
-			NAND = {
-					has_citizenship_type = { country = from type = citizenship_slavery }
-					has_slavery_type = { country = from type = slavery_military }
-					has_slavery_type = { country = from type = slavery_indentured }													
+				has_trait = trait_nerve_stapled
 			}
-		}			
+		}
+		custom_tooltip = {
+			fail_text = is_slaves_not_battle_thralls_or_indentured_fail
+			NAND = {
+				has_citizenship_type = { country = from type = citizenship_slavery }
+				NOR = {
+					has_slavery_type = { country = from type = slavery_military }
+					has_slavery_type = { country = from type = slavery_indentured }
+				}
+			}
+		}
 	}
-	
 	ai_will_do = {
 		factor = 1
+		modifier = {
+			factor = 0
+			from = {
+				has_origin = origin_necrophage
+			}
+		}
 		modifier = {
 			factor = 0
 			from = { has_valid_civic = civic_machine_servitor }

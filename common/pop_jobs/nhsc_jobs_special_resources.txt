@@ -50,9 +50,30 @@ esc_nanite_breeder = {
         produces = {
             nanites = 2
         }
+        produces = {
+            trigger = {
+                exists = owner
+                owner = { is_galactic_community_member = yes }
+                OR = {
+                    is_active_resolution = "resolution_industry_environmental_ordinance_waivers"
+                    is_active_resolution = "resolution_industry_project_cornucopia"
+                }
+            }
+            nanites = 0.1
+        }
         upkeep = {
             alloys = 4
             consumer_goods = 1
+        }
+        upkeep = {
+            trigger = { planet = { colony_type = col_refinery } }
+            alloys = -0.4
+            consumer_goods = -0.1
+        }
+        upkeep = {
+            trigger = { planet = { colony_type = col_habitat_refinery } }
+            alloys = -0.8
+            consumer_goods = -0.2
         }
     }
 
@@ -98,15 +119,58 @@ esc_nanite_breeder_drone = {
         produces = {
             nanites = 2
         }
+        produces = {
+            trigger = {
+                exists = owner
+                owner = { is_galactic_community_member = yes }
+                OR = {
+                    is_active_resolution = "resolution_industry_environmental_ordinance_waivers"
+                    is_active_resolution = "resolution_industry_project_cornucopia"
+                }
+            }
+            nanites = 0.1
+        }
         upkeep = {
-            trigger = { is_lithoid = no }
+            trigger = { NOT = { has_trait = trait_lithoid } }
             alloys = 4
             food = 2
         }
         upkeep = {
-            trigger = { is_lithoid = yes }
+            trigger = { has_trait = trait_lithoid }
             alloys = 4
             minerals = 2
+        }
+        upkeep = {
+            trigger = {
+                NOT = { has_trait = trait_lithoid }
+                planet = { colony_type = col_refinery }
+            }
+            alloys = -0.4
+            food = -0.2
+        }
+        upkeep = {
+            trigger = {
+                NOT = { has_trait = trait_lithoid }
+                planet = { colony_type = col_habitat_refinery }
+            }
+            alloys = -0.8
+            food = -0.4
+        }
+        upkeep = {
+            trigger = {
+                has_trait = trait_lithoid
+                planet = { colony_type = col_refinery }
+            }
+            alloys = -0.4
+            minerals = -0.2
+        }
+        upkeep = {
+            trigger = {
+                has_trait = trait_lithoid
+                planet = {colony_type = col_habitat_refinery }
+            }
+            alloys = -0.8
+            minerals = -0.4
         }
     }
 
@@ -147,9 +211,30 @@ esc_nanite_breeder_unit = {
         produces = {
             nanites = 2
         }
+        produces = {
+            trigger = {
+                exists = owner
+                owner = { is_galactic_community_member = yes }
+                OR = {
+                    is_active_resolution = "resolution_industry_environmental_ordinance_waivers"
+                    is_active_resolution = "resolution_industry_project_cornucopia"
+                }
+            }
+            nanites = 0.1
+        }
         upkeep = {
             alloys = 4
             energy = 2
+        }
+        upkeep = {
+            trigger = { planet = { colony_type = col_refinery } }
+            alloys = -0.4
+            energy = -0.2
+        }
+        upkeep = {
+            trigger = { planet = { colony_type = col_habitat_refinery } }
+            alloys = -0.8
+            energy = -0.4
         }
     }
 
@@ -189,13 +274,49 @@ esc_crystal_farmer = {
         }
         produces = {
             trigger = {
+                exists = owner
+                owner = { is_galactic_community_member = yes }
+                OR = {
+                    is_active_resolution = "resolution_industry_environmental_ordinance_waivers"
+                    is_active_resolution = "resolution_industry_project_cornucopia"
+                }
+            }
+            esc_living_crystal = 0.1
+            alloys = 0.05
+        }
+        produces = {
+            trigger = {
                 owner = { has_technology = nhsc_tech_rare_crystals_cultivation }
             }
             rare_crystals = 0.5
         }
+        produces = {
+            trigger = {
+                exists = owner
+                owner = {
+                    has_technology = nhsc_tech_rare_crystals_cultivation
+                    is_galactic_community_member = yes
+                }
+                OR = {
+                    is_active_resolution = "resolution_industry_environmental_ordinance_waivers"
+                    is_active_resolution = "resolution_industry_project_cornucopia"
+                }
+            }
+            rare_crystals = 0.025
+        }
         upkeep = {
             consumer_goods = 1
             minerals = 4
+        }
+        upkeep = {
+            trigger = { planet = { colony_type = col_refinery } }
+            consumer_goods = -0.1
+            minerals = -0.4
+        }
+        upkeep = {
+            trigger = { planet = { colony_type = col_habitat_refinery } }
+            consumer_goods = -0.2
+            minerals = -0.8
         }
     }
 
@@ -257,18 +378,74 @@ esc_crystal_farmer_drone = {
         }
         produces = {
             trigger = {
+                exists = owner
+                owner = { is_galactic_community_member = yes }
+                OR = {
+                    is_active_resolution = "resolution_industry_environmental_ordinance_waivers"
+                    is_active_resolution = "resolution_industry_project_cornucopia"
+                }
+            }
+            esc_living_crystal = 0.1
+            alloys = 0.05
+        }
+        produces = {
+            trigger = {
                 owner = { has_technology = nhsc_tech_rare_crystals_cultivation }
             }
             rare_crystals = 0.5
         }
+        produces = {
+            trigger = {
+                exists = owner
+                owner = {
+                    has_technology = nhsc_tech_rare_crystals_cultivation
+                    is_galactic_community_member = yes
+                }
+                OR = {
+                    is_active_resolution = "resolution_industry_environmental_ordinance_waivers"
+                    is_active_resolution = "resolution_industry_project_cornucopia"
+                }
+            }
+            rare_crystals = 0.025
+        }
         upkeep = {
-            trigger = { is_lithoid = no }
+            trigger = { NOT = { has_trait = trait_lithoid } }
             minerals = 4
             food = 2
         }
         upkeep = {
-            trigger = { is_lithoid = yes }
+            trigger = { has_trait = trait_lithoid }
             minerals = 6
+        }
+        upkeep = {
+            trigger = {
+                NOT = { has_trait = trait_lithoid }
+                planet = { colony_type = col_refinery }
+            }
+            minerals = -0.4
+            food = -0.2
+        }
+        upkeep = {
+            trigger = {
+                NOT = { has_trait = trait_lithoid }
+                planet = { colony_type = col_habitat_refinery }
+            }
+            minerals = -0.8
+            food = -0.4
+        }
+        upkeep = {
+            trigger = {
+                has_trait = trait_lithoid
+                planet = { colony_type = col_refinery }
+            }
+            minerals = -0.6
+        }
+        upkeep = {
+            trigger = {
+                has_trait = trait_lithoid
+                planet = { colony_type = col_habitat_refinery }
+            }
+            minerals = -1.2
         }
     }
 
@@ -316,13 +493,49 @@ esc_crystal_farmer_unit = {
         }
         produces = {
             trigger = {
+                exists = owner
+                owner = { is_galactic_community_member = yes }
+                OR = {
+                    is_active_resolution = "resolution_industry_environmental_ordinance_waivers"
+                    is_active_resolution = "resolution_industry_project_cornucopia"
+                }
+            }
+            esc_living_crystal = 0.1
+            alloys = 0.05
+        }
+        produces = {
+            trigger = {
                 owner = { has_technology = nhsc_tech_rare_crystals_cultivation }
             }
             rare_crystals = 0.5
         }
+        produces = {
+            trigger = {
+                exists = owner
+                owner = {
+                    has_technology = nhsc_tech_rare_crystals_cultivation
+                    is_galactic_community_member = yes
+                }
+                OR = {
+                    is_active_resolution = "resolution_industry_environmental_ordinance_waivers"
+                    is_active_resolution = "resolution_industry_project_cornucopia"
+                }
+            }
+            rare_crystals = 0.025
+        }
         upkeep = {
             energy = 2
             minerals = 4
+        }
+        upkeep = {
+            trigger = { planet = { colony_type = col_refinery } }
+            energy = -0.2
+            minerals = -0.4
+        }
+        upkeep = {
+            trigger = { planet = { colony_type = col_habitat_refinery } }
+            energy = -0.4
+            minerals = -0.8
         }
     }
 
@@ -359,11 +572,30 @@ esc_channeller = {
 
     resources = {
         category = planet_jobs
+        ### production base + galactic community resolution bonus
         produces = {
             esc_psionic_charge = 2
         }
+        produces = {
+            trigger = {
+                exists = owner
+                owner = { is_galactic_community_member = yes }
+                OR = {
+                    is_active_resolution = "resolution_industry_environmental_ordinance_waivers"
+                    is_active_resolution = "resolution_industry_project_cornucopia"
+                }
+            }
+            esc_psionic_charge = 0.1
+        }
+        ### upkeep : base
         upkeep = {
-            trigger = { NOT = { has_trait = trait_lithoid } }
+            trigger = {
+				NOR = {
+					has_trait = trait_lithoid
+					has_trait = trait_mechanical
+					has_trait = trait_machine_unit
+				}
+			}
             energy = 4
             food = 2
         }
@@ -371,6 +603,78 @@ esc_channeller = {
             trigger = { has_trait = trait_lithoid }
             energy = 4
             minerals = 2
+        }
+        upkeep = {
+            trigger = {
+				OR = {
+					has_trait = trait_mechanical
+					has_trait = trait_machine_unit
+				}
+			}
+            energy = 6
+        }
+        ### upkeep reduction on refinery worlds (biological)
+        upkeep = {
+            trigger = {
+                NOR = {
+					has_trait = trait_lithoid
+					has_trait = trait_mechanical
+					has_trait = trait_machine_unit
+				}
+                planet = { colony_type = col_refinery }
+            }
+            energy = -0.4
+            food = -0.2
+        }
+        upkeep = {
+            trigger = {
+                NOR = {
+					has_trait = trait_lithoid
+					has_trait = trait_mechanical
+					has_trait = trait_machine_unit
+				}
+                planet = { colony_type = col_habitat_refinery }
+            }
+            energy = -0.8
+            food = -0.4
+        }
+        ### upkeep reduction on refinery worlds (lithoid)
+        upkeep = {
+            trigger = {
+                has_trait = trait_lithoid
+                planet = { colony_type = col_refinery }
+            }
+            energy = -0.4
+            minerals = -0.2
+        }
+        upkeep = {
+            trigger = {
+                has_trait = trait_lithoid
+                planet = { colony_type = col_habitat_refinery }
+            }
+            energy = -0.8
+            minerals = -0.4
+        }
+        ### upkeep reduction on refinery worlds (lithoid)
+        upkeep = {
+            trigger = {
+                OR = {
+					has_trait = trait_mechanical
+					has_trait = trait_machine_unit
+				}
+                planet = { colony_type = col_refinery }
+            }
+            energy = -0.6
+        }
+        upkeep = {
+            trigger = {
+                OR = {
+					has_trait = trait_mechanical
+					has_trait = trait_machine_unit
+				}
+                planet = { colony_type = col_habitat_refinery }
+            }
+            energy = -1.2
         }
     }
 
@@ -431,6 +735,17 @@ esc_channeller_drone = {
         produces = {
             esc_psionic_charge = 2
         }
+        produces = {
+            trigger = {
+                exists = owner
+                owner = { is_galactic_community_member = yes }
+                OR = {
+                    is_active_resolution = "resolution_industry_environmental_ordinance_waivers"
+                    is_active_resolution = "resolution_industry_project_cornucopia"
+                }
+            }
+            esc_psionic_charge = 0.1
+        }
         upkeep = {
             trigger = { is_lithoid = no }
             food = 2
@@ -440,6 +755,38 @@ esc_channeller_drone = {
             trigger = { is_lithoid = yes }
             minerals = 2
             energy = 4
+        }
+        upkeep = {
+            trigger = {
+                NOT = { has_trait = trait_lithoid }
+                planet = { colony_type = col_refinery }
+            }
+            energy = -0.4
+            food = -0.2
+        }
+        upkeep = {
+            trigger = {
+                NOT = { has_trait = trait_lithoid }
+                planet = { colony_type = col_habitat_refinery }
+            }
+            energy = -0.8
+            food = -0.4
+        }
+        upkeep = {
+            trigger = {
+                has_trait = trait_lithoid
+                planet = { colony_type = col_refinery }
+            }
+            energy = -0.4
+            minerals = -0.2
+        }
+        upkeep = {
+            trigger = {
+                has_trait = trait_lithoid
+                planet = { colony_type = col_habitat_refinery }
+            }
+            energy = -0.8
+            minerals = -0.4
         }
     }
 
@@ -500,9 +847,30 @@ esc_gravity_manipulator = {
         produces = {
             esc_gravitic_anomaly = 2
         }
+        produces = {
+            trigger = {
+                exists = owner
+                owner = { is_galactic_community_member = yes }
+                OR = {
+                    is_active_resolution = "resolution_industry_environmental_ordinance_waivers"
+                    is_active_resolution = "resolution_industry_project_cornucopia"
+                }
+            }
+            esc_gravitic_anomaly = 0.1
+        }
         upkeep = {
             energy = 2
             consumer_goods = 2
+        }
+        upkeep = {
+            trigger = { planet = { colony_type = col_refinery } }
+            energy = -0.2
+            consumer_goods = -0.2
+        }
+        upkeep = {
+            trigger = { planet = { colony_type = col_habitat_refinery } }
+            energy = -0.4
+            consumer_goods = -0.4
         }
     }
 
@@ -555,6 +923,17 @@ esc_gravity_manipulator_drone = {
         produces = {
             esc_gravitic_anomaly = 2
         }
+        produces = {
+            trigger = {
+                exists = owner
+                owner = { is_galactic_community_member = yes }
+                OR = {
+                    is_active_resolution = "resolution_industry_environmental_ordinance_waivers"
+                    is_active_resolution = "resolution_industry_project_cornucopia"
+                }
+            }
+            esc_gravitic_anomaly = 0.1
+        }
         upkeep = {
             trigger = { is_lithoid = no }
             energy = 2
@@ -564,6 +943,38 @@ esc_gravity_manipulator_drone = {
             trigger = { is_lithoid = yes }
             energy = 2
             minerals = 4
+        }
+        upkeep = {
+            trigger = {
+                NOT = { has_trait = trait_lithoid }
+                planet = { colony_type = col_refinery }
+            }
+            food = -0.4
+            energy = -0.2
+        }
+        upkeep = {
+            trigger = {
+                NOT = { has_trait = trait_lithoid }
+                planet = { colony_type = col_habitat_refinery }
+            }
+            food = -0.8
+            energy = -0.4
+        }
+        upkeep = {
+            trigger = {
+                has_trait = trait_lithoid
+                planet = { colony_type = col_refinery }
+            }
+            minerals = -0.4
+            energy = -0.2
+        }
+        upkeep = {
+            trigger = {
+                has_trait = trait_lithoid
+                planet = { colony_type = col_habitat_refinery }
+            }
+            minerals = -0.8
+            energy = -0.4
         }
     }
 
@@ -610,8 +1021,27 @@ esc_gravity_manipulator_unit = {
         produces = {
             esc_gravitic_anomaly = 2
         }
+        produces = {
+            trigger = {
+                exists = owner
+                owner = { is_galactic_community_member = yes }
+                OR = {
+                    is_active_resolution = "resolution_industry_environmental_ordinance_waivers"
+                    is_active_resolution = "resolution_industry_project_cornucopia"
+                }
+            }
+            esc_gravitic_anomaly = 0.1
+        }
         upkeep = {
             energy = 8
+        }
+        upkeep = {
+            trigger = { planet = { colony_type = col_refinery } }
+            energy = -0.8
+        }
+        upkeep = {
+            trigger = { planet = { colony_type = col_habitat_refinery } }
+            energy = -1.6
         }
     }
 
@@ -653,9 +1083,30 @@ esc_dimension_warper = {
         produces = {
             esc_transdimensional_vortex = 2
         }
+        produces = {
+            trigger = {
+                exists = owner
+                owner = { is_galactic_community_member = yes }
+                OR = {
+                    is_active_resolution = "resolution_industry_environmental_ordinance_waivers"
+                    is_active_resolution = "resolution_industry_project_cornucopia"
+                }
+            }
+            esc_transdimensional_vortex = 0.1
+        }
         upkeep = {
             energy = 2
             consumer_goods = 2
+        }
+        upkeep = {
+            trigger = { planet = { colony_type = col_refinery } }
+            energy = -0.2
+            consumer_goods = -0.2
+        }
+        upkeep = {
+            trigger = { planet = { colony_type = col_habitat_refinery } }
+            energy = -0.4
+            consumer_goods = -0.4
         }
     }
 
@@ -708,6 +1159,17 @@ esc_dimension_warper_drone = {
         produces = {
             esc_transdimensional_vortex = 2
         }
+        produces = {
+            trigger = {
+                exists = owner
+                owner = { is_galactic_community_member = yes }
+                OR = {
+                    is_active_resolution = "resolution_industry_environmental_ordinance_waivers"
+                    is_active_resolution = "resolution_industry_project_cornucopia"
+                }
+            }
+            esc_transdimensional_vortex = 0.1
+        }
         upkeep = {
             trigger = { is_lithoid = no }
             energy = 2
@@ -717,6 +1179,38 @@ esc_dimension_warper_drone = {
             trigger = { is_lithoid = yes }
             energy = 2
             minerals = 4
+        }
+        upkeep = {
+            trigger = {
+                NOT = { has_trait = trait_lithoid }
+                planet = { colony_type = col_refinery }
+            }
+            food = -0.4
+            energy = -0.2
+        }
+        upkeep = {
+            trigger = {
+                NOT = { has_trait = trait_lithoid }
+                planet = { colony_type = col_habitat_refinery }
+            }
+            food = -0.8
+            energy = -0.4
+        }
+        upkeep = {
+            trigger = {
+                has_trait = trait_lithoid
+                planet = { colony_type = col_refinery }
+            }
+            minerals = -0.4
+            energy = -0.2
+        }
+        upkeep = {
+            trigger = {
+                has_trait = trait_lithoid
+                planet = { colony_type = col_habitat_refinery }
+            }
+            minerals = -0.8
+            energy = -0.4
         }
     }
 
@@ -764,8 +1258,27 @@ esc_dimension_warper_unit = {
         produces = {
             esc_transdimensional_vortex = 2
         }
+        produces = {
+            trigger = {
+                exists = owner
+                owner = { is_galactic_community_member = yes }
+                OR = {
+                    is_active_resolution = "resolution_industry_environmental_ordinance_waivers"
+                    is_active_resolution = "resolution_industry_project_cornucopia"
+                }
+            }
+            esc_transdimensional_vortex = 0.1
+        }
         upkeep = {
             energy = 8
+        }
+        upkeep = {
+            trigger = { planet = { colony_type = col_refinery } }
+            energy = -0.8
+        }
+        upkeep = {
+            trigger = { planet = { colony_type = col_habitat_refinery } }
+            energy = -1.6
         }
     }
 
@@ -807,9 +1320,30 @@ esc_enigma_reader = {
         produces = {
             esc_enigmatic_energy = 2
         }
+        produces = {
+            trigger = {
+                exists = owner
+                owner = { is_galactic_community_member = yes }
+                OR = {
+                    is_active_resolution = "resolution_industry_environmental_ordinance_waivers"
+                    is_active_resolution = "resolution_industry_project_cornucopia"
+                }
+            }
+            esc_enigmatic_energy = 0.1
+        }
         upkeep = {
             energy = 2
             consumer_goods = 2
+        }
+        upkeep = {
+            trigger = { planet = { colony_type = col_refinery } }
+            energy = -0.2
+            consumer_goods = -0.2
+        }
+        upkeep = {
+            trigger = { planet = { colony_type = col_habitat_refinery } }
+            energy = -0.4
+            consumer_goods = -0.4
         }
     }
 
@@ -862,6 +1396,17 @@ esc_enigma_reader_drone = {
         produces = {
             esc_enigmatic_energy = 2
         }
+        produces = {
+            trigger = {
+                exists = owner
+                owner = { is_galactic_community_member = yes }
+                OR = {
+                    is_active_resolution = "resolution_industry_environmental_ordinance_waivers"
+                    is_active_resolution = "resolution_industry_project_cornucopia"
+                }
+            }
+            esc_enigmatic_energy = 0.1
+        }
         upkeep = {
             trigger = { is_lithoid = no }
             energy = 2
@@ -871,6 +1416,38 @@ esc_enigma_reader_drone = {
             trigger = { is_lithoid = yes }
             energy = 2
             minerals = 4
+        }
+        upkeep = {
+            trigger = {
+                NOT = { has_trait = trait_lithoid }
+                planet = { colony_type = col_refinery }
+            }
+            food = -0.4
+            energy = -0.2
+        }
+        upkeep = {
+            trigger = {
+                NOT = { has_trait = trait_lithoid }
+                planet = { colony_type = col_habitat_refinery }
+            }
+            food = -0.8
+            energy = -0.4
+        }
+        upkeep = {
+            trigger = {
+                has_trait = trait_lithoid
+                planet = { colony_type = col_refinery }
+            }
+            minerals = -0.4
+            energy = -0.2
+        }
+        upkeep = {
+            trigger = {
+                has_trait = trait_lithoid
+                planet = { colony_type = col_habitat_refinery }
+            }
+            minerals = -0.8
+            energy = -0.4
         }
     }
 
@@ -918,8 +1495,27 @@ esc_enigma_reader_unit = {
         produces = {
             esc_enigmatic_energy = 2
         }
+        produces = {
+            trigger = {
+                exists = owner
+                owner = { is_galactic_community_member = yes }
+                OR = {
+                    is_active_resolution = "resolution_industry_environmental_ordinance_waivers"
+                    is_active_resolution = "resolution_industry_project_cornucopia"
+                }
+            }
+            esc_enigmatic_energy = 0.1
+        }
         upkeep = {
             energy = 8
+        }
+        upkeep = {
+            trigger = { planet = { colony_type = col_refinery } }
+            energy = -0.8
+        }
+        upkeep = {
+            trigger = { planet = { colony_type = col_habitat_refinery } }
+            energy = -1.6
         }
     }
 

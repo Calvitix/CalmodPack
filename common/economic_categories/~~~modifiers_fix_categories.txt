@@ -498,7 +498,7 @@ ships = {
 
 		trigger = {
 			is_scope_valid = yes #When called from ship designer the design is not valid yet.
-			is_ship_size = constructor
+			is_ship_size = shipclass_constructor
 		}
 	}
     
@@ -1710,7 +1710,11 @@ planet_jobs = {
 			add
 		}
 		trigger = {
-			is_pop_category = worker
+			OR = {
+				is_pop_category = worker
+				is_pop_category = slave # Yes, slave should count towards both worker and slave
+				is_pop_category = simple_drone
+			}
 		}
 	}
 
@@ -1721,7 +1725,10 @@ planet_jobs = {
 			add
 		}
 		trigger = {
-			is_pop_category = specialist
+			OR = {
+				is_pop_category = specialist
+				is_pop_category = complex_drone #should use planet_jobs_complex_drone wherever possible, this is just for cases like species traits
+			}
 		}
 	}
 
@@ -1732,7 +1739,10 @@ planet_jobs = {
 			add
 		}
 		trigger = {
-			is_pop_category = specialist
+			OR = {
+				is_pop_category = specialist
+				is_pop_category = complex_drone #should use planet_jobs_complex_drone wherever possible, this is just for cases like species traits
+			}
 		}
 	}						  
     
@@ -1823,7 +1833,9 @@ planet_jobs = {
 			is_robot_pop = yes
 		}
 	}	
- 
+
+	
+
     triggered_produces_modifier = {
 		key = planet_jobs_organic_slave
 		modifier_types = {
@@ -1903,7 +1915,7 @@ planet_jobs = {
 			is_robot_pop = yes
 		}
 	}
-    
+	
     triggered_produces_modifier = {
 		key = planet_jobs_organic_ruler
 		modifier_types = {
@@ -1927,7 +1939,7 @@ planet_jobs = {
 			is_robot_pop = yes
 		}
 	}
-    
+	
 	triggered_produces_modifier = {
 		key = planet_jobs_organic_simple_drone
 		modifier_types = {
@@ -2175,6 +2187,18 @@ planet_nobles = {
 	}
 }
 
+planet_necro_apprentices = {
+	parent = planet_pop_assemblers
+	generate_add_modifiers = {
+		produces
+        upkeep
+	}
+	generate_mult_modifiers = {
+		produces
+		upkeep
+	}
+}
+
 planet_merchants = {
 	parent = planet_jobs
 	generate_add_modifiers = {
@@ -2201,6 +2225,18 @@ planet_entertainers = {
 
 planet_soldiers = {
 	parent = planet_jobs
+	generate_add_modifiers = {
+		produces
+        upkeep
+	}
+	generate_mult_modifiers = {
+		produces
+		upkeep
+	}
+}
+
+planet_necromancers = {
+	parent = planet_researchers
 	generate_add_modifiers = {
 		produces
         upkeep

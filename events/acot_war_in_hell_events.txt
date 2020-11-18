@@ -13,15 +13,20 @@ country_event = {
     id = acot_war_in_hell.0
     hide_window = yes
     trigger = {
-        always = no # DISABLED UNTIL FULLY IMPLEMENTED
         NOR = {
             has_global_flag = acot_events_forbidden
+            has_global_flag = acot_war_in_hell_active
         }
         has_technology = tech_dark_matter_power_core_ae
         is_country_type = default
         any_country = {
             is_ai = yes
-            is_fallen_empire = yes
+            OR = {
+                has_country_flag = fallen_empire_1
+                has_country_flag = fallen_empire_2
+                has_country_flag = fallen_empire_3
+                has_country_flag = fallen_empire_4
+            }
             NOT = {
                 has_ethic = ethic_gestalt_consciousness
             }
@@ -35,14 +40,19 @@ country_event = {
     }
 
     mean_time_to_happen = {
-        years = 1000 # DISABLED UNTIL FULLY IMPLEMENTED
+        years = 10
     }
 
     immediate = {
         random_country = {
             limit = {
                 is_ai = yes
-                is_fallen_empire = yes
+                OR = {
+                    has_country_flag = fallen_empire_1
+                    has_country_flag = fallen_empire_2
+                    has_country_flag = fallen_empire_3
+                    has_country_flag = fallen_empire_4
+                }
                 NOT = {
                     has_ethic = ethic_gestalt_consciousness
                 }    
@@ -116,6 +126,9 @@ country_event = {
         response_text = acot_war_in_hell.1.a.response
         set_country_flag = prepare_to_die_by_fe
         save_event_target_as = FallenEmpireTaskTarget
+        add_opinion_modifier = { 
+            who = event_target:FallenEmpireTaskOrigin modifier = triggered_opinion_war_in_hell_fe
+         }  
         event_target:FallenEmpireTaskOrigin = { 
             add_opinion_modifier = { 
                 who = root modifier = triggered_opinion_war_in_hell_fe
@@ -204,6 +217,8 @@ country_event = {
 	is_triggered_only = yes
 
 	immediate = {
+        set_global_flag = acot_war_in_hell_active
+        set_country_flag = mountain_king_declarer_fe
         if = {
             limit = { 
                 is_country_type = fallen_empire
@@ -246,7 +261,7 @@ country_event = {
         }
         set_variable = {
             which = acot_wih_pirate_fleet_resource
-            value = 15
+            value = 10
         }
         set_variable = {
             which = acot_wih_fe_desperation
@@ -265,16 +280,16 @@ country_event = {
 					is_country_type = default
 					is_country_type = fallen_empire
                     is_country_type = awakened_fallen_empire
-                    #is_country_type = ascended_empire #calvitix
-                    #is_country_type = lost_empire
-                    #is_country_type = eternal_empire #calvitix
+                    is_country_type = ascended_empire
+                    is_country_type = lost_empire
+                    is_country_type = eternal_empire
 				}
 				NOT = { has_communications = root }
 			}
 
 			establish_communications_no_message = root
 			root = { save_event_target_as = contact_empire }
-			country_event = { id = action.1 }
+            country_event = { id = action.1 }
         }
 	}
 }
@@ -283,7 +298,20 @@ country_event = {
 country_event = {
 	id = acot_war_in_hell.200
 	title = acot_war_in_hell.200.name
-	desc = acot_war_in_hell.200.desc
+    desc = {
+        trigger = {
+            is_same_value = event_target:FallenEmpireTaskTarget
+        }
+        text = acot_war_in_hell.200.desc.a
+    }
+    desc = {
+        trigger = {
+            NOT = {
+                is_same_value = event_target:FallenEmpireTaskTarget              
+            }
+        }
+        text = acot_war_in_hell.200.desc.b
+    }
 	picture = GFX_evt_fallen_empire
 	show_sound = event_alien_signal
 	location = from
@@ -294,7 +322,7 @@ country_event = {
         trigger = {
             is_same_value = event_target:FallenEmpireTaskTarget
         }
-		name = acot_war_in_hell.13.a
+		name = acot_war_in_hell.200.a
     }
     
 	option = {
@@ -303,7 +331,17 @@ country_event = {
                 is_same_value = event_target:FallenEmpireTaskTarget              
             }
         }
-		name = acot_war_in_hell.13.b
+		name = acot_war_in_hell.200.b
+	}
+
+	option = {
+        trigger = {
+            NOT = {
+                is_same_value = event_target:FallenEmpireTaskTarget        
+            }
+            has_origin = origin_scion
+        }
+		name = acot_war_in_hell.200.c
 	}
 }
 
@@ -375,8 +413,6 @@ country_event = {
         give_technology = { tech = tech_fe_thruster_2 }				
         give_technology = { tech = tech_dark_matter_deflector_ae }	
         give_technology = { tech = tech_enigmatic_drive }	
-        give_technology = { tech = tech_resized_energy_lance_ae }				
-        give_technology = { tech = tech_resized_arc_emitter_ae }	
         give_technology = { tech = tech_resized_mass_accelerator_ae }			
 
         give_technology = { tech = tech_darkmatter_afterburners }
@@ -455,9 +491,9 @@ country_event = {
 					is_country_type = default
 					is_country_type = fallen_empire
                     is_country_type = awakened_fallen_empire
-                    #is_country_type = ascended_empire #calvitix
-                    #is_country_type = lost_empire
-                    #is_country_type = eternal_empire #calvitix
+                    is_country_type = ascended_empire
+                    is_country_type = lost_empire
+                    is_country_type = eternal_empire
 				}
 				NOT = { has_communications = root }
 			}
@@ -474,7 +510,20 @@ country_event = {
 country_event = {
 	id = acot_war_in_hell.300
 	title = acot_war_in_hell.300.name
-	desc = acot_war_in_hell.300.desc
+    desc = {
+        trigger = {
+            is_same_value = event_target:FallenEmpireTaskTarget
+        }
+        text = acot_war_in_hell.300.desc.a
+    }
+    desc = {
+        trigger = {
+            NOT = {
+                is_same_value = event_target:FallenEmpireTaskTarget              
+            }
+        }
+        text = acot_war_in_hell.300.desc.b
+    }
 	picture = GFX_evt_fallen_empire
 	show_sound = event_alien_signal
 	location = from
@@ -485,7 +534,7 @@ country_event = {
         trigger = {
             is_same_value = event_target:FallenEmpireTaskTarget
         }
-		name = acot_war_in_hell.13.a
+		name = acot_war_in_hell.300.a
     }
     
 	option = {
@@ -494,7 +543,7 @@ country_event = {
                 is_same_value = event_target:FallenEmpireTaskTarget              
             }
         }
-		name = acot_war_in_hell.13.b
+		name = acot_war_in_hell.300.b
 	}
 }
 
@@ -511,6 +560,7 @@ country_event = {
 	immediate = {
         IF = {
             limit = {
+                exists = root
                 is_at_war = no        
             }
             ### BUY MORE FLEETS FROM LEGENDARY SMUGGLER
@@ -660,6 +710,23 @@ country_event = {
                     country_event = { id = acot_war_in_hell.401 }                
                 }
             }
+             ### NO BUDGET MUST DECLARE WAR
+             IF = {
+                limit = {
+                    check_variable = {
+                        which = acot_wih_pirate_fleet_resource
+                        value > 0
+                    }
+                }
+                save_event_target_as = FallenEmpireTaskOrigin
+                random_country = {
+                    limit = {
+                        has_country_flag = prepare_to_die_by_fe
+                    }    
+                    save_event_target_as = FallenEmpireTaskTarget
+                    country_event = { id = acot_war_in_hell.6  }          
+                }
+            }      
 
             # RECHECK FOR MORE FLEETS
             country_event = {  id = acot_war_in_hell.4 days = 180 }
@@ -682,7 +749,7 @@ country_event = {
         trigger = {
             is_same_value = event_target:FallenEmpireTaskTarget
         }
-		name = acot_war_in_hell.13.a
+		name = acot_war_in_hell.400.a
     }
     
 	option = {
@@ -691,7 +758,7 @@ country_event = {
                 is_same_value = event_target:FallenEmpireTaskTarget              
             }
         }
-		name = acot_war_in_hell.13.b
+		name = acot_war_in_hell.400.b
 	}
 }
 
@@ -710,7 +777,7 @@ country_event = {
         trigger = {
             is_same_value = event_target:FallenEmpireTaskTarget
         }
-		name = acot_war_in_hell.13.a
+		name = acot_war_in_hell.401.a
     }
     
 	option = {
@@ -719,65 +786,10 @@ country_event = {
                 is_same_value = event_target:FallenEmpireTaskTarget              
             }
         }
-		name = acot_war_in_hell.13.b
+		name = acot_war_in_hell.401.b
 	}
 }
 
-###HALF FLEET ####
-country_event = {
-	id = acot_war_in_hell.402
-	title = acot_war_in_hell.402.name
-	desc = acot_war_in_hell.402.desc
-	picture = GFX_evt_fleet_evil
-	show_sound = event_alien_signal
-	location = from
-
-	is_triggered_only = yes
-
-	option = {
-        trigger = {
-            is_same_value = event_target:FallenEmpireTaskTarget
-        }
-		name = acot_war_in_hell.13.a
-    }
-    
-	option = {
-        trigger = {
-            NOT = {
-                is_same_value = event_target:FallenEmpireTaskTarget              
-            }
-        }
-		name = acot_war_in_hell.13.b
-	}
-}
-
-###HALF FLEET ####
-country_event = {
-	id = acot_war_in_hell.403
-	title = acot_war_in_hell.403.name
-	desc = acot_war_in_hell.403.desc
-	picture = GFX_evt_pirate_armada
-	show_sound = event_alien_signal
-	location = from
-
-	is_triggered_only = yes
-
-	option = {
-        trigger = {
-            is_same_value = event_target:FallenEmpireTaskTarget
-        }
-		name = acot_war_in_hell.13.a
-    }
-    
-	option = {
-        trigger = {
-            NOT = {
-                is_same_value = event_target:FallenEmpireTaskTarget              
-            }
-        }
-		name = acot_war_in_hell.13.b
-	}
-}
 
 ####WARGOAL GO####
 country_event = {
@@ -785,22 +797,21 @@ country_event = {
     hide_window = yes
 
     trigger = {
-        always = no # DISABLED UNTIL FULLY IMPLEMENTED
         NOT = {
             has_global_flag = acot_events_forbidden
         }
         has_country_flag = prepare_to_die_by_fe
-        OR = {
-            is_country_type = default
-            #is_country_type = lost_empire
-            #is_country_type = ascended_empire #calvitix
-        }
         any_country = {
             is_ai = yes
             is_country_type = awakened_fallen_empire
             is_at_war = no
-            #has_country_flag = wih_fallen_empire_pending
+            has_country_flag = mountain_king_declarer_fe
             OR = {
+                relative_power = {
+                    who = ROOT
+                    category = fleet
+                    value = equivalent
+                }
                 relative_power = {
                     who = ROOT
                     category = fleet
@@ -831,7 +842,7 @@ country_event = {
                 is_ai = yes
                 is_country_type = awakened_fallen_empire
                 is_at_war = no
-                #has_country_flag = wih_fallen_empire_pending
+                has_country_flag = mountain_king_declarer_fe
                 OR = {
                     relative_power = {
                         who = ROOT
@@ -851,7 +862,6 @@ country_event = {
                     is_at_war_with = root
                 }              
             }
-            #remove_country_flag = wih_fallen_empire_pending
             save_event_target_as = FallenEmpireTaskOrigin
             establish_communications_no_message = event_target:FallenEmpireTaskTarget
         }    
@@ -908,26 +918,23 @@ country_event = {
 		}
     }
 
-    option = {
-        name = acot_war_in_hell.6.a.default
+    immediate = {
         event_target:FallenEmpireTaskOrigin = {
             declare_war = {
                 target = event_target:FallenEmpireTaskTarget
                 attacker_war_goal = acot_wg_mountain_king
             }           
-        }
+        }       
+    }
+
+    option = {
+        name = acot_war_in_hell.6.a.default
     }
 
     option = {
         name = acot_war_in_hell.6.a.mat
         trigger = {
             is_materialist = yes
-        }
-        event_target:FallenEmpireTaskOrigin = {
-            declare_war = {
-                target = event_target:FallenEmpireTaskTarget
-                attacker_war_goal = acot_wg_mountain_king
-            }           
         }
     }
 
@@ -936,24 +943,13 @@ country_event = {
         trigger = {
             is_spiritualist = yes
         }
-        event_target:FallenEmpireTaskOrigin = {
-            declare_war = {
-                target = event_target:FallenEmpireTaskTarget
-                attacker_war_goal = acot_wg_mountain_king
-            }           
-        }
+
     }
 
     option = {
         name = acot_war_in_hell.6.a.paci
         trigger = {
             is_pacifist = yes
-        }
-        event_target:FallenEmpireTaskOrigin = {
-            declare_war = {
-                target = event_target:FallenEmpireTaskTarget
-                attacker_war_goal = acot_wg_mountain_king
-            }           
         }
     }
 
@@ -962,24 +958,12 @@ country_event = {
         trigger = {
             is_militarist = yes
         }
-        event_target:FallenEmpireTaskOrigin = {
-            declare_war = {
-                target = event_target:FallenEmpireTaskTarget
-                attacker_war_goal = acot_wg_mountain_king
-            }           
-        }
     }
 
     option = {
         name = acot_war_in_hell.6.a.phile
         trigger = {
             is_xenophile = yes
-        }
-        event_target:FallenEmpireTaskOrigin = {
-            declare_war = {
-                target = event_target:FallenEmpireTaskTarget
-                attacker_war_goal = acot_wg_mountain_king
-            }           
         }
     }
 
@@ -988,24 +972,12 @@ country_event = {
         trigger = {
             is_xenophobe = yes
         }
-        event_target:FallenEmpireTaskOrigin = {
-            declare_war = {
-                target = event_target:FallenEmpireTaskTarget
-                attacker_war_goal = acot_wg_mountain_king
-            }           
-        }
     }
 
     option = {
         name = acot_war_in_hell.6.a.ega
         trigger = {
             is_egalitarian = yes
-        }
-        event_target:FallenEmpireTaskOrigin = {
-            declare_war = {
-                target = event_target:FallenEmpireTaskTarget
-                attacker_war_goal = acot_wg_mountain_king
-            }           
         }
     }
 
@@ -1014,24 +986,12 @@ country_event = {
         trigger = {
             is_authoritarian = yes
         }
-        event_target:FallenEmpireTaskOrigin = {
-            declare_war = {
-                target = event_target:FallenEmpireTaskTarget
-                attacker_war_goal = acot_wg_mountain_king
-            }           
-        }
     }
 
     option = {
         name = acot_war_in_hell.6.a.hive
         trigger = {
             is_hive_empire = yes
-        }
-        event_target:FallenEmpireTaskOrigin = {
-            declare_war = {
-                target = event_target:FallenEmpireTaskTarget
-                attacker_war_goal = acot_wg_mountain_king
-            }           
         }
     }
 
@@ -1040,24 +1000,12 @@ country_event = {
         trigger = {
             is_machine_empire = yes
         }
-        event_target:FallenEmpireTaskOrigin = {
-            declare_war = {
-                target = event_target:FallenEmpireTaskTarget
-                attacker_war_goal = acot_wg_mountain_king
-            }           
-        }
     }
 
     option = {
         name = acot_war_in_hell.6.a.mega
         trigger = {
             is_megacorp = yes
-        }
-        event_target:FallenEmpireTaskOrigin = {
-            declare_war = {
-                target = event_target:FallenEmpireTaskTarget
-                attacker_war_goal = acot_wg_mountain_king
-            }           
         }
     }
 
@@ -1066,24 +1014,12 @@ country_event = {
         trigger = {
             has_valid_civic = civic_hive_devouring_swarm
         }
-        event_target:FallenEmpireTaskOrigin = {
-            declare_war = {
-                target = event_target:FallenEmpireTaskTarget
-                attacker_war_goal = acot_wg_mountain_king
-            }           
-        }
     }
 
     option = {
         name = acot_war_in_hell.6.a.termin
         trigger = {
             has_valid_civic = civic_machine_terminator
-        }
-        event_target:FallenEmpireTaskOrigin = {
-            declare_war = {
-                target = event_target:FallenEmpireTaskTarget
-                attacker_war_goal = acot_wg_mountain_king
-            }           
         }
     }
 
@@ -1092,104 +1028,58 @@ country_event = {
         trigger = {
             has_valid_civic = civic_fanatic_purifiers
         }
-        event_target:FallenEmpireTaskOrigin = {
-            declare_war = {
-                target = event_target:FallenEmpireTaskTarget
-                attacker_war_goal = acot_wg_mountain_king
-            }           
-        }
     }
 
-    option = {
-        name = acot_war_in_hell.6.a.surrender
-    }
 }
 
 #Wargoal Win - Default
 country_event = {
 	id = acot_war_in_hell.16
-    title = acot_war_in_hell.1.name
-    desc = {
-        text = acot_war_in_hell.16.desc.phobe
-        trigger = {
-            is_fallen_empire_xenophobe = yes
+	hide_window = yes
+	
+	is_triggered_only = yes
+	picture = GFX_evt_fallen_empire
+    
+	trigger = {
+        is_country_type = awakened_fallen_empire
+        has_country_flag = mountain_king_declarer_fe
+        has_global_flag = acot_war_in_hell_active
+	}
+
+    immediate = {
+        every_country = {
+            limit = {
+                has_country_flag = prepare_to_die_by_fe  
+            }
+            save_event_target_as = mountain_king_victor
+            remove_country_flag = prepare_to_die_by_fe
+            remove_global_flag = acot_war_in_hell_active
+            set_timed_country_flag = {
+                flag = acot_mountain_king_winner
+                years = 10
+            }
+            country_event = { id = acot_war_in_hell.1600 }               
         }
     }
-    desc = {
-        text = acot_war_in_hell.16.desc.phile
-        trigger = {
-            is_fallen_empire_xenophile = yes
-        }
-    }
-    desc = {
-        text = acot_war_in_hell.16.desc.spirit
-        trigger = {
-            is_fallen_empire_spiritualist = yes
-        }
-    }
-    desc = {
-        text = acot_war_in_hell.16.desc.mat
-        trigger = {
-            is_fallen_empire_materialist = yes
-        }
-    }
+
+}
+
+country_event = {
+	id = acot_war_in_hell.1600
+    title = acot_war_in_hell.16.name
+    desc = acot_war_in_hell.16.desc
 		
 	
 	is_triggered_only = yes
-	diplomatic = yes
-	
-	picture_event_data = {
-		portrait = event_target:mountain_king_loser
-		planet_background = event_target:mountain_king_loser
-		graphical_culture = event_target:mountain_king_loser
-		city_level = event_target:mountain_king_loser
-		room = event_target:mountain_king_loser.ruler
-	}
+	picture = GFX_evt_fallen_empire
     
+
     immediate = {
-        save_event_target_as = mountain_king_victor
-        set_timed_country_flag = {
-            flag = acot_mountain_king_winner
-            years = 10
-        }
     }
 
 
     option = {
         name = acot_war_in_hell.16.a
-        response_text = acot_war_in_hell.16.a.response
-        trigger = {
-            is_country_type = default
-        }
-        allow = {
-            NAND = {
-                has_technology = tech_precursor_design
-                has_technology = tech_precursor_escort
-                has_technology = tech_precursor_bc
-                has_technology = tech_fe_tower_offense
-                has_technology = tech_fe_assault_carrier
-                has_technology = tech_gatekeepers
-                has_technology = tech_precursor_titan
-                has_technology = tech_precursor_guardian
-                has_technology = tech_precursor_colossus
-                has_technology = tech_precursor_citadel
-                has_technology = tech_precursor_construcor
-                has_technology = tech_precursor_science
-                has_technology = tech_precursor_colonizer
-            }    
-        }
-        if = {
-            limit = { 
-                NOT = {
-                    has_technology = tech_precursor_design
-                }
-             }
-            add_research_option = tech_precursor_design
-            add_tech_progress = {
-                tech = tech_precursor_design
-                progress = 0.10
-            }
-        }
         random_list = {
             10 = { 
 				modifier = {
@@ -1248,36 +1138,12 @@ country_event = {
 				modifier = {
                     factor = 0
                     OR = {
-                        has_technology = tech_gatekeepers
-                        has_tech_option = tech_gatekeepers
-                    }
-					has_technology = tech_gatekeepers
-                }
-                add_research_option = tech_gatekeepers       	   
-            }
-            10 = { 
-				modifier = {
-                    factor = 0
-                    OR = {
                         has_technology = tech_precursor_titan
                         has_tech_option = tech_precursor_titan
                     }
 					has_technology = tech_precursor_titan
 				}
                 add_research_option = tech_precursor_titan          	   
-            }
-            10 = { 
-				modifier = {
-                    factor = 0
-                    OR = {
-                        has_technology = tech_precursor_colossus
-                        has_tech_option = tech_precursor_colossus
-                    }
-                    NOT = {
-                        host_has_dlc = Apocalypse  
-                    }
-				}
-                add_research_option = tech_precursor_colossus        	   
             }
             10 = { 
 				modifier = {
@@ -1303,11 +1169,6 @@ country_event = {
                 add_research_option = tech_precursor_science          	   
             }
         }  
-    }
-
-    option = {
-        name = acot_war_in_hell.16.b
-        response_text = acot_war_in_hell.16.b.response
         add_resource = {
             energy = 250000
             minerals = 250000
@@ -1320,86 +1181,65 @@ country_event = {
             rare_crystals = 25000
             exotic_gases = 25000
             minor_artifacts = 2500
-        }
-        if = { limit = { FROM = { is_fallen_empire_materialist = yes } }
-            add_resource = {
-                sr_living_metal = 5000
-            }           
-        }
-        if = { limit = { FROM = { is_fallen_empire_spiritualist = yes } }
-        add_resource = {
-            sr_zro = 5000
-            }           
-        }
-        if = { limit = { FROM = { is_fallen_empire_xenophobe = yes } }
-        add_resource = {
-            nanites = 2500
-            }           
-        }
-        if = { limit = { FROM = { is_fallen_empire_xenophile = yes } }
-        add_resource = {
-            energy = 125000
-            minerals = 125000
-            food = 125000
-            alloys = 50000
-            }           
-        }
-        hidden_effect = {      
-        }
-    }
-
-    option = {
-        name = acot_war_in_hell.16.c
-        add_resource = {
             unity = 1000000
             influence = 1000
         }
         every_country = {
             limit = {
                 is_country_type = default
-                NOT = {
+                NOR = {
                     is_same_value = root
+                    has_origin = origin_scion
                 }
             }
             add_opinion_modifier = { who = root modifier = triggered_opinion_beat_the_fe }
         }
-        hidden_effect = {
-            event_target:mountain_king_loser = {
-                every_playable_country = {
-                    country_event = { id = acot_war_in_hell.20 days = 5 }
-                }    
-            }   
-        }
     }
 }
+
 
 #Wargoal Win - FE
 country_event = {
 	id = acot_war_in_hell.17
-    title = acot_war_in_hell.1.name
-    desc = acot_war_in_hell.17.desc
+    hide_window = yes
 	
 	is_triggered_only = yes
-	diplomatic = yes
-	
-	picture_event_data = {
-		portrait = event_target:mountain_king_victor
-		planet_background = event_target:mountain_king_victor
-		graphical_culture = event_target:mountain_king_victor
-		city_level = event_target:mountain_king_victor
-		room = event_target:mountain_king_victor.ruler
-    }
     
-    option = {
-        name = acot_war_in_hell.17.a
-        set_country_flag = acot_robbed_of_victory
-        remove_country_flag = prepare_to_die_by_fe
-        every_owned_leader = {  
-            kill_leader = {
+	trigger = {
+        has_country_flag = prepare_to_die_by_fe
+        has_global_flag = acot_war_in_hell_active
+	}
+
+    immediate = {
+        remove_global_flag = acot_war_in_hell_active
+        every_country = {
+            limit = {
+                has_country_flag = mountain_king_declarer_fe
             }
+            save_event_target_as = mountain_king_victor
+            remove_country_flag = mountain_king_declarer_fe
+            country_event = { id = acot_war_in_hell.1700 }
         }
+    }
+
+}   
+
+#Wargoal Win - FE
+country_event = {
+	id = acot_war_in_hell.1700
+    title = EXCELLENT
+    desc = EXCELLENT
+	picture = GFX_evt_fallen_empire
+	is_triggered_only = yes
+    
+
+
+
+    option = {
+        name = EXCELLENT
         hidden_effect = {  
             event_target:mountain_king_victor = {
+                remove_country_flag = mountain_king_declarer_fe
                 set_country_flag = ae_tier_permitted
 
                 give_technology = { tech = tech_autocannons_ae }
@@ -1425,8 +1265,6 @@ country_event = {
                 give_technology = { tech = tech_fe_thruster_2 }				
                 give_technology = { tech = tech_dark_matter_deflector_ae }	
                 give_technology = { tech = tech_enigmatic_drive }	
-                give_technology = { tech = tech_resized_energy_lance_ae }				
-                give_technology = { tech = tech_resized_arc_emitter_ae }	
                 give_technology = { tech = tech_resized_mass_accelerator_ae }			
         
                 give_technology = { tech = tech_darkmatter_afterburners }
@@ -1662,21 +1500,31 @@ country_event = {
 #Wargoal Win - Default
 country_event = {
 	id = acot_war_in_hell.20
-    title = acot_war_in_hell.1.name
+    title = acot_war_in_hell.20.name
     desc = acot_war_in_hell.20.desc
+    picture = GFX_evt_fallen_empire
+    show_sound = event_mystic_reveal_light
 	
 	is_triggered_only = yes
-	diplomatic = yes
-	
-	picture_event_data = {
-		portrait = event_target:mountain_king_loser
-		planet_background = event_target:mountain_king_loser
-		graphical_culture = event_target:mountain_king_loser
-		city_level = event_target:mountain_king_loser
-		room = event_target:mountain_king_loser.ruler
-	}
+
     
     option = {
-        name = GOOD
+        name = acot_war_in_hell.20.a
+    }
+}
+
+#Wargoal Win - Default
+country_event = {
+	id = acot_war_in_hell.21
+    title = acot_war_in_hell.21.name
+    desc = acot_war_in_hell.21.desc
+    picture = GFX_evt_fallen_empire
+    show_sound = event_mystic_reveal_light
+	
+	is_triggered_only = yes
+
+    
+    option = {
+        name = acot_war_in_hell.21.a
     }
 }

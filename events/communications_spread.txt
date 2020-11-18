@@ -83,6 +83,10 @@ country_event = {
 		months = 60
 		modifier = {
 			factor = 2
+			has_ethic = ethic_fanatic_xenophobe
+		}
+		modifier = {
+			factor = 2
 			is_xenophobe = yes
 		}
 		modifier = {
@@ -104,7 +108,7 @@ country_event = {
 		modifier = {
 			factor = 0.5
 			end_game_years_passed > 50
-		}
+		}		
 	}
 
 	option = {
@@ -153,14 +157,19 @@ country_event = {
 		is_homicidal = no
 		NOT = { has_ethic = ethic_fanatic_xenophobe }
 		NOT = { has_valid_civic = civic_inwards_perfection }
-		any_country = {
+		any_relation = {
 			is_country_type = default
 			is_homicidal = no
 			NOT = { has_country_flag = starting_event }
 			NOT = { has_valid_civic = civic_inwards_perfection }
 			NOT = { is_country = ROOT }
-			NOT = { has_ethic = ethic_fanatic_xenophobe }
 			has_communications = ROOT
+			OR = { # stops Scions spreading knowledge across the galaxy quite so much (FE can be anywhere, if you establish comms with the FE then you get them with the Scion, then you soon find out about the whole opposite side of the galaxy)
+				NOT = { has_origin = origin_scion }
+				any_neighbor_country = {
+					has_communications = root
+				}
+			}
 			any_neighbor_country = {
 				OR = {
 					is_country_type = default
@@ -174,15 +183,20 @@ country_event = {
 	}
 	
 	immediate = {
-		random_country = {
+		random_relation = {
 			limit = {		
 				is_country_type = default
 				is_homicidal = no
 				NOT = { has_country_flag = starting_event }
 				NOT = { has_valid_civic = civic_inwards_perfection }
 				NOT = { is_country = ROOT }
-				NOT = { has_ethic = ethic_fanatic_xenophobe }
 				has_communications = ROOT
+				OR = { # stops Scions spreading knowledge across the galaxy quite so much (FE can be anywhere, if you establish comms with the FE then you get them with the Scion, then you soon find out about the whole opposite side of the galaxy)
+					NOT = { has_origin = origin_scion }
+					any_neighbor_country = {
+						has_communications = root
+					}
+				}
 				any_neighbor_country = {
 					OR = {
 						is_country_type = default
@@ -211,7 +225,11 @@ country_event = {
 	}
 
 	mean_time_to_happen = {
-		months = 480
+		months = 240
+		modifier = {
+			factor = 2
+			has_ethic = ethic_fanatic_xenophobe
+		}
 		modifier = {
 			factor = 2
 			is_xenophobe = yes
@@ -235,7 +253,7 @@ country_event = {
 		modifier = {
 			factor = 0.5
 			years_passed > 200
-		}
+		}			
 	}
 
 	option = {

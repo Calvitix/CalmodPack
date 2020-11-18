@@ -116,6 +116,7 @@ indiscriminate = {
 		}
 		modifier = {
 			factor = 0
+			exists = from
 			from = { owner = { NOT = { is_hostile = root.owner } } }
 			owner = { 
 				has_policy_flag = orbital_bombardment_armageddon
@@ -128,7 +129,10 @@ indiscriminate = {
 armageddon = {
 	trigger = {
 		owner = {
-			has_policy_flag = orbital_bombardment_armageddon
+			OR = {
+				has_policy_flag = orbital_bombardment_armageddon
+				is_crisis_faction = yes
+			}
 		}
 	}
 
@@ -156,6 +160,8 @@ armageddon = {
 			from = {
 				owner = { NOT = { is_hostile = root.owner } }
 			}
+			exists = owner
+			owner = { is_crisis_faction = no }
 		}
 	}
 }
@@ -186,8 +192,8 @@ pox = {
 		modifier = {
 			factor = 0
 			OR = {
-				pop_has_trait = trait_mechanical
 				pop_has_trait = trait_machine_unit
+				pop_has_trait = trait_mechanical
 			}
 		}
 	}

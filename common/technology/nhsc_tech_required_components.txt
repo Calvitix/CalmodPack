@@ -12,6 +12,7 @@
 #     └─ String Theory							: tier 6 sensors for ships and stations
 #         ├─ String Fluctuation Analysis		: tier 7 sensors for ships and stations
 #         └─ Psionic Sensors					: tier 7 sensors for ships and stations
+# ── Precursor Sensor Arrays					: tier 8 sensors
 #
 # ── Antimatter Thrusters						: tier 5 thrusters for ships
 #     └─ Gravity Manipulation Engines			: tier 6 thrusters for ships
@@ -21,6 +22,8 @@
 # ── Precursor Jump Drive						: tier 3 jump drive [FE debris only]
 # ── Improved Psi Jump Drive					: tier 2 psi jump drive
 #     └─ Shroud Guide							: tier 3 psi jump drive
+#
+# ── Nanite Thought Matrix						: nanite-based combat computers
 
 ############################################################
 ##              Improved Zero-Point Reactor               ##
@@ -411,7 +414,7 @@ nhsc_tech_dark_matter_power_core_3 = {
 
 nhsc_tech_advanced_sensors_1 = {
 	area = physics
-	category = { voidcraft }
+	category = { computing }
 	tier = 5
 	cost = @tier5cost1
 	weight = @tier5weight1
@@ -438,7 +441,7 @@ nhsc_tech_advanced_sensors_1 = {
 			factor = 1.25
 			research_leader = {
 				area = physics
-				has_trait = "leader_trait_expertise_voidcraft"
+				has_trait = "leader_trait_expertise_computing"
 			}
 		}
 	}
@@ -449,7 +452,7 @@ nhsc_tech_advanced_sensors_1 = {
 			factor = 1.25
 			research_leader = {
 				area = physics
-				has_trait = "leader_trait_expertise_voidcraft"
+				has_trait = "leader_trait_expertise_computing"
 			}
 		}
 	}
@@ -461,7 +464,7 @@ nhsc_tech_advanced_sensors_1 = {
 
 nhsc_tech_advanced_sensors_2 = {
 	area = physics
-	category = { voidcraft }
+	category = { computing }
 	tier = 5
 	cost = @tier5cost3
 	weight = @tier5weight3
@@ -489,7 +492,7 @@ nhsc_tech_advanced_sensors_2 = {
 			factor = 1.25
 			research_leader = {
 				area = physics
-				has_trait = "leader_trait_expertise_voidcraft"
+				has_trait = "leader_trait_expertise_computing"
 			}
 		}
 		modifier = {
@@ -512,7 +515,7 @@ nhsc_tech_advanced_sensors_2 = {
 			factor = 1.25
 			research_leader = {
 				area = physics
-				has_trait = "leader_trait_expertise_voidcraft"
+				has_trait = "leader_trait_expertise_computing"
 			}
 		}
 		modifier = {
@@ -536,7 +539,7 @@ nhsc_tech_advanced_sensors_2 = {
 
 nhsc_tech_advanced_sensors_3 = {
 	area = physics
-	category = { voidcraft }
+	category = { computing }
 	tier = 6
 	cost = @techTier6cost1
 	weight = @techTier6weight1
@@ -564,7 +567,7 @@ nhsc_tech_advanced_sensors_3 = {
 			factor = 1.25
 			research_leader = {
 				area = physics
-				has_trait = "leader_trait_expertise_voidcraft"
+				has_trait = "leader_trait_expertise_computing"
 			}
 		}
 		modifier = {
@@ -587,7 +590,7 @@ nhsc_tech_advanced_sensors_3 = {
 			factor = 1.25
 			research_leader = {
 				area = physics
-				has_trait = "leader_trait_expertise_voidcraft"
+				has_trait = "leader_trait_expertise_computing"
 			}
 		}
 		modifier = {
@@ -705,6 +708,33 @@ nhsc_tech_psionic_sensors = {
 				any_member = { has_technology = nhsc_tech_psionic_sensors }
 			}
 		}
+	}
+}
+
+############################################################
+##                 Precursor Sensor Arrays                ##
+############################################################
+
+nhsc_tech_precursor_sensors = {
+	area = physics
+	category = { computing }
+	tier = 6
+	cost = @techTier6cost3
+	weight = 0
+	prerequisites = { }
+	ai_update_type = all
+	is_rare = yes
+
+	prereqfor_desc = {
+		hide_prereq_for_desc = component
+		component = {
+			title = "TECH_UNLOCK_PRECURSOR_SENSOR_TITLE"
+			desc = "TECH_UNLOCK_PRECURSOR_SENSOR_DESC"
+		}
+	}
+
+	potential = {
+		NOT = { has_global_flag = ESC_sensors_forbidden }
 	}
 }
 
@@ -1107,5 +1137,28 @@ nhsc_tech_psi_jump_drive_3 = {
 
 	ai_weight = {
 		factor = 20 #FTL techs are good
+	}
+}
+
+############################################################
+##                 Nanite Thought Matrix                  ##
+############################################################
+
+nhsc_tech_nanite_thought_matrix = {
+	area = physics
+	tier = 5
+	cost = @tier5cost3
+	category = { computing }
+	ai_update_type = military
+	prerequisites = { "nhsc_tech_synthetic_lifeform_studies" }
+	weight = 0 # tech is given as a research option by an event
+	is_rare = yes
+
+	prereqfor_desc = {
+		hide_prereq_for_desc = component
+		custom = {
+			title = "NHSC_TECH_UNLOCK_COMBAT_COMPUTERS_NANITE_TITLE"
+			desc = "NHSC_TECH_UNLOCK_COMBAT_COMPUTERS_NANITE_DESC"
+		}
 	}
 }

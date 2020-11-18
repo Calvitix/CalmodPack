@@ -27,5 +27,38 @@ planet_event = {
 			}
 			remove_deposit = d_great_pacific_garbage_patch
 		}
+		
+		# Ecology Origin
+		if = {
+			limit = { owner = { has_origin = origin_ecology } }
+			clear_blockers = yes
+			set_planet_size = 20
+			add_deposit = d_eco_city_park
+			add_deposit = d_dangerous_wildlife_blocker
+			
+			if = {
+				limit = { has_modifier = eco_fragile_ecosystem }
+				remove_modifier = eco_fragile_ecosystem
+			}
+			
+			if = {
+				limit = { NOT = { has_modifier = eco_resilient_ecosystem } }
+				add_modifier = { modifier = "eco_resilient_ecosystem" days = -1 }
+			}
+			
+			if = {
+				limit = { is_cold = yes }
+				add_deposit = d_eco_peatland
+				add_deposit = d_massive_glacier
+			} else_if = {
+				limit = { is_wet = yes }
+				add_deposit = d_eco_old_growth_forest
+				add_deposit = d_toxic_kelp
+			} else_if = {
+				limit = { is_dry = yes }
+				add_deposit = d_eco_tall_grass_prairie
+				add_deposit = d_quicksand_basin
+			}
+		}
 	}
 }

@@ -16,49 +16,110 @@ planet_event = {
 	is_triggered_only = yes
 	
 	trigger = {
-		has_orbital_bombardment_stance = exterminatus
 		OR = {
-			habitable_planet = yes		
+			has_orbital_bombardment_stance = exterminatus
+			has_orbital_bombardment_stance = punishment
+		}
+		OR = {
+			habitable_planet = yes	
+			is_planet_class = pc_nuked	
 			is_planet_class = pc_ringworld_habitable
 			is_planet_class = pc_habitat	
+		}
+		NOR = {
+			is_planet_class = pc_dark_fractured
+			is_planet_class = pc_dark_fractured_ae
+			is_planet_class = pc_acot_enigmopolis	
 		}
 	}
 	
 	immediate = {
-		add_threat = { who = from amount = 2 }
+		add_threat = { who = from amount = 10 }
 		every_owned_pop = {
 			kill_pop = yes
 		}
+		remove_all_buildings = yes
+		reroll_deposits = yes
+		clear_planet_modifiers = yes
+		if = {
+			limit = { NOT = { has_global_flag = fractured_happened } }
+			set_global_flag = fractured_happened
+		}
+		### FRACTURE
 		owner = { 
 			add_static_war_exhaustion = {
 				attacker = from
 				location = root
 				value_for_planet_destruction = 0.5
 			}
-			country_event = { id = acot_exterminatus_event.2 } 
+			country_event = { id = acot_exterminatus_event.101 } 
 		}
-		from = { country_event = { id = acot_exterminatus_event.3 } }
-		remove_all_buildings = yes
-		reroll_deposits = yes
-		remove_modifier = "natural_beauty"
-		remove_modifier = "acot_modifier_ascended_city"
-		remove_modifier = "atmospheric_aphrodisiac"
-		remove_modifier = "atmospheric_hallucinogen"
-		remove_modifier = "lush_planet"		
-		remove_modifier = "dangerous_wildlife"
+		from = { country_event = { id = acot_exterminatus_event.102 } }
+		every_playable_country = {
+			limit = {
+				NOR = {
+					is_same_value = root.owner
+					is_same_value = from
+				}
+			}
+			country_event = { id = acot_exterminatus_event.103 }
+		}
 		if = {
-			limit = { habitable_planet = yes }
-			change_pc = pc_nuked
-		}	
-		if = {
-			limit = { is_planet_class = pc_ringworld_habitable }
+			limit = {
+				has_orbital_bombardment_stance = punishment			
+				NOR = {
+					is_planet_class = pc_ringworld_habitable
+					is_planet_class = pc_habitat
+				}
+			}
+			change_pc = pc_dark_fractured_unstable
+			reset_planet = yes
+			add_modifier = { modifier = acot_modifier_fractured_cooldown }
+			planet_event = {id = acot_exterminatus_event.1000 days = 3600 }
+		}
+		else_if = {
+			limit = { 
+				has_orbital_bombardment_stance = punishment
+				is_planet_class = pc_ringworld_habitable 
+			}
 			change_pc = pc_ringworld_habitable_damaged
-			spawn_ringworld_cracker_effect = yes
+			reset_planet = yes
 		}
-		if = {
-			limit = { is_planet_class = pc_habitat }
+		else_if = {
+			limit = { 
+				has_orbital_bombardment_stance = punishment
+				is_planet_class = pc_habitat 
+			}
 			remove_planet = yes
-			spawn_habitat_cracker_effect = yes
+		}
+		### ALPHAFRACT
+		if = {
+			limit = {
+				has_orbital_bombardment_stance = exterminatus		
+				NOR = {
+					is_planet_class = pc_ringworld_habitable
+					is_planet_class = pc_habitat
+				}
+			}
+			change_pc = pc_dark_fractured_ae_unstable
+			add_modifier = { modifier = acot_modifier_fractured_cooldown }
+			planet_event = {id = acot_exterminatus_event.1000 days = 7200 }
+			reset_planet = yes
+		}
+		else_if = {
+			limit = { 
+				has_orbital_bombardment_stance = exterminatus		
+				is_planet_class = pc_ringworld_habitable 
+			}
+			change_pc = pc_ringworld_habitable_damaged
+			reset_planet = yes
+		}
+		else_if = {
+			limit = {
+				has_orbital_bombardment_stance = exterminatus		 
+				is_planet_class = pc_habitat 
+			}
+			remove_planet = yes
 		}
 	}
 }
@@ -78,13 +139,18 @@ planet_event = {
 				has_technology = tech_bombardment_ae_final
 			}
 		}
+		NOT = {
+			has_planet_flag = bombardment_cooldown
+		}
 		OR = {
 			habitable_planet = yes		
+			is_planet_class = pc_nuked
 			is_planet_class = pc_ringworld_habitable
 			is_planet_class = pc_habitat	
-			NOT = {
-				has_planet_flag = bombardment_cooldown
-			}
+		}
+		NOR = {
+			is_planet_class = pc_dark_fractured_ae
+			is_planet_class = pc_acot_enigmopolis	
 		}
 	}
 	immediate = {
@@ -93,6 +159,35 @@ planet_event = {
 		}
 		random_list = {
 			80 = { 
+				modifier = {
+					factor = 0
+					num_pops <= 5
+				}
+				IF = {
+					limit = {
+						has_building = building_dark_energy_psg					
+					}
+					while = {
+						count = 3
+						random_pop = {
+							kill_pop = yes
+						}
+					}
+				}
+				IF = {
+					limit = {
+						NOR = {
+							has_building = building_dark_energy_psg			
+							has_building = building_ae_dark_energy_psg	
+						}				
+					}
+					while = {
+						count = 5
+						random_pop = {
+							kill_pop = yes
+						}
+					}
+				}
 			}
 			20 = { 
 				modifier = {
@@ -135,12 +230,7 @@ planet_event = {
 				}
 				remove_all_buildings = yes
 				destroy_colony = yes
-				remove_modifier = "natural_beauty"
-				remove_modifier = "acot_modifier_ascended_city"
-				remove_modifier = "atmospheric_aphrodisiac"
-				remove_modifier = "atmospheric_hallucinogen"
-				remove_modifier = "lush_planet"		
-				remove_modifier = "dangerous_wildlife"
+				clear_planet_modifiers = yes
 				if = {
 					limit = {
 						NOR = {
@@ -148,8 +238,10 @@ planet_event = {
 							is_planet_class = pc_habitat
 						}
 					}
-					change_pc = pc_dark_fractured
+					change_pc = pc_dark_fractured_unstable
 					reset_planet = yes
+					add_modifier = { modifier = acot_modifier_fractured_cooldown }
+					planet_event = {id = acot_exterminatus_event.1000 days = 3600 }
 				}
 				else_if = {
 					limit = { is_planet_class = pc_ringworld_habitable }
@@ -183,11 +275,15 @@ planet_event = {
 		}
 		OR = {
 			habitable_planet = yes		
+			is_planet_class = pc_nuked
 			is_planet_class = pc_ringworld_habitable
 			is_planet_class = pc_habitat	
 		}
 		NOT = {
 			has_planet_flag = bombardment_cooldown
+		}
+		NOR = {
+			is_planet_class = pc_acot_enigmopolis	
 		}
 	}
 
@@ -197,6 +293,46 @@ planet_event = {
 		}
 		random_list = {
 			80 = { 
+				modifier = {
+					factor = 0
+					num_pops <= 20
+				}
+				IF = {
+					limit = {
+						has_building = building_dark_energy_psg						
+					}
+					while = {
+						count = 10
+						random_pop = {
+							kill_pop = yes
+						}
+					}
+				}
+				IF = {
+					limit = {
+						has_building = building_ae_dark_energy_psg						
+					}
+					while = {
+						count = 5
+						random_pop = {
+							kill_pop = yes
+						}
+					}
+				}
+				IF = {
+					limit = {
+						NOR = {
+							has_building = building_dark_energy_psg			
+							has_building = building_ae_dark_energy_psg	
+						}				
+					}
+					while = {
+						count = 20
+						random_pop = {
+							kill_pop = yes
+						}
+					}
+				}
 			}
 			20 = { 
 				modifier = {
@@ -235,12 +371,7 @@ planet_event = {
 				}
 				remove_all_buildings = yes
 				destroy_colony = yes
-				remove_modifier = "natural_beauty"
-				remove_modifier = "acot_modifier_ascended_city"
-				remove_modifier = "atmospheric_aphrodisiac"
-				remove_modifier = "atmospheric_hallucinogen"
-				remove_modifier = "lush_planet"		
-				remove_modifier = "dangerous_wildlife"
+				clear_planet_modifiers = yes
 				if = {
 					limit = {
 						NOR = {
@@ -248,7 +379,9 @@ planet_event = {
 							is_planet_class = pc_habitat
 						}
 					}
-					change_pc = pc_dark_fractured_ae
+					change_pc = pc_dark_fractured_ae_unstable
+					add_modifier = { modifier = acot_modifier_fractured_cooldown }
+					planet_event = {id = acot_exterminatus_event.1000 days = 7200 }
 					reset_planet = yes
 				}
 				else_if = {
@@ -471,10 +604,24 @@ planet_event = {
 	is_triggered_only = yes
 	
 	trigger = {
+		FROM = {
+			owner = {
+				OR = {
+					is_country_type = default
+					is_country_type = primitive
+					is_country_type = fallen_empire
+					is_country_type = awakened_fallen_empire
+					is_country_type = ascended_empire
+					is_country_type = lost_empire
+					is_country_type = eternal_empire
+				}				
+			}
+		}
 		has_orbital_bombardment_stance = final_destionation
 		planet_devastation >= 100
 		OR = {
 			habitable_planet = yes		
+			is_planet_class = pc_nuked
 			is_planet_class = pc_ringworld_habitable
 			is_planet_class = pc_habitat	
 		}
@@ -485,6 +632,9 @@ planet_event = {
 				is_country_type = awakened_fallen_empire
 				is_country_type = awakened_marauders
 			}
+		}
+		NOT = {
+			is_planet_class = pc_acot_enigmopolis	
 		}
 	}
 	
@@ -506,17 +656,16 @@ planet_event = {
 		remove_all_buildings = yes
 		reroll_deposits = yes
 		destroy_colony = yes
-		remove_modifier = "natural_beauty"
-		remove_modifier = "acot_modifier_ascended_city"
-		remove_modifier = "atmospheric_aphrodisiac"
-		remove_modifier = "atmospheric_hallucinogen"
-		remove_modifier = "lush_planet"		
-		remove_modifier = "dangerous_wildlife"
+		reset_planet = yes
+		clear_planet_modifiers = yes
 		if = {
 			limit = {
-				habitable_planet = yes
+				OR = {
+					habitable_planet = yes
+					is_planet_class = pc_nuked
+				}
 			}
-			change_pc = pc_molten
+			change_pc = pc_shattered
 		}
 		else = {
 			if = {
@@ -588,8 +737,8 @@ planet_event = {
 				is_country_type = fallen_empire
 				is_country_type = awakened_fallen_empire
 				is_country_type = awakened_marauders
-				#is_country_type = ascended_empire
-				#is_country_type = lost_empire #calvitix
+				is_country_type = ascended_empire
+				is_country_type = lost_empire
 			}
 		}
 		FROM = {
@@ -597,6 +746,11 @@ planet_event = {
 		}
 		NOT = {
 			has_planet_flag = bombardment_cooldown
+		}
+		NOR = {
+			is_planet_class = pc_dark_fractured
+			is_planet_class = pc_dark_fractured_ae
+			is_planet_class = pc_acot_enigmopolis	
 		}
 	}
 	
@@ -657,17 +811,14 @@ country_event = {
 				remove_all_buildings = yes
 				reroll_deposits = yes
 				destroy_colony = yes
-				remove_modifier = "natural_beauty"
-				remove_modifier = "acot_modifier_ascended_city"
-				remove_modifier = "atmospheric_aphrodisiac"
-				remove_modifier = "atmospheric_hallucinogen"
-				remove_modifier = "lush_planet"		
-				remove_modifier = "dangerous_wildlife"
+				clear_planet_modifiers = yes
 				if = {
 					limit = {
 						habitable_planet = yes
 					}
-					change_pc = pc_dark_fractured
+					change_pc = pc_dark_fractured_unstable
+					add_modifier = { modifier = acot_modifier_fractured_cooldown }
+					planet_event = {id = acot_exterminatus_event.1000 days = 3600 }
 				}
 				else = {
 					if = {
@@ -704,6 +855,8 @@ country_event = {
 				remove_all_buildings = yes
 				reroll_deposits = yes
 				destroy_colony = yes
+				reset_planet = yes
+				clear_planet_modifiers = yes
 				remove_modifier = "natural_beauty"
 				remove_modifier = "acot_modifier_ascended_city"
 				remove_modifier = "atmospheric_aphrodisiac"
@@ -714,7 +867,9 @@ country_event = {
 					limit = {
 						habitable_planet = yes
 					}
-					change_pc = pc_dark_fractured_ae
+					change_pc = pc_dark_fractured_ae_unstable
+					add_modifier = { modifier = acot_modifier_fractured_cooldown }
+					planet_event = {id = acot_exterminatus_event.1000 days = 7200 }
 				}
 				else = {
 					if = {
@@ -729,4 +884,178 @@ country_event = {
 			}			
 		}
 	}
+}
+
+# Planet turns into stable form and starts spawning shits
+planet_event = {
+	id = acot_exterminatus_event.1000
+	hide_window = yes
+
+	is_triggered_only = yes
+
+	trigger = {
+	}
+	immediate = {
+		remove_modifier = acot_modifier_fractured_cooldown
+		if = {
+			limit = {
+				is_planet_class = pc_dark_fractured_unstable
+			}
+			change_pc = pc_dark_fractured
+		}
+		if = {
+			limit = {
+				is_planet_class = pc_dark_fractured_ae_unstable
+			}
+			change_pc = pc_dark_fractured_ae
+		}
+		IF = {
+			limit = {
+				NOT = {
+					exists = event_target:lifeform_country
+				}				
+			}
+			create_country = {
+				type = void_lifeforms_1
+				flag = {
+					icon = {
+						category = "spherical"
+						file = "flag_spherical_23.dds"
+					}
+					background= {
+						category = "backgrounds"
+						file = "v.dds"
+					}
+					colors={
+						"black"
+						"teal"
+						"null"
+						"null"
+					}
+				}
+				effect = {
+					save_global_event_target_as = lifeform_country	
+					every_playable_country = {
+						establish_communications_no_message = event_target:lifeform_country					
+					}				
+				}
+			}
+			create_species = {
+				name = "NAME_Titans"
+				class = random_non_machine
+				portrait = random
+				traits = random
+			}
+		}
+		while = {
+			count = 2
+			random_list = {
+				33 = {
+					modifier = {
+						factor = 0
+						has_deposit = d_acot_void_chasm
+					}
+					add_deposit = d_acot_void_chasm
+				}
+				33 = {
+					modifier = {
+						factor = 0
+						has_deposit = d_acot_void_rift
+					}	
+					add_deposit = d_acot_void_rift				
+				}
+				33 = {
+					modifier = {
+						factor = 0
+						has_deposit = d_acot_void_terrain
+					}
+					add_deposit = d_acot_void_terrain					
+				}
+			}
+		}
+		while = {
+			count = 3
+			random_list = {
+				20 = {
+					if = {
+						limit = { 
+							NOT = {
+								has_modifier = acot_modifier_fractured_mutants
+							}
+						}
+						add_modifier = { modifier = acot_modifier_fractured_mutants days = -1 }
+					}
+				}
+				20 = {
+					if = {
+						limit = { 
+							NOT = {
+								has_modifier = acot_modifier_fractured_lifeforms
+							}
+						}
+						add_modifier = { modifier = acot_modifier_fractured_lifeforms days = -1 }
+					}
+				}
+				20 = {
+					if = {
+						limit = { 
+							NOT = {
+								has_modifier = acot_modifier_fractured_sentient_crystal
+							}
+						}
+						add_modifier = { modifier = acot_modifier_fractured_sentient_crystal days = -1 }
+					}
+				}
+				20 = {
+					if = {
+						limit = { 
+							NOT = {
+								has_modifier = acot_modifier_fractured_machines
+							}
+						}
+						add_modifier = { modifier = acot_modifier_fractured_machines days = -1 }
+					}
+				}
+				20 = {
+					if = {
+						limit = { 
+							NOT = {
+								has_modifier = acot_modifier_fractured_plants
+							}
+						}
+						add_modifier = { modifier = acot_modifier_fractured_plants days = -1 }
+					}
+				}
+			}
+		}
+	}
+}
+
+# Planet turns into stable form and starts spawning shits
+planet_event = {
+	id = acot_exterminatus_event.1001
+	hide_window = yes
+
+	mean_time_to_happen = {
+		days = 320
+	}
+
+	trigger = {
+		OR = {
+			is_planet_class = pc_dark_fractured
+			is_planet_class = pc_dark_fractured_ae
+		}
+		exists = owner
+		owner = {
+			is_playable_country = no
+		}
+		has_army = yes
+		attacker = {
+			is_playable_country = yes		
+		}
+	}
+
+	immediate = {
+		set_owner = attacker
+	}		
 }

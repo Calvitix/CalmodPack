@@ -1,5 +1,5 @@
-version="02.04"
-name="CalmodPack [2.7+]"
+version="18.11.2020"
+name="CalmodPack [2.8+]"
 tags={
 	"ModPack"
 	"Gameplay"
@@ -7,5 +7,5 @@ tags={
 	"Overhaul"
 }
 picture="thumbnail.png"
-supported_version="2.7.*"
+supported_version="2.8.*"
 remote_file_id="2058173175"

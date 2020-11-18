@@ -22,11 +22,10 @@ planet_event = {
 			has_global_flag = acot_digsite_1_happened
 		}
 		has_planet_flag = can_have_precursor_event
-		solar_system = {
-			exists = owner
-			owner = {
-				is_ai = no
-			}
+		exists = owner
+		owner = {
+			is_same_value = root.owner
+			is_ai = no
 		}
 	}
 
@@ -41,11 +40,9 @@ planet_event = {
 			set_global_flag = acot_digsite_1_happened
 		}
 		save_global_event_target_as = acot_digsite_1_planet
-		solar_system = {
-			owner = {
-				country_event = {
-					id = acot_digsite_events.1
-				}
+		owner = {
+			country_event = {
+				id = acot_digsite_events.1
 			}
 		}
 	}
@@ -73,14 +70,22 @@ fleet_event = {
 	title = acot_digsite_events.2.name
 	desc = {
 		trigger = {
-			owner = { NOT = { has_technology = tech_enigmatic_power_core } }						
+			owner = {
+				NOR = {
+					has_technology = tech_enigmatic_power_core
+					has_technology = tech_dark_matter_power_core
+				}
+			}						
 		}
 		text = acot_digsite_events.2.desc.stupid
 	}
 	desc = {
 		trigger = {
 			owner = {
-				has_technology = tech_enigmatic_power_core
+				OR = {
+					has_technology = tech_enigmatic_power_core
+					has_technology = tech_dark_matter_power_core
+				}
 			}						
 		}
 		text = acot_digsite_events.2.desc.smart
@@ -102,8 +107,9 @@ fleet_event = {
 	option = {
 		trigger = {
 			owner = {
-				NOT = {
+				NOR = {
 					has_technology = tech_enigmatic_power_core
+					has_technology = tech_dark_matter_power_core
 				}
 			}			
 		}
@@ -124,8 +130,9 @@ fleet_event = {
 	option = {
 		trigger = {
 			owner = {
-				NOT = {
+				NOR = {
 					has_technology = tech_enigmatic_power_core
+					has_technology = tech_dark_matter_power_core
 				}
 			}			
 		}
@@ -145,8 +152,9 @@ fleet_event = {
 	option = {
 		trigger = {
 			owner = {
-				NOT = {
+				NOR = {
 					has_technology = tech_enigmatic_power_core
+					has_technology = tech_dark_matter_power_core
 				}
 			}			
 		}
@@ -160,7 +168,10 @@ fleet_event = {
 	option = {
 		trigger = {
 			owner = {
-				has_technology = tech_enigmatic_power_core
+				OR = {
+					has_technology = tech_enigmatic_power_core
+					has_technology = tech_dark_matter_power_core
+				}
 			}			
 		}
 		name = acot_digsite_events.2.d
@@ -180,7 +191,10 @@ fleet_event = {
 	option = {
 		trigger = {
 			owner = {
-				has_technology = tech_enigmatic_power_core
+				OR = {
+					has_technology = tech_enigmatic_power_core
+					has_technology = tech_dark_matter_power_core
+				}
 			}			
 		}
 		name = acot_digsite_events.2.e
@@ -885,9 +899,6 @@ fleet_event = {
 		}
 		text = acot_digsite_events.6.d.desc.translated
 	}
-	#calvitix
-	picture = GFX_acot_fractured_world
-	show_sound = event_mystic_reveal_light
 
 	archaeology = yes
 	is_triggered_only = yes
@@ -1013,7 +1024,7 @@ fleet_event = {
 country_event = {
 	id = acot_digsite_events.700
 	title = acot_alpha_matter_events.1.name
-	desc = acot_alpha_matter_events.1.desc
+	desc =  acot_alpha_matter_events.1.a.desc
 	picture = GFX_evt_ancient_records
 	show_sound = event_mystery
 
@@ -1115,9 +1126,6 @@ fleet_event = {
 		}
 		text = acot_digsite_events.7.f.desc
 	}
-	#calvitix
-	picture = GFX_acot_fractured_world
-	show_sound = event_mystic_reveal_light
 
 	archaeology = yes
 	is_triggered_only = yes
@@ -1163,14 +1171,15 @@ fleet_event = {
 					limit = {  
 						NOR = { 
 							has_country_flag = hear_precursor_rumor 
+							has_tech_option = tech_precursor_design
 							has_technology = tech_precursor_design
 							has_technology = tech_dark_matter_power_core_ae
 							has_event_chain = acot_alpha_tech_chain
 						} 
 					} 
-				}
-				country_event = {
-					id = acot_digsite_events.700 days = 5
+					country_event = {
+						id = acot_digsite_events.700 days = 5
+					}
 				}
 			}
 		}
@@ -1531,7 +1540,7 @@ fleet_event = {
 
 	### I SEE EVERYTHING
 	option = {
-		name = acot_digsite_events.702.c
+		name = acot_digsite_events.7.e.1
 		trigger = { event_target:acot_digsite_1_planet = { has_planet_flag = precursor_all_selected } }
 		### ESCORT ONLY
 		IF = {

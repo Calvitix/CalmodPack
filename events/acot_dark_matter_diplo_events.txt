@@ -219,6 +219,22 @@ country_event = {
 		name = acot_diplo.3.a
         response_text = acot_diplo.3.a.response
         custom_tooltip = dm_with_assist_tooltip
+        add_resource = {
+            energy = 250000
+        }
+        if = {
+            limit = {
+                event_target:interested_buyer = {
+                    resource_stockpile_compare = {
+                        resource = energy
+                        value >= 250000
+                    }
+                }
+             }
+             add_resource = {
+                energy = 250000
+            }
+        }
         event_target:interested_buyer = { 
             add_research_option = tech_dark_matter_power_core
             set_country_flag = have_received_dm
@@ -245,36 +261,6 @@ country_event = {
             add_opinion_modifier = { who = root modifier = triggered_opinion_give_dm_with_assist }
         }
 		hidden_effect = {
-            every_country = {
-                limit = {
-                    is_country_type = default
-                    OR = {
-                        is_friendly_to = ROOT
-                        is_cordial_to = ROOT
-                        has_defensive_pact = root
-                        is_in_federation_with = ROOT          
-                    }
-                    NOR = {
-                        is_same_value = root
-                        is_same_value = event_target:interested_buyer
-                    }
-                }
-                add_opinion_modifier = { who = root modifier = triggered_opinion_give_dm_with_assist_neighbour }
-            }
-            every_country = {
-                limit = {
-                    OR = {
-                        is_rival = event_target:interested_buyer
-                        is_unfriendly_to = event_target:interested_buyer
-                        is_hostile_to = event_target:interested_buyer
-                        is_overlord_to = event_target:interested_buyer           
-                    }
-                    NOR = {
-                        is_same_value = root
-                    }
-                }
-                add_opinion_modifier = { who = root modifier = triggered_opinion_give_dm_to_enemy }
-            }
 			remove_country_flag = about_to_be_negotiated
         }
         
@@ -294,42 +280,28 @@ country_event = {
 		name = acot_diplo.3.b
         response_text = acot_diplo.3.b.response
         custom_tooltip = dm_with_assist_tooltip
+        add_resource = {
+            energy = 100000
+        }
+        if = {
+            limit = {
+                event_target:interested_buyer = {
+                    resource_stockpile_compare = {
+                        resource = energy
+                        value >= 100000
+                    }
+                }
+             }
+             add_resource = {
+                energy = 100000
+            }
+        }
         event_target:interested_buyer = { 
             set_country_flag = have_received_dm
             add_research_option = tech_dark_matter_power_core
             add_opinion_modifier = { who = root modifier = triggered_opinion_give_dm_normal }
         }
 		hidden_effect = {
-            every_country = {
-                limit = {
-                    is_country_type = default
-                    OR = {
-                        is_friendly_to = ROOT
-                        is_cordial_to = ROOT
-                        has_defensive_pact = root
-                        is_in_federation_with = ROOT            
-                    }
-                    NOR = {
-                        is_same_value = root
-                        is_same_value = event_target:interested_buyer
-                    }
-                }
-                add_opinion_modifier = { who = root modifier = triggered_opinion_give_dm_normal_neighbour }
-            }
-            every_country = {
-                limit = {
-                    OR = {
-                        is_rival = event_target:interested_buyer
-                        is_unfriendly_to = event_target:interested_buyer
-                        is_hostile_to = event_target:interested_buyer
-                        is_overlord_to = event_target:interested_buyer           
-                    }
-                    NOR = {
-                        is_same_value = root
-                    }
-                }
-                add_opinion_modifier = { who = root modifier = triggered_opinion_give_dm_to_enemy }
-            }
 			remove_country_flag = about_to_be_negotiated
         }
         
@@ -354,6 +326,22 @@ country_event = {
             }
         }
         add_opinion_modifier = { who = root modifier = triggered_opinion_give_dm_normal_neighbour }
+        add_resource = {
+            energy = 50000
+        }
+        if = {
+            limit = {
+                event_target:interested_buyer = {
+                    resource_stockpile_compare = {
+                        resource = energy
+                        value >= 50000
+                    }
+                }
+             }
+             add_resource = {
+                energy = 50000
+            }
+        }
         event_target:interested_buyer = { 
             set_timed_country_flag = {
                 flag = delay_before_ask_dm
@@ -450,22 +438,7 @@ country_event = {
                 }    
                 set_country_flag = asked_for_dm
                 break = yes             
-            }
-            every_country = {
-                limit = {
-                    OR = {
-                        is_friendly_to = ROOT
-                        is_cordial_to = ROOT
-                        has_defensive_pact = root
-                        is_in_federation_with = ROOT                   
-                    }
-                    NOR = {
-                        is_same_value = ROOT
-                        is_same_value = event_target:interested_buyer                    
-                    }
-                }
-                add_opinion_modifier = { who = root modifier = triggered_opinion_refuse_dm_friendly_others }
-            }           
+            }         
         }
 		hidden_effect = {
 			remove_country_flag = about_to_be_negotiated
@@ -490,6 +463,65 @@ country_event = {
         }
     }
     
+	option = {
+		name = acot_diplo.3.drisma
+        response_text = acot_diplo.3.drisma.response
+        trigger = {
+            ruler = {
+                OR = {
+                    has_skill >= 6   
+                    has_trait = leader_trait_charismatic                
+                }
+            }
+            event_target:interested_buyer = { 
+                    OR = {
+                    is_friendly_to = ROOT
+                    is_cordial_to = ROOT
+                    has_defensive_pact = root
+                    is_in_federation_with = ROOT
+                }
+            }         
+        }
+        event_target:interested_buyer = {
+            if = {
+                limit = { has_country_flag = asked_for_dm } 
+                set_timed_country_flag = {
+                    flag = delay_before_ask_dm
+                    days = 3600
+                }   
+            }
+            else = {
+                set_timed_country_flag = {
+                    flag = delay_before_ask_dm
+                    days = 1800
+                }    
+                set_country_flag = asked_for_dm
+                break = yes             
+            }         
+        }
+		hidden_effect = {
+			remove_country_flag = about_to_be_negotiated
+        }
+        
+        ai_chance = {
+            factor = 5
+            modifier = {
+                factor = 7
+                NOR = {
+                    is_cordial_to = from  
+                    is_friendly_to = from
+                }
+            }
+            modifier = {
+                factor = 10
+                OR = {
+                    has_ethic = ethic_fanatic_xenophobe
+                    has_ethic = ethic_xenophobe
+                }
+            }
+        }
+    }
+
 	option = {
 		name = acot_diplo.3.e
         response_text = acot_diplo.3.e.response
@@ -584,25 +616,52 @@ country_event = {
             }
         }
 		hidden_effect = {
-            every_country = {
-                limit = {
-                    OR = {
-                        is_rival = event_target:interested_buyer
-                        is_unfriendly_to = event_target:interested_buyer
-                        is_hostile_to = event_target:interested_buyer
-                        is_overlord_to = event_target:interested_buyer           
-                    }
-                    NOR = {
-                        is_same_value = root
-                    }
-                }
-                add_opinion_modifier = { who = root modifier = triggered_opinion_give_dm_to_enemy }
-            }
 			remove_country_flag = about_to_be_negotiated
         }        
     }
     
-	#option Removed by calvitix	name = acot_diplo.3.g
+	option = {
+		name = acot_diplo.3.g
+        response_text = acot_diplo.3.g.response
+        trigger = {
+            event_target:interested_buyer = { 
+                any_owned_megastructure = {
+                    is_megastructure_type = sofe_outer_gate
+                }
+            }         
+        }
+        event_target:interested_buyer = { 
+            set_country_flag = have_received_dm
+            add_research_option = tech_dark_matter_power_core
+            add_opinion_modifier = { who = root modifier = triggered_opinion_give_dm_normal }
+            random_system = {
+                limit = {
+                        is_rival = event_target:interested_buyer
+                    has_megastructure = sofe_outer_gate
+                }
+                random_fleet_in_system = {
+                    limit = {
+                        any_owned_ship = {
+                            is_ship_class = shipclass_starbase
+                        }
+                    }
+                    set_owner = ROOT
+                }
+                every_system_planet = {
+                    limit = {
+                        OR = {
+                            habitable_planet = yes
+                            habitable_structure = yes
+                        }
+                    }
+                    set_owner = ROOT
+                }
+            }
+        }
+		hidden_effect = {
+			remove_country_flag = about_to_be_negotiated
+        }        
+	}
 }
 
 

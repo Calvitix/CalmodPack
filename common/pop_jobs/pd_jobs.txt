@@ -5,10 +5,6 @@ templeresearcher = {
 	clothes_texture_index = 3
 
 	possible = {
-		or = {
-			has_job = templeresearcher
-			z_pop_job_trigger = yes
-		}
 		complex_specialist_job_check_trigger = yes
 	}
 	
@@ -88,10 +84,6 @@ tiyankicleanup = {
 	clothes_texture_index = 2
 
 	possible = {
-		or = {
-			has_job = tiyankicleanup
-			z_pop_job_trigger = yes
-		}
 		complex_worker_job_check_trigger = yes
 		owner = { is_fallen_empire = no }
 	}
@@ -179,10 +171,6 @@ tiyankirecycler = {
 	clothes_texture_index = 2
 
 	possible = {
-		or = {
-			has_job = tiyankirecycler
-			z_pop_job_trigger = yes
-		}
 		complex_specialist_job_check_trigger = yes
 	}
 	
@@ -244,10 +232,6 @@ archive_historian = {
 	clothes_texture_index = 2
 
 	possible = {
-		or = {
-			has_job = archive_historian
-			z_pop_job_trigger = yes
-		}
 		complex_specialist_job_check_trigger = yes
 	}
 	
@@ -306,10 +290,6 @@ archive_physicist = {
 	clothes_texture_index = 2
 
 	possible = {
-		or = {
-			has_job = archive_physicist
-			z_pop_job_trigger = yes
-		}
 		complex_specialist_job_check_trigger = yes
 	}
 	
@@ -368,10 +348,6 @@ archive_engineer = {
 	clothes_texture_index = 2
 
 	possible = {
-		or = {
-			has_job = archive_engineer
-			z_pop_job_trigger = yes
-		}
 		complex_specialist_job_check_trigger = yes
 	}
 	
@@ -430,10 +406,6 @@ archivist = {
 	clothes_texture_index = 2
 
 	possible = {
-		or = {
-			has_job = archivist
-			z_pop_job_trigger = yes
-		}
 		complex_specialist_job_check_trigger = yes
 	}
 	
@@ -498,10 +470,6 @@ interdimensional_researcher = {
 	clothes_texture_index = 2
 
 	possible = {
-		or = {
-			has_job = interdimensional_researcher
-			z_pop_job_trigger = yes
-		}
 		complex_specialist_job_check_trigger = yes
 	}
 	
@@ -560,10 +528,6 @@ virtual_observers = {
 	clothes_texture_index = 2
 
 	possible = {
-		or = {
-			has_job = virtual_observers
-			z_pop_job_trigger = yes
-		}
 		complex_specialist_job_check_trigger = yes
 	}
 	
@@ -622,10 +586,6 @@ slurry_distillers = {
 	clothes_texture_index = 3
 
 	possible = {
-		or = {
-			has_job = slurry_distillers
-			z_pop_job_trigger = yes
-		}
 		complex_specialist_job_check_trigger = yes
 	}
 	
@@ -633,9 +593,17 @@ slurry_distillers = {
 		category = planet_metallurgists
 		produces = {
 			alloys = 3
+			engineering_research = 3
 		}	
+		upkeep = {
+			consumer_goods = 1
+		}
 	}
 	
+	planet_modifier = {
+		planet_jobs_alloys_produces_mult = 0.025
+	}
+
 	weight = {
 		weight = @specialist_job_weight
 		modifier = {
@@ -674,22 +642,22 @@ nightside_miner = {
 	clothes_texture_index = 2
 
 	possible = {
-		or = {
-			has_job = nightside_miner
-			z_pop_job_trigger = yes
-		}
 		complex_specialist_job_check_trigger = yes
 	}
 	
 	resources = {
 		category = planet_miners
 		produces = {
-			minerals = 8
-			rare_crystals = 2
+			minerals = 3
+			physics_research = 3
 		}
 		upkeep = {
-			consumer_goods = 2
-		}		
+			consumer_goods = 1
+		}
+	}
+	
+	planet_modifier = {
+		planet_jobs_physics_research_produces_mult = 0.025
 	}
 	
 	weight = {
@@ -748,76 +716,79 @@ volatile_miner = {
 	category = specialist
 	condition_string = SPECIALIST_JOB_TRIGGER
 	building_icon = building_volatiles_mine
-	clothes_texture_index = 2
+	clothes_texture_index = 3
 
 	possible = {
-		or = {
-			has_job = volatile_miner
-			z_pop_job_trigger = yes
-		}
 		complex_specialist_job_check_trigger = yes
 	}
 
 	resources = {
-		category = planet_miners
+		category = planet_researchers
 		produces = {
-			energy = 8
-			volatile_motes = 2
-		}
+			society_research = 6
+		}	
 		upkeep = {
-			consumer_goods = 2
-		}		
+			consumer_goods = 1
+		}
+	}
+
+	planet_modifier = {
+		planet_jobs_society_research_produces_mult = 0.025
 	}
 	
 	weight = {
 		weight = @specialist_job_weight
 		modifier = {
-           factor = 2
-           OR = {
-               has_trait = trait_robust
-               has_trait = trait_robot_efficient_processors
-           }
-        }
-        modifier = {
-            factor = 1.5
-            OR = {
-                has_trait = trait_robot_superconductive
-                has_trait = trait_ingenious
-            }
-        }
-		modifier = {
-			factor = 10
-			is_enslaved = yes
-			can_take_servant_job = no
-		}	
+			factor = 0.2
+			has_citizenship_rights = no	
+			NOT = { has_trait = trait_mechanical }
+		}
 		modifier = {
 			factor = 2
-			OR = {	
-				is_non_sapient_robot = yes
-				is_shackled_robot = yes
-			}
-			can_take_servant_job = no
-			owner = { has_technology = tech_droid_workers }
-		}	
+			has_living_standard = { type = living_standard_academic_privilege }
+		}
 		modifier = {
-			factor = 10
-			OR = {	
-				is_non_sapient_robot = yes
-				is_shackled_robot = yes
-			}
-			can_take_servant_job = no
-			owner = { NOT = { has_technology = tech_droid_workers } }
-		}		
-		modifier = {
-			factor = 0.25
-			can_take_servant_job = yes
+			factor = 3
+			has_trait = trait_erudite
 		}		
 		modifier = {
 			factor = 2
-			species = {
-				has_species_flag = racket_species_flag
+			OR = {
+				has_trait = trait_robot_logic_engines
+				has_trait = trait_intelligent
 			}
 		}
+		modifier = {
+			factor = 2
+			has_trait = trait_brainslug
+		}
+		modifier = {			
+            factor = 1.5
+			OR = {
+				has_trait = trait_natural_engineers
+				has_trait = trait_natural_physicists
+				has_trait = trait_natural_sociologists
+			}
+		}
+        modifier = {
+            factor = 1.1
+            OR = {
+                has_trait = trait_robot_propaganda_machines
+                has_trait = trait_traditional
+            }
+        }
+        modifier = {
+            factor = 0.9
+			has_trait = trait_quarrelsome
+        }
+		modifier = {
+			factor = 0.1
+			can_take_servant_job = yes
+		}
+		modifier = {
+			factor = 1.5
+			has_job = researcher
+		}		
 	}
 }
 
@@ -828,10 +799,6 @@ jungle_ranger = {
 	clothes_texture_index = 2
 
 	possible = {
-		or = {
-			has_job = jungle_ranger
-			z_pop_job_trigger = yes
-		}
 		complex_specialist_job_check_trigger = yes
 	}
 	
@@ -841,6 +808,13 @@ jungle_ranger = {
 			society_research = 3
 			unity = 3
 		}
+		upkeep = {
+			consumer_goods = 1
+		}
+	}
+	
+	planet_modifier = {
+		planet_jobs_society_research_produces_mult = 0.025
 	}
 	
 	weight = {
@@ -904,17 +878,14 @@ eludium_expert = {
 	clothes_texture_index = 2
 
 	possible = {
-		or = {
-			has_job = eludium_expert
-			z_pop_job_trigger = yes
-		}
 		complex_specialist_job_check_trigger = yes
 	}
 	
 	resources = {
 		category = planet_miners
 		produces = {
-			sr_eludium = 1
+			sr_eludium = 0.5
+			physics_research = 9
 		}
 	}
 	
@@ -986,17 +957,14 @@ eludium_hive = {
 	clothes_texture_index = 2
 
 	possible = {
-		or = {
-			has_job = eludium_hive
-			z_pop_job_trigger = yes
-		}
 		complex_specialist_job_check_trigger = yes
 	}
 	
 	resources = {
 		category = planet_researchers
 		produces = {
-			sr_eludium = 1
+			sr_eludium = 0.5
+			physics_research = 9
 		}
 	}
 	
@@ -1068,17 +1036,14 @@ eludium_robot = {
 	clothes_texture_index = 2
 
 	possible = {
-		or = {
-			has_job = eludium_robot
-			z_pop_job_trigger = yes
-		}
 		complex_specialist_job_check_trigger = yes
 	}
 	
 	resources = {
 		category = planet_researchers
 		produces = {
-			sr_eludium = 1
+			sr_eludium = 0.5
+			physics_research = 9
 		}
 	}
 	
@@ -1150,17 +1115,14 @@ crystal_carver = {
 	clothes_texture_index = 3
 	
 	possible = {
-		or = {
-			has_job = crystal_carver
-			z_pop_job_trigger = yes
-		}
 		specialist_job_check_trigger = yes
 	}
 	
 	resources = {
 		category = planet_artisans
 		produces = {
-			sr_acean = 1
+			sr_acean = 0.5
+			minerals = 4
 		}
 	}	
 	
@@ -1196,17 +1158,14 @@ crystal_hive = {
 	clothes_texture_index = 3
 	
 	possible = {
-		or = {
-			has_job = crystal_hive
-			z_pop_job_trigger = yes
-		}
 		specialist_job_check_trigger = yes
 	}
 	
 	resources = {
 		category = planet_artisans
 		produces = {
-			sr_acean = 1
+			sr_acean = 0.5
+			minerals = 4
 		}
 	}
 	
@@ -1242,17 +1201,14 @@ crystal_robot = {
 	clothes_texture_index = 3
 	
 	possible = {
-		or = {
-			has_job = crystal_robot
-			z_pop_job_trigger = yes
-		}
 		specialist_job_check_trigger = yes
 	}
 	
 	resources = {
 		category = planet_artisans
 		produces = {
-			sr_acean = 1
+			sr_acean = 0.5
+			minerals = 4
 		}
 	}
 	
@@ -1281,8 +1237,6 @@ crystal_robot = {
 	}
 }
 
-##### ADD ingenious?, prudent
-##### SUBTRACT idle, spendthrift
 tiyanki_roughneck = {	
 	category = specialist
 	condition_string = SPECIALIST_JOB_TRIGGER
@@ -1290,10 +1244,6 @@ tiyanki_roughneck = {
 	clothes_texture_index = 2
 
 	possible = {
-		or = {
-			has_job = tiyanki_roughneck
-			z_pop_job_trigger = yes
-		}
 		complex_specialist_job_check_trigger = yes
 	}
 	
@@ -1363,10 +1313,6 @@ tiyanki_hive = {
 	clothes_texture_index = 2
 
 	possible = {
-		or = {
-			has_job = tiyanki_hive
-			z_pop_job_trigger = yes
-		}
 		complex_specialist_job_check_trigger = yes
 	}
 	
@@ -1440,10 +1386,6 @@ tiyanki_robot = {
 	clothes_texture_index = 2
 
 	possible = {
-		or = {
-			has_job = tiyanki_robot
-			z_pop_job_trigger = yes
-		}
 		complex_specialist_job_check_trigger = yes
 	}
 	
@@ -1517,10 +1459,6 @@ synth_assembler = {
 	clothes_texture_index = 3
 		
 	possible = {
-		or = {
-			has_job = synth_assembler
-			z_pop_job_trigger = yes
-		}
 		specialist_job_check_trigger = yes
 	}
 	
@@ -1592,10 +1530,6 @@ preserve_ranger = {
 	clothes_texture_index = 2
 
 	possible = {
-		or = {
-			has_job = preserve_ranger
-			z_pop_job_trigger = yes
-		}
 		complex_specialist_job_check_trigger = yes
 	}
 	
@@ -1674,10 +1608,6 @@ biobrain_drone = {
 	building_icon = building_research_lab_1
 	
 	possible = {
-		or = {
-			has_job = biobrain_drone
-			z_pop_job_trigger = yes
-		}
 		drone_job_check_trigger = yes
 	}
 
@@ -1739,10 +1669,6 @@ biostomach_drone = {
 	building_icon = building_foundry_1
 	
 	possible = {
-		or = {
-			has_job = biostomach_drone
-			z_pop_job_trigger = yes
-		}
 		drone_job_check_trigger = yes
 	}
 
@@ -1773,10 +1699,6 @@ frozen_gas_miner = {
 	clothes_texture_index = 2
 
 	possible = {
-		or = {
-			has_job = frozen_gas_miner
-			z_pop_job_trigger = yes
-		}
 		complex_specialist_job_check_trigger = yes
 	}
 	
@@ -1787,7 +1709,7 @@ frozen_gas_miner = {
 			rare_crystals = 2
 		}
 		upkeep = {
-			consumer_goods = 2
+			consumer_goods = 1
 		}		
 	}
 	
@@ -1850,10 +1772,6 @@ electrodepositionist = {
 	clothes_texture_index = 3
 
 	possible = {
-		or = {
-			has_job = electrodepositionist
-			z_pop_job_trigger = yes
-		}
 		complex_specialist_job_check_trigger = yes
 	}
 	
@@ -1861,7 +1779,11 @@ electrodepositionist = {
 		category = planet_metallurgists
 		produces = {
 			alloys = 3
+			minerals = 4
 		}
+		upkeep = {
+			consumer_goods = 1
+		}	
 	}
 	
 	weight = {
@@ -1902,10 +1824,6 @@ pdzro_harvester = {
 	clothes_texture_index = 2
 
 	possible = {
-		or = {
-			has_job = pdzro_harvester
-			z_pop_job_trigger = yes
-		}
 		complex_specialist_job_check_trigger = yes
 	}
 	
@@ -1991,10 +1909,6 @@ zro_hive = {
 	clothes_texture_index = 2
 
 	possible = {
-		or = {
-			has_job = zro_hive
-			z_pop_job_trigger = yes
-		}
 		complex_specialist_job_check_trigger = yes
 	}
 	
@@ -2076,10 +1990,6 @@ zro_robot = {
 	clothes_texture_index = 2
 
 	possible = {
-		or = {
-			has_job = zro_robot
-			z_pop_job_trigger = yes
-		}
 		complex_specialist_job_check_trigger = yes
 	}
 	
@@ -2161,17 +2071,16 @@ bloom_evaporator = {
 	clothes_texture_index = 2
 
 	possible = {
-		or = {
-			has_job = bloom_evaporator
-			z_pop_job_trigger = yes
-		}
 		complex_specialist_job_check_trigger = yes
 	}
 	
 	resources = {
 		category = planet_researchers
 		produces = {
-			sr_rad_bloom = 2
+			sr_rad_bloom = 0.5
+		}
+		upkeep = {
+			consumer_goods = 1
 		}
 	}
 	
@@ -2243,17 +2152,13 @@ bloom_hive = {
 	clothes_texture_index = 2
 
 	possible = {
-		or = {
-			has_job = bloom_hive
-			z_pop_job_trigger = yes
-		}
 		complex_specialist_job_check_trigger = yes
 	}
 	
 	resources = {
 		category = planet_researchers
 		produces = {
-			sr_rad_bloom = 2
+			sr_rad_bloom = 1
 		}
 	}
 	
@@ -2325,17 +2230,13 @@ bloom_robot = {
 	clothes_texture_index = 2
 
 	possible = {
-		or = {
-			has_job = bloom_robot
-			z_pop_job_trigger = yes
-		}
 		complex_specialist_job_check_trigger = yes
 	}
 	
 	resources = {
 		category = planet_researchers
 		produces = {
-			sr_rad_bloom = 2
+			sr_rad_bloom = 1
 		}
 	}
 	
@@ -2407,10 +2308,6 @@ karst_miner = {
 	clothes_texture_index = 2
 
 	possible = {
-		or = {
-			has_job = karst_miner
-			z_pop_job_trigger = yes
-		}
 		complex_specialist_job_check_trigger = yes
 	}
 	
@@ -2484,10 +2381,6 @@ lava_miner = {
 	clothes_texture_index = 3
 
 	possible = {
-		or = {
-			has_job = lava_miner
-			z_pop_job_trigger = yes
-		}
 		complex_specialist_job_check_trigger = yes
 	}
 	
@@ -2495,7 +2388,15 @@ lava_miner = {
 		category = planet_metallurgists
 		produces = {
 			alloys = 3
+			engineering_research = 3
 		}
+		upkeep = {
+			consumer_goods = 1
+		}
+	}
+
+	planet_modifier = {
+		planet_jobs_alloys_produces_mult = 0.025
 	}
 	
 	weight = {
@@ -2525,6 +2426,929 @@ lava_miner = {
 		modifier = {
 			factor = 1.5
 			has_job = foundry
+		}		
+	}
+}
+
+storm_researcher = {
+	category = specialist
+	condition_string = SPECIALIST_JOB_TRIGGER
+	building_icon = building_storm_lab
+	clothes_texture_index = 3
+
+	possible = {
+		complex_specialist_job_check_trigger = yes
+	}
+	
+	resources = {
+		category = planet_researchers
+		produces = {
+			physics_research = 3
+			engineering_research = 3
+		}
+		upkeep = {
+			consumer_goods = 1
+		}
+	}
+
+	planet_modifier = {
+		planet_jobs_engineering_research_produces_mult = 0.0125
+		planet_jobs_physics_research_produces_mult = 0.0125
+	}
+	
+	weight = {
+		weight = @specialist_job_weight
+		modifier = {
+			factor = 0.2
+			has_citizenship_rights = no	
+			NOT = { has_trait = trait_mechanical }
+		}
+		modifier = {
+			factor = 2
+			has_living_standard = { type = living_standard_academic_privilege }
+		}
+		modifier = {
+			factor = 3
+			has_trait = trait_erudite
+		}		
+		modifier = {
+			factor = 2
+			OR = {
+				has_trait = trait_robot_logic_engines
+				has_trait = trait_intelligent
+			}
+		}
+		modifier = {
+			factor = 2
+			has_trait = trait_brainslug
+		}
+		modifier = {			
+            factor = 1.5
+			OR = {
+				has_trait = trait_natural_engineers
+				has_trait = trait_natural_physicists
+				has_trait = trait_natural_sociologists
+			}
+		}
+        modifier = {
+            factor = 1.1
+            OR = {
+                has_trait = trait_robot_propaganda_machines
+                has_trait = trait_traditional
+            }
+        }
+        modifier = {
+            factor = 0.9
+			has_trait = trait_quarrelsome
+        }
+		modifier = {
+			factor = 0.1
+			can_take_servant_job = yes
+		}
+		modifier = {
+			factor = 1.5
+			has_job = researcher
+		}		
+	}
+}
+
+underwater_venter = {
+	category = specialist
+	condition_string = SPECIALIST_JOB_TRIGGER
+	building_icon = building_undersea_gasmine
+	clothes_texture_index = 3
+
+	possible = {
+		complex_specialist_job_check_trigger = yes
+	}
+	
+	resources = {
+		category = planet_researchers
+		produces = {
+			energy = 3
+			engineering_research = 3
+		}
+		upkeep = {
+			consumer_goods = 1
+		}
+	}
+
+	planet_modifier = {
+		planet_jobs_engineering_research_produces_mult = 0.025
+	}
+	
+	weight = {
+		weight = @specialist_job_weight
+		modifier = {
+			factor = 0.2
+			has_citizenship_rights = no	
+			NOT = { has_trait = trait_mechanical }
+		}
+		modifier = {
+			factor = 2
+			has_living_standard = { type = living_standard_academic_privilege }
+		}
+		modifier = {
+			factor = 3
+			has_trait = trait_erudite
+		}		
+		modifier = {
+			factor = 2
+			OR = {
+				has_trait = trait_robot_logic_engines
+				has_trait = trait_intelligent
+			}
+		}
+		modifier = {
+			factor = 2
+			has_trait = trait_brainslug
+		}
+		modifier = {			
+            factor = 1.5
+			OR = {
+				has_trait = trait_natural_engineers
+				has_trait = trait_natural_physicists
+				has_trait = trait_natural_sociologists
+			}
+		}
+        modifier = {
+            factor = 1.1
+            OR = {
+                has_trait = trait_robot_propaganda_machines
+                has_trait = trait_traditional
+            }
+        }
+        modifier = {
+            factor = 0.9
+			has_trait = trait_quarrelsome
+        }
+		modifier = {
+			factor = 0.1
+			can_take_servant_job = yes
+		}
+		modifier = {
+			factor = 1.5
+			has_job = researcher
+		}		
+	}
+}
+
+cave_eng = {	
+	category = specialist
+	condition_string = SPECIALIST_JOB_TRIGGER
+	building_icon = building_karst_mine
+	clothes_texture_index = 3
+
+	possible = {
+		complex_specialist_job_check_trigger = yes
+	}
+
+	resources = {
+		category = planet_researchers
+		produces = {
+			engineering_research = 3		
+		}	
+		upkeep = {
+			consumer_goods = 1
+		}
+	}
+
+	planet_modifier = {
+		planet_jobs_engineering_research_produces_mult = 0.025
+		planet_amenities_mult = 0.025
+	}
+	
+	weight = {
+		weight = @specialist_job_weight
+		modifier = {
+			factor = 0.2
+			has_citizenship_rights = no	
+			NOT = { has_trait = trait_mechanical }
+		}
+		modifier = {
+			factor = 2
+			has_living_standard = { type = living_standard_academic_privilege }
+		}
+		modifier = {
+			factor = 3
+			has_trait = trait_erudite
+		}		
+		modifier = {
+			factor = 2
+			OR = {
+				has_trait = trait_robot_logic_engines
+				has_trait = trait_intelligent
+			}
+		}
+		modifier = {
+			factor = 2
+			has_trait = trait_brainslug
+		}
+		modifier = {			
+            factor = 1.5
+			OR = {
+				has_trait = trait_natural_engineers
+				has_trait = trait_natural_physicists
+				has_trait = trait_natural_sociologists
+			}
+		}
+        modifier = {
+            factor = 1.1
+            OR = {
+                has_trait = trait_robot_propaganda_machines
+                has_trait = trait_traditional
+            }
+        }
+        modifier = {
+            factor = 0.9
+			has_trait = trait_quarrelsome
+        }
+		modifier = {
+			factor = 0.1
+			can_take_servant_job = yes
+		}
+		modifier = {
+			factor = 1.5
+			has_job = researcher
+		}		
+	}
+}
+
+salt_miner = {	
+	category = specialist
+	condition_string = SPECIALIST_JOB_TRIGGER
+	building_icon = building_salt_mine
+	clothes_texture_index = 3
+
+	possible = {
+		complex_specialist_job_check_trigger = yes
+	}
+	
+	resources = {
+		category = planet_metallurgists
+		produces = {
+			minerals = 4
+		}
+		upkeep = {
+			consumer_goods = 1
+		}
+	}
+
+	planet_modifier = {
+		trade_value_add = 4
+		planet_amenities_add = 5
+		trade_value_mult = 0.025
+	}
+	
+	weight = {
+		weight = @specialist_job_weight
+		modifier = {
+           factor = 2
+           OR = {
+               has_trait = trait_robust
+               has_trait = trait_robot_efficient_processors
+           }
+        }
+		modifier = {
+			factor = 0.2
+			has_citizenship_rights = no	
+			NOT = { has_trait = trait_mechanical }	
+		}		
+		modifier = {
+			factor = 0.1
+			can_take_servant_job = yes
+		}
+		modifier = {
+			factor = 2
+			species = {
+				has_species_flag = racket_species_flag
+			}
+		}
+		modifier = {
+			factor = 1.5
+			has_job = foundry
+		}		
+	}
+}
+
+coral_miner = {	
+	category = specialist
+	condition_string = SPECIALIST_JOB_TRIGGER
+	building_icon = building_coral_mine
+	clothes_texture_index = 3
+
+	possible = {
+		complex_specialist_job_check_trigger = yes
+	}
+	
+	resources = {
+		category = planet_artisans
+		produces = {
+			consumer_goods = 3
+		}
+		upkeep = {
+			minerals = 2
+		}
+	}
+
+	planet_modifier = {
+		trade_value_add = 4
+		trade_value_mult = 0.025
+	}
+
+	weight = {
+		weight = @specialist_job_weight
+		modifier = {
+			factor = 0.2
+			has_citizenship_rights = no
+			NOT = { has_trait = trait_mechanical }
+		}
+		modifier = {
+			factor = 0.1
+			can_take_servant_job = yes
+		}
+		modifier = {
+			factor = 5
+			has_job = artisan
+		}
+		modifier = {
+			factor = 10
+			has_job = artisan
+			OR = {
+				has_trait = trait_robust
+				has_trait = trait_robot_efficient_processors
+			}
+		}
+		modifier = {
+			factor = 1.2
+			is_enslaved = yes
+			has_slavery_type = { type = slavery_indentured }
+		}
+		modifier = {
+			factor = 1.5
+			has_trait = trait_void_dweller_1
+		}
+	}
+}
+
+mega_eng = {	
+	category = specialist
+	condition_string = SPECIALIST_JOB_TRIGGER
+	building_icon = building_megaflora_mine
+	clothes_texture_index = 3
+
+	possible = {
+		complex_specialist_job_check_trigger = yes
+	}
+
+	resources = {
+		category = planet_researchers
+		produces = {
+			engineering_research = 3		
+		}	
+		upkeep = {
+			consumer_goods = 1
+		}
+	}
+
+	planet_modifier = {
+		planet_housing_mult = 0.025
+		planet_amenities_add = 5
+	}
+	
+	weight = {
+		weight = @specialist_job_weight
+		modifier = {
+			factor = 0.2
+			has_citizenship_rights = no	
+			NOT = { has_trait = trait_mechanical }
+		}
+		modifier = {
+			factor = 2
+			has_living_standard = { type = living_standard_academic_privilege }
+		}
+		modifier = {
+			factor = 3
+			has_trait = trait_erudite
+		}		
+		modifier = {
+			factor = 2
+			OR = {
+				has_trait = trait_robot_logic_engines
+				has_trait = trait_intelligent
+			}
+		}
+		modifier = {
+			factor = 2
+			has_trait = trait_brainslug
+		}
+		modifier = {			
+            factor = 1.5
+			OR = {
+				has_trait = trait_natural_engineers
+				has_trait = trait_natural_physicists
+				has_trait = trait_natural_sociologists
+			}
+		}
+        modifier = {
+            factor = 1.1
+            OR = {
+                has_trait = trait_robot_propaganda_machines
+                has_trait = trait_traditional
+            }
+        }
+        modifier = {
+            factor = 0.9
+			has_trait = trait_quarrelsome
+        }
+		modifier = {
+			factor = 0.1
+			can_take_servant_job = yes
+		}
+		modifier = {
+			factor = 1.5
+			has_job = researcher
+		}		
+	}
+}
+
+mega_eng_hive = {	
+	category = complex_drone
+	condition_string = DRONE_JOB_TRIGGER
+	building_icon = building_megaflora_mine
+	clothes_texture_index = 3
+
+	possible = {
+		complex_specialist_job_check_trigger = yes
+	}
+
+	resources = {
+		category = planet_researchers
+		produces = {
+			engineering_research = 3		
+		}	
+		upkeep = {
+			energy = 2
+			minerals = 2
+		}
+	}
+
+	planet_modifier = {
+		planet_housing_mult = 0.025
+		planet_amenities_add = 5
+	}
+	
+	weight = {
+		weight = @specialist_job_weight
+		modifier = {
+			factor = 0.2
+			has_citizenship_rights = no	
+			NOT = { has_trait = trait_mechanical }
+		}
+		modifier = {
+			factor = 2
+			has_living_standard = { type = living_standard_academic_privilege }
+		}
+		modifier = {
+			factor = 3
+			has_trait = trait_erudite
+		}		
+		modifier = {
+			factor = 2
+			OR = {
+				has_trait = trait_robot_logic_engines
+				has_trait = trait_intelligent
+			}
+		}
+		modifier = {
+			factor = 2
+			has_trait = trait_brainslug
+		}
+		modifier = {			
+            factor = 1.5
+			OR = {
+				has_trait = trait_natural_engineers
+				has_trait = trait_natural_physicists
+				has_trait = trait_natural_sociologists
+			}
+		}
+        modifier = {
+            factor = 1.1
+            OR = {
+                has_trait = trait_robot_propaganda_machines
+                has_trait = trait_traditional
+            }
+        }
+        modifier = {
+            factor = 0.9
+			has_trait = trait_quarrelsome
+        }
+		modifier = {
+			factor = 0.1
+			can_take_servant_job = yes
+		}
+		modifier = {
+			factor = 1.5
+			has_job = researcher
+		}		
+	}
+}
+
+methane_miner = {	
+	category = specialist
+	condition_string = SPECIALIST_JOB_TRIGGER
+	building_icon = building_frozen_gas_mine
+	clothes_texture_index = 2
+
+	possible = {
+		complex_specialist_job_check_trigger = yes
+	}
+	
+	resources = {
+		category = planet_researchers
+		produces = {
+			physics_research = 3
+			minerals = 4
+		}
+		upkeep = {
+			consumer_goods = 1
+		}	
+	} 
+	
+	weight = {
+		weight = @specialist_job_weight
+		modifier = {
+			factor = 3
+			has_trait = trait_erudite
+		}		
+		modifier = {
+			factor = 2
+			OR = {
+				has_trait = trait_robot_logic_engines
+				has_trait = trait_intelligent
+				has_trait = trait_brainslug
+			}
+		}
+		modifier = {
+			factor = 1.5
+			has_trait = trait_natural_sociologists
+		}
+		modifier = {
+			factor = 10
+			is_enslaved = yes
+			can_take_servant_job = no
+		}	
+		modifier = {
+			factor = 2
+			OR = {	
+				is_non_sapient_robot = yes
+				is_shackled_robot = yes
+			}
+			can_take_servant_job = no
+			owner = { has_technology = tech_droid_workers }
+		}	
+		modifier = {
+			factor = 10
+			OR = {	
+				is_non_sapient_robot = yes
+				is_shackled_robot = yes
+			}
+			can_take_servant_job = no
+			owner = { NOT = { has_technology = tech_droid_workers } }
+		}		
+		modifier = {
+			factor = 0.25
+			can_take_servant_job = yes
+		}		
+		modifier = {
+			factor = 2
+			species = {
+				has_species_flag = racket_species_flag
+			}
+		}	
+	}
+}
+
+acid_tech = {	
+	category = specialist
+	condition_string = SPECIALIST_JOB_TRIGGER
+	building_icon = building_acid_lab
+	clothes_texture_index = 2
+
+	possible = {
+		complex_specialist_job_check_trigger = yes
+	}
+	
+	resources = {
+		category = planet_chemists
+		produces = {
+			exotic_gases = 0.25
+			rare_crystals = 0.25
+			volatile_motes = 0.25
+		}
+		upkeep = {
+			consumer_goods = 1
+		}	
+	} 
+
+	planet_modifier = {
+		planet_jobs_exotic_gases_produces_mult = 0.025
+		planet_jobs_rare_crystals_produces_mult = 0.025
+		planet_jobs_volatile_motes_produces_mult = 0.025
+	}
+	
+	weight = {
+		weight = @specialist_job_weight
+		modifier = {
+			factor = 3
+			has_trait = trait_erudite
+		}		
+		modifier = {
+			factor = 2
+			OR = {
+				has_trait = trait_robot_logic_engines
+				has_trait = trait_intelligent
+				has_trait = trait_brainslug
+			}
+		}
+		modifier = {
+			factor = 1.5
+			has_trait = trait_natural_sociologists
+		}
+		modifier = {
+			factor = 10
+			is_enslaved = yes
+			can_take_servant_job = no
+		}	
+		modifier = {
+			factor = 2
+			OR = {	
+				is_non_sapient_robot = yes
+				is_shackled_robot = yes
+			}
+			can_take_servant_job = no
+			owner = { has_technology = tech_droid_workers }
+		}	
+		modifier = {
+			factor = 10
+			OR = {	
+				is_non_sapient_robot = yes
+				is_shackled_robot = yes
+			}
+			can_take_servant_job = no
+			owner = { NOT = { has_technology = tech_droid_workers } }
+		}		
+		modifier = {
+			factor = 0.25
+			can_take_servant_job = yes
+		}		
+		modifier = {
+			factor = 2
+			species = {
+				has_species_flag = racket_species_flag
+			}
+		}	
+	}
+}
+
+eyeball_tech = {	
+	category = specialist
+	condition_string = SPECIALIST_JOB_TRIGGER
+	building_icon = building_eyeball_lab
+	clothes_texture_index = 2
+
+	possible = {
+		complex_specialist_job_check_trigger = yes
+	}
+	
+	resources = {
+		category = planet_chemists
+		produces = {
+			physics_research = 3
+			engineering_research = 3
+		}
+		upkeep = {
+			consumer_goods = 1
+		}	
+	} 
+
+	planet_modifier = {
+		planet_housing_mult = 0.025
+	}
+	
+	weight = {
+		weight = @specialist_job_weight
+		modifier = {
+			factor = 3
+			has_trait = trait_erudite
+		}		
+		modifier = {
+			factor = 2
+			OR = {
+				has_trait = trait_robot_logic_engines
+				has_trait = trait_intelligent
+				has_trait = trait_brainslug
+			}
+		}
+		modifier = {
+			factor = 1.5
+			has_trait = trait_natural_sociologists
+		}
+		modifier = {
+			factor = 10
+			is_enslaved = yes
+			can_take_servant_job = no
+		}	
+		modifier = {
+			factor = 2
+			OR = {	
+				is_non_sapient_robot = yes
+				is_shackled_robot = yes
+			}
+			can_take_servant_job = no
+			owner = { has_technology = tech_droid_workers }
+		}	
+		modifier = {
+			factor = 10
+			OR = {	
+				is_non_sapient_robot = yes
+				is_shackled_robot = yes
+			}
+			can_take_servant_job = no
+			owner = { NOT = { has_technology = tech_droid_workers } }
+		}		
+		modifier = {
+			factor = 0.25
+			can_take_servant_job = yes
+		}		
+		modifier = {
+			factor = 2
+			species = {
+				has_species_flag = racket_species_flag
+			}
+		}	
+	}
+}
+
+acid_drone = {	
+	category = complex_drone
+	condition_string = SPECIALIST_JOB_TRIGGER
+	building_icon = building_acid_lab
+	clothes_texture_index = 2
+
+	possible = {
+		complex_specialist_job_check_trigger = yes
+	}
+	
+	resources = {
+		category = planet_chemists
+		produces = {
+			exotic_gases = 0.25
+			rare_crystals = 0.25
+			volatile_motes = 0.25
+		}
+		upkeep = {
+			energy = 2
+		}	
+	} 
+
+	planet_modifier = {
+		planet_jobs_exotic_gases_produces_mult = 0.025
+		planet_jobs_rare_crystals_produces_mult = 0.025
+		planet_jobs_volatile_motes_produces_mult = 0.025
+	}
+	
+	weight = {
+		weight = @specialist_job_weight
+		modifier = {
+			factor = 3
+			has_trait = trait_erudite
+		}		
+		modifier = {
+			factor = 2
+			OR = {
+				has_trait = trait_robot_logic_engines
+				has_trait = trait_intelligent
+				has_trait = trait_brainslug
+			}
+		}
+		modifier = {
+			factor = 1.5
+			has_trait = trait_natural_sociologists
+		}
+		modifier = {
+			factor = 10
+			is_enslaved = yes
+			can_take_servant_job = no
+		}	
+		modifier = {
+			factor = 2
+			OR = {	
+				is_non_sapient_robot = yes
+				is_shackled_robot = yes
+			}
+			can_take_servant_job = no
+			owner = { has_technology = tech_droid_workers }
+		}	
+		modifier = {
+			factor = 10
+			OR = {	
+				is_non_sapient_robot = yes
+				is_shackled_robot = yes
+			}
+			can_take_servant_job = no
+			owner = { NOT = { has_technology = tech_droid_workers } }
+		}		
+		modifier = {
+			factor = 0.25
+			can_take_servant_job = yes
+		}		
+		modifier = {
+			factor = 2
+			species = {
+				has_species_flag = racket_species_flag
+			}
+		}	
+	}
+}
+
+rogue_miner = {	
+	category = specialist
+	condition_string = SPECIALIST_JOB_TRIGGER
+	building_icon = building_rogue_mine
+	clothes_texture_index = 3
+
+	possible = {
+		complex_specialist_job_check_trigger = yes
+	}
+
+	resources = {
+		category = planet_researchers
+		produces = {
+			physics_research = 3
+			minerals = 3	
+		}	
+		upkeep = {
+			consumer_goods = 1
+		}
+	}
+
+	planet_modifier = {
+		planet_jobs_physics_research_produces_mult = 0.025
+	}
+	
+	weight = {
+		weight = @specialist_job_weight
+		modifier = {
+			factor = 0.2
+			has_citizenship_rights = no	
+			NOT = { has_trait = trait_mechanical }
+		}
+		modifier = {
+			factor = 2
+			has_living_standard = { type = living_standard_academic_privilege }
+		}
+		modifier = {
+			factor = 3
+			has_trait = trait_erudite
+		}		
+		modifier = {
+			factor = 2
+			OR = {
+				has_trait = trait_robot_logic_engines
+				has_trait = trait_intelligent
+			}
+		}
+		modifier = {
+			factor = 2
+			has_trait = trait_brainslug
+		}
+		modifier = {			
+            factor = 1.5
+			OR = {
+				has_trait = trait_natural_engineers
+				has_trait = trait_natural_physicists
+				has_trait = trait_natural_sociologists
+			}
+		}
+        modifier = {
+            factor = 1.1
+            OR = {
+                has_trait = trait_robot_propaganda_machines
+                has_trait = trait_traditional
+            }
+        }
+        modifier = {
+            factor = 0.9
+			has_trait = trait_quarrelsome
+        }
+		modifier = {
+			factor = 0.1
+			can_take_servant_job = yes
+		}
+		modifier = {
+			factor = 1.5
+			has_job = researcher
 		}		
 	}
 }

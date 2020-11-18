@@ -174,16 +174,17 @@ districts_build_district = {
 		any_owned_pop = {
 			is_unemployed = yes
 			OR = {
-				specialist_job_check_trigger = no
 				has_citizenship_type = { type = citizenship_slavery }
+				AND = {
+					specialist_job_check_trigger = no
+					NOT = { has_citizenship_type = { type = citizenship_assimilation } }
+				}
 			}
-			NOR = { has_citizenship_type = { type = citizenship_assimilation } }
 		}
-		owner = { is_ai = yes }
 		AND = {
 			planet_devastation < 10
 			has_building_construction = no
-			free_jobs < 2
+			buildings_unemployed = yes
 			NOT = {
 				planet = {
 					has_current_purge = yes
@@ -322,11 +323,12 @@ buildings_has_motes = {
 			}
 		}
 		AND = {
-			free_building_slots > 1
+			free_building_slots > 2
 			owner = {
+				has_technology = tech_volatile_motes
 				has_monthly_income = {
 					resource = volatile_motes
-					value > 0
+					value >= 1
 				}
 			}
 		}
@@ -342,12 +344,13 @@ buildings_has_crystals = {
 				value >= 3
 			}
 		}
-		AND = {
-			free_building_slots > 1
+		AND ={
+			free_building_slots > 2
 			owner = {
+				has_technology = tech_rare_crystals
 				has_monthly_income = {
 					resource = rare_crystals
-					value > 0
+					value >= 1
 				}
 			}
 		}
@@ -364,11 +367,12 @@ buildings_has_exotic_gases = {
 			}
 		}
 		AND = {
-			free_building_slots > 1
+			free_building_slots > 2
 			owner = {
+				has_technology = tech_exotic_gases
 				has_monthly_income = {
 					resource = exotic_gases
-					value > 0
+					value >= 1
 				}
 			}
 		}
@@ -379,7 +383,7 @@ buildings_upgrade_allow = {
 	exists = owner
 	OR = {
 		owner = { is_ai = no }
-		free_jobs < 3
+		buildings_unemployed = yes
 	}
 }
 

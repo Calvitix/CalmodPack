@@ -17,12 +17,12 @@ country_event = {
 			has_global_flag = acot_events_forbidden
 		}
 		end_game_years_passed >= 0
-        has_technology = "tech_sensor_fe"
-			NOR = {
+		NOR = {
 				has_country_flag = hear_stellarite
 				has_technology = "tech_stellarite_reactor"
 				has_tech_option = tech_stellarite_reactor
-			}
+		}
+		is_playable_country = yes
     }
 	
 	mean_time_to_happen = {
@@ -430,18 +430,15 @@ country_event = {
 			has_global_flag = acot_events_forbidden
 		}
 		has_technology = "tech_stellarite_reactor"	
-		NOT = {
-				has_technology = tech_stellarite_generator_ae
-		}
 		resource_stockpile_compare = {
 				resource = acot_sr_stellarite
 				value >= 500
 		}
 		OR = {
 			is_country_type = default
-			#is_country_type = ascended_empire	#calvitix	
-			#is_country_type = lost_empire #calvitix	
-			}
+			is_country_type = ascended_empire		
+			is_country_type = lost_empire	
+		}
 	}
 
 	immediate = {
@@ -453,9 +450,9 @@ country_event = {
 					}
 				 }
 				 create_country = {
-					type = guardian_stellarite
+					type = acot_crazed_stellarite
 					name = "Stellarite Good Man Bad Boy"
-					auto_delete = yes
+					auto_delete = no
 					flag = {
 						icon= {
 							category = "special"
@@ -477,18 +474,215 @@ country_event = {
 						save_global_event_target_as = stellarite_punisher
 					}
 				}			
+			}			 
+		}	
+	}
+
+	option = {
+		name = stellarite_events.10.a
+		allow = {
+			resource_stockpile_compare = {
+				resource = acot_sr_stellarite
+				value >= 5000
+			}
+		}
+		add_resource = {
+			acot_sr_stellarite = -5000
+		}
+		hidden_effect = {
+			set_timed_country_flag = {
+				flag = stellarite_punisher_delay
+				years = 5
+			}
+		}
+	}
+
+	option = {
+		name = stellarite_events.10.b
+		trigger = {				
+		}
+		hidden_effect = {
+			set_timed_country_flag = {
+				flag = stellarite_punisher_delay
+				years = 20
+			}
+		}
+		hidden_effect = {
+			random_list = {
+				33 = {
+					modifier = {
+						factor = 0
+						resource_stockpile_compare = {
+							resource = acot_sr_stellarite
+							value > 1000
+						}					
+					}
+					random_owned_planet = {
+						create_fleet = {
+							name = "Weak Boy Bad Dog"
+							effect = {
+								set_owner = event_target:stellarite_punisher
+								set_fleet_stance = aggressive
+								set_aggro_range_measure_from = self
+								set_aggro_range = 250
+								create_ship = {
+									design = NAME_Stellarite
+									name = "Class-12 Stellarite Anomaly Signature"
+								}
+								set_location = {
+									target = prev
+									distance = 10
+									angle = random
+								}
+							}
+							settings = {
+								is_boss = yes
+								spawn_debris = no
+							}
+						}
+					}
+				}
+				33 = {
+					modifier = {
+						add = 33
+						resource_stockpile_compare = {
+							resource = acot_sr_stellarite
+							value >= 5000
+						}					
+					}
+					random_owned_planet = {
+						create_fleet = {
+							name = "Jumbo Stellarite Big Mac"
+							effect = {
+								set_owner = event_target:stellarite_punisher
+								set_fleet_stance = aggressive
+								set_aggro_range_measure_from = self
+								set_aggro_range = 250
+								create_ship = {
+									design = NAME_ACOT_Large_Stellarite
+									name = "Class-18 Stellarite Anomaly Signature"
+								}
+								set_location = {
+									target = prev
+									distance = 10
+									angle = random
+								}
+							}
+							settings = {
+								is_boss = yes
+								spawn_debris = no
+							}
+						}
+					}
+				}
+				33 = {
+					modifier = {
+						factor = 0
+						resource_stockpile_compare = {
+							resource = acot_sr_stellarite
+							value < 50000
+						}					
+					}
+					modifier = {
+						add = 100
+						resource_stockpile_compare = {
+							resource = acot_sr_stellarite
+							value >= 100000
+						}					
+					}
+					country_event = { id = stellarite_events.1001 }
+					random_owned_planet = {
+						create_fleet = {
+							name = "Midgardsomr"
+							effect = {
+								random_list = {
+									10 = { set_name = "Midgardsomr" }
+									10 = { set_name = "Tiamat" }
+									10 = { set_name = "Nidhogg" }
+									10 = { set_name = "Hraesvaelgyr" }
+									10 = { set_name = "Vidofnir" }
+									10 = { set_name = "Smaug" }
+									10 = { set_name = "Deathwing" }
+									10 = { set_name = "Alextrasza" }
+									10 = { set_name = "Ysera" }
+									10 = { set_name = "Sapphiron" }
+									10 = { set_name = "Sindragoza" }
+									10 = { set_name = "Malygos" }
+									10 = { set_name = "Midgardsomr" }
+								}
+								set_owner = event_target:stellarite_punisher
+								create_ship = {
+									design = NAME_ACOT_Dragon_Stellarite
+									name = "Class-25 Stellarite Anomaly Signature"
+								}
+								set_location = {
+									target = prev
+									distance = 10
+									angle = random
+								}
+							}
+							settings = {
+								is_boss = yes
+								spawn_debris = no
+							}
+						}
+					}
+				}
+			}	
+			set_timed_country_flag = {
+				flag = stellarite_punisher_delay
+				years = 20
+			}
+		}
+	}
+
+	option = {
+		name = stellarite_events.10.c
+		custom_tooltip = stellarite_events.10.c.tooltip
+		trigger = {		
+			has_country_flag = got_ownt_by_stellarite_once	
+		}
+		allow = {
+			resource_stockpile_compare = {
+				resource = acot_sr_stellarite
+				value >= 10000
+			}
+		}
+		add_resource = {
+			acot_sr_stellarite = -10000
+		}
+		hidden_effect = {
+			country_event = { id = stellarite_events.1001 }
+			set_timed_country_flag = {
+				flag = stellarite_punisher_delay
+				years = 30
 			}
 			random_owned_planet = {
 				create_fleet = {
-					name = "Spawn from Incompetent Use of Stellarite"
+					name = "Midgardsomr"
 					effect = {
+						random_list = {
+							10 = { set_name = "Midgardsomr" }
+							10 = { set_name = "Tiamat" }
+							10 = { set_name = "Nidhogg" }
+							10 = { set_name = "Hraesvaelgyr" }
+							10 = { set_name = "Vidofnir" }
+							10 = { set_name = "Smaug" }
+							10 = { set_name = "Deathwing" }
+							10 = { set_name = "Alextrasza" }
+							10 = { set_name = "Ysera" }
+							10 = { set_name = "Sapphiron" }
+							10 = { set_name = "Sindragoza" }
+							10 = { set_name = "Malygos" }
+							10 = { set_name = "Midgardsomr" }
+						}
 						set_owner = event_target:stellarite_punisher
-						set_fleet_stance = aggressive
-						set_aggro_range_measure_from = self
-						set_aggro_range = 250
 						create_ship = {
-							design = NAME_Stellarite
-							name = "Class-12 Stellarite Anomaly Signature"
+							design = NAME_ACOT_Dragon_Stellarite
+							name = "Class-25 Stellarite Anomaly Signature"
+							effect = {
+								set_ship_flag = dragon_give_stellarite
+							}
 						}
 						set_location = {
 							target = prev
@@ -501,140 +695,7 @@ country_event = {
 						spawn_debris = no
 					}
 				}
-			}
-			random_list = {
-				45 = {
-
-				}
-				35 = {
-					random_owned_planet = {
-						create_fleet = {
-							name = "Spawn from Incompetent Use of Stellarite"
-							effect = {
-								set_owner = event_target:stellarite_punisher
-								set_fleet_stance = aggressive
-								set_aggro_range_measure_from = self
-								set_aggro_range = 250
-								create_ship = {
-									design = NAME_Stellarite
-									name = "Class-12 Stellarite Anomaly Signature"
-								}
-								set_location = {
-									target = prev
-									distance = 10
-									angle = random
-								}
-							}
-							settings = {
-								is_boss = yes
-								spawn_debris = no
-							}
-						}
-					}
-				}
-				20 = {
-					random_owned_planet = {
-						create_fleet = {
-							name = "Spawn from Incompetent Use of Stellarite"
-							effect = {
-								set_owner = event_target:stellarite_punisher
-								set_fleet_stance = aggressive
-								set_aggro_range_measure_from = self
-								set_aggro_range = 250
-								create_ship = {
-									design = NAME_Stellarite
-									name = "Class-12 Stellarite Anomaly Signature"
-								}
-								set_location = {
-									target = prev
-									distance = 10
-									angle = random
-								}
-							}
-							settings = {
-								is_boss = yes
-								spawn_debris = no
-							}
-						}
-					}
-					random_owned_planet = {
-						create_fleet = {
-							name = "Spawn from Incompetent Use of Stellarite"
-							effect = {
-								set_owner = event_target:stellarite_punisher
-								set_fleet_stance = aggressive
-								set_aggro_range_measure_from = self
-								set_aggro_range = 250
-								create_ship = {
-									design = NAME_Stellarite
-									name = "Class-12 Stellarite Anomaly Signature"
-								}
-								set_location = {
-									target = prev
-									distance = 10
-									angle = random
-								}
-							}
-							settings = {
-								is_boss = yes
-								spawn_debris = no
-							}
-						}
-					}
-					random_owned_planet = {
-						create_fleet = {
-							name = "Spawn from Incompetent Use of Stellarite"
-							effect = {
-								set_owner = event_target:stellarite_punisher
-								set_fleet_stance = aggressive
-								set_aggro_range_measure_from = self
-								set_aggro_range = 250
-								create_ship = {
-									design = NAME_Stellarite
-									name = "Class-12 Stellarite Anomaly Signature"
-								}
-								set_location = {
-									target = prev
-									distance = 10
-									angle = random
-								}
-							}
-							settings = {
-								is_boss = yes
-								spawn_debris = no
-							}
-						}
-					}
-				}
-			}				 
-		}	
-	}
-
-	option = {
-		name = stellarite_events.10.a
-		trigger = {
-			NOT = {
-				has_country_flag = got_ownt_by_stellarite_once				
-			}
-		}
-		hidden_effect = {
-			set_timed_country_flag = {
-				flag = stellarite_punisher_delay
-				years = 15
-			}
-		}
-	}
-
-	option = {
-		name = stellarite_events.10.b
-		trigger = {
-			has_country_flag = got_ownt_by_stellarite_once					
-		}
-		hidden_effect = {
-			set_timed_country_flag = {
-				flag = stellarite_punisher_delay
-				years = 5
-			}
+			}	
 		}
 	}
 
@@ -647,6 +708,251 @@ country_event = {
 		}
 	}
 }
+
+#DRAGON SPAWN
+country_event = {
+	id = stellarite_events.1001
+	title = stellarite_events.1001.name
+	desc = { 
+		trigger = {
+			NOT = {
+				has_country_flag = encountered_stellarit_dragon
+			}
+		}
+		text = stellarite_events.1001.desc.b
+	}
+	desc = { 
+		trigger = {
+			has_country_flag = encountered_stellarit_dragon
+		}
+		text = stellarite_events.1001.desc.b
+	}
+	picture = GFX_acot_stellarwyrm
+	show_sound = event_screams
+	is_triggered_only = yes
+
+	trigger = {
+    }
+	
+	immediate = {
+		if = {
+			limit = {
+				NOT = {
+					has_country_flag = encountered_stellarit_dragon
+				}
+ 			}
+			 set_country_flag = encountered_stellarit_dragon
+		}	
+	}
+	
+	option = {
+		name = stellarite_events.1001.a
+	}
+
+	option = {
+		name = stellarite_events.1001.b
+	}
+}
+
+#DRAGON DEFEAT
+country_event = {
+	id = stellarite_events.1000
+	title = stellarite_events.1000.name
+	desc = {
+		trigger = {
+			FromFromFrom = {
+				NOT = {
+					has_ship_flag = dragon_give_stellarite
+				}
+			}				
+		}
+		text = stellarite_events.1000.desc.a
+	}
+	desc = {
+		trigger = {
+			FromFromFrom = {
+				has_ship_flag = dragon_give_stellarite
+			}				
+		}
+		text = stellarite_events.1000.desc.b
+	}
+	desc = stellarite_events.4.name
+	picture = GFX_acot_stellarwyrm
+	show_sound = event_screams
+	
+	is_triggered_only = yes
+
+	
+	trigger = {
+		is_playable_country = yes
+		FromFromFrom = {
+			is_ship_size = acot_dragon_stellarite
+		}		
+	}
+
+
+	
+    immediate = {
+    }
+	
+    option = {
+		name = stellarite_events.1000.a
+		trigger = {
+			FromFromFrom = {
+				NOT = {
+					has_ship_flag = dragon_give_stellarite
+				}
+			}	
+		}
+		add_resource = {
+			acot_sr_stellarite = 25000
+		}
+	}
+	
+    option = {
+		name = stellarite_events.1000.b
+		trigger = {
+			FromFromFrom = {
+				has_ship_flag = dragon_give_stellarite
+			}	
+		}
+		add_resource = {
+			acot_sr_stellarite = 50000
+		}
+	}
+
+    option = {
+		name = stellarite_events.1000.c
+		trigger = {
+			FromFromFrom = {
+				has_ship_flag = dragon_give_stellarite
+			}	
+		}
+		random_list = {
+			33 = {
+			}
+			33 = {
+				custom_tooltip = stellarite_events.1000.explain.outcome.1
+				create_fleet = {
+					name = "Midgardsomr"
+					effect = {
+						set_owner = event_target:stellarite_punisher
+						random_list = {
+							10 = { set_name = "Midgardsomr" }
+							10 = { set_name = "Tiamat" }
+							10 = { set_name = "Nidhogg" }
+							10 = { set_name = "Hraesvaelgyr" }
+							10 = { set_name = "Vidofnir" }
+							10 = { set_name = "Smaug" }
+							10 = { set_name = "Deathwing" }
+							10 = { set_name = "Alextrasza" }
+							10 = { set_name = "Ysera" }
+							10 = { set_name = "Sapphiron" }
+							10 = { set_name = "Sindragoza" }
+							10 = { set_name = "Malygos" }
+							10 = { set_name = "Midgardsomr" }
+						}
+						create_ship = {
+							design = NAME_ACOT_Dragon_Stellarite
+							name = "Class-25 Stellarite Anomaly Signature"
+							effect = {
+								set_ship_flag = dragon_give_stellarite
+							}
+						}
+						set_location = {
+							target = FromFrom
+							distance = 30
+							angle = random
+						}
+					}
+					settings = {
+						is_boss = yes
+						spawn_debris = no
+					}
+				}
+				create_fleet = {
+					name = "Midgardsomr"
+					effect = {
+						set_owner = event_target:stellarite_punisher
+						random_list = {
+							10 = { set_name = "Midgardsomr" }
+							10 = { set_name = "Tiamat" }
+							10 = { set_name = "Nidhogg" }
+							10 = { set_name = "Hraesvaelgyr" }
+							10 = { set_name = "Vidofnir" }
+							10 = { set_name = "Smaug" }
+							10 = { set_name = "Deathwing" }
+							10 = { set_name = "Alextrasza" }
+							10 = { set_name = "Ysera" }
+							10 = { set_name = "Sapphiron" }
+							10 = { set_name = "Sindragoza" }
+							10 = { set_name = "Malygos" }
+							10 = { set_name = "Midgardsomr" }
+						}
+						create_ship = {
+							design = NAME_ACOT_Dragon_Stellarite
+							
+							name = "Class-25 Stellarite Anomaly Signature"
+							effect = {
+								set_ship_flag = dragon_give_stellarite
+							}
+						}
+						set_location = {
+							target = FromFrom
+							distance = 30
+							angle = random
+						}
+					}
+					settings = {
+						is_boss = yes
+						spawn_debris = no
+					}
+				}
+			}
+			33 = {
+				custom_tooltip = stellarite_events.1000.explain.outcome.2
+				create_fleet = {
+					name = "Midgardsomr"
+					effect = {
+						set_owner = root
+						random_list = {
+							10 = { set_name = "Midgardsomr" }
+							10 = { set_name = "Tiamat" }
+							10 = { set_name = "Nidhogg" }
+							10 = { set_name = "Hraesvaelgyr" }
+							10 = { set_name = "Vidofnir" }
+							10 = { set_name = "Smaug" }
+							10 = { set_name = "Deathwing" }
+							10 = { set_name = "Alextrasza" }
+							10 = { set_name = "Ysera" }
+							10 = { set_name = "Sapphiron" }
+							10 = { set_name = "Sindragoza" }
+							10 = { set_name = "Malygos" }
+							10 = { set_name = "Midgardsomr" }
+						}
+						create_ship = {
+							design = NAME_ACOT_Dragon_Stellarite
+							name = "Class-25 Stellarite Anomaly Signature"
+							effect = {
+							}
+						}
+						set_location = {
+							target = FromFrom
+							distance = 30
+							angle = random
+						}
+					}
+					settings = {
+						is_boss = yes
+						spawn_debris = no
+					}
+				}
+			}
+		}
+	}
+}
+
+
 
 #Stellarite Generator Amount Check
 planet_event = {
@@ -665,12 +971,16 @@ planet_event = {
 			type = building_stellarite_generator
 			value >= 3	
 		}
+		NOR = {
+			is_planet_class = pc_acot_enigmopolis
+		}
 		owner = {
 			NOR = {
+				has_technology = tech_stellarite_generator_ae
 				is_country_type = original_empire
-				#is_country_type = original_empire_passive
+				is_country_type = original_empire_passive
 				is_country_type = original_empire_active
-				#is_country_type = eternal_empire
+				is_country_type = eternal_empire
 			}
 		}
 	}
@@ -718,7 +1028,12 @@ planet_event = {
 					kill_pop = yes							
 				}
 				destroy_colony = yes
-				change_pc = pc_molten
+				if = {
+					limit = {
+						habitable_planet = yes
+					}
+					change_pc = pc_molten
+				}
 			}
 		}
 	}
@@ -764,7 +1079,12 @@ planet_event = {
 					kill_pop = yes							
 				}
 				destroy_colony = yes
-				change_pc = pc_molten
+				if = {
+					limit = {
+						habitable_planet = yes
+					}
+					change_pc = pc_molten
+				}
 			}
 		}
 	}

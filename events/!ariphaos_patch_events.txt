@@ -2,21 +2,21 @@ namespace = ariphaos_patch
 
 # Event for version handling.
 event = {
-    id = ariphaos_patch.1
-    hide_window = yes
-    is_triggered_only = yes
+	id = ariphaos_patch.1
+	hide_window = yes
+	is_triggered_only = yes
 
-    immediate = {
-       set_global_flag = ariphaos_unofficial_patch_27
-    }
+	immediate = {
+		set_global_flag = ariphaos_unofficial_patch_28
+	}
 }
 
 # Progress.2, but for remnants.
 ship_event = {
-    id = ariphaos_patch.2
-    hide_window = yes
-    is_triggered_only = yes
-	
+	id = ariphaos_patch.2
+	hide_window = yes
+	is_triggered_only = yes
+
 	trigger = {
 		owner = {
 			is_ai = no
@@ -37,17 +37,17 @@ ship_event = {
 		}
 	}
 
-    immediate = {
-       owner = { country_event = { id = story.5 days = 30 } }
-    }
+	immediate = {
+	   owner = { country_event = { id = story.5 days = 30 } }
+	}
 }
 
 # Grant living metal tech option if a deposit is in our territory, or if we have a fabricator.
 country_event = {
-    id = ariphaos_patch.3
-    hide_window = yes
-    is_triggered_only = yes
-	
+	id = ariphaos_patch.3
+	hide_window = yes
+	is_triggered_only = yes
+
 	trigger = {
 		is_country_type = default
 		NOR = {
@@ -58,41 +58,41 @@ country_event = {
 			any_planet_within_border = { has_deposit = d_living_metal_deposit }
 		}
 	}
-	
+
 	immediate = {
 		add_research_option = tech_mine_living_metal
 	}
-	
+
 }
 
 # Automagically close borders.
 # ROOT = country closing the borders
 # FROM = previous war participant.
 country_event = {
-    id = ariphaos_patch.44
-    hide_window = yes
-    is_triggered_only = yes
-	
+	id = ariphaos_patch.44
+	hide_window = yes
+	is_triggered_only = yes
+
 	# The AI will do this on their own. Make sure the message is generated.
 	trigger = {
 		is_ai = no
 	}
 
-    immediate = {
-       set_closed_borders = {
+	immediate = {
+	   set_closed_borders = {
 			who = from
 			status = yes
 		}
-    }
+	}
 }
 
 # Sets a short timed flag if pox/armageddon bombardment is going on, so the planet can be appropriately nuked.
 # Ariphaos todo: Should we just turn the planet into a tomb world once devastation is over 100? Give players the option to fully nuke the planet if they kill the last pop before it reaches 100?
 planet_event = {
-    id = ariphaos_patch.81
-    hide_window = yes
-    is_triggered_only = yes
-	
+	id = ariphaos_patch.81
+	hide_window = yes
+	is_triggered_only = yes
+
 	trigger = {
 		planet_devastation >= 100
 		OR = {
@@ -101,12 +101,12 @@ planet_event = {
 		}
 	}
 
-    immediate = {
+	immediate = {
 		set_timed_planet_flag = {
 			flag = ariphaos_patch_flag_tomb_bombardment
 			days = 7
 		}
-    }
+	}
 }
 
 # Catch-all trait adding event.
@@ -116,17 +116,32 @@ country_event = {
 	hide_window = yes
 
 	immediate = {
-		from = { ariphaos_patch_leader_add_traits = yes }
+		from = { 
+			add_leader_traits_after_modification = yes
+			remove_leader_traits_after_modification = yes
+		}
 	}
 
 }
 
 # Populate the galaxy with terraforming candidates based on habitability setting.
 event = {
-    id = ariphaos_patch.2575
-    hide_window = yes
-    is_triggered_only = yes
+	id = ariphaos_patch.2575
+	hide_window = yes
+	is_triggered_only = yes
 	
+	immediate = {
+		event_target:global_event_country = {
+			country_event = { id = ariphaos_patch.25750 days = 1 }
+		}
+	}
+}
+	
+country_event = {
+	id = ariphaos_patch.25750
+	hide_window = yes
+	is_triggered_only = yes
+
 	immediate = {
 		every_system = {
 			limit = {
@@ -139,7 +154,9 @@ event = {
 			}
 			every_system_planet = {
 				limit = {
-					NOR = { 
+					planet_size < 26
+					planet_size > 9
+					NOR = {
 						has_modifier = terraforming_candidate
 						has_anomaly = yes
 						is_preventing_anomaly = yes
@@ -150,19 +167,9 @@ event = {
 					}
 				}
 
-# Turns out colonizable_planet_odds can't be retrieved because of course it can't.		
-#				get_galaxy_setup_value = { 
-#					setting = colonizable_planet_odds
-#					which = local_habitability_num
-#					scale_by = 4
-#				}
-#					
-#				while = {
-#					count = local_habitability_num
-#				}
 				random_list = {
-					98 = { }
-					2 = {
+					96 = { }
+					4 = {
 						add_modifier = {
 							modifier = "terraforming_candidate"
 							days = -1
@@ -175,15 +182,57 @@ event = {
 }
 
 country_event = {
-    id = ariphaos_patch.9998
-    hide_window = yes
-    is_triggered_only = yes
-	
+	id = ariphaos_patch.25751
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		every_planet = {
+			limit = {
+				planet_size < 26
+				planet_size > 9
+				NOR = {
+					has_modifier = terraforming_candidate
+					has_anomaly = yes
+					is_preventing_anomaly = yes
+				}
+				OR = {
+					is_planet_class = pc_barren
+					is_planet_class = pc_barren_cold
+				}
+				solar_system = {
+					NOR = {
+						is_star_class = sc_black_hole
+						is_star_class = sc_neutron_star
+						is_star_class = sc_pulsar
+						has_star_flag = empire_home_system
+					}
+				}
+				
+			}
+			random_list = {
+				96 = { }
+				4 = {
+					add_modifier = {
+						modifier = "terraforming_candidate"
+						days = -1
+					}
+				}
+			}
+		}
+	}
+}
+
+country_event = {
+	id = ariphaos_patch.9998
+	hide_window = yes
+	is_triggered_only = yes
+
 	trigger = {
 		is_regular_empire = yes
 		is_country_type = default
 	}
-	
+
 	immediate = {
 		add_modifier = {
 			modifier = ariphaos_patch_political_restructuring
@@ -211,7 +260,7 @@ country_event = {
 					}
 					pop_change_ethic = ethic_xenophobe
 				}
-				25 = { 
+				25 = {
 					modifier = {
 						factor = 0
 						ROOT = { is_xenophile = no }
@@ -233,7 +282,7 @@ country_event = {
 					}
 					pop_change_ethic = ethic_militarist
 				}
-				25 = { 
+				25 = {
 					modifier = {
 						factor = 0
 						ROOT = { is_pacifist = no }
@@ -255,7 +304,7 @@ country_event = {
 					}
 					pop_change_ethic = ethic_materialist
 				}
-				25 = { 
+				25 = {
 					modifier = {
 						factor = 0
 						ROOT = { is_spiritualist = no }
@@ -277,7 +326,7 @@ country_event = {
 					}
 					pop_change_ethic = ethic_egalitarian
 				}
-				25 = { 
+				25 = {
 					modifier = {
 						factor = 0
 						ROOT = { is_authoritarian = no }
