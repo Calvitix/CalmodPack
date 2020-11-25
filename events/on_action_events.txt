@@ -1,7 +1,4 @@
 
-#fix: action.1.a
-
-
 #########################################
 #
 # on_action_events
@@ -4267,7 +4264,7 @@ country_event = {
 	id = action.5
 	title = "action.5.name"
 	picture = GFX_evt_medieval_alien_civilization
-	location = fromfrom # Correction de bug
+	location = FROMFROM
 	show_sound = event_primitive_civilization
 
 	desc = { # Stone Age
@@ -4324,7 +4321,7 @@ country_event = {
 	id = action.6
 	title = "action.5.name"
 	picture = GFX_evt_metropolis
-	location = fromfrom # Correction de bug
+	location = FROMFROM
 	show_sound = event_scanner
 
 	desc = { # Industrial Age
@@ -4446,7 +4443,7 @@ country_event = {
 	title = "action.10.name"
 	desc = "action.15.desc"
 	picture = GFX_evt_star_chart
-	location = fromfrom # Correction de bug
+	location = FROMFROMFROM
 	trackable = yes
 
 	is_triggered_only = yes
@@ -4495,7 +4492,7 @@ country_event = {
 	desc = {
 		text = "action.11.desc"
 		trigger = {
-			fromfrom = { NOT = { has_relation_flag = { who = root flag = AbandonedRefugees } } }
+			NOT = { fromfrom = { has_relation_flag = { who = root flag = AbandonedRefugees } } }
 		}
 	}
 	desc = {
@@ -5322,7 +5319,7 @@ country_event = {
 			}
 		}
 		is_country_type = default
-		is_ai = no
+	#	is_ai = no
 		NOT = { has_country_flag = crystal_encountered }
 	}
 
@@ -5369,7 +5366,7 @@ country_event = {
 			}
 		}
 		is_country_type = default
-		is_ai = no
+	#	is_ai = no
 		NOT = { has_country_flag = drone_encountered }
 	}
 
@@ -5411,7 +5408,7 @@ country_event = {
 	trigger = {
 		FROM = { is_country_type = cloud }
 		is_country_type = default
-		is_ai = no
+	#	is_ai = no
 		NOT = { has_country_flag = cloud_encountered }
 	}
 
@@ -5458,7 +5455,7 @@ country_event = {
 			}
 		}
 		is_country_type = default
-		is_ai = no
+	#	is_ai = no
 		NOT = { has_country_flag = tiyanki_encountered }
 	}
 
@@ -5651,10 +5648,11 @@ planet_event = {
 			is_robot_pop = no
 			is_sapient = yes
 			NOT = { has_trait = "trait_hive_mind" }
-			OR = {
-				NOT = { has_citizenship_type = { country = from type = citizenship_purge } }
-				NOT = { has_purge_type = { country = from type = purge_neutering } }
+			NAND = {
+				has_citizenship_type = { country = from type = citizenship_purge }
+				has_purge_type = { country = from type = purge_neutering }
 			}
+			NOT = { has_purge_type = { country = from type = purge_necrophage } }
 		}
 		is_controlled_by = FROM
 	}
@@ -6892,8 +6890,9 @@ country_event = {
 
 	is_triggered_only = yes
 
+	immediate = {
 		every_subject = {
-			is_country_type = default
+			set_subject_of = {
 				who = none
 			}
 		}
@@ -6931,7 +6930,7 @@ country_event = {
 				is_subject = no
 				OR = {
 					is_country_type = default
-					has_communications = root
+					is_country_type = fallen_empire
 					is_country_type = awakened_fallen_empire
 				}
 				NOT = { has_country_flag = silence_destroy_event }
@@ -6949,7 +6948,7 @@ country_event = {
 					observer_event = { id = observer.2 }
 				}
 			}
-		else = {
+			else = {
 				every_playable_country = {
 					limit = {
 						has_communications = root
@@ -7672,7 +7671,6 @@ country_event = {
 
 	immediate = {
 		if = {
-				limit = {
 			limit = { last_changed_policy = robot_pop_policy has_policy_flag = robots_outlawed }
 			every_owned_army = {
 				limit = {

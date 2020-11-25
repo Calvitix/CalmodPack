@@ -59,21 +59,19 @@ diplomatic_stance = {
 			}
 
 			# Pacifists
-			modifier = { # Fanatic Pacifists can *only* go belligerent if they are at war or there's a rival neighbor...
+			modifier = { # Fanatic Pacifists will *only* go belligerent if there's a rival neighbor...
 				factor = 0
 				has_ethic = ethic_fanatic_pacifist
-				NOR = {
-					is_at_war = yes
+				NOT = {
 					any_neighbor_country = {
 						is_rival = root
 					}
 				}
 			}
-			modifier = { # Regular Pacifists have only a small chance to go belligerent if they are not at war or there's a rival neighbor...
+			modifier = { # Regular Pacifists have only a small chance to go belligerent unless there's a rival neighbor...
 				factor = 0.5
 				has_ethic = ethic_pacifist
-				NOR = {
-					is_at_war = yes
+				NOT = {
 					any_neighbor_country = {
 						is_rival = root
 					}
@@ -437,23 +435,23 @@ diplomatic_stance = {
 
 			# Angry people want to be Supreme
 			modifier = {
-				factor = 2.0
+				factor = 5
 				has_ethic = ethic_fanatic_militarist
 			}
 			modifier = {
-				factor = 1.5
+				factor = 2
 				has_ethic = ethic_militarist
 			}
 			modifier = {
-				factor = 1.5
+				factor = 2
 				has_ethic = ethic_fanatic_authoritarian
 			}
 			modifier = {
-				factor = 1.25
+				factor = 1.5
 				has_ethic = ethic_authoritarian
 			}
 			modifier = {
-				factor = 1.25 # Despoilers/Nihilistic Acquisition intentionally get a higher multiplier for Belligerent than Supremacist
+				factor = 1.5 # Despoilers/Nihilistic Acquisition intentionally get a higher multiplier for Belligerent than Supremacist
 				is_slaver = yes
 			}
 			modifier = {
@@ -736,9 +734,17 @@ war_philosophy = {
 				has_valid_ai_personality = yes
 				is_ai = yes
 				OR = {
-					has_ai_personality_behaviour = conqueror
-					has_ai_personality_behaviour = subjugator
 					has_ai_personality_behaviour = liberator
+				}
+			}
+			modifier = {
+				factor = 10
+				has_valid_ai_personality = yes
+				is_ai = yes
+				is_galactic_community_member = yes
+				OR = {
+					is_active_resolution = "resolution_rulesofwar_last_resort_doctrine"
+					is_active_resolution = "resolution_rulesofwar_demobilization_initiative"
 				}
 			}
 		}
@@ -1505,7 +1511,7 @@ food_policy = {
 			factor = 1
 			modifier = {
 				factor = 0
-				has_resource = { type = food amount > 6000 }
+				days_passed > 28
 			}
 		}
 	}
@@ -1522,10 +1528,10 @@ food_policy = {
 		}
 
 		AI_weight = {
-			factor = 1
+			weight = 0
 			modifier = {
-				factor = 0
-				has_resource = { type = food amount < 5000 }
+				weight = 500
+				days_passed > 28
 			}
 		}
 	}
@@ -1559,7 +1565,7 @@ food_policy_gestalt = {
 			factor = 1
 			modifier = {
 				factor = 0
-				years_passed >= 1
+				days_passed > 28
 			}
 		}
 	}
@@ -1573,15 +1579,14 @@ food_policy_gestalt = {
 		}
 
 		AI_weight = {
-			factor = 1
+			weight = 0
 			modifier = {
-				factor = 0
-				years_passed < 1
+				weight = 500
+				days_passed > 28
 			}
 		}
 	}
 }
-
 
 economic_policy = {
 	potential = {
@@ -1591,9 +1596,6 @@ economic_policy = {
 	option = {
 		name = "economic_policy_civilian"
 
-		policy_flags = {
-			economic_policy_civilian
-		}
 		modifier = {
 			planet_jobs_consumer_goods_produces_mult = 0.15
 			planet_jobs_alloys_produces_mult = -0.25
@@ -1608,11 +1610,6 @@ economic_policy = {
 		name = "economic_policy_balanced"
 
 		modifier = {}
-
-		policy_flags = {
-			economic_policy_balanced
-		}
-
 
 		AI_weight = {
 			factor = 1
@@ -2371,19 +2368,6 @@ purge = {
 
 		valid = {
 			NOR = {
-				is_subject_type = signatory
-				AND = {
-					has_ethic = ethic_gestalt_consciousness
-					OR = {
-						is_galactic_community_member = no
-						NOR = {
-							is_active_resolution = "resolution_rulesofwar_reverence_for_life"
-							is_active_resolution = "resolution_rulesofwar_independent_tribunals"
-							is_active_resolution = "resolution_rulesofwar_last_resort_doctrine"
-							is_active_resolution = "resolution_rulesofwar_demobilization_initiative"
-						}
-					}
-				}
 				has_ethic = ethic_xenophile
 				has_ethic = ethic_fanatic_xenophile
 			}

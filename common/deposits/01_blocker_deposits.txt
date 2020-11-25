@@ -41,8 +41,11 @@ d_mountain_range = {
 		}
 		modifier = {
 			factor = 0
-			new_worlds_subterranean = yes
-		}	
+			num_free_districts = {
+				type = district_city
+				value < 2
+			}
+		}
 	}
 
 	ai_weight = {
@@ -84,12 +87,11 @@ d_active_volcano = {
 			planet_size < 15
 		}
 		modifier = {
-			factor = 3
-			is_planet_class = pc_primordial
-		}
-		modifier = {
 			factor = 0
-			new_worlds_subterranean = yes
+			num_free_districts = {
+				type = district_city
+				value < 2
+			}
 		}
 	}
 
@@ -134,28 +136,15 @@ d_dangerous_wildlife_blocker = {
 	drop_weight = {
 		weight = @blocker_low
 		modifier = {
-			factor = 2
-			has_modifier = "dangerous_wildlife"
-		}
-		modifier = {
-			factor = 10
-			has_modifier = "titanic_life"
-		}
-		modifier = {
 			factor = 0.5
 			planet_size < 15
 		}
 		modifier = {
 			factor = 0
-			OR = {
-				is_planet_class = pc_primordial
-				is_planet_class = pc_hothouse
-				is_planet_class = pc_desolate
+			num_free_districts = {
+				type = district_city
+				value < 2
 			}
-		}
-		modifier = {
-			factor = 0
-			new_worlds_subterranean = yes
 		}
 	}
 
@@ -196,13 +185,9 @@ d_dense_jungle = {
 		}
 		modifier = {
 			factor = 0
-			OR = {
-				is_planet_class = pc_primordial
-				is_planet_class = pc_hothouse
-				is_planet_class = pc_desolate
-				is_planet_class = pc_irradiated_marginal
-				is_planet_class = pc_marginal_cold
-				is_planet_class = pc_marginal_warm
+			num_free_districts = {
+				type = district_city
+				value < 2
 			}
 		}
 	}
@@ -241,11 +226,9 @@ d_toxic_kelp = {
 		}
 		modifier = {
 			factor = 0
-			OR = {
-				is_planet_class = pc_primordial
-				is_planet_class = pc_hothouse
-				is_planet_class = pc_desolate
-				is_planet_class = pc_marginal_cold
+			num_free_districts = {
+				type = district_city
+				value < 2
 			}
 		}
 	}
@@ -283,11 +266,15 @@ d_deep_sinkhole = {
 			OR = {
 				is_planet_class = pc_arid
 				is_planet_class = pc_savannah
-				is_planet_class_pc_irradiated_marginal = yes
-				is_planet_class_pc_desolate = yes
-				is_planet_class_pc_primordial = yes
 			}
-		}	
+		}
+		modifier = {
+			factor = 0
+			num_free_districts = {
+				type = district_city
+				value < 2
+			}
+		}
 	}
 
 	prerequisites = { "tech_deep_sinkhole" }
@@ -322,7 +309,14 @@ d_quicksand_basin = {
 		modifier = {
 			factor = 2
 			is_planet_class = pc_desert
-		}		
+		}
+		modifier = {
+			factor = 0
+			num_free_districts = {
+				type = district_city
+				value < 2
+			}
+		}
 	}
 
 	prerequisites = { "tech_quicksand_basin" }
@@ -359,11 +353,9 @@ d_noxious_swamp = {
 		}
 		modifier = {
 			factor = 0
-			OR = {
-				is_planet_class = pc_primordial
-				is_planet_class = pc_hothouse
-				is_planet_class = pc_desolate
-				is_planet_class = pc_irradiated_marginal
+			num_free_districts = {
+				type = district_city
+				value < 2
 			}
 		}
 	}
@@ -405,18 +397,15 @@ d_massive_glacier = {
 		}
 		modifier = {
 			factor = 0
-			OR = {
-				is_planet_class = pc_primordial
-				is_planet_class = pc_hothouse
-				is_planet_class = pc_desolate
-				is_planet_class = pc_irradiated_marginal
+			num_free_districts = {
+				type = district_city
+				value < 2
 			}
 		}
 	}
 
 	prerequisites = { "tech_massive_glacier" }
 }
-
 
 ### SPECIAL
 
@@ -445,6 +434,13 @@ d_radioactive_wasteland = {
 
 	drop_weight = {
 		weight = @blocker_high
+		modifier = {
+			factor = 0
+			num_free_districts = {
+				type = district_city
+				value < 2
+			}
+		}
 	}
 }
 
@@ -472,6 +468,13 @@ d_city_ruins = {
 
 	drop_weight = {
 		weight = @blocker_high
+		modifier = {
+			factor = 0
+			num_free_districts = {
+				type = district_city
+				value < 2
+			}
+		}
 	}
 }
 
@@ -501,6 +504,13 @@ d_bomb_crater = {
 
 	drop_weight = {
 		weight = @blocker_low
+		modifier = {
+			factor = 0
+			num_free_districts = {
+				type = district_city
+				value < 2
+			}
+		}
 	}
 }
 
@@ -573,61 +583,25 @@ d_slums = {
 #calvitix : merged from PD new worlds
 d_crater = {
 	time = 100
-	
+
 	is_for_colonizeable = yes
-	category = deposit_cat_blockers	
-	
+	category = deposit_cat_blockers
+
 	potential = {
-		OR = {
-			is_planet_class_pc_desolate = yes
-			is_planet_class_pc_primordial = yes
-		}
+		always = no
 	}
-	
-	planet_modifier = { 
+
+	planet_modifier = {
 		planet_max_districts_add = -1
 	}
-	
-	all_blocker_swap_types = yes
-	
-	drop_weight = {
-		weight = @blocker_high	
-	}
-	
+
 	resources = {
 		category = deposit_blockers
 		cost = {
 			energy = 300
 		}
 	}
-	
-	prerequisites = { "tech_terrestrial_sculpting" }
-	
 }
-
-
-#removed_calvitix
-#d_crater = {
-#	time = 100
-#
-#	is_for_colonizeable = yes
-#	category = deposit_cat_blockers
-#
-#	potential = {
-#		always = no
-#	}
-#
-#	planet_modifier = {
-#		planet_max_districts_add = -1
-#	}
-#
-#	resources = {
-#		category = deposit_blockers
-#		cost = {
-#			energy = 300
-#		}
-#	}
-#}
 
 d_wandering_forests = {
 	icon = d_dense_jungle

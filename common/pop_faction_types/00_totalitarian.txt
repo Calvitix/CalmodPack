@@ -151,150 +151,55 @@ totalitarian = {
 
 		trigger = {
 			owner = {
-				NOR = { has_authority = auth_democratic   has_authority = auth_direct_democratic }
+				NOT = { has_authority = auth_democratic }
 			}
 		}
 	}
 
 	demand = {
-		title = "TOTALITARIAN_PERSONALITY_CULT"
-		unfulfilled_title = "TOTALITARIAN_NO_PERSONALITY_CULT"
-		desc = "TOTALITARIAN_PERSONALITY_CULT_DESC"
+		title = "TOTALITARIAN_STRATIFICATION"
+		unfulfilled_title = "TOTALITARIAN_NO_STRATIFICATION"
+		desc = "TOTALITARIAN_STRATIFICATION_DESC"
 
-		fulfilled_effect = 5
+		fulfilled_effect = 10
+		unfulfilled_effect = -20
 
-	    potential = {
-			exists = owner
-			owner = { or = { has_valid_civic = civic_military_dictatorship  has_valid_civic = civic_imperial_cult   has_valid_civic = civic_philosopher_king  } }
-		}
-
-		trigger = {
-				owner = { or = { has_valid_civic = civic_military_dictatorship  has_valid_civic = civic_imperial_cult   has_valid_civic = civic_philosopher_king  }  }
-		}
-	}
-
-
-	demand = {
-		title = "TOTALITARIAN_ARISTOCRACY"
-		unfulfilled_title = "TOTALITARIAN_NO_ARISTOCRACY"
-		desc = "TOTALITARIAN_ARISTOCRACY_DESC"
-
-		fulfilled_effect = 5
-
-	    potential = {
-			exists = owner
-			owner = { or = { has_valid_civic = civic_aristocratic_elite  } }
-		}
-
-		trigger = {
-				owner = { has_valid_civic = civic_aristocratic_elite  }
-		}
-	}
-
-
-
-	demand = {
-		title = "TOTALITARIAN_CASTE"
-		unfulfilled_title = "TOTALITARIAN_NO_CASTE"
-		desc = "TOTALITARIAN_CASTE_DESC"
-
-		fulfilled_effect = 5
-
-	    potential = {
-			exists = owner
-			owner = { or = { has_valid_civic = civic_divine_order  } }
-		}
-
-		trigger = {
-				owner = { has_valid_civic = civic_divine_order  }
-		}
-	}
-
-
-	demand = {
-		title = "TOTALITARIAN_SLAVERY"
-		unfulfilled_title = "TOTALITARIAN_NO_SLAVERY"
-		desc = "TOTALITARIAN_SLAVERY_DESC"
-
-		fulfilled_effect = 5
-
-	    potential = {
-			exists = owner
-			owner = { or = { has_valid_civic = civic_slaver_guilds  has_valid_civic = civic_reeducated_labor  } }
-		}
-
-		trigger = {
-				owner = { or = { has_valid_civic = civic_slaver_guilds  has_valid_civic = civic_reeducated_labor  }  }
-		}
-	}
-
-	demand = {
-		title = "TOTALITARIAN_POLICE_CONTROL"
-		unfulfilled_title = "TOTALITARIAN_NO_POLICE_CONTROL"
-		desc = "TOTALITARIAN_POLICE_CONTROL_DESC"
-
-		fulfilled_effect = 5
-
-	    potential = {
-			exists = owner
-			owner = { OR = { has_valid_civic = civic_police_state  has_valid_civic = civic_cyber_dictatorship } }
-		}
-
-		trigger = {
-				owner = { OR = { has_valid_civic = civic_police_state  has_valid_civic = civic_cyber_dictatorship }  }
-		}
-	}
-
-
-	demand = {
-		title = "TOTALITARIAN_GUN_RIGHTS"
-		unfulfilled_title = "TOTALITARIAN_NO_GUN_RIGHTS"
-		desc = "TOTALITARIAN_GUN_RIGHTS_DESC"
-
-		fulfilled_effect = 5
-
-	potential = {
+		potential = {
 			exists = owner
 		}
 
 		trigger = {
-				owner = { has_policy_flag = gun_rights_limited  }
-		}
-	}
-
-
-
-
-
-	demand = {
-		title = "NO_FREE_MEDIA"
-		unfulfilled_title = "NO_FREE_MEDIA"
-		desc = "NO_FREE_MEDIA_DESC"
-
-		unfulfilled_effect = -10
-
-	potential = {
-			exists = owner
 			owner = {
 				OR = {
-					has_policy_flag = free_media
+					NOT = {
+						any_owned_species = {
+							NOR = {
+								has_living_standard = { type = living_standard_stratified country = prev }
+								has_living_standard = { type = living_standard_academic_privilege country = prev }
+								has_living_standard = { type = living_standard_none country = prev }
+								has_living_standard = { type = living_standard_psi_assimilation country = prev }
+								has_living_standard = { type = living_standard_tech_assimilation country = prev }
+								has_living_standard = { type = living_standard_deassimilation country = prev }
+								is_archetype = PRESAPIENT
+							}
+						}
+					}
+					any_owned_species = {
+						OR = {
+							has_citizenship_type = { type = citizenship_slavery country = prev }
+							has_citizenship_type = { type = citizenship_purge country = prev }
+							has_citizenship_type = { type = citizenship_robot_servitude country = prev }
+						}
+					}
 				}
 			}
 		}
-
-		trigger = {
-				owner = { NOT = { has_policy_flag = free_media } }
-		}
 	}
 
-
-
-
-
 	demand = {
-		title = "CENTRALIZED_STATE"
-		unfulfilled_title = "NO_CENTRALIZED STATE"
-		desc = "CENTRALIZED_STATE_DESC"
+		title = "TOTALITARIAN_ELITISM"
+		unfulfilled_title = "TOTALITARIAN_NO_ELITISM"
+		desc = "TOTALITARIAN_ELITISM_DESC"
 
 		fulfilled_effect = 5
 		unfulfilled_effect = -5
@@ -303,7 +208,8 @@ totalitarian = {
 			exists = owner
 			owner = {
 				OR = {
-					has_technology = tech_centralized_state
+					has_technology = tech_selected_lineages
+					has_technology = tech_capacity_boosters
 				}
 			}
 		}
@@ -311,7 +217,8 @@ totalitarian = {
 		trigger = {
 			owner = {
 				OR = {
-					has_policy_flag = centralized_state
+					has_policy_flag = leader_enhancement_selected_lineages
+					has_policy_flag = leader_enhancement_capacity_boosters
 				}
 			}
 		}
