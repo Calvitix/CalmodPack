@@ -1,12 +1,104 @@
 namespace = pas
 
-fleet_event = {
+country_event = {
 	id = pas.0
 	hide_window = yes
 	is_triggered_only = yes
 
+	trigger = {
+		has_global_flag = pasmod_main_feature
+		any_owned_fleet = {
+			any_owned_ship = {
+				NOT = { has_ship_flag = pasmod_army_drop_done } #will not drop army when ship has this flag
+				OR = {
+					#tier I
+					has_component = pasmod_orbital_drop_pod_default
+					has_component = pasmod_orbital_drop_pod_clone
+					has_component = pasmod_orbital_drop_pod_gene
+					has_component = pasmod_orbital_drop_pod_psionic_force
+					has_component = pasmod_orbital_drop_pod_slave_army
+					has_component = pasmod_orbital_drop_pod_droid_army
+
+					#tier II
+					has_component = pasmod_orbital_drop_pod_default_2
+					has_component = pasmod_orbital_drop_pod_clone_2
+					has_component = pasmod_orbital_drop_pod_gene_2
+					has_component = pasmod_orbital_drop_pod_psionic_force_2
+					has_component = pasmod_orbital_drop_pod_slave_army_2
+					has_component = pasmod_orbital_drop_pod_droid_army_2
+
+					#tier III
+					has_component = pasmod_orbital_drop_pod_default_3
+					has_component = pasmod_orbital_drop_pod_clone_3
+					has_component = pasmod_orbital_drop_pod_gene_3
+					has_component = pasmod_orbital_drop_pod_psionic_force_3
+					has_component = pasmod_orbital_drop_pod_slave_army_3
+					has_component = pasmod_orbital_drop_pod_droid_army_3
+				}
+			}
+			solar_system = {
+				any_system_planet = {
+					any_fleet_in_orbit = { is_same_value = prevprevprev }
+					planet_devastation >= 30 #the event will happen only when planet's devastation is reach or over this percentage #current one is 30%
+					is_colony = yes
+					NOR = {
+						is_owned_by = root
+						is_planet_class = pc_infested #no effect on crisis faction's planets
+						is_planet_class = pc_ai
+					}
+				}
+			}
+		}
+	}
+
 	immediate = {
-		from = { planet_event = { id = pas.1 } }
+		every_owned_fleet = {
+			solar_system = {
+				every_system_planet = {
+					limit = {
+						any_fleet_in_orbit = {
+							is_same_value = prevprevprev
+							any_owned_ship = {
+								NOT = { has_ship_flag = pasmod_army_drop_done } #will not drop army when ship has this flag
+								OR = {
+									#tier I
+									has_component = pasmod_orbital_drop_pod_default
+									has_component = pasmod_orbital_drop_pod_clone
+									has_component = pasmod_orbital_drop_pod_gene
+									has_component = pasmod_orbital_drop_pod_psionic_force
+									has_component = pasmod_orbital_drop_pod_slave_army
+									has_component = pasmod_orbital_drop_pod_droid_army
+				
+									#tier II
+									has_component = pasmod_orbital_drop_pod_default_2
+									has_component = pasmod_orbital_drop_pod_clone_2
+									has_component = pasmod_orbital_drop_pod_gene_2
+									has_component = pasmod_orbital_drop_pod_psionic_force_2
+									has_component = pasmod_orbital_drop_pod_slave_army_2
+									has_component = pasmod_orbital_drop_pod_droid_army_2
+				
+									#tier III
+									has_component = pasmod_orbital_drop_pod_default_3
+									has_component = pasmod_orbital_drop_pod_clone_3
+									has_component = pasmod_orbital_drop_pod_gene_3
+									has_component = pasmod_orbital_drop_pod_psionic_force_3
+									has_component = pasmod_orbital_drop_pod_slave_army_3
+									has_component = pasmod_orbital_drop_pod_droid_army_3
+								}
+							}
+						}
+						planet_devastation >= 30 #the event will happen only when planet's devastation is reach or over this percentage #current one is 30%
+						is_colony = yes
+						NOR = {
+							is_owned_by = root
+							is_planet_class = pc_infested #no effect on crisis faction's planets
+							is_planet_class = pc_ai
+						}
+					}
+					planet_event = { id = pas.1 }
+				}
+			}
+		}
 	}
 }
 planet_event = {
@@ -23,7 +115,7 @@ planet_event = {
 			is_planet_class = pc_infested
 			is_planet_class = pc_ai 
 		}
-		planet_devastation >= 30 #the event will happens only when planet's devastation is reach or over this percentage #current one is 30%
+		planet_devastation >= 30 #the event will happen only when planet's devastation is reach or over this percentage #current one is 30%
 		solar_system = {
 			any_ship_in_system = {
 				exists = orbit
@@ -113,7 +205,7 @@ ship_event = {
 					has_component = pasmod_orbital_drop_pod_droid_army
 				}
 			}
-			pasmod_automatic_invasion_process = yes #actual army spawn process #'scripted_effect' is used here, since the code is quite long one
+			ship_event = { id = pas.21 }
 		}
 		if = {
 			limit = {
@@ -127,7 +219,7 @@ ship_event = {
 					has_component = pasmod_orbital_drop_pod_droid_army_2
 				}
 			}
-			pasmod_automatic_invasion_process_2 = yes
+			ship_event = { id = pas.22 }
 		}
 		if = {
 			limit = {
@@ -141,7 +233,265 @@ ship_event = {
 					has_component = pasmod_orbital_drop_pod_droid_army_3
 				}
 			}
-			pasmod_automatic_invasion_process_3 = yes
+			ship_event = { id = pas.23 }
+		}
+	}
+}
+ship_event = {
+	id = pas.21
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = { has_component = pasmod_orbital_drop_pod_default }
+			while = { #while is used to repeat the effect serveral times, in this case it is 10 / or repeat until condition is met (if there is a existing condition)
+				fromfrom = { #this is called 'scope', 'target of certain effect' #in this case, from.planet means the place where orbital bombardment is happening
+					create_army = {
+						owner = root.owner #in this case, root means ship so this means owner of the ship will be owner of spawned army too
+						species = root.owner.species #in scripted_effects 'root.owner.species' scope seems not working #tested twice
+						type = pasmod_assault_army_default
+					}
+				}
+				count = 5
+			}
+		}
+		if = {
+			limit = { has_component = pasmod_orbital_drop_pod_clone }
+			while = {
+				fromfrom = {
+					create_army = {
+						owner = root.owner
+						species = root.owner.species
+						type = pasmod_assault_army_clone
+					}
+				}
+				count = 5
+			}
+		}
+		if = {
+			limit = { has_component = pasmod_orbital_drop_pod_gene }
+			while = {
+				fromfrom = {
+					create_army = {
+						owner = root.owner
+						species = root.owner.species
+						type = pasmod_assault_army_gene
+					}
+				}
+				count = 5
+			}
+		}
+		if = {
+			limit = { has_component = pasmod_orbital_drop_pod_psionic_force }
+			while = {
+				fromfrom = {
+					create_army = {
+						owner = root.owner
+						species = root.owner.species
+						type = pasmod_assault_army_psionic_force
+					}
+				}
+				count = 5
+			}
+		}
+		if = {
+			limit = { has_component = pasmod_orbital_drop_pod_slave_army }
+			while = {
+				fromfrom = {
+					create_army = {
+						owner = root.owner
+						species = root.owner.species
+						type = pasmod_assault_army_slave_army
+					}
+				}
+				count = 5
+			}
+		}
+		if = {
+			limit = { has_component = pasmod_orbital_drop_pod_droid_army }
+			while = {
+				fromfrom = {
+					create_army = {
+						owner = root.owner
+						#droid army doesn't have species
+						type = pasmod_assault_army_droid_army
+					}
+				}
+				count = 5
+			}
+		}
+	}
+}
+ship_event = {
+	id = pas.22
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = { has_component = pasmod_orbital_drop_pod_default_2 }
+			while = { #while is used to repeat the effect serveral times, in this case it is 10 / or repeat until condition is met (if there is a existing condition)
+				fromfrom = { #this is called 'scope', 'target of certain effect' #in this case, from.planet means the place where orbital bombardment is happening
+					create_army = {
+						owner = root.owner #in this case, root means ship so this means owner of the ship will be owner of spawned army too
+						species = root.owner.species #in scripted_effects 'root.owner.species' scope seems not working #tested twice
+						type = pasmod_assault_army_default
+					}
+				}
+				count = 10
+			}
+		}
+		if = {
+			limit = { has_component = pasmod_orbital_drop_pod_clone_2 }
+			while = {
+				fromfrom = {
+					create_army = {
+						owner = root.owner
+						species = root.owner.species
+						type = pasmod_assault_army_clone
+					}
+				}
+				count = 10
+			}
+		}
+		if = {
+			limit = { has_component = pasmod_orbital_drop_pod_gene_2 }
+			while = {
+				fromfrom = {
+					create_army = {
+						owner = root.owner
+						species = root.owner.species
+						type = pasmod_assault_army_gene
+					}
+				}
+				count = 10
+			}
+		}
+		if = {
+			limit = { has_component = pasmod_orbital_drop_pod_psionic_force_2 }
+			while = {
+				fromfrom = {
+					create_army = {
+						owner = root.owner
+						species = root.owner.species
+						type = pasmod_assault_army_psionic_force
+					}
+				}
+				count = 10
+			}
+		}
+		if = {
+			limit = { has_component = pasmod_orbital_drop_pod_slave_army_2 }
+			while = {
+				fromfrom = {
+					create_army = {
+						owner = root.owner
+						species = root.owner.species
+						type = pasmod_assault_army_slave_army
+					}
+				}
+				count = 10
+			}
+		}
+		if = {
+			limit = { has_component = pasmod_orbital_drop_pod_droid_army_2 }
+			while = {
+				fromfrom = {
+					create_army = {
+						owner = root.owner
+						#droid army doesn't have species
+						type = pasmod_assault_army_droid_army
+					}
+				}
+				count = 10
+			}
+		}
+	}
+}
+ship_event = {
+	id = pas.23
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = { has_component = pasmod_orbital_drop_pod_default_3 }
+			while = { #while is used to repeat the effect serveral times, in this case it is 10 / or repeat until condition is met (if there is a existing condition)
+				fromfrom = { #this is called 'scope', 'target of certain effect' #in this case, from.planet means the place where orbital bombardment is happening
+					create_army = {
+						owner = root.owner #in this case, root means ship so this means owner of the ship will be owner of spawned army too
+						species = root.owner.species #in scripted_effects 'root.owner.species' scope seems not working #tested twice
+						type = pasmod_assault_army_default
+					}
+				}
+				count = 20
+			}
+		}
+		if = {
+			limit = { has_component = pasmod_orbital_drop_pod_clone_3 }
+			while = {
+				fromfrom = {
+					create_army = {
+						owner = root.owner
+						species = root.owner.species
+						type = pasmod_assault_army_clone
+					}
+				}
+				count = 20
+			}
+		}
+		if = {
+			limit = { has_component = pasmod_orbital_drop_pod_gene_3 }
+			while = {
+				fromfrom = {
+					create_army = {
+						owner = root.owner
+						species = root.owner.species
+						type = pasmod_assault_army_gene
+					}
+				}
+				count = 20
+			}
+		}
+		if = {
+			limit = { has_component = pasmod_orbital_drop_pod_psionic_force_3 }
+			while = {
+				fromfrom = {
+					create_army = {
+						owner = root.owner
+						species = root.owner.species
+						type = pasmod_assault_army_psionic_force
+					}
+				}
+				count = 20
+			}
+		}
+		if = {
+			limit = { has_component = pasmod_orbital_drop_pod_slave_army_3 }
+			while = {
+				fromfrom = {
+					create_army = {
+						owner = root.owner
+						species = root.owner.species
+						type = pasmod_assault_army_slave_army
+					}
+				}
+				count = 20
+			}
+		}
+		if = {
+			limit = { has_component = pasmod_orbital_drop_pod_droid_army_3 }
+			while = {
+				fromfrom = {
+					create_army = {
+						owner = root.owner
+						#droid army doesn't have species
+						type = pasmod_assault_army_droid_army
+					}
+				}
+				count = 20
+			}
 		}
 	}
 }
