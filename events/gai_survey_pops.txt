@@ -1,0 +1,2995 @@
+namespace = gai_survey_pops
+#This even is designed to find out what pops the AI has and find out what they want to inhabit
+#This information is then used by the terraforming files
+#All event descriptions are now in the common\on actions\ folder
+
+# See common/scripted_triggers/pd_gai_scripted_triggers.txt for the definition
+# of pd_gai_is_pop_considered_for_terraforming
+
+country_event = {
+	id = gai_survey_pops.1
+	hide_window = yes
+    is_triggered_only = yes
+	
+	immediate = {
+		set_country_flag = gai_pop_survey
+		remove_country_flag = gai_likes_not_nuked
+		remove_country_flag = gai_likes_not_ammonia
+		remove_country_flag = gai_likes_not_sulfur
+		remove_country_flag = gai_likes_not_methane
+		remove_country_flag = gai_likes_not_acid
+		remove_country_flag = gai_likes_not_ash
+		remove_country_flag = gai_likes_not_irradiated
+		remove_country_flag = gai_likes_desert
+		remove_country_flag = gai_likes_arid
+		remove_country_flag = gai_likes_savannah
+		remove_country_flag = gai_likes_alpine
+		remove_country_flag = gai_likes_tundra
+		remove_country_flag = gai_likes_antarctic
+		remove_country_flag = gai_likes_snow
+		remove_country_flag = gai_likes_highland
+		remove_country_flag = gai_likes_arctic
+		remove_country_flag = gai_likes_ocean
+		remove_country_flag = gai_likes_continental
+		remove_country_flag = gai_likes_tropical
+		remove_country_flag = gai_likes_retinal
+		remove_country_flag = gai_likes_lake
+		remove_country_flag = gai_likes_aquatic
+		remove_country_flag = gai_likes_swamp
+		remove_country_flag = gai_likes_mud
+		remove_country_flag = gai_likes_frozen_desert
+		remove_country_flag = gai_likes_glacial
+		remove_country_flag = gai_likes_boreal
+		remove_country_flag = gai_likes_mushroom
+		remove_country_flag = gai_likes_cascadian
+		remove_country_flag = gai_likes_desertislands
+		remove_country_flag = gai_likes_subarctic
+		remove_country_flag = gai_likes_mangrove
+		remove_country_flag = gai_likes_wetswamp
+		remove_country_flag = gai_likes_biolumen
+		remove_country_flag = gai_likes_hajungle
+		remove_country_flag = gai_likes_steppe
+		remove_country_flag = gai_likes_sandsea
+		remove_country_flag = gai_likes_oasis
+		remove_country_flag = gai_likes_mesa
+		remove_country_flag = gai_likes_outback
+		remove_country_flag = gai_likes_superhabitable
+		remove_country_flag = gai_likes_tidallylocked
+		remove_country_flag = gai_likes_geothermal
+		remove_country_flag = gai_likes_machine
+		remove_country_flag = gai_likes_gaia
+		remove_country_flag = gai_likes_nuked
+		remove_country_flag = gai_likes_ammonia
+		remove_country_flag = gai_likes_sulfur
+		remove_country_flag = gai_likes_methane
+		remove_country_flag = gai_likes_acid
+		remove_country_flag = gai_likes_ash
+		remove_country_flag = gai_likes_hadesert
+		remove_country_flag = gai_likes_prairie
+		remove_country_flag = gai_likes_veld
+		remove_country_flag = gai_likes_semiarid
+		remove_country_flag = gai_likes_med
+		remove_country_flag = gai_likes_hive
+		remove_country_flag = gai_likes_irradiated
+		remove_country_flag = gai_likes_karst
+		remove_country_flag = gai_likes_primal
+		remove_country_flag = gai_likes_salt
+		remove_country_flag = gai_likes_coral
+		remove_country_flag = gai_likes_storm
+		remove_country_flag = gai_likes_rogue
+		remove_country_flag = gai_likes_eyeball
+		remove_country_flag = gai_likes_megaflora
+		remove_country_flag = gai_likes_glacio
+
+		# Special tests for planet types that have very low base habitability
+		# and should be "extra avoided" if any pops don't like it.
+		IF = {
+			limit = {
+				OR = {
+					species = {
+						is_organic_species = yes
+						NOT = { has_trait = trait_pc_nuked_preference }
+						NOT = { has_trait = trait_pc_irradiated_preference }
+					}
+					count_owned_pops = {
+						limit = {
+							pd_gai_is_pop_considered_for_terraforming = yes
+							NOT = { has_trait = trait_pc_nuked_preference }
+							NOT = { has_trait = trait_pc_irradiated_preference }
+						}
+						count >= 10
+					}
+				}
+			}
+			set_country_flag = gai_likes_not_nuked
+			set_country_flag = gai_likes_not_irradiated
+		}
+		IF = {
+			limit = {
+				OR = {
+					species = {
+						is_organic_species = yes
+						NOT = { has_trait = trait_pc_ammonia_preference }
+					}
+					count_owned_pops = {
+						limit = {
+							pd_gai_is_pop_considered_for_terraforming = yes
+							NOT = { has_trait = trait_pc_ammonia_preference }
+						}
+						count >= 10
+					}
+				}
+			}
+			set_country_flag = gai_likes_not_ammonia
+		}
+		IF = {
+			limit = {
+				OR = {
+					species = {
+						is_organic_species = yes
+						NOT = { has_trait = trait_pc_sulfur_preference }
+					}
+					count_owned_pops = {
+						limit = {
+							pd_gai_is_pop_considered_for_terraforming = yes
+							NOT = { has_trait = trait_pc_sulfur_preference }
+						}
+						count >= 10
+					}
+				}
+			}
+			set_country_flag = gai_likes_not_sulfur
+		}
+		IF = {
+			limit = {
+				OR = {
+					species = {
+						is_organic_species = yes
+						NOT = { has_trait = trait_pc_methane_preference }
+					}
+					count_owned_pops = {
+						limit = {
+							pd_gai_is_pop_considered_for_terraforming = yes
+							NOT = { has_trait = trait_pc_methane_preference }
+						}
+						count >= 10
+					}
+				}
+			}
+			set_country_flag = gai_likes_not_methane
+		}
+		IF = {
+			limit = {
+				OR = {
+					species = {
+						is_organic_species = yes
+						NOT = { has_trait = trait_pc_acid_preference }
+					}
+					count_owned_pops = {
+						limit = {
+							pd_gai_is_pop_considered_for_terraforming = yes
+							NOT = { has_trait = trait_pc_acid_preference }
+						}
+						count >= 10
+					}
+				}
+			}
+			set_country_flag = gai_likes_not_acid
+		}
+		IF = {
+			limit = {
+				OR = {
+					species = {
+						is_organic_species = yes
+						NOT = { has_trait = trait_pc_ash_preference }
+					}
+					count_owned_pops = {
+						limit = {
+							pd_gai_is_pop_considered_for_terraforming = yes
+							NOT = { has_trait = trait_pc_ash_preference }
+						}
+						count >= 10
+					}
+				}
+			}
+			set_country_flag = gai_likes_not_ash
+		}
+  
+		# Regular positive habitibility tests start here.
+		IF = {
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_desert_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_desert_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_desert
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_arid_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_arid_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_arid
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_savannah_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_savannah_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_savannah
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_alpine_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_alpine_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_alpine
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_tundra_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_tundra_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_tundra
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_antarctic_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_antarctic_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_antarctic
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_snow_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_snow_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_snow
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_highland_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_highland_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_highland
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_arctic_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_arctic_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_arctic
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_ocean_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_ocean_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_ocean
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_continental_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_continental_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_continental
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_tropical_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_tropical_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_tropical
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_retinal_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_retinal_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_retinal
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_forest_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_forest_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_forest
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_lake_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_lake_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_lake
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_aquatic_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_aquatic_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_aquatic
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_swamp_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_swamp_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_swamp
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_mud_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_mud_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_mud
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_frozen_desert_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_frozen_desert_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_frozen_desert
+			# break = yes
+		}			
+		
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_glacial_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_glacial_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_glacial
+			# break = yes
+		}
+		
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_boreal_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_boreal_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_boreal
+			# break = yes
+		}
+		
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_mushroom_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_mushroom_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_mushroom
+			# break = yes
+		}
+		
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_cascadian_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_cascadian_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_cascadian
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_desertislands_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_desertislands_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_desertislands
+			# break = yes
+		}
+		
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_subarctic_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_subarctic_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_subarctic
+			# break = yes
+		}
+		
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_mangrove_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_mangrove_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_mangrove
+			# break = yes
+		}
+		
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_wetswamp_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_wetswamp_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_wetswamp
+			# break = yes
+		}
+		
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_biolumen_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_biolumen_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_biolumen
+			# break = yes
+		}
+		
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_hajungle_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_hajungle_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_hajungle
+			# break = yes
+		}
+		
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_steppe_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_steppe_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_steppe
+			# break = yes
+		}
+		
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_sandsea_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_sandsea_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_sandsea
+			# break = yes
+		}
+		
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_oasis_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_oasis_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_oasis
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_mesa_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_mesa_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_mesa
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_outback_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_outback_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_outback
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_superhabitable_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_superhabitable_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_superhabitable
+			# break = yes
+		}
+		
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_tidallylocked_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_tidallylocked_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_tidallylocked
+			# break = yes
+		}
+		
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_geothermal_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_geothermal_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_geothermal
+			# break = yes
+		}
+		
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_machine_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_machine_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_machine
+			# break = yes
+		}
+		
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_gaia_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_gaia_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_gaia
+			# break = yes
+		}
+		
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_nuked_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_nuked_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_nuked
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_ammonia_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_ammonia_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_ammonia
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_sulfur_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_sulfur_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_sulfur
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_methane_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_methane_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_methane
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_acid_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_acid_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_acid
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_ash_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_ash_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_ash
+			# break = yes
+		}
+	
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_hadesert_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_hadesert_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_hadesert
+			# break = yes
+		}
+
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_prairie_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_prairie_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_prairie
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_veld_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_veld_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_veld
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_semiarid_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_semiarid_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_semiarid
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_med_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_med_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_med
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_hive_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_hive_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_hive
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_irradiated_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_irradiated_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_irradiated
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_karst_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_karst_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_karst
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_primal_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_primal_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_primal
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_salt_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_salt_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_salt
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_coral_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_coral_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_coral
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_storm_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_storm_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_storm
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_rogue_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_rogue_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_rogue
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_eyeball_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_eyeball_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_eyeball
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_megaflora_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_megaflora_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_megaflora
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_glacio_preference }
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_glacio_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_glacio
+			# break = yes
+		}
+	}
+}
+
+country_event = {
+	id = gai_survey_pops.2
+	hide_window = yes
+    is_triggered_only = yes
+	
+	immediate = {
+		# set_country_flag = gai_machines_have_organics
+		remove_country_flag = gai_machines_have_organics
+		remove_country_flag = gai_likes_not_nuked
+		remove_country_flag = gai_likes_not_ammonia
+		remove_country_flag = gai_likes_not_sulfur
+		remove_country_flag = gai_likes_not_methane
+		remove_country_flag = gai_likes_not_acid
+		remove_country_flag = gai_likes_not_ash
+		remove_country_flag = gai_likes_not_irradiated
+		remove_country_flag = gai_likes_desert
+		remove_country_flag = gai_likes_arid
+		remove_country_flag = gai_likes_savannah
+		remove_country_flag = gai_likes_alpine
+		remove_country_flag = gai_likes_tundra
+		remove_country_flag = gai_likes_antarctic
+		remove_country_flag = gai_likes_snow
+		remove_country_flag = gai_likes_highland
+		remove_country_flag = gai_likes_arctic
+		remove_country_flag = gai_likes_ocean
+		remove_country_flag = gai_likes_continental
+		remove_country_flag = gai_likes_tropical
+		remove_country_flag = gai_likes_retinal
+		remove_country_flag = gai_likes_forest
+		remove_country_flag = gai_likes_lake
+		remove_country_flag = gai_likes_aquatic
+		remove_country_flag = gai_likes_swamp
+		remove_country_flag = gai_likes_mud
+		remove_country_flag = gai_likes_frozen_desert
+		remove_country_flag = gai_likes_glacial
+		remove_country_flag = gai_likes_boreal
+		remove_country_flag = gai_likes_mushroom
+		remove_country_flag = gai_likes_cascadian
+		remove_country_flag = gai_likes_desertislands
+		remove_country_flag = gai_likes_subarctic
+		remove_country_flag = gai_likes_mangrove
+		remove_country_flag = gai_likes_wetswamp
+		remove_country_flag = gai_likes_biolumen
+		remove_country_flag = gai_likes_hajungle
+		remove_country_flag = gai_likes_steppe
+		remove_country_flag = gai_likes_sandsea
+		remove_country_flag = gai_likes_oasis
+		remove_country_flag = gai_likes_mesa
+		remove_country_flag = gai_likes_outback
+		remove_country_flag = gai_likes_superhabitable
+		remove_country_flag = gai_likes_tidallylocked
+		remove_country_flag = gai_likes_geothermal
+		remove_country_flag = gai_likes_machine
+		remove_country_flag = gai_likes_gaia
+		remove_country_flag = gai_likes_nuked
+		remove_country_flag = gai_likes_ammonia
+		remove_country_flag = gai_likes_sulfur
+		remove_country_flag = gai_likes_methane
+		remove_country_flag = gai_likes_acid
+		remove_country_flag = gai_likes_ash
+		remove_country_flag = gai_likes_hadesert
+		remove_country_flag = gai_likes_prairie
+		remove_country_flag = gai_likes_veld
+		remove_country_flag = gai_likes_semiarid
+		remove_country_flag = gai_likes_med
+		remove_country_flag = gai_likes_hive
+		remove_country_flag = gai_likes_irradiated
+		remove_country_flag = gai_likes_karst
+		remove_country_flag = gai_likes_primal
+		remove_country_flag = gai_likes_salt
+		remove_country_flag = gai_likes_coral
+		remove_country_flag = gai_likes_storm
+		remove_country_flag = gai_likes_rogue
+		remove_country_flag = gai_likes_eyeball
+		remove_country_flag = gai_likes_megaflora
+		remove_country_flag = gai_likes_glacio
+		
+		# Special tests for planet types that have very low base habitability
+		# and should be "extra avoided" if any pops don't like it.
+		IF = {
+			limit = {
+				OR = {
+					species = {
+						is_organic_species = yes
+						NOT = { has_trait = trait_pc_nuked_preference }
+						NOT = { has_trait = trait_pc_irradiated_preference }
+					}
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						NOT = { has_trait = trait_pc_nuked_preference }
+						NOT = { has_trait = trait_pc_irradiated_preference }
+					}
+					count_owned_pops = {
+						limit = {
+							pd_gai_is_pop_considered_for_terraforming = yes
+							NOT = { has_trait = trait_pc_nuked_preference }
+							NOT = { has_trait = trait_pc_irradiated_preference }
+						}
+						count >= 10
+					}
+				}
+			}
+			set_country_flag = gai_likes_not_irradiated
+			set_country_flag = gai_likes_not_nuked
+		}
+		IF = {
+			limit = {
+				OR = {
+					species = {
+						is_organic_species = yes
+						NOT = { has_trait = trait_pc_ammonia_preference }
+					}
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						NOT = { has_trait = trait_pc_ammonia_preference }
+					}
+					count_owned_pops = {
+						limit = {
+							pd_gai_is_pop_considered_for_terraforming = yes
+							NOT = { has_trait = trait_pc_ammonia_preference }
+						}
+						count >= 10
+					}
+				}
+			}
+			set_country_flag = gai_likes_not_ammonia
+		}
+		IF = {
+			limit = {
+				OR = {
+					species = {
+						is_organic_species = yes
+						NOT = { has_trait = trait_pc_sulfur_preference }
+					}
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						NOT = { has_trait = trait_pc_sulfur_preference }
+					}
+					count_owned_pops = {
+						limit = {
+							pd_gai_is_pop_considered_for_terraforming = yes
+							NOT = { has_trait = trait_pc_sulfur_preference }
+						}
+						count >= 10
+					}
+				}
+			}
+			set_country_flag = gai_likes_not_sulfur
+		}
+		IF = {
+			limit = {
+				OR = {
+					species = {
+						is_organic_species = yes
+						NOT = { has_trait = trait_pc_methane_preference }
+					}
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						NOT = { has_trait = trait_pc_methane_preference }
+					}
+					count_owned_pops = {
+						limit = {
+							pd_gai_is_pop_considered_for_terraforming = yes
+							NOT = { has_trait = trait_pc_methane_preference }
+						}
+						count >= 10
+					}
+				}
+			}
+			set_country_flag = gai_likes_not_methane
+		}
+		IF = {
+			limit = {
+				OR = {
+					species = {
+						is_organic_species = yes
+						NOT = { has_trait = trait_pc_acid_preference }
+					}
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						NOT = { has_trait = trait_pc_acid_preference }
+					}
+					count_owned_pops = {
+						limit = {
+							pd_gai_is_pop_considered_for_terraforming = yes
+							NOT = { has_trait = trait_pc_acid_preference }
+						}
+						count >= 10
+					}
+				}
+			}
+			set_country_flag = gai_likes_not_acid
+		}
+		IF = {
+			limit = {
+				OR = {
+					species = {
+						is_organic_species = yes
+						NOT = { has_trait = trait_pc_ash_preference }
+					}
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						NOT = { has_trait = trait_pc_ash_preference }
+					}
+					count_owned_pops = {
+						limit = {
+							pd_gai_is_pop_considered_for_terraforming = yes
+							NOT = { has_trait = trait_pc_ash_preference }
+						}
+						count >= 10
+					}
+				}
+			}
+			set_country_flag = gai_likes_not_ash
+		}
+		
+		# Regular positive habitibility tests start here.
+		IF = {
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_desert_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_desert_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_desert_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_desert
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_arid_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_arid_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_arid_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_arid
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_savannah_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_savannah_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_savannah_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_savannah
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_alpine_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_alpine_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_alpine_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_alpine
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_tundra_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_tundra_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_tundra_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_tundra
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_antarctic_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_antarctic_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_antarctic_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_antarctic
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_snow_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_snow_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_snow_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_snow
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_highland_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_highland_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_highland_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_highland
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_arctic_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_arctic_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_arctic_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_arctic
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_ocean_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_ocean_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_ocean_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_ocean
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_continental_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_continental_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_continental_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_continental
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_tropical_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_tropical_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_tropical_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_tropical
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_retinal_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_retinal_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_retinal_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_retinal
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_forest_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_forest_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_forest_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_forest
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_lake_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_lake_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_lake_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_lake
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_aquatic_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_aquatic_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_aquatic_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_aquatic
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_swamp_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_swamp_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_swamp_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_swamp
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_mud_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_mud_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_mud_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_mud
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_frozen_desert_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_frozen_desert_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_frozen_desert_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_frozen_desert
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		
+		
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_glacial_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_glacial_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_glacial_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_glacial
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_boreal_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_boreal_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_boreal_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_boreal
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_mushroom_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_mushroom_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_mushroom_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_mushroom
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_cascadian_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_cascadian_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_cascadian_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_cascadian
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		
+		
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_desertislands_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_desertislands_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_desertislands_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_desertislands
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_subarctic_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_subarctic_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_subarctic_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_subarctic
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_mangrove_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_mangrove_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_mangrove_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_mangrove
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_wetswamp_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_wetswamp_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_wetswamp_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_wetswamp
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_biolumen_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_biolumen_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_biolumen_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_biolumen
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_hajungle_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_hajungle_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_hajungle_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_hajungle
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_steppe_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_steppe_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_steppe_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_steppe
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_sandsea_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_sandsea_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_sandsea_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_sandsea
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_oasis_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_oasis_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_oasis_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_oasis
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_mesa_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_mesa_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_mesa_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_mesa
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_outback_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_outback_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_outback_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_outback
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_superhabitable_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_superhabitable_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_superhabitable_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_superhabitable
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		
+		
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_tidallylocked_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_tidallylocked_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_tidallylocked_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_tidallylocked
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_geothermal_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_geothermal_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_geothermal_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_geothermal
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_machine_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_machine_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_machine_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_machine
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_gaia_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_gaia_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_gaia_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_gaia
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_nuked_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_nuked_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_nuked_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_nuked
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_ammonia_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_ammonia_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_ammonia_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_ammonia
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_sulfur_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_sulfur_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_sulfur_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_sulfur
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_methane_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_methane_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_methane_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_methane
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_acid_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_acid_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_acid_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_acid
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_ash_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_ash_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_ash_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_ash
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_hadesert_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_hadesert_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_hadesert_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_hadesert
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_prairie_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_prairie_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_prairie_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_prairie
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_veld_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_veld_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_veld_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_veld
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_semiarid_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_semiarid_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_semiarid_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_semiarid
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_med_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_med_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_med_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_med
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_hive_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_hive_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_hive_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_hive
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_irradiated_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_irradiated_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_irradiated_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_irradiated
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_karst_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_karst_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_karst_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_karst
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_primal_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_primal_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_primal_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_primal
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_salt_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_salt_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_salt_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_salt
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_coral_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_coral_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_coral_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_coral
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_storm_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_storm_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_storm_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_storm
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_rogue_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_rogue_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_rogue_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_rogue
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_eyeball_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_eyeball_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_eyeball_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_eyeball
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_megaflora_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_megaflora_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_megaflora_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_megaflora
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+		IF = {  # Was ELSE_IF
+			limit = {
+				OR = {
+					species = { has_trait = trait_pc_glacio_preference }
+					any_owned_pop = {
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_citizenship_type = { type = citizenship_organic_trophy }
+						has_trait = trait_pc_glacio_preference
+					}
+					count_owned_pops = {
+						limit = {
+							has_trait = trait_pc_glacio_preference
+							pd_gai_is_pop_considered_for_terraforming = yes
+						}
+						count >= 15
+					}
+				}
+			}
+			set_country_flag = gai_likes_glacio
+			set_country_flag = gai_machines_have_organics
+			# break = yes
+		}
+	}
+}
+
+country_event = {
+	id = gai_survey_pops.3
+	hide_window = yes
+    is_triggered_only = yes
+	
+	immediate = {
+		remove_country_flag = gai_pop_survey
+		remove_country_flag = gai_likes_not_nuked
+		remove_country_flag = gai_likes_not_ammonia
+		remove_country_flag = gai_likes_not_sulfur
+		remove_country_flag = gai_likes_not_methane
+		remove_country_flag = gai_likes_not_acid
+		remove_country_flag = gai_likes_not_ash
+		remove_country_flag = gai_likes_not_irradiated
+		remove_country_flag = gai_likes_desert
+		remove_country_flag = gai_likes_arid
+		remove_country_flag = gai_likes_savannah
+		remove_country_flag = gai_likes_alpine
+		remove_country_flag = gai_likes_tundra
+		remove_country_flag = gai_likes_antarctic
+		remove_country_flag = gai_likes_snow
+		remove_country_flag = gai_likes_highland
+		remove_country_flag = gai_likes_arctic
+		remove_country_flag = gai_likes_ocean
+		remove_country_flag = gai_likes_continental
+		remove_country_flag = gai_likes_tropical
+		remove_country_flag = gai_likes_retinal
+		remove_country_flag = gai_likes_forest
+		remove_country_flag = gai_likes_lake
+		remove_country_flag = gai_likes_aquatic
+		remove_country_flag = gai_likes_swamp
+		remove_country_flag = gai_likes_mud
+		remove_country_flag = gai_likes_frozen_desert
+		remove_country_flag = gai_likes_glacial
+		remove_country_flag = gai_likes_boreal
+		remove_country_flag = gai_likes_mushroom
+		remove_country_flag = gai_likes_cascadian
+		remove_country_flag = gai_likes_desertislands
+		remove_country_flag = gai_likes_subarctic
+		remove_country_flag = gai_likes_mangrove
+		remove_country_flag = gai_likes_wetswamp
+		remove_country_flag = gai_likes_biolumen
+		remove_country_flag = gai_likes_hajungle
+		remove_country_flag = gai_likes_steppe
+		remove_country_flag = gai_likes_sandsea
+		remove_country_flag = gai_likes_oasis
+		remove_country_flag = gai_likes_mesa
+		remove_country_flag = gai_likes_outback
+		remove_country_flag = gai_likes_superhabitable
+		remove_country_flag = gai_likes_tidallylocked
+		remove_country_flag = gai_likes_geothermal
+		remove_country_flag = gai_likes_machine
+		remove_country_flag = gai_likes_gaia
+		remove_country_flag = gai_likes_nuked
+		remove_country_flag = gai_likes_ammonia
+		remove_country_flag = gai_likes_sulfur
+		remove_country_flag = gai_likes_methane
+		remove_country_flag = gai_likes_acid
+		remove_country_flag = gai_likes_ash
+		remove_country_flag = gai_likes_hadesert
+		remove_country_flag = gai_likes_prairie
+		remove_country_flag = gai_likes_veld
+		remove_country_flag = gai_likes_semiarid
+		remove_country_flag = gai_likes_med
+		remove_country_flag = gai_likes_hive
+		remove_country_flag = gai_likes_irradiated
+		remove_country_flag = gai_likes_karst
+		remove_country_flag = gai_likes_primal
+		remove_country_flag = gai_likes_salt
+		remove_country_flag = gai_likes_coral
+		remove_country_flag = gai_likes_storm
+		remove_country_flag = gai_likes_rogue
+		remove_country_flag = gai_likes_eyeball
+		remove_country_flag = gai_likes_megaflora
+		remove_country_flag = gai_likes_glacio
+	}
+}
