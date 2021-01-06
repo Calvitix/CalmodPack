@@ -244,7 +244,7 @@ district_farming = {
 			}
 		}
 		modifier = {
-			job_farming_farmer_overseer_add = 1
+			#Calvitix Disable job_farming_farmer_overseer_add = 1
 			planet_housing_add = 1
 		}
     }
@@ -258,7 +258,7 @@ district_farming = {
 			}
 		}
 		modifier = {
-			job_farming_g_farmer_overseer_add = 1
+			#Calvitix Disable job_farming_g_farmer_overseer_add = 1
 			planet_housing_add = 1
 		}
 	}
@@ -316,52 +316,227 @@ district_farming = {
 		tech_industrial_farming
 	}
 	
-	ai_weight = { 
-		weight = 1
-		# Is there a negative income?
+	ai_weight = {
+		weight = 14
+
 		modifier = {
-			factor = 17
-			need_food = yes
+			factor = 100
+			any_owned_pop = {
+				is_unemployed = yes
+			}
+			owner = {
+				resource_income_compare = {
+					resource = food
+					value < 5
+				}
+			}
+			free_jobs < 2
 		}
-		modifier = {
-			factor = 1.5
-			low_food_storage = yes
-		}
-		# Does the country have a bad food economy?
 		modifier = {
 			factor = 2
-			bad_food_economy = yes
+			free_jobs < 5
 		}
-		# Workers looking for work
 		modifier = {
-			factor = 5
-			has_unemployed_workers = yes
+			factor = 2.5
+			owner = { is_hive_empire = yes }
 		}
-		# No one to work it anyway
+
 		modifier = {
-			factor = 0
-			AND = {
-				free_jobs > 1
-				has_unemployed_workers = no
-			}
-		}
-		# To much food already / doesn't use food
-		modifier = {
-			factor = 0.1
-			food_not_needed = yes
-		}
-		# Wrong Colony Type
-		modifier = {
-			factor = 0.1
-			NOT = {
-				OR = {
-					has_designation = farming
-					has_designation = col_rural
-					has_designation = col_rural_gestalt
+			factor = 50
+			owner = {
+				resource_income_compare = {
+					resource = food
+					value < 2
 				}
 			}
 		}
+		modifier = {
+			factor = 0.01
+			owner = {
+				resource_income_compare = {
+					resource = food
+					value > 20
+				}
+			}
+		}
+
+		modifier = {
+			factor = 50
+			owner = {
+				resource_income_compare = {
+					resource = food
+					value < 0
+				}
+			}
+		}
+
+
+		modifier = {
+			factor = 0.2
+			owner = {
+				resource_income_compare = {
+					resource = food
+					value > 10
+				}
+				resource_stockpile_compare = {
+					resource = food
+					value > 1000
+				}
+			}
+		}
+		modifier = {
+			factor = 0.001
+			free_jobs > 1
+			free_building_slots > 0
+			not = {
+				any_owned_pop = {
+					or = {
+						has_job = clerk  
+						and = {
+						is_unemployed = yes
+						not = { is_pop_category = specialist }
+						}
+					}
+				}
+			}
+		}
+		modifier = {
+			factor = 0.001
+			free_jobs > 3
+			free_district_slots < 3
+			not = {
+				any_owned_pop = {
+					or = {
+						has_job = clerk  
+						and = {
+						is_unemployed = yes
+						not = { is_pop_category = specialist }
+						}
+					}
+				}
+			}
+		}
+		modifier = {
+			factor = 0.01
+			owner = {
+				is_lithoid_empire = yes
+				resource_income_compare = {
+					resource = food
+					value > 5
+				}
+			}
+		}
+
+		modifier = {
+			factor = 2
+			str_good_food = yes
+		}
+		
+		modifier = {
+			factor = 0.005
+			has_planet_flag = ecumen
+		}
+		modifier = {
+			factor = 0
+			has_planet_flag = ecumen
+			free_district_slots = 0
+		}
+
+		modifier = {
+			factor = 0.07
+			free_amenities < -5
+		}
+		
+		modifier = {
+			factor = 0.01
+			years_passed > 50
+			owner = {
+				resource_income_compare = {
+					resource = food
+					value > 20
+				}
+				resource_stockpile_compare = {
+					resource = food
+					value > 2000
+				}
+			}
+		}
+		modifier = {
+			factor = 0
+			owner = { country_uses_food = no }
+			owner = {
+				or = {
+				is_lithoid_empire = no
+				resource_income_compare = {
+					resource = food
+					value > 5
+				} }
+			}
+		}
+
+		#modifier = {
+			#factor = 30
+			#owner = { really_needs_food = yes }
+		#}
+		modifier = {
+			factor = 1.5
+			or = {
+				has_building = building_food_processing_facility
+				has_building = building_food_processing_center
+			}
+		}
+
+
+
+		modifier = {
+			factor = 0.001
+			free_district_slots = 0
+			free_housing < 2
+		}
+		
+		modifier = {
+			factor = 0.0001
+			nor = {
+			any_owned_pop = {
+				or = { 
+					has_job = clerk 
+				and = {
+					is_shackled_robot = yes
+					is_unemployed = yes
+				} } }
+			free_jobs < 2 
+			and = {
+				owner = { is_gestalt = yes }
+				or = {
+				free_amenities > 12
+				free_jobs < 4
+				}
+			}
+			}
+		}
+
+		modifier = {
+			factor = 50
+			any_owned_pop = {
+				is_shackled_robot = yes
+				is_unemployed = yes
+			}
+		}
+		
+		modifier = {
+			factor = 0
+			owner = {
+				is_mechanical_empire = yes
+				NOR = {
+					has_civic = civic_machine_servitor
+					has_civic = civic_machine_assimilator
+				}
+			}
+		}
+
+
 	}
+	
 	ai_resource_production = {
 		food = 2
 		trigger = {
@@ -608,7 +783,7 @@ district_farming_uncapped = {
 			# # }
 		# # }
 		# # modifier = {
-			# # job_farming_farmer_overseer_add = 1
+			# # #Calvitix Disable job_farming_farmer_overseer_add = 1
 			# # planet_housing_add = 1
 		# # }
     # # }
@@ -622,7 +797,7 @@ district_farming_uncapped = {
 			# }
 		# }
 		# modifier = {
-			# job_farming_g_farmer_overseer_add = 1
+			# #Calvitix Disable job_farming_g_farmer_overseer_add = 1
 			# planet_housing_add = 1
 		# }
 	# }
@@ -680,50 +855,249 @@ district_farming_uncapped = {
 		tech_industrial_farming
 	}
 	
-	ai_weight = { 
-		weight = 1
-		# Is there a negative income?
-		modifier = {
-			factor = 17
-			need_food = yes
-		}
-		modifier = {
-			factor = 1.5
-			low_food_storage = yes
-		}
-		# Does the country have a bad food economy?
+	ai_weight = {
+			weight = 3
+
+			modifier = {
+				factor = 2
+				free_jobs < 5
+			}
 		modifier = {
 			factor = 2
-			bad_food_economy = yes
+			owner = { is_hive_empire = yes }
 		}
-		# Workers looking for work
+
 		modifier = {
-			factor = 5
-			has_unemployed_workers = yes
+			factor = 2
+			years_passed > 40
 		}
-		# No one to work it anyway
+		modifier = {
+			factor = 2
+			years_passed > 100
+		}
+
+		modifier = {
+			factor = 2
+			str_good_food = yes
+		}
 		modifier = {
 			factor = 0
-			AND = {
-				free_jobs > 1
-				has_unemployed_workers = no
+			has_planet_flag = ecumen
+		}
+
+		modifier = {
+			factor = 0.07
+			free_amenities < -5
+		}
+		#modifier = {
+			#factor = 0
+			#owner = { needs_food = no }
+		#}
+
+		#modifier = {
+			#factor = 30
+			#owner = { really_needs_food = yes }
+		#}
+		modifier = {
+			factor = 1.5
+			or = {
+				has_building = building_food_processing_facility
+				has_building = building_food_processing_center
 			}
 		}
-		# To much food already / doesn't use food
+
+
 		modifier = {
-			factor = 0
-			food_not_needed = yes
-		}
-		# Wrong Colony Type
-		modifier = {
-			factor = 0.1
-			NOT = {
-				OR = {
-					has_designation = farming
-					has_designation = col_rural
-					has_designation = col_rural_gestalt
+			factor = 0.2
+			owner = {
+				resource_income_compare = {
+					resource = energy
+					value < 20
+				}
+				resource_income_compare = {
+					resource = food
+					value > 50
+				}
+				resource_stockpile_compare = {
+					resource = food
+					value > 2500
 				}
 			}
+		}
+
+		modifier = {
+			factor = 0.001
+			free_district_slots = 0
+			free_housing < 2
+		}
+		
+	
+		modifier = {
+			factor = 0.001
+			nor = {
+			any_owned_pop = {
+				or = { 
+					has_job = clerk 
+				and = {
+					is_shackled_robot = yes
+					is_unemployed = yes
+				} } }
+			free_jobs < 2 
+			and = {
+				owner = { is_gestalt = yes }
+				free_amenities > 10 
+				free_jobs < 6
+			}
+			}
+		}
+		
+		modifier = {
+			factor = 0.001
+			free_jobs > 3
+			free_district_slots < 3
+			not = {
+				any_owned_pop = {
+					or = {
+						has_job = clerk  
+						and = {
+						is_unemployed = yes
+						not = { is_pop_category = specialist }
+						}
+					}
+				}
+			}
+		}
+		modifier = {
+			factor = 0
+			owner = {
+				is_mechanical_empire = yes
+				NOR = {
+					has_civic = civic_machine_servitor
+					has_civic = civic_machine_assimilator
+				}
+			}
+		}
+
+
+
+		modifier = {
+			factor = 1.5
+			years_passed > 10
+			owner = {resource_stockpile_compare = { resource = food value < 100 } }
+			}
+
+		modifier = {
+			factor = 0.75
+			
+			owner = {resource_stockpile_compare = { resource = food value >4000 } }
+			}
+			
+			modifier = {
+			factor = 0.75
+			
+			owner = {resource_stockpile_compare = { resource = food value >5000 } }
+			}
+			
+			modifier = {
+			factor = 0.75
+			
+			owner = {resource_stockpile_compare = { resource = food value >6000 } }
+			}
+
+			modifier = {
+				factor = 5
+				owner = { has_deficit = food }
+			}
+
+		modifier = {
+			factor = 3
+			owner = {
+			resource_income_compare = {
+			resource = food
+			value < -40 }
+			} 
+		}
+		modifier = {
+		factor = 3
+		owner = {
+		resource_income_compare = {
+		resource = food
+		value < -30 }
+		} }
+		modifier = {
+		factor = 2
+		owner = {
+		resource_income_compare = {
+		resource = food
+		value < -20 }
+		} }
+		modifier = {
+		factor = 2
+		owner = {
+		resource_income_compare = {
+		resource = food
+		value < -10 }
+		} }
+		modifier = {
+		factor = 2
+		owner = {
+		resource_income_compare = {
+		resource = food
+		value < 0 }
+		} }
+
+
+
+
+		modifier = {
+		factor = 0.8
+		owner = {
+		resource_income_compare = {
+		resource = food
+		value > 10 }
+		} }
+		modifier = {
+		factor = 0.8
+		owner = {
+		resource_income_compare = {
+		resource = food
+		value > 20 }
+		} }
+		modifier = {
+		factor = 0.8
+		owner = {
+		resource_income_compare = {
+		resource = food
+		value > 30 } } }
+		modifier = {
+		factor = 0.8
+		owner = {
+		resource_income_compare = {
+		resource = food
+		value > 40 } } }
+
+
+
+
+
+		modifier = {
+		factor = 0.75
+		owner = {
+		resource_income_compare = {
+		resource = food
+		value > 50 }
+		} }
+		modifier = {
+		factor = 0.5
+		owner = {
+		resource_income_compare = {
+		resource = food
+		value > 100 }
+		} }
+		
+		modifier = {
+			factor = 0
+			owner = { needs_food_at_all = no }
 		}
 	}
 	ai_resource_production = {
@@ -973,7 +1347,7 @@ district_hydroponic_bay = {
 			}
 		}
 		modifier = {
-			job_farming_farmer_overseer_add = 1
+			#Calvitix Disable job_farming_farmer_overseer_add = 1
 			planet_housing_add = 1
 		}
     }
@@ -987,7 +1361,7 @@ district_hydroponic_bay = {
 			}
 		}
 		modifier = {
-			job_farming_g_farmer_overseer_add = 1
+			#Calvitix Disable job_farming_g_farmer_overseer_add = 1
 			planet_housing_add = 1
 		}
 	}
@@ -1045,52 +1419,227 @@ district_hydroponic_bay = {
 		tech_industrial_farming
 	}
 	
-	ai_weight = { 
-		weight = 0.6
-		# Is there a negative income?
+	ai_weight = {
+		weight = 14
+
 		modifier = {
-			factor = 17
-			need_food = yes
+			factor = 100
+			any_owned_pop = {
+				is_unemployed = yes
+			}
+			owner = {
+				resource_income_compare = {
+					resource = food
+					value < 5
+				}
+			}
+			free_jobs < 2
 		}
-		modifier = {
-			factor = 1.5
-			low_food_storage = yes
-		}
-		# Does the country have a bad food economy?
 		modifier = {
 			factor = 2
-			bad_food_economy = yes
+			free_jobs < 5
 		}
-		# Workers looking for work
 		modifier = {
-			factor = 5
-			has_unemployed_workers = yes
+			factor = 2.5
+			owner = { is_hive_empire = yes }
 		}
-		# No one to work it anyway
+
 		modifier = {
-			factor = 0
-			AND = {
-				free_jobs > 1
-				has_unemployed_workers = no
-			}
-		}
-		# To much food already / doesn't use food
-		modifier = {
-			factor = 0
-			food_not_needed = yes
-		}
-		# Wrong Colony Type
-		modifier = {
-			factor = 0.1
-			NOT = {
-				OR = {
-					has_designation = farming
-					has_designation = col_rural
-					has_designation = col_rural_gestalt
+			factor = 50
+			owner = {
+				resource_income_compare = {
+					resource = food
+					value < 2
 				}
 			}
 		}
+		modifier = {
+			factor = 0.01
+			owner = {
+				resource_income_compare = {
+					resource = food
+					value > 20
+				}
+			}
+		}
+
+		modifier = {
+			factor = 50
+			owner = {
+				resource_income_compare = {
+					resource = food
+					value < 0
+				}
+			}
+		}
+
+
+		modifier = {
+			factor = 0.2
+			owner = {
+				resource_income_compare = {
+					resource = food
+					value > 10
+				}
+				resource_stockpile_compare = {
+					resource = food
+					value > 1000
+				}
+			}
+		}
+		modifier = {
+			factor = 0.001
+			free_jobs > 1
+			free_building_slots > 0
+			not = {
+				any_owned_pop = {
+					or = {
+						has_job = clerk  
+						and = {
+						is_unemployed = yes
+						not = { is_pop_category = specialist }
+						}
+					}
+				}
+			}
+		}
+		modifier = {
+			factor = 0.001
+			free_jobs > 3
+			free_district_slots < 3
+			not = {
+				any_owned_pop = {
+					or = {
+						has_job = clerk  
+						and = {
+						is_unemployed = yes
+						not = { is_pop_category = specialist }
+						}
+					}
+				}
+			}
+		}
+		modifier = {
+			factor = 0.01
+			owner = {
+				is_lithoid_empire = yes
+				resource_income_compare = {
+					resource = food
+					value > 5
+				}
+			}
+		}
+
+		modifier = {
+			factor = 2
+			str_good_food = yes
+		}
+		
+		modifier = {
+			factor = 0.005
+			has_planet_flag = ecumen
+		}
+		modifier = {
+			factor = 0
+			has_planet_flag = ecumen
+			free_district_slots = 0
+		}
+
+		modifier = {
+			factor = 0.07
+			free_amenities < -5
+		}
+		
+		modifier = {
+			factor = 0.01
+			years_passed > 50
+			owner = {
+				resource_income_compare = {
+					resource = food
+					value > 20
+				}
+				resource_stockpile_compare = {
+					resource = food
+					value > 2000
+				}
+			}
+		}
+		modifier = {
+			factor = 0
+			owner = { country_uses_food = no }
+			owner = {
+				or = {
+				is_lithoid_empire = no
+				resource_income_compare = {
+					resource = food
+					value > 5
+				} }
+			}
+		}
+
+		#modifier = {
+			#factor = 30
+			#owner = { really_needs_food = yes }
+		#}
+		modifier = {
+			factor = 1.5
+			or = {
+				has_building = building_food_processing_facility
+				has_building = building_food_processing_center
+			}
+		}
+
+
+
+		modifier = {
+			factor = 0.001
+			free_district_slots = 0
+			free_housing < 2
+		}
+		
+		modifier = {
+			factor = 0.0001
+			nor = {
+			any_owned_pop = {
+				or = { 
+					has_job = clerk 
+				and = {
+					is_shackled_robot = yes
+					is_unemployed = yes
+				} } }
+			free_jobs < 2 
+			and = {
+				owner = { is_gestalt = yes }
+				or = {
+				free_amenities > 12
+				free_jobs < 4
+				}
+			}
+			}
+		}
+
+		modifier = {
+			factor = 50
+			any_owned_pop = {
+				is_shackled_robot = yes
+				is_unemployed = yes
+			}
+		}
+		
+		modifier = {
+			factor = 0
+			owner = {
+				is_mechanical_empire = yes
+				NOR = {
+					has_civic = civic_machine_servitor
+					has_civic = civic_machine_assimilator
+				}
+			}
+		}
+
+
 	}
+	
 	ai_resource_production = {
 		food = 1.2
 		trigger = {
@@ -1302,7 +1851,7 @@ district_nature_farms = {
 			}
 		}
 		modifier = {
-			job_farming_farmer_overseer_add = 1
+			#Calvitix Disable job_farming_farmer_overseer_add = 1
 			planet_housing_add = 1
 		}
     }
@@ -1316,7 +1865,7 @@ district_nature_farms = {
 			}
 		}
 		modifier = {
-			job_farming_g_farmer_overseer_add = 1
+			#Calvitix Disable job_farming_g_farmer_overseer_add = 1
 			planet_housing_add = 1
 		}
 	}
@@ -1374,52 +1923,227 @@ district_nature_farms = {
 		tech_industrial_farming
 	}
 	
-	ai_weight = { 
-		weight = 1.4
-		# Is there a negative income?
+	ai_weight = {
+		weight = 14
+
 		modifier = {
-			factor = 17
-			need_food = yes
+			factor = 100
+			any_owned_pop = {
+				is_unemployed = yes
+			}
+			owner = {
+				resource_income_compare = {
+					resource = food
+					value < 5
+				}
+			}
+			free_jobs < 2
 		}
-		modifier = {
-			factor = 1.5
-			low_food_storage = yes
-		}
-		# Does the country have a bad food economy?
 		modifier = {
 			factor = 2
-			bad_food_economy = yes
+			free_jobs < 5
 		}
-		# Workers looking for work
 		modifier = {
-			factor = 5
-			has_unemployed_workers = yes
+			factor = 2.5
+			owner = { is_hive_empire = yes }
 		}
-		# No one to work it anyway
+
 		modifier = {
-			factor = 0
-			AND = {
-				free_jobs > 1
-				has_unemployed_workers = no
-			}
-		}
-		# To much food already / doesn't use food
-		modifier = {
-			factor = 0
-			food_not_needed = yes
-		}
-		# Wrong Colony Type
-		modifier = {
-			factor = 0.1
-			NOT = {
-				OR = {
-					has_designation = farming
-					has_designation = col_rural
-					has_designation = col_rural_gestalt
+			factor = 50
+			owner = {
+				resource_income_compare = {
+					resource = food
+					value < 2
 				}
 			}
 		}
+		modifier = {
+			factor = 0.01
+			owner = {
+				resource_income_compare = {
+					resource = food
+					value > 20
+				}
+			}
+		}
+
+		modifier = {
+			factor = 50
+			owner = {
+				resource_income_compare = {
+					resource = food
+					value < 0
+				}
+			}
+		}
+
+
+		modifier = {
+			factor = 0.2
+			owner = {
+				resource_income_compare = {
+					resource = food
+					value > 10
+				}
+				resource_stockpile_compare = {
+					resource = food
+					value > 1000
+				}
+			}
+		}
+		modifier = {
+			factor = 0.001
+			free_jobs > 1
+			free_building_slots > 0
+			not = {
+				any_owned_pop = {
+					or = {
+						has_job = clerk  
+						and = {
+						is_unemployed = yes
+						not = { is_pop_category = specialist }
+						}
+					}
+				}
+			}
+		}
+		modifier = {
+			factor = 0.001
+			free_jobs > 3
+			free_district_slots < 3
+			not = {
+				any_owned_pop = {
+					or = {
+						has_job = clerk  
+						and = {
+						is_unemployed = yes
+						not = { is_pop_category = specialist }
+						}
+					}
+				}
+			}
+		}
+		modifier = {
+			factor = 0.01
+			owner = {
+				is_lithoid_empire = yes
+				resource_income_compare = {
+					resource = food
+					value > 5
+				}
+			}
+		}
+
+		modifier = {
+			factor = 2
+			str_good_food = yes
+		}
+		
+		modifier = {
+			factor = 0.005
+			has_planet_flag = ecumen
+		}
+		modifier = {
+			factor = 0
+			has_planet_flag = ecumen
+			free_district_slots = 0
+		}
+
+		modifier = {
+			factor = 0.07
+			free_amenities < -5
+		}
+		
+		modifier = {
+			factor = 0.01
+			years_passed > 50
+			owner = {
+				resource_income_compare = {
+					resource = food
+					value > 20
+				}
+				resource_stockpile_compare = {
+					resource = food
+					value > 2000
+				}
+			}
+		}
+		modifier = {
+			factor = 0
+			owner = { country_uses_food = no }
+			owner = {
+				or = {
+				is_lithoid_empire = no
+				resource_income_compare = {
+					resource = food
+					value > 5
+				} }
+			}
+		}
+
+		#modifier = {
+			#factor = 30
+			#owner = { really_needs_food = yes }
+		#}
+		modifier = {
+			factor = 1.5
+			or = {
+				has_building = building_food_processing_facility
+				has_building = building_food_processing_center
+			}
+		}
+
+
+
+		modifier = {
+			factor = 0.001
+			free_district_slots = 0
+			free_housing < 2
+		}
+		
+		modifier = {
+			factor = 0.0001
+			nor = {
+			any_owned_pop = {
+				or = { 
+					has_job = clerk 
+				and = {
+					is_shackled_robot = yes
+					is_unemployed = yes
+				} } }
+			free_jobs < 2 
+			and = {
+				owner = { is_gestalt = yes }
+				or = {
+				free_amenities > 12
+				free_jobs < 4
+				}
+			}
+			}
+		}
+
+		modifier = {
+			factor = 50
+			any_owned_pop = {
+				is_shackled_robot = yes
+				is_unemployed = yes
+			}
+		}
+		
+		modifier = {
+			factor = 0
+			owner = {
+				is_mechanical_empire = yes
+				NOR = {
+					has_civic = civic_machine_servitor
+					has_civic = civic_machine_assimilator
+				}
+			}
+		}
+
+
 	}
+	
 	ai_resource_production = {
 		food = 2.8
 		trigger = {
@@ -1673,7 +2397,7 @@ district_ocean_farms = {
 			}
 		}
 		modifier = {
-			job_farming_farmer_overseer_add = 1
+			#Calvitix Disable job_farming_farmer_overseer_add = 1
 			planet_housing_add = 1
 		}
     }
@@ -1687,7 +2411,7 @@ district_ocean_farms = {
 			}
 		}
 		modifier = {
-			job_farming_g_farmer_overseer_add = 1
+			#Calvitix Disable job_farming_g_farmer_overseer_add = 1
 			planet_housing_add = 1
 		}
 	}
@@ -1745,52 +2469,227 @@ district_ocean_farms = {
 		tech_industrial_farming
 	}
 	
-	ai_weight = { 
-		weight = 1.8
-		# Is there a negative income?
+	ai_weight = {
+		weight = 14
+
 		modifier = {
-			factor = 17
-			need_food = yes
+			factor = 100
+			any_owned_pop = {
+				is_unemployed = yes
+			}
+			owner = {
+				resource_income_compare = {
+					resource = food
+					value < 5
+				}
+			}
+			free_jobs < 2
 		}
-		modifier = {
-			factor = 1.5
-			low_food_storage = yes
-		}
-		# Does the country have a bad food economy?
 		modifier = {
 			factor = 2
-			bad_food_economy = yes
+			free_jobs < 5
 		}
-		# Workers looking for work
 		modifier = {
-			factor = 5
-			has_unemployed_workers = yes
+			factor = 2.5
+			owner = { is_hive_empire = yes }
 		}
-		# No one to work it anyway
+
 		modifier = {
-			factor = 0
-			AND = {
-				free_jobs > 1
-				has_unemployed_workers = no
-			}
-		}
-		# To much food already / doesn't use food
-		modifier = {
-			factor = 0
-			food_not_needed = yes
-		}
-		# Wrong Colony Type
-		modifier = {
-			factor = 0.1
-			NOT = {
-				OR = {
-					has_designation = farming
-					has_designation = col_rural
-					has_designation = col_rural_gestalt
+			factor = 50
+			owner = {
+				resource_income_compare = {
+					resource = food
+					value < 2
 				}
 			}
 		}
+		modifier = {
+			factor = 0.01
+			owner = {
+				resource_income_compare = {
+					resource = food
+					value > 20
+				}
+			}
+		}
+
+		modifier = {
+			factor = 50
+			owner = {
+				resource_income_compare = {
+					resource = food
+					value < 0
+				}
+			}
+		}
+
+
+		modifier = {
+			factor = 0.2
+			owner = {
+				resource_income_compare = {
+					resource = food
+					value > 10
+				}
+				resource_stockpile_compare = {
+					resource = food
+					value > 1000
+				}
+			}
+		}
+		modifier = {
+			factor = 0.001
+			free_jobs > 1
+			free_building_slots > 0
+			not = {
+				any_owned_pop = {
+					or = {
+						has_job = clerk  
+						and = {
+						is_unemployed = yes
+						not = { is_pop_category = specialist }
+						}
+					}
+				}
+			}
+		}
+		modifier = {
+			factor = 0.001
+			free_jobs > 3
+			free_district_slots < 3
+			not = {
+				any_owned_pop = {
+					or = {
+						has_job = clerk  
+						and = {
+						is_unemployed = yes
+						not = { is_pop_category = specialist }
+						}
+					}
+				}
+			}
+		}
+		modifier = {
+			factor = 0.01
+			owner = {
+				is_lithoid_empire = yes
+				resource_income_compare = {
+					resource = food
+					value > 5
+				}
+			}
+		}
+
+		modifier = {
+			factor = 2
+			str_good_food = yes
+		}
+		
+		modifier = {
+			factor = 0.005
+			has_planet_flag = ecumen
+		}
+		modifier = {
+			factor = 0
+			has_planet_flag = ecumen
+			free_district_slots = 0
+		}
+
+		modifier = {
+			factor = 0.07
+			free_amenities < -5
+		}
+		
+		modifier = {
+			factor = 0.01
+			years_passed > 50
+			owner = {
+				resource_income_compare = {
+					resource = food
+					value > 20
+				}
+				resource_stockpile_compare = {
+					resource = food
+					value > 2000
+				}
+			}
+		}
+		modifier = {
+			factor = 0
+			owner = { country_uses_food = no }
+			owner = {
+				or = {
+				is_lithoid_empire = no
+				resource_income_compare = {
+					resource = food
+					value > 5
+				} }
+			}
+		}
+
+		#modifier = {
+			#factor = 30
+			#owner = { really_needs_food = yes }
+		#}
+		modifier = {
+			factor = 1.5
+			or = {
+				has_building = building_food_processing_facility
+				has_building = building_food_processing_center
+			}
+		}
+
+
+
+		modifier = {
+			factor = 0.001
+			free_district_slots = 0
+			free_housing < 2
+		}
+		
+		modifier = {
+			factor = 0.0001
+			nor = {
+			any_owned_pop = {
+				or = { 
+					has_job = clerk 
+				and = {
+					is_shackled_robot = yes
+					is_unemployed = yes
+				} } }
+			free_jobs < 2 
+			and = {
+				owner = { is_gestalt = yes }
+				or = {
+				free_amenities > 12
+				free_jobs < 4
+				}
+			}
+			}
+		}
+
+		modifier = {
+			factor = 50
+			any_owned_pop = {
+				is_shackled_robot = yes
+				is_unemployed = yes
+			}
+		}
+		
+		modifier = {
+			factor = 0
+			owner = {
+				is_mechanical_empire = yes
+				NOR = {
+					has_civic = civic_machine_servitor
+					has_civic = civic_machine_assimilator
+				}
+			}
+		}
+
+
 	}
+	
 	ai_resource_production = {
 		food = 3.6
 		trigger = {
@@ -2038,7 +2937,7 @@ district_efficient_farms = {
 			}
 		}
 		modifier = {
-			job_farming_farmer_overseer_add = 1
+			#Calvitix Disable job_farming_farmer_overseer_add = 1
 			planet_housing_add = 1
 		}
     }
@@ -2052,7 +2951,7 @@ district_efficient_farms = {
 			}
 		}
 		modifier = {
-			job_farming_g_farmer_overseer_add = 1
+			#Calvitix Disable job_farming_g_farmer_overseer_add = 1
 			planet_housing_add = 1
 		}
 	}
@@ -2110,52 +3009,227 @@ district_efficient_farms = {
 		tech_industrial_farming
 	}
 	
-	ai_weight = { 
-		weight = 1
-		# Is there a negative income?
+	ai_weight = {
+		weight = 14
+
 		modifier = {
-			factor = 17
-			need_food = yes
+			factor = 100
+			any_owned_pop = {
+				is_unemployed = yes
+			}
+			owner = {
+				resource_income_compare = {
+					resource = food
+					value < 5
+				}
+			}
+			free_jobs < 2
 		}
-		modifier = {
-			factor = 1.5
-			low_food_storage = yes
-		}
-		# Does the country have a bad food economy?
 		modifier = {
 			factor = 2
-			bad_food_economy = yes
+			free_jobs < 5
 		}
-		# Workers looking for work
 		modifier = {
-			factor = 5
-			has_unemployed_workers = yes
+			factor = 2.5
+			owner = { is_hive_empire = yes }
 		}
-		# No one to work it anyway
+
 		modifier = {
-			factor = 0
-			AND = {
-				free_jobs > 1
-				has_unemployed_workers = no
-			}
-		}
-		# To much food already / doesn't use food
-		modifier = {
-			factor = 0
-			food_not_needed = yes
-		}
-		# Wrong Colony Type
-		modifier = {
-			factor = 0.1
-			NOT = {
-				OR = {
-					has_designation = farming
-					has_designation = col_rural
-					has_designation = col_rural_gestalt
+			factor = 50
+			owner = {
+				resource_income_compare = {
+					resource = food
+					value < 2
 				}
 			}
 		}
+		modifier = {
+			factor = 0.01
+			owner = {
+				resource_income_compare = {
+					resource = food
+					value > 20
+				}
+			}
+		}
+
+		modifier = {
+			factor = 50
+			owner = {
+				resource_income_compare = {
+					resource = food
+					value < 0
+				}
+			}
+		}
+
+
+		modifier = {
+			factor = 0.2
+			owner = {
+				resource_income_compare = {
+					resource = food
+					value > 10
+				}
+				resource_stockpile_compare = {
+					resource = food
+					value > 1000
+				}
+			}
+		}
+		modifier = {
+			factor = 0.001
+			free_jobs > 1
+			free_building_slots > 0
+			not = {
+				any_owned_pop = {
+					or = {
+						has_job = clerk  
+						and = {
+						is_unemployed = yes
+						not = { is_pop_category = specialist }
+						}
+					}
+				}
+			}
+		}
+		modifier = {
+			factor = 0.001
+			free_jobs > 3
+			free_district_slots < 3
+			not = {
+				any_owned_pop = {
+					or = {
+						has_job = clerk  
+						and = {
+						is_unemployed = yes
+						not = { is_pop_category = specialist }
+						}
+					}
+				}
+			}
+		}
+		modifier = {
+			factor = 0.01
+			owner = {
+				is_lithoid_empire = yes
+				resource_income_compare = {
+					resource = food
+					value > 5
+				}
+			}
+		}
+
+		modifier = {
+			factor = 2
+			str_good_food = yes
+		}
+		
+		modifier = {
+			factor = 0.005
+			has_planet_flag = ecumen
+		}
+		modifier = {
+			factor = 0
+			has_planet_flag = ecumen
+			free_district_slots = 0
+		}
+
+		modifier = {
+			factor = 0.07
+			free_amenities < -5
+		}
+		
+		modifier = {
+			factor = 0.01
+			years_passed > 50
+			owner = {
+				resource_income_compare = {
+					resource = food
+					value > 20
+				}
+				resource_stockpile_compare = {
+					resource = food
+					value > 2000
+				}
+			}
+		}
+		modifier = {
+			factor = 0
+			owner = { country_uses_food = no }
+			owner = {
+				or = {
+				is_lithoid_empire = no
+				resource_income_compare = {
+					resource = food
+					value > 5
+				} }
+			}
+		}
+
+		#modifier = {
+			#factor = 30
+			#owner = { really_needs_food = yes }
+		#}
+		modifier = {
+			factor = 1.5
+			or = {
+				has_building = building_food_processing_facility
+				has_building = building_food_processing_center
+			}
+		}
+
+
+
+		modifier = {
+			factor = 0.001
+			free_district_slots = 0
+			free_housing < 2
+		}
+		
+		modifier = {
+			factor = 0.0001
+			nor = {
+			any_owned_pop = {
+				or = { 
+					has_job = clerk 
+				and = {
+					is_shackled_robot = yes
+					is_unemployed = yes
+				} } }
+			free_jobs < 2 
+			and = {
+				owner = { is_gestalt = yes }
+				or = {
+				free_amenities > 12
+				free_jobs < 4
+				}
+			}
+			}
+		}
+
+		modifier = {
+			factor = 50
+			any_owned_pop = {
+				is_shackled_robot = yes
+				is_unemployed = yes
+			}
+		}
+		
+		modifier = {
+			factor = 0
+			owner = {
+				is_mechanical_empire = yes
+				NOR = {
+					has_civic = civic_machine_servitor
+					has_civic = civic_machine_assimilator
+				}
+			}
+		}
+
+
 	}
+	
 	ai_resource_production = {
 		food = 2
 		trigger = {
@@ -2450,7 +3524,7 @@ district_exotic_farms = {
 			}
 		}
 		modifier = {
-			job_farming_farmer_overseer_add = 1
+			#Calvitix Disable job_farming_farmer_overseer_add = 1
 			planet_housing_add = 1
 		}
     }
@@ -2464,7 +3538,7 @@ district_exotic_farms = {
 			}
 		}
 		modifier = {
-			job_farming_g_farmer_overseer_add = 1
+			#Calvitix Disable job_farming_g_farmer_overseer_add = 1
 			planet_housing_add = 1
 		}
 	}
@@ -2539,61 +3613,227 @@ district_exotic_farms = {
 	prerequisites = {
 		tech_industrial_farming
 	}
-	ai_weight = { 
-		weight = 0.5
-		# Is there a negative income?
+	ai_weight = {
+		weight = 14
+
 		modifier = {
-			factor = 17
-			need_food = yes
+			factor = 100
+			any_owned_pop = {
+				is_unemployed = yes
+			}
+			owner = {
+				resource_income_compare = {
+					resource = food
+					value < 5
+				}
+			}
+			free_jobs < 2
 		}
-		modifier = {
-			factor = 1.5
-			low_food_storage = yes
-		}
-		# Does the country have a bad food economy?
 		modifier = {
 			factor = 2
-			bad_food_economy = yes
+			free_jobs < 5
 		}
-		# Workers looking for work
 		modifier = {
-			factor = 5
-			has_unemployed_workers = yes
+			factor = 2.5
+			owner = { is_hive_empire = yes }
 		}
-		# Is a special exotic farm
+
 		modifier = {
-			factor = 5
-			is_special_exotic_farming_pc = yes
-		}
-		# No one to work it anyway
-		modifier = {
-			factor = 0
-			AND = {
-				free_jobs > 1
-				has_unemployed_workers = no
+			factor = 50
+			owner = {
+				resource_income_compare = {
+					resource = food
+					value < 2
+				}
 			}
 		}
-		# To much food already / doesn't use food
 		modifier = {
-			factor = 0
-			food_not_needed = yes
+			factor = 0.01
+			owner = {
+				resource_income_compare = {
+					resource = food
+					value > 20
+				}
+			}
 		}
-		# Wrong Colony Type
+
 		modifier = {
-			factor = 0.1
-			NOT = {
-				OR = {
-					has_designation = farming
-					has_designation = col_rural
-					has_designation = col_rural_gestalt
-					AND = {
-						has_designation = col_research
-						is_special_exotic_farming_pc = yes
+			factor = 50
+			owner = {
+				resource_income_compare = {
+					resource = food
+					value < 0
+				}
+			}
+		}
+
+
+		modifier = {
+			factor = 0.2
+			owner = {
+				resource_income_compare = {
+					resource = food
+					value > 10
+				}
+				resource_stockpile_compare = {
+					resource = food
+					value > 1000
+				}
+			}
+		}
+		modifier = {
+			factor = 0.001
+			free_jobs > 1
+			free_building_slots > 0
+			not = {
+				any_owned_pop = {
+					or = {
+						has_job = clerk  
+						and = {
+						is_unemployed = yes
+						not = { is_pop_category = specialist }
+						}
 					}
 				}
 			}
 		}
+		modifier = {
+			factor = 0.001
+			free_jobs > 3
+			free_district_slots < 3
+			not = {
+				any_owned_pop = {
+					or = {
+						has_job = clerk  
+						and = {
+						is_unemployed = yes
+						not = { is_pop_category = specialist }
+						}
+					}
+				}
+			}
+		}
+		modifier = {
+			factor = 0.01
+			owner = {
+				is_lithoid_empire = yes
+				resource_income_compare = {
+					resource = food
+					value > 5
+				}
+			}
+		}
+
+		modifier = {
+			factor = 2
+			str_good_food = yes
+		}
+		
+		modifier = {
+			factor = 0.005
+			has_planet_flag = ecumen
+		}
+		modifier = {
+			factor = 0
+			has_planet_flag = ecumen
+			free_district_slots = 0
+		}
+
+		modifier = {
+			factor = 0.07
+			free_amenities < -5
+		}
+		
+		modifier = {
+			factor = 0.01
+			years_passed > 50
+			owner = {
+				resource_income_compare = {
+					resource = food
+					value > 20
+				}
+				resource_stockpile_compare = {
+					resource = food
+					value > 2000
+				}
+			}
+		}
+		modifier = {
+			factor = 0
+			owner = { country_uses_food = no }
+			owner = {
+				or = {
+				is_lithoid_empire = no
+				resource_income_compare = {
+					resource = food
+					value > 5
+				} }
+			}
+		}
+
+		#modifier = {
+			#factor = 30
+			#owner = { really_needs_food = yes }
+		#}
+		modifier = {
+			factor = 1.5
+			or = {
+				has_building = building_food_processing_facility
+				has_building = building_food_processing_center
+			}
+		}
+
+
+
+		modifier = {
+			factor = 0.001
+			free_district_slots = 0
+			free_housing < 2
+		}
+		
+		modifier = {
+			factor = 0.0001
+			nor = {
+			any_owned_pop = {
+				or = { 
+					has_job = clerk 
+				and = {
+					is_shackled_robot = yes
+					is_unemployed = yes
+				} } }
+			free_jobs < 2 
+			and = {
+				owner = { is_gestalt = yes }
+				or = {
+				free_amenities > 12
+				free_jobs < 4
+				}
+			}
+			}
+		}
+
+		modifier = {
+			factor = 50
+			any_owned_pop = {
+				is_shackled_robot = yes
+				is_unemployed = yes
+			}
+		}
+		
+		modifier = {
+			factor = 0
+			owner = {
+				is_mechanical_empire = yes
+				NOR = {
+					has_civic = civic_machine_servitor
+					has_civic = civic_machine_assimilator
+				}
+			}
+		}
+
+
 	}
+	
 	ai_resource_production = {
 		food = 1
 		trigger = {

@@ -144,24 +144,29 @@ building_bureaucratic_1 = {
 			owner = { empire_sprawl_over_cap > 10 }
 		}
 		modifier = {
-			weight = 100
+			factor = 1000
 			#STARNET AI
 			owner = { empire_sprawl_over_cap > 20 
 			resource_stockpile_compare = {
 				resource = alloys
-				value > 1500
+				value > 500 #1500
 			}
 			resource_income_compare = {
 				resource = consumer_goods
-				value > -5
+				value > -50  #-5  Pb d'I.A avec les consum.
 			}
-			used_naval_capacity_percent > 0.95
+			#used_naval_capacity_percent > 0.80 #0.95 pas de lien souhaité
 			}
+		}
+		modifier = {
+			factor = 20
+			everything_is_fine_normal = yes
+			owner = { empire_sprawl_over_cap > 10 }
 		}
 		modifier = {
 			weight = 500
 			owner = { empire_sprawl_over_cap > 40 }
-		}
+		}		
 
 		modifier = {
 			factor = 2
@@ -169,7 +174,7 @@ building_bureaucratic_1 = {
 		}
 
 		modifier = {
-			weight = 0
+			weight = 0.01
 			has_planet_flag = recent_admin_building_built
 		}
 	}
@@ -183,7 +188,15 @@ building_bureaucratic_2 = {
 
 	potential = {
 		exists = owner
-		owner = { is_regular_empire = yes }
+		owner = { is_regular_empire = yes 
+			or = {
+				is_ai = no 
+				resource_income_compare = {
+					resource = physics_research
+					value > 100 #200
+				}
+			}
+		}
 	}
 
 	allow = {
@@ -192,9 +205,17 @@ building_bureaucratic_2 = {
 
 	destroy_trigger = {
 		exists = owner
-		OR = {
+		owner = { or = { 
 			buildings_no_crystals = yes
-			owner = { is_regular_empire = no }
+			is_regular_empire = no 
+			and = {
+				is_ai = yes
+				years_passed > 1
+				resource_income_compare = {
+					resource = physics_research 
+					value < 100 }  #200
+				}
+			}
 		}
 	}
 
@@ -250,6 +271,15 @@ building_bureaucratic_2 = {
 			buildings_has_crystals = no
 		}
 		modifier = {
+			factor = 0.1
+			owner = {
+				resource_income_compare = {
+					resource = physics_research
+					value < 200
+				}
+			}
+		}		
+		modifier = {
 			factor = 2
 			owner = { empire_sprawl_over_cap > 0 }
 		}
@@ -257,6 +287,10 @@ building_bureaucratic_2 = {
 			factor = 2
 			owner = { empire_sprawl_over_cap > 10 }
 		}
+		modifier = {
+			weight = 500
+			owner = { empire_sprawl_over_cap > 40 }
+		}					
 		#STARNET AI
 		modifier = {
 			factor = 1000
@@ -267,9 +301,9 @@ building_bureaucratic_2 = {
 			}
 			resource_income_compare = {
 				resource = consumer_goods
-				value > -5
+				value > -50 #5
 			}
-			used_naval_capacity_percent > 0.95
+			#used_naval_capacity_percent > 0.80 #0.95
 			}
 			buildings_has_crystals = yes
 		}
@@ -377,6 +411,32 @@ building_bureaucratic_3 = {
 			factor = 2
 			owner = { has_valid_civic = civic_byzantine_bureaucracy }
 		}
+		modifier = {
+			factor = 0
+			owner = {
+				resource_income_compare = {
+					resource = physics_research
+					value < 200
+				}
+			}
+		}
+#STARNET START
+		modifier = {
+			factor = 1000
+			owner = { empire_sprawl_over_cap > 20 
+			resource_stockpile_compare = {
+				resource = alloys
+				value > 500 # 1500
+			}
+			resource_income_compare = {
+				resource = consumer_goods
+				value > -50 #-5
+			}
+			#used_naval_capacity_percent > 0.80 #0.95
+			}
+			buildings_has_crystals = yes
+		}
+#STARNET END
 	}
 	on_queued = {
 		planet = {
@@ -472,9 +532,43 @@ building_uplink_node = {
 		}
 
 		modifier = {
-			factor = 0
+			factor = 0.01
 			has_planet_flag = recent_admin_building_built
 		}
+#STARNET START 
+#		modifier = {
+#			factor = 0
+#			owner = {
+#				resource_income_compare = {
+#					resource = physics_research
+#					value < 100
+#				}
+#			}
+#		}
+
+		modifier = {
+			factor = 1000
+			owner = { empire_sprawl_over_cap > 20 
+			resource_stockpile_compare = {
+				resource = alloys
+				value > 500 #1500
+			}
+			#used_naval_capacity_percent > 0.80 #0.95
+			}
+		}
+
+		modifier = {
+			factor = 20
+			everything_is_fine_gestalt = yes
+			owner = { empire_sprawl_over_cap > 30 }
+		}
+#STARNET END
+		modifier = {
+			factor = 0.001
+			everything_is_fine_gestalt = yes
+			owner = { empire_sprawl_over_cap < 50 }
+		}
+
 	}
 }
 
@@ -567,11 +661,40 @@ building_network_junction = {
 			owner = { empire_sprawl_over_cap > 20 }
 		}
 		modifier = {
-			factor = 2
+			factor = 20
 			owner = { empire_sprawl_over_cap > 40 }
 		}
+#STARNET START
+
+		modifier = {
+			factor = 0
+			owner = {
+				resource_income_compare = {
+					resource = physics_research
+					value < 150
+				}
+			}
+		}
+
+		modifier = {
+			factor = 1000
+			owner = { empire_sprawl_over_cap > 20 
+			resource_stockpile_compare = {
+				resource = alloys
+				value > 500 #1500
+			}
+			#used_naval_capacity_percent > 0.80 #0.95
+			}
+			buildings_has_crystals = yes
+		}
+
+
+#STARNET END
+
+
 	}
 	on_queued = {
+		owner = { set_timed_country_flag = { flag = buildings_new_crystal_building days = 480 } }
 		planet = {
 			set_timed_planet_flag = { flag = recent_admin_building_built days = 720 }
 		}
@@ -663,11 +786,39 @@ building_system_conflux = {
 			owner = { empire_sprawl_over_cap > 20 }
 		}
 		modifier = {
-			factor = 2
+			factor = 20
 			owner = { empire_sprawl_over_cap > 40 }
 		}
+#STARNET START
+
+		modifier = {
+			factor = 0
+			owner = {
+				resource_income_compare = {
+					resource = physics_research
+					value < 150
+				}
+			}
+		}
+
+		modifier = {
+			factor = 1000
+			owner = { empire_sprawl_over_cap > 20 
+			resource_stockpile_compare = {
+				resource = alloys
+				value > 500 #1500
+			}
+			#used_naval_capacity_percent > 0.80 #0.95
+			}
+			buildings_has_crystals = yes
+		}
+
+#STARNET END
+
+
 	}
 	on_queued = {
+		owner = { set_timed_country_flag = { flag = buildings_new_crystal_building days = 600 } }
 		planet = {
 			set_timed_planet_flag = { flag = recent_admin_building_built days = 720 }
 		}
@@ -724,6 +875,12 @@ building_slave_processing = {
 			factor = 0
 			NOT = { any_owned_pop = { is_enslaved = yes } }
 		}
+#STARNET START
+		modifier = {
+			factor = 0
+			unsupervised_destruction = yes
+		}
+#STARNET END		
 	}
 }
 
@@ -796,7 +953,7 @@ building_precinct_house = {
 	}
 
 	ai_weight = {
-		weight = 1 #0
+		weight = 0.5 #0
 		modifier = {
 			weight = 100
 			planet_crime > 15
@@ -809,6 +966,12 @@ building_precinct_house = {
 				num_buildings = { type = building_precinct_house value = 3 }
 			}
 		}
+#STARNET START
+		modifier = {
+			factor = 0
+			unsupervised_destruction = yes
+		}
+#STARNET END
 	}
 }
 
@@ -826,6 +989,7 @@ building_hall_judgment = {
 	destroy_trigger = {
 		exists = owner
 		OR = {
+			and = { owner = { is_ai = yes } years_passed > 4 }
 			buildings_no_exotic_gases = yes
 			NOT = { owner = { is_regular_empire = yes } }
 		}
@@ -860,7 +1024,7 @@ building_hall_judgment = {
 	}
 
 	ai_weight = {
-		weight = 1
+		weight = 0
 	}
 }
 
@@ -919,12 +1083,24 @@ building_sentinel_posts = {
 	}
 
 	ai_weight = {
-		weight = 1 #0
+		weight = 0.5 #0
 		modifier = {
 			weight = 10
 			planet_crime > 15
 			buildings_build_building = yes
 		}
+#STARNET START
+		modifier = {
+			factor = 0
+			unsupervised_destruction = yes
+			nor = {
+				owner = { 
+				has_origin = origin_shattered_ring
+				has_origin = origin_void_dwellers }
+			}
+		}
+#STARNET END
+
 	}
 }
 
@@ -978,7 +1154,7 @@ building_psi_corps = {
 	}
 
 	ai_weight = {
-		weight = 5
+		weight = 100 #5
 		modifier = {
 			factor = 0
 			buildings_build_building = no
@@ -998,6 +1174,12 @@ building_clone_vats = {
 		exists = owner
 		owner = { has_ascension_perk = ap_engineered_evolution }
 		NOT = { has_modifier = resort_colony }
+#STARNET START
+		or = {
+			owner = { is_ai = no }
+			num_pops < 55
+		}
+#STARNET END
 	}
 
 	destroy_trigger = {
@@ -1035,6 +1217,7 @@ building_clone_vats = {
 			OR = {
 				free_district_slots = 0
 				num_buildings = { type = any value >= 14 }
+				num_pops > 70
 				is_planet_class = pc_habitat
 			}
 		}
@@ -1105,7 +1288,7 @@ building_embassy = {
 	ai_weight = {
 		weight = 5
 		modifier = {
-			factor = 0
+			factor = 0.01
 			OR = {
 				buildings_build_building = no
 				buildings_has_crystals = no
@@ -1192,7 +1375,7 @@ building_grand_embassy = {
 	ai_weight = {
 		weight = 10
 		modifier = {
-			factor = 0
+			factor = 0.01
 			buildings_has_crystals = no
 		}
 		modifier = {

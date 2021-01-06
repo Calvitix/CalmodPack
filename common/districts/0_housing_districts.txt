@@ -495,27 +495,44 @@ district_city = {
 	}
 
 	ai_weight = {
-		weight = 1
-		# Does the planet need housing?
+		weight = 0.5
+
 		modifier = {
-			factor = 25
-			need_housing = yes
+			factor = 0.001
+			num_pops < 8
+			not = {
+				has_planet_flag = ecumen
+			}
+		}
+		modifier = {
+			factor = 100
+			free_housing < -10
+		}
+		modifier = {
+			factor = 50
+			free_housing < -5
+		}
+		modifier = {
+			factor = 20
+			free_housing < 1
+		}
+		modifier = {
+			factor = 0.1
+			free_housing > 5
+			NOT ={ has_planet_flag = ecumen }
 		}
 
-		# No Housing needed
 		modifier = {
-			factor = 0
-			free_housing > 2
-			NOT = { has_planet_flag = do_ai_ecu_planned }
+			factor = 10000
+			has_planet_flag = build_city_here
 		}
 
-		# Ecumenopolis Housing Spam
 		modifier = {
-			factor = 1000
-			free_district_slots < 5
-			has_planet_flag = do_ai_ecu_planned
+			factor = 5000
+			has_planet_flag = ecumen 
 		}
 	}
+	
 	ai_resource_production = {
 		consumer_goods = 1
 		trigger = {

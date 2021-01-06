@@ -22,7 +22,7 @@ crew_quarters = {
 	ai_build_at_chokepoint = yes
 	ai_build_outside_chokepoint = yes
 	ai_weight = {
-		weight = 50
+		weight = 45
 	}
 }
 
@@ -52,10 +52,10 @@ hydroponics_bay = {
 
 	show_in_tech = "tech_hydroponics"
 
-	ai_build_at_chokepoint = no
+	ai_build_at_chokepoint = yes
 	ai_build_outside_chokepoint = yes
 	ai_weight = {
-		weight = 50
+		weight = 2
 	}
 }
 
@@ -75,10 +75,44 @@ resource_silo = {
 		country_resource_max_add = 2000
 	}
 
-	ai_build_at_chokepoint = no
+	ai_build_at_chokepoint = yes
 	ai_build_outside_chokepoint = yes
 	ai_weight = {
-		weight = 50
+		weight = 10
+		modifier = {
+			factor = 0
+			years_passed < 10
+		}
+		modifier = {
+			factor = 5
+			owner = {
+				resource_stockpile_compare = {
+					resource = minerals
+					value > 12000
+				}
+				
+			}
+		}
+		modifier = {
+			factor = 10
+			owner = {
+				resource_stockpile_compare = {
+					resource = minerals
+					value > 14000
+				}
+				
+			}
+		}
+		modifier = {
+			factor = 2
+			owner = {
+				resource_stockpile_compare = {
+					resource = minerals
+					value > 10000
+				}
+				
+			}
+		}
 	}
 }
 
@@ -342,10 +376,16 @@ fleet_academy = {
 
 	show_in_tech = "tech_interstellar_fleet_traditions"
 
-	ai_build_at_chokepoint = no
+	ai_build_at_chokepoint = yes
 	ai_build_outside_chokepoint = yes
 	ai_weight = {
 		weight = 200
+		modifier = {
+			factor = 0
+			not = {
+				owner = { has_technology = tech_interstellar_fleet_traditions }
+			}
+		}
 		modifier = {
 			factor = 0
 			count_starbase_modules = {
@@ -389,9 +429,15 @@ naval_logistics_office = {
 		weight = 200
 		modifier = {
 			factor = 0
+			not = {
+				owner = { has_technology = tech_interstellar_fleet_traditions }
+			}
+		}
+		modifier = {
+			factor = 0
 			count_starbase_modules = {
 				type = anchorage
-				count < 3
+				count < 1
 			}
 		}
 	}
@@ -695,7 +741,7 @@ deep_space_black_site = {
 
 	show_in_tech = "tech_living_state"
 
-	ai_build_at_chokepoint = no
+	ai_build_at_chokepoint = yes
 	ai_build_outside_chokepoint = yes
 	ai_weight = {
 		weight = 150
@@ -914,7 +960,7 @@ communications_jammer = {
 	ai_build_at_chokepoint = yes
 	ai_build_outside_chokepoint = no
 	ai_weight = {
-		weight = 10
+		weight = 1
 	}
 }
 
@@ -945,7 +991,7 @@ disruption_field = {
 	ai_build_at_chokepoint = yes
 	ai_build_outside_chokepoint = no
 	ai_weight = {
-		weight = 10
+		weight = 1
 	}
 }
 
@@ -988,7 +1034,7 @@ warp_fluctuator = {
 	ai_build_at_chokepoint = yes
 	ai_build_outside_chokepoint = no
 	ai_weight = {
-		weight = 10
+		weight = 1
 	}
 }
 
@@ -1025,7 +1071,7 @@ command_center = {
 	ai_build_at_chokepoint = yes
 	ai_build_outside_chokepoint = no
 	ai_weight = {
-		weight = 10
+		weight = 5
 	}
 }
 
@@ -1148,8 +1194,7 @@ trader_proxy_office = {
 		trade_value_add = 5
 	}
 
-	ai_build_at_chokepoint = no
-	ai_build_outside_chokepoint = yes
+	ai_build_at_chokepoint = yes
 	ai_weight = {
 		weight = 200
 		modifier = {

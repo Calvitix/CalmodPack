@@ -545,6 +545,20 @@ eco_building_junkyard = {
 	
 	potential = {
 		NOT = { is_planet_class = pc_machine }
+		or = {
+		has_modifier = eco_pristine
+		
+		}
+		owner = {
+			or = {
+				is_ai = no			
+				nor = { 
+					has_modifier = eco_minimal 
+					has_modifier = eco_clean
+					has_modifier = eco_pristine					
+				}
+			}
+		}		
 	}
 	
 	triggered_planet_modifier = {
@@ -645,9 +659,32 @@ eco_building_junkyard = {
 		}
 		text = job_waste_drone_effect_desc
 	}
+
+	destroy_trigger = {
+		free_building_slots = 0
+		or = {
+			has_modifier = eco_pristine
+			has_modifier = eco_clean		
+		}
+		#supervised_destruction = yes
+		not = {
+				has_planet_flag = just_destroyed_building
+		}
+	}
+
+	on_destroy = {
+		set_timed_planet_flag = {
+			flag = just_destroyed_building
+			days = 36
+		}
+	}
 	
 	ai_weight = {
 		weight = 1
+		modifier = {
+			factor = 0.1
+			has_modifier = eco_minimal
+		}	
 		modifier = {
 			weight = 5
 			has_modifier = eco_heavy
@@ -657,20 +694,28 @@ eco_building_junkyard = {
 			has_modifier = eco_waste_mod
 		}
 		modifier = {
-			weight = 10
+			factor = 10
 			has_modifier = eco_extreme
 		}
 		modifier = {
-			weight = 10
+			factor = 10
 			has_modifier = eco_waste_high
 		}
 		modifier = {
-			weight = 20
+			factor = 40
 			has_modifier = eco_catastrophic
 		}
 		modifier = {
 			factor = 0
 			has_building = eco_building_junkyard
 		}
+		modifier = {
+			factor = 0
+			has_modifier = eco_clean
+		}	
+		modifier = {
+			factor = 0
+			has_modifier = eco_pristine
+		}	
 	}
 }

@@ -202,7 +202,7 @@ building_hydroponics_farm = {
 	}
 
 	ai_resource_production = {
-		food = 2
+		food = 1
 		trigger = {
 			always = yes
 		}
@@ -320,6 +320,10 @@ building_food_processing_facility = {
 	ai_weight = {
 		weight = 1 #0
 		modifier = {
+			factor = 1.3
+			str_good_food = yes
+		}
+		modifier = {
 			weight = 30 #Needs to be higher than building_hydroponics_farm
 			OR = {
 				num_districts = { type = district_farming value >= 3 }
@@ -342,7 +346,7 @@ building_food_processing_facility = {
 	}
 
 	ai_resource_production = {
-		food = 2
+		food = 1
 		trigger = {
 			always = yes
 		}
@@ -453,13 +457,49 @@ building_food_processing_center = {
 	}
 
 	ai_weight = {
-		weight = 1 #0
+		
+		weight = 1
+		modifier = {
+			factor = 1.3
+			str_good_food = yes
+		}
 		modifier = {
 			weight = 30
 			buildings_has_motes = yes
 		}
 		modifier = {
-			factor = 20 #2
+			factor = 2
+			not = {
+				owner = { has_country_flag = fine_raw_economy }
+			}
+		}
+		modifier ={
+			factor = 0.1
+			NOR ={
+				num_districts = { type = district_farming value > 5	}
+				num_districts = { type = district_farming_uncapped value > 5 }
+				}
+		}
+		modifier = {
+			factor = 0.01
+			or = {
+			years_passed < 12
+			not = { owner = { has_country_flag = good_raw_economy } }
+			NOR ={
+				num_districts = { type = district_farming value > 10 }
+				num_districts = { type = district_farming_uncapped value > 10 }
+			} }
+			
+		}
+		modifier ={
+			factor = 0.05
+			or = {
+				owner = { excess_motes = no }
+			}
+			
+		}
+		modifier = {
+			factor = 2
 			exists = owner
 			owner = {
 				has_monthly_income = {
@@ -648,7 +688,7 @@ building_mineral_purification_plant = {
 			}
 		}
 		modifier = {
-			factor = 20 #2
+			factor = 2
 			exists = owner
 			owner = {
 				has_monthly_income = {
@@ -800,13 +840,13 @@ building_mineral_purification_hub = {
 	}
 
 	ai_weight = {
-		weight = 1 #0
+		weight = 0
 		modifier = {
 			weight = 30
 			buildings_has_motes = yes
 		}
 		modifier = {
-			factor = 20 #2
+			factor = 2
 			exists = owner
 			owner = {
 				has_monthly_income = {
@@ -978,7 +1018,55 @@ building_energy_grid = {
 	}
 
 	ai_weight = {
-		weight = 1 #0
+		weight = 1.2
+		modifier = {
+			factor = 1.3
+			str_good_energy = yes
+		}
+		modifier = {
+			factor = 2
+			not = {
+				owner = { has_country_flag = acceptable_raw_economy }
+			}
+		}
+		modifier = {
+			factor = 2
+			not = {
+				owner = { has_country_flag = fine_raw_economy }
+			}
+		}
+		modifier ={
+			factor = 0.01
+			NOR ={
+				num_districts = { type = district_generator value > 4	}
+				num_districts = { type = district_generator_uncapped value > 4 }
+				}
+			}
+		modifier ={
+			factor = 5
+			OR = {
+				num_districts = { type = district_generator value > 10 }
+				num_districts = { type = district_generator_uncapped value > 10 }
+			}
+		}
+		modifier = {
+			factor = 0.01
+			or = {
+			years_passed < 12
+			owner = { resource_income_compare = {
+				resource = energy
+				value > 150
+			} } 
+			NOR = {
+				and = {
+					owner = { is_gestalt = yes }
+					is_planet_class = pc_habitat
+				}
+				num_districts = { type = district_generator value > 3 }
+				num_districts = { type = district_generator_uncapped value > 3 }
+			}
+			}
+		}
 		modifier = {
 			weight = 50
 			NOR = {
@@ -1015,7 +1103,7 @@ building_energy_grid = {
 	}
 
 	ai_resource_production = {
-		energy = 2
+		energy = 1
 		trigger = {
 			always = yes
 		}
@@ -1156,7 +1244,55 @@ building_energy_nexus = {
 	}
 
 	ai_weight = {
-		weight = 1 #0
+		weight = 1
+		modifier = {
+			factor = 1.3
+			str_good_energy = yes
+		}
+		modifier = {
+			factor = 2
+			not = {
+				owner = { has_country_flag = acceptable_raw_economy }
+			}
+		}
+		modifier = {
+			factor = 2
+			not = {
+				owner = { has_country_flag = fine_raw_economy }
+			}
+		}
+		modifier ={
+			factor = 0.1
+			NOR ={
+				num_districts = { type = district_generator value > 4	}
+				num_districts = { type = district_generator_uncapped value > 4 }
+				}
+			}
+		modifier ={
+			factor = 2
+			OR ={
+				num_districts = { type = district_generator value > 10 }
+				num_districts = { type = district_generator_uncapped value > 10 }
+			}
+		}
+		modifier = {
+			factor = 0.01
+			or = {
+			years_passed < 12
+			not = { owner = { has_country_flag = good_raw_economy } }
+			NOR ={
+				num_districts = { type = district_generator value > 10 }
+				num_districts = { type = district_generator_uncapped value > 10 }
+			}
+			}
+		}
+		modifier ={
+			factor = 0.05
+			or = {
+				owner = { excess_gases = no }
+			}
+			
+		}
 		modifier = {
 			weight = 30
 			buildings_has_exotic_gases = yes
@@ -1268,7 +1404,7 @@ building_resource_silo = {
 	}
 
 	ai_weight = {
-		weight = 1 #0
+		weight = 0.5
 		modifier = {
 			weight = 5
 			exists = owner
@@ -1337,7 +1473,7 @@ building_bio_reactor = {
 	}
 
 	ai_weight = {
-		weight = 1 #Calvitix 0
+		weight = 0.5 #Calvitix 0
 		modifier = {
 			weight = 25
 			buildings_unemployed = no # Don't build bioreactors if you need jobs

@@ -17,6 +17,7 @@ building_autochthon_monument = {
 				is_gestalt = yes
 				is_spiritualist = yes
 				is_megacorp = yes
+				is_ai = no #STARNET
 				has_valid_civic = civic_memorialist
 				has_valid_civic = civic_hive_memorialist
 				has_valid_civic = civic_machine_memorialist
@@ -33,6 +34,7 @@ building_autochthon_monument = {
 					is_gestalt = yes
 					is_spiritualist = yes
 					is_megacorp = yes
+					is_ai = yes #STARNET
 					has_valid_civic = civic_memorialist
 					has_valid_civic = civic_hive_memorialist
 					has_valid_civic = civic_machine_memorialist
@@ -82,7 +84,7 @@ building_autochthon_monument = {
 	}
 
 	ai_weight = {
-		weight = 1 #Calvitix 0
+		weight = 0.5 #Calvitix 0
 		modifier = {
 			weight = 5
 			OR = {
@@ -116,6 +118,7 @@ building_heritage_site = {
 		exists = owner
 		NOT = { has_modifier = slave_colony }
 		owner = {
+			is_ai = no #STARNET
 			NOR = {
 				is_gestalt = yes
 				is_spiritualist = yes
@@ -141,6 +144,7 @@ building_heritage_site = {
 					is_gestalt = yes
 					is_spiritualist = yes
 					is_megacorp = yes
+					is_ai = yes #STARNET
 					has_valid_civic = civic_memorialist
 					has_valid_civic = civic_hive_memorialist
 					has_valid_civic = civic_machine_memorialist
@@ -222,6 +226,7 @@ building_hypercomms_forum = {
 				has_valid_civic = civic_memorialist
 				has_valid_civic = civic_hive_memorialist
 				has_valid_civic = civic_machine_memorialist
+				is_ai = yes #STARNET
 			}
 		}
 	}
@@ -241,6 +246,7 @@ building_hypercomms_forum = {
 					is_gestalt = yes
 					is_spiritualist = yes
 					is_megacorp = yes
+					is_ai = yes #STARNET
 					has_valid_civic = civic_memorialist
 					has_valid_civic = civic_hive_memorialist
 					has_valid_civic = civic_machine_memorialist
@@ -288,7 +294,7 @@ building_hypercomms_forum = {
 	}
 
 	ai_weight = {
-		weight = 1 #Calvitix 0
+		weight = 0.5 #Calvitix 0
 		modifier = {
 			weight = 1
 			buildings_has_crystals = yes
@@ -300,6 +306,28 @@ building_hypercomms_forum = {
 			}
 		}
 	}
+	
+#STARNET START	
+	on_queued = {
+		IF = {
+			limit = {
+				owner = { has_technology = tech_construction_templates }
+			}
+			owner = { set_timed_country_flag = { flag = buildings_new_crystal_building days = 270 } }
+		}
+		ELSE_IF = {
+			limit = {
+				owner = { has_technology = tech_assembly_pattern }
+			}
+			owner = { set_timed_country_flag = { flag = buildings_new_crystal_building days = 390 } }
+		}
+		else = {
+			planet = {
+				owner = { set_timed_country_flag = { flag = buildings_new_crystal_building days = 510 } }
+			}
+		}
+	}
+#STARNET END
 }
 
 ##################
@@ -335,6 +363,7 @@ building_temple = {
 					has_valid_civic = civic_death_cult
 					has_valid_civic = civic_death_cult_corporate
 					is_spiritualist = no
+					is_ai = yes #STARNET
 				}
 			}
 			has_modifier = slave_colony
@@ -419,6 +448,7 @@ building_holotemple = {
 		building_basic_income_check = yes
 		owner = {
 			is_spiritualist = yes
+			is_ai = no #STARNET
 			NOR = {
 				has_valid_civic = civic_death_cult
 				has_valid_civic = civic_death_cult_corporate
@@ -442,6 +472,7 @@ building_holotemple = {
 					is_spiritualist = no
 				}
 			}
+			owner = { is_ai = yes } #STARNET
 			has_modifier = slave_colony
 		}
 	}
@@ -541,6 +572,8 @@ building_sacred_nexus = {
 					is_spiritualist = no
 				}
 			}
+			owner = { is_ai = yes }
+			buildings_no_crystals = yes
 			has_modifier = slave_colony
 		}
 	}
@@ -589,7 +622,7 @@ building_sacred_nexus = {
 	}
 
 	ai_weight = {
-		weight = 1 #Calvitix 0
+		weight = 0.5 #Calvitix 0
 		modifier = {
 			weight = 1
 			buildings_has_crystals = yes
@@ -891,7 +924,7 @@ building_sacrificial_temple_3 = {
 	triggered_desc = { text = job_death_priest_effect_desc }
 
 	ai_weight = {
-		weight = 1 #Calvitix 0
+		weight = 0.5 #Calvitix 0
 		modifier = {
 			weight = 1
 			buildings_has_exotic_gases = yes
@@ -1046,7 +1079,7 @@ building_galactic_memorial_1 = {
 	}
 
 	ai_weight = {
-		weight = 1 #Calvitix 0
+		weight = 0.5 #Calvitix 0
 		modifier = {
 			weight = 5
 			NOR = {
@@ -1377,7 +1410,7 @@ building_galactic_memorial_3 = {
 	}
 
 	ai_weight = {
-		weight = 1 #Calvitix 0
+		weight = 0.5 #Calvitix 0
 		modifier = {
 			weight = 1
 			buildings_has_exotic_gases = yes
@@ -1408,6 +1441,15 @@ building_hive_node = {
 		building_relaxed_basic_income_check = yes
 		owner = {
 			is_hive_empire = yes
+#STARNET START
+			or = { 
+				is_ai = no
+				resource_income_compare = {
+					resource = physics_research
+					value > 200
+				} 
+			}
+#STARNET END
 		}
 	}
 
@@ -1415,6 +1457,15 @@ building_hive_node = {
 		exists = owner
 		OR = {
 			owner = { is_hive_empire = no }
+#STARNET START
+			owner = { 
+				is_ai = yes 
+				resource_income_compare = {
+					resource = physics_research
+					value < 300
+				} 
+			}
+#STARNET END
 		}
 	}
 
@@ -1470,8 +1521,35 @@ building_hive_node = {
 	}
 
 	ai_weight = {
-		weight = 1 #Calvitix 0
+		weight = 0.5 #Calvitix 0
 
+#STARNET START
+		modifier = {
+			factor = 0
+			owner = {
+				resource_income_compare = {
+					resource = physics_research
+					value < 300
+				}
+			}
+		}
+		modifier = {
+			factor = 1000
+			owner = { empire_sprawl_over_cap > 20 
+			resource_stockpile_compare = {
+				resource = alloys
+				value > 1500
+			}
+			used_naval_capacity_percent > 0.80 #0.95
+			}
+		}
+
+		modifier = {
+			factor = 20
+			everything_is_fine_gestalt = yes
+			owner = { empire_sprawl_over_cap > 10 }
+		}
+#STARNET END
 		modifier = {
 			weight = 20
 			owner = { empire_sprawl_over_cap > 0 }
@@ -1490,7 +1568,7 @@ building_hive_node = {
 		}
 
 		modifier = {
-			weight = 1 #Calvitix 0
+			weight = 0.5 #Calvitix 0
 			has_planet_flag = recent_admin_building_built
 		}
 	}
@@ -1506,6 +1584,15 @@ building_hive_cluster = {
 		exists = owner
 		owner = {
 			is_hive_empire = yes
+#STARNET START
+			or = { 
+				is_ai = no
+				resource_income_compare = {
+					resource = physics_research
+					value > 200
+				} 
+			}
+#STARNET END
 		}
 	}
 
@@ -1516,7 +1603,20 @@ building_hive_cluster = {
 
 	destroy_trigger = {
 		exists = owner
-		owner = { is_hive_empire = no }
+#STARNET START
+		OR = {
+			buildings_no_exotic_gases = yes
+			owner = { is_hive_empire = no }
+			owner = { 
+				is_ai = yes 
+				resource_income_compare = {
+					resource = physics_research
+					value < 300
+				} 
+			}
+		}
+#STARNET END
+		#owner = { is_hive_empire = no }
 	}
 
 	convert_to = {
@@ -1573,7 +1673,7 @@ building_hive_cluster = {
 	}
 
 	ai_weight = {
-		weight = 10
+		weight = 1
 		modifier = {
 			factor = 0.5
 			owner = {
@@ -1599,6 +1699,29 @@ building_hive_cluster = {
 			factor = 2
 			owner = { empire_sprawl_over_cap > 40 }
 		}
+#STARNET START
+		modifier = {
+			factor = 0
+			owner = {
+				resource_income_compare = {
+					resource = physics_research
+					value < 300
+				}
+			}
+		}
+
+		modifier = {
+			factor = 1000
+			owner = { empire_sprawl_over_cap > 20 
+			resource_stockpile_compare = {
+				resource = alloys
+				value > 1500
+			}
+			used_naval_capacity_percent > 0.80 #0.95
+			}
+			buildings_has_crystals = yes
+		}
+#STARNET END
 	}
 }
 
@@ -1612,6 +1735,15 @@ building_hive_confluence = {
 		exists = owner
 		owner = {
 			is_hive_empire = yes
+#STARNET START
+			or = { 
+				is_ai = no
+				resource_income_compare = {
+					resource = physics_research
+					value > 200
+				} 
+			}
+#STARNET END
 		}
 	}
 
@@ -1622,8 +1754,21 @@ building_hive_confluence = {
 
 	destroy_trigger = {
 		exists = owner
-		owner = { is_hive_empire = no }
-		buildings_no_exotic_gases = yes
+#		owner = { is_hive_empire = no }
+#		buildings_no_exotic_gases = yes
+#STARNET START
+		OR = {
+			buildings_no_exotic_gases = yes
+			owner = { is_hive_empire = no }
+			owner = { 
+				is_ai = yes 
+				resource_income_compare = {
+					resource = physics_research
+					value < 300
+				} 
+			}
+		}
+#STARNET END
 	}
 
 	convert_to = {
@@ -1683,7 +1828,7 @@ building_hive_confluence = {
 	}
 
 	ai_weight = {
-		weight = 1 #Calvitix 0
+		weight = 0.5 #Calvitix 0
 		modifier = {
 			weight = 10
 			buildings_has_exotic_gases = yes
@@ -1710,6 +1855,29 @@ building_hive_confluence = {
 			factor = 2
 			owner = { empire_sprawl_over_cap > 40 }
 		}
+#STARNET START
+		modifier = {
+			factor = 0
+			owner = {
+				resource_income_compare = {
+					resource = physics_research
+					value < 300
+				}
+			}
+		}
+
+		modifier = {
+			factor = 1000
+			owner = { empire_sprawl_over_cap > 20 
+			resource_stockpile_compare = {
+				resource = alloys
+				value > 1500
+			}
+			used_naval_capacity_percent > 0.80 #0.95
+			}
+			buildings_has_crystals = yes
+		}
+#STARNET END
 	}
 
 	on_queued = {
@@ -1733,6 +1901,15 @@ building_simulation_1 = {
 		building_basic_income_check  = yes
 		owner = {
 			is_machine_empire = yes
+#STARNET START
+			or = {
+				is_ai = no
+				resource_income_compare = {
+					resource = unity
+					value < 40
+				}
+			}
+#STARNET END
 			NOT = { has_valid_civic = civic_machine_servitor }
 		}
 	}
@@ -1741,6 +1918,15 @@ building_simulation_1 = {
 		exists = owner
 		owner = {
 			OR = {
+#STARNET START
+				and = {
+				is_ai = yes
+				resource_income_compare = {
+					resource = unity
+					value > 60
+				}
+			}
+#STARNET END
 				is_machine_empire = no
 				has_valid_civic = civic_machine_servitor
 			}
@@ -1786,7 +1972,7 @@ building_simulation_1 = {
 	}
 
 	ai_weight = {
-		weight = 5
+		weight = 0.5
 		modifier = {
 			factor = 0
 			OR = {
@@ -1795,6 +1981,18 @@ building_simulation_1 = {
 				has_building = building_simulation_3
 			}
 		}
+#STARNET START
+		modifier = {
+			factor = 10
+			years_passed > 20
+			owner = {
+			is_gestalt = yes
+			resource_income_compare = {
+				resource = unity
+				value < 15
+			} }
+		}
+#STARNET END
 	}
 }
 
@@ -1808,6 +2006,7 @@ building_simulation_2 = {
 	potential = {
 		exists = owner
 		owner = {
+			is_ai = no #STARNET
 			is_machine_empire = yes
 			NOT = { has_valid_civic = civic_machine_servitor }
 		}
@@ -1822,6 +2021,7 @@ building_simulation_2 = {
 		exists = owner
 		owner = {
 			OR = {
+				is_ai = yes #STARNET
 				is_machine_empire = no
 				has_valid_civic = civic_machine_servitor
 			}
@@ -1868,7 +2068,7 @@ building_simulation_2 = {
 	}
 
 	ai_weight = {
-		weight = 1 #Calvitix 0
+		weight = 0.5 #Calvitix 0
 		modifier = {
 			weight = 1
 			buildings_has_crystals = yes
@@ -1886,6 +2086,7 @@ building_simulation_3 = {
 	potential = {
 		exists = owner
 		owner = {
+			is_ai = no #STARNET
 			is_machine_empire = yes
 			NOT = { has_valid_civic = civic_machine_servitor }
 		}
@@ -1901,6 +2102,7 @@ building_simulation_3 = {
 		OR = {
 			owner = {
 				OR = {
+					is_ai = yes #STARNET
 					is_machine_empire = no
 					has_valid_civic = civic_machine_servitor
 				}
@@ -1945,7 +2147,7 @@ building_simulation_3 = {
 	}
 
 	ai_weight = {
-		weight = 1 #Calvitix 0
+		weight = 0.5 #Calvitix 0
 		modifier = {
 			weight = 1
 			buildings_has_crystals = yes
@@ -1967,6 +2169,7 @@ building_corporate_monument = {
 		building_basic_income_check = yes
 		NOT = { has_modifier = slave_colony }
 		owner = {
+			is_ai = no #STARNET
 			is_megacorp = yes
 			is_spiritualist = no
 		}
@@ -1978,6 +2181,7 @@ building_corporate_monument = {
 			has_modifier = slave_colony
 			owner = {
 				OR = {
+					is_ai = yes #STARNET
 					is_megacorp = no
 					is_spiritualist = yes
 				}
@@ -2024,7 +2228,7 @@ building_corporate_monument = {
 	}
 
 	ai_weight = {
-		weight = 1 #Calvitix 0
+		weight = 0.5 #Calvitix 0
 		modifier = {
 			weight = 2
 			owner = {
@@ -2053,6 +2257,7 @@ building_corporate_site = {
 		exists = owner
 		NOT = { has_modifier = slave_colony }
 		owner = {
+			is_ai = no #STARNET
 			is_megacorp = yes
 			is_spiritualist = no
 		}
@@ -2070,6 +2275,7 @@ building_corporate_site = {
 			buildings_no_crystals = yes
 			owner = {
 				OR = {
+					is_ai = yes #STARNET
 					is_megacorp = no
 					is_spiritualist = yes
 				}
@@ -2117,7 +2323,7 @@ building_corporate_site = {
 	}
 
 	ai_weight = {
-		weight = 1 #Calvitix 0
+		weight = 0.5 #Calvitix 0
 		modifier = {
 			weight = 1
 			buildings_has_crystals = yes
@@ -2142,6 +2348,7 @@ building_corporate_forum = {
 		exists = owner
 		NOT = { has_modifier = slave_colony }
 		owner = {
+			is_ai = no  #STARNET
 			is_megacorp = yes
 			is_spiritualist = no
 		}
@@ -2158,6 +2365,7 @@ building_corporate_forum = {
 			has_modifier = slave_colony
 			owner = {
 				OR = {
+					is_ai = yes #STARNET
 					is_megacorp = no
 					is_spiritualist = yes
 				}
@@ -2222,6 +2430,7 @@ building_autocurating_vault = {
 			is_machine_empire = no
 			is_spiritualist = no
 			is_megacorp = no
+			is_ai = no #STARNET
 		}
 	}
 
@@ -2236,6 +2445,7 @@ building_autocurating_vault = {
 			buildings_no_crystals = yes
 	 		owner = {
 				OR = {
+					is_ai = yes #STARNET
 					is_machine_empire = yes
 					is_spiritualist = yes
 					is_megacorp = yes
@@ -2292,7 +2502,7 @@ building_autocurating_vault = {
 	}
 
 	ai_weight = {
-		weight = 1 #Calvitix 0
+		weight = 0.5 #Calvitix 0
 		modifier = {
 			weight = 1
 			buildings_has_crystals = yes
@@ -2303,6 +2513,32 @@ building_autocurating_vault = {
 				}
 			}
 		}
+#STARNET START
+		modifier = {
+			factor = 0
+			owner = { has_country_flag = buildings_new_crystal_building }
+		}
+	}
+
+	on_queued = {
+		IF = {
+			limit = {
+				owner = { has_technology = tech_construction_templates }
+			}
+			owner = { set_timed_country_flag = { flag = buildings_new_crystal_building days = 270 } }
+		}
+		ELSE_IF = {
+			limit = {
+				owner = { has_technology = tech_assembly_pattern }
+			}
+			owner = { set_timed_country_flag = { flag = buildings_new_crystal_building days = 390 } }
+		}
+		else = {
+			planet = {
+				owner = { set_timed_country_flag = { flag = buildings_new_crystal_building days = 510 } }
+			}
+		}
+#STARNET END
 	}
 }
 
@@ -2315,7 +2551,7 @@ building_citadel_of_faith = {
 	potential = {
 		exists = owner
 		building_basic_income_check = yes
-		owner = { is_spiritualist = yes }
+		owner = { is_spiritualist = yes is_ai = no }
 		NOT = { has_modifier = slave_colony }
 	}
 
@@ -2328,6 +2564,7 @@ building_citadel_of_faith = {
 		exists = owner
 		OR = {
 			owner = { is_spiritualist = no }
+			owner = { is_ai = yes }
 			has_modifier = slave_colony
 			buildings_no_crystals = yes
 		}
@@ -2366,7 +2603,7 @@ building_citadel_of_faith = {
 	}
 
 	ai_weight = {
-		weight = 1 #Calvitix 0
+		weight = 0.5 #Calvitix 0
 		modifier = {
 			weight = 1
 			buildings_has_crystals = yes
@@ -2377,6 +2614,32 @@ building_citadel_of_faith = {
 				}
 			}
 		}
+#STARNET START
+		modifier = {
+			factor = 0
+			owner = { has_country_flag = buildings_new_crystal_building }
+		}
+	}
+
+	on_queued = {
+		IF = {
+			limit = {
+				owner = { has_technology = tech_construction_templates }
+			}
+			owner = { set_timed_country_flag = { flag = buildings_new_crystal_building days = 270 } }
+		}
+		ELSE_IF = {
+			limit = {
+				owner = { has_technology = tech_assembly_pattern }
+			}
+			owner = { set_timed_country_flag = { flag = buildings_new_crystal_building days = 390 } }
+		}
+		else = {
+			planet = {
+				owner = { set_timed_country_flag = { flag = buildings_new_crystal_building days = 510 } }
+			}
+		}
+#STARNET END
 	}
 }
 
@@ -2392,6 +2655,7 @@ building_corporate_vault = {
 		building_basic_income_check = yes
 		NOT = { has_modifier = slave_colony }
 		owner = {
+			is_ai = no #STARNET
 			is_megacorp = yes
 			is_spiritualist = no
 		}
@@ -2408,6 +2672,7 @@ building_corporate_vault = {
 			buildings_no_crystals = yes
 			owner = {
 				OR = {
+					is_ai = yes #STARNET
 					is_megacorp = no
 					is_spiritualist = yes
 				}
@@ -2450,7 +2715,7 @@ building_corporate_vault = {
 	}
 
 	ai_weight = {
-		weight = 1 #Calvitix 0
+		weight = 0.5 #Calvitix 0
 		modifier = {
 			weight = 1
 			buildings_has_crystals = yes
@@ -2461,6 +2726,32 @@ building_corporate_vault = {
 				}
 			}
 		}
+#STARNET START
+		modifier = {
+			factor = 0
+			owner = { has_country_flag = buildings_new_crystal_building }
+		}
+	}
+
+	on_queued = {
+		IF = {
+			limit = {
+				owner = { has_technology = tech_construction_templates }
+			}
+			owner = { set_timed_country_flag = { flag = buildings_new_crystal_building days = 270 } }
+		}
+		ELSE_IF = {
+			limit = {
+				owner = { has_technology = tech_assembly_pattern }
+			}
+			owner = { set_timed_country_flag = { flag = buildings_new_crystal_building days = 390 } }
+		}
+		else = {
+			planet = {
+				owner = { set_timed_country_flag = { flag = buildings_new_crystal_building days = 510 } }
+			}
+		}
+#STARNET END
 	}
 }
 
@@ -2474,7 +2765,7 @@ building_alpha_hub = {
 	potential = {
 		exists = owner
 		building_basic_income_check = yes
-		owner = { is_machine_empire = yes }
+		owner = { is_machine_empire = yes is_ai = no }  #STARNET
 	}
 
 	allow = {
@@ -2485,6 +2776,7 @@ building_alpha_hub = {
 		exists = owner
 		OR = {
 			owner = { is_machine_empire = no }
+			owner = { is_ai = yes } #STARNET
 			buildings_no_crystals = yes
 		}
 	}
@@ -2523,11 +2815,37 @@ building_alpha_hub = {
 	}
 
 	ai_weight = {
-		weight = 1 #Calvitix 0
+		weight = 0.5 #Calvitix 0
 		modifier = {
 			weight = 1
 			buildings_has_crystals = yes
 		}
+ #STARNET START
+		modifier = {
+			factor = 0
+			owner = { has_country_flag = buildings_new_crystal_building }
+		}
+	}
+
+	on_queued = {
+		IF = {
+			limit = {
+				owner = { has_technology = tech_construction_templates }
+			}
+			owner = { set_timed_country_flag = { flag = buildings_new_crystal_building days = 270 } }
+		}
+		ELSE_IF = {
+			limit = {
+				owner = { has_technology = tech_assembly_pattern }
+			}
+			owner = { set_timed_country_flag = { flag = buildings_new_crystal_building days = 390 } }
+		}
+		else = {
+			planet = {
+				owner = { set_timed_country_flag = { flag = buildings_new_crystal_building days = 510 } }
+			}
+		}
+ #STARNET END
 	}
 }
 
@@ -2598,7 +2916,7 @@ building_organic_sanctuary = {
 	}
 
 	ai_weight = {
-		weight = 1 #Calvitix 0
+		weight = 0.5 #Calvitix 0
 		modifier = {
 			weight = 1000
 			any_owned_pop = {
@@ -2674,10 +2992,36 @@ building_organic_paradise = {
 	}
 
 	ai_weight = {
-		weight = 1 #Calvitix 0
+		weight = 0.5 #Calvitix 0
+ #STARNET START
 		modifier = {
-			weight = 1
+			weight = 10
 			buildings_has_exotic_gases = yes
+			any_owned_pop = {
+				is_unemployed = yes
+				has_citizenship_type = { type = citizenship_organic_trophy }
+			}
+		}
+	}
+
+	on_queued = {
+		IF = {
+			limit = {
+				owner = { has_technology = tech_construction_templates }
+			}
+			owner = { set_timed_country_flag = { flag = buildings_new_gas_building days = 270 } }
+		}
+		ELSE_IF = {
+			limit = {
+				owner = { has_technology = tech_assembly_pattern }
+			}
+			owner = { set_timed_country_flag = { flag = buildings_new_gas_building days = 390 } }
+		}
+		else = {
+			planet = {
+				owner = { set_timed_country_flag = { flag = buildings_new_gas_building days = 510 } }
+			}
+ #STARNET END
 		}
 	}
 }
