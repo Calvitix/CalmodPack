@@ -171,7 +171,6 @@ fleet_event = {
 		event_target:pspmod_astanine_colony_3 = {
 			change_pc = pc_broken #다른 아스타닌 식민지들과는 다르게 부서져 있는 것 같습니다.
 			create_archaeological_site = PSP_astanine_site_3
-			set_planet_flag = pspmod_astanine_near_home_colony
 		}
 	}
 
@@ -455,90 +454,19 @@ fleet_event = {
 	option = {
 		name = pspmod_astanine.11.a
 		hidden_effect = {
-			random_planet = {
-				limit = { has_planet_flag = pspmod_astanine_near_home_colony }
-				spawn_system = {
-					min_jumps = 0
-					max_jumps = 0
-					min_distance = 5
-					max_distance = 20
-					initializer = pspmod_astanine_home_system
+			owner = {
+				random_system_within_border = {
+					limit = { any_system_planet = { has_planet_flag = pspmod_astanine_colony } }
+					spawn_system = {
+						min_jumps = 0
+						max_jumps = 0
+						min_distance = 5
+						max_distance = 20
+						initializer = pspmod_astanine_home_system
+					}
 				}
 			}
-			if = {
-				limit = {
-					count_system = {
-						limit = {
-							has_star_flag = pspmod_astanine_home_system
-							any_system_planet = {
-								exists = archaeological_site
-								archaeological_site = { is_site_type = PSP_astanine_site_5 }
-							}
-						}
-						count > 1
-					}
-				}
-				random_system = {
-					limit = {
-						has_star_flag = pspmod_astanine_home_system
-						any_system_planet = {
-							exists = archaeological_site
-							archaeological_site = { is_site_type = PSP_astanine_site_5 }
-						}
-					}
-					random_system_megastructure = {
-						limit = { is_megastructure_type = mega_art_installation_ruined }
-						delete_megastructure = this
-					}
-					every_system_planet = {
-						limit = { is_star = no }
-						remove_planet = yes
-					}
-					star = { change_pc = pc_black_hole }
-					isolate_system = yes
-				}
-			}
-			else_if = {
-				limit = {
-					count_system = {
-						limit = {
-							has_star_flag = pspmod_astanine_home_system
-						}
-						count > 1
-					}
-					count_system = {
-						limit = {
-							has_star_flag = pspmod_astanine_home_system
-							any_system_planet = {
-								exists = archaeological_site
-								archaeological_site = { is_site_type = PSP_astanine_site_5 }
-							}
-						}
-						count = 1
-					}
-				}
-				random_system = {
-					limit = {
-						NOT = {
-							any_system_planet = {
-								exists = archaeological_site
-								archaeological_site = { is_site_type = PSP_astanine_site_5 }
-							}
-						}
-						has_star_flag = pspmod_astanine_home_system
-					}
-					random_system_megastructure = {
-						limit = { is_megastructure_type = mega_art_installation_ruined }
-						delete_megastructure = this
-					}
-					every_system_planet = {
-						limit = { is_star = no }
-						remove_planet = yes
-					}
-					star = { change_pc = pc_black_hole }
-					isolate_system = yes
-				}
-			}
+			#pspmod_astanine_duplicated_home_system_hide_effect = yes
 		}
 		owner = {
 			create_point_of_interest = {
