@@ -1,0 +1,1832 @@
+namespace = aihealthcheck
+
+event = {
+	id = aihealthcheck.1
+	hide_window = yes
+	is_triggered_only = yes
+	
+	immediate = {
+		
+		### Machine Empires
+		every_country = {
+			limit = {
+				is_ai = yes
+				is_machine_empire = yes
+				not = { is_country_type = primitive }
+				not = { is_country_type = fallen_empire }
+				not = { is_country_type = awakened_fallen_empire }
+				not = { is_country_type = enclave }
+				not = { is_country_type = nomad }
+				not = { is_country_type = dormant_marauders }
+				not = { is_country_type = awakened_marauders }
+			}
+			random_owned_planet = {
+				limit = {
+					is_colony = yes
+					not = { has_planet_flag = pf_health_checked }
+				}
+				set_timed_planet_flag = {
+					flag = pf_health_checked
+					days = 90
+				}
+				add_modifier = {
+					modifier = health_checking
+					days = 90
+				}
+				
+				# Housing shortage - Nexus possible
+				if = {
+					limit = {
+						free_housing < 1
+						num_free_districts = { type = district_nexus value > 1 }
+					}
+					add_district = district_nexus
+				}
+				
+				# Early minerals crisis
+				if = {
+					limit = {
+						free_jobs > 1
+						owner = { has_monthly_income = { resource = minerals value < 1 }}
+						num_buildings = { type = building_foundry_1 value > 1 }
+					}
+					remove_building = building_foundry_1
+				}
+				
+				# Early energy crisis
+				if = {
+					limit = {
+						owner = { has_monthly_income = { resource = energy value < 1 }}
+						has_building = building_foundry_1
+						free_jobs > 2
+					}					
+					if = {
+						limit = {
+							num_free_districts = { type = district_generator value > 0 }
+						}
+						add_district = district_generator
+						remove_building = building_foundry_1
+					}
+					#Calvitix Ajout pour tous les types de Générateurs (D_overhaul)
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_generator_uncapped value > 0 }
+						}
+						add_district = district_generator_uncapped
+						remove_building = building_foundry_1
+					}
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_wind_turbines value > 0 }
+						}
+						add_district = district_wind_turbines
+						remove_building = building_foundry_1
+					}
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_geothermal_generator value > 0 }
+						}
+						add_district = district_geothermal_generator
+						remove_building = building_foundry_1
+					}
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_solar_generator value > 0 }
+						}
+						add_district = district_solar_generator
+						remove_building = building_foundry_1
+					}
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_tidal_generator value > 0 }
+						}
+						add_district = district_tidal_generator
+						remove_building = building_foundry_1
+					}					
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_rw_generator value > 0 }
+						}
+						add_district = district_rw_generator
+						remove_building = building_foundry_1
+					}					
+				}
+				if = {
+					limit = {
+						free_jobs > 2
+						owner = { has_monthly_income = { resource = energy value < 1 }}
+						has_building = building_factory_1
+					}
+					if = {
+						limit = {
+							num_free_districts = { type = district_generator value > 0 }
+						}
+						add_district = district_generator
+						remove_building = building_factory_1
+					}
+					#Calvitix Ajout pour tous les types de Générateurs (D_overhaul)
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_generator_uncapped value > 0 }
+						}
+						add_district = district_generator_uncapped
+						remove_building = building_factory_1
+					}
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_wind_turbines value > 0 }
+						}
+						add_district = district_wind_turbines
+						remove_building = building_factory_1
+					}
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_geothermal_generator value > 0 }
+						}
+						add_district = district_geothermal_generator
+						remove_building = building_factory_1
+					}
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_solar_generator value > 0 }
+						}
+						add_district = district_solar_generator
+						remove_building = building_factory_1
+					}
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_tidal_generator value > 0 }
+						}
+						add_district = district_tidal_generator
+						remove_building = building_factory_1
+					}					
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_rw_generator value > 0 }
+						}
+						add_district = district_rw_generator
+						remove_building = building_factory_1
+					}					
+				}
+				
+				# Housing shortage = building slot
+				if = {
+					limit = {
+						free_housing < 1
+						free_building_slots > 1
+						num_free_districts = { type = district_nexus value < 2 }
+					}
+					add_building = building_drone_storage
+				}
+				
+				# Unemployment
+				if = {
+					limit = {
+						or = {
+							free_jobs < 10
+							#any_owned_pop = { is_unemployed = yes }
+						}
+						owner = { has_monthly_income = { resource = energy value < 100 }}
+					}
+					if = {
+						limit = {
+							num_free_districts = { type = district_generator value > 0 }
+						}
+						add_district = district_generator
+					}
+					#Calvitix Ajout pour tous les types de Générateurs (D_overhaul)
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_generator_uncapped value > 0 }
+						}
+						add_district = district_generator_uncapped
+					}
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_wind_turbines value > 0 }
+						}
+						add_district = district_wind_turbines
+					}
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_geothermal_generator value > 0 }
+						}
+						add_district = district_geothermal_generator
+					}
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_solar_generator value > 0 }
+						}
+						add_district = district_solar_generator
+					}
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_tidal_generator value > 0 }
+						}
+						add_district = district_tidal_generator
+					}
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_rw_generator value > 0 }
+						}
+						add_district = district_rw_generator
+					}					
+				}
+				if = {
+					limit = {
+						or = {
+							free_jobs < 5
+							#any_owned_pop = { is_unemployed = yes }
+						}
+						owner = { has_monthly_income = { resource = minerals value < 100 }}
+					}
+					if = {
+						limit = {
+							num_free_districts = { type = district_mining value > 0 }
+						}
+						add_district = district_mining
+					}
+					#Calvitix Ajout pour tous les types de mines (D_overhaul)
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_mining_uncapped value > 0 }
+						}
+						add_district = district_mining_uncapped
+					}
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_cheap_mining value > 0 }
+						}
+						add_district = district_cheap_mining
+					}
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_secure_mining value > 0 }
+						}
+						add_district = district_secure_mining
+					}
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_surface_mining value > 0 }
+						}
+						add_district = district_surface_mining
+					}
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_rw_asteroid_belt_mining value > 0 }
+						}
+						add_district = district_rw_asteroid_belt_mining
+					}
+				}
+				if = {
+					limit = {
+						owner = { country_uses_food = yes }
+						or = {
+							#any_owned_pop = { is_unemployed = yes }
+							free_jobs < 3
+						}
+						owner = { has_monthly_income = { resource = food value < 5 }}
+					}
+					if = {
+						limit = {
+							num_free_districts = { type = district_farming value > 0 }
+						}
+						add_district = district_farming
+					}
+					#Calvitix Ajout pour tous les types de fermes (D_overhaul)
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_farming_uncapped value > 0 }
+						}
+						add_district = district_farming_uncapped
+					}
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_hydroponic_bay value > 0 }
+						}
+						add_district = district_hydroponic_bay
+					}
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_nature_farms value > 0 }
+						}
+						add_district = district_nature_farms
+					}
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_ocean_farms value > 0 }
+						}
+						add_district = district_ocean_farms
+					}					
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_efficient_farms value > 0 }
+						}
+						add_district = district_efficient_farms
+					}					
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_exotic_farms value > 0 }
+						}
+						add_district = district_exotic_farms
+					}					
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_rw_farming value > 0 }
+						}
+						add_district = district_rw_farming
+					}					
+				}
+				if = {
+					limit = {
+						owner = { has_valid_civic = civic_machine_servitor }
+						or = {
+							free_jobs < 3
+							#any_owned_pop = { is_unemployed = yes }
+						}
+						free_building_slots > 0
+						owner = { has_monthly_income = { resource = minerals value > 50 }}
+						owner = { has_monthly_income = { resource = consumer_goods value < 5 }}
+					}
+					add_building = building_factory_1
+				}
+				if = {
+					limit = {
+						free_amenities < 5
+						or = {
+							free_jobs < 3
+							#any_owned_pop = { is_unemployed = yes }
+						}
+						free_building_slots > 0
+						not = { has_building = building_maintenance_depot }
+					}
+					add_building = building_maintenance_depot
+				}
+				if = {
+					limit = {
+						planet_crime > 10
+						or = {
+							#any_owned_pop = { is_unemployed = yes }
+							free_jobs < 14
+						}
+						free_building_slots > 0
+					}
+					add_building = building_sentinel_posts
+				}				
+				if = {
+					limit = {
+						free_housing > 0
+						or = {
+							free_jobs < 2
+							#any_owned_pop = { is_unemployed = yes }
+						}
+						free_building_slots > 1
+					}
+					add_building = building_research_lab_1
+				}
+## Ajout pour les bâtiments spéciaux D Overhaul
+				if = {
+					limit = {
+						 or = {
+							 free_jobs < 15
+							 #any_owned_pop = { is_unemployed = yes }
+						 }
+						
+					}
+					if = {
+						limit = {
+							num_free_districts = { type = district_robot_assembly value > 0 }
+						}
+						add_district = district_robot_assembly
+					}
+				}							
+				if = {
+					limit = {
+						 or = {
+							 free_jobs < 15
+							 #any_owned_pop = { is_unemployed = yes }
+						 }
+						owner = { has_monthly_income = { resource = consumer_goods value < 100 }}
+					}
+					if = {
+						limit = {
+							num_free_districts = { type = district_workshops value > 0 }
+						}
+						add_district = district_workshops
+					}
+				}
+				if = {
+					limit = {
+						 or = {
+							 free_jobs < 15
+							 #any_owned_pop = { is_unemployed = yes }
+						 }
+						owner = { has_monthly_income = { resource = alloys value < 100 }}						
+					}
+					if = {
+						limit = {
+							num_free_districts = { type = district_local_industry value > 0 }
+						}
+						add_district = district_local_industry
+					}
+				}
+				if = {
+					limit = {
+						 or = {
+							 free_jobs < 15
+							 #any_owned_pop = { is_unemployed = yes }
+						 }
+						owner = { has_monthly_income = { resource = physics_research value < 250 }}
+						
+					}
+					if = {
+						limit = {
+							num_free_districts = { type = district_university value > 0 }
+						}
+						add_district = district_university
+					}
+				}
+				if = {
+					limit = {
+						 or = {
+							 free_jobs < 15
+							 #any_owned_pop = { is_unemployed = yes }
+						 }
+						#owner = { has_monthly_income = { resource = physics_research value < 250 }}
+						
+					}
+					if = {
+						limit = {
+							num_free_districts = { type = district_production_hub value > 0 }
+						}
+						add_district = district_production_hub
+					}
+				}
+				if = {
+					limit = {
+						 or = {
+							 free_jobs < 15
+							 #any_owned_pop = { is_unemployed = yes }
+						 }
+						 used_naval_capacity_percent > 0.70
+						
+					}
+					if = {
+						limit = {
+							num_free_districts = { type = district_spaceport value > 0 }
+						}
+						add_district = district_spaceport
+					}
+				}
+				if = {
+					limit = {
+						 or = {
+							 free_jobs < 15
+							 #any_owned_pop = { is_unemployed = yes }
+						 }
+						 #used_naval_capacity_percent > 0.70
+						#owner = { has_monthly_income = { resource = physics_research value < 250 }}
+						
+					}
+					if = {
+						limit = {
+							num_free_districts = { type = district_academy value > 0 }
+						}
+						add_district = district_academy
+					}
+				}
+				
+				if = {
+					limit = {
+						 or = {
+							 free_jobs < 15
+							 #any_owned_pop = { is_unemployed = yes }
+						 }
+						 empire_sprawl_over_cap > 0
+						#owner = { has_monthly_income = { resource = physics_research value < 250 }}
+						
+					}
+					if = {
+						limit = {
+							num_free_districts = { type = district_bureaucratic value > 0 }
+						}
+						add_district = district_bureaucratic
+					}
+				}
+
+				if = {
+					limit = {
+						 or = {
+							 free_jobs < 15
+							 #any_owned_pop = { is_unemployed = yes }
+						 }
+						exists = owner
+						owner = { has_technology = tech_rare_crystals }
+						owner = { has_monthly_income = { resource = rare_crystals value < 50 }}
+					}
+					if = {
+						limit = {
+							num_free_districts = { type = district_crystal_mines value > 0 }
+						}
+						add_district = district_crystal_mines
+					}
+				}
+				if = {
+					limit = {
+						 or = {
+							 free_jobs < 15
+							 #any_owned_pop = { is_unemployed = yes }
+						 }
+						exists = owner
+						owner = { has_technology = tech_volatile_motes }
+						owner = { has_monthly_income = { resource = volatile_motes value < 50 }}
+					}
+					if = {
+						limit = {
+							num_free_districts = { type = district_chemistry_industry value > 0 }
+						}
+						add_district = district_chemistry_industry
+					}
+				}
+				if = {
+					limit = {
+						 or = {
+							 free_jobs < 15
+							 #any_owned_pop = { is_unemployed = yes }
+						 }
+						exists = owner
+						owner = { has_technology = tech_exotic_gases }
+						owner = { has_monthly_income = { resource = exotic_gases value < 50 }}
+					}
+					if = {
+						limit = {
+							num_free_districts = { type = district_gas_refinery value > 0 }
+						}
+						add_district = district_gas_refinery
+					}
+				}
+				
+				if = {
+					limit = {
+						 or = {
+							 free_jobs < 15
+							 #any_owned_pop = { is_unemployed = yes }
+						 }
+						
+					}
+					if = {
+						limit = {
+							num_free_districts = { type = district_logistics_hub value > 0 }
+						}
+						add_district = district_logistics_hub
+					}
+				}	
+				if = {
+					limit = {
+						 or = {
+							 free_jobs < 5
+							 #any_owned_pop = { is_unemployed = yes }
+						 }
+						
+					}
+					if = {
+						limit = {
+							num_free_districts = { type = district_archeology value > 0 }
+						}
+						add_district = district_archeology
+					}
+				}
+				if = {
+					limit = {
+						 or = {
+							 free_jobs < 5
+							 #any_owned_pop = { is_unemployed = yes }
+						 }
+						
+					}
+					if = {
+						limit = {
+							num_free_districts = { type = district_research_complex value > 0 }
+						}
+						add_district = district_research_complex
+					}
+				}				
+				if = {
+					limit = {
+						 or = {
+							 free_jobs < 5
+							 #any_owned_pop = { is_unemployed = yes }
+						 }
+						
+					}
+					if = {
+						limit = {
+							num_free_districts = { type = district_research_complex value > 0 }
+						}
+						add_district = district_research_complex
+					}
+				}			
+				if = {
+					limit = {
+						 or = {
+							 free_jobs < 5
+							 #any_owned_pop = { is_unemployed = yes }
+						 }
+						
+					}
+					if = {
+						limit = {
+							num_free_districts = { type = district_tourism value > 0 }
+						}
+						add_district = district_tourism
+					}
+				}
+				if = {
+					limit = {
+						 or = {
+							 free_jobs < 5
+							 #any_owned_pop = { is_unemployed = yes }
+						 }
+						
+					}
+					if = {
+						limit = {
+							num_free_districts = { type = district_gardens value > 0 }
+						}
+						add_district = district_gardens
+					}
+				}				
+				
+			}				
+		}
+		### END Machine Empires
+		
+		### Regular Empires
+		every_country = {
+			limit = {
+				is_ai = yes
+				is_regular_empire = yes
+				not = { is_country_type = primitive }
+				not = { is_country_type = fallen_empire }
+				not = { is_country_type = awakened_fallen_empire }
+				not = { is_country_type = enclave }
+				not = { is_country_type = nomad }
+				not = { is_country_type = dormant_marauders }
+				not = { is_country_type = awakened_marauders }
+			}
+			random_owned_planet = {
+				limit = {
+					is_colony = yes
+					num_pops > 12
+					not = { has_planet_flag = pf_health_checked }
+				}
+				
+				random_list = {
+					30 = {
+						set_timed_planet_flag = {
+							flag = pf_health_checked
+							days = 270
+						}
+						add_modifier = {
+							modifier = health_checking
+							days = 270
+						}
+					}
+					30 = {
+						set_timed_planet_flag = {
+							flag = pf_health_checked
+							days = 360
+						}
+						add_modifier = {
+							modifier = health_checking
+							days = 360
+						}
+					}
+					30 = {
+						set_timed_planet_flag = {
+							flag = pf_health_checked
+							days = 180
+						}
+						add_modifier = {
+							modifier = health_checking
+							days = 180
+						}
+					}
+					10 = {
+						set_timed_planet_flag = {
+							flag = pf_health_checked
+							days = 90
+						}
+						add_modifier = {
+							modifier = health_checking
+							days = 90
+						}
+					}
+				}
+				
+				# Early minerals crisis
+				# Make artisans and metallurgists into miners
+				if = {
+					limit = {
+						free_jobs > 2						
+						owner = { has_monthly_income = { resource = minerals value < 1 }}
+						has_building = building_foundry_1
+					}
+					if = {
+						limit = {
+							num_free_districts = { type = district_mining value > 0 }
+						}
+						add_district = district_mining
+						remove_building = building_foundry_1
+					}
+					#Calvitix Ajout pour tous les types de Générateurs (D_overhaul)
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_mining_uncapped value > 0 }
+						}
+						add_district = district_mining_uncapped
+						remove_building = building_foundry_1
+					}
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_cheap_mining value > 0 }
+						}
+						add_district = district_cheap_mining
+						remove_building = building_foundry_1
+					}
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_secure_mining value > 0 }
+						}
+						add_district = district_secure_mining
+						remove_building = building_foundry_1
+					}
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_surface_mining value > 0 }
+						}
+						add_district = district_surface_mining
+						remove_building = building_foundry_1
+					}					
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_rw_asteroid_belt_mining value > 0 }
+						}
+						add_district = district_rw_asteroid_belt_mining
+						remove_building = building_foundry_1
+					}					
+				}
+				if = {
+					limit = {
+						free_jobs > 2
+						owner = { has_monthly_income = { resource = minerals value < 1 }}
+						has_building = building_factory_1
+					}
+					if = {
+						limit = {
+							num_free_districts = { type = district_mining value > 0 }
+						}
+						add_district = district_mining
+						remove_building = building_factory_1
+					}
+					#Calvitix Ajout pour tous les types de Générateurs (D_overhaul)
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_mining_uncapped value > 0 }
+						}
+						add_district = district_mining_uncapped
+						remove_building = building_factory_1
+					}
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_cheap_mining value > 0 }
+						}
+						add_district = district_cheap_mining
+						remove_building = building_factory_1
+					}
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_secure_mining value > 0 }
+						}
+						add_district = district_secure_mining
+						remove_building = building_factory_1
+					}
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_surface_mining value > 0 }
+						}
+						add_district = district_surface_mining
+						remove_building = building_factory_1
+					}
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_rw_asteroid_belt_mining value > 0 }
+						}
+						add_district = district_rw_asteroid_belt_mining
+						remove_building = building_factory_1
+					}					
+				}
+				
+				# Early CGs crisis
+				# Make researchers into artisans
+				if = {
+					limit = {
+						owner = { has_monthly_income = { resource = consumer_goods value < 0 }}
+						owner = { has_monthly_income = { resource = minerals value > 20 }}
+						has_building = building_research_lab_1
+					}
+					remove_building = building_research_lab_1
+					add_building = building_factory_1
+				}
+				
+				# Crime and Instability
+				if = {
+					limit = {
+						or = {
+							planet_crime > 20
+							and = {
+								planet_crime > 10
+								planet_stability < 50
+							}
+						}
+						not = { has_building = building_precinct_house }
+						not = { has_building = building_hall_judgment }
+					}
+					if = {
+						limit = { 
+							free_building_slots > 0
+							free_jobs < 1
+						}
+						add_building = building_precinct_house
+					}
+					else_if = {
+						limit = { has_building = building_holo_theatres }
+						remove_building = building_holo_theatres
+						add_building = building_precinct_house
+					}
+					else_if = {
+						limit = { has_building = building_research_lab_1 }
+						remove_building = building_research_lab_1
+						add_building = building_precinct_house
+					}
+					else_if = {
+						limit = { has_building = building_foundry_1 }
+						remove_building = building_foundry_1
+						add_building = building_precinct_house
+					}					
+				}
+				
+				# Amenities
+				if = {
+					limit = {
+						or = {
+							free_amenities < 1
+							and = {
+								free_amenities < 5
+								planet_stability < 25
+							}
+						}
+						not = { has_building = building_holo_theatres }
+						not = { has_building = building_hyper_entertainment_forum }
+					}
+					if = {
+						limit = { 
+							free_building_slots > 0
+							free_jobs < 1
+						}
+						add_building = building_holo_theatres
+					}
+					else_if = {
+						limit = { has_building = building_research_lab_1 }
+						remove_building = building_research_lab_1
+						add_building = building_holo_theatres						
+					}
+					else_if = {
+						limit = { has_building = building_foundry_1 }
+						remove_building = building_foundry_1
+						add_building = building_holo_theatres
+					}					
+				}
+				
+				# Create More Jobs
+				if = {
+					limit = {
+						or = {
+							and = {
+								free_jobs < 2
+								free_building_slots > 1
+							}
+							and = {
+								free_jobs < 3
+								free_building_slots > 2
+							}
+							and = {
+								num_pops > 40
+								free_jobs < 1
+								free_district_slots < 3
+								free_building_slots > 0
+								has_building_construction = no
+							}
+							and = {
+								num_pops > 50
+								free_jobs < 1
+								free_district_slots < 1
+								free_building_slots > 0
+								has_building_construction = no
+							}
+						}
+					}
+					if = {
+						limit = {
+							not = { has_building = building_factory_1 }
+							owner = { has_monthly_income = { resource = minerals value > 50 }}
+							owner = { has_monthly_income = { resource = consumer_goods value < 20 }}
+						}
+						add_building = building_factory_1					
+					}
+					else_if = {
+						limit = {
+							not = { has_building = building_foundry_1 }
+							owner = { has_monthly_income = { resource = minerals value > 50 }}
+							owner = { has_monthly_income = { resource = alloys value < 10 }}
+						}
+						add_building = building_foundry_1					
+					}
+					else_if = {
+						limit = {
+							not = { has_building = building_research_lab_1 }
+						}
+						add_building = building_research_lab_1					
+					}
+					else_if = {
+						limit = {
+							not = { has_building = building_holo_theatres }
+						}
+						add_building = building_holo_theatres				
+					}
+					else = {
+						add_building = building_commercial_zone
+					}
+				}
+				
+				# Unemployment
+				if = {
+					limit = { any_owned_pop = { is_unemployed = yes }}
+					if = {
+						limit = { 
+							owner = { has_monthly_income = { resource = energy value < 50 }}
+						}
+						if = {
+							limit = {
+								num_free_districts = { type = district_generator value > 0 }
+							}
+							add_district = district_generator
+						}
+						#Calvitix Ajout pour tous les types de Générateurs (D_overhaul)
+						else_if = {
+							limit = {
+								num_free_districts = { type = district_generator_uncapped value > 0 }
+							}
+							add_district = district_generator_uncapped
+						}
+						else_if = {
+							limit = {
+								num_free_districts = { type = district_wind_turbines value > 0 }
+							}
+							add_district = district_wind_turbines
+						}
+						else_if = {
+							limit = {
+								num_free_districts = { type = district_geothermal_generator value > 0 }
+							}
+							add_district = district_geothermal_generator
+						}
+						else_if = {
+							limit = {
+								num_free_districts = { type = district_solar_generator value > 0 }
+							}
+							add_district = district_solar_generator
+						}
+						else_if = {
+							limit = {
+								num_free_districts = { type = district_tidal_generator value > 0 }
+							}
+							add_district = district_tidal_generator
+						}
+						else_if = {
+							limit = {
+								num_free_districts = { type = district_rw_generator value > 0 }
+							}
+							add_district = district_rw_generator
+						}												
+					}
+					else_if = {
+						limit = { 
+							owner = { has_monthly_income = { resource = food value < 25 }}
+						}
+						if = {
+							limit = {
+								num_free_districts = { type = district_farming value > 0 }
+							}
+							add_district = district_farming
+						}
+						#Calvitix Ajout pour tous les types de fermes (D_overhaul)
+						else_if = {
+							limit = {
+								num_free_districts = { type = district_farming_uncapped value > 0 }
+							}
+							add_district = district_farming_uncapped
+						}
+						else_if = {
+							limit = {
+								num_free_districts = { type = district_hydroponic_bay value > 0 }
+							}
+							add_district = district_hydroponic_bay
+						}
+						else_if = {
+							limit = {
+								num_free_districts = { type = district_nature_farms value > 0 }
+							}
+							add_district = district_nature_farms
+						}
+						else_if = {
+							limit = {
+								num_free_districts = { type = district_ocean_farms value > 0 }
+							}
+							add_district = district_ocean_farms
+						}					
+						else_if = {
+							limit = {
+								num_free_districts = { type = district_efficient_farms value > 0 }
+							}
+							add_district = district_efficient_farms
+						}					
+						else_if = {
+							limit = {
+								num_free_districts = { type = district_exotic_farms value > 0 }
+							}
+							add_district = district_exotic_farms
+						}					
+						else_if = {
+							limit = {
+								num_free_districts = { type = district_rw_farming value > 0 }
+							}
+							add_district = district_rw_farming
+						}					
+					}
+					else_if = {
+						limit = { 
+							owner = { has_monthly_income = { resource = minerals value < 75 }}
+						}
+						if = {
+							limit = {
+								num_free_districts = { type = district_mining value > 0 }
+							}
+							add_district = district_mining
+						}
+						#Calvitix Ajout pour tous les types de Générateurs (D_overhaul)
+						else_if = {
+							limit = {
+								num_free_districts = { type = district_mining_uncapped value > 0 }
+							}
+							add_district = district_mining_uncapped
+						}
+						else_if = {
+							limit = {
+								num_free_districts = { type = district_cheap_mining value > 0 }
+							}
+							add_district = district_cheap_mining
+						}
+						else_if = {
+							limit = {
+								num_free_districts = { type = district_secure_mining value > 0 }
+							}
+							add_district = district_secure_mining
+						}
+						else_if = {
+							limit = {
+								num_free_districts = { type = district_surface_mining value > 0 }
+							}
+							add_district = district_surface_mining
+						}
+						else_if = {
+							limit = {
+								num_free_districts = { type = district_rw_asteroid_belt_mining value > 0 }
+							}
+							add_district = district_rw_asteroid_belt_mining
+						}
+					}
+					else_if = {
+						limit = { free_building_slots > 1 }
+						if = {
+							limit = { 
+								not = { has_building = building_factory_1 }
+								owner = { has_monthly_income = { resource = consumer_goods value < 25 }}
+							}
+							add_building = building_factory_1					
+						}
+						else_if = {
+							limit = { not = { has_building = building_research_lab_1 }}
+							add_building = building_research_lab_1					
+						}
+						else_if = {
+							limit = {
+								not = { has_building = building_holo_theatres }
+								free_amenities < 10
+							}
+							add_building = building_holo_theatres				
+						}
+						else = { add_building = building_commercial_zone }
+					}
+				}
+## Ajout pour les bâtiments spéciaux D Overhaul
+				if = {
+					limit = {
+						 or = {
+							 free_jobs < 15
+							 #any_owned_pop = { is_unemployed = yes }
+						 }
+						
+					}
+					if = {
+						limit = {
+							num_free_districts = { type = district_robot_assembly value > 0 }
+						}
+						add_district = district_robot_assembly
+					}
+				}							
+				if = {
+					limit = {
+						 or = {
+							 free_jobs < 15
+							 #any_owned_pop = { is_unemployed = yes }
+						 }
+						owner = { has_monthly_income = { resource = consumer_goods value < 100 }}
+					}
+					if = {
+						limit = {
+							num_free_districts = { type = district_workshops value > 0 }
+						}
+						add_district = district_workshops
+					}
+				}
+				if = {
+					limit = {
+						 or = {
+							 free_jobs < 15
+							 #any_owned_pop = { is_unemployed = yes }
+						 }
+						owner = { has_monthly_income = { resource = alloys value < 100 }}						
+					}
+					if = {
+						limit = {
+							num_free_districts = { type = district_local_industry value > 0 }
+						}
+						add_district = district_local_industry
+					}
+				}
+				if = {
+					limit = {
+						 or = {
+							 free_jobs < 15
+							 #any_owned_pop = { is_unemployed = yes }
+						 }
+						owner = { has_monthly_income = { resource = physics_research value < 250 }}
+						
+					}
+					if = {
+						limit = {
+							num_free_districts = { type = district_university value > 0 }
+						}
+						add_district = district_university
+					}
+				}
+				if = {
+					limit = {
+						 or = {
+							 free_jobs < 15
+							 #any_owned_pop = { is_unemployed = yes }
+						 }
+						#owner = { has_monthly_income = { resource = physics_research value < 250 }}
+						
+					}
+					if = {
+						limit = {
+							num_free_districts = { type = district_production_hub value > 0 }
+						}
+						add_district = district_production_hub
+					}
+				}
+				if = {
+					limit = {
+						 or = {
+							 free_jobs < 15
+							 #any_owned_pop = { is_unemployed = yes }
+						 }
+						 used_naval_capacity_percent > 0.70
+						#owner = { has_monthly_income = { resource = physics_research value < 250 }}
+						
+					}
+					if = {
+						limit = {
+							num_free_districts = { type = district_spaceport value > 0 }
+						}
+						add_district = district_spaceport
+					}
+				}
+				if = {
+					limit = {
+						 or = {
+							 free_jobs < 15
+							 #any_owned_pop = { is_unemployed = yes }
+						 }
+						 #used_naval_capacity_percent > 0.70
+						#owner = { has_monthly_income = { resource = physics_research value < 250 }}
+						
+					}
+					if = {
+						limit = {
+							num_free_districts = { type = district_academy value > 0 }
+						}
+						add_district = district_academy
+					}
+				}
+				
+				if = {
+					limit = {
+						 or = {
+							 free_jobs < 15
+							 #any_owned_pop = { is_unemployed = yes }
+						 }
+						 empire_sprawl_over_cap > 0
+						#owner = { has_monthly_income = { resource = physics_research value < 250 }}
+						
+					}
+					if = {
+						limit = {
+							num_free_districts = { type = district_bureaucratic value > 0 }
+						}
+						add_district = district_bureaucratic
+					}
+				}
+
+				if = {
+					limit = {
+						 or = {
+							 free_jobs < 15
+							 #any_owned_pop = { is_unemployed = yes }
+						 }
+						exists = owner
+						owner = { has_technology = tech_rare_crystals }
+						owner = { has_monthly_income = { resource = rare_crystals value < 50 }}
+					}
+					if = {
+						limit = {
+							num_free_districts = { type = district_crystal_mines value > 0 }
+						}
+						add_district = district_crystal_mines
+					}
+				}
+				if = {
+					limit = {
+						 or = {
+							 free_jobs < 15
+							 #any_owned_pop = { is_unemployed = yes }
+						 }
+						exists = owner
+						owner = { has_technology = tech_volatile_motes }
+						owner = { has_monthly_income = { resource = volatile_motes value < 50 }}
+					}
+					if = {
+						limit = {
+							num_free_districts = { type = district_chemistry_industry value > 0 }
+						}
+						add_district = district_chemistry_industry
+					}
+				}
+				if = {
+					limit = {
+						 or = {
+							 free_jobs < 15
+							 #any_owned_pop = { is_unemployed = yes }
+						 }
+						exists = owner
+						owner = { has_technology = tech_exotic_gases }
+						owner = { has_monthly_income = { resource = exotic_gases value < 50 }}
+					}
+					if = {
+						limit = {
+							num_free_districts = { type = district_gas_refinery value > 0 }
+						}
+						add_district = district_gas_refinery
+					}
+				}
+				
+				if = {
+					limit = {
+						 or = {
+							 free_jobs < 15
+							 #any_owned_pop = { is_unemployed = yes }
+						 }
+						
+					}
+					if = {
+						limit = {
+							num_free_districts = { type = district_logistics_hub value > 0 }
+						}
+						add_district = district_logistics_hub
+					}
+				}	
+				if = {
+					limit = {
+						 or = {
+							 free_jobs < 5
+							 #any_owned_pop = { is_unemployed = yes }
+						 }
+						
+					}
+					if = {
+						limit = {
+							num_free_districts = { type = district_archeology value > 0 }
+						}
+						add_district = district_archeology
+					}
+				}
+				if = {
+					limit = {
+						 or = {
+							 free_jobs < 5
+							 #any_owned_pop = { is_unemployed = yes }
+						 }
+						
+					}
+					if = {
+						limit = {
+							num_free_districts = { type = district_research_complex value > 0 }
+						}
+						add_district = district_research_complex
+					}
+				}				
+				if = {
+					limit = {
+						 or = {
+							 free_jobs < 5
+							 #any_owned_pop = { is_unemployed = yes }
+						 }
+						
+					}
+					if = {
+						limit = {
+							num_free_districts = { type = district_research_complex value > 0 }
+						}
+						add_district = district_research_complex
+					}
+				}			
+				if = {
+					limit = {
+						 or = {
+							 free_jobs < 5
+							 #any_owned_pop = { is_unemployed = yes }
+						 }
+						
+					}
+					if = {
+						limit = {
+							num_free_districts = { type = district_tourism value > 0 }
+						}
+						add_district = district_tourism
+					}
+				}
+				if = {
+					limit = {
+						 or = {
+							 free_jobs < 5
+							 #any_owned_pop = { is_unemployed = yes }
+						 }
+						
+					}
+					if = {
+						limit = {
+							num_free_districts = { type = district_gardens value > 0 }
+						}
+						add_district = district_gardens
+					}
+				}				
+				
+				
+				
+				
+				
+				# Uncleared blockers - just get rid of them
+				if = {
+					limit = { free_district_slots < 2 }
+					clear_blockers = yes
+				}
+				
+				# Economic Fine Tuning - surplus is wasting space
+				if = {
+					limit = {
+						free_housing > 4
+						free_jobs > 3
+						free_district_slots < 5
+						not = { any_owned_pop = { is_unemployed = yes }}
+					}
+					if = {
+						limit = {
+							has_district = district_farming
+							owner = {
+								has_monthly_income = {
+									resource = food
+									value > 150
+								}
+								resource_stockpile_compare = {
+									resource = food
+									value > 5000
+								}
+							}
+						}
+						remove_district = district_farming
+					}
+				}
+				if = {
+					limit = {
+						free_housing > 3
+						free_jobs > 3
+						free_district_slots < 2
+						not = { any_owned_pop = { is_unemployed = yes }}
+					}
+					if = {
+						limit = {
+							has_district = district_mining
+							owner = {
+								has_monthly_income = {
+									resource = minerals
+									value > 500
+								}
+								resource_stockpile_compare = {
+									resource = minerals
+									value > 12000
+								}
+							}
+						}
+						remove_district = district_mining
+					}
+				}
+				if = {
+					limit = {
+						free_housing > 3
+						free_jobs > 3
+						free_district_slots < 2
+						not = { any_owned_pop = { is_unemployed = yes }}
+					}
+					if = {
+						limit = {
+							has_district = district_generator
+							owner = {
+								has_monthly_income = {
+									resource = energy
+									value > 250
+								}
+								resource_stockpile_compare = {
+									resource = energy
+									value > 10000
+								}
+							}
+						}
+						remove_district = district_generator
+					}
+				}
+				
+				# Housing
+				if = {
+					limit = {
+						free_housing < 1
+					}
+					if = {
+						limit = {
+							num_free_districts = { type = district_ascended_housing value > 0 }
+						}
+						add_district = district_ascended_housing
+					}
+					#Calvitix Ajout pour tous les types de Générateurs (D_overhaul)
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_city value > 0 }
+						}
+						add_district = district_city
+					}
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_ocean_housing value > 0 }
+						}
+						add_district = district_ocean_housing
+					}
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_suburban_city value > 0 }
+						}
+						add_district = district_suburban_city
+					}
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_underground_city value > 0 }
+						}
+						add_district = district_underground_city
+					}
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_shelters value > 0 }
+						}
+						add_district = district_shelters
+					}
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_slums value > 0 }
+						}
+						add_district = district_slums
+					}
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_rw_ascended_housing value > 0 }
+						}
+						add_district = district_rw_ascended_housing
+					}
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_rw_city value > 0 }
+						}
+						add_district = district_rw_city
+					}
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_rw_hive value > 0 }
+						}
+						add_district = district_rw_hive
+					}
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_rw_nexus value > 0 }
+						}
+						add_district = district_rw_nexus
+					}
+
+				}
+				else_if = {
+					limit = { free_housing < -1 }
+					clear_blockers = yes
+				}
+				
+				# Overcrowding - pointless unemployed homeless pops lags up the game
+				if = {
+					limit = {
+						any_owned_pop = { is_unemployed = yes }
+						free_building_slots < 1
+						free_district_slots < 1
+						num_pops > 82
+						free_housing < 0
+					}
+					random_owned_pop = {
+						limit = { is_unemployed = yes }
+						kill_pop = yes
+					}
+					random_owned_pop = {
+						limit = { is_unemployed = yes }
+						kill_pop = yes
+					}
+					random_owned_pop = {
+						limit = { is_unemployed = yes }
+						kill_pop = yes
+					}
+				}
+				
+				# Surplus getting in the way
+				if = {
+					limit = {
+						free_housing > 20
+						num_districts = { type = district_city value > 0 }
+						free_jobs > 2
+					}
+					remove_district = district_city
+				}
+				if = {
+					limit = {
+						has_building = building_commercial_zone
+						free_jobs > 4
+						free_amenities > 25
+						owner = {
+							has_monthly_income = {
+								resource = energy
+								value > 150
+							}
+							has_monthly_income = {
+								resource = consumer_goods
+								value > 75
+							}
+						}
+					}
+					remove_building = building_commercial_zone
+				}
+				
+				# Shortages rectified by removing surplus
+				# Make workers change jobs
+				if = {
+					limit = {
+						num_districts = { type = district_mining value > 0 }
+						num_free_districts = { type = district_farming value > 0 }
+						owner = {
+							has_monthly_income = { resource = minerals value > 50 }
+							resource_stockpile_compare = { resource = minerals value > 1000 }
+							has_monthly_income = { resource = food value < 2 }
+						}
+					}
+					remove_district = district_mining
+					add_district = district_farming
+				}						
+				if = {
+					limit = {
+						has_district = district_generator
+						num_free_districts = { type = district_farming value > 0 }
+						owner = {
+							has_monthly_income = {
+								resource = energy
+								value > 100
+							}
+							resource_stockpile_compare = {
+								resource = energy
+								value > 500
+							}
+							has_monthly_income = {
+								resource = food
+								value < 2
+							}
+						}
+					}
+					remove_district = district_generator
+					add_district = district_farming
+				}
+				if = {
+					limit = {
+						has_district = district_farming
+						num_free_districts = { type = district_generator value > 0 }
+						owner = {
+							has_monthly_income = {
+								resource = energy
+								value < 2
+							}
+							resource_stockpile_compare = {
+								resource = energy
+								value < 500
+							}
+							has_monthly_income = {
+								resource = food
+								value > 100
+							}
+							resource_stockpile_compare = {
+								resource = food
+								value > 500
+							}
+						}
+					}
+					remove_district = district_farming
+					add_district = district_generator
+				}
+				
+				# Minerals shortages are rare
+				if = {
+					limit = {
+						free_jobs < 4
+						num_pops > 25
+						or = {
+							owner = { has_monthly_income = { resource = minerals value < 1 }}
+							and = {
+								owner = { has_monthly_income = { resource = minerals value < 20 }}
+								owner = { resource_stockpile_compare = { resource = minerals value < 1000 }}
+							}
+						}
+					}
+					if = {
+						limit = {
+							num_free_districts = { type = district_mining value > 0 }
+						}
+						add_district = district_mining
+					}
+					#Calvitix Ajout pour tous les types de mines (D_overhaul)
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_mining_uncapped value > 0 }
+						}
+						add_district = district_mining_uncapped
+					}
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_cheap_mining value > 0 }
+						}
+						add_district = district_cheap_mining
+					}
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_secure_mining value > 0 }
+						}
+						add_district = district_secure_mining
+					}
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_surface_mining value > 0 }
+						}
+						add_district = district_surface_mining
+					}
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_rw_asteroid_belt_mining value > 0 }
+						}
+						add_district = district_rw_asteroid_belt_mining
+					}
+				}
+
+				# Homeworld with too many empty building slots			
+				if = {
+					limit = {
+						or = {
+							is_homeworld = yes
+							is_capital = yes
+						}
+						free_building_slots > 4
+						free_jobs < 3
+						num_pops > 40
+					}
+					add_building = building_research_lab_1
+				}				
+				if = {
+					limit = {
+						or = {
+							is_homeworld = yes
+							is_capital = yes
+						}
+						free_building_slots > 3
+						free_jobs < 3
+						num_pops > 45
+					}
+					add_building = building_research_lab_1
+				}
+				if = {
+					limit = {
+						or = {
+							is_homeworld = yes
+							is_capital = yes
+						}
+						free_building_slots > 2
+						free_jobs < 3
+						num_pops > 50
+					}
+					add_building = building_research_lab_1
+				}				
+
+
+
+
+
+				# Last resort
+				if = {
+					limit = {
+						num_pops > 36
+						free_building_slots > 0
+						free_housing < 4
+						owner = {
+							or = {
+								and = {
+									has_monthly_income = {
+										resource = food
+										value < 0
+									}
+									resource_stockpile_compare = {
+										resource = food
+										value < 250
+									}
+								}
+								and = {
+									has_monthly_income = {
+										resource = consumer_goods
+										value < 0
+									}
+									resource_stockpile_compare = {
+										resource = consumer_goods
+										value < 250
+									}
+								}
+							}
+						}
+					}
+					random_owned_pop = {
+						limit = {
+							not = { has_job = job_technician }
+							not = { has_job = job_miner }
+							not = { has_job = job_farmer }
+							not = { has_job = job_artisan }
+						}
+						kill_pop = yes
+					}
+				}
+			}
+		}
+	}
+}

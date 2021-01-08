@@ -870,7 +870,7 @@ building_slave_processing = {
 	}
 
 	ai_weight = {
-		weight = 5
+		weight = 200 #5
 		modifier = {
 			factor = 0
 			NOT = { any_owned_pop = { is_enslaved = yes } }
@@ -924,6 +924,8 @@ building_precinct_house = {
 
 	planet_modifier = {
 		job_enforcer_add = 2
+		# job_security_guard_add = 2
+		planet_crime_add = -5
 	}
 
 	resources = {
@@ -953,15 +955,27 @@ building_precinct_house = {
 	}
 
 	ai_weight = {
-		weight = 0.5 #0
+		weight = 10
 		modifier = {
-			weight = 100
-			planet_crime > 15
-			NOR = {
-				AND = {
-					has_building = building_precinct_house
-					owner = { has_technology = tech_colonial_centralization }
-				}
+			factor = 10
+			planet_crime > 20
+		}
+		modifier = {
+			factor = 25
+			planet_crime > 25
+		}
+		modifier = {
+			factor = 100
+			planet_crime > 30
+		}
+		modifier = {
+			factor = 500
+			planet_crime > 50
+		}
+		modifier = {
+			factor = 0
+			or = {
+				planet_crime < 15
 				has_building = building_hall_judgment
 				num_buildings = { type = building_precinct_house value = 3 }
 			}
@@ -1024,7 +1038,12 @@ building_hall_judgment = {
 	}
 
 	ai_weight = {
-		weight = 0
+		weight = 1
+		# AA Upgrade this now if there is still crime
+		modifier = {
+			factor = 1000
+			planet_crime > 15
+		}
 	}
 }
 
@@ -1087,7 +1106,7 @@ building_sentinel_posts = {
 		modifier = {
 			weight = 10
 			planet_crime > 15
-			buildings_build_building = yes
+			#buildings_build_building = yes
 		}
 #STARNET START
 		modifier = {
@@ -1154,10 +1173,22 @@ building_psi_corps = {
 	}
 
 	ai_weight = {
-		weight = 100 #5
+		weight = 5
 		modifier = {
 			factor = 0
-			buildings_build_building = no
+			# buildings_build_building = no
+			# AA Yeah lets leave this until end-game even if it could stop crime now?
+			# Bitching about crime not being relevant to an empire that can use this is stoopid
+			# That is kinda the whole feckin point
+			planet_crime < 1
+			planet_stability > 90
+		}
+		modifier = {
+			factor = 100
+			or = {
+				planet_crime > 10
+				planet_stability < 50			
+			}
 		}
 	}
 }

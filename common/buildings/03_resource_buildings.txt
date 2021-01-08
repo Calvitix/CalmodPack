@@ -46,6 +46,7 @@ building_hydroponics_farm = {
 			planet = {
 				NOT = { is_planet_class = pc_habitat }
 				free_building_slots = 0
+				free_jobs > 1
 				owner = {
 					is_ai = yes
 					has_monthly_income = {
@@ -155,11 +156,23 @@ building_hydroponics_farm = {
 			OR = {
 				num_free_districts = { type = district_farming value = 0 }
 				free_district_slots = 0
-			}
+				owner = {
+					is_regular_empire = yes
+					has_monthly_income = { resource = food value < 10 }
+				}
+				owner = { 
+					is_mechanical_empire = yes
+					OR = {
+						has_civic = civic_machine_servitor
+						has_civic = civic_machine_assimilator
+					}
+					has_monthly_income = { resource = food value < 2 }
+				}
+			}				
 			owner = {
 				has_monthly_income = {
 					resource = food
-					value < 0
+					value < 20
 				}
 			}
 		}
@@ -199,6 +212,33 @@ building_hydroponics_farm = {
 				owner = { country_uses_food = no }
 			}
 		}
+#EDAI START
+		modifier = {
+			factor = 0
+			or = {
+				num_free_districts = { type = district_farming value > 0 }
+				owner = {
+					is_regular_empire = yes
+					has_monthly_income = { resource = food value > 25 }
+				}
+				owner = { 
+					is_mechanical_empire = yes
+					NOR = {
+						has_civic = civic_machine_servitor
+						has_civic = civic_machine_assimilator
+					}
+				}
+				owner = { 
+					is_mechanical_empire = yes
+					OR = {
+						has_civic = civic_machine_servitor
+						has_civic = civic_machine_assimilator
+					}
+					has_monthly_income = { resource = food value > 10 }
+				}
+			}
+		}
+#EDAI END
 	}
 
 	ai_resource_production = {
@@ -224,12 +264,25 @@ building_food_processing_facility = {
 	destroy_trigger = {
 		exists = owner
 		OR = {
-			owner = {
-				is_ai = yes
-				owner = { country_uses_food = no }
-			}
+#EDAI START
 			is_planet_class = pc_machine
 			has_modifier = resort_colony
+			AND = {
+				exists = owner
+				owner = { is_ai = yes }
+				or = {
+					and = {
+						num_districts = { type = district_farming value < 1 }
+						num_districts = { type = district_farming_uncapped value < 1 }
+					}
+					and = {
+						free_jobs > 2
+						exists = owner
+						owner = { has_monthly_income = { resource = food value > 300 }}
+					}
+				}
+			}
+#EDAI END
 		}
 	}
 
@@ -346,7 +399,7 @@ building_food_processing_facility = {
 	}
 
 	ai_resource_production = {
-		food = 1
+		food = 2
 		trigger = {
 			always = yes
 		}
@@ -371,13 +424,19 @@ building_food_processing_center = {
 		OR = {
 			AND = {
 				exists = owner
-				owner = {
-					is_ai = yes
-					owner = { country_uses_food = no }
+				owner = { is_ai = yes }
+				or = {
+					and = {
+						num_districts = { type = district_farming value < 1 }
+						num_districts = { type = district_farming_uncapped value < 1 }
+					}
+					and = {
+						free_jobs > 3
+						exists = owner
+						owner = { has_monthly_income = { resource = food value > 400 }}
+					}
 				}
 			}
-			is_planet_class = pc_machine
-			has_modifier = resort_colony
 			buildings_no_motes = yes
 		}
 	}
@@ -518,6 +577,11 @@ building_food_processing_center = {
 		food = 3
 		trigger = {
 			always = yes
+		}
+	}
+	on_built = {
+		planet = { 
+			owner = { set_timed_country_flag = { flag = buildings_new_mote_building days = 480 } }
 		}
 	}
 }
@@ -863,6 +927,11 @@ building_mineral_purification_hub = {
 			always = yes
 		}
 	}
+	on_built = {
+		planet = { 
+			owner = { set_timed_country_flag = { flag = buildings_new_mote_building days = 480 } }
+		}
+	}
 }
 
 building_energy_grid = {
@@ -1103,7 +1172,7 @@ building_energy_grid = {
 	}
 
 	ai_resource_production = {
-		energy = 1
+		energy = 2
 		trigger = {
 			always = yes
 		}
@@ -1315,6 +1384,11 @@ building_energy_nexus = {
 			always = yes
 		}
 	}
+	on_built = {
+		planet = { 
+			owner = { set_timed_country_flag = { flag = buildings_new_gas_building days = 480 } }
+		}
+	}
 }
 
 building_resource_silo = {
@@ -1422,7 +1496,7 @@ building_resource_silo = {
 			is_active_resolution = "resolution_greatergood_universal_prosperity_mandate"
 		}
 		modifier = {
-			factor = 10
+			weight = 90000
 			owner = {
 				has_ascension_perk = ap_arcology_project
 				NOT = { has_technology = tech_mega_engineering }
@@ -1451,6 +1525,26 @@ building_bio_reactor = {
 		}
 	}
 
+	# AA - Better control over AI use
+	allow = {
+		exists = owner
+		or = {
+			owner = { is_ai = no }
+			owner = {
+				is_ai = yes
+				has_ascension_perk = ap_arcology_project
+				has_monthly_income = {
+					resource = energy
+					value < 50
+				}
+				has_monthly_income = {
+					resource = food
+					value > 50
+				}
+			}
+		}
+	}
+	
 	resources = {
 		category = planet_buildings
 		cost = {
@@ -1514,4 +1608,10 @@ building_bio_reactor = {
 			}
 		}
 	}
+	on_built = {
+		planet = { 
+			owner = { set_timed_country_flag = { flag = buildings_new_reactor_building days = 480 } }
+		}
+	}
+
 }

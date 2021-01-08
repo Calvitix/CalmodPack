@@ -120,8 +120,73 @@ building_foundry_1 = {
 
 	ai_weight = {
 #STARNET END
-		weight = 2.2 #1.2
-		
+#EDAI START
+		weight = 0
+		modifier = {
+			weight = 2
+			is_capital = no
+			free_jobs < 6
+			free_amenities > 0
+			free_housing > 0
+			owner = {
+				has_monthly_income = {
+					resource = food
+					value > 10
+				}
+				has_monthly_income = {
+					resource = energy
+					value > 10
+				}
+				has_monthly_income = {
+					resource = minerals
+					value > 20
+				}
+				has_monthly_income = {
+					resource = alloys
+					value < 100
+				}
+			}
+		}
+		modifier = {
+			weight = 10000
+			is_capital = yes
+			NOR = {
+				has_building = building_foundry_2
+				has_building = building_foundry_3
+			}
+			num_buildings = { type = building_foundry_1 value < 3 }
+			free_jobs < 5
+			owner = {
+				has_monthly_income = {
+					resource = minerals
+					value > 25
+				}
+				has_monthly_income = {
+					resource = alloys
+					value < 200
+				}
+			}
+		}
+		modifier = {
+			weight = 25000
+			NOR = {
+				has_building = building_foundry_1
+				has_building = building_foundry_2
+				has_building = building_foundry_3
+			}
+			free_jobs < 5
+			owner = {
+				has_monthly_income = {
+					resource = minerals
+					value > 25
+				}
+				has_monthly_income = {
+					resource = alloys
+					value < 50
+				}
+			}
+		}
+#EDAI END		
 		modifier = {
 			factor = 1.5
 			str_good_alloys = yes
@@ -1159,7 +1224,18 @@ building_foundry_2 = {
 			}
 			}
 		}
-		
+		modifier = {
+			factor = 0
+			AND = {
+				owner = {
+					has_monthly_income = {
+						resource = volatile_motes
+						value > 2
+					}
+				}
+			}
+			owner = { has_country_flag = buildings_new_mote_building }
+		}		
 	}
 	on_queued = {
 		owner = { set_timed_country_flag = {
@@ -1184,6 +1260,11 @@ building_foundry_2 = {
 		alloys = 1
 		trigger = {
 			always = yes
+		}
+	}
+	on_built = {
+		planet = { 
+			owner = { set_timed_country_flag = { flag = buildings_new_mote_building days = 480 } }
 		}
 	}
 }
@@ -1437,6 +1518,18 @@ building_foundry_3 = {
 				}
 			}
 		}
+		modifier = {
+			factor = 0
+			AND = {
+				owner = {
+					has_monthly_income = {
+						resource = volatile_motes
+						value > 2
+					}
+				}
+			}
+			owner = { has_country_flag = buildings_new_mote_building }
+		}		
 	}
 	on_queued = {
 		owner = { set_timed_country_flag = {
@@ -1465,6 +1558,11 @@ building_foundry_3 = {
 		}
 	}
 
+	on_built = {
+		planet = { 
+			owner = { set_timed_country_flag = { flag = buildings_new_mote_building days = 480 } }
+		}
+	}
 }
 
 building_factory_1 = {
@@ -1565,7 +1663,74 @@ building_factory_1 = {
 
 	
 	ai_weight = {
-		weight = 0.9
+#EDAI START
+		weight = 0
+		modifier = {
+			weight = 1.9
+			is_capital = no
+			free_jobs < 6
+			free_amenities > 0
+			free_housing > 0
+			owner = {
+				has_monthly_income = {
+					resource = food
+					value > 10
+				}
+				has_monthly_income = {
+					resource = energy
+					value > 10
+				}
+				has_monthly_income = {
+					resource = minerals
+					value > 20
+				}
+				has_monthly_income = {
+					resource = consumer_goods
+					value < 50
+				}
+			}
+		}
+		modifier = {
+			weight = 10000
+			is_capital = yes
+			NOR = {
+				has_building = building_factory_2
+				has_building = building_factory_3
+			}
+			num_buildings = { type = building_factory_1 value < 3 }
+			free_jobs < 5
+			owner = {
+				has_monthly_income = {
+					resource = minerals
+					value > 25
+				}
+				has_monthly_income = {
+					resource = consumer_goods
+					value < 100
+				}
+			}
+		}
+		modifier = {
+			weight = 25000
+			NOR = {
+				has_building = building_factory_1
+				has_building = building_factory_2
+				has_building = building_factory_3
+			}
+			free_jobs < 5
+			owner = {
+				has_monthly_income = {
+					resource = minerals
+					value > 25
+				}
+				has_monthly_income = {
+					resource = consumer_goods
+					value < 10
+				}
+			}
+		}
+
+#EDAI END
 	
 		modifier = {
 			factor = 2.2
@@ -2162,6 +2327,16 @@ building_factory_2 = {
 				}
 			}
 		}
+		modifier = {
+			factor = 0
+			owner = {
+				has_monthly_income = {
+					resource = rare_crystals
+					value > 2
+				}
+				has_country_flag = buildings_new_crystal_building
+			}
+		}		
 		
 	}
 
@@ -2182,7 +2357,9 @@ building_factory_2 = {
 			always = yes
 		}
 	}
-
+	on_built = {
+		owner = { set_timed_country_flag = { flag = buildings_new_crystal_building days = 480 } }
+	}
 	on_queued = {
 		IF = {
 			limit = {
@@ -2481,6 +2658,16 @@ building_factory_3 = {
 				}
 			}
 		}
+		modifier = {
+			factor = 0
+			owner = { 
+				has_monthly_income = {
+					resource = rare_crystals
+					value > 2
+				}
+				has_country_flag = buildings_new_crystal_building
+			}
+		}		
 
 
 	}
@@ -2509,7 +2696,9 @@ building_factory_3 = {
 			always = yes
 		}
 	}
-
+	on_built = {
+		owner = { set_timed_country_flag = { flag = buildings_new_crystal_building days = 480 } }
+	}
 	on_queued = {
 		IF = {
 			limit = {
@@ -3136,7 +3325,10 @@ building_chemical_plant = {
 				resource_income_compare = {
 					resource = consumer_goods
 					value > 5
-				}
+				}			
+				NOT = {
+					has_country_flag = buildings_new_mote_plant
+				}			
 			}
 		}
 	}
@@ -3163,7 +3355,9 @@ building_chemical_plant = {
 			always = yes
 		}
 	}
-
+	on_built = {
+		owner = { set_timed_country_flag = { flag = buildings_new_mote_plant days = 480 } }
+	}
 	on_queued = {
 		IF = {
 			limit = {
@@ -3465,7 +3659,9 @@ building_crystal_plant = {
 			always = yes
 		}
 	}
-
+	on_built = {
+		owner = { set_timed_country_flag = { flag = buildings_new_crystal_plant days = 480 } }
+	}
 	on_queued = {
 		IF = {
 			limit = {
