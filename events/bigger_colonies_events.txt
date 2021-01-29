@@ -137,83 +137,87 @@ planet_event = {
 	hide_window = yes
 	is_triggered_only = yes
 	immediate = {
-		if = {
-			limit = { 
-				owner = { 
-					OR = {
-						has_civic = civic_life_seeded 
-						has_civic = civic_crystal_world 
-						has_civic = civic_floating_world 
-						has_civic = civic_graveyard_world 
-						has_civic = civic_technoorganic_world
-					}
-				} 
-			}
-			set_planet_size = 50		
-			add_deposit = d_searing_desert			
-			add_deposit = d_underwater_vent
-			add_deposit = d_tempestous_mountain		
-			add_deposit = d_searing_desert			
-			add_deposit = d_underwater_vent
-			add_deposit = d_tempestous_mountain		
-			add_deposit = d_ore_rich_caverns 		
-			add_deposit = d_prosperous_mesa
-			add_deposit = d_submerged_ore_veins
-			add_deposit = d_ore_rich_caverns 		
-			add_deposit = d_prosperous_mesa
-			add_deposit = d_submerged_ore_veins
-			add_deposit = d_lush_jungle	
-			add_deposit = d_teeming_reef		
-			add_deposit = d_black_soil	
-			add_deposit = d_lush_jungle	
-			add_deposit = d_teeming_reef		
-			add_deposit = d_black_soil		
-			random_list = {
-				33 = { add_deposit = d_frozen_gas_lake }
-				33 = { add_deposit = d_prosperous_mesa }
-				33 = { add_deposit = d_fertile_lands }
-			}	
-			add_deposit = d_dust_caverns
-			add_deposit = d_bubbling_swamp
-			add_deposit = d_crystalline_caverns
-			while = { count = 4 bc_add_random_diversity_mod_deposit = yes } # !!District Diversity Mod
-		}
-		else_if = {
-			limit = { owner = { has_civic = civic_post_apocalyptic } }
-			set_planet_size = 50		
-			add_deposit = d_tomb_world_ruins
-			add_deposit = d_tomb_world_wasteland	
-			add_deposit = d_hot_springs		
-			add_deposit = d_searing_desert
-			add_deposit = d_underwater_vent	
-			add_deposit = d_veiny_cliffs		
-			add_deposit = d_ore_rich_caverns
-			add_deposit = d_submerged_ore_veins
-			add_deposit = d_lichen_fields	
-			add_deposit = d_fungal_caves 	
-			add_deposit = d_fungal_forest
-			while = { count = 4 bc_add_random_diversity_mod_deposit = yes } # !!District Diversity Mod
-		}
-		else_if = {
-			limit = { NOR = {  owner = { has_civic = civic_life_seeded } owner = { has_civic = civic_post_apocalyptic } } }
-			if = {# selected capital goes directly to size 25. 
-				limit = { planet_size < 25 } 
-				set_planet_size = 25 
-				while = { count = 5 bc_add_random_deposit = yes }		
-				while = { count = 2 bc_add_random_blocker = yes }
-				while = { count = 1 bc_add_random_diversity_mod_deposit = yes } # !!District Diversity Mod
-			}
-			while = {#selected capital can go up from size 25 to 45.
-				count = 20 
+		if = { 
+			limit = { NOT = { is_planet_class = pc_ringworld_habitable } } #Calvitix
+			
+			if = {
+				limit = { 
+					owner = { 
+						OR = {
+							has_civic = civic_life_seeded 
+							has_civic = civic_crystal_world 
+							has_civic = civic_floating_world 
+							has_civic = civic_graveyard_world 
+							has_civic = civic_technoorganic_world
+						}
+					} 
+				}
+				set_planet_size = 50		
+				add_deposit = d_searing_desert			
+				add_deposit = d_underwater_vent
+				add_deposit = d_tempestous_mountain		
+				add_deposit = d_searing_desert			
+				add_deposit = d_underwater_vent
+				add_deposit = d_tempestous_mountain		
+				add_deposit = d_ore_rich_caverns 		
+				add_deposit = d_prosperous_mesa
+				add_deposit = d_submerged_ore_veins
+				add_deposit = d_ore_rich_caverns 		
+				add_deposit = d_prosperous_mesa
+				add_deposit = d_submerged_ore_veins
+				add_deposit = d_lush_jungle	
+				add_deposit = d_teeming_reef		
+				add_deposit = d_black_soil	
+				add_deposit = d_lush_jungle	
+				add_deposit = d_teeming_reef		
+				add_deposit = d_black_soil		
 				random_list = {
-					1 = {} 
-					1 = { 
-						change_planet_size = 1
-						random_list = { 1 = {} 2 = { bc_add_random_deposit = yes } }
-						random_list = { 1 = {} 1 = { bc_add_random_blocker = yes } }
-						random_list = { 1 = {} 1 = { bc_add_random_diversity_mod_deposit = yes } } # !!District Diversity Mod
-					}						
-				} 
+					33 = { add_deposit = d_frozen_gas_lake }
+					33 = { add_deposit = d_prosperous_mesa }
+					33 = { add_deposit = d_fertile_lands }
+				}	
+				add_deposit = d_dust_caverns
+				add_deposit = d_bubbling_swamp
+				add_deposit = d_crystalline_caverns
+				while = { count = 4 bc_add_random_diversity_mod_deposit = yes } # !!District Diversity Mod
+			}
+			else_if = {
+				limit = { owner = { has_civic = civic_post_apocalyptic } }
+				set_planet_size = 50		
+				add_deposit = d_tomb_world_ruins
+				add_deposit = d_tomb_world_wasteland	
+				add_deposit = d_hot_springs		
+				add_deposit = d_searing_desert
+				add_deposit = d_underwater_vent	
+				add_deposit = d_veiny_cliffs		
+				add_deposit = d_ore_rich_caverns
+				add_deposit = d_submerged_ore_veins
+				add_deposit = d_lichen_fields	
+				add_deposit = d_fungal_caves 	
+				add_deposit = d_fungal_forest
+				while = { count = 4 bc_add_random_diversity_mod_deposit = yes } # !!District Diversity Mod
+			}
+			else_if = {
+				limit = { NOR = {  owner = { has_civic = civic_life_seeded } owner = { has_civic = civic_post_apocalyptic } } }
+				if = {# selected capital goes directly to size 25. 
+					limit = { planet_size < 25 } 
+					set_planet_size = 25 
+					while = { count = 5 bc_add_random_deposit = yes }		
+					while = { count = 2 bc_add_random_blocker = yes }
+					while = { count = 1 bc_add_random_diversity_mod_deposit = yes } # !!District Diversity Mod
+				}
+				while = {#selected capital can go up from size 25 to 45.
+					count = 20 
+					random_list = {
+						1 = {} 
+						1 = { 
+							change_planet_size = 1
+							random_list = { 1 = {} 2 = { bc_add_random_deposit = yes } }
+							random_list = { 1 = {} 1 = { bc_add_random_blocker = yes } }
+							random_list = { 1 = {} 1 = { bc_add_random_diversity_mod_deposit = yes } } # !!District Diversity Mod
+						}						
+					} 
+				}
 			}
 		}
 	}
