@@ -388,3 +388,546 @@ ship_event = {
 		name = "EXCELLENT"
 	}
 }
+
+############################
+### FLAGSHIP EVENT CHAIN ###
+############################
+
+#1. Player obtains Flagship tech, which opens the Flagship in the ship designer. The Flagship Shipyard mega becomes available to build.
+#the notification event to tell players that they can now design a flagship and build a shipyard for it
+country_event = {
+	id = nsc_events.10
+	title = "nsc_events.10.name"
+	desc = "nsc_events.10.desc"
+	picture = GFX_evt_megashipyard
+	show_sound = event_bad_omen
+	is_triggered_only = yes
+
+	trigger = {
+		last_increased_tech = tech_Flagship_1
+	}
+
+	option = {
+		name = nsc_events.10.a #ok
+	}
+}
+
+
+#2. Whenever the player starts on their Shipyard, we can have a popup telling the player that they should finalize the design of their Flagship before the Shipyard is complete.
+#3. Once the Shipyard finishes, the player can then "upgrade" the Shipyard a total of 6 times, with each stage being a section of the Flagship being completed.
+#the notification event to tell players that they should finalize the flagship design
+country_event = {
+	id = nsc_events.11
+	title = "nsc_events.11.name"
+	desc = "nsc_events.11.desc"
+	picture = GFX_evt_physics_research
+	show_sound = event_construction
+	is_triggered_only = yes
+
+	option = {
+		name = nsc_events.11.a
+	}
+}
+
+
+#4. When the third Flagship stage is done, an event popup tells you that other empires know about this and may start their own Flagship programs.
+#the notification event to tell players that other empires know about their flagship project by now
+country_event = {
+	id = nsc_events.12
+	title = "nsc_events.12.name"
+	desc = "nsc_events.12.desc"
+	picture = GFX_evt_board_meeting
+	show_sound = event_red_alert
+	is_triggered_only = yes
+
+	option = {
+		name = nsc_events.12.a
+	}
+}
+
+
+#5. When the final stage is complete, the Flagship is spawned from the player design and an event popup talks about the completion of the project, its awesome power, and the reaction of other empires.
+#the notification event to tell players that their flagship construction has finished
+country_event = {
+	id = nsc_events.13
+	title = "nsc_events.13.name"
+	desc = "nsc_events.13.desc"
+	picture = GFX_evt_space_hangar
+	show_sound = relic_activation_khans_throne
+	is_triggered_only = yes
+
+	immediate = {
+		#6. A year (or whatever time frame) after the Flagship is spawned, you get an event telling you that other empires have rushed their flagships into production, and they're operational.
+		#This is the event that spawns Flagships for a random set of AI empires.
+		country_event = { id = nsc_events.14 days = 30 }
+		country_event = { id = nsc_events.15 days = 360 }
+	}
+
+	option = {
+		name = nsc_events.13.a
+	}
+}
+
+
+#connected from the 'nsc_events.13' event
+country_event = {
+	id = nsc_events.14
+	title = "nsc_events.14.name"
+	desc = "nsc_events.14.desc"
+	picture = GFX_evt_flagship
+	show_sound = event_celebration
+	is_triggered_only = yes
+
+	immediate = {
+		nsc_flagship_creation_effect = yes
+	}
+
+	option = {
+		name = nsc_events.14.a
+		add_resource = { influence = 100 }
+	}
+}
+
+
+#the event that spawns Flagships for a random set of AI empires.
+country_event = {
+	id = nsc_events.15
+	title = "nsc_events.15.name"
+	desc = "nsc_events.15.desc"
+	picture = GFX_evt_unknown_ships
+	show_sound = event_bad_omen
+	is_triggered_only = yes
+
+	immediate = {
+		every_rival_country = {
+			limit = {
+				is_ai = yes
+				OR = {
+					is_country_type = default
+					is_country_type = fallen_empire
+					is_country_type = awakened_fallen_empire
+				}
+				NOT = { any_owned_ship = { is_ship_size = Flagship } }
+			}
+			nsc_flagship_creation_for_ai_effect = yes
+		}
+		every_neighbor_country = {
+			limit = {
+				is_ai = yes
+				OR = {
+					is_country_type = default
+					is_country_type = fallen_empire
+					is_country_type = awakened_fallen_empire
+				}
+				NOT = { any_owned_ship = { is_ship_size = Flagship } }
+			}
+			nsc_flagship_creation_for_ai_effect = yes
+		}
+		while = {
+			random_country = {
+				limit = {
+					is_ai = yes
+					OR = {
+						opinion_level = { who = root level = poor }
+						opinion_level = { who = root level = terrible }
+					}
+					NOT = { any_owned_ship = { is_ship_size = Flagship } }
+				}
+				nsc_flagship_creation_for_ai_effect = yes
+			}
+			count = 3
+		}
+	}
+
+	option = {
+		name = nsc_events.15.a
+	}
+}
+
+
+#7. Flagship is destroyed, an event popup then tells the player that a special project will be created to allow them to build another Flagship, and will be available for them to start at any time. 
+#At the end of that special project, the Flagship once again spawns. This event should repeat each time the Flagship is destroyed.
+#the event for destroyed flagship
+country_event = {
+	id = nsc_events.16
+	title = "nsc_events.16.name"
+	desc = "nsc_events.16.desc"
+	picture = GFX_evt_exploding_ship
+	show_sound = event_ship_explosion
+	is_triggered_only = yes
+
+	trigger = {
+		fromfrom = { is_ship_size = Flagship }
+	}
+
+	immediate = {
+		if = {
+			limit = { has_country_flag = nsc_flagship_ruler_leader_country }
+			remove_country_flag = nsc_flagship_ruler_leader_country
+		}
+		random_owned_leader = {
+			limit = { has_leader_flag = nsc_flagship_ruler_captain }
+			random_list = {
+				60 = {}
+				40 = { kill_leader = { show_notification = yes } }
+			}
+		}
+	}
+
+	option = {
+		name = nsc_events.16.a #build it again!
+		allow = {
+			has_resource = { type = alloys amount >= 10000 }
+			has_resource = { type = influence amount >= 700 }
+		}
+		add_resource = {
+			alloys = -10000
+			influence = -700
+		}
+		enable_special_project = {
+			name = NSC_FLAGSHIP_REBUILD_PROJECT
+			location = this.capital_scope #damn, this code doesn't support megastructure scope
+		}
+	}
+	option = {
+		name = nsc_events.16.b #no
+		add_resource = { influence = 200 }
+	}
+}
+
+
+#'NSC_FLAGSHIP_REBUILD_PROJECT' special proejct completion event
+country_event = {
+	id = nsc_events.17
+	title = "nsc_events.17.name"
+	desc = "nsc_events.17.desc"
+	picture = GFX_evt_flagship
+	show_sound = event_celebration
+	is_triggered_only = yes
+
+	immediate = {
+		nsc_flagship_creation_effect = yes
+	}
+
+	option = {
+		name = nsc_events.17.a
+	}
+}
+
+
+#when the flagship ruler captain is dead
+country_event = {
+	id = nsc_events.18
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = nsc_flagship_ruler_leader_country
+		from = { has_leader_flag = nsc_flagship_ruler_leader }
+	}
+
+	immediate = {
+		from = { remove_leader_flag = nsc_flagship_ruler_leader }
+		ruler = {
+			remove_leader_flag = nsc_flagship_ruler #added a code to prevent the below event from executing
+			kill_leader = { show_notification = yes }
+		}
+	}
+}
+
+
+#when a ruler is removed (killed, ousted, or peacefully retired) and left the flagship
+country_event = {
+	id = nsc_events.19
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = nsc_flagship_ruler_leader_country
+		from = { has_leader_flag = nsc_flagship_ruler }
+	}
+
+	immediate = {
+		from = { remove_leader_flag = nsc_flagship_ruler }
+		random_owned_leader = {
+			limit = { has_leader_flag = nsc_flagship_ruler_leader }
+			remove_leader_flag = nsc_flagship_ruler_leader #added a code to prevent the above event from executing
+			kill_leader = { show_notification = no }
+		}
+	}
+}
+
+
+#when new ruler is set, prepared for the flagship
+country_event = {
+	id = nsc_events.20
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = nsc_flagship_ruler_leader_country
+		any_owned_ship = { is_ship_size = Flagship }
+	}
+
+	immediate = {
+		clone_leader = {
+			target = ruler
+			class = admiral
+			traits = {
+				trait = leader_trait_flagship
+			}
+			effect = {
+				prev.ruler = { set_leader_flag = nsc_flagship_ruler }
+				set_leader_flag = nsc_flagship_ruler_leader
+				save_event_target_as = nsc_flagship_ruler_leader_target
+				if = {
+					limit = { has_skill < 3 }
+					set_skill = 3
+				}
+			}
+		}
+		random_owned_fleet = {
+			limit = { any_owned_ship = { is_ship_size = Flagship } }
+			assign_leader = event_target:nsc_flagship_ruler_leader_target
+			settings = { can_change_leader = no }
+		}
+
+	}
+}
+
+
+#### federation events for building flagship for federation fleets ###
+country_event = {
+	id = nsc_events.21
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		federation = { NOT = { has_federation_type = research_federation } }
+		always = no
+	}
+
+	immediate = {
+		federation = {
+			set_federation_law = nsc_flagship_for_federation_fleet_no
+			remove_modifier = federation_law_category_nsc_flagship_for_federation_fleet_cooldown
+		}
+	}
+}
+#player notification event that the vote for building a flagship for the federation fleet is now possible
+country_event = {
+	id = nsc_events.22
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = { #at first, I put 'has_federation_law' trigger here directly but didn't work
+		federation = { NOT = { has_federation_flag = nsc_flagship_vote_possible_notification_happened } }
+	}
+
+	immediate = {
+		country_event = { id = nsc_events.23 days = 1 } #it seems I need to add a delay here...
+	}
+}
+country_event = {
+	id = nsc_events.23
+	title = "nsc_events.23.name"
+	desc = "nsc_events.23.desc"
+	picture = GFX_evt_voting
+	is_triggered_only = yes
+
+	trigger = {
+		federation = {
+			has_federation_law = centralization_low
+			NOT = { has_federation_flag = nsc_flagship_vote_possible_notification_happened } #check the flag twice #this is intended
+		}
+	}
+
+	immediate = {
+		federation = { set_federation_flag = nsc_flagship_vote_possible_notification_happened }
+	}
+
+	option = {
+		name = nsc_events.23.a
+	}
+}
+#player notification event for an available flagship federation project
+country_event = {
+	id = nsc_events.24
+	title = "nsc_events.24.name"
+	desc = "nsc_events.24.desc"
+	picture = GFX_evt_megashipyard
+	is_triggered_only = yes
+
+	immediate = {
+		nsc_federation_flagship_project_effect = yes
+	}
+
+	option = {
+		name = nsc_events.24.a
+		custom_tooltip = nsc_events.24.a.tooltip
+	}
+}
+#'NSC_FLAGSHIP_BUILDING_FEDERATION_PROJECT' special projects effect event
+ship_event = {
+	id = nsc_events.25
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		owner.federation = {
+			change_variable = { which = nsc_federation_flagship_project_progress_count_var value = 1 }
+			if = {
+				limit = { check_variable = { which = nsc_federation_flagship_project_progress_count_var value = 6 } }
+				random_member = {
+					limit = { is_federation_leader = yes }
+					country_event = { id = nsc_events.26 }
+				}
+			}
+		}
+	}
+}
+#'NSC_FLAGSHIP_BUILDING_FEDERATION_PROJECT' special projects finished effect event
+country_event = {
+	id = nsc_events.26
+	title = "nsc_events.26.name"
+	desc = "nsc_events.26.desc"
+	picture = GFX_evt_automated_dreadnought
+	show_sound = event_celebration
+	is_triggered_only = yes
+
+	immediate = {
+		federation = {
+			every_member = {
+				limit = { has_modifier = nsc_federation_flagship_project }
+				remove_modifier = nsc_federation_flagship_project
+			}
+			every_member = {
+				limit = { is_ai = no }
+				add_modifier = { modifier = nsc_federation_flagship_project_done days = -1 }
+			}
+			set_federation_flag = nsc_federation_flagship_project_done_flag
+		}
+	}
+
+	option = {
+		name = nsc_events.26.a
+	}
+}
+#when a country with 'NSC_FLAGSHIP_BUILDING_FEDERATION_PROJECT' special projects destroyed
+country_event = {
+	id = nsc_events.27
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		OR = {
+			has_special_project = NSC_FLAGSHIP_BUILDING_FEDERATION_PROJECT_1
+			has_special_project = NSC_FLAGSHIP_BUILDING_FEDERATION_PROJECT_2
+			has_special_project = NSC_FLAGSHIP_BUILDING_FEDERATION_PROJECT_3
+			has_special_project = NSC_FLAGSHIP_BUILDING_FEDERATION_PROJECT_4
+			has_special_project = NSC_FLAGSHIP_BUILDING_FEDERATION_PROJECT_5
+			has_special_project = NSC_FLAGSHIP_BUILDING_FEDERATION_PROJECT_6
+		}
+	}
+
+	immediate = {
+		nsc_federation_flagship_project_transferred_from_destroyed_country_effect = yes
+	}
+}
+#notification event for a player try to build a flagship at a shipyard manually
+ship_event = {
+	id = nsc_events.28
+	title = "nsc_events.28.name"
+	desc = "nsc_events.28.desc"
+	picture = GFX_evt_glitchy_matrix
+	show_sound = event_red_alert
+	is_triggered_only = yes
+
+	trigger = {
+		fleet = { is_alliance_fleet = no }
+		is_ship_size = Flagship
+	}
+
+	immediate = {
+		owner = {
+			if = {
+				limit = { NOT = { has_modifier = nsc_federation_flagship_project_done } }
+				add_resource = { #refund resources
+					alloys = 10200
+					influence = 600
+				}
+			}
+		}
+		destroy_ship = this #this is intended to force players to build the flagship-yard megastructure
+	}
+
+	option = {
+		name = nsc_events.28.a
+	}
+}
+#notification event for first time building federation fleet's flagship
+ship_event = {
+	id = nsc_events.29
+	hide_window = yes
+	is_triggered_only = yes
+	
+	trigger = {
+		fleet = { is_alliance_fleet = yes }
+		is_ship_size = Flagship
+	}
+
+	immediate = {
+		owner.federation = {
+			every_member = {
+				limit = { has_modifier = nsc_federation_flagship_project_done }
+				remove_modifier = nsc_federation_flagship_project_done
+			}
+		}
+		set_ship_flag = nsc_federation_fleet_flagship
+	}
+}
+#notification event for the first time two flagships fight against each other
+country_event = {
+	id = nsc_events.30
+	title = "nsc_events.30.name"
+	desc = "nsc_events.30.desc"
+	picture = GFX_evt_small_space_battle
+	show_sound = event_space_battle
+	is_triggered_only = yes
+	fire_only_once = yes #I can add more trigger if this is not working properly
+	location = fromfrom
+
+	trigger = {
+		fromfrom = { any_owned_ship = { is_ship_size = Flagship } }
+		fromfromfrom = { any_owned_ship = { is_ship_size = Flagship } }
+	}
+
+	option = {
+		name = nsc_events.30.a
+		add_resource = { influence = 100 unity = 100 }
+	}
+}
+
+#monthly pulse event to remove flagship bonuses if ruler is transferred off of flagship
+country_event = {
+	id = nsc_events.31
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = nsc_flagship_ruler_leader_country
+		any_owned_fleet = {
+			NOT = { any_owned_ship = { is_ship_size = Flagship } }
+			leader = { has_leader_flag = nsc_flagship_ruler_leader }
+		}
+	}
+
+	immediate = {
+		remove_country_flag = nsc_flagship_ruler_leader_country
+		random_owned_leader = {
+			limit = { has_leader_flag = nsc_flagship_ruler_leader }
+			remove_trait = leader_trait_flagship
+		}
+	}
+}
+
