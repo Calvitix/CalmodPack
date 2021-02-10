@@ -1,3 +1,4 @@
+#CALVITIX Merge with STARNET AI
 #############
 # Machine buildings
 #############
@@ -10,23 +11,33 @@ building_robot_assembly_plant = {
 	
 	potential = {
 		exists = owner
+		OR = {
+			owner = { is_ai = no }
+			free_building_slots > 0
+			num_pops < 75
+			is_planet_class = pc_habitat
+		}
 		owner = { 
 			is_regular_empire = yes 
 			NOT = { has_policy_flag = robots_outlawed }
 		}
 		NOT = { has_modifier = slave_colony }
-		or = {
-			owner = { is_ai = no }
-			num_pops < 75
-			is_planet_class = pc_habitat
-			}
-		
 	}
 	
 	convert_to = {
 		building_machine_assembly_plant
 	}
 	
+	allow = {
+		OR = {
+			owner = { is_ai = no }
+			AND = {
+				num_buildings = { type = any value <= 14 }
+				NOT = { is_planet_class = pc_habitat }
+			}
+		}
+	}
+
 	destroy_trigger = {
 		exists = owner
 		OR = {
@@ -401,6 +412,7 @@ building_necrophage_house_of_apotheosis = {
 			has_origin = origin_necrophage
 			has_trait = trait_necrophage
 			NOT = { has_valid_civic = civic_fanatic_purifiers }
+			is_ai = no #the AI will just kill all its necrophytes
 		}
 	}
 	

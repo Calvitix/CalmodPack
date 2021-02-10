@@ -1,3 +1,4 @@
+#CALVITIX Merge with Starnet OK
 #############
 # Resource buildings
 #############
@@ -10,18 +11,31 @@ building_foundry_1 = {
 		exists = owner
 		NOT = { has_modifier = resort_colony }
 		NOT = { has_modifier = slave_colony }
+		OR = {
+			building_relaxed_basic_income_check = yes
+			AND = {
+				num_buildings = { type = building_foundry_1 value < 5 }
+				is_capital = yes
+				owner = {
+					OR = {
+						country_uses_consumer_goods = no
+						country_uses_food = no
+					}
+				}
+			}	
 			owner = {
 				or = {
-				is_ai = no
-				resource_stockpile_compare = {
-					resource = alloys
-					value < 3000
+					is_ai = no
+					resource_stockpile_compare = {
+						resource = alloys
+						value < 5000 #3000
+					}
+					used_naval_capacity_percent < 0.95
+					resource_income_compare = {
+						resource = alloys
+						value < 100
+					} 
 				}
-				used_naval_capacity_percent < 0.80 #0.95
-				resource_income_compare = {
-					resource = alloys
-					value < 100
-				} 
 			}
 		}
 	}
@@ -124,9 +138,13 @@ building_foundry_1 = {
 		weight = 8
 		modifier = {
 			weight = 50 #5 
+			OR = {
+				planet_crime < 15
+				has_building = building_hall_judgment
+			}
 			is_capital = no
 			#free_jobs < 6  calvitix
-			free_amenities > -20  #calvitix
+			free_amenities > -10  #calvitix #2
 			free_housing > 0
 			num_buildings = { type = building_foundry_1 value < 5 }			
 			owner = {
@@ -140,7 +158,7 @@ building_foundry_1 = {
 				}
 				has_monthly_income = {
 					resource = minerals
-					value > 20
+					value > 20 #100
 				}
 				has_monthly_income = {
 					resource = alloys
@@ -156,6 +174,7 @@ building_foundry_1 = {
 				has_building = building_foundry_3
 			}
 			num_buildings = { type = building_foundry_1 value < 3 }
+			has_building_construction = no
 			#free_jobs < 5  calvitix
 			owner = {
 				has_monthly_income = {
@@ -171,12 +190,33 @@ building_foundry_1 = {
 		modifier = {
 			weight = 2500
 			NOR = {
-				has_building = building_foundry_1
+				num_buildings = { type = building_foundry_1 value > 1 }
 				has_building = building_foundry_2
 				has_building = building_foundry_3
 			}
 			#free_jobs < 5 calvitix
-			num_buildings = { type = building_foundry_1 value < 4 }
+			OR = {
+				NOT = { has_building = building_foundry_1 }
+				AND = {
+					owner = {
+						OR = {
+							has_monthly_income = {
+								resource = consumer_goods
+								value > 0
+							}
+							country_uses_consumer_goods = no
+						}
+					}
+					owner = {
+						has_ai_personality_behaviour = conqueror
+						OR = {
+							has_ai_personality_behaviour = opportunist
+							has_ai_personality_behaviour = purger
+							has_ai_personality_behaviour = propagator
+						}
+					}#Agressive empires but not robot liberators as they tend to be erudite explorers and the like.
+				}#Give agressive empires 2 alloy factories on planets early on.
+			}
 			owner = {
 				has_monthly_income = {
 					resource = minerals
@@ -196,7 +236,7 @@ building_foundry_1 = {
 
 
 		modifier = {
-			factor = 0.05
+			factor = 0.005
 			free_building_slots <  2 #3
 			owner = {
 			is_gestalt = yes
@@ -284,7 +324,7 @@ building_foundry_1 = {
 		}
 
 		modifier = {
-			factor = 20
+			factor = 2
 			owner = {
 				resource_income_compare = {
 					resource = alloys
@@ -333,6 +373,22 @@ building_foundry_1 = {
 				value > 1000
 			} }
 		}
+
+		modifier = {
+			factor = 0.5
+			free_jobs > 3
+		}
+		modifier = {
+			factor = 1.5
+			owner = {
+				has_origin = origin_void_dwellers
+			}
+		}
+		modifier = {
+			weight = 500
+			has_building = building_foundry_1
+			free_building_slots = 0
+		}#Repairs
 
 		modifier = {
 			factor = 0.2
@@ -453,7 +509,7 @@ building_foundry_1 = {
 				resource = alloys
 				value < 4000
 			} 
-			used_naval_capacity_percent < 0.80 #0.95
+			used_naval_capacity_percent < 0.95
 			}
 		}
 
@@ -953,7 +1009,7 @@ building_foundry_1 = {
 		}
 	}
 	ai_resource_production = {
-		alloys = 1
+		alloys = 2 #1 Calvitix show more ?
 		trigger = {
 			always = yes
 		}
@@ -979,7 +1035,7 @@ building_foundry_2 = {
 					resource = alloys
 					value < 3000
 				}
-				used_naval_capacity_percent < 0.80 #0.95
+				used_naval_capacity_percent < 0.95
 				resource_income_compare = {
 					resource = alloys
 					value < 100
@@ -1385,7 +1441,23 @@ building_foundry_3 = {
 	}
 #STARNET START
 	ai_weight = {
-		weight = 3
+		weight = 0
+		modifier = {
+			weight = 10
+			buildings_has_motes = yes
+		}
+		modifier = {
+			factor = 2
+			exists = owner
+			owner = {
+				has_monthly_income = {
+					resource = alloys
+					value < 200
+				}
+			}
+		}
+	
+	#		weight = 3
 		
 
 		modifier = {
@@ -1583,8 +1655,9 @@ building_factory_1 = {
 		}
 		NOT = { has_modifier = resort_colony }
 		NOT = { has_modifier = slave_colony }
-			owner = {
-				or = {
+		building_relaxed_basic_income_check = yes
+		owner = {
+			or = {
 				is_ai = no
 				resource_income_compare = {
 					resource = consumer_goods
@@ -1698,7 +1771,7 @@ building_factory_1 = {
 			}
 		}
 		modifier = {
-			weight = 1000
+			weight = 25
 			is_capital = yes
 			NOR = {
 				has_building = building_factory_2
@@ -1719,6 +1792,27 @@ building_factory_1 = {
 					resource = alloys
 					value > 20
 				}
+			}
+		}
+		modifier = {
+			weight = 100
+			jobs_work_minerals_goods = no
+			owner = {
+				has_monthly_income = {
+					resource = consumer_goods
+					value < 30
+				}
+				OR = {
+					country_uses_food = no
+					has_monthly_income = {
+						resource = food
+						value >= 0
+					}
+					has_resource = {
+						type = food
+						amount > 0
+					}
+				}#Check to see if consumer goods shortage is being caused by a food shortage.
 			}
 		}
 		modifier = {
@@ -1833,7 +1927,7 @@ building_factory_1 = {
 		}
 
 		modifier = {
-			factor = 3000
+			factor = 300
 			owner = {
 			or = {
 				resource_income_compare = {
@@ -2199,7 +2293,12 @@ building_factory_2 = {
 	}
 	
 	ai_weight = {
-		weight = 0.8
+		weight = 0
+		modifier = {
+			weight = 3
+			buildings_has_crystals = yes
+		}
+	#	weight = 0.8
 		modifier = {
 			factor = 0.5
 			not = {
@@ -2495,7 +2594,12 @@ building_factory_3 = {
 		text = job_artisan_drone_effect_desc
 	}
 	ai_weight = {
-		weight = 0.8
+		weight = 0
+		modifier = {
+			weight = 3
+			buildings_has_crystals = yes
+		}
+		#		weight = 0.8
 	
 		modifier = {
 			factor = 0.5
@@ -2741,6 +2845,7 @@ building_refinery = {
 	potential = {
 		NOT = { has_modifier = resort_colony }
 		NOT = { has_modifier = slave_colony }
+		building_basic_income_check = yes
 	}
 
 	allow = {
@@ -2810,7 +2915,27 @@ building_refinery = {
 		text = job_gas_refiner_drone_effect_desc
 	}
 	ai_weight = {
-		weight = 0.5
+		weight = 0
+		modifier = {
+			weight = 50
+			owner = {
+				has_monthly_income = {
+					resource = exotic_gases
+					value < 5
+				}
+			}
+			buildings_build_building = yes
+		}
+		modifier = {
+			weight = 200
+			owner = {
+				has_monthly_income = {
+					resource = exotic_gases
+					value < 1
+				}
+			}
+		}
+		#		weight = 0.5
 		modifier = {
 			factor = 3
 			has_designation = col_refinery
@@ -3145,7 +3270,30 @@ building_chemical_plant = {
 	}
 
 	ai_weight = {
-		weight = 0.5
+		weight = 0
+		modifier = {
+			factor = 0
+			buildings_build_building = no
+		}
+		modifier = {
+			weight = 30
+			owner = {
+				has_monthly_income = {
+					resource = volatile_motes
+					value < 3
+				}#5 is too high since that means 2 extra buildings. Better to just go with 1 extra building
+			}
+		}
+		modifier = {
+			weight = 200
+			owner = {
+				has_monthly_income = {
+					resource = volatile_motes
+					value < 0
+				}#5 is too high since that means 2 extra buildings. Better to just go with 1 extra building
+			}
+		}
+		#weight = 0.5
 		modifier = {
 			factor = 4
 			has_designation = col_refinery
@@ -3400,6 +3548,7 @@ building_crystal_plant = {
 	potential = {
 		NOT = { has_modifier = resort_colony }
 		NOT = { has_modifier = slave_colony }
+		building_basic_income_check = yes
 	}
 
 	allow = {
@@ -3472,8 +3621,32 @@ building_crystal_plant = {
 	upgrades = {
 		"building_crystal_plant_2"
 	}
+
 	ai_weight = {
-		weight = 0.5
+		weight = 0
+		modifier = {
+			factor = 0
+			buildings_build_building = no
+		}
+		modifier = {
+			weight = 30
+			owner = {
+				has_monthly_income = {
+					resource = rare_crystals
+					value < 3
+				}#5 is too high since that means 2 extra buildings. Better to just go with 1 extra building
+			}
+		}
+		modifier = {
+			weight = 200
+			owner = {
+				has_monthly_income = {
+					resource = rare_crystals
+					value < 0
+				}#5 is too high since that means 2 extra buildings. Better to just go with 1 extra building
+			}
+		}
+		#weight = 0.5
 		modifier = {
 			factor = 3
 			has_designation = col_refinery
@@ -3722,6 +3895,7 @@ building_nanite_transmuter = {
 			has_modifier = resort_colony
 			has_modifier = slave_colony
 		}
+		building_basic_income_check = yes
 	}
 
 	allow = {
@@ -3839,7 +4013,24 @@ building_ministry_production = {
 		is_regular_empire = yes
 	}
 	ai_weight = {
-		weight = 0.5
+		weight = 0
+		modifier = {
+			weight = 10
+			OR = {
+				has_building = building_foundry_1
+				has_building = building_foundry_2
+				has_building = building_foundry_3
+
+				has_building = building_factory_1
+				has_building = building_factory_2
+				has_building = building_factory_3
+			}
+		}#No reason to build before the factory and foundry are built
+		modifier = {
+			weight = 1
+			free_building_slots = 0
+		}#Repairs
+		#weight = 0.5
 		modifier = {
 			factor = 0
 			has_building = building_institute
@@ -3914,7 +4105,11 @@ building_ministry_production = {
 		}
 
 	}
-
+	ai_resource_production = {
+		trigger = { always = yes }
+		alloys = 1
+		consumer_goods = 1
+	}
 }
 
 building_production_center = {

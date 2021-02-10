@@ -1,45 +1,124 @@
+#CALVITIX Merge with STARNET AI
 ## Categories used in this file must have use_for_ai_budget = yes defined in economic_categories ##
 ## It is possible to have multiple entries with the same category and resource ##
 
 #################
 ## Expenditure ##
 #################
-
-
-energy_expenditure_campaigns = {
-	resource = energy
+energy_expenditure_buffer = { # Buffer, will not be spent
+	resource = energy 
 	type = expenditure
-	category = campaigns
-
+	category = buffer
+	
 	potential = {
-		resource_stockpile_compare = {
-			resource = energy
-			value > 3000
-		}
-
+		always = yes
 	}
-
-	static_min = {
-		base = 20000
-	}
-
+	
+	fraction = {
+		weight = 0.1
+	}	
 }
 
-energy_expenditure_colonies = {
+energy_expenditure_trade = {
 	resource = energy 
 	type = expenditure
 	category = trade
 	
 	potential = {
-		always = yes
+		has_resource = { 
+			type = energy 
+			amount > 500
+		}
+	}
+	
+	fraction = {
+		weight = 0.5
+	}
+}
+
+energy_expenditure_trade_deficit = {
+	resource = energy 
+	type = expenditure
+	category = trade
+	
+	potential = {
+		has_resource = { 
+			type = energy 
+			amount > 500
+		}
+		OR = {
+			AND = {
+				has_monthly_income = {
+					resource = minerals
+					value < -1
+				}
+				has_resource = { 
+					type = minerals 
+					amount < 1000
+				}
+			}
+			AND = {
+				has_monthly_income = {
+					resource = food
+					value < -1
+				}
+				has_resource = { 
+					type = food 
+					amount < 500
+				}
+			}
+			AND = {
+				has_monthly_income = {
+					resource = consumer_goods
+					value < -1
+				}
+				has_resource = { 
+					type = consumer_goods 
+					amount < 500
+				}
+			}
+			AND = {
+				has_monthly_income = {
+					resource = alloys
+					value < -1
+				}
+				has_resource = { 
+					type = alloys 
+					amount < 500
+				}
+			}
+		}
+	}
+	
+	fraction = {
+		weight = 0.7
+	}
+}
+
+energy_expenditure_colonies = {
+	resource = energy 
+	type = expenditure
+	category = colonies
+	
+	potential = {
+		ai_colonize_plans > 0
+		OR = {
+			has_civic = civic_corporate_dominion
+			has_civic = civic_private_prospectors
+		}
+		#STARNET always = yes Calvitix removed
 	}
 	fraction ={
-		weight = 0.5
+		weight = 0.5 #1.5
 	}
    
     static_min = {
         base = 1000
-    }	
+    }
+    
+	#static_max = {
+	#	base = 500
+	#}    	
 }
 
 energy_expenditure_leaders = {
@@ -54,12 +133,15 @@ energy_expenditure_leaders = {
 	fraction = {
 		weight = 1.3
 	}	
+###STARNET
 	static_min = {
 		base = 20000
 		
 	}
+###
 }
 
+#STARNET
 energy_expenditure_slums = {
 	resource = energy
 	type = expenditure
@@ -101,6 +183,7 @@ energy_expenditure_ringworld_blockers = {
 	}
 
 }
+####
 
 energy_expenditure_deposit_blockers = {
 	resource = energy 
@@ -108,15 +191,29 @@ energy_expenditure_deposit_blockers = {
 	category = deposit_blockers
 	
 	potential = {
+		any_owned_planet = {
+			num_uncleared_blockers > 0
+		}
 		years_passed > 3
 	}
 	
 	fraction = {
-		weight = 0.7
+		weight = 0.7 #0.3
+		modifier = {
+			factor = 5
+
+			# if we have any planet that is currently completely blocked
+			any_owned_planet = {
+				num_uncleared_blockers > 0
+				num_free_districts = { type = any value < 1 }
+			}
+		}
 	}
 
+	# base remove blocker cost
 	static_min = {
-		base = 0
+		base = 500
+#STARNET
 		modifier = {
 			add = 400
 			years_passed > 3			
@@ -133,8 +230,78 @@ energy_expenditure_deposit_blockers = {
 			}
 			years_passed > 20
 		}
+###
+	}
+
+	#static_max = {
+	#	base = 1000
+	#}	
+}
+
+
+energy_expenditure_missing_scientist = {
+	resource = energy 
+	type = expenditure
+	category = leaders
+	
+	potential = {
+		OR = {
+			scientist_count < 4
+
+			NOT = {
+				research_leader = {
+					area = physics
+				}
+			}
+			NOT = {
+				research_leader = {
+					area = society
+				}
+			}
+			NOT = {
+				research_leader = {
+					area = engineering
+				}
+			}
+		}
+	}
+	
+	fraction = {
+		weight = 0.3 #1.6
+	}
+
+#STARNET
+	static_min = {
+		base = 15000
+	}
+	static_max = {
+		base = 50000 #1500
+	}
+###
+}
+
+
+
+energy_expenditure_megastructures = {
+	resource = energy 
+	type = expenditure
+	category = megastructures
+	
+	potential = {
+		is_country_type = default
+		is_at_war = no
+		has_galactic_wonders = yes
+	}
+	
+	fraction = {
+		weight = 0.3
+	}
+
+	static_max = {
+		base = 20000 # 6000
 	}
 }
+
 
 energy_expenditure_decisions = {
     resource = energy
@@ -160,104 +327,52 @@ energy_expenditure_decisions = {
     }
 }
 
-energy_expenditure_missing_scientist = {
+
+
+
+energy_expenditure_campaigns = {
 	resource = energy 
 	type = expenditure
-	category = leaders
+	category = campaigns
 	
 	potential = {
-		OR = {
-		scientist_count < 4
-
-		NOT = {
-			research_leader = {
-				area = physics
-			}
+		# only consider campaigns when we can actually afford them
+		has_resource = { 
+			type = energy 
+			amount > 3000
 		}
-		NOT = {
-			research_leader = {
-				area = society
-			}
-		}
-		NOT = {
-			research_leader = {
-				area = engineering
-			}
-		}
-	}
 	}
 	
 	fraction = {
-		weight = 0.3
+		weight = 0.30 
 	}
 
 	static_min = {
-		base = 15000
+		base = 20000 #1000
 	}
-	static_max = {
-		base = 50000
-	}
+	
+	#static_max = {
+	#	base = 3000
+	#}
 }
 
-
-
-energy_expenditure_megastructures = {
-	resource = energy 
-	type = expenditure
-	category = megastructures
-	
-	potential = {
-		is_country_type = default
-		is_at_war = no
-		has_galactic_wonders = yes
-	}
-	
-	fraction = {
-		weight = 0.3
-	}
-
-	static_max = {
-		base = 20000 # 
-	}
-}
-energy_expenditure_armies = {
-	resource = energy 
-	type = expenditure
-	category = armies
-	
-	potential = {
-		has_valid_civic = civic_reanimated_armies
-		or = {
-		is_at_war = yes
-		and = {
-		prepare_for_war = yes
-		used_naval_capacity_percent <= 1
-		}
-		and = {
-		resource_stockpile_compare = {
-			resource = energy
-			value > 1000
-		}
-		resource_income_compare = {
-			resource = energy
-			value > 10
-		}
-		used_naval_capacity_percent > 0.9
-		} }
-	}
-	
-	fraction = {
-		weight = 0.1
-	}	
-	static_min = {
-		base = 5000
-	}
-}
 
 ############
 ## Upkeep ##
 ############
-
+energy_upkeep_buffer = {	# Buffer, will not be spent
+	resource = energy 
+	type = upkeep
+	category = buffer
+	
+	potential = {
+		always = yes
+	}
+	
+	fraction = {
+		weight = 0.01
+	}	
+}
 
 energy_upkeep_country = { # Covers most other things
 	resource = energy 
@@ -273,6 +388,43 @@ energy_upkeep_country = { # Covers most other things
 	}	
 }
 
+
+energy_expenditure_armies = {
+	resource = energy 
+	type = expenditure
+	category = armies
+	
+	potential = {
+		has_valid_civic = civic_reanimated_armies
+###STARNET
+		or = {
+			is_at_war = yes
+			and = {
+				prepare_for_war = yes
+				used_naval_capacity_percent <= 1
+			}
+			and = {
+				resource_stockpile_compare = {
+					resource = energy
+					value > 1000
+				}
+				resource_income_compare = {
+					resource = energy
+					value > 10
+				}
+			}
+			used_naval_capacity_percent > 0.9
+		} 
+	}	
+	
+	fraction = {
+		weight = 0.1
+	}	
+	static_min = {
+		base = 5000
+	}
+}
+###
 
 energy_upkeep_war = { # Covers most other things
 	resource = energy 
@@ -302,6 +454,7 @@ energy_upkeep_warprep = { # Covers most other things
 	}	
 }
 
+###STARNET
 energy_upkeep_country_a = { # Covers most other things
 	resource = energy 
 	type = upkeep
@@ -561,3 +714,4 @@ energy_upkeep_country_buildingsfix = {
 		weight = 0.5
 	}
 }
+###

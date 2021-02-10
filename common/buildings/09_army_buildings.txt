@@ -17,7 +17,7 @@ building_military_academy = {
 		exists = owner
 		owner = {
 			OR = {
-				is_ai = yes
+				#is_ai = yes  #CALVITIX not destroy by AI
 				has_valid_civic = civic_reanimated_armies
 			}
 		}
@@ -170,6 +170,25 @@ building_stronghold = {
 
 	category = army
 	
+	potential = {
+		buildings_simple_allow = yes
+	}
+
+	destroy_trigger = {
+		exists = owner
+		owner = { is_ai = yes }
+		AND = {
+			OR = {
+				num_buildings = { type = building_stronghold value > 1 }
+				has_building = building_fortress
+			}
+			free_building_slots = 0
+			owner = { 
+				used_naval_capacity_percent < 0.6
+				is_at_war = no # don't destroy while at war
+			}
+		}
+	}
 	
 	planet_modifier = {
 		planet_housing_add = 1
@@ -244,7 +263,7 @@ building_stronghold = {
 
 		modifier = {
 			factor = 200
-			free_building_slots > 4 #2
+			free_building_slots > 4 #2 CALVITIX
 			years_passed > 80
 			owner = { used_naval_capacity_percent > 0.8 
 			has_technology = tech_battleships 
@@ -265,7 +284,7 @@ building_stronghold = {
 
 		modifier = {
 			factor = 20
-			free_building_slots > 6 #2
+			free_building_slots > 6 #2 CALVITIX
 			years_passed > 50
 			owner = {
 			used_naval_capacity_integer > 300
@@ -390,8 +409,14 @@ building_fortress = {
 	
 	destroy_trigger = {
 		exists = owner
-		owner = { is_ai = yes }
-		num_buildings = { type = building_fortress value > 1 }
+		OR = 
+		{
+			num_buildings = { type = building_fortress value > 1 }
+			free_building_slots = 0
+			owner = { is_ai = yes }
+			owner = { used_naval_capacity_percent < 0.4	}			
+			buildings_no_motes = yes
+		}
 	}
 	
 	planet_modifier = {

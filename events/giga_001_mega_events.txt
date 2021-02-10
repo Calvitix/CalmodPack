@@ -5,7 +5,7 @@ namespace = giga_mega
 ####################################
 # On game start
 event = {
-	id = giga_mega.001
+	id = giga_mega.1111
 	hide_window = yes
 	is_triggered_only = yes
 
@@ -59,7 +59,8 @@ event = {
 		if = {
 			limit = { NOT = { any_system = { has_star_flag = flusion_system } } }
 			random_system = { spawn_system = { initializer = "giga_flusion_initializer" } }
-			last_created_system = {
+			random_system = {
+				limit = { any_system_planet = { has_planet_flag = gigaflusion } }
 				# Add extra hyperlane
 				while = {
 					count = 2
@@ -79,11 +80,13 @@ event = {
 						add_hyperlane = { from = prev to = this }
 					}
 				}
-
-				spawn_system = {
-					initializer = "giga_jupitwo_initializer"
-					max_distance = 4
-					min_distance = 5
+				if = {
+					limit = { NOT = { any_system = { has_star_flag = jupitwo_system } } }
+					spawn_system = {
+						initializer = "giga_jupitwo_initializer"
+						max_distance = 4
+						min_distance = 5
+					}
 				}
 				last_created_system = {
 					# Add extra hyperlane
