@@ -1121,7 +1121,82 @@ ehof_redo_button = {
 ###############################################################################################################################################################
 ######################################################################## Change States ########################################################################
 ###############################################################################################################################################################
+remove_ehof_flags = {
+	remove_megastructure_flag = ehof_wormhole_node
+	remove_megastructure_flag = ehof_phase_00
+	remove_megastructure_flag = ehof_phase_01
+	remove_megastructure_flag = ehof_phase_02
+	remove_megastructure_flag = ehof_phase_03
+	remove_megastructure_flag = ehof_phase_04
+	remove_megastructure_flag = ehof_phase_01_decommissioned
+	remove_megastructure_flag = ehof_phase_02_decommissioned
+	remove_megastructure_flag = ehof_phase_03_decommissioned
+	remove_megastructure_flag = ehof_phase_04_decommissioned
+}
+
+activate_an_ehof = {
+	if = {
+		limit = { any_owned_megastructure = { has_megastructure_flag = ehof_phase_04_decommissioned } }
+		capital_scope.solar_system = {
+			closest_system = {
+				limit = { any_system_megastructure = { has_megastructure_flag = ehof_phase_04_decommissioned } }
+				random_system_megastructure = {
+					limit = { has_megastructure_flag = ehof_phase_04_decommissioned }
+					remove_megastructure = this
+				}
+				spawn_megastructure = { type = "ehof_megastructure_phase4_idle" owner = from location = star }
+			}
+		}
+	}
+	else_if = {
+		limit = { any_owned_megastructure = { has_megastructure_flag = ehof_phase_03_decommissioned } }
+		capital_scope.solar_system = {
+			closest_system = {
+				limit = { any_system_megastructure = { has_megastructure_flag = ehof_phase_03_decommissioned } }
+				random_system_megastructure = {
+					limit = { has_megastructure_flag = ehof_phase_03_decommissioned }
+					remove_megastructure = this
+				}
+				spawn_megastructure = { type = "ehof_megastructure_phase3_idle" owner = from location = star }
+			}
+		}
+	}
+	else_if = {
+		limit = { any_owned_megastructure = { has_megastructure_flag = ehof_phase_02_decommissioned } }
+		capital_scope.solar_system = {
+			closest_system = {
+				limit = { any_system_megastructure = { has_megastructure_flag = ehof_phase_02_decommissioned } }
+				random_system_megastructure = {
+					limit = { has_megastructure_flag = ehof_phase_02_decommissioned }
+					remove_megastructure = this
+				}
+				spawn_megastructure = { type = "ehof_megastructure_phase2_idle" owner = from location = star }
+			}
+		}
+	}
+	else_if = {
+		limit = { any_owned_megastructure = { has_megastructure_flag = ehof_phase_01_decommissioned } }
+		capital_scope.solar_system = {
+			closest_system = {
+				limit = { any_system_megastructure = { has_megastructure_flag = ehof_phase_01_decommissioned } }
+				random_system_megastructure = {
+					limit = { has_megastructure_flag = ehof_phase_01_decommissioned }
+					remove_megastructure = this
+				}
+				spawn_megastructure = { type = "ehof_megastructure_phase1_idle" owner = from location = star }
+			}
+		}
+	}
+}
+
 decomission_all_ehofs = {
+	remove_country_flag = ehof_destination_picked
+	remove_country_flag = ehof_travel_diplomacy
+	remove_country_flag = ehof_can_activate
+	remove_country_flag = ehof_can_deactivate
+	remove_country_flag = ehof_is_upgrading
+	remove_country_flag = ehof_on_cooldown
+
 	every_owned_megastructure = {
 		limit = {
 			OR = {
@@ -1161,6 +1236,33 @@ decomission_all_ehofs = {
 	}
 }
 
+decomission_this_ehof = {
+	if = {
+		limit = { has_megastructure_flag = ehof_phase_00 }
+		remove_megastructure = this
+	}
+	else_if = {
+		limit = { has_megastructure_flag = ehof_phase_01 }
+		upgrade_megastructure_to = ehof_megastructure_phase1_decommissioned
+		finish_upgrade = yes
+	}
+	else_if = {
+		limit = { has_megastructure_flag = ehof_phase_02 }
+		upgrade_megastructure_to = ehof_megastructure_phase2_decommissioned
+		finish_upgrade = yes
+	}
+	else_if = {
+		limit = { has_megastructure_flag = ehof_phase_03 }
+		upgrade_megastructure_to = ehof_megastructure_phase3_decommissioned
+		finish_upgrade = yes
+	}
+	else_if = {
+		limit = { has_megastructure_flag = ehof_phase_04 }
+		upgrade_megastructure_to = ehof_megastructure_phase4_decommissioned
+		finish_upgrade = yes
+	}
+}
+
 ehof_set_to_idle = {
 	random_owned_megastructure = {
 		limit = {
@@ -1176,7 +1278,24 @@ ehof_set_to_idle = {
 					is_megastructure_type = ehof_megastructure_phase1_active
 				}
 			}
-			solar_system = { spawn_megastructure = { type = "ehof_megastructure_phase1_idle" owner = from location = star } }
+			solar_system = {
+				spawn_megastructure = {
+					type = "ehof_megastructure_phase1_idle"
+					owner = from
+					location = star
+					init_effect = {
+						solar_system = {
+							every_system_megastructure = {
+								limit = {
+									is_any_ehof = yes
+									NOT = { is_same_value = prevprev }
+								}
+								remove_megastructure = this
+							}
+						}
+					}
+				}
+			}
 		}
 		else_if = {
 			limit = {
@@ -1185,7 +1304,24 @@ ehof_set_to_idle = {
 					is_megastructure_type = ehof_megastructure_phase2_active
 				}
 			}
-			solar_system = { spawn_megastructure = { type = "ehof_megastructure_phase2_idle" owner = from location = star } }
+			solar_system = {
+				spawn_megastructure = {
+					type = "ehof_megastructure_phase2_idle"
+					owner = from
+					location = star
+					init_effect = {
+						solar_system = {
+							every_system_megastructure = {
+								limit = {
+									is_any_ehof = yes
+									NOT = { is_same_value = prevprev }
+								}
+								remove_megastructure = this
+							}
+						}
+					}
+				}
+			}
 		}
 		else_if = {
 			limit = {
@@ -1194,7 +1330,24 @@ ehof_set_to_idle = {
 					is_megastructure_type = ehof_megastructure_phase3_active
 				}
 			}
-			solar_system = { spawn_megastructure = { type = "ehof_megastructure_phase3_idle" owner = from location = star } }
+			solar_system = {
+				spawn_megastructure = {
+					type = "ehof_megastructure_phase3_idle"
+					owner = from
+					location = star
+					init_effect = {
+						solar_system = {
+							every_system_megastructure = {
+								limit = {
+									is_any_ehof = yes
+									NOT = { is_same_value = prevprev }
+								}
+								remove_megastructure = this
+							}
+						}
+					}
+				}
+			}
 		}
 		else_if = {
 			limit = {
@@ -1203,9 +1356,25 @@ ehof_set_to_idle = {
 					is_megastructure_type = ehof_megastructure_phase4_active
 				}
 			}
-			solar_system = { spawn_megastructure = { type = "ehof_megastructure_phase4_idle" owner = from location = star } }
+			solar_system = {
+				spawn_megastructure = {
+					type = "ehof_megastructure_phase4_idle"
+					owner = from
+					location = star
+					init_effect = {
+						solar_system = {
+							every_system_megastructure = {
+								limit = {
+									is_any_ehof = yes
+									NOT = { is_same_value = prevprev }
+								}
+								remove_megastructure = this
+							}
+						}
+					}
+				}
+			}
 		}
-		remove_megastructure = this
 	}
 }
 
