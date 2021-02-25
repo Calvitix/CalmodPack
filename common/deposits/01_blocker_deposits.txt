@@ -4,6 +4,8 @@
 # planet_modifier - applied to planet only when deposit blocker has been cleared
 # constant_modifier - applied to planet always
 # station = station class in orbit to gather
+#Merge with RS New Frontiers
+#Merge with RS ## Planetary Exploration Deposits by Annatar ##
 
 @blocker_high = 10
 @blocker_low = 5
@@ -28,6 +30,36 @@ d_mountain_range = {
 	planet_modifier = {
 		planet_max_districts_add = -2
 	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_regular_empire = yes }
+		}
+		modifier = {
+			job_pioneer_add = 1
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_hive_empire = yes }
+		}
+		modifier = {
+			job_opportunist_drone_add = 1
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_machine_empire = yes }
+		}
+		modifier = {	
+			job_scout_drone_add = 1
+		}
+	}
 
 	drop_weight = {
 		weight = @blocker_low
@@ -44,6 +76,16 @@ d_mountain_range = {
 			num_free_districts = {
 				type = district_city
 				value < 2
+			}
+		}
+		modifier = {
+			factor = 0
+			OR = {
+				has_modifier = "panthalassic_world"
+				has_modifier = "underground_world"
+				has_modifier = "steppe_world"
+				has_modifier = "ocean_tidally_locked"
+				has_modifier = "coriolis_world"
 			}
 		}
 	}
@@ -74,10 +116,31 @@ d_active_volcano = {
 
 	planet_modifier = {
 		planet_max_districts_add = -2
+		pop_environment_tolerance = -0.05
+		planet_jobs_engineering_research_produces_mult = 0.05
 	}
 
 	drop_weight = {
 		weight = @blocker_low
+		modifier = {
+			factor = 5
+			has_modifier = "lava_world"
+		}
+		modifier = {
+			factor = 3
+			has_modifier = "young_world"
+		}
+		modifier = {
+			factor = 2
+			OR = {
+				has_modifier = "primal_world"
+				is_planet_class = pc_sterile
+			}
+		}
+		modifier = {
+			factor = 1.5
+			has_modifier = "unstable_tectonics"
+		}
 		modifier = {
 			factor = 0.5
 			is_planet_class = pc_alpine
@@ -93,14 +156,21 @@ d_active_volcano = {
 				value < 2
 			}
 		}
+		modifier = {
+			factor = 0
+			OR = {
+				has_modifier = "cryokarst_world"
+				has_modifier = "steppe_world"
+			}
+		}
 	}
-
+	
 	prerequisites = { "tech_volcano" }
 }
 
 d_dangerous_wildlife_blocker = {
 	time = 270
-
+	
 	is_for_colonizeable = yes
 	category = deposit_cat_blockers
 
@@ -117,6 +187,8 @@ d_dangerous_wildlife_blocker = {
 
 	planet_modifier = {
 		planet_max_districts_add = -2
+		pop_environment_tolerance = -0.05
+		planet_jobs_society_research_produces_mult = 0.05
 	}
 
 	on_cleared = {
@@ -136,8 +208,23 @@ d_dangerous_wildlife_blocker = {
 	drop_weight = {
 		weight = @blocker_low
 		modifier = {
+			factor = 5
+			has_modifier = "death_world"
+		}
+		modifier = {
+			factor = 2
+			OR = {
+				has_modifier = "dangerous_wildlife"
+				is_extreme_subclass = yes
+			}
+		}
+		modifier = {
 			factor = 0.5
 			planet_size < 15
+		}
+		modifier = {
+			factor = 0
+			is_planet_class = pc_sterile
 		}
 		modifier = {
 			factor = 0
@@ -165,15 +252,66 @@ d_dense_jungle = {
 	}
 
 	potential = {
-		is_wet = yes
+		OR = {
+			is_wet = yes
+			has_modifier = "oasis_world"
+		}
 	}
 
 	planet_modifier = {
 		planet_max_districts_add = -1
 	}
 
-	all_blocker_swap_types = yes
-
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_regular_empire = yes }
+		}
+		modifier = {
+			job_pioneer_add = 1
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_hive_empire = yes }
+		}
+		modifier = {
+			job_opportunist_drone_add = 1
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_machine_empire = yes }
+		}
+		modifier = {	
+			job_scout_drone_add = 1
+		}
+	}
+	
+	use_weights_for_blocker_swap_types = yes
+	blocker_swap_types = {
+		d_rushing_waterfalls
+		d_veiny_cliffs
+		d_mineral_fields
+		d_ore_rich_caverns
+		d_rich_mountain
+		d_bountiful_plains
+		d_green_hills
+		d_boggy_fens
+		d_fertile_lands
+		d_black_soil
+		d_dust_caverns
+		d_bubbling_swamp
+		d_fuming_bog
+		d_crystalline_caverns
+		d_betharian_deposit
+		d_karst_cave
+	}
+	
 	drop_weight = {
 		weight = @blocker_high
 		modifier = {
@@ -185,10 +323,28 @@ d_dense_jungle = {
 			}
 		}
 		modifier = {
+			factor = 4
+			has_modifier = "jungle_world"
+		}
+		modifier = {
+			factor = 2
+			has_modifier = "forest_world"
+		}
+		modifier = {
 			factor = 0
 			num_free_districts = {
 				type = district_city
 				value < 2
+			}
+		}
+		modifier = {
+			factor = 0
+			OR = {
+				has_modifier = "fungal_world"
+				has_modifier = "panthalassic_world"
+				has_modifier = "boreal_world"
+				has_modifier = "young_world"
+				has_modifier = "storm_world"
 			}
 		}
 	}
@@ -207,23 +363,51 @@ d_toxic_kelp = {
 		cost = {
 			energy = 500
 		}
+		produces = {
+			food = 1
+		}
 	}
 
 	potential = {
-		is_wet = yes
+		OR = {
+			is_wet = yes
+			has_modifier = "oasis_world"
+			has_modifier = "cryokarst_world"
+			has_modifier = "melting_world"
+			has_modifier = "ocean_tidally_locked"
+		}
 	}
 
 	planet_modifier = {
 		planet_max_districts_add = -1
+		planet_jobs_society_research_produces_mult = 0.05
 	}
-
-	all_blocker_swap_types = yes
+	
+	use_weights_for_blocker_swap_types = yes
+	blocker_swap_types = {
+		d_underwater_vent
+		d_submerged_ore_veins
+		d_teeming_reef
+		d_crystal_reef
+	}
 
 	drop_weight = {
 		weight = @blocker_high
 		modifier = {
+			factor = 4
+			has_modifier = "algic_seas"
+		}
+		modifier = {
 			factor = 2
 			is_planet_class = pc_ocean
+		}
+		modifier = {
+			factor = 2
+			has_modifier = "panthalassic_world"
+		}
+		modifier = {
+			factor = 0.5
+			has_modifier = "oasis_world"
 		}
 		modifier = {
 			factor = 0
@@ -251,14 +435,58 @@ d_deep_sinkhole = {
 	}
 
 	potential = {
-		is_dry = yes
+		OR = {
+			has_modifier = "pangea_world"
+			is_dry = yes
+			is_planet_class = pc_tidallylocked
+			is_planet_class = pc_sterile
+		}
 	}
 
 	planet_modifier = {
 		planet_max_districts_add = -1
 	}
 
-	all_blocker_swap_types = yes
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_regular_empire = yes }
+		}
+		modifier = {
+			job_smuggler_add = 2
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_hive_empire = yes }
+		}
+		modifier = {
+			job_aberrant_drone_add = 2
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_machine_empire = yes }
+		}
+		modifier = {	
+			job_renegade_drone_add = 2
+		}
+	}
+	
+	use_weights_for_blocker_swap_types = yes
+	blocker_swap_types = {
+		d_searing_desert
+		d_veiny_cliffs
+		d_mineral_fields
+		d_ore_rich_caverns
+		d_dust_caverns
+		d_crystalline_caverns
+		d_karst_cave
+	}
 
 	drop_weight = {
 		weight = @blocker_high
@@ -267,13 +495,29 @@ d_deep_sinkhole = {
 			OR = {
 				is_planet_class = pc_arid
 				is_planet_class = pc_savannah
+				is_planet_class = pc_sterile
 			}
+		}
+		modifier = {
+			factor = 5
+			has_modifier = "karstic_world"
+		}
+		modifier = {
+			factor = 0.25
+			has_modifier = "steppe_world"
 		}
 		modifier = {
 			factor = 0
 			num_free_districts = {
 				type = district_city
 				value < 2
+			}
+		}
+		modifier = {
+			factor = 0
+			OR = {
+				has_modifier = "underground_world"
+				has_modifier = "ocean_tidally_locked"
 			}
 		}
 	}
@@ -296,14 +540,28 @@ d_quicksand_basin = {
 	}
 
 	potential = {
-		is_dry = yes
+		OR ={
+			is_planet_class = pc_continental
+			is_dry = yes
+			has_modifier = "pangea_world"
+			has_modifier = "young_world"
+			has_modifier = "arid_tidally_locked"
+		}
 	}
 
 	planet_modifier = {
 		planet_max_districts_add = -1
 	}
-
-	all_blocker_swap_types = yes
+	
+	use_weights_for_blocker_swap_types = yes
+	blocker_swap_types = {
+		d_searing_desert
+		d_mineral_fields
+		d_ore_rich_caverns
+		d_nutritious_mudland
+		d_dust_desert
+		d_betharian_deposit
+	}
 
 	drop_weight = {
 		weight = @blocker_high
@@ -317,6 +575,22 @@ d_quicksand_basin = {
 				type = district_city
 				value < 2
 			}
+		}
+		modifier = {
+			factor = 0.25
+			has_modifier = "steppe_world"
+		}
+		modifier = {
+			factor = 0.5
+			has_modifier = "salt_world"
+		}
+		modifier = {
+			factor = 0.1
+			has_modifier = "dune_world"
+		}
+		modifier = {
+			factor = 0
+			has_modifier = "underground_world"
 		}
 	}
 
@@ -342,15 +616,82 @@ d_noxious_swamp = {
 
 	planet_modifier = {
 		planet_max_districts_add = -1
+		planet_jobs_society_research_produces_mult = 0.05
 	}
-
-	all_blocker_swap_types = yes
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_regular_empire = yes }
+		}
+		modifier = {
+			job_smuggler_add = 1
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_hive_empire = yes }
+		}
+		modifier = {
+			job_aberrant_drone_add = 1
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_machine_empire = yes }
+		}
+		modifier = {	
+			job_renegade_drone_add = 1
+		}
+	}
+	
+	use_weights_for_blocker_swap_types = yes
+	blocker_swap_types = {
+		d_geothermal_vent
+		d_mineral_fields
+		d_bountiful_plains
+		d_green_hills
+		d_boggy_fens
+		d_fertile_lands
+		d_black_soil
+		d_dust_caverns
+		d_bubbling_swamp
+		d_fuming_bog
+		d_betharian_deposit
+	}
 
 	drop_weight = {
 		weight = @blocker_high
 		modifier = {
 			factor = 2
 			is_planet_class = pc_tundra
+		}
+		modifier = {
+			factor = 5
+			has_modifier = "poisonous_world"
+		}
+		modifier = {
+			factor = 3
+			has_modifier = "swamp_world"
+			has_modifier = "bog_world"
+		}
+		modifier = {
+			factor = 0.25
+			OR = {
+				is_planet_class = pc_continental
+				AND = {
+					is_planet_class = pc_tundra
+					NOT = { has_modifier = "bog_world" }
+				}
+			}
+		}
+		modifier = {
+			factor = 0
+			has_modifier = "young_world"
 		}
 		modifier = {
 			factor = 0
@@ -378,14 +719,61 @@ d_massive_glacier = {
 	}
 
 	potential = {
-		is_cold = yes
+		OR = {
+			is_cold = yes
+			is_planet_class = pc_tidallylocked
+			has_modifier = "boreal_world"
+		}
 	}
 
 	planet_modifier = {
 		planet_max_districts_add = -1
 	}
-
-	all_blocker_swap_types = yes
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_regular_empire = yes }
+		}
+		modifier = {
+			job_smuggler_add = 1
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_hive_empire = yes }
+		}
+		modifier = {
+			job_aberrant_drone_add = 1
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_machine_empire = yes }
+		}
+		modifier = {	
+			job_renegade_drone_add = 1
+		}
+	}
+	
+	use_weights_for_blocker_swap_types = yes
+	blocker_swap_types = {
+		d_hot_springs
+		d_geothermal_vent
+		d_veiny_cliffs
+		d_mineral_fields
+		d_ore_rich_caverns
+		d_rich_mountain
+		d_dust_caverns
+		d_frozen_gas_lake
+		d_crystalline_caverns
+		d_betharian_deposit
+		d_karst_cave
+	}
 
 	drop_weight = {
 		weight = @blocker_high
@@ -394,6 +782,28 @@ d_massive_glacier = {
 			OR = {
 				is_planet_class = pc_alpine
 				is_planet_class = pc_arctic
+			}
+		}
+		modifier = {
+			factor = 3
+			OR = {
+				has_modifier = "glacial_world"
+				has_modifier = "ice_world"
+			}
+		}
+		modifier = {
+			factor = 2
+			OR = {
+				has_modifier = "melting_world"
+				has_modifier = "geothermal_world"
+			}
+		}
+		modifier = {
+			factor = 0.5
+			OR = {
+				has_modifier = "boreal_world"
+				has_modifier = "equatorial_world"
+				is_planet_class = pc_tidallylocked
 			}
 		}
 		modifier = {
@@ -406,6 +816,166 @@ d_massive_glacier = {
 	}
 
 	prerequisites = { "tech_massive_glacier" }
+}
+
+d_dune_sea = {
+	time = 180
+	
+	is_for_colonizeable = yes
+	category = deposit_cat_blockers
+	icon = d_searing_desert
+	
+	resources = {
+		category = deposit_blockers
+		cost = {
+			energy = 500
+		}
+	}
+	
+	potential = {
+		OR = {
+			is_dry = yes
+			is_planet_class = pc_sterile
+			has_modifier = "pangea_world"
+			has_modifier = "arid_tidally_locked"
+		}
+	}
+	
+	planet_modifier = {
+		planet_max_districts_add = -1
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_regular_empire = yes }
+		}
+		modifier = {
+			job_pioneer_add = 1
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_hive_empire = yes }
+		}
+		modifier = {
+			job_opportunist_drone_add = 1
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_machine_empire = yes }
+		}
+		modifier = {	
+			job_scout_drone_add = 1
+		}
+	}
+	
+	use_weights_for_blocker_swap_types = yes
+	blocker_swap_types = {
+		d_searing_desert
+		d_mineral_fields
+		d_dust_desert
+		d_betharian_deposit
+	}
+
+	drop_weight = {
+		weight = @blocker_high
+		modifier = {
+			factor = 3
+			is_planet_class = pc_desert
+		}
+		modifier = {
+			factor = 2
+			has_modifier = "dune_world"
+		}
+		modifier = {
+			factor = 0
+			num_free_districts = {
+				type = district_city
+				value < 2
+			}
+		}
+		modifier = {
+			factor = 0.5
+			has_modifier = "oasis_world"
+		}
+		modifier = {
+			factor = 0.25
+			has_modifier = "salt_world"
+		}
+		modifier = {
+			factor = 0
+			has_modifier = "underground_world"
+		}
+	}
+	
+	prerequisites = { "tech_dune_sea" }
+}
+
+d_igneous_traps = {
+	time = 300
+	
+	is_for_colonizeable = yes
+	category = deposit_cat_blockers
+	
+	resources = {
+		category = deposit_blockers
+		cost = {
+			energy = 1500
+		}
+		produces = {
+			alloys = 1
+		}
+	}
+	
+	potential = {
+		OR = {
+			can_have_habitable_deposits = yes
+			is_planet_class = pc_sterile
+		}
+	}
+	
+	planet_modifier = {
+		planet_max_districts_add = -3
+		planet_jobs_engineering_research_produces_mult = 0.10
+	}
+	
+	on_cleared = {
+		if = {
+			limit = { exists = owner }
+			owner = { add_resource = { alloys = 100 } }
+		}
+	}
+
+	drop_weight = {
+		weight = 0.25
+		modifier = {
+			factor = 10
+			has_modifier = "lava_world"
+		}
+		modifier = {
+			factor = 5
+			has_modifier = "young_world"
+		}
+		modifier = {
+			factor = 2
+			has_modifier = "primal_world"
+		}
+		modifier = {
+			factor = 0
+			OR = {
+				has_modifier = "underground_world"
+				is_planet_class = pc_ocean
+			}
+		}
+	}
+	
+	prerequisites = { "tech_igneous_traps" }
 }
 
 ### SPECIAL
@@ -424,6 +994,7 @@ d_radioactive_wasteland = {
 
 	planet_modifier = {
 		planet_max_districts_add = -1
+		pop_environment_tolerance = -0.05
 	}
 
 	resources = {
@@ -442,6 +1013,10 @@ d_radioactive_wasteland = {
 				value < 2
 			}
 		}
+		modifier = {
+			factor = 0
+			has_modifier = "lava_world"
+		}
 	}
 }
 
@@ -452,14 +1027,51 @@ d_city_ruins = {
 	category = deposit_cat_blockers
 
 	potential = {
-		is_planet_class = pc_nuked
-		is_planet_class = pc_relic
+		OR = {
+			is_planet_class = pc_nuked
+			is_planet_class = pc_relic
+			has_modifier = "ancient_world"
+		}
 	}
 
 	planet_modifier = {
 		planet_max_districts_add = -2
+		planet_jobs_society_research_produces_mult = 0.10
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_regular_empire = yes }
+		}
+		modifier = {
+			job_pioneer_add = 1
+			job_smuggler_add = 2
+		}
 	}
 
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_hive_empire = yes }
+		}
+		modifier = {
+			job_opportunist_drone_add = 1
+			job_aberrant_drone_add = 2
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_machine_empire = yes }
+		}
+		modifier = {	
+			job_scout_drone_add = 1
+			job_renegade_drone_add = 2
+		}
+	}
+	
 	resources = {
 		category = deposit_blockers
 		cost = {
@@ -470,11 +1082,23 @@ d_city_ruins = {
 	drop_weight = {
 		weight = @blocker_high
 		modifier = {
+			factor = 3
+			has_modifier = "ancient_world"
+		}
+		modifier = {
+			factor = 2
+			has_modifier = "depleted_world"
+		}
+		modifier = {
 			factor = 0
 			num_free_districts = {
 				type = district_city
 				value < 2
 			}
+		}
+		modifier = {
+			factor = 0.1
+			has_modifier = "lava_world"
 		}
 	}
 }
@@ -494,6 +1118,7 @@ d_bomb_crater = {
 
 	planet_modifier = {
 		planet_max_districts_add = -1
+		planet_jobs_engineering_research_produces_mult = 0.05
 	}
 
 	resources = {
@@ -505,6 +1130,86 @@ d_bomb_crater = {
 
 	drop_weight = {
 		weight = @blocker_low
+		modifier = {
+			factor = 0
+			num_free_districts = {
+				type = district_city
+				value < 2
+			}
+		}
+	}
+}
+
+d_industrial_boneyard = {
+	time = 270
+	
+	is_for_colonizeable = yes
+	category = deposit_cat_blockers
+	icon = d_metal_boneyard
+	
+	resources = {
+		category = deposit_blockers
+		cost = {
+			energy = 700
+		}
+	}
+	
+	potential = {
+		is_planet_class = pc_nuked
+	}
+	
+	planet_modifier = {
+		planet_max_districts_add = -1
+		planet_jobs_engineering_research_produces_mult = 0.10
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_regular_empire = yes }
+		}
+		modifier = {
+			job_pioneer_add = 1
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_hive_empire = yes }
+		}
+		modifier = {
+			job_opportunist_drone_add = 1
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_machine_empire = yes }
+		}
+		modifier = {	
+			job_scout_drone_add = 1
+		}
+	}
+	
+	on_cleared = {
+		if = {
+			limit = { exists = owner }
+			owner = { add_resource = { alloys = 100 } }
+			if = {
+				limit = { owner = { has_origin = origin_scavengers } }			
+				owner = { give_random_eng_technology = yes }
+			}
+		}
+	}
+
+	drop_weight = {
+		weight = @blocker_high
+		modifier = {
+			factor = 5
+			has_modifier = "depleted_world"
+		}
 		modifier = {
 			factor = 0
 			num_free_districts = {

@@ -49,7 +49,7 @@ megacorp_caravaneer_init = {
 	
 	planet = {
 		class = star
-		size = { min = 10 max = 25 }
+		size = { min = @standard_min max = @standard_max }
 		orbit_distance = 0
 		
 		init_effect = {
@@ -199,7 +199,8 @@ megacorp_caravaneer_init = {
 		orbit_angle = { min = 355 max = 5 }
 		size = { min = 10 max = 25 }
 		class = "rl_unhabitable_planets"
-		orbit_distance = 12
+		orbit_distance = { min = 15 max = 20 }
+		flags = { hot_zone }
 	}
 
 	planet = {
@@ -207,7 +208,8 @@ megacorp_caravaneer_init = {
 		orbit_angle = { min = 175 max = 185 }
 		size = { min = 10 max = 25 }
 		class = "rl_unhabitable_planets"
-		orbit_distance = 12
+		orbit_distance = { min = 20 max = 30 }
+		flags = { warm_zone }
 	}
 
 	planet = {
@@ -215,7 +217,8 @@ megacorp_caravaneer_init = {
 		orbit_angle = { min = 85 max = 95 }
 		size = { min = 10 max = 25 }
 		class = "rl_unhabitable_planets"
-		orbit_distance = 12
+		orbit_distance = { min = 30 max = 40 }
+		flags = { temperate_zone }
 	}
 
 	planet = {
@@ -223,7 +226,7 @@ megacorp_caravaneer_init = {
 		orbit_angle = { min = 175 max = 185 }
 		size = { min = 10 max = 25 }
 		class = "rl_unhabitable_planets"
-		orbit_distance = 12
+		orbit_distance = { min = 40 max = 50 }
 	}
 
 	init_effect = {
@@ -710,7 +713,7 @@ megacorp_matter_decompressor_init_01 = {
 
 	planet = {
 		class = star
-		size = { min = 10 max = 25 }
+		size = { min = @standard_min max = @standard_max }
 		orbit_distance = 0
 		init_effect = {
 			save_event_target_as = matter_decompressor_hole
@@ -800,18 +803,19 @@ megacorp_strategic_coordination_center_init_01 = {
 	
 	planet = {
 		class = star
-		size = { min = 10 max = 25 }
+		size = { min = @standard_min max = @standard_max }
 		orbit_distance = 0
 		init_effect = {
 			save_event_target_as = coordination_location
 		}
 	}
 
-	change_orbit = 55
+	change_orbit = { min = 20 max = 60 }
 
 	planet = {
 		class = "pc_barren"
 		size = { min = 10 max = 15 }
+		flags = { hot_zone }
 
 		init_effect = {
 			create_ambient_object = {
@@ -830,6 +834,7 @@ megacorp_strategic_coordination_center_init_01 = {
 	planet = {
 		class = "pc_gas_giant"
 		orbit_angle = { min = 90 max = 270 }
+		orbit_distance = { min = 30 max = 40 }
 		size = 40
 
 		init_effect = {
@@ -881,11 +886,10 @@ megacorp_strategic_coordination_center_init_01 = {
 		}
 	}
 
-	change_orbit = 25
-
 	planet = {
 		class = "pc_gas_giant"
 		orbit_angle = { min = 90 max = 270 }
+		orbit_distance = { min = 40 max = 50 }
 		size = 30
 
 		init_effect = {
@@ -973,11 +977,10 @@ megacorp_strategic_coordination_center_init_01 = {
 		}
 	}
 
-	change_orbit = 25
-
 	planet = {
 		class = "pc_gas_giant"
 		orbit_angle = { min = 90 max = 270 }
+		orbit_distance = { min = 50 max = 60 }
 		size = 35
 
 		init_effect = {
@@ -1087,10 +1090,9 @@ megacorp_strategic_coordination_center_init_01 = {
 		}
 	}
 
-	change_orbit = 25
-
 	planet = {
 		class = "pc_frozen"
+		orbit_distance = { min = 60 max = 70 }
 		size = { min = 10 max = 15 }
 
 		init_effect = {
@@ -1170,7 +1172,7 @@ megacorp_mega_art_installation_init_01 = {
 		class = star
 		orbit_distance = 25
 		orbit_angle = 0
-		size = { min = 25 max = 30 }
+		size = { min = @standard_min max = @standard_max }
 		has_ring = no
 		init_effect = {
 			save_event_target_as = installation_star
@@ -1182,7 +1184,7 @@ megacorp_mega_art_installation_init_01 = {
 		class = star
 		orbit_distance = { min = 0 max = 20 }
 		orbit_angle = 120
-		size = { min = 25 max = 30 }
+		size = { min = @standard_sat_min max = @standard_sat_max }
 		has_ring = no
 	}
 
@@ -1191,16 +1193,157 @@ megacorp_mega_art_installation_init_01 = {
 		class = star
 		orbit_distance = { min = 0 max = 20 }
 		orbit_angle = 120
-		size = { min = 25 max = 30 }
+		size = { min = @standard_sat_min max = @standard_sat_max }
 		has_ring = no
 
 	}
 
-	change_orbit = 45
+	change_orbit = { min = 40 max = 60 }
 	
 	planet = {
-		count = { min = 2 max = 10 }
-		orbit_distance = 20
+		count = 1
+		orbit_angle = { min = 90 max = 270 }
+		
+		change_orbit = @base_moon_distance
+		
+		moon = {
+			count = { min = 0 max = 1 }
+			orbit_angle = { min = 90 max = 270 }
+			orbit_distance = 5
+		}
+	}
+	
+	planet = {
+		count = 1
+		orbit_distance = { min = 15 max = 20 }
+		orbit_angle = { min = 90 max = 270 }
+		flags = { hot_zone }
+		
+		change_orbit = @base_moon_distance
+		
+		moon = {
+			count = { min = 0 max = 1 }
+			orbit_angle = { min = 90 max = 270 }
+			orbit_distance = 5
+			flags = { hot_zone }
+		}
+	}
+	
+	planet = {
+		count = { min = 0 max = 1 }
+		orbit_distance = { min = 20 max = 25 }
+		orbit_angle = { min = 90 max = 270 }
+		
+		change_orbit = @base_moon_distance
+		
+		moon = {
+			count = { min = 0 max = 1 }
+			orbit_angle = { min = 90 max = 270 }
+			orbit_distance = 5
+		}
+	}
+	
+	planet = {
+		count = { min = 0 max = 1 }
+		orbit_distance = { min = 25 max = 30 }
+		orbit_angle = { min = 90 max = 270 }
+		
+		change_orbit = @base_moon_distance
+		
+		moon = {
+			count = { min = 0 max = 1 }
+			orbit_angle = { min = 90 max = 270 }
+			orbit_distance = 5
+		}
+	}
+	
+	planet = {
+		count = { min = 0 max = 1 }
+		orbit_distance = { min = 30 max = 35 }
+		orbit_angle = { min = 90 max = 270 }
+		
+		change_orbit = @base_moon_distance
+		
+		moon = {
+			count = { min = 0 max = 1 }
+			orbit_angle = { min = 90 max = 270 }
+			orbit_distance = 5
+		}
+	}
+	
+	planet = {
+		count = { min = 0 max = 1 }
+		orbit_distance = { min = 35 max = 40 }
+		orbit_angle = { min = 90 max = 270 }
+		
+		change_orbit = @base_moon_distance
+		
+		moon = {
+			count = { min = 0 max = 1 }
+			orbit_angle = { min = 90 max = 270 }
+			orbit_distance = 5
+		}
+	}
+	
+	planet = {
+		count = { min = 0 max = 1 }
+		orbit_distance = { min = 40 max = 45 }
+		orbit_angle = { min = 90 max = 270 }
+		
+		change_orbit = @base_moon_distance
+		
+		moon = {
+			count = { min = 0 max = 1 }
+			orbit_angle = { min = 90 max = 270 }
+			orbit_distance = 5
+		}
+	}
+	
+	planet = {
+		count = { min = 0 max = 1 }
+		orbit_distance = { min = 45 max = 50 }
+		orbit_angle = { min = 90 max = 270 }
+		
+		change_orbit = @base_moon_distance
+		
+		moon = {
+			count = { min = 0 max = 1 }
+			orbit_angle = { min = 90 max = 270 }
+			orbit_distance = 5
+		}
+	}
+	
+	planet = {
+		count = { min = 0 max = 1 }
+		orbit_distance = { min = 50 max = 55 }
+		orbit_angle = { min = 90 max = 270 }
+		
+		change_orbit = @base_moon_distance
+		
+		moon = {
+			count = { min = 0 max = 1 }
+			orbit_angle = { min = 90 max = 270 }
+			orbit_distance = 5
+		}
+	}
+	
+	planet = {
+		count = { min = 0 max = 1 }
+		orbit_distance = { min = 55 max = 60 }
+		orbit_angle = { min = 90 max = 270 }
+		
+		change_orbit = @base_moon_distance
+		
+		moon = {
+			count = { min = 0 max = 1 }
+			orbit_angle = { min = 90 max = 270 }
+			orbit_distance = 5
+		}
+	}
+	
+	planet = {
+		count = { min = 0 max = 1 }
+		orbit_distance = { min = 60 max = 70 }
 		orbit_angle = { min = 90 max = 270 }
 		
 		change_orbit = @base_moon_distance
@@ -1282,7 +1425,7 @@ megacorp_interstellar_assembly_init_01 = {
 		class = star
 		orbit_distance = 0
 		orbit_angle = 1
-		size = { min = 20 max = 30 }
+		size = { min = @standard_min max = @standard_max }
 		has_ring = no
 	}
 	
@@ -1351,8 +1494,24 @@ megacorp_interstellar_assembly_init_01 = {
 	}
 	
 	planet = {
+		count = { min = 0 max = 1 }
+		orbit_distance = { min = 20 max = 25 }
+		class = random_non_colonizable
+		orbit_angle = { min = 90 max = 270 }
+		
+		change_orbit = @base_moon_distance
+
+		moon = {
+			count = { min = 0 max = 1 }
+			class = random_non_colonizable
+			orbit_angle = { min = 90 max = 270 }
+			orbit_distance = 5
+		}
+	}
+	
+	planet = {
 		count = { min = 0 max = 2 }
-		orbit_distance = 20
+		orbit_distance = { min = 25 max = 30 }
 		class = random_non_colonizable
 		orbit_angle = { min = 90 max = 270 }
 		
@@ -1368,7 +1527,7 @@ megacorp_interstellar_assembly_init_01 = {
 	
 	planet = {
 		count = 1
-		orbit_distance = 20
+		orbit_distance = { min = 30 max = 35 }
 		home_planet = yes
 		class = ideal_planet_class
 		orbit_angle = { min = 90 max = 270 }
@@ -1391,8 +1550,8 @@ megacorp_interstellar_assembly_init_01 = {
 	}
 	
 	planet = {
-		count = { min = 2 max = 4 }
-		orbit_distance = 20
+		count = 1
+		orbit_distance = { min = 35 max = 40 }
 		class = random_non_colonizable
 		orbit_angle = { min = 90 max = 270 }
 		
@@ -1407,8 +1566,72 @@ megacorp_interstellar_assembly_init_01 = {
 	}
 	
 	planet = {
-		count = { min = 1 max = 2 }
-		orbit_distance = 20
+		count = 1
+		orbit_distance = { min = 45 max = 50 }
+		class = random_non_colonizable
+		orbit_angle = { min = 90 max = 270 }
+		
+		change_orbit = @base_moon_distance
+
+		moon = {
+			count = { min = 0 max = 1 }
+			class = random_non_colonizable
+			orbit_angle = { min = 90 max = 270 }
+			orbit_distance = 5
+		}
+	}
+	
+	planet = {
+		count = { min = 0 max = 1 }
+		orbit_distance = { min = 50 max = 55 }
+		class = random_non_colonizable
+		orbit_angle = { min = 90 max = 270 }
+		
+		change_orbit = @base_moon_distance
+
+		moon = {
+			count = { min = 0 max = 1 }
+			class = random_non_colonizable
+			orbit_angle = { min = 90 max = 270 }
+			orbit_distance = 5
+		}
+	}
+	
+	planet = {
+		count = { min = 0 max = 1 }
+		orbit_distance = { min = 55 max = 60 }
+		class = random_non_colonizable
+		orbit_angle = { min = 90 max = 270 }
+		
+		change_orbit = @base_moon_distance
+
+		moon = {
+			count = { min = 0 max = 1 }
+			class = random_non_colonizable
+			orbit_angle = { min = 90 max = 270 }
+			orbit_distance = 5
+		}
+	}
+	
+	planet = {
+		count = 1
+		orbit_distance = { min = 60 max = 70 }
+		class = pc_gas_giant
+		orbit_angle = { min = 90 max = 270 }
+		
+		change_orbit = @base_moon_distance
+
+		moon = {
+			count = { min = 0 max = 3 }
+			class = random_non_colonizable
+			orbit_angle = { min = 90 max = 270 }
+			orbit_distance = 5
+		}
+	}
+	
+	planet = {
+		count = { min = 0 max = 1 }
+		orbit_distance = { min = 70 max = 80 }
 		class = pc_gas_giant
 		orbit_angle = { min = 90 max = 270 }
 		
