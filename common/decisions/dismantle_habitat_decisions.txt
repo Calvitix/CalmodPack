@@ -1,0 +1,91 @@
+##########################################################################
+# Decisions
+##########################################################################
+decision_dismantle_habitat_on = {
+	sound = event_construction_03
+	icon = decision_dismantle_habitat
+	resources = {
+		category = decisions
+		cost = {
+			influence = 75
+			energy = 500
+		}
+	}
+
+	potential = {
+		exists = space_owner
+		space_owner = { is_same_value = from }
+		is_planet_class = pc_habitat
+		is_colony = no
+		NOT = {
+			has_planet_flag = pf_dh_in_progress
+		}
+	}
+
+	effect = {
+		if = { limit = { planet_size = 4 }
+			custom_tooltip = decision_dismantle_habitat_effects_t1_short
+			hidden_effect = {
+				add_modifier = { modifier = "timer_habitat" days = 900 }
+				planet_event = { 
+					id = dismantle_habitat.1
+					days = 900
+				}
+				set_planet_flag = pf_dh_in_progress
+			}
+		}
+		if = { limit = { planet_size = 6 }
+			custom_tooltip = decision_dismantle_habitat_effects_t2_short
+			hidden_effect = {
+				add_modifier = { modifier = "timer_habitat" days = 1260 }
+				planet_event = { 
+					id = dismantle_habitat.2
+					days = 1260
+				}
+				set_planet_flag = pf_dh_in_progress
+			}
+		}
+		if = { limit = { planet_size = 8 }
+			custom_tooltip = decision_dismantle_habitat_effects_t3_short
+			hidden_effect = {
+				add_modifier = { modifier = "timer_habitat" days = 1980 }
+				planet_event = { 
+					id = dismantle_habitat.3
+					days = 1980
+				}
+				set_planet_flag = pf_dh_in_progress
+			}
+		}
+	}
+
+	ai_weight = {
+		weight = -1
+	}
+}
+
+decision_dismantle_habitat_off = {
+	sound = event_construction_03
+	icon = decision_dismantle_habitat
+
+	potential = {
+		exists = space_owner
+		space_owner = { is_same_value = from }
+		is_planet_class = pc_habitat
+		is_colony = no
+		has_planet_flag = pf_dh_in_progress
+	}
+
+	effect = {
+		custom_tooltip = decision_dismantle_habitat_effects_off_short
+		hidden_effect = {
+			planet_event = { 
+				id = dismantle_habitat.4
+        	    days = 1
+    		}
+    	}
+	}
+}
+
+#900 1500 500
+#1260 2500 900
+#1980 4000 1400
