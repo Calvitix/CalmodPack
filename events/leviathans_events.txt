@@ -1,3 +1,4 @@
+#Unofficial Patch
 #################################
 ### Leviathan & Enclave Events###
 ### by Maximilian Olbers	  ###
@@ -13243,11 +13244,20 @@ ship_event = {
 
 	trigger = {
 		has_ship_flag = fortress_vault
-		from.owner = { is_country_type = default }
+#Unofficial Patch		
+		from.owner = { 
+			OR = {
+				is_country_type = default
+				is_ai = no
+			} 
+			NOT = { has_event_chain = "enigmatic_fortress_chain" }
+		}
+		NOT = { has_global_flag = enigmatic_fortress_disabled }
 	}
 
 	immediate = {
 		from.owner = { country_event = { id = leviathans.2101 } }
+		set_timed_global_flag = { flag = enigmatic_fortress_disabled days = 180 }
 	}
 }
 
@@ -13274,6 +13284,9 @@ country_event = {
 		exists = event_target:fortress_country
 		from = { is_same_value = event_target:fortress_country }
 		exists = event_target:fortress_vault_core
+#unofficial Patch
+		NOT = { has_global_flag = enigmatic_fortress_disabled }
+		NOT = { has_event_chain = "enigmatic_fortress_chain" }
 		event_target:fortress_country = {
 			count_owned_ship = { # Check that all ships are disabled
 				limit = { is_disabled = no }
@@ -13284,6 +13297,8 @@ country_event = {
 
 	immediate = {
 		country_event = { id = story.8 days = 15 }
+#unofficial patch
+		set_timed_global_flag = { flag = enigmatic_fortress_disabled days = 180 }
 		establish_communications_no_message = event_target:fortress_country
 		#event_target:fortress_country = {
 			event_target:fortress_vault_core = {

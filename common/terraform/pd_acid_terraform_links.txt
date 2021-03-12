@@ -411,6 +411,15 @@ terraform_link = {
 }
 terraform_link = {
 	from = pc_acid
+	to = pc_tepid
+	energy = @terraforming_cost_level_3
+	duration = @terraforming_duration_level_3
+	condition = { has_technology = tech_climate_restoration }
+	ai_weight = { weight = 0 }
+	effect = { from = { remove_modifier = pdacid } }
+}
+terraform_link = {
+	from = pc_acid
 	to = pc_aquatic
 	energy = @terraforming_cost_level_3
 	duration = @terraforming_duration_level_3
@@ -1203,6 +1212,15 @@ terraform_link = {
 }
 terraform_link = {
 	from = pc_acid
+	to = pc_aeolian
+	energy = @terraforming_cost_level_3
+	duration = @terraforming_duration_level_3
+	condition = { has_technology = tech_climate_restoration }
+	ai_weight = { weight = 0 }
+	effect = { from = { remove_modifier = pdacid } }
+}
+terraform_link = {
+	from = pc_acid
 	to = pc_snow
 	energy = @terraforming_cost_level_3
 	duration = @terraforming_duration_level_3
@@ -1265,6 +1283,15 @@ terraform_link = {
 			resource_stockpile_compare = { resource = energy value < 5000 }
 		}
 	}
+	effect = { from = { remove_modifier = pdacid } }
+}
+terraform_link = {
+	from = pc_acid
+	to = pc_duneforest
+	energy = @terraforming_cost_level_3
+	duration = @terraforming_duration_level_3
+	condition = { has_technology = tech_climate_restoration }
+	ai_weight = { weight = 0 }
 	effect = { from = { remove_modifier = pdacid } }
 }
 #Exotic
@@ -1399,6 +1426,15 @@ terraform_link = {
 		}
 	}
 	effect = { from = { remove_modifier = pdacid } }
+}
+terraform_link = {
+	from = pc_gaia
+	to = pc_acid
+	energy = @terraforming_cost_level_3
+	duration = @terraforming_duration_level_3
+	condition = { has_technology = tech_climate_restoration }
+	ai_weight = { weight = 0 }
+	effect = { from = { remove_deposit = d_pdgaia } }
 }
 #Special
 terraform_link = {
@@ -1595,6 +1631,15 @@ terraform_link = {
 			resource_stockpile_compare = { resource = energy value < 5000 }
 		}
 	}
+	effect = { from = { remove_modifier = pdacid } }
+}
+terraform_link = {
+	from = pc_acid
+	to = pc_supercon
+	energy = @terraforming_cost_level_3
+	duration = @terraforming_duration_level_4
+	condition = { OR = { has_ascension_perk = ap_world_shaper has_ascension_perk = ap_hive_worlds } from = { is_moon = no } }
+	ai_weight = { weight = 0 }
 	effect = { from = { remove_modifier = pdacid } }
 }
 terraform_link = {
@@ -1919,40 +1964,6 @@ terraform_link = {
 }
 terraform_link = {
 	from = pc_acid
-	to = pc_megaflora
-	energy = @terraforming_cost_gaia
-	duration = @terraforming_duration_gaia
-	condition = { OR = { has_ascension_perk = ap_world_shaper has_ascension_perk = ap_hive_worlds } }
-	ai_weight = {
-		weight = 0
-		modifier = {
-			# This should never fire because ap_world_shaper is a requirement.
-			# This is just here for consistency in case the reqs change in the future.
-			weight = 10
-			has_country_flag = gai_likes_megaflora
-			NOT = { has_country_flag = gai_likes_acid }
-			NOR = {
-				has_ascension_perk = ap_hive_worlds #hive
-				has_ascension_perk = ap_machine_worlds #robot
-				has_ascension_perk = ap_world_shaper #gaia
-			}
-		}
-		modifier = {
-			factor = 5
-			has_country_flag = gai_likes_not_acid
-		}
-		modifier = {
-			factor = 0.25
-			resource_stockpile_compare = { resource = energy value < 10000 }
-		}
-		modifier = {
-			factor = 0
-			resource_stockpile_compare = { resource = energy value < 5000 }
-		}
-	}
-}
-terraform_link = {
-	from = pc_acid
 	to = pc_glacio
 	energy = @terraforming_cost_gaia
 	duration = @terraforming_duration_gaia
@@ -1986,6 +1997,50 @@ terraform_link = {
 	}
 	effect = { from = { remove_modifier = pdacid } }
 }
+terraform_link = {
+	from = pc_acid
+	to = pc_lanthanide
+	energy = @terraforming_cost_level_3
+	duration = @terraforming_duration_level_4
+	condition = { OR = { has_ascension_perk = ap_world_shaper has_ascension_perk = ap_hive_worlds } }
+	ai_weight = { weight = 0 }
+	effect = { from = { remove_modifier = pdacid } }
+}
+terraform_link = {
+	from = pc_acid
+	to = pc_megaflora
+	energy = @terraforming_cost_gaia
+	duration = @terraforming_duration_gaia
+	condition = { OR = { has_ascension_perk = ap_world_shaper has_ascension_perk = ap_hive_worlds } }
+	ai_weight = {
+		weight = 0
+		modifier = {
+			# This should never fire because ap_world_shaper is a requirement.
+			# This is just here for consistency in case the reqs change in the future.
+			weight = 10
+			has_country_flag = gai_likes_megaflora
+			NOT = { has_country_flag = gai_likes_acid }
+			NOR = {
+				has_ascension_perk = ap_hive_worlds #hive
+				has_ascension_perk = ap_machine_worlds #robot
+				has_ascension_perk = ap_world_shaper #gaia
+			}
+		}
+		modifier = {
+			factor = 5
+			has_country_flag = gai_likes_not_acid
+		}
+		modifier = {
+			factor = 0.25
+			resource_stockpile_compare = { resource = energy value < 10000 }
+		}
+		modifier = {
+			factor = 0
+			resource_stockpile_compare = { resource = energy value < 5000 }
+		}
+	}
+}
+
 terraform_link = {
 	from = pc_alpine
 	to = pc_acid
@@ -2530,6 +2585,15 @@ terraform_link = {
 	condition = { OR = { has_ascension_perk = ap_world_shaper has_ascension_perk = ap_hive_worlds } }
 	ai_weight = { weight = 0 }
 	effect = { from = { remove_modifier = pdglacio } }
+}
+terraform_link = {
+	from = pc_lanthanide
+	to = pc_acid
+	energy = @terraforming_cost_level_3
+	duration = @terraforming_duration_level_4
+	condition = { OR = { has_ascension_perk = ap_world_shaper has_ascension_perk = ap_hive_worlds } }
+	ai_weight = { weight = 0 }
+	effect = { from = { remove_modifier = pdlanthanide } }
 }
 terraform_link = {
 	from = pc_megaflora

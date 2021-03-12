@@ -276,6 +276,31 @@ terraform_link = {
 }
 terraform_link = {
 	from = pc_continental
+	to = pc_tepid
+	energy = @terraforming_cost_level_1
+	duration = @terraforming_duration_level_1
+	condition = { has_technology = tech_terrestrial_sculpting }
+	 
+	ai_weight = {
+		weight = 0
+		modifier = {
+			weight = 10
+			has_country_flag = gai_likes_tepid
+			NOT = { has_country_flag = gai_likes_continental }
+			# Normal terraforming within same group (level 1 costs) is allowed even with world shaper.
+		}
+		modifier = {
+			factor = 0.25
+			resource_stockpile_compare = { resource = energy value < 10000 }
+		}
+		modifier = {
+			factor = 0
+			resource_stockpile_compare = { resource = energy value < 5000 }
+		}
+	}
+}
+terraform_link = {
+	from = pc_continental
 	to = pc_aquatic
 	energy = @terraforming_cost_level_1
 	duration = @terraforming_duration_level_1
@@ -947,6 +972,34 @@ terraform_link = {
 }
 terraform_link = {
 	from = pc_continental
+	to = pc_aeolian
+	energy = @terraforming_cost_level_2
+	duration = @terraforming_duration_level_2
+	condition = { has_technology = tech_terrestrial_sculpting }
+	ai_weight = {
+		weight = 0
+		modifier = {
+			weight = 10
+			has_country_flag = gai_likes_aeolian
+			NOT = { has_country_flag = gai_likes_continental }
+			NOR = {
+				has_ascension_perk = ap_hive_worlds #hive
+				has_ascension_perk = ap_machine_worlds #robot
+				has_ascension_perk = ap_world_shaper #gaia
+			}
+		}
+		modifier = {
+			factor = 0.25
+			resource_stockpile_compare = { resource = energy value < 10000 }
+		}
+		modifier = {
+			factor = 0
+			resource_stockpile_compare = { resource = energy value < 5000 }
+		}
+	}
+}
+terraform_link = {
+	from = pc_continental
 	to = pc_snow
 	energy = @terraforming_cost_level_2
 	duration = @terraforming_duration_level_2
@@ -1001,6 +1054,36 @@ terraform_link = {
 		}
 	}
 }
+
+terraform_link = {
+	from = pc_continental
+	to = pc_duneforest
+	energy = @terraforming_cost_level_2
+	duration = @terraforming_duration_level_2
+	condition = { has_technology = tech_terrestrial_sculpting }
+	ai_weight = {
+		weight = 0
+		modifier = {
+			weight = 10
+			has_country_flag = gai_likes_duneforest
+			NOT = { has_country_flag = gai_likes_continental }
+			NOR = {
+				has_ascension_perk = ap_hive_worlds #hive
+				has_ascension_perk = ap_machine_worlds #robot
+				has_ascension_perk = ap_world_shaper #gaia
+			}
+		}
+		modifier = {
+			factor = 0.25
+			resource_stockpile_compare = { resource = energy value < 10000 }
+		}
+		modifier = {
+			factor = 0
+			resource_stockpile_compare = { resource = energy value < 5000 }
+		}
+	}
+}
+
 #Exotic
 terraform_link = {
 	from = pc_continental
@@ -1346,6 +1429,14 @@ terraform_link = {
 }
 terraform_link = {
 	from = pc_continental
+	to = pc_supercon
+	energy = @terraforming_cost_gaia
+	duration = @terraforming_duration_gaia
+	condition = { OR = { has_ascension_perk = ap_world_shaper has_ascension_perk = ap_hive_worlds } from = { is_moon = no } }
+	ai_weight = { weight = 0 }
+}
+terraform_link = {
+	from = pc_continental
 	to = pc_biolumen
 	energy = @terraforming_cost_gaia
 	duration = @terraforming_duration_gaia
@@ -1678,4 +1769,12 @@ terraform_link = {
 			resource_stockpile_compare = { resource = energy value < 5000 }
 		}
 	}
+}
+terraform_link = {
+	from = pc_continental
+	to = pc_lanthanide
+	energy = @terraforming_cost_gaia
+	duration = @terraforming_duration_gaia
+	condition = { OR = { has_ascension_perk = ap_world_shaper has_ascension_perk = ap_hive_worlds } }
+	ai_weight = { weight = 0 }
 }

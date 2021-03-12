@@ -109,6 +109,29 @@ planet_event = {
 	}
 }
 
+# Make sure bombarded infested worlds revert to barren.
+event = {
+	id = ariphaos_patch.92
+	hide_window = yes
+	is_triggered_only = yes
+	
+	immediate = {
+		every_planet = {
+			limit = {
+				has_owner = no
+				is_planet_class = pc_infested
+				is_under_colonization = no
+			}
+			
+			change_pc = pc_barren
+			add_modifier = {
+				modifier = "terraforming_candidate"
+				days = -1
+			}
+		}
+	}
+}
+
 # Catch-all trait adding event.
 country_event = {
 	id = ariphaos_patch.2560
@@ -132,7 +155,7 @@ event = {
 	
 	immediate = {
 		event_target:global_event_country = {
-			country_event = { id = ariphaos_patch.25750 days = 1 }
+			country_event = { id = ariphaos_patch.25751 days = 1 }
 		}
 	}
 }
@@ -218,6 +241,49 @@ country_event = {
 						days = -1
 					}
 				}
+			}
+		}
+	}
+}
+
+event = {
+	id = ariphaos_patch.3101
+	hide_window = yes
+	is_triggered_only = yes
+	
+	immediate = {
+		every_country = {
+			limit = {
+				has_origin = origin_remnants
+			}
+			country_event = { id = ariphaos_patch.31010 days = 1 }
+		}
+	}
+}
+
+country_event = {
+	id = ariphaos_patch.31010
+	hide_window = yes
+	is_triggered_only = yes
+	
+	immediate = {
+		capital_scope.solar_system = {
+			every_neighbor_system = {
+			    every_system_planet = {
+					limit = {
+						has_planet_flag = prescripted_ideal
+					}
+					set_planet_flag = ariphaos_patch_remnants
+				}
+			
+			    every_neighbor_system = {
+					every_system_planet = {
+						limit = {
+							has_planet_flag = prescripted_ideal
+						}
+						set_planet_flag = ariphaos_patch_remnants
+					}
+			    }
 			}
 		}
 	}

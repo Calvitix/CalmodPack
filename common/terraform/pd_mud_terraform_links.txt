@@ -40,6 +40,30 @@ terraform_link = {
 }
 terraform_link = {
 	from = pc_mud
+	to = pc_swamp
+	energy = @terraforming_cost_level_1
+	duration = @terraforming_duration_level_1
+	condition = { has_technology = tech_terrestrial_sculpting }
+	ai_weight = {
+		weight = 0
+		modifier = {
+			weight = 10
+			has_country_flag = gai_likes_swamp
+			NOT = { has_country_flag = gai_likes_mud }
+			# Normal terraforming within same group (level 1 costs) is allowed even with world shaper.
+		}
+		modifier = {
+			factor = 0.25
+			resource_stockpile_compare = { resource = energy value < 10000 }
+		}
+		modifier = {
+			factor = 0
+			resource_stockpile_compare = { resource = energy value < 5000 }
+		}
+	}
+}
+terraform_link = {
+	from = pc_mud
 	to = pc_alpine
 	energy = @terraforming_cost_level_1
 	duration = @terraforming_duration_level_1
@@ -73,30 +97,6 @@ terraform_link = {
 		modifier = {
 			weight = 10
 			has_country_flag = gai_likes_tundra
-			NOT = { has_country_flag = gai_likes_mud }
-			# Normal terraforming within same group (level 1 costs) is allowed even with world shaper.
-		}
-		modifier = {
-			factor = 0.25
-			resource_stockpile_compare = { resource = energy value < 10000 }
-		}
-		modifier = {
-			factor = 0
-			resource_stockpile_compare = { resource = energy value < 5000 }
-		}
-	}
-}
-terraform_link = {
-	from = pc_mud
-	to = pc_swamp
-	energy = @terraforming_cost_level_1
-	duration = @terraforming_duration_level_1
-	condition = { has_technology = tech_terrestrial_sculpting }
-	ai_weight = {
-		weight = 0
-		modifier = {
-			weight = 10
-			has_country_flag = gai_likes_swamp
 			NOT = { has_country_flag = gai_likes_mud }
 			# Normal terraforming within same group (level 1 costs) is allowed even with world shaper.
 		}
@@ -232,6 +232,14 @@ terraform_link = {
 }
 terraform_link = {
 	from = pc_mud
+	to = pc_aeolian
+	energy = @terraforming_cost_level_1
+	duration = @terraforming_duration_level_1
+	condition = { has_technology = tech_terrestrial_sculpting }
+	ai_weight = { weight = 0 }
+}
+terraform_link = {
+	from = pc_mud
 	to = pc_snow
 	energy = @terraforming_cost_level_1
 	duration = @terraforming_duration_level_1
@@ -277,6 +285,14 @@ terraform_link = {
 			resource_stockpile_compare = { resource = energy value < 5000 }
 		}
 	}
+}
+terraform_link = {
+	from = pc_mud
+	to = pc_duneforest
+	energy = @terraforming_cost_level_1
+	duration = @terraforming_duration_level_1
+	condition = { has_technology = tech_terrestrial_sculpting }
+	ai_weight = { weight = 0 }
 }
 
 #Different Group
@@ -615,6 +631,14 @@ terraform_link = {
 			resource_stockpile_compare = { resource = energy value < 5000 }
 		}
 	}
+}
+terraform_link = {
+	from = pc_mud
+	to = pc_tepid
+	energy = @terraforming_cost_level_2
+	duration = @terraforming_duration_level_2
+	condition = { has_technology = tech_terrestrial_sculpting }
+	ai_weight = { weight = 0 }
 }
 terraform_link = {
 	from = pc_mud
@@ -1354,6 +1378,14 @@ terraform_link = {
 }
 terraform_link = {
 	from = pc_mud
+	to = pc_supercon
+	energy = @terraforming_cost_gaia
+	duration = @terraforming_duration_gaia
+	condition = { OR = { has_ascension_perk = ap_world_shaper has_ascension_perk = ap_hive_worlds } from = { is_moon = no } }
+	ai_weight = { weight = 0 }
+}
+terraform_link = {
+	from = pc_mud
 	to = pc_biolumen
 	energy = @terraforming_cost_gaia
 	duration = @terraforming_duration_gaia
@@ -1629,7 +1661,7 @@ terraform_link = {
 }
 terraform_link = {
 	from = pc_mud
-	to = pc_megaflora
+	to = pc_glacio
 	energy = @terraforming_cost_gaia
 	duration = @terraforming_duration_gaia
 	condition = { OR = { has_ascension_perk = ap_world_shaper has_ascension_perk = ap_hive_worlds } }
@@ -1639,7 +1671,7 @@ terraform_link = {
 			# This should never fire because ap_world_shaper is a requirement.
 			# This is just here for consistency in case the reqs change in the future.
 			weight = 10
-			has_country_flag = gai_likes_megaflora
+			has_country_flag = gai_likes_glacio
 			NOT = { has_country_flag = gai_likes_mud }
 			NOR = {
 				has_ascension_perk = ap_hive_worlds #hive
@@ -1659,7 +1691,15 @@ terraform_link = {
 }
 terraform_link = {
 	from = pc_mud
-	to = pc_glacio
+	to = pc_lanthanide
+	energy = @terraforming_cost_gaia
+	duration = @terraforming_duration_gaia
+	condition = { OR = { has_ascension_perk = ap_world_shaper has_ascension_perk = ap_hive_worlds } }	
+	ai_weight = { weight = 0 }
+}
+terraform_link = {
+	from = pc_mud
+	to = pc_megaflora
 	energy = @terraforming_cost_gaia
 	duration = @terraforming_duration_gaia
 	condition = { OR = { has_ascension_perk = ap_world_shaper has_ascension_perk = ap_hive_worlds } }
@@ -1669,7 +1709,7 @@ terraform_link = {
 			# This should never fire because ap_world_shaper is a requirement.
 			# This is just here for consistency in case the reqs change in the future.
 			weight = 10
-			has_country_flag = gai_likes_glacio
+			has_country_flag = gai_likes_megaflora
 			NOT = { has_country_flag = gai_likes_mud }
 			NOR = {
 				has_ascension_perk = ap_hive_worlds #hive
