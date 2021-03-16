@@ -935,7 +935,7 @@ country_event = {
 					min_jumps = 1
 					max_jumps = 10
 				}
-				NOT = {
+				NOR = {
 					exists = space_owner
 					has_star_flag = hostile_system
 				}
@@ -4828,6 +4828,7 @@ country_event = {
 		is_country_type = awakened_fallen_empire
 		is_at_war = no
 		has_crisis = no
+		NOT = { has_global_flag = war_in_heaven_ongoing }
 		NOT = { has_country_flag = guardians_of_the_galaxy }
 		NOT = { has_authority = auth_machine_intelligence }
 		any_country = {
@@ -5091,16 +5092,23 @@ country_event = {
 			factor = 0.5
 			has_ethic = ethic_fanatic_xenophile
 		}
+		modifier = {
+			factor = 2
+			is_ai = yes
+		}
 	}
 	
-	trigger = {		
-		is_ai = no
+	trigger = {
+		OR = {
+			is_ai = no
+			NOT = { any_federation_ally = { is_ai = no } }
+		}
 		is_country_type = default	
 		is_subject = no	
-		is_homicidal = no	
+		is_homicidal = no
 		NOT = { has_country_flag = fe_task_asked_to_attack_tiyanki_killer }
 		NOT = { has_country_flag = fe_task_given }
-		NOT = { has_global_flag = fe_task_attack_tiyanki_killer }	
+		NOT = { has_global_flag = fe_task_attack_tiyanki_killer }
 		is_at_war = no
 		
 		NOT = { has_policy_flag = no_wars }
@@ -5123,6 +5131,19 @@ country_event = {
 					is_in_federation_with = ROOT
 					has_defensive_pact = ROOT
 					has_non_aggression_pact = ROOT
+				}
+				OR = {
+					ROOT = { is_ai = no }
+					AND = {
+						relative_power = {
+							who = ROOT
+							value <= equivalent
+						}
+						opinion_level = {
+							who = ROOT
+							level <= poor
+						}
+					}
 				}
 				has_opinion_modifier = { who = prev modifier = opinion_killed_all_tiyanki_3 is_reverse = yes }
 			}
@@ -5152,6 +5173,19 @@ country_event = {
 						has_defensive_pact = ROOT
 						has_non_aggression_pact = ROOT
 					}
+					OR = {
+						ROOT = { is_ai = no }
+						AND = {
+							relative_power = {
+								who = ROOT
+								value <= equivalent
+							}
+							opinion_level = {
+								who = ROOT
+								level <= poor
+							}
+						}
+					}
 					has_opinion_modifier = { who = prev modifier = opinion_killed_all_tiyanki_3 is_reverse = yes }
 				}
 			}
@@ -5162,6 +5196,19 @@ country_event = {
 						is_in_federation_with = ROOT
 						has_defensive_pact = ROOT
 						has_non_aggression_pact = ROOT
+					}
+					OR = {
+						ROOT = { is_ai = no }
+						AND = {
+							relative_power = {
+								who = ROOT
+								value <= equivalent
+							}
+							opinion_level = {
+								who = ROOT
+								level <= poor
+							}
+						}
 					}
 					has_opinion_modifier = { who = prev modifier = opinion_killed_all_tiyanki_3 is_reverse = yes }
 				}
@@ -5193,7 +5240,61 @@ country_event = {
 	option = {
 		name = countryexpanded.116.a
 		ai_chance = {
-			factor = 90				
+			factor = 90		
+			modifier = {
+				factor = 2
+				has_valid_civic = civic_environmentalist
+				has_valid_civic = civic_hive_ascetic
+				has_valid_civic = civic_hive_empath
+				has_valid_civic = eco_civic_scavenger
+				has_valid_civic = civic_machine_zero_waste_protocols
+				has_valid_civic = eco_civic_recycler
+				has_valid_civic = civic_memorialist
+				has_valid_civic = civic_memorialist_corp
+				has_valid_civic = civic_hive_memorialist
+				has_valid_civic = civic_machine_memorialist
+				has_origin = origin_tree_of_life
+				has_origin = origin_delicate_ecosystem
+				has_origin = origin_terraformer
+				has_origin = origin_amoeba
+				has_origin = origin_symbiote
+			}
+			modifier = {
+				factor = 2
+				OR = {
+					has_valid_civic = civic_machine_servitor
+					has_valid_civic = civic_harm_hive
+					has_valid_civic = civic_harm_machine
+				}
+			}
+			modifier = {
+				factor = 2
+				has_ethic = ethic_xenophile
+			}
+			modifier = {
+				factor = 10
+				has_ethic = ethic_fanatic_xenophile
+			}
+			modifier = {
+				factor = 2
+				is_militarist = yes # looking for a fight
+			}			
+			modifier = {
+				factor = 0.1
+				has_ethic = ethic_xenophobe
+			}
+			modifier = {
+				factor = 0.01
+				has_ethic = ethic_fanatic_xenophobe
+			}
+			modifier = {
+				factor = 0.1
+				has_ethic = ethic_pacifist
+			}
+			modifier = {
+				factor = 0.01
+				has_ethic = ethic_fanatic_pacifist
+			}			
 		}		
 		
 		begin_event_chain = {
@@ -5208,6 +5309,26 @@ country_event = {
 			set_timed_country_flag = { flag = fe_task_attack_tiyanki_killer_timer days = 7200 }
 			event_target:FallenEmpireTaskOrigin = { set_country_flag = fe_task_attack_tiyanki_killer_origin }
 			event_target:FallenEmpireTaskTarget = { set_country_flag = fe_task_attack_tiyanki_killer_target }
+			if = {
+				limit = {
+					is_ai = yes
+					has_policy_flag = unrestricted_wars
+				}
+				declare_war = {
+					target = event_target:FallenEmpireTaskTarget
+					attacker_war_goal = "wg_humiliation"
+				}
+			}
+			else_if = {
+				limit = {
+					is_ai = yes
+					has_policy_flag = liberation_wars
+				}
+				declare_war = {
+					target = event_target:FallenEmpireTaskTarget
+					attacker_war_goal = "wg_force_ideology"
+				}
+			}
 		}
 		hidden_effect = { remove_country_flag = fe_task_given }
 	}
@@ -5647,6 +5768,173 @@ country_event = {
 				add_modifier = { modifier = fe_resource_shortage days = 7200 }
 			}
 		}
+	}
+}
+
+# Xenophile asks you to return their ancient artifacts
+country_event = {
+	id = countryexpanded.122
+	title = OK
+	desc = OK
+	
+	hide_window = yes
+	
+	mean_time_to_happen = {
+		years = 350
+		modifier = {
+			factor = 0.75
+			has_ethic = ethic_xenophobe
+		}
+		modifier = {
+			factor = 0.75
+			has_ethic = ethic_fanatic_xenophobe
+		}
+		modifier = {
+			factor = 0.5
+			is_gestalt = no
+			OR = {
+				allows_slavery = yes
+				allows_purge = yes
+			}
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_xenophile
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_xenophile
+		}
+	}
+	
+	trigger = {
+		is_country_type = default
+		NOR = {
+			is_homicidal = yes
+			is_at_war = yes
+			has_country_flag = fe_demanded_artifacts
+			end_game_years_passed >= 50
+		}
+		has_resource = { type = minor_artifacts amount >= 10 }
+		any_country = {
+			is_valid_fallen_empire_for_task = yes
+			has_ethic = ethic_fanatic_xenophile
+			has_communications = root
+		}
+	}
+	
+	immediate = {
+		random_country = {
+			limit = { 
+				is_valid_fallen_empire_for_task = yes
+				has_ethic = ethic_fanatic_xenophile
+				has_communications = root
+			}
+			
+			save_event_target_as = FallenEmpireTaskOrigin
+			root = { country_event = { id = countryexpanded.123 } }
+		}
+	}
+}
+country_event = {
+	id = countryexpanded.123
+	title = fallen_empires_tasks.4.name
+	desc = {
+		text = countryexpanded.123.desc
+		trigger = {
+			event_target:FallenEmpireTaskOrigin = {
+				OR = {
+					is_patronizing_to = root
+					is_dismissive_to = root
+				}
+			}
+		}
+	}
+	desc = {
+		text = countryexpanded.123.desc_angry
+		trigger = {
+			event_target:FallenEmpireTaskOrigin = {
+				NOR = {
+					is_patronizing_to = root
+					is_dismissive_to = root
+				}
+			}
+		}
+	}
+	
+	is_triggered_only = yes
+	diplomatic = yes
+	
+	picture_event_data = {
+		portrait = event_target:FallenEmpireTaskOrigin
+		planet_background = event_target:FallenEmpireTaskOrigin
+		graphical_culture = event_target:FallenEmpireTaskOrigin
+		city_level = event_target:FallenEmpireTaskOrigin
+		room = event_target:FallenEmpireTaskOrigin.ruler
+	}
+	
+	immediate = {
+		set_country_flag = fe_demanded_artifacts
+	}
+	
+	option = {
+		name = countryexpanded.123.a
+		allow = { has_resource = { type = minor_artifacts amount >= 5 } }
+		add_resource = { minor_artifacts = -5 }
+		add_resource = { influence = 100 }
+		custom_tooltip = fallen_empire_happy_tooltip
+		hidden_effect = {		
+			event_target:FallenEmpireTaskOrigin = { add_opinion_modifier = { who = root modifier = opinion_accepted_fallen_empire_request } }	
+		}
+	}
+	
+	option = {
+		name = countryexpanded.123.b
+		trigger = {
+			OR = {
+				has_ethic = ethic_xenophobe
+				has_ethic = ethic_fanatic_xenophobe
+			}
+		}
+		custom_tooltip = fallen_empire_unhappy_tooltip
+		hidden_effect = { event_target:FallenEmpireTaskOrigin = { add_opinion_modifier = { who = root modifier = opinion_refused_fallen_empire_request } } }
+	}
+	option = {
+		name = countryexpanded.123.c
+		trigger = {
+			OR = {
+				has_ethic = ethic_materialist
+				has_ethic = ethic_fanatic_materialist
+			}
+		}
+		custom_tooltip = fallen_empire_unhappy_tooltip
+		hidden_effect = { event_target:FallenEmpireTaskOrigin = { add_opinion_modifier = { who = root modifier = opinion_refused_fallen_empire_request } } }
+	}
+	option = {
+		name = countryexpanded.123.d
+		trigger = {
+			OR = {
+				has_ethic = ethic_authoritarian
+				has_ethic = ethic_fanatic_authoritarian
+			}
+		}
+		custom_tooltip = fallen_empire_unhappy_tooltip
+		hidden_effect = { event_target:FallenEmpireTaskOrigin = { add_opinion_modifier = { who = root modifier = opinion_refused_fallen_empire_request } } }
+	}	
+	option = {
+		name = countryexpanded.123.e
+		trigger = {
+			NOR = {
+				has_ethic = ethic_materialist
+				has_ethic = ethic_fanatic_materialist
+				has_ethic = ethic_authoritarian
+				has_ethic = ethic_fanatic_authoritarian
+				has_ethic = ethic_xenophobe
+				has_ethic = ethic_fanatic_xenophobe
+			}
+		}
+		custom_tooltip = fallen_empire_unhappy_tooltip
+		hidden_effect = { event_target:FallenEmpireTaskOrigin = { add_opinion_modifier = { who = root modifier = opinion_refused_fallen_empire_request } } }
 	}
 }
 
@@ -10472,7 +10760,7 @@ country_event = {
 			1 = {
 				country_event = { id = countryexpanded.402 days = 360 random = 360 }
 			}
-			3 = {
+			4 = {
 			}
 		}
 	}
@@ -10523,6 +10811,8 @@ country_event = {
 	}
 	picture = GFX_evt_arena
 	show_sound = event_cityscape
+	
+	is_triggered_only = yes
 	
 	trigger = {
 		has_valid_civic = civic_warrior_culture
@@ -10660,6 +10950,7 @@ country_event = {
 	option = {
 		name = EXCELLENT
 		add_resource = { influence = 25 }
+		hidden_effect = { remove_country_flag = lost_war_timer }
 	}
 }
 
@@ -10679,6 +10970,7 @@ country_event = {
 		event_target:dueled_leader = {
 			kill_leader = { show_notification = yes }
 		}
+		hidden_effect = { remove_country_flag = lost_war_timer }
 	}
 }
 

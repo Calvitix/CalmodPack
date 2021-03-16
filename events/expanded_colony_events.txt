@@ -910,6 +910,7 @@ planet_event = {
 	is_triggered_only = yes
 	
 	trigger = {
+		exists = owner
 		owner = { country_uses_food = yes }
 		has_planet_flag = mass_effect_citadel
 		is_colony = yes
@@ -1099,11 +1100,13 @@ planet_event = {
 		is_capital = no
 		habitable_structure = no
 		exists = owner
-		owner = { OR = {
-			is_country_type = default
-			is_country_type = ascended_empire
-			is_country_type = lost_empire
-		} }
+		owner = {
+			OR = {
+				is_country_type = default
+				is_country_type = ascended_empire
+				is_country_type = lost_empire
+			}
+		}
 	}
 	
 	immediate = {
@@ -2281,6 +2284,7 @@ planet_event = {
 	
 	immediate = {
 		owner = {
+			set_country_flag = found_presapients
 			set_country_flag = found_presapients_312
 		}
 		random_list = {
@@ -2354,6 +2358,15 @@ planet_event = {
 					}
 					homeworld = ROOT
 					sapient = no
+				}
+			}
+		}
+		if = {
+			limit = { has_global_flag = expanded_pops_active }
+			last_created_species = {
+				if = {
+					limit = { needs_class_trait = yes }
+					add_class_trait_effect = yes
 				}
 			}
 		}
@@ -2965,18 +2978,37 @@ ship_event = {
 	
 	immediate = {
 		FROMFROM = {
-			create_species = {
-				name = random
-				class = "PRE_MAM"
-				portrait = pre_mam13
-				traits = {
-					trait = trait_presapient_earthbound
-					trait = trait_very_strong
-					trait = trait_quick_learners
-					trait = trait_slow_breeders
+			if = {
+				limit = { has_global_flag = expanded_pops_active }
+				create_species = {
+					name = random
+					class = "PRE_MAM"
+					portrait = pre_mam13
+					traits = {
+						#trait = trait_mammalian
+						trait = trait_presapient_earthbound
+						trait = trait_very_strong
+						trait = trait_quick_learners
+						trait = trait_slow_breeders
+					}
+					homeworld = FROMFROM
+					sapient = no
 				}
-				homeworld = FROMFROM
-				sapient = no
+			}
+			else = {
+				create_species = {
+					name = random
+					class = "PRE_MAM"
+					portrait = pre_mam13
+					traits = {
+						trait = trait_presapient_earthbound
+						trait = trait_very_strong
+						trait = trait_quick_learners
+						trait = trait_slow_breeders
+					}
+					homeworld = FROMFROM
+					sapient = no
+				}
 			}
 			while = {
 				limit = {
@@ -3062,18 +3094,37 @@ planet_event = {
 	is_triggered_only = yes
 	
 	immediate = {
-		create_species = {
-			name = random
-			class = "PRE_MAM"
-			portrait = pre_mam13
-			traits = {
-				trait = trait_presapient_earthbound
-				trait = trait_very_strong
-				trait = trait_quick_learners
-				trait = trait_slow_breeders
+		if = {
+			limit = { has_global_flag = expanded_pops_active }
+			create_species = {
+				name = random
+				class = "PRE_MAM"
+				portrait = pre_mam13
+				traits = {
+					#trait = trait_mammalian
+					trait = trait_presapient_earthbound
+					trait = trait_very_strong
+					trait = trait_quick_learners
+					trait = trait_slow_breeders
+				}
+				homeworld = FROMFROM
+				sapient = no
 			}
-			homeworld = ROOT
-			sapient = no
+		}
+		else = {
+			create_species = {
+				name = random
+				class = "PRE_MAM"
+				portrait = pre_mam13
+				traits = {
+					trait = trait_presapient_earthbound
+					trait = trait_very_strong
+					trait = trait_quick_learners
+					trait = trait_slow_breeders
+				}
+				homeworld = FROMFROM
+				sapient = no
+			}
 		}
 		while = {
 			limit = {

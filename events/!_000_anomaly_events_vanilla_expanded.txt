@@ -480,6 +480,41 @@ ship_event = {
 	}
 }
 
+### Atmospheric Ecosystem
+ship_event = {
+	id = anomaly.300
+	title = "anomaly.300.name"
+	desc = "anomaly.300.desc"
+	picture = GFX_evt_atmospheric_flight
+	show_sound = event_ship_bridge
+	location = FROM
+
+	is_triggered_only = yes
+
+	immediate = {
+		from = { clear_deposits = yes }
+		owner = {
+			set_country_flag = anomaly_300_happened
+			country_event = { id = story.2 days = 30 }
+		}
+	}
+
+	option = {
+		name = FASCINATING
+		hidden_effect = {
+			FROM = {
+				add_modifier = {
+					modifier = "atmospheric_ecosystem"
+					days = -1
+				}
+			}
+		}
+		FROM = {
+			set_deposit = d_society_3
+		}
+	}
+}
+
 ### Abandoned Cargo Pod
 ship_event = {
 	id = anomaly.305
@@ -4903,12 +4938,12 @@ ship_event = {
 	}
 	option = {
 		name = RESEARCHIT
-		owner = {
-			# planet/owner project, best start in country scope, instead of location scope
+		small_artifact_reward = yes
+		event_target:HomePlanet = {
 			enable_special_project = {
 				name = "MASTERS_WRITINGS_POLITICS"
-				owner = root.owner
-				location = capital_scope
+				owner = root
+				location = this
 			}
 		}
 	}
@@ -4977,12 +5012,12 @@ ship_event = {
 
 	option = {
 		name = RESEARCHIT
-		owner = {
-			# planet/owner project, best start in country scope, instead of location scope
+		small_artifact_reward = yes
+		event_target:HomePlanet = {
 			enable_special_project = {
 				name = "MASTERS_WRITINGS_PHILOSOPHY"
-				owner = root.owner
-				location = capital_scope
+				owner = root
+				location = this
 			}
 		}
 	}
@@ -5045,12 +5080,12 @@ ship_event = {
 
 	option = {
 		name = RESEARCHIT
-		owner = {
-			# planet/owner project, best start in country scope, instead of location scope
+		small_artifact_reward = yes
+		event_target:HomePlanet = {
 			enable_special_project = {
 				name = "MASTERS_WRITINGS_DIPLOMACY"
-				owner = root.owner
-				location = capital_scope
+				owner = root
+				location = this
 			}
 		}
 	}
@@ -5103,14 +5138,25 @@ ship_event = {
 
 	is_triggered_only = yes
 
+	immediate = {
+		owner = {
+			random_owned_planet = {
+				limit = {
+					is_capital = yes
+				}
+				save_event_target_as = HomePlanet
+			}
+		}
+	}
+
 	option = {
 		name = RESEARCHIT
-		owner = {
-			# planet/owner project, best start in country scope, instead of location scope
+		small_artifact_chance = yes
+		event_target:HomePlanet = {
 			enable_special_project = {
 				name = "CRYOPOD_OPENING_PROJECT"
-				owner = root.owner
-				location = capital_scope
+				owner = root
+				location = this
 			}
 		}
 	}
@@ -5302,7 +5348,7 @@ ship_event = {
 
 	trigger = {
 		from = {
-			is_colonizable = no
+			has_any_strategic_resource = no
 			OR = { 
 				has_modifier = chthonian_planet
 				has_modifier = extensive_moon_system
@@ -5432,6 +5478,7 @@ ship_event = {
 
 	trigger = {
 		from = {
+			has_any_strategic_resource = no
 			OR = { 
 				has_modifier = hazardous_weather
 				has_modifier = strong_magnetic_field

@@ -782,7 +782,7 @@ DISTAR_MERCURY_CAT = {
 			add = 0.1
 			has_distar = yes
 			OR = {
-				is_planet_class = "pc_molten"
+				is_planet_class = pc_molten
 				is_barren = yes
 				is_frozen = yes
 				is_toxic = yes
@@ -828,9 +828,11 @@ DISTAR_BRAINSLUG_CAT = {
 
 	spawn_chance = {
 		modifier = {
-			add = 10
+			add = 33
 			has_distar = yes
 			habitable_planet = yes
+			NOT = { exists = owner } # no primitives
+			NOT = { has_global_flag = distar_170_happened }
 			OR = {
 				has_deposit = d_dangerous_wildlife_blocker
 				has_planet_modifier = pm_dangerous_wildlife
@@ -857,6 +859,7 @@ DISTAR_BRAINSLUG_CAT = {
 	}
 
 	on_spawn = {
+		set_global_flag = distar_170_happened
 		add_deposit = d_abandoned_primitive_homesteads
 	}
 
@@ -962,13 +965,23 @@ DISTAR_ZONE_CAT = {
 	level = 2
 	
 	spawn_chance = {
+###Expanded events
 		modifier = {
-			add = 2
+			add = 5
 			has_distar = yes
 			habitable_planet = yes
+			is_city = no
+			is_nuked = no
+			NOR = {
+				has_modifier = ancient_world
+				has_modifier = ancient_cities
+			}
 			NOT = { exists = owner }
+			NOT = {
+				from.owner = { has_country_flag = the_zone_spawned }
+			}
 		}
-###Expanded events
+
 		modifier = {
 			factor = @anomaly_habitable
 			colonizeable_planet = yes

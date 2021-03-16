@@ -107,6 +107,7 @@ AST_DEBRIS_FIELD_1_CAT = {
 							has_star_flag = com_sol
 							has_star_flag = nuked_sol
 							has_star_flag = lost_colony_sol
+							has_star_flag = sol_system
 						}
 					}
 					any_country = {
@@ -115,6 +116,10 @@ AST_DEBRIS_FIELD_1_CAT = {
 							has_country_flag = humans_early_space_age
 						}
 					}
+				}
+				any_country = {
+					is_country_type = primitive
+					has_country_flag = humans_early_space_age
 				}
 				owner = {
 					NOR = {
@@ -132,12 +137,10 @@ AST_DEBRIS_FIELD_1_CAT = {
 			modifier = {
 				add = 1
 				owner = {
-					species_portrait = human
 					OR = {
 						has_country_flag = human_1
 						has_country_flag = human_2
-						capital_scope.solar_system = { has_star_flag = sol_system }
-						capital_scope.solar_system = { has_star_flag = deneb_system }
+						species_portrait = human
 					}
 					NOT = {
 						has_country_flag = found_pioneer
@@ -175,13 +178,28 @@ AST_DEBRIS_FIELD_1_CAT = {
 			anomaly_event = anomaly.105
 		}
 		1 = {
-			# Risa Fix: rewrite event's trigger block here
+			# Modified Risa Fix: rewrite event's trigger block here
 			modifier = {
 				factor = 0
 				NOT = {
 					owner = {
-						has_country_flag = story7
-						leader = { has_trait = trait_ruler_champion_of_the_people }
+						OR = {
+							has_country_flag = story7
+							any_relation = {
+								has_communications = prev
+								OR = {
+									is_country_type = default
+									is_country_type = fallen_empire
+									is_country_type = awakened_fallen_empire 
+								}
+							}
+						}
+						leader = {
+							OR = {
+								has_trait = trait_ruler_champion_of_the_people
+								has_trait = trait_ruler_charismatic
+							}
+						}
 					}
 				}
 			}	
@@ -561,14 +579,6 @@ FROZ_BASE_CAT = {
 		modifier = {
 			add = 3
 			is_frozen = yes
-			# Risa Fix: not needed, anomaly.170 is max_once, and this can block anomaly.175
-			#FROM = {	
-			#	owner = {
-			#		NOT = {
-			#			has_country_flag = FROZ_BASE_FLAG
-			#		}
-			#	}
-			#}
 		}
 		modifier = {
 			factor = 0
@@ -1195,6 +1205,7 @@ AST_CLUSTER_CAT = {
 					NOR = {
 						has_trait = leader_trait_carefree
 						has_trait = leader_trait_meticulous
+						has_trait = leader_trait_cataloger
 					}
 				}
 			}
@@ -1349,6 +1360,7 @@ GEN_DESERT_CAT = {
 				leader = {
 					OR = {
 						has_trait = leader_trait_meticulous
+						has_trait = leader_trait_cataloger
 						has_trait = leader_trait_carefree
 					}
 				}

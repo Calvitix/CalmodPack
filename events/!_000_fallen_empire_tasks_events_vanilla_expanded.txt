@@ -950,7 +950,7 @@ country_event = {
 						}
 						OR = {
 							NOT = { has_global_flag = starbase_expanded_installed }
-							#has_technology = tech_galactic_trading_companies
+							has_technology = tech_galactic_trading_companies
 							is_gestalt = yes
 							event_target:FallenEmpireTaskOrigin = { NOT = { has_ethic = ethic_fanatic_xenophile } }
 						}
@@ -1099,12 +1099,12 @@ country_event = {
 							factor = 0
 							OR = {
 								NOT = { has_global_flag = starbase_expanded_installed }
-								#has_technology = tech_galactic_trading_companies
+								has_technology = tech_galactic_trading_companies
 								is_gestalt = yes
 								event_target:FallenEmpireTaskOrigin = { NOT = { has_ethic = ethic_fanatic_xenophile } }
 							}
 						}
-						#give_technology = { tech = tech_galactic_trading_companies }
+						give_technology = { tech = tech_galactic_trading_companies }
 					}
 				}
 			}
@@ -1533,17 +1533,27 @@ country_event = {
 				has_ethic = ethic_fanatic_xenophile
 			}
 		}
+		modifier = {
+			factor = 2
+			is_ai = yes
+		}
 	}
 	
-	trigger = {		
-		is_ai = no
+	trigger = {
 		is_country_type = default
 		is_homicidal = no
-		NOT = { has_authority = auth_machine_intelligence }
-		NOT = { has_authority = auth_hive_mind }
+		OR = {
+			is_gestalt = no
+			has_valid_civic = civic_machine_servitor
+		}
 		NOT = { has_country_flag = fe_task_given }
 		NOT = { has_global_flag = fe_task_stop_atrocity_active }
 		is_at_war = no
+		
+		OR = {
+			is_ai = no
+			NOT = { any_federation_ally = { is_ai = no } }
+		}
 		
 		NOT = { has_policy_flag = no_wars }
 
@@ -1574,12 +1584,19 @@ country_event = {
 				has_communications = prev
 				OR = {
 					AND = {
-						root = { has_opinion_modifier = { who = prev modifier = opinion_genocidal } }
+						root = { has_opinion_modifier = { who = prev modifier = opinion_genocidal } } # still on the hook if they stopped or finished purging
 						is_homicidal = no # make sure there are pops left to rescue
 					}
-					any_owned_pop = {
+					any_owned_species = {
 						has_citizenship_type = { type = citizenship_purge country = prev }
 						NOT = { has_purge_type = { type = purge_displacement country = prev } }
+					}
+				}
+				OR = {
+					ROOT = { is_ai = no }
+					relative_power = {
+						who = ROOT
+						value <= equivalent
 					}
 				}
 			}
@@ -1615,9 +1632,16 @@ country_event = {
 							root = { has_opinion_modifier = { who = prev modifier = opinion_genocidal } }
 							is_homicidal = no # make sure there are pops left to rescue
 						}
-						any_owned_pop = {
+						any_owned_species = {
 							has_citizenship_type = { type = citizenship_purge country = prev }
 							NOT = { has_purge_type = { type = purge_displacement country = prev } }
+						}
+					}
+					OR = {
+						ROOT = { is_ai = no }
+						relative_power = {
+							who = ROOT
+							value <= equivalent
 						}
 					}
 				}
@@ -1639,9 +1663,16 @@ country_event = {
 							root = { has_opinion_modifier = { who = prev modifier = opinion_genocidal } }
 							is_homicidal = no # make sure there are pops left to rescue
 						}
-						any_owned_pop = {
+						any_owned_species = {
 							has_citizenship_type = { type = citizenship_purge country = prev }
 							NOT = { has_purge_type = { type = purge_displacement country = prev } }
+						}
+					}
+					OR = {
+						ROOT = { is_ai = no }
+						relative_power = {
+							who = ROOT
+							value <= equivalent
 						}
 					}
 				}
@@ -1688,12 +1719,26 @@ country_event = {
 			factor = 90
 			modifier = {
 				factor = 2
+				OR = {
+					has_valid_civic = civic_beacon_of_liberty
+					has_valid_civic = civic_free_haven
+					has_valid_civic = civic_free_haven_corp
+					has_valid_civic = civic_idealistic_foundation
+					has_valid_civic = civic_befrienders
+				}
+			}
+			modifier = {
+				factor = 10
+				has_valid_civic = civic_machine_servitor
+			}
+			modifier = {
+				factor = 2
 				has_ethic = ethic_xenophile
-			}			
+			}
 			modifier = {
 				factor = 10
 				has_ethic = ethic_fanatic_xenophile
-			}	
+			}
 			modifier = {
 				factor = 2
 				has_ethic = ethic_egalitarian
@@ -1701,7 +1746,15 @@ country_event = {
 			modifier = {
 				factor = 10
 				has_ethic = ethic_fanatic_egalitarian
-			}				
+			}
+			modifier = {
+				factor = 2
+				has_ethic = ethic_militarist
+			}			
+			modifier = {
+				factor = 10
+				has_ethic = ethic_fanatic_militarist
+			}
 			modifier = {
 				factor = 0.1
 				has_ethic = ethic_xenophobe
@@ -1709,8 +1762,16 @@ country_event = {
 			modifier = {
 				factor = 0.01
 				has_ethic = ethic_fanatic_xenophobe
-			}		
-		}		
+			}
+			modifier = {
+				factor = 0.1
+				has_ethic = ethic_pacifist
+			}
+			modifier = {
+				factor = 0.01
+				has_ethic = ethic_fanatic_pacifist
+			}
+		}
 		
 		begin_event_chain = {
 			event_chain = fe_stop_atrocity_task_chain
@@ -1723,6 +1784,43 @@ country_event = {
 			set_timed_country_flag = { flag = fe_task_stop_atrocity_timer days = 7300 }
 			event_target:FallenEmpireTaskOrigin = { set_country_flag = fe_task_stop_atrocity_origin }
 			event_target:FallenEmpireTaskTarget = { set_country_flag = fe_task_stop_atrocity_target }
+			if = {
+				limit = {
+					is_ai = yes
+					event_target:FallenEmpireTaskTarget = { is_homicidal = no }
+				}
+				declare_war = {
+					target = event_target:FallenEmpireTaskTarget
+					attacker_war_goal = "wg_stop_atrocities"
+				}
+			}
+			else_if = {
+				limit = {
+					is_ai = yes
+					event_target:FallenEmpireTaskTarget = {
+						OR = {
+							has_valid_civic = civic_fanatic_purifiers
+							has_valid_civic = civic_machine_terminator
+						}
+					}
+				}
+				declare_war = {
+					target = event_target:FallenEmpireTaskTarget
+					attacker_war_goal = "wg_end_threat"
+				}
+			}
+			else_if = {
+				limit = {
+					is_ai = yes
+					event_target:FallenEmpireTaskTarget = {
+						has_valid_civic = civic_hive_devouring_swarm 
+					}
+				}
+				declare_war = {
+					target = event_target:FallenEmpireTaskTarget
+					attacker_war_goal = "wg_end_threat_swarm"
+				}
+			}
 		}
 		hidden_effect = { remove_country_flag = fe_task_given }
 	}
@@ -1814,7 +1912,7 @@ country_event = {
 				NOT = { has_country_flag = synthetic_empire }
 				has_technology = tech_droid_workers
 				has_communications = prev
-			}			
+			}
 		}
 	
 		modifier = {
@@ -1830,22 +1928,38 @@ country_event = {
 				NOT = { has_country_flag = synthetic_empire }
 				has_technology = tech_synthetic_workers
 				has_communications = prev
-			}			
+			}
+		}
+		
+		modifier = {
+			factor = 0.5
+			
+			any_country = {
+				is_country_type = default
+				root = { is_rival = prev }
+				has_country_flag = synthetic_empire
+				has_communications = prev
+			}
+		}
+		
+		modifier = {
+			factor = 2
+			is_ai = yes
 		}
 	}
 	
 	trigger = {		
-		is_ai = no
 		is_country_type = default	
-		NOR = {
-			has_valid_civic = civic_machine_terminator
-			has_valid_civic = civic_hive_devouring_swarm
-			has_valid_civic = civic_fanatic_purifiers
-		}	
-		NOT = { has_authority = auth_machine_intelligence }
+		is_homicidal = no
+		is_robot_empire = no
 		NOT = { has_country_flag = fe_task_given }
 		NOT = { has_global_flag = fe_task_stop_robots_active }	
 		is_at_war = no
+		
+		OR = {
+			is_ai = no
+			NOT = { any_federation_ally = { is_ai = no } }
+		}
 		
 		NOT = { has_policy_flag = no_wars }
 
@@ -1881,6 +1995,13 @@ country_event = {
 							has_technology = tech_synthetic_workers
 							is_researching_technology = tech_synthetic_workers
 						}
+					}
+				}
+				OR = {
+					ROOT = { is_ai = no }
+					relative_power = {
+						who = ROOT
+						value <= equivalent
 					}
 				}
 				has_communications = root
@@ -1920,6 +2041,13 @@ country_event = {
 							}
 						}
 					}
+					OR = {
+						ROOT = { is_ai = no }
+						relative_power = {
+							who = ROOT
+							value <= equivalent
+						}
+					}
 					has_communications = root
 					has_communications = prev
 				}
@@ -1942,6 +2070,13 @@ country_event = {
 									has_technology = tech_synthetic_workers
 									is_researching_technology = tech_synthetic_workers
 								}
+							}
+						}
+						OR = {
+							ROOT = { is_ai = no }
+							relative_power = {
+								who = ROOT
+								value <= equivalent
 							}
 						}
 						has_communications = root
@@ -1996,7 +2131,10 @@ country_event = {
 		trigger = {
 			event_target:FallenEmpireTaskTarget = {
 				has_authority = auth_machine_intelligence
-				has_valid_civic = civic_machine_assimilator
+				OR = {
+					has_valid_civic = civic_machine_assimilator
+					has_valid_civic = civic_machine_consciousness
+				}
 			}
 		}
 	}
@@ -2040,7 +2178,41 @@ country_event = {
 			modifier = {
 				factor = 10
 				has_ethic = ethic_fanatic_spiritualist
-			}					
+			}
+			modifier = {
+				factor = 2
+				has_ethic = ethic_militarist
+			}			
+			modifier = {
+				factor = 10
+				has_ethic = ethic_fanatic_militarist
+			}
+			modifier = {
+				factor = 0.1
+				has_ethic = ethic_xenophobe
+				is_spiritualist = no
+			}
+			modifier = {
+				factor = 0.01
+				has_ethic = ethic_fanatic_xenophobe
+				is_spiritualist = no
+			}
+			modifier = {
+				factor = 0.1
+				has_ethic = ethic_pacifist
+			}
+			modifier = {
+				factor = 0.01
+				has_ethic = ethic_fanatic_pacifist
+			}
+			modifier = {
+				factor = 0.1
+				has_ethic = ethic_materialist
+			}
+			modifier = {
+				factor = 0.01
+				has_ethic = ethic_fanatic_materialist
+			}
 		}		
 		
 		begin_event_chain = {
@@ -2054,6 +2226,26 @@ country_event = {
 			set_timed_country_flag = { flag = fe_task_stop_robots_timer days = 7300 }
 			event_target:FallenEmpireTaskOrigin = { set_country_flag = fe_task_stop_robots_origin }
 			event_target:FallenEmpireTaskTarget = { set_country_flag = fe_task_stop_robots_target }
+			if = {
+				limit = {
+					is_ai = yes
+					event_target:FallenEmpireTaskTarget = { is_robot_empire = no }
+				}
+				declare_war = {
+					target = event_target:FallenEmpireTaskTarget
+					attacker_war_goal = "wg_stop_robots"
+				}
+			}
+			else_if = {
+				limit = {
+					is_ai = yes
+					event_target:FallenEmpireTaskTarget = { is_robot_empire = yes }
+				}
+				declare_war = {
+					target = event_target:FallenEmpireTaskTarget
+					attacker_war_goal = "wg_kill_robots"
+				}
+			}
 		}
 		hidden_effect = { remove_country_flag = fe_task_given }
 	}
@@ -2229,5 +2421,92 @@ country_event = {
 				remove_country_flag = fe_task_stop_robots_target
 			}
 		}
+	}
+}
+
+# Xenophile Fallen Empire asks for brain scans found in anomaly
+country_event = {
+	id = fallen_empires_tasks.23
+	title = OK
+	desc = OK
+	
+	hide_window = yes
+	
+	mean_time_to_happen = {
+		years = 10		
+	}
+	
+	trigger = {		
+		is_ai = no
+		is_country_type = default	
+		NOR = {
+			has_valid_civic = civic_machine_terminator
+			has_valid_civic = civic_hive_devouring_swarm
+			has_valid_civic = civic_fanatic_purifiers
+		}		
+		is_at_war = no
+		has_country_flag = limbo_downloaded
+		NOR = { 
+			has_global_flag = fe_xenophile_asked_brain_scans 
+			has_country_flag = limbo_uploaded_robots 
+		}	
+		
+		any_country = {
+			is_valid_fallen_empire_for_task = yes
+			has_ethic = ethic_fanatic_xenophile
+			OR = {
+				is_patronizing_to = root
+				is_dismissive_to = root
+			}
+			has_communications = root		
+			any_owned_planet = {
+				has_planet_flag = fe_the_preserve
+				free_housing > 0
+			}			
+		}
+	}
+	
+	immediate = {
+		set_global_flag = fe_xenophile_asked_brain_scans
+		
+		create_species = {
+			name = random
+			class = FUN
+			portrait = random
+			traits = {
+				trait = trait_erudite
+				trait = trait_solitary
+				trait = trait_decadent
+			}
+			#allow_negative_traits = no
+			extra_trait_points = 1
+		}
+		create_country = {
+			name = "NAME_Dead_Species"
+			species = last_created_species
+			type = global_event
+			effect = {
+				save_event_target_as = FallenEmpireDeadSpecies
+			}		
+		}
+	
+		random_country = {
+			limit = { 
+				is_valid_fallen_empire_for_task = yes
+				has_ethic = ethic_fanatic_xenophile
+				OR = {
+					is_patronizing_to = root
+					is_dismissive_to = root
+				}
+				has_communications = root		
+				any_owned_planet = {
+					has_planet_flag = fe_the_preserve
+					free_housing > 0
+				}
+			}		
+			
+			save_event_target_as = FallenEmpireTaskOrigin
+		}
+		country_event = { id = fallen_empires_tasks.24 }
 	}
 }

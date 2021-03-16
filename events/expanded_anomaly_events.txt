@@ -431,6 +431,7 @@ ship_event = {
 	is_triggered_only = yes
 	
 	immediate = {
+		owner = { set_country_flag = anomalymod_8_happened }
 		hidden_effect = { owner = { country_event = { id = story.5 days = 30 } } }
 		from = {
 			every_deposit = {
@@ -492,6 +493,7 @@ ship_event = {
 	is_triggered_only = yes
 	
 	immediate = {
+		owner = { set_country_flag = anomalymod_9_happened }
 		from = {
 			add_modifier = {
 				modifier = "lush_planet"
@@ -1223,6 +1225,57 @@ country_event = {
 	}
 }
 
+ship_event = {
+	id = anomalymod.36
+	title = "PROJECT_COMPLETE"
+	desc = "anomalymod.36.desc"
+	picture = GFX_evt_microscopic_life
+	show_sound = event_alien_nature
+	location = FROMFROM
+	
+	is_triggered_only = yes
+	
+	immediate = {
+	}
+	
+	option = {
+		name = OK
+		hidden_effect = {
+			FROMFROM = {
+				add_modifier = {
+					modifier = "atmospheric_ecosystem"
+					days = -1
+				}
+			}
+		}
+		FROMFROM = {
+			set_deposit = d_society_2
+		}
+		leader = { add_experience = 50 }
+	}
+}
+
+country_event = {
+	id = anomalymod.37
+	title = "PROJECT_FAILURE"
+	desc = "anomalymod.37.desc"
+	picture = GFX_evt_gas_giant
+	show_sound = event_sensor_ping
+	location = FROMFROM
+	
+	is_triggered_only = yes
+	
+	immediate = {
+	}
+	
+	option = {
+		name = UNFORTUNATE
+		FROM = {
+			leader = { add_experience = 100 }
+		}
+	}
+}
+
 
 ##################################
 # Brainslug Events
@@ -1527,6 +1580,169 @@ country_event = {
 				}
 			}
 		}
+	}
+}
+
+#Happy Little Brainslugs (colony event)
+planet_event = {
+	id = anomalymod.43
+	title = anomalymod.43.name
+	desc = anomalymod.43.desc
+	picture = GFX_evt_alien_nature
+	show_sound = event_alien_nature
+	location = root
+	
+	is_triggered_only = yes
+	
+	trigger = {
+		has_distar = yes
+		NOT = { has_global_flag = distar_170_happened }
+		exists = owner
+		owner = { is_ai = no }
+		OR = {
+			has_deposit = d_dangerous_wildlife_blocker
+			has_planet_modifier = pm_dangerous_wildlife
+			has_planet_flag = has_dangerous_wildlife
+		}
+	}
+	
+	immediate = {
+		set_global_flag = distar_170_happened
+		owner = { set_country_flag = found_presapients }
+		owner = { country_event = { id = tutorial.57 days = 5 } }
+		owner = { country_event = { id = story.4 days = 30 } }
+		add_deposit = d_abandoned_primitive_homesteads
+	}
+	
+	option = {
+		name = anomalymod.43.a
+		enable_special_project = {
+			name = "BROKEN_UNION_PROJECT"
+			location = this
+			owner = root.owner
+		}
+	}
+	
+	option = {
+		name = NOTIME
+	}
+}
+
+
+ship_event = {
+	id = anomalymod.44
+	title = "distar.170.name"
+	desc = {
+		trigger = {
+			owner = {
+				NOT = { has_authority = auth_machine_intelligence }
+			}
+		}
+		text = "anomalymod.44.desc"
+	}
+	desc = {
+		trigger = {
+			owner = {
+				has_authority = auth_machine_intelligence
+			}
+		}
+		text = "anomalymod.44.desc.machi"
+	}
+	picture = GFX_evt_alien_nature
+	show_sound = event_alien_nature
+	location = FROMFROM
+	
+	is_triggered_only = yes
+	
+	immediate = {
+		FROMFROM = {
+			create_species = {
+				name = random
+				class = "PRE_REP"
+				portrait = random
+				traits = {
+					trait = random_presapient_trait
+				}
+				homeworld = FROMFROM
+				sapient = no
+			}
+			if = {
+				limit = { has_global_flag = expanded_pops_active }
+				last_created_species = {
+					if = {
+						limit = { needs_class_trait = yes }
+						add_class_trait_effect = yes
+					}
+				}
+			}
+			while = {
+				count = 3
+				create_pop = { species = last_created }
+			}
+		}
+	}
+
+	option = {
+		trigger = {
+			owner = {
+				NOT = { has_authority = auth_machine_intelligence }
+				any_owned_pop = {
+					species = {
+						NOR = {
+							has_trait = trait_cybernetic
+							has_trait = trait_mechanical
+							has_trait = trait_machine_unit
+						}
+					}
+				}
+			}
+		}
+		name = "distar.170.a"
+		FROMFROM = {
+			enable_special_project = {
+				name = "BRAINSLUG_PROJECT"
+				location = this
+				owner = root.owner
+			}
+		}
+	}
+
+	option = {
+		trigger = {
+			owner = {
+				NOT = { has_authority = auth_machine_intelligence }
+			}
+		}
+		name = NOTIME
+		owner = {
+			add_monthly_resource_mult = {
+				resource = society_research
+				value = @tier4researchreward
+				min = @tier4researchmin
+				max = @tier4researchmax
+			}
+		}
+	}
+
+	option = {
+		trigger = {
+			owner = {
+				has_authority = auth_machine_intelligence
+			}
+		}
+		name = "distar.170.machi"
+		owner = {
+			add_monthly_resource_mult = {
+				resource = society_research
+				value = @tier4researchreward
+				min = @tier4researchmin
+				max = @tier4researchmax
+			}
+		}
+	}
+	
+	after = {
+		small_artifact_reward = yes
 	}
 }
 
@@ -3066,6 +3282,7 @@ planet_event = {
 	}
 }
 
+### Breathing Rift ###
 country_event = {
 	id = anomalymod.93
 	title = "anomalymod.93.name"
@@ -3245,6 +3462,84 @@ country_event = {
 			value = @tier5researchreward
 			min = @tier5researchmin
 			max = @tier5researchmax
+		}
+	}
+}
+
+### ZONE A ###
+planet_event = {
+	id = anomalymod.96
+	title = "distar.220.name"
+	desc = {
+		trigger = {
+			owner = {
+				NOT = { has_authority = auth_machine_intelligence }
+			}
+		}
+		text = "anomalymod.96.desc"
+	}
+	desc = {
+		trigger = {
+			owner = {
+				has_authority = auth_machine_intelligence
+			}
+		}
+		text = "anomalymod.96.desc.machi"
+	}
+	picture = GFX_evt_alien_ruins
+	show_sound = event_ghost_town
+	location = from
+	
+	is_triggered_only = yes
+	
+	trigger = {
+		has_distar = yes
+		exists = owner
+		owner = {
+			is_ai = no
+			NOT = { has_country_flag = the_zone_spawned }
+		}
+		habitable_planet = yes
+		is_city = no
+		is_nuked = no
+		NOR = {
+			has_modifier = ancient_world
+			has_modifier = ancient_cities
+		}
+	}
+
+	immediate = {
+		add_deposit = d_the_zone
+		owner = {
+			set_country_flag = the_zone_spawned
+			country_event = { id = story.5 days = 30 }
+		}
+	}
+
+	option = {
+		name = FASCINATING
+		custom_tooltip = "distar.220.a.tooltip"
+		owner = {
+			small_artifact_reward = yes
+			add_monthly_resource_mult = {
+				resource = engineering_research
+				value = @tier1researchreward
+				min = @tier1researchmin
+				max = @tier1researchmax
+			}
+			add_monthly_resource_mult = {
+				resource = physics_research
+				value = @tier1researchreward
+				min = @tier1researchmin
+				max = @tier1researchmax
+			}
+			add_monthly_resource_mult = {
+				resource = unity
+				value = @tier1unityreward
+				min = @tier1unitymin
+				max = @tier1unitymax
+			}
+			hidden_effect = { pop_lcluster_event = yes }
 		}
 	}
 }
@@ -4351,8 +4646,11 @@ planet_event = {
 							is_tropical = yes
 						}
 						is_terraforming = no
-						NOT = {
+						NOR = {
 							has_building = building_planetary_shield_generator
+							has_building = building_mem_planetary_shield_generator
+							has_building = building_mem_planetary_shield_generator_heavy
+							has_building = building_mem_planetary_shield_generator_orila
 						}
 					}
 				}
@@ -4366,8 +4664,11 @@ planet_event = {
 							is_tropical = yes
 						}
 						is_terraforming = no
-						NOT = {
+						NOR = {
 							has_building = building_planetary_shield_generator
+							has_building = building_mem_planetary_shield_generator
+							has_building = building_mem_planetary_shield_generator_heavy
+							has_building = building_mem_planetary_shield_generator_orila
 						}
 					}
 					set_planet_flag = next_locusts_target
@@ -4382,8 +4683,11 @@ planet_event = {
 							is_tropical = yes
 						}
 						is_terraforming = no
-						NOT = {
+						NOR = {
 							has_building = building_planetary_shield_generator
+							has_building = building_mem_planetary_shield_generator
+							has_building = building_mem_planetary_shield_generator_heavy
+							has_building = building_mem_planetary_shield_generator_orila
 						}
 					}
 					planet_event = { id = anomalymod.121 days = 720 random = 180 }
@@ -4429,6 +4733,9 @@ planet_event = {
 				OR = {
 					is_terraforming = yes
 					has_building = building_planetary_shield_generator
+					has_building = building_mem_planetary_shield_generator
+					has_building = building_mem_planetary_shield_generator_heavy
+					has_building = building_mem_planetary_shield_generator_orila
 				}
 			}
 			remove_planet_flag = next_locusts_target

@@ -140,6 +140,44 @@ ship_event = {
 	}
 }
 
+# Life Signs (Gas Giant)
+ship_event = {
+	id = anomaly_failure.11
+	title = "DISC_FAILURE"
+	desc = {
+		trigger = { owner = { NOT = { has_technology = tech_society_2 } } }
+		text = "anomaly_failure.11.desc"
+	}
+	desc = {
+		trigger = { owner = { has_technology = tech_society_2 } }
+		text = "anomaly_failure.11.desc_b"
+	}
+	picture = GFX_evt_atmospheric_flight
+	show_sound = event_ship_bridge
+	location = FROM
+	
+	is_triggered_only = yes
+	
+	immediate = {
+		owner = { set_country_flag = anomaly_300_happened }
+	}
+			
+	option = {
+		name = "UNFORTUNATE"
+		trigger = { owner = { NOT = { has_technology = tech_society_2 } } }
+		leader = { add_experience = 100 }
+	}
+	option = {
+		name = "UNDERSTOOD"
+		trigger = { owner = { has_technology = tech_society_2 } }
+		enable_special_project = {
+			name = "SAVING_GAS_BIOSPHERE_PROJECT"
+			location = this
+			owner = root.owner
+		}
+	}
+}
+
 # Massive Impact (Uninhabitable Planet)
 ship_event = {
 	id = anomaly_failure.16
@@ -447,7 +485,7 @@ ship_event = {
 	is_triggered_only = yes
 
 	immediate = {
-		owner = { set_country_flag = anomaly_failure_1400_happened }
+		owner = { set_country_flag = anomaly_failure_901_happened }
 	}
 			
 	option = {
@@ -471,7 +509,7 @@ ship_event = {
 	auto_opens = yes
 	
 	immediate = {
-		owner = { set_country_flag = anomaly_failure_1400_happened }
+		owner = { set_country_flag = anomaly_failure_901_happened }
 	}
 
 	option = {
