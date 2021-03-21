@@ -137,25 +137,31 @@ gpm_random_res_mineral_deposit = {
 		75 = {
 			clear_deposits = yes
 			random_list = {
-				90 = { add_deposit = d_minerals_5 }
-				5 = { add_deposit = d_rare_crystals_1 }
-				5 = { add_deposit = d_volatile_motes_1 }
+				90 = { add_deposit = d_minerals_2 }
+				10 = { add_deposit = d_trade_value_2 modifier = { factor = 0 space_owner = { is_hive_empire = yes } } }
+				3 = { add_deposit = d_rare_crystals_1 }
+				3 = { add_deposit = d_volatile_motes_1 }
+				3 = { add_deposit = d_alloys_1 }
 			}
 		}
 		18 = {
 			clear_deposits = yes
 			random_list = {
-				90 = { add_deposit = d_minerals_7 }
-				5 = { add_deposit = d_rare_crystals_2 }
-				5 = { add_deposit = d_volatile_motes_2 }
+				90 = { add_deposit = d_minerals_3 }
+				10 = { add_deposit = d_trade_value_3 modifier = { factor = 0 space_owner = { is_hive_empire = yes } } }
+				3 = { add_deposit = d_rare_crystals_2 }
+				3 = { add_deposit = d_volatile_motes_2 }
+				3 = { add_deposit = d_alloys_3 }
 			}
 		}
 		7 = {
 			clear_deposits = yes
 			random_list = {
-				90 = { add_deposit = d_minerals_9 }
-				5 = { add_deposit = d_rare_crystals_3 }
-				5 = { add_deposit = d_volatile_motes_3 }
+				90 = { add_deposit = d_minerals_4 }
+				10 = { add_deposit = d_trade_value_4 modifier = { factor = 0 space_owner = { is_hive_empire = yes } } }
+				3 = { add_deposit = d_rare_crystals_3 }
+				3 = { add_deposit = d_volatile_motes_3 }
+				3 = { add_deposit = d_alloys_3 }
 			}
 		}
 	}
@@ -166,22 +172,25 @@ gpm_random_res_energy_deposit = {
 		75 = {
 			clear_deposits = yes
 			random_list = {
-				95 = { add_deposit = d_energy_5 }
-				5 = { add_deposit = d_exotic_gases_1 }
+				90 = { add_deposit = d_energy_2 }
+				10 = { add_deposit = d_trade_value_2 modifier = { factor = 0 space_owner = { is_hive_empire = yes } } }
+				3 = { add_deposit = d_exotic_gases_1 }
 			}
 		}
 		18 = {
 			clear_deposits = yes
 			random_list = {
-				95 = { add_deposit = d_energy_7 }
-				5 = { add_deposit = d_exotic_gases_2 }
+				90 = { add_deposit = d_energy_3 }
+				10 = { add_deposit = d_trade_value_3 modifier = { factor = 0 space_owner = { is_hive_empire = yes } } }
+				3 = { add_deposit = d_exotic_gases_2 }
 			}
 		}
 		7 = {
 			clear_deposits = yes
 			random_list = {
-				95 = { add_deposit = d_energy_9 }
-				5 = { add_deposit = d_exotic_gases_3 }
+				90 = { add_deposit = d_energy_4 }
+				10 = { add_deposit = d_trade_value_4 modifier = { factor = 0 space_owner = { is_hive_empire = yes } } }
+				3 = { add_deposit = d_exotic_gases_3 }
 			}
 		}
 	}
@@ -1033,4 +1042,51 @@ gpm_create_primitive_relic_world = {
 	add_building = building_primitive_dwellings
 }
 
+gpm_remove_galaxy_generation_deposits = {
+	if = {
+		limit = {
+			solar_system = {
+				NOR = {
+					has_star_flag = drone_home_system
+					has_star_flag = tiyanki_spawn_system
+					has_star_flag = pirate_home_system
+					has_star_flag = amoeba_home_system
+					has_star_flag = gpm_precursor_machine_system
+					exists = space_owner
+				}
+			}
+			NOT = { has_planet_flag = forbid_guillis_planet_modifiers }
+			gpm_engine_forbidden_planets = no
+		}
 
+		random_list = {
+			70 = { }
+			30 = {
+				if = {
+					limit = { has_deposit = d_minerals_2 }
+					remove_deposit = d_minerals_2
+				}
+				if = { 
+					limit = { has_deposit = d_minerals_3 }
+					remove_deposit = d_minerals_3
+				}
+				if = { 
+					limit = { has_deposit = d_minerals_4 }
+					remove_deposit = d_minerals_4
+				}
+				if = { 
+					limit = { has_deposit = d_energy_2 }
+					remove_deposit = d_energy_2
+				}
+				if = { 
+					limit = { has_deposit = d_energy_3 }
+					remove_deposit = d_energy_3
+				}
+				if = { 
+					limit = { has_deposit = d_energy_4 }
+					remove_deposit = d_energy_4
+				}
+			}
+		}
+	}
+}

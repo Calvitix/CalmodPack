@@ -8,6 +8,49 @@ is_rare_planet = {
 	is_pd_rare = yes
 }
 
+ndb_can_target_system = {
+	cohesive_system = no
+	compound_cluster = no
+	annihilator_system = no
+	urmazin_system = no
+	everchanging_system = no
+	NOT = {
+		any_system_planet = {
+			OR = {
+				has_planet_flag = cant_build_here
+				has_planet_flag = cant_target_this_planet
+				is_planet_class = pc_ai
+				is_planet_class = pc_birch
+				is_planet_class = pc_squareworld_habitable
+				is_planet_class = pc_alderson_slice_ecu
+				is_planet_class = pc_alderson_slice_machine
+				is_planet_class = pc_alderson_slice_gaia
+				is_planet_class = pc_alderson_slice_pc
+				is_planet_class = pc_alderson_slice_hive
+			}
+		}
+	}
+}
+
+ndb_can_target_planet = {
+	NOR = {
+		AND = {
+			is_capital = yes
+			exists = owner
+			owner = { is_same_value = root }
+		}
+		is_star = yes
+		is_planet_class = pc_birch
+		is_planet_class = pc_alderson_slice_ecu
+		is_planet_class = pc_alderson_slice_hive
+		is_planet_class = pc_alderson_slice_machine
+		is_planet_class = pc_alderson_slice_gaia
+		is_planet_class = pc_alderson_slice_pc
+		is_planet_class = pc_ai
+		is_planet_class = pc_squareworld_habitable
+		has_planet_flag = cant_build_here
+	}
+}
 
 has_mineral_deposit = {
 	OR = {
@@ -153,7 +196,6 @@ giga_has_particle_accelerator = {
 	OR = {
 		has_megastructure = particle_accelerator_0
 		has_megastructure = particle_accelerator_1
-		has_megastructure = particle_accelerator_1_dismantle
 		has_megastructure = particle_accelerator_restored
 		has_megastructure = particle_accelerator_ruined
 	}

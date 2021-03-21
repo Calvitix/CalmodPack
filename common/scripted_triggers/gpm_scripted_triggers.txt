@@ -8,10 +8,15 @@ is_terraforming_candidate = {
 
 gpm_engine_forbidden_planets = {
 	OR = {
-		space_owner = { has_origin = origin_gpm_death_world }
-		space_owner = { has_origin = origin_gpm_fallen_empire_colony }
-		space_owner = { has_origin = origin_gpm_precursor_world }
+		solar_system.owner = { has_origin = origin_gpm_death_world }
+		solar_system.owner = { has_origin = origin_gpm_fallen_empire_colony }
+		solar_system.owner = { has_origin = origin_gpm_precursor_world }
 		# space_owner = { has_origin = origin_scion} 							# keep it of for player story purposes
+		has_planet_flag	= hoard_planet
+		AND = {
+			is_planet_class = pc_relic
+			solar_system = { has_star_flag = mechanocalibrator_system }
+		}
 	}
 }
 
@@ -19,6 +24,7 @@ gpm_has_required_terraform_modifier = {
 	OR = {
 		has_modifier = terraforming_candidate
 		has_modifier = terraforming_candidate_precursor
+		has_planet_flag = terraforming_candidate_precursor
 	}
 }
 
