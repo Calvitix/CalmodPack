@@ -37,23 +37,55 @@ shipyard = {
 	ai_build_at_chokepoint = no
 	ai_build_outside_chokepoint = yes
 	ai_weight = {
-		weight = 500
+		weight = 50
 		modifier = {
-			factor = 3
+			factor = 2
 			has_starbase_module = shipyard
 			count_starbase_modules = {
-				count < 5
+				count < 2
 				type = shipyard
 			}
 		}
 		modifier = {
-			factor = 0
+			factor = 1.5
 			has_starbase_module = shipyard
 			count_starbase_modules = {
-				count = 5
+				count < 3
 				type = shipyard
 			}
 		}
+		modifier = {
+			factor = 1.5
+			has_starbase_module = shipyard
+			count_starbase_modules = {
+				count < 4
+				type = shipyard
+			}
+		}
+		modifier = {
+			factor = 0.5
+			has_starbase_module = shipyard
+			count_starbase_modules = {
+				count > 3
+				type = shipyard
+			}
+		}
+		modifier = {
+			factor = 0.5
+			has_starbase_module = shipyard
+			count_starbase_modules = {
+				count > 4
+				type = shipyard
+			}
+		}		
+		modifier = {
+			factor = 0.5
+			has_starbase_module = shipyard
+			count_starbase_modules = {
+				count > 5
+				type = shipyard
+			}
+		}		
 	}
 }
 
@@ -103,6 +135,17 @@ anchorage = {
 	ai_build_outside_chokepoint = yes
 	ai_weight = {
 		weight = 20
+		modifier = {
+			factor = 4
+			count_starbase_modules = {
+				type = anchorage
+				count < 1
+			}
+			count_starbase_modules = {
+				type = shipyard
+				count < 1
+			}
+		}		
 		modifier = {
 			factor = 2
 			count_starbase_modules = {
@@ -158,11 +201,11 @@ gun_battery = {
 	}
 
 	ai_build_at_chokepoint = yes
-	ai_build_outside_chokepoint = no
+	ai_build_outside_chokepoint = yes
 	ai_weight = {
-		weight = 20
+		weight = 70
 		modifier = {
-			factor = 2
+			factor = 1.5
 			exists = owner
 			owner = {
 				OR = {
@@ -172,13 +215,14 @@ gun_battery = {
 			}
 		}
 #CALVITIX
-		modifier = {
-			factor = 0.2
-			count_starbase_modules = {
-				type = gun_battery
-				count > 4
-			}
-		}
+		modifier = { factor = 0.75 count_starbase_modules = { type = gun_battery count > 0 } }
+		modifier = { factor = 0.75 count_starbase_modules = { type = gun_battery count > 1 } }
+		modifier = { factor = 0.9 count_starbase_modules = { type = gun_battery count > 2 } }
+		modifier = { factor = 0.9 count_starbase_modules = { type = gun_battery count > 3 } }
+		modifier = { factor = 0.9 count_starbase_modules = { type = gun_battery count > 4 } }
+		modifier = { factor = 0.9 count_starbase_modules = { type = gun_battery count > 5 } }
+		modifier = { factor = 0.9 count_starbase_modules = { type = gun_battery count > 6 } }
+		modifier = { factor = 0.5 count_starbase_modules = { type = gun_battery count > 7 } }
 ####
 	}
 
@@ -222,24 +266,25 @@ missile_battery = {
 	}
 
 	ai_build_at_chokepoint = yes
-	ai_build_outside_chokepoint = no
+	ai_build_outside_chokepoint = yes
 	ai_weight = {
-		weight = 40
+		weight = 70
 		modifier = {
-			factor = 2
+			factor = 1.5
 			exists = owner
 			owner = { is_preferred_weapons = weapon_type_explosive }
 		}
 #CALVITIX
-		modifier = {
-			factor = 0.2
-			count_starbase_modules = {
-				type = missile_battery
-				count > 3
-			}
-		}	
+		modifier = { factor = 0.75 count_starbase_modules = { type = missile_battery count > 0 } }
+		modifier = { factor = 0.75 count_starbase_modules = { type = missile_battery count > 1 } }
+		modifier = { factor = 0.9 count_starbase_modules = { type = missile_battery count > 2 } }
+		modifier = { factor = 0.9 count_starbase_modules = { type = missile_battery count > 3 } }
+		modifier = { factor = 0.9 count_starbase_modules = { type = missile_battery count > 4 } }
+		modifier = { factor = 0.9 count_starbase_modules = { type = missile_battery count > 5 } }
+		modifier = { factor = 0.9 count_starbase_modules = { type = missile_battery count > 6 } }
+		modifier = { factor = 0.5 count_starbase_modules = { type = missile_battery count > 7 } }		
+####
 	}
-
 	show_in_tech = "tech_missiles_1"
 }
 
@@ -295,9 +340,19 @@ pd_battery = {
 	}
 	
 	ai_weight = {
-		weight = 20
-		modifier = { factor = 0 has_starbase_size < starbase_starfortress }
-		modifier = { factor = 0 count_starbase_modules = { type = pd_battery count = 2 } }
+		weight = 70
+#CALVITIX
+		modifier = { factor = 0.8 count_starbase_modules = { type = pd_battery count > 0 } }
+		modifier = { factor = 0.8 count_starbase_modules = { type = pd_battery count > 1 } }
+		modifier = { factor = 0.8 count_starbase_modules = { type = pd_battery count > 2 } }
+		modifier = { factor = 0.8 count_starbase_modules = { type = pd_battery count > 3 } }
+		modifier = { factor = 0.8 count_starbase_modules = { type = pd_battery count > 4 } }
+		modifier = { factor = 0.8 count_starbase_modules = { type = pd_battery count > 5 } }
+		modifier = { factor = 0.8 count_starbase_modules = { type = pd_battery count > 6 } }
+		modifier = { factor = 0.5 count_starbase_modules = { type = pd_battery count > 7 } }				
+####
+		modifier = { factor = 0.5 has_starbase_size < starbase_starfortress }		
+		#modifier = { factor = 0 count_starbase_modules = { type = pd_battery count = 2 } }
 	}
 }
 
@@ -342,9 +397,32 @@ large_battery = {
 	}
 	
 	ai_weight = {
-		weight = 50
+		weight = 105
+#CALVITIX
+		modifier = {
+			factor = 0.8
+			count_starbase_modules = {
+				type = large_battery
+				count > 2
+			}
+		}
+		modifier = {
+			factor = 0.6
+			count_starbase_modules = {
+				type = large_battery
+				count > 4
+			}
+		}
+		modifier = {
+			factor = 0.5
+			count_starbase_modules = {
+				type = large_battery
+				count > 6
+			}
+		}			
+####
 		modifier = { factor = 0 has_starbase_size < starbase_starfortress }
-		modifier = { factor = 0 count_starbase_modules = { type = large_battery count = 5 } }
+		#modifier = { factor = 0 count_starbase_modules = { type = large_battery count = 5 } }
 	}	
 }
 
@@ -404,6 +482,29 @@ hangar_bay = {
 			exists = owner
 			owner = { is_preferred_weapons = weapon_type_strike_craft }
 		}
+#CALVITIX
+		modifier = {
+			factor = 0.6
+			count_starbase_modules = {
+				type = hangar_bay
+				count > 2
+			}
+		}
+		modifier = {
+			factor = 0.5
+			count_starbase_modules = {
+				type = hangar_bay
+				count > 4
+			}
+		}
+		modifier = {
+			factor = 0.5
+			count_starbase_modules = {
+				type = hangar_bay
+				count > 6
+			}
+		}			
+####
 		modifier = {
 			factor = 0
 			count_starbase_modules = {
@@ -477,7 +578,30 @@ xl_battery = {
 	}
 
 	ai_weight = {
-		weight = 100
+		weight = 150
+#CALVITIX
+		modifier = {
+			factor = 0.6
+			count_starbase_modules = {
+				type = xl_battery
+				count > 2
+			}
+		}
+		modifier = {
+			factor = 0.5
+			count_starbase_modules = {
+				type = xl_battery
+				count > 4
+			}
+		}
+		modifier = {
+			factor = 0.5
+			count_starbase_modules = {
+				type = xl_battery
+				count > 6
+			}
+		}			
+####		
 	}
 }
 
@@ -532,7 +656,30 @@ titanic_battery = {
 	}
 
 	ai_weight = {
-		weight = 100
+		weight = 150
+#CALVITIX
+		modifier = {
+			factor = 0.6
+			count_starbase_modules = {
+				type = titanic_battery
+				count > 2
+			}
+		}
+		modifier = {
+			factor = 0.5
+			count_starbase_modules = {
+				type = titanic_battery
+				count > 4
+			}
+		}
+		modifier = {
+			factor = 0.5
+			count_starbase_modules = {
+				type = titanic_battery
+				count > 6
+			}
+		}			
+####		
 	}
 
 	show_in_tech = "tech_titans"
@@ -575,7 +722,15 @@ shield_module = {
 		has_starbase_size >= starbase_starport #not for outposts
 	}
 	ai_weight = {
-		weight = 20
+		weight = 40
+#CALVITIX
+		modifier = { factor = 0.9 count_starbase_modules = { type = shield_module count > 0 } }
+		modifier = { factor = 0.9 count_starbase_modules = { type = shield_module count > 1 } }
+		modifier = { factor = 0.9 count_starbase_modules = { type = shield_module count > 2 } }
+		modifier = { factor = 0.9 count_starbase_modules = { type = shield_module count > 3 } }
+		modifier = { factor = 0.9 count_starbase_modules = { type = shield_module count > 4 } }
+		modifier = { factor = 0.9 count_starbase_modules = { type = shield_module count > 5 } }
+####		
 		modifier = { factor = 0.5 count_starbase_modules = { type = shield_module count > 10 } }
 		modifier = { factor = 0 count_starbase_modules = { type = shield_module count >= 15 } }
 	}
@@ -618,7 +773,15 @@ armor_module = {
 		has_starbase_size >= starbase_starport #not for outposts
 	}
 	ai_weight = {
-		weight = 20
+		weight = 50
+#CALVITIX
+		modifier = { factor = 0.9 count_starbase_modules = { type = armor_module count > 0 } }
+		modifier = { factor = 0.9 count_starbase_modules = { type = armor_module count > 1 } }
+		modifier = { factor = 0.9 count_starbase_modules = { type = armor_module count > 2 } }
+		modifier = { factor = 0.9 count_starbase_modules = { type = armor_module count > 3 } }
+		modifier = { factor = 0.9 count_starbase_modules = { type = armor_module count > 4 } }
+		modifier = { factor = 0.9 count_starbase_modules = { type = armor_module count > 5 } }
+####
 		modifier = { factor = 0.5 count_starbase_modules = { type = armor_module count > 10 } }
 		modifier = { factor = 0 count_starbase_modules = { type = armor_module count >= 15 } }
 	}
@@ -700,7 +863,30 @@ solar_panel_network = {
 
 	ai_build_at_chokepoint = no
 	ai_weight = {
-		weight = 15
+		weight = 25
+#CALVITIX
+		modifier = {
+			factor = 0.6
+			count_starbase_modules = {
+				type = solar_panel_network
+				count > 2
+			}
+		}
+		modifier = {
+			factor = 0.5
+			count_starbase_modules = {
+				type = solar_panel_network
+				count > 4
+			}
+		}
+		modifier = {
+			factor = 0.5
+			count_starbase_modules = {
+				type = solar_panel_network
+				count > 6
+			}
+		}			
+####		
 	}
 }
 
@@ -795,7 +981,7 @@ space_power_plant = {
 	ai_build_at_chokepoint = no
 	ai_build_outside_chokepoint = yes
 	ai_weight = {
-		weight = 50
+		weight = 15
 		modifier = { factor = 5 has_starbase_size < starbase_starport }
 		modifier = { factor = 4 count_starbase_modules = { type = space_power_plant count > 1 } }
 		modifier = { factor = 3 count_starbase_modules = { type = space_power_plant count > 2 } }
@@ -838,7 +1024,7 @@ asteroid_mining = {
 	ai_build_at_chokepoint = no
 	ai_build_outside_chokepoint = yes
 	ai_weight = {
-		weight = 50
+		weight = 15
 		modifier = { factor = 5 has_starbase_size < starbase_starport }
 		modifier = { factor = 4 count_starbase_modules = { type = asteroid_mining count > 1 } }
 		modifier = { factor = 3 count_starbase_modules = { type = asteroid_mining count > 2 } }
@@ -882,7 +1068,7 @@ orbital_lab = {
 	ai_build_at_chokepoint = no
 	ai_build_outside_chokepoint = yes
 	ai_weight = {
-		weight = 50
+		weight = 15
 		modifier = { factor = 5 has_starbase_size < starbase_starport }
 		modifier = { factor = 4 count_starbase_modules = { type = orbital_lab count > 1 } }
 		modifier = { factor = 3 count_starbase_modules = { type = orbital_lab count > 2 } }
@@ -924,7 +1110,7 @@ space_foundry = {
 	ai_build_outside_chokepoint = yes
 	potential = { exists = owner owner = { has_technology = tech_alloys_1 } }
 	ai_weight = {
-		weight = 50
+		weight = 20
 		modifier = { factor = 5 has_starbase_size < starbase_starport }
 		modifier = { factor = 4 count_starbase_modules = { type = space_foundry count > 1 } }
 		modifier = { factor = 3 count_starbase_modules = { type = space_foundry count > 2 } }
@@ -971,7 +1157,7 @@ space_factory = {
 		owner = { is_gestalt = no } 
 	}
 	ai_weight = {
-		weight = 50
+		weight = 15
 		modifier = { factor = 5 has_starbase_size < starbase_starport }
 		modifier = { factor = 4 count_starbase_modules = { type = space_factory count > 1 } }
 		modifier = { factor = 3 count_starbase_modules = { type = space_factory count > 2 } }
@@ -1015,6 +1201,7 @@ security_branch_office = {
 	ai_build_at_chokepoint = no
 	ai_build_outside_chokepoint = yes
 	ai_weight = {
-		weight = 50
+		weight = 35
+		modifier = { factor = 0.2 count_starbase_modules = { type = security_branch_office count > 0 } }
 	}
 }
