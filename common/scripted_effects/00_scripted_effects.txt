@@ -3778,7 +3778,7 @@ create_cybernetic_species_mod = {
 			traits = this
 			homeworld = this
 			traits = {
-				ideal_planet_class = this
+				ideal_planet_class = prev
 				trait = trait_cybernetic
 			}
 		}
@@ -4620,7 +4620,7 @@ add_awakened_fallen_empire_fleet = {
 	if = {
 		limit = {
 			any_country = {
-				nhsc_is_playable_empire = yes
+				is_country_type = default
 				OR = {
 					fleet_power > 80000
 					AND = {
@@ -4644,7 +4644,7 @@ add_awakened_fallen_empire_fleet = {
 	if = {
 		limit = {
 			any_country = {
-				nhsc_is_playable_empire = yes
+				is_country_type = default
 				OR = {
 					fleet_power > 150000
 					AND = {
@@ -4668,7 +4668,7 @@ add_awakened_fallen_empire_fleet = {
 	if = {
 		limit = {
 			any_country = {
-				nhsc_is_playable_empire = yes
+				is_country_type = default
 				OR = {
 					fleet_power > 200000
 					AND = {
@@ -4696,7 +4696,7 @@ add_awakened_fallen_empire_fleet_small = {
 	if = {
 		limit = {
 			any_country = {
-				nhsc_is_playable_empire = yes
+				is_country_type = default
 				OR = {
 					fleet_power > 150000
 					AND = {
@@ -10325,6 +10325,33 @@ apply_post_assimilation_effects = {
 		limit = { root.owner = { has_authority = auth_machine_intelligence } }
 		set_citizenship_type = {
 			type = citizenship_full_machine
+			country = root.owner
+		}
+	}
+	# Xenophobe does not allow full citizenship per default
+	else_if = {
+		limit = {
+			root.owner = {
+				is_xenophobe = yes
+			}
+		}
+		set_citizenship_type = {
+			type = citizenship_limited
+			country = root.owner
+		}
+	}
+	# Fallback workaround only for slaver empire
+	else_if = {
+		limit = {
+			root.owner = {
+				has_policy_flag = slavery_allowed
+				has_policy_flag = population_controls_allowed
+				# is_ai = no
+				is_xenophile = no
+			}
+		}
+		set_citizenship_type = {
+			type = citizenship_slavery
 			country = root.owner
 		}
 	}
