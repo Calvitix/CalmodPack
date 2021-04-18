@@ -1,9 +1,3 @@
-# Original File
-#
-# Calvitix Check 3.0.1  17/04/2021
-#
-# Merge with Planet. Diversity
-# Merge with Starnet OK
 ##################
 # Unity buildings
 ##################
@@ -23,7 +17,6 @@ building_autochthon_monument = {
 				is_gestalt = yes
 				is_spiritualist = yes
 				is_megacorp = yes
-				is_ai = no #STARNET
 				has_valid_civic = civic_memorialist
 				has_valid_civic = civic_hive_memorialist
 				has_valid_civic = civic_machine_memorialist
@@ -40,7 +33,6 @@ building_autochthon_monument = {
 					is_gestalt = yes
 					is_spiritualist = yes
 					is_megacorp = yes
-					#is_ai = yes #STARNET  #CALVITIX don't do, enough place on planets
 					has_valid_civic = civic_memorialist
 					has_valid_civic = civic_hive_memorialist
 					has_valid_civic = civic_machine_memorialist
@@ -125,7 +117,6 @@ building_heritage_site = {
 					is_gestalt = yes
 					is_spiritualist = yes
 					is_megacorp = yes
-					#is_ai = yes #STARNET
 					has_valid_civic = civic_memorialist
 					has_valid_civic = civic_hive_memorialist
 					has_valid_civic = civic_machine_memorialist
@@ -194,7 +185,6 @@ building_hypercomms_forum = {
 				has_valid_civic = civic_memorialist
 				has_valid_civic = civic_hive_memorialist
 				has_valid_civic = civic_machine_memorialist
-				is_ai = yes #STARNET
 			}
 		}
 	}
@@ -214,7 +204,6 @@ building_hypercomms_forum = {
 					is_gestalt = yes
 					is_spiritualist = yes
 					is_megacorp = yes
-					is_ai = yes #STARNET
 					has_valid_civic = civic_memorialist
 					has_valid_civic = civic_hive_memorialist
 					has_valid_civic = civic_machine_memorialist
@@ -295,7 +284,6 @@ building_temple = {
 					has_valid_civic = civic_death_cult
 					has_valid_civic = civic_death_cult_corporate
 					is_spiritualist = no
-					is_ai = yes #STARNET
 				}
 			}
 			has_modifier = slave_colony
@@ -359,7 +347,6 @@ building_holotemple = {
 		building_basic_income_check = yes
 		owner = {
 			is_spiritualist = yes
-			is_ai = no #STARNET
 			NOR = {
 				has_valid_civic = civic_death_cult
 				has_valid_civic = civic_death_cult_corporate
@@ -383,7 +370,6 @@ building_holotemple = {
 					is_spiritualist = no
 				}
 			}
-			owner = { is_ai = yes } #STARNET
 			has_modifier = slave_colony
 		}
 	}
@@ -1193,15 +1179,6 @@ building_hive_node = {
 		building_relaxed_basic_income_check = yes
 		owner = {
 			is_hive_empire = yes
-#STARNET START
-			or = { 
-				is_ai = no
-				resource_income_compare = {
-					resource = physics_research
-					value > 200
-				} 
-			}
-#STARNET END
 		}
 	}
 
@@ -1209,15 +1186,6 @@ building_hive_node = {
 		exists = owner
 		OR = {
 			owner = { is_hive_empire = no }
-#STARNET START
-			owner = { 
-				is_ai = yes 
-				resource_income_compare = {
-					resource = physics_research
-					value < 300
-				} 
-			}
-#STARNET END
 		}
 	}
 
@@ -1312,15 +1280,6 @@ building_hive_cluster = {
 		exists = owner
 		owner = {
 			is_hive_empire = yes
-#STARNET START
-			or = { 
-				is_ai = no
-				resource_income_compare = {
-					resource = physics_research
-					value > 200
-				} 
-			}
-#STARNET END
 		}
 	}
 
@@ -1331,20 +1290,7 @@ building_hive_cluster = {
 
 	destroy_trigger = {
 		exists = owner
-#STARNET START
-		OR = {
-			buildings_no_exotic_gases = yes
-			owner = { is_hive_empire = no }
-			owner = { 
-				is_ai = yes 
-				resource_income_compare = {
-					resource = physics_research
-					value < 300
-				} 
-			}
-		}
-#STARNET END
-		#owner = { is_hive_empire = no }
+		owner = { is_hive_empire = no }
 	}
 
 	convert_to = {
@@ -1440,15 +1386,6 @@ building_hive_confluence = {
 		exists = owner
 		owner = {
 			is_hive_empire = yes
-#STARNET START
-			or = { 
-				is_ai = no
-				resource_income_compare = {
-					resource = physics_research
-					value > 200
-				} 
-			}
-#STARNET END
 		}
 	}
 
@@ -1517,7 +1454,6 @@ building_hive_confluence = {
 		job_maintenance_drone_add = 1
 	}
 
-### PLENTIFUL TRAD
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
@@ -1530,7 +1466,7 @@ building_hive_confluence = {
 			job_synapse_drone_add = 4
 		}
 	}
-####
+
 	prerequisites = {
 		"tech_hive_confluence"
 	}
@@ -1570,15 +1506,6 @@ building_simulation_1 = {
 		building_basic_income_check  = yes
 		owner = {
 			is_machine_empire = yes
-#STARNET START
-			or = {
-				is_ai = no
-				resource_income_compare = {
-					resource = unity
-					value < 40
-				}
-			}
-#STARNET END
 			NOT = { has_valid_civic = civic_machine_servitor }
 		}
 	}
@@ -1587,15 +1514,6 @@ building_simulation_1 = {
 		exists = owner
 		owner = {
 			OR = {
-#STARNET START
-				and = {
-				is_ai = yes
-				resource_income_compare = {
-					resource = unity
-					value > 60
-				}
-			}
-#STARNET END
 				is_machine_empire = no
 				has_valid_civic = civic_machine_servitor
 			}
@@ -1651,7 +1569,6 @@ building_simulation_2 = {
 	potential = {
 		exists = owner
 		owner = {
-			is_ai = no #STARNET
 			is_machine_empire = yes
 			NOT = { has_valid_civic = civic_machine_servitor }
 		}
@@ -1666,7 +1583,6 @@ building_simulation_2 = {
 		exists = owner
 		owner = {
 			OR = {
-				is_ai = yes #STARNET
 				is_machine_empire = no
 				has_valid_civic = civic_machine_servitor
 			}
@@ -1723,7 +1639,6 @@ building_simulation_3 = {
 	potential = {
 		exists = owner
 		owner = {
-			is_ai = no #STARNET
 			is_machine_empire = yes
 			NOT = { has_valid_civic = civic_machine_servitor }
 		}
@@ -1739,7 +1654,6 @@ building_simulation_3 = {
 		OR = {
 			owner = {
 				OR = {
-					is_ai = yes #STARNET
 					is_machine_empire = no
 					has_valid_civic = civic_machine_servitor
 				}
@@ -2286,19 +2200,6 @@ building_organic_sanctuary = {
 		exists = owner
 		owner = { has_valid_civic = civic_machine_servitor }
 	}
-
-#mod ?	
-	allow = {
-		exists = owner
-		OR = {
-			owner = { is_ai = no }
-			AND = {
-				num_buildings = { type = building_organic_sanctuary value < 2 }
-				NOT = { has_building = building_organic_paradise }
-			}
-		}
-	}
-###
 
 	destroy_trigger = {
 		exists = owner

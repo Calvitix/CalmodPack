@@ -6,45 +6,43 @@
 
 namespace = ancrel
 
-#calvitix, included in !_000_ancient_relics_events_vanilla_expanded.txt
 # Archaeology Site On Survey Spawn
+ship_event = {
+	id = ancrel.9999
+	hide_window = yes
 
-# ship_event = {
-	# id = ancrel.9999
-	# hide_window = yes
+	is_triggered_only = yes
 
-	# is_triggered_only = yes
+	trigger = {
+		has_ancrel = yes
+		FROM = {
+			NOR = { exists = archaeological_site }
+			solar_system = {NOT = { is_star_class = sc_dn } }
+		}
+	}
 
-	# trigger = {
-		# has_ancrel = yes
-		# FROM = {
-			# NOR = { exists = archaeological_site }
-			# solar_system = {NOT = { is_star_class = sc_dn } }
-		# }
-	# }
-
-	# immediate = {
-		# random_list = {
-			# 400 = {}
-			# 5 = {
-				# modifier = {
-					# factor = 0.2
-					# OR = {
-						# owner = { is_ai = yes }
-						# owner = { has_country_flag = discovered_site }
-					# }
-				# }
-				# from = {
-					# prevent_anomaly = yes
-					# create_archaeological_site = random
-				# }
-				# owner = {
-					# set_timed_country_flag = {
-						# flag = discovered_site
-						# days = 1800
-					# }
-				# }
-			# }
-		# }
-	# }
-# }
+	immediate = {
+		random_list = {
+			400 = {}
+			5 = {
+				modifier = {
+					factor = 0.2
+					OR = {
+						owner = { is_ai = yes }
+						owner = { has_country_flag = discovered_site }
+					}
+				}
+				from = {
+					prevent_anomaly = yes
+					create_archaeological_site = random
+				}
+				owner = {
+					set_timed_country_flag = {
+						flag = discovered_site
+						days = 1800
+					}
+				}
+			}
+		}
+	}
+}
