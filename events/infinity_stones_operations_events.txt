@@ -1,0 +1,1040 @@
+# I spent a lot of time on this mod out of my own free time, and nobody would like it if someone took their creation
+# and stole it, and tried to claim it as thier's. If you want to learn to mod Stellaris, I'm not the best person to
+# ask, but I'm always open to help and if you'd like to make new features or add-ons to this mod, send me a message,
+# and we'll discuss together about either integrating them into this mod, or creating an add-on to this one.
+
+
+namespace = ig_operations
+
+
+################### POWER STONE ###################
+
+# Ready to steal Power Stone
+espionage_operation_event = {
+    id = ig_operations.1
+    title = ig_operations.1.name
+    espionage_operation = yes
+    desc = ig_operations.1.desc
+    picture = GFX_evt_decryption
+    show_sound = event_default
+    is_triggered_only = yes
+
+    immediate = {
+        set_espionage_operation_progress_locked = yes
+        target = {
+            save_event_target_as = previous_owner_of_infinity_stone
+        }
+        owner = {
+            set_timed_country_flag = {
+                flag = stole_infinity_stone@root.target
+                years = 5
+            }
+        }
+    }
+
+    option = {
+        name = LAUNCH_OPERATION
+        hidden_effect = {
+            if = {
+                limit = {
+                    event_target:previous_owner_of_infinity_stone = {
+                        has_relic = r_power_stone
+                    }
+                }
+                random_list = {
+                    25 = {
+                        modifier = {
+                            factor = 2
+                            root = {
+                                relative_encryption_decryption = {
+                                    target = event_target:previous_owner_of_infinity_stone
+                                    value > 1.3
+                                }
+                            }
+                        }
+                        owner = {
+                            country_event = { id = ig_operations.2 days = 3 }
+                        }
+                    }
+                    75 = {
+                        modifier = {
+                            factor = 0.7
+                            root = {
+                                relative_encryption_decryption = {
+                                    target = event_target:previous_owner_of_infinity_stone
+                                    value > 1.3
+                                }
+                            }
+                        }
+                        owner = {
+                            country_event = { id = ig_operations.5 days = 3 }
+                        }
+                    }
+                }
+            }
+            else = {
+                owner = {
+                    country_event = { id = ig_operations.4 days = 3 }
+                }
+            }
+        }
+    }
+
+    after = {
+        set_espionage_operation_progress_locked = no
+    }
+}
+
+# Power Stone Stolen
+country_event = {
+    id = ig_operations.2
+    title = ig_operations.1.name
+    desc = ig_operations.2.desc
+    picture = GFX_evt_power_stone_notify
+    show_sound = event_espionage_concluded
+    is_triggered_only = yes
+
+    immediate = {
+        save_event_target_as = new_owner_of_infinity_stone
+    }
+
+    option = {
+        name = EXCELLENT
+        from.spynetwork = { add_spy_network_level = -80 }
+        steal_relic = {
+            target = event_target:previous_owner_of_infinity_stone
+            relic = r_power_stone
+        }
+        hidden_effect = {
+            event_target:previous_owner_of_infinity_stone = {
+                country_event = { id = ig_operations.3 days = 7 random = 7 }
+            }
+        }
+    }
+
+    after = {
+        destroy_espionage_operation = from
+    }
+}
+
+# Other nation figures out Power Stone was stolen
+country_event = {
+    id = ig_operations.3
+    title = ig_operations.3.name
+    desc = ig_operations.3.desc
+    picture = GFX_evt_resource_cache
+    show_sound = event_administrative_work
+    is_triggered_only = yes
+
+    immediate = {
+        remove_infinity_stone_modifiers_on_stone_lost = yes
+    }
+
+    option = {
+        name = ig_operations.getstoneback
+        custom_tooltip = power_stone_removed_tooltip
+        add_modifier = {
+            modifier = "stone_lost"
+            days = 360
+        }
+    }
+}
+
+# Stone is already gone
+country_event = {
+    id = ig_operations.4
+    title = ig_operations.1.name
+    desc = ig_operations.4.desc
+    picture = GFX_evt_resource_cache
+    show_sound = event_administrative_work
+    is_triggered_only = yes
+
+    option = {
+        name = ig_operations.intelbad
+        from.spynetwork = { add_spy_network_level = -80 }
+    }
+
+    after = {
+        destroy_espionage_operation = from
+    }
+}
+
+# Operation fails and you don't get the stone
+country_event = {
+    id = ig_operations.5
+    title = ig_operations.1.name
+    desc = ig_operations.5.desc
+    picture = GFX_evt_resource_cache
+    show_sound = event_administrative_work
+    is_triggered_only = yes
+
+    option = {
+        name = ig_operations.another_opportunity
+        from.spynetwork = { add_spy_network_level = -80 }
+        add_resource = { influence = -20 }
+    }
+
+    after = {
+        destroy_espionage_operation = from
+    }
+}
+
+################### Time STONE ###################
+
+# Ready to steal Time Stone
+espionage_operation_event = {
+    id = ig_operations.11
+    title = ig_operations.11.name
+    espionage_operation = yes
+    desc = ig_operations.11.desc
+    picture = GFX_evt_decryption
+    show_sound = event_default
+    is_triggered_only = yes
+
+    immediate = {
+        set_espionage_operation_progress_locked = yes
+        target = {
+            save_event_target_as = previous_owner_of_infinity_stone
+        }
+        owner = {
+            set_timed_country_flag = {
+                flag = stole_infinity_stone@root.target
+                years = 5
+            }
+        }
+    }
+
+    option = {
+        name = LAUNCH_OPERATION
+        hidden_effect = {
+            if = {
+                limit = {
+                    event_target:previous_owner_of_infinity_stone = {
+                        has_relic = r_time_stone
+                    }
+                }
+                random_list = {
+                    25 = {
+                        modifier = {
+                            factor = 2
+                            root = {
+                                relative_encryption_decryption = {
+                                    target = event_target:previous_owner_of_infinity_stone
+                                    value > 1.3
+                                }
+                            }
+                        }
+                        owner = {
+                            country_event = { id = ig_operations.12 days = 3 }
+                        }
+                    }
+                    75 = {
+                        modifier = {
+                            factor = 0.7
+                            root = {
+                                relative_encryption_decryption = {
+                                    target = event_target:previous_owner_of_infinity_stone
+                                    value > 1.3
+                                }
+                            }
+                        }
+                        owner = {
+                            country_event = { id = ig_operations.15 days = 3 }
+                        }
+                    }
+                }
+            }
+            else = {
+                owner = {
+                    country_event = { id = ig_operations.14 days = 3 }
+                }
+            }
+        }
+    }
+
+    after = {
+        set_espionage_operation_progress_locked = no
+    }
+}
+
+# Time Stone Stolen
+country_event = {
+    id = ig_operations.12
+    title = ig_operations.11.name
+    desc = ig_operations.12.desc
+    picture = GFX_evt_time_stone_notify
+    show_sound = event_espionage_concluded
+    is_triggered_only = yes
+
+    immediate = {
+        save_event_target_as = new_owner_of_infinity_stone
+    }
+
+    option = {
+        name = EXCELLENT
+        from.spynetwork = { add_spy_network_level = -80 }
+        steal_relic = {
+            target = event_target:previous_owner_of_infinity_stone
+            relic = r_time_stone
+        }
+        hidden_effect = {
+            event_target:previous_owner_of_infinity_stone = {
+                country_event = { id = ig_operations.13 days = 7 random = 7 }
+            }
+        }
+    }
+
+    after = {
+        destroy_espionage_operation = from
+    }
+}
+
+# Other nation figures out Time Stone was stolen
+country_event = {
+    id = ig_operations.13
+    title = ig_operations.13.name
+    desc = ig_operations.13.desc
+    picture = GFX_evt_resource_cache
+    show_sound = event_administrative_work
+    is_triggered_only = yes
+
+    immediate = {
+        remove_infinity_stone_modifiers_on_stone_lost = yes
+    }
+
+    option = {
+        name = ig_operations.getstoneback
+        custom_tooltip = time_stone_removed_tooltip
+        add_modifier = {
+            modifier = "stone_lost"
+            days = 360
+        }
+    }
+}
+
+# Stone is already gone
+country_event = {
+    id = ig_operations.14
+    title = ig_operations.11.name
+    desc = ig_operations.14.desc
+    picture = GFX_evt_resource_cache
+    show_sound = event_administrative_work
+    is_triggered_only = yes
+
+    option = {
+        name = ig_operations.intelbad
+        from.spynetwork = { add_spy_network_level = -80 }
+    }
+
+    after = {
+        destroy_espionage_operation = from
+    }
+}
+
+# Operation fails and you don't get the stone
+country_event = {
+    id = ig_operations.15
+    title = ig_operations.11.name
+    desc = ig_operations.15.desc
+    picture = GFX_evt_resource_cache
+    show_sound = event_administrative_work
+    is_triggered_only = yes
+
+    option = {
+        name = ig_operations.another_opportunity
+        from.spynetwork = { add_spy_network_level = -80 }
+        add_resource = { influence = -20 }
+    }
+
+    after = {
+        destroy_espionage_operation = from
+    }
+}
+
+################### Reality STONE ###################
+
+# Ready to steal Reality Stone
+espionage_operation_event = {
+    id = ig_operations.21
+    title = ig_operations.21.name
+    espionage_operation = yes
+    desc = ig_operations.21.desc
+    picture = GFX_evt_decryption
+    show_sound = event_default
+    is_triggered_only = yes
+
+    immediate = {
+        set_espionage_operation_progress_locked = yes
+        target = {
+            save_event_target_as = previous_owner_of_infinity_stone
+        }
+        owner = {
+            set_timed_country_flag = {
+                flag = stole_infinity_stone@root.target
+                years = 5
+            }
+        }
+    }
+
+    option = {
+        name = LAUNCH_OPERATION
+        hidden_effect = {
+            if = {
+                limit = {
+                    event_target:previous_owner_of_infinity_stone = {
+                        has_relic = r_reality_stone
+                    }
+                }
+                random_list = {
+                    25 = {
+                        modifier = {
+                            factor = 2
+                            root = {
+                                relative_encryption_decryption = {
+                                    target = event_target:previous_owner_of_infinity_stone
+                                    value > 1.3
+                                }
+                            }
+                        }
+                        owner = {
+                            country_event = { id = ig_operations.22 days = 3 }
+                        }
+                    }
+                    75 = {
+                        modifier = {
+                            factor = 0.7
+                            root = {
+                                relative_encryption_decryption = {
+                                    target = event_target:previous_owner_of_infinity_stone
+                                    value > 1.3
+                                }
+                            }
+                        }
+                        owner = {
+                            country_event = { id = ig_operations.25 days = 3 }
+                        }
+                    }
+                }
+            }
+            else = {
+                owner = {
+                    country_event = { id = ig_operations.24 days = 3 }
+                }
+            }
+        }
+    }
+
+    after = {
+        set_espionage_operation_progress_locked = no
+    }
+}
+
+# Reality Stone Stolen
+country_event = {
+    id = ig_operations.22
+    title = ig_operations.21.name
+    desc = ig_operations.22.desc
+    picture = GFX_evt_reality_stone_notify
+    show_sound = event_espionage_concluded
+    is_triggered_only = yes
+
+    immediate = {
+        save_event_target_as = new_owner_of_infinity_stone
+    }
+
+    option = {
+        name = EXCELLENT
+        from.spynetwork = { add_spy_network_level = -80 }
+        steal_relic = {
+            target = event_target:previous_owner_of_infinity_stone
+            relic = r_reality_stone
+        }
+        hidden_effect = {
+            event_target:previous_owner_of_infinity_stone = {
+                country_event = { id = ig_operations.23 days = 7 random = 7 }
+            }
+        }
+    }
+
+    after = {
+        destroy_espionage_operation = from
+    }
+}
+
+# Other nation figures out Reality Stone was stolen
+country_event = {
+    id = ig_operations.23
+    title = ig_operations.23.name
+    desc = ig_operations.23.desc
+    picture = GFX_evt_resource_cache
+    show_sound = event_administrative_work
+    is_triggered_only = yes
+
+    immediate = {
+        remove_infinity_stone_modifiers_on_stone_lost = yes
+    }
+
+    option = {
+        name = ig_operations.getstoneback
+        custom_tooltip = reality_stone_removed_tooltip
+        add_modifier = {
+            modifier = "stone_lost"
+            days = 360
+        }
+    }
+}
+
+# Stone is already gone
+country_event = {
+    id = ig_operations.24
+    title = ig_operations.21.name
+    desc = ig_operations.24.desc
+    picture = GFX_evt_resource_cache
+    show_sound = event_administrative_work
+    is_triggered_only = yes
+
+    option = {
+        name = ig_operations.intelbad
+        from.spynetwork = { add_spy_network_level = -80 }
+    }
+
+    after = {
+        destroy_espionage_operation = from
+    }
+}
+
+# Operation fails and you don't get the stone
+country_event = {
+    id = ig_operations.25
+    title = ig_operations.21.name
+    desc = ig_operations.25.desc
+    picture = GFX_evt_resource_cache
+    show_sound = event_administrative_work
+    is_triggered_only = yes
+
+    option = {
+        name = ig_operations.another_opportunity
+        from.spynetwork = { add_spy_network_level = -80 }
+        add_resource = { influence = -20 }
+    }
+
+    after = {
+        destroy_espionage_operation = from
+    }
+}
+
+################### SOUL STONE ###################
+
+# Ready to steal Soul Stone
+espionage_operation_event = {
+    id = ig_operations.31
+    title = ig_operations.31.name
+    espionage_operation = yes
+    desc = ig_operations.31.desc
+    picture = GFX_evt_decryption
+    show_sound = event_default
+    is_triggered_only = yes
+
+    immediate = {
+        set_espionage_operation_progress_locked = yes
+        target = {
+            save_event_target_as = previous_owner_of_infinity_stone
+        }
+        owner = {
+            set_timed_country_flag = {
+                flag = stole_infinity_stone@root.target
+                years = 5
+            }
+        }
+    }
+
+    option = {
+        name = LAUNCH_OPERATION
+        hidden_effect = {
+            if = {
+                limit = {
+                    event_target:previous_owner_of_infinity_stone = {
+                        has_relic = r_soul_stone
+                    }
+                }
+                random_list = {
+                    25 = {
+                        modifier = {
+                            factor = 2
+                            root = {
+                                relative_encryption_decryption = {
+                                    target = event_target:previous_owner_of_infinity_stone
+                                    value > 1.3
+                                }
+                            }
+                        }
+                        owner = {
+                            country_event = { id = ig_operations.32 days = 3 }
+                        }
+                    }
+                    75 = {
+                        modifier = {
+                            factor = 0.7
+                            root = {
+                                relative_encryption_decryption = {
+                                    target = event_target:previous_owner_of_infinity_stone
+                                    value > 1.3
+                                }
+                            }
+                        }
+                        owner = {
+                            country_event = { id = ig_operations.35 days = 3 }
+                        }
+                    }
+                }
+            }
+            else = {
+                owner = {
+                    country_event = { id = ig_operations.34 days = 3 }
+                }
+            }
+        }
+    }
+
+    after = {
+        set_espionage_operation_progress_locked = no
+    }
+}
+
+# Soul Stone Stolen
+country_event = {
+    id = ig_operations.32
+    title = ig_operations.31.name
+    desc = ig_operations.32.desc
+    picture = GFX_evt_soul_stone_notify
+    show_sound = event_espionage_concluded
+    is_triggered_only = yes
+
+    immediate = {
+        save_event_target_as = new_owner_of_infinity_stone
+    }
+
+    option = {
+        name = EXCELLENT
+        from.spynetwork = { add_spy_network_level = -80 }
+        steal_relic = {
+            target = event_target:previous_owner_of_infinity_stone
+            relic = r_soul_stone
+        }
+        hidden_effect = {
+            event_target:previous_owner_of_infinity_stone = {
+                country_event = { id = ig_operations.33 days = 7 random = 7 }
+            }
+        }
+    }
+
+    after = {
+        destroy_espionage_operation = from
+    }
+}
+
+# Other nation figures out Soul Stone was stolen
+country_event = {
+    id = ig_operations.33
+    title = ig_operations.33.name
+    desc = ig_operations.33.desc
+    picture = GFX_evt_resource_cache
+    show_sound = event_administrative_work
+    is_triggered_only = yes
+
+    immediate = {
+        remove_infinity_stone_modifiers_on_stone_lost = yes
+    }
+
+    option = {
+        name = ig_operations.getstoneback
+        custom_tooltip = soul_stone_removed_tooltip
+        add_modifier = {
+            modifier = "stone_lost"
+            days = 360
+        }
+    }
+}
+
+# Stone is already gone
+country_event = {
+    id = ig_operations.34
+    title = ig_operations.31.name
+    desc = ig_operations.34.desc
+    picture = GFX_evt_resource_cache
+    show_sound = event_administrative_work
+    is_triggered_only = yes
+
+    option = {
+        name = ig_operations.intelbad
+        from.spynetwork = { add_spy_network_level = -80 }
+    }
+
+    after = {
+        destroy_espionage_operation = from
+    }
+}
+
+# Operation fails and you don't get the stone
+country_event = {
+    id = ig_operations.35
+    title = ig_operations.31.name
+    desc = ig_operations.35.desc
+    picture = GFX_evt_resource_cache
+    show_sound = event_administrative_work
+    is_triggered_only = yes
+
+    option = {
+        name = ig_operations.another_opportunity
+        from.spynetwork = { add_spy_network_level = -80 }
+        add_resource = { influence = -20 }
+    }
+
+    after = {
+        destroy_espionage_operation = from
+    }
+}
+
+################### Mind STONE ###################
+
+# Ready to steal Mind Stone
+espionage_operation_event = {
+    id = ig_operations.41
+    title = ig_operations.41.name
+    espionage_operation = yes
+    desc = ig_operations.41.desc
+    picture = GFX_evt_decryption
+    show_sound = event_default
+    is_triggered_only = yes
+
+    immediate = {
+        set_espionage_operation_progress_locked = yes
+        target = {
+            save_event_target_as = previous_owner_of_infinity_stone
+        }
+        owner = {
+            set_timed_country_flag = {
+                flag = stole_infinity_stone@root.target
+                years = 5
+            }
+        }
+    }
+
+    option = {
+        name = LAUNCH_OPERATION
+        hidden_effect = {
+            if = {
+                limit = {
+                    event_target:previous_owner_of_infinity_stone = {
+                        has_relic = r_mind_stone
+                    }
+                }
+                random_list = {
+                    25 = {
+                        modifier = {
+                            factor = 2
+                            root = {
+                                relative_encryption_decryption = {
+                                    target = event_target:previous_owner_of_infinity_stone
+                                    value > 1.3
+                                }
+                            }
+                        }
+                        owner = {
+                            country_event = { id = ig_operations.42 days = 3 }
+                        }
+                    }
+                    75 = {
+                        modifier = {
+                            factor = 0.7
+                            root = {
+                                relative_encryption_decryption = {
+                                    target = event_target:previous_owner_of_infinity_stone
+                                    value > 1.3
+                                }
+                            }
+                        }
+                        owner = {
+                            country_event = { id = ig_operations.45 days = 3 }
+                        }
+                    }
+                }
+            }
+            else = {
+                owner = {
+                    country_event = { id = ig_operations.44 days = 3 }
+                }
+            }
+        }
+    }
+
+    after = {
+        set_espionage_operation_progress_locked = no
+    }
+}
+
+# Mind Stone Stolen
+country_event = {
+    id = ig_operations.42
+    title = ig_operations.41.name
+    desc = ig_operations.42.desc
+    picture = GFX_evt_mind_stone_notify
+    show_sound = event_espionage_concluded
+    is_triggered_only = yes
+
+    immediate = {
+        save_event_target_as = new_owner_of_infinity_stone
+    }
+
+    option = {
+        name = EXCELLENT
+        from.spynetwork = { add_spy_network_level = -80 }
+        steal_relic = {
+            target = event_target:previous_owner_of_infinity_stone
+            relic = r_mind_stone
+        }
+        hidden_effect = {
+            event_target:previous_owner_of_infinity_stone = {
+                country_event = { id = ig_operations.43 days = 7 random = 7 }
+            }
+        }
+    }
+
+    after = {
+        destroy_espionage_operation = from
+    }
+}
+
+# Other nation figures out Mind Stone was stolen
+country_event = {
+    id = ig_operations.43
+    title = ig_operations.43.name
+    desc = ig_operations.43.desc
+    picture = GFX_evt_resource_cache
+    show_sound = event_administrative_work
+    is_triggered_only = yes
+
+    immediate = {
+        remove_infinity_stone_modifiers_on_stone_lost = yes
+    }
+
+    option = {
+        name = ig_operations.getstoneback
+        custom_tooltip = mind_stone_removed_tooltip
+        add_modifier = {
+            modifier = "stone_lost"
+            days = 360
+        }
+    }
+}
+
+# Stone is already gone
+country_event = {
+    id = ig_operations.44
+    title = ig_operations.41.name
+    desc = ig_operations.44.desc
+    picture = GFX_evt_resource_cache
+    show_sound = event_administrative_work
+    is_triggered_only = yes
+
+    option = {
+        name = ig_operations.intelbad
+        from.spynetwork = { add_spy_network_level = -80 }
+    }
+
+    after = {
+        destroy_espionage_operation = from
+    }
+}
+
+# Operation fails and you don't get the stone
+country_event = {
+    id = ig_operations.45
+    title = ig_operations.41.name
+    desc = ig_operations.45.desc
+    picture = GFX_evt_resource_cache
+    show_sound = event_administrative_work
+    is_triggered_only = yes
+
+    option = {
+        name = ig_operations.another_opportunity
+        from.spynetwork = { add_spy_network_level = -80 }
+        add_resource = { influence = -20 }
+    }
+
+    after = {
+        destroy_espionage_operation = from
+    }
+}
+
+################### Space STONE ###################
+
+# Ready to steal Space Stone
+espionage_operation_event = {
+    id = ig_operations.51
+    title = ig_operations.51.name
+    espionage_operation = yes
+    desc = ig_operations.51.desc
+    picture = GFX_evt_decryption
+    show_sound = event_default
+    is_triggered_only = yes
+
+    immediate = {
+        set_espionage_operation_progress_locked = yes
+        target = {
+            save_event_target_as = previous_owner_of_infinity_stone
+        }
+        owner = {
+            set_timed_country_flag = {
+                flag = stole_infinity_stone@root.target
+                years = 5
+            }
+        }
+    }
+
+    option = {
+        name = LAUNCH_OPERATION
+        hidden_effect = {
+            if = {
+                limit = {
+                    event_target:previous_owner_of_infinity_stone = {
+                        has_relic = r_space_stone
+                    }
+                }
+                random_list = {
+                    25 = {
+                        modifier = {
+                            factor = 2
+                            root = {
+                                relative_encryption_decryption = {
+                                    target = event_target:previous_owner_of_infinity_stone
+                                    value > 1.3
+                                }
+                            }
+                        }
+                        owner = {
+                            country_event = { id = ig_operations.52 days = 3 }
+                        }
+                    }
+                    75 = {
+                        modifier = {
+                            factor = 0.7
+                            root = {
+                                relative_encryption_decryption = {
+                                    target = event_target:previous_owner_of_infinity_stone
+                                    value > 1.3
+                                }
+                            }
+                        }
+                        owner = {
+                            country_event = { id = ig_operations.55 days = 3 }
+                        }
+                    }
+                }
+            }
+            else = {
+                owner = {
+                    country_event = { id = ig_operations.54 days = 3 }
+                }
+            }
+        }
+    }
+
+    after = {
+        set_espionage_operation_progress_locked = no
+    }
+}
+
+# Space Stone Stolen
+country_event = {
+    id = ig_operations.52
+    title = ig_operations.51.name
+    desc = ig_operations.52.desc
+    picture = GFX_evt_space_stone_notify
+    show_sound = event_espionage_concluded
+    is_triggered_only = yes
+
+    immediate = {
+        save_event_target_as = new_owner_of_infinity_stone
+    }
+
+    option = {
+        name = EXCELLENT
+        from.spynetwork = { add_spy_network_level = -80 }
+        steal_relic = {
+            target = event_target:previous_owner_of_infinity_stone
+            relic = r_space_stone
+        }
+        hidden_effect = {
+            event_target:previous_owner_of_infinity_stone = {
+                country_event = { id = ig_operations.53 days = 7 random = 7 }
+            }
+        }
+    }
+
+    after = {
+        destroy_espionage_operation = from
+    }
+}
+
+# Other nation figures out Space Stone was stolen
+country_event = {
+    id = ig_operations.53
+    title = ig_operations.53.name
+    desc = ig_operations.53.desc
+    picture = GFX_evt_resource_cache
+    show_sound = event_administrative_work
+    is_triggered_only = yes
+
+    immediate = {
+        remove_infinity_stone_modifiers_on_stone_lost = yes
+    }
+
+    option = {
+        name = ig_operations.getstoneback
+        custom_tooltip = space_stone_removed_tooltip
+        add_modifier = {
+            modifier = "stone_lost"
+            days = 360
+        }
+    }
+}
+
+# Stone is already gone
+country_event = {
+    id = ig_operations.54
+    title = ig_operations.51.name
+    desc = ig_operations.54.desc
+    picture = GFX_evt_resource_cache
+    show_sound = event_administrative_work
+    is_triggered_only = yes
+
+    option = {
+        name = ig_operations.intelbad
+        from.spynetwork = { add_spy_network_level = -80 }
+    }
+
+    after = {
+        destroy_espionage_operation = from
+    }
+}
+
+# Operation fails and you don't get the stone
+country_event = {
+    id = ig_operations.55
+    title = ig_operations.51.name
+    desc = ig_operations.55.desc
+    picture = GFX_evt_resource_cache
+    show_sound = event_administrative_work
+    is_triggered_only = yes
+
+    option = {
+        name = ig_operations.another_opportunity
+        from.spynetwork = { add_spy_network_level = -80 }
+        add_resource = { influence = -20 }
+    }
+
+    after = {
+        destroy_espionage_operation = from
+    }
+}

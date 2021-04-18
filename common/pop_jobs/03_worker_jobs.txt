@@ -1,4 +1,11 @@
-#Unofficial Patch
+# Original File
+#
+# Calvitix Check 3.0.1  17/04/2021
+#
+# Merge with Starnet AI
+# Merge with local production
+#
+#
 ###################
 # Basic Jobs
 ###################
@@ -13,10 +20,11 @@ clerk = {
 		has_owner = yes
 		is_being_purged = no
 		is_being_assimilated = no
+		is_sapient = yes
 	}
 
 	possible = {
-		complex_worker_job_check_trigger = yes
+		worker_job_check_trigger = yes
 	}
 
 	planet_modifier = {
@@ -44,21 +52,17 @@ clerk = {
 	}
 	triggered_planet_modifier = {
 		potential = {
-			OR = {
-				has_trait = trait_thrifty
-				has_trait = trait_nuumismatic_administration
-			}
+			has_trait = trait_thrifty
 		}
 		modifier = {
 			trade_value_add = 0.5
 		}
-	}	
+	}
+
 	triggered_planet_modifier = {
 		potential = {
-			planet = {
-				has_designation = col_city
-			}
-		}		
+			has_trait = trait_nuumismatic_administration
+		}
 		modifier = {
 			trade_value_add = 0.5
 		}
@@ -123,10 +127,11 @@ technician = {
 		has_owner = yes
 		is_being_purged = no
 		is_being_assimilated = no
+		is_sapient = yes
 	}
 
 	possible = {
-		complex_worker_job_check_trigger = yes
+		worker_job_check_trigger = yes
 		owner = {
 			is_gestalt = no
 		}
@@ -141,7 +146,7 @@ technician = {
 	resources = {
 		category = planet_technician
 		produces = {
-			energy = 4
+			energy = 6
 		}
 		produces = {
 			trigger = {
@@ -290,6 +295,7 @@ miner = {
 		has_owner = yes
 		is_being_purged = no
 		is_being_assimilated = no
+		is_sapient = yes
 	}
 
 	possible = {
@@ -441,6 +447,7 @@ crystal_miner = {
 		has_owner = yes
 		is_being_purged = no
 		is_being_assimilated = no
+		is_sapient = yes
 	}
 
 	possible = {
@@ -465,7 +472,7 @@ crystal_miner = {
 	}
 
 	weight = {
-		weight = @specialist_job_weight
+		weight = @specialist_job_weight # Important job
 		modifier = {
 			factor = 10
 			is_enslaved = yes
@@ -547,6 +554,7 @@ gas_extractor = {
 		has_owner = yes
 		is_being_purged = no
 		is_being_assimilated = no
+		is_sapient = yes
 	}
 
 	possible = {
@@ -570,7 +578,7 @@ gas_extractor = {
 	}
 
 	weight = {
-		weight = @specialist_job_weight
+		weight = @specialist_job_weight # Important job
 		modifier = {
 			factor = 10
 			is_enslaved = yes
@@ -652,6 +660,7 @@ mote_harvester = {
 		has_owner = yes
 		is_being_purged = no
 		is_being_assimilated = no
+		is_sapient = yes
 	}
 
 	possible = {
@@ -675,7 +684,7 @@ mote_harvester = {
 	}
 
 	weight = {
-		weight = @specialist_job_weight
+		weight = @specialist_job_weight # Important job
 		modifier = {
 			factor = 10
 			is_enslaved = yes
@@ -757,6 +766,7 @@ farmer = {
 		has_owner = yes
 		is_being_purged = no
 		is_being_assimilated = no
+		is_sapient = yes
 	}
 
 	possible = {
@@ -964,7 +974,7 @@ farmer = {
 
 soldier = {
 	category = worker
-	condition_string = WORKER_JOB_TRIGGER
+	condition_string = SOLDIER_JOB_TRIGGER
 	building_icon = building_stronghold
 	clothes_texture_index = 4
 
@@ -1016,10 +1026,11 @@ soldier = {
 		has_owner = yes
 		is_being_purged = no
 		is_being_assimilated = no
+		is_sapient = yes
 	}
 
 	possible = {
-		worker_job_check_trigger = yes
+		soldier_job_check_trigger = yes
 		owner = { is_gestalt = no }
 	}
 
@@ -1128,10 +1139,11 @@ preacher = {
 		has_owner = yes
 		is_being_purged = no
 		is_being_assimilated = no
+		is_sapient = yes
 	}
 
 	possible = {
-		complex_worker_job_check_trigger = yes
+		worker_job_check_trigger = yes
 	}
 
 	resources = {
@@ -1143,7 +1155,7 @@ preacher = {
 
 	planet_modifier = {
 		planet_amenities_add = 3
-		trade_value_add = 3
+		trade_value_add = 4
 	}
 
 	triggered_planet_modifier = {
@@ -1167,18 +1179,24 @@ preacher = {
 	}
 	triggered_planet_modifier = {
 		potential = {
-			OR = {
-				has_trait = trait_thrifty
-				has_trait = trait_nuumismatic_administration
-			}
+			has_trait = trait_thrifty
 		}
 		modifier = {
-			trade_value_add = 0.6
+			trade_value_add = 1
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			has_trait = trait_nuumismatic_administration
+		}
+		modifier = {
+			trade_value_add = 1
 		}
 	}
 
 	weight = {
-		weight = @specialist_job_weight
+		weight = @specialist_job_weight # Important job
 		modifier = {
 			factor = 0.2
 			has_citizenship_rights = no
@@ -1280,7 +1298,8 @@ mortal_initiate = {
 	}
 
 	possible = {
-		complex_worker_job_check_trigger = yes #No machines
+		worker_job_check_trigger = yes
+		NOT = { has_trait = trait_mechanical } #No machines
 	}
 
 	resources = {

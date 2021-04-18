@@ -1,4 +1,12 @@
 
+# Original File
+#
+# Calvitix Check 3.0.1  17/04/2021
+#
+# Merge with RealSpace
+# Merge with JL Picard
+
+@base_moon_distance = 10 #œ
 #### README: On changing and saving file, game must be restarted from desktop to prevent crash.
 
 ####### Star Lifting System ######
@@ -487,7 +495,7 @@ time_loop_world_system = {
 		orbit_distance = 0
 		class = pc_desert
 		orbit_angle = { min = 90 max = 270 }
-		size = { min = 10 max = 15 }
+		size = { min = 17 max = 20 }
 		deposit_blockers = none
 		anomaly = time_loop_world
 		init_effect = {
@@ -2280,7 +2288,7 @@ primitive_robot_system = {
 
 	usage = misc_system_init
 	usage_odds = {
-		base = 90000
+		base = 9000
 		modifier = {
 			factor = 0
 			has_distar = no
@@ -2586,7 +2594,7 @@ collapse_system = {
 						civic = civic_secret_of_fire
 						civic = civic_the_wheel
 					}
-					species = last_created
+					species = last_created_species
 					ethos = {
 						ethic = "ethic_fanatic_pacifist"
 						ethic = "ethic_materialist"
@@ -2624,7 +2632,7 @@ collapse_system = {
 				while = {
 					count = 4
 					create_pop = {
-						species = last_created
+						species = last_created_species
 					}					
 				}
 				add_building = building_crude_huts
@@ -2718,7 +2726,8 @@ old_foes_system = {
 			set_planet_flag = czyrni_planet
 			create_species = {
 				name = "NAME_Czyrni"
-				plural = "NAME_Czyrni"
+				plural = "NAME_Czyrni_plural" # Correction de bug
+				adjective = "NAME_Czyrni" # Correction de bug
 				class = HUM
 				portrait = humanoid_02
 				namelist = "HUM3"
@@ -2739,7 +2748,7 @@ old_foes_system = {
 					civic = civic_secret_of_fire
 					civic = civic_the_wheel
 				}
-				species = last_created
+				species = last_created_species
 				ethos = random
 				origin = "origin_enlightened" # Should only be visible if they become spacefaring
 				flag = {
@@ -2770,7 +2779,7 @@ old_foes_system = {
 			while = {
 				count = 8
 				create_pop = {
-					species = last_created
+					species = last_created_species
 				}					
 			}
 			add_building = building_primitive_dwellings
@@ -2795,7 +2804,8 @@ old_foes_system = {
 			set_planet_flag = pyorun_planet
 			create_species = {
 				name = "NAME_Pyorun"
-				plural = "NAME_Pyorun"
+				plural = "NAME_Pyorun_plural" # Correction de bug
+				adjective = "NAME_Pyorun" # Correction de bug
 				class = HUM
 				portrait = humanoid_03
 				namelist = "HUM2"
@@ -2815,7 +2825,7 @@ old_foes_system = {
 					civic = civic_secret_of_fire
 					civic = civic_the_wheel
 				}
-				species = last_created
+				species = last_created_species
 				ethos = random
 				origin = "origin_enlightened" # Should only be visible if they become spacefaring
 				flag = {
@@ -2846,7 +2856,7 @@ old_foes_system = {
 			while = {
 				count = 8
 				create_pop = {
-					species = last_created
+					species = last_created_species
 				}					
 			}
 			add_building = building_primitive_dwellings
@@ -3317,10 +3327,11 @@ scavenger_system = {
 			}
 		}
 		last_created_country = {
+			set_country_flag = guardian_scavenger_bot
 			if = {
 				limit = { NOT = { has_modifier = scavenger_bot_power } }
 				add_modifier = { modifier = scavenger_bot_power	days = -1 }
-			}					
+			}			
 			save_global_event_target_as = scavenger_bot_country
 		}
 		event_target:scavenger_bot_country = {
@@ -4002,7 +4013,7 @@ ratling_1_1 = {
 			class = "pc_nuked"
 			orbit_angle = { min = 90 max = 270 }
 			orbit_distance = 5
-			size = { min = 9 max = 16 }
+			size = { min = 11 max = 16 }
 			init_effect = {
 				prevent_anomaly = yes
 				set_planet_flag = ratling_planet
@@ -4264,7 +4275,7 @@ ratling_1_2 = {
 			class = "pc_nuked"
 			orbit_angle = { min = 90 max = 270 }
 			orbit_distance = 5
-			size = { min = 9 max = 12 }
+			size = { min = 11 max = 14 }
 			init_effect = {
 				prevent_anomaly = yes
 				set_planet_flag = ratling_planet
@@ -5269,7 +5280,6 @@ distantstars_init_00 = {
 			type = lgate_base
 			orbit_angle = 225
 			orbit_distance = 30
-			location = solar_system
 		}
 	}
 }
@@ -5344,7 +5354,6 @@ distantstars_init_06 = {
 			type = lgate_base
 			orbit_angle = 225
 			orbit_distance = 30
-			location = solar_system
 		}
 	}
 }
@@ -5563,7 +5572,6 @@ distantstars_init_01 = {
 			type = lgate_base
 			orbit_angle = 225
 			orbit_distance = 360
-			location = solar_system
 		}
 	}
 }

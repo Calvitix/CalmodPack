@@ -1,4 +1,12 @@
-############################
+
+# Original File
+#
+# Calvitix Check 3.0.1  17/04/2021
+#
+# Merge with JLPicard
+#
+#
+############################œ
 #
 # Progress Events
 #
@@ -165,11 +173,13 @@ ship_event = {
 	option = {
 		trigger = {
 			owner = {
-				has_authority = auth_machine_intelligence
-				NOR = {
-					has_civic = civic_machine_terminator
-					has_civic = civic_machine_servitor
-					has_civic = civic_machine_assimilator
+				AND = {
+					has_authority = auth_machine_intelligence
+					NOR = {
+						has_civic = civic_machine_terminator
+						has_civic = civic_machine_servitor
+						has_civic = civic_machine_assimilator
+					}
 				}
 			}
 		}
@@ -442,100 +452,6 @@ planet_event = {
 			}
 		}
 	}
-	desc = { # Gaia
-		text = progress.3.desc_gaia
-		trigger = { 
-			is_planet_class = pc_gaia
-			NOT = { owner = { has_authority = auth_machine_intelligence } }
-			NOT = {
-				FROM = { 
-					exists = FROM
-					is_ship_size = lithoid_colonizer
-				} 
-			}
-		}
-	}
-	desc = { # Relic
-		text = progress.3.desc_relic
-		trigger = { 
-			is_planet_class = pc_relic
-			NOT = { owner = { has_authority = auth_machine_intelligence } }
-			NOT = {
-				FROM = { 
-					exists = FROM
-					is_ship_size = lithoid_colonizer
-				} 
-			}
-		}
-	}
-	desc = { # City
-		text = progress.3.desc_city
-		trigger = { 
-			is_planet_class = pc_city
-			NOT = { owner = { has_authority = auth_machine_intelligence } }
-			NOT = {
-				FROM = { 
-					exists = FROM
-					is_ship_size = lithoid_colonizer
-				} 
-			}
-		}
-	}
-	desc = { # Tomb
-		text = progress.3.desc_nuked
-		trigger = { 
-			is_planet_class = pc_nuked
-			NOT = { owner = { has_authority = auth_machine_intelligence } }
-			NOT = {
-				FROM = { 
-					exists = FROM
-					is_ship_size = lithoid_colonizer
-				} 
-			}
-		}
-	}
-	desc = { # Ringworld
-		text = progress.3.desc_ringworld
-		trigger = { 
-			is_planet_class = pc_ringworld_habitable 
-			NOT = { owner = { has_authority = auth_machine_intelligence } }
-			NOT = {
-				FROM = { 
-					exists = FROM
-					is_ship_size = lithoid_colonizer
-				} 
-			}
-		}
-	}
-	desc = { # Other
-		text = progress.3.desc_other
-		trigger = { 
-			NOR = {
-				is_planet_class = pc_continental
-				is_planet_class = pc_ocean 
-				is_planet_class = pc_desert 
-				is_planet_class = pc_tropical 
-				is_planet_class = pc_arid 
-				is_planet_class = pc_tundra 
-				is_planet_class = pc_arctic 
-				is_planet_class = pc_savannah 
-				is_planet_class = pc_alpine 
-				is_planet_class = pc_gaia
-				is_planet_class = pc_relic
-				is_planet_class = pc_city
-				is_planet_class = pc_nuked
-				is_planet_class = pc_habitat
-				is_planet_class = pc_ringworld_habitable 
-			}
-			NOT = { owner = { has_authority = auth_machine_intelligence } }
-			NOT = {
-				FROM = { 
-					exists = FROM
-					is_ship_size = lithoid_colonizer
-				} 
-			}
-		}
-	}
 	desc = { # Machine Empires
 		text = progress.3.desc_10
 		trigger = { owner = { has_authority = auth_machine_intelligence } }
@@ -545,7 +461,9 @@ planet_event = {
 
 	trigger = {
 		NOR = {
+			is_planet_class = pc_gaia
 			is_planet_class = pc_habitat
+			is_planet_class = pc_ringworld_habitable
 			owner = { has_origin = origin_remnants }
 		}
 		owner = {
@@ -629,14 +547,10 @@ country_event = {
 				is_country_type = fallen_empire
 				is_country_type = awakened_fallen_empire
 				#is_country_type = tiyanki
-				is_country_type = amoeba
-				is_country_type = amoeba_borderless
-				is_country_type = amoeba_garrison
-				is_country_type = crystal
-				is_country_type = drone
+				is_amoeba_country_type = yes
 				is_country_type = cloud
-				has_country_flag = crystal_country
-				has_country_flag = drone_country
+				is_drone_country_type = yes
+				is_crystal_country_type = yes
 			}
 			is_primitive = no
 		}

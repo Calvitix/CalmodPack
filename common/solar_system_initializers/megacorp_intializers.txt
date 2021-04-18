@@ -1,16 +1,26 @@
-#WARNING : Overwritten by FrenchTranslationPack
+
+# Original File
+#
+# Calvitix Check 3.0.1  17/04/2021
+#
+# Merge with Real Space
+# Merge with JL Picard
+
+#WARNING : Overwritten by FrenchTranslationPack ?
 
 
-@base_moon_distance = 10
-@caravaneerfleetlaunch1 = 9000 # 25 years # Correction de bug
-@caravaneerfleetlaunch2 = 14400 # 40 years # Correction de bug
+@base_moon_distance = 8 #6 #10
+@caravaneerfleetlaunch1 = 9000 # 25 years
+@caravaneerfleetlaunch2 = 14400 # 40 years
+@homeworld_min_size = 18
+@homeworld_max_size = 21
 
 # Caravaneers
 megacorp_caravaneer_init = {
 	class = "rl_standard_stars"
 	usage = misc_system_init
 	name = "NAME_Chors_Compass"
-	
+
 	usage_odds = {
 		base = 0
 		modifier = {
@@ -26,15 +36,11 @@ megacorp_caravaneer_init = {
 			factor = 0
 			has_star_flag = empire_cluster
 		}
-		modifier = {
-			factor = 0
-			is_bottleneck_system = yes
-		}
 	}
 
 	max_instances = 1
 	spawn_chance = 9999
-	
+
 	flags = { caravaneer_home }
 
 	asteroid_belt = {
@@ -46,12 +52,12 @@ megacorp_caravaneer_init = {
 		type = icy_asteroid_belt
 		radius = 110
 	}
-	
+
 	planet = {
 		class = star
 		size = { min = @standard_min max = @standard_max }
 		orbit_distance = 0
-		
+
 		init_effect = {
 
 			create_ambient_object = {
@@ -125,7 +131,7 @@ megacorp_caravaneer_init = {
 					civic = civic_free_traders
 				}
 				origin = "origin_default"
-				species = last_created
+				species = last_created_species
 				flag = {
 					icon = {
 						category = "special"
@@ -179,7 +185,7 @@ megacorp_caravaneer_init = {
 					}
 					create_leader = {
 						class = ruler
-						species = prev
+						species = this
 						name = random
 						skill = 5
 						immortal = yes
@@ -191,7 +197,7 @@ megacorp_caravaneer_init = {
 			}
 		}
 	}
-	
+
 	change_orbit = 48
 
 	planet = {
@@ -270,7 +276,7 @@ megacorp_caravaneer_init = {
 				civics = {
 					civic = civic_caravaneer_fleet1
 				}
-				species = last_created
+				species = last_created_species
 				flag = {
 					icon = {
 						category = "special"
@@ -336,7 +342,7 @@ megacorp_caravaneer_init = {
 					}
 					create_leader = {
 						class = ruler
-						species = prev
+						species = this
 						name = random
 						skill = 5
 						immortal = yes
@@ -361,7 +367,7 @@ megacorp_caravaneer_init = {
 				civics = {
 					civic = civic_caravaneer_fleet2
 				}
-				species = last_created
+				species = last_created_species
 				flag = {
 					icon = {
 						category = "special"
@@ -427,7 +433,7 @@ megacorp_caravaneer_init = {
 					}
 					create_leader = {
 						class = ruler
-						species = prev
+						species = this
 						name = random
 						skill = 5
 					}
@@ -699,7 +705,7 @@ megacorp_matter_decompressor_init_01 = {
 	usage = misc_system_init
 
 	flags = { ruined_matter_decompressor_system }
-	
+
 	usage_odds = {
 		base = 0
 		modifier = {
@@ -729,16 +735,16 @@ megacorp_matter_decompressor_init_01 = {
 	}
 
 	init_effect = {
-		spawn_megastructure = { 
-			type = "matter_decompressor_ruined" 
-			location = event_target:matter_decompressor_hole
+		spawn_megastructure = {
+			type = "matter_decompressor_ruined"
+			planet = event_target:matter_decompressor_hole
 
 			init_effect = {
 				create_ambient_object = {
 					type = "large_debris_object"
 					location = this
 				}
-				last_created_ambient_object = { 
+				last_created_ambient_object = {
 					set_location = {
 						target = prev
 						distance = 20
@@ -749,7 +755,7 @@ megacorp_matter_decompressor_init_01 = {
 					type = "large_debris_object"
 					location = this
 				}
-				last_created_ambient_object = { 
+				last_created_ambient_object = {
 					set_location = {
 						target = prev
 						distance = 20
@@ -760,7 +766,7 @@ megacorp_matter_decompressor_init_01 = {
 					type = "medium_debris_01_object"
 					location = this
 				}
-				last_created_ambient_object = { 
+				last_created_ambient_object = {
 					set_location = {
 						target = prev
 						distance = 35
@@ -771,7 +777,7 @@ megacorp_matter_decompressor_init_01 = {
 					type = "medium_debris_02_object"
 					location = this
 				}
-				last_created_ambient_object = { 
+				last_created_ambient_object = {
 					set_location = {
 						target = prev
 						distance = 3
@@ -789,7 +795,7 @@ megacorp_strategic_coordination_center_init_01 = {
 	usage = misc_system_init
 
 	flags = { ruined_strategic_coordination_center_system }
-	
+
 	usage_odds = {
 		base = 0
 		modifier = {
@@ -800,7 +806,7 @@ megacorp_strategic_coordination_center_init_01 = {
 
 	max_instances = 1
 	scaled_spawn_chance = 4
-	
+
 	planet = {
 		class = star
 		size = { min = @standard_min max = @standard_max }
@@ -842,7 +848,7 @@ megacorp_strategic_coordination_center_init_01 = {
 				type = "abandoned_starbase_01_object"
 				location = this
 			}
-			last_created_ambient_object = { 
+			last_created_ambient_object = {
 				set_location = {
 					target = prev
 					distance = 10
@@ -853,7 +859,7 @@ megacorp_strategic_coordination_center_init_01 = {
 				type = "abandoned_starbase_01_object"
 				location = this
 			}
-			last_created_ambient_object = { 
+			last_created_ambient_object = {
 				set_location = {
 					target = prev
 					distance = 10
@@ -897,7 +903,7 @@ megacorp_strategic_coordination_center_init_01 = {
 				type = "abandoned_starbase_01_object"
 				location = this
 			}
-			last_created_ambient_object = { 
+			last_created_ambient_object = {
 				set_location = {
 					target = prev
 					distance = 7
@@ -908,7 +914,7 @@ megacorp_strategic_coordination_center_init_01 = {
 				type = "abandoned_starbase_01_object"
 				location = this
 			}
-			last_created_ambient_object = { 
+			last_created_ambient_object = {
 				set_location = {
 					target = prev
 					distance = 7
@@ -919,7 +925,7 @@ megacorp_strategic_coordination_center_init_01 = {
 				type = "abandoned_starbase_01_object"
 				location = this
 			}
-			last_created_ambient_object = { 
+			last_created_ambient_object = {
 				set_location = {
 					target = prev
 					distance = 7
@@ -930,7 +936,7 @@ megacorp_strategic_coordination_center_init_01 = {
 				type = "large_debris_object"
 				location = this
 			}
-			last_created_ambient_object = { 
+			last_created_ambient_object = {
 				set_location = {
 					target = prev
 					distance = 15
@@ -941,7 +947,7 @@ megacorp_strategic_coordination_center_init_01 = {
 				type = "large_debris_object"
 				location = this
 			}
-			last_created_ambient_object = { 
+			last_created_ambient_object = {
 				set_location = {
 					target = prev
 					distance = 15
@@ -988,7 +994,7 @@ megacorp_strategic_coordination_center_init_01 = {
 				type = "abandoned_starbase_01_object"
 				location = this
 			}
-			last_created_ambient_object = { 
+			last_created_ambient_object = {
 				set_location = {
 					target = prev
 					distance = 10
@@ -999,7 +1005,7 @@ megacorp_strategic_coordination_center_init_01 = {
 				type = "abandoned_starbase_01_object"
 				location = this
 			}
-			last_created_ambient_object = { 
+			last_created_ambient_object = {
 				set_location = {
 					target = prev
 					distance = 10
@@ -1010,7 +1016,7 @@ megacorp_strategic_coordination_center_init_01 = {
 				type = "abandoned_starbase_01_object"
 				location = this
 			}
-			last_created_ambient_object = { 
+			last_created_ambient_object = {
 				set_location = {
 					target = prev
 					distance = 10
@@ -1021,7 +1027,7 @@ megacorp_strategic_coordination_center_init_01 = {
 				type = "abandoned_starbase_01_object"
 				location = this
 			}
-			last_created_ambient_object = { 
+			last_created_ambient_object = {
 				set_location = {
 					target = prev
 					distance = 10
@@ -1032,7 +1038,7 @@ megacorp_strategic_coordination_center_init_01 = {
 				type = "large_debris_object"
 				location = this
 			}
-			last_created_ambient_object = { 
+			last_created_ambient_object = {
 				set_location = {
 					target = prev
 					distance = 15
@@ -1043,7 +1049,7 @@ megacorp_strategic_coordination_center_init_01 = {
 				type = "large_debris_object"
 				location = this
 			}
-			last_created_ambient_object = { 
+			last_created_ambient_object = {
 				set_location = {
 					target = prev
 					distance = 15
@@ -1054,7 +1060,7 @@ megacorp_strategic_coordination_center_init_01 = {
 				type = "large_debris_object"
 				location = this
 			}
-			last_created_ambient_object = { 
+			last_created_ambient_object = {
 				set_location = {
 					target = prev
 					distance = 15
@@ -1108,9 +1114,9 @@ megacorp_strategic_coordination_center_init_01 = {
 	}
 
 	init_effect = {
-		spawn_megastructure = { 
-			type = "strategic_coordination_center_ruined" 
-			location = event_target:coordination_location
+		spawn_megastructure = {
+			type = "strategic_coordination_center_ruined"
+			planet = event_target:coordination_location
 		}
 
 		create_ambient_object = {
@@ -1155,7 +1161,7 @@ megacorp_mega_art_installation_init_01 = {
 	usage = misc_system_init
 
 	flags = { ruined_mega_art_installation_system }
-	
+
 	usage_odds = {
 		base = 0
 		modifier = {
@@ -1199,13 +1205,13 @@ megacorp_mega_art_installation_init_01 = {
 	}
 
 	change_orbit = { min = 40 max = 60 }
-	
+
 	planet = {
 		count = 1
 		orbit_angle = { min = 90 max = 270 }
-		
+
 		change_orbit = @base_moon_distance
-		
+
 		moon = {
 			count = { min = 0 max = 1 }
 			orbit_angle = { min = 90 max = 270 }
@@ -1356,9 +1362,9 @@ megacorp_mega_art_installation_init_01 = {
 	}
 
 	init_effect = {
-		spawn_megastructure = { 
-			type = "mega_art_installation_ruined" 
-			location = event_target:installation_star
+		spawn_megastructure = {
+			type = "mega_art_installation_ruined"
+			planet = event_target:installation_star
 		}
 		create_ambient_object = {
 			type = "large_debris_object"
@@ -1403,7 +1409,7 @@ megacorp_interstellar_assembly_init_01 = {
 		type = rocky_asteroid_belt
 		radius = 50
 	}
-	
+
 	usage = misc_system_init
 
 	usage_odds = {
@@ -1416,10 +1422,10 @@ megacorp_interstellar_assembly_init_01 = {
 
 	max_instances = 1
 	scaled_spawn_chance = 4
-	
+
 	flags = { ruined_interstellar_assembly_system }
 
-	
+
 	planet = {
 		count = 1
 		class = star
@@ -1429,18 +1435,18 @@ megacorp_interstellar_assembly_init_01 = {
 		has_ring = no
 	}
 	
-	init_effect = {		
+	init_effect = {
 		generate_home_system_resources = yes
-		spawn_megastructure = { 
-			type = "interstellar_assembly_ruined" 
-			location = star
+		spawn_megastructure = {
+			type = "interstellar_assembly_ruined"
+			planet = star
 
 			init_effect = {
 				create_ambient_object = {
 					type = "large_debris_object"
 					location = this
 				}
-				last_created_ambient_object = { 
+				last_created_ambient_object = {
 					set_location = {
 						target = prev
 						distance = 20
@@ -1451,7 +1457,7 @@ megacorp_interstellar_assembly_init_01 = {
 					type = "large_debris_object"
 					location = this
 				}
-				last_created_ambient_object = { 
+				last_created_ambient_object = {
 					set_location = {
 						target = prev
 						distance = 20
@@ -1462,7 +1468,7 @@ megacorp_interstellar_assembly_init_01 = {
 					type = "medium_debris_01_object"
 					location = this
 				}
-				last_created_ambient_object = { 
+				last_created_ambient_object = {
 					set_location = {
 						target = prev
 						distance = 35
@@ -1473,7 +1479,7 @@ megacorp_interstellar_assembly_init_01 = {
 					type = "medium_debris_02_object"
 					location = this
 				}
-				last_created_ambient_object = { 
+				last_created_ambient_object = {
 					set_location = {
 						target = prev
 						distance = 3
@@ -1485,7 +1491,7 @@ megacorp_interstellar_assembly_init_01 = {
 	}
 
 	change_orbit = 50
-	
+
 	planet = {
 		count = { min = 1 max = 3 }
 		class = pc_asteroid
@@ -1514,7 +1520,7 @@ megacorp_interstellar_assembly_init_01 = {
 		orbit_distance = { min = 25 max = 30 }
 		class = random_non_colonizable
 		orbit_angle = { min = 90 max = 270 }
-		
+
 		change_orbit = @base_moon_distance
 
 		moon = {
@@ -1524,7 +1530,7 @@ megacorp_interstellar_assembly_init_01 = {
 			orbit_distance = 5
 		}
 	}
-	
+
 	planet = {
 		count = 1
 		orbit_distance = { min = 30 max = 35 }
@@ -1534,11 +1540,11 @@ megacorp_interstellar_assembly_init_01 = {
 		size = { min = 16 max = 20 }
 		deposit_blockers = none
 		modifiers = none
-		
+
 		init_effect = {
 			generate_empire_home_planet = yes
 		}
-		
+
 		change_orbit = @base_moon_distance
 
 		moon = {

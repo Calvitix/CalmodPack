@@ -1,51 +1,11 @@
-# Available requirements:
-#
-#	SKILLS
-#	#skill = 2
-#
-#	LEADER
-#	leader = scientist
-#	leader = admiral
-#	leader = general
-#	leader = ruler
-#	leader = governor
-#	
-#	MILITARY SHIPS
-#	shipclass_military = 1
-#	
-#	CIVILIAN SHIPS
-#	shipclass_constructor = 2
-#	shipclass_science_ship = 1
-#	shipclass_colonizer = 2
-#	
-#	ARMIES
-#	shipclass_transport = 1
-#	assault_armies = 2
-#	defense_armies = 1
-#	
-#	STATIONS
-#	research_station = yes
-#	mining_station = yes
-#	observation_station = yes
-#
-#	SCOPES
-#	abort_trigger
-#	this = country (project owner)
-#	from = event scope (planet or ship, MIGHT NOT EXIST)
-#	fromfrom = project creation scope (usually equals location)
-#	
-#	on_success / on_start / on_progress_25/50/75
-#	this = event scope (ship or planet)
-#	from = project creation scope (usually equals location)
-#	
-#	on_fail - this fires if it times out
-#	this = country (project owner)
-#	from = project creation scope (usually equals location)
-#	
-#	on_cancel - this fires if the abort trigger returns true
-#	this = country (project owner)
-#	from = project creation scope (usually equals location)
 
+# Original File
+#
+# Calvitix Check 3.0.1  18/04/2021
+#
+# Merge with Unofficial Patch
+#
+#
 special_project = {
 	key = "DEAL_WITH_FLORA"
 	#cost = 0
@@ -544,13 +504,7 @@ special_project = {
 	event_scope = planet_event
 
 	on_success = {
-		if = {
-			limit = { is_same_value = fromfrom }
-			owner = { country_event = { id = story.105 } }	# compatibility code
-		}
-		else = {
-			fromfrom = { country_event = { id = story.105 } }
-		}
+		prev = { country_event = { id = story.105 } }
 	}
 }
 
@@ -566,13 +520,7 @@ special_project = {
 	event_scope = planet_event
 
 	on_success = {
-		if = {
-			limit = { is_same_value = fromfrom }
-			owner = { country_event = { id = story.107 } }	# compatibility code
-		}
-		else = {
-			fromfrom = { country_event = { id = story.107 } }
-		}
+		prev = { country_event = { id = story.107 } }
 	}
 }
 
@@ -588,13 +536,7 @@ special_project = {
 	event_scope = planet_event
 
 	on_success = {
-		if = {
-			limit = { is_same_value = fromfrom }
-			owner = { country_event = { id = story.205 } }	# compatibility code
-		}
-		else = {
-			fromfrom = { country_event = { id = story.205 } }
-		}
+		prev = { country_event = { id = story.205 } }
 	}
 }
 
@@ -610,13 +552,7 @@ special_project = {
 	event_scope = planet_event
 
 	on_success = {
-		if = {
-			limit = { is_same_value = fromfrom }
-			owner = { country_event = { id = story.207 } }	# compatibility code
-		}
-		else = {
-			fromfrom = { country_event = { id = story.207 } }
-		}
+		prev = { country_event = { id = story.207 } }
 	}
 }
 
@@ -632,13 +568,7 @@ special_project = {
 	event_scope = planet_event
 
 	on_success = {
-		if = {
-			limit = { is_same_value = fromfrom }
-			owner = { country_event = { id = story.305 } }	# compatibility code
-		}
-		else = {
-			fromfrom = { country_event = { id = story.305 } }
-		}
+		prev = { country_event = { id = story.305 } }
 	}
 }
 
@@ -654,13 +584,7 @@ special_project = {
 	event_scope = planet_event
 
 	on_success = {
-		if = {
-			limit = { is_same_value = fromfrom }
-			owner = { country_event = { id = story.405 } }	# compatibility code
-		}
-		else = {
-			fromfrom = { country_event = { id = story.405 } }
-		}
+		prev = { country_event = { id = story.405 } }
 	}
 }
 
@@ -726,13 +650,7 @@ special_project = {
 	event_scope = planet_event
 
 	on_success = {
-		if = {
-			limit = { is_same_value = from }
-			owner = { country_event = { id = anomaly.3086 } }	# compatibility code
-		}
-		else = {
-			from = { country_event = { id = anomaly.3086 } }
-		}
+		owner = { country_event = { id = anomaly.3086 } }
 	}
 
 	on_fail = {}
@@ -864,6 +782,67 @@ special_project = {
 		else_if = {
 			limit = {
 				owner = {
+					has_country_flag = manufactory4
+					has_country_flag = manufactory3
+					has_country_flag = manufactory2
+				}
+			}
+			ship_event = { id = anomaly.3126 }
+		}
+		else_if = {
+			limit = {
+				owner = {
+					has_country_flag = manufactory4
+					has_country_flag = manufactory3
+					NOT = { has_technology = tech_rare_crystals }
+				}
+			}
+			random_list = {
+				50 = { ship_event = { id = anomaly.3126 } }
+				50 = { ship_event = { id = anomaly.3131 } }
+			}
+		}
+		else_if = {
+			limit = {
+				owner = {
+					has_country_flag = manufactory4
+					has_country_flag = manufactory2
+				}
+			}
+			random_list = {
+				50 = { ship_event = { id = anomaly.3126 } }
+				50 = { ship_event = { id = anomaly.3128 } }
+			}
+		}
+		else_if = {
+			limit = {
+				owner = {
+					has_country_flag = manufactory3
+					has_country_flag = manufactory2
+				}
+			}
+			random_list = {
+				50 = { ship_event = { id = anomaly.3126 } }
+				50 = { ship_event = { id = anomaly.3129 } }
+			}
+		}
+		else_if = {
+			limit = {
+				owner = {
+					has_country_flag = manufactory4
+					NOT = { has_technology = tech_rare_crystals }
+				}
+			}
+			random_list = {
+				33 = { ship_event = { id = anomaly.3126 } }
+				33 = { ship_event = { id = anomaly.3131 } }
+				33 = { ship_event = { id = anomaly.3128 } }
+			}
+		}
+		else_if = {
+			limit = {
+				owner = {
+					has_country_flag = manufactory3
 					NOT = { has_technology = tech_rare_crystals }
 				}
 			}
@@ -873,9 +852,22 @@ special_project = {
 				33 = { ship_event = { id = anomaly.3129 } }
 			}
 		}
+		else_if = {
+			limit = {
+				owner = {
+					has_country_flag = manufactory2
+				}
+			}
+			random_list = {
+				33 = { ship_event = { id = anomaly.3126 } }
+				33 = { ship_event = { id = anomaly.3128 } }
+				33 = { ship_event = { id = anomaly.3129 } }
+			}
+		}
 		else = {
 			random_list = {
 				33 = { ship_event = { id = anomaly.3126 } }
+				#33 = { ship_event = { id = anomaly.3131 } }
 				16 = { ship_event = { id = anomaly.3128 } }
 				16 = { ship_event = { id = anomaly.3129 } }
 			}

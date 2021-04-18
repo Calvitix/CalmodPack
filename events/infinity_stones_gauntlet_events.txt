@@ -275,6 +275,311 @@ event = {
     }
  }
 
+ # Destroy Enemies choose
+country_event = {
+    id = infinity_gauntlet.72
+    title = infinity_gauntlet.72.name
+    desc = infinity_gauntlet.72.desc
+    picture = GFX_evt_ig_cheat_snap
+
+    hide_window = no
+    is_triggered_only = yes
+
+    immediate = {
+        clear_global_event_target = snap_option_one
+        clear_global_event_target = snap_option_two
+        clear_global_event_target = snap_option_three
+        random_playable_country = {
+            limit = {
+                NOT = {
+                    has_country_flag = chosen_for_gauntlet_destruction
+                    is_same_value = root
+                }
+            }
+            save_global_event_target_as = snap_option_one
+        }
+        random_playable_country = {
+            limit = {
+                NOT = {
+                    has_country_flag = chosen_for_gauntlet_destruction
+                    is_same_value = root
+                }
+                if = {
+                    limit = {
+                        exists = event_target:snap_option_one
+                    }
+                    NOT = { is_same_value = event_target:snap_option_one }
+                }
+            }
+            save_global_event_target_as = snap_option_two
+        }
+        random_playable_country = {
+            limit = {
+                NOT = {
+                    has_country_flag = chosen_for_gauntlet_destruction
+                    is_same_value = root
+                }
+                if = {
+                    limit = {
+                        exists = event_target:snap_option_one
+                    }
+                    NOT = { is_same_value = event_target:snap_option_one }
+                }
+                if = {
+                    limit = {
+                        exists = event_target:snap_option_two
+                    }
+                    NOT = { is_same_value = event_target:snap_option_two }
+                }
+            }
+            save_global_event_target_as = snap_option_three
+        }
+    }
+
+    option = {
+        name = infinity_gauntlet.72.a
+        trigger = {
+            exists = event_target:snap_option_one
+        }
+        custom_tooltip = snap_option_one_selected
+        hidden_effect = {
+            event_target:snap_option_one = {
+                set_country_flag = chosen_for_gauntlet_destruction
+            }
+            clear_global_event_target = snap_option_one
+            clear_global_event_target = snap_option_two
+            clear_global_event_target = snap_option_three
+            country_event = { id = infinity_gauntlet.72 }
+        }
+    }
+
+    option = {
+        name = infinity_gauntlet.72.b
+        trigger = {
+            exists = event_target:snap_option_two
+        }
+        custom_tooltip = snap_option_two_selected
+        hidden_effect = {
+            event_target:snap_option_two = {
+                set_country_flag = chosen_for_gauntlet_destruction
+            }
+            clear_global_event_target = snap_option_one
+            clear_global_event_target = snap_option_two
+            clear_global_event_target = snap_option_three
+            country_event = { id = infinity_gauntlet.72 }
+        }
+    }
+
+    option = {
+        name = infinity_gauntlet.72.c
+        trigger = {
+            exists = event_target:snap_option_three
+        }
+        custom_tooltip = snap_option_three_selected
+        hidden_effect = {
+            event_target:snap_option_three = {
+                set_country_flag = chosen_for_gauntlet_destruction
+            }
+            clear_global_event_target = snap_option_one
+            clear_global_event_target = snap_option_two
+            clear_global_event_target = snap_option_three
+            country_event = { id = infinity_gauntlet.72 }
+        }
+    }
+
+    option = {
+        name = infinity_gauntlet.72.refresh
+        trigger = {
+            count_playable_country = {
+                count > 1
+                limit = {
+                    NOT = { has_country_flag = chosen_for_gauntlet_destruction }
+                }
+            }
+        }
+        hidden_effect = {
+            clear_global_event_target = snap_option_one
+            clear_global_event_target = snap_option_two
+            clear_global_event_target = snap_option_three
+            country_event = { id = infinity_gauntlet.72 }
+        }
+    }
+
+    option = {
+        name = infinity_gauntlet.72.deselect
+        allow = {
+            custom_tooltip = {
+                fail_text = snap_destroy_enemies_fail_text
+                count_playable_country = {
+                    count > 0
+                    limit = {
+                        has_country_flag = chosen_for_gauntlet_destruction
+                    }
+                }
+            }
+        }
+        hidden_effect = {
+            clear_global_event_target = snap_option_one
+            clear_global_event_target = snap_option_two
+            clear_global_event_target = snap_option_three
+            country_event = { id = infinity_gauntlet.73 }
+        }
+    }
+
+    option = {
+        name = infinity_gauntlet.72.snap
+        allow = {
+            custom_tooltip = {
+                fail_text = snap_destroy_enemies_fail_text
+                count_playable_country = {
+                    count > 0
+                    limit = {
+                        has_country_flag = chosen_for_gauntlet_destruction
+                    }
+                }
+            }
+        }
+        hidden_effect = {
+            clear_global_event_target = snap_option_one
+            clear_global_event_target = snap_option_two
+            clear_global_event_target = snap_option_three
+            country_event = { id = infinity_gauntlet.71 }
+        }
+    }
+}
+
+ # Destroy Enemies unchoose
+country_event = {
+    id = infinity_gauntlet.73
+    title = infinity_gauntlet.72.name
+    desc = infinity_gauntlet.73.desc
+    picture = GFX_evt_ig_cheat_menu
+
+    hide_window = no
+    is_triggered_only = yes
+
+    immediate = {
+        clear_global_event_target = snap_option_one
+        clear_global_event_target = snap_option_two
+        clear_global_event_target = snap_option_three
+        random_playable_country = {
+            limit = {
+                has_country_flag = chosen_for_gauntlet_destruction
+            }
+            save_global_event_target_as = snap_option_one
+        }
+        random_playable_country = {
+            limit = {
+                has_country_flag = chosen_for_gauntlet_destruction
+                if = {
+                    limit = {
+                        exists = event_target:snap_option_one
+                    }
+                    NOT = { is_same_value = event_target:snap_option_one }
+                }
+            }
+            save_global_event_target_as = snap_option_two
+        }
+        random_playable_country = {
+            limit = {
+                has_country_flag = chosen_for_gauntlet_destruction
+                if = {
+                    limit = {
+                        exists = event_target:snap_option_one
+                    }
+                    NOT = { is_same_value = event_target:snap_option_one }
+                }
+                if = {
+                    limit = {
+                        exists = event_target:snap_option_two
+                    }
+                    NOT = { is_same_value = event_target:snap_option_two }
+                }
+            }
+            save_global_event_target_as = snap_option_three
+        }
+    }
+
+    option = {
+        name = infinity_gauntlet.72.a
+        trigger = {
+            exists = event_target:snap_option_one
+        }
+        custom_tooltip = snap_option_one_deselected
+        hidden_effect = {
+            event_target:snap_option_one = {
+                remove_country_flag = chosen_for_gauntlet_destruction
+            }
+            clear_global_event_target = snap_option_one
+            clear_global_event_target = snap_option_two
+            clear_global_event_target = snap_option_three
+            country_event = { id = infinity_gauntlet.73 }
+        }
+    }
+
+    option = {
+        name = infinity_gauntlet.72.b
+        trigger = {
+            exists = event_target:snap_option_two
+        }
+        custom_tooltip = snap_option_two_deselected
+        hidden_effect = {
+            event_target:snap_option_two = {
+                remove_country_flag = chosen_for_gauntlet_destruction
+            }
+            clear_global_event_target = snap_option_one
+            clear_global_event_target = snap_option_two
+            clear_global_event_target = snap_option_three
+            country_event = { id = infinity_gauntlet.73 }
+        }
+    }
+
+    option = {
+        name = infinity_gauntlet.72.c
+        trigger = {
+            exists = event_target:snap_option_three
+        }
+        custom_tooltip = snap_option_three_deselected
+        hidden_effect = {
+            event_target:snap_option_three = {
+                remove_country_flag = chosen_for_gauntlet_destruction
+            }
+            clear_global_event_target = snap_option_one
+            clear_global_event_target = snap_option_two
+            clear_global_event_target = snap_option_three
+            country_event = { id = infinity_gauntlet.73 }
+        }
+    }
+
+    option = {
+        name = infinity_gauntlet.72.refresh
+        trigger = {
+            count_playable_country = {
+                count > 0
+                limit = {
+                    has_country_flag = chosen_for_gauntlet_destruction
+                }
+            }
+        }
+        hidden_effect = {
+            clear_global_event_target = snap_option_one
+            clear_global_event_target = snap_option_two
+            clear_global_event_target = snap_option_three
+            country_event = { id = infinity_gauntlet.73 }
+        }
+    }
+
+    option = {
+        name = infinity_gauntlet.73.back
+        hidden_effect = {
+            clear_global_event_target = snap_option_one
+            clear_global_event_target = snap_option_two
+            clear_global_event_target = snap_option_three
+            country_event = { id = infinity_gauntlet.72 }
+        }
+    }
+}
+
 #Snapture#########################################################################################################
 
 #SNAP EVENT 50%
@@ -318,7 +623,7 @@ country_event = {
 
 
 #SNAP EVENT 50% NOTIFICATION ALL EMPIRES
-event = {
+country_event = {
     id = infinity_gauntlet.99
     title = infinity_gauntlet.99.name
     desc = infinity_gauntlet.99.desc
@@ -455,7 +760,7 @@ country_event = {
 
 
 #SNAP EVENT 10% NOTIFICATION ALL EMPIRES
-event = {
+country_event = {
     id = infinity_gauntlet.154
     title = infinity_gauntlet.154.name
     desc = infinity_gauntlet.154.desc
@@ -513,7 +818,7 @@ country_event = {
 
 
 #SNAP EVENT 90% NOTIFICATION ALL EMPIRES
-event = {
+country_event = {
     id = infinity_gauntlet.156
     title = infinity_gauntlet.156.name
     desc = infinity_gauntlet.156.desc
@@ -615,11 +920,11 @@ country_event = {
 
     immediate = {
         every_galaxy_pop = {
-            limit = { owner = { is_at_war_with = FROM } }
+            limit = { owner = { has_country_flag = chosen_for_gauntlet_destruction } }
             kill_pop = yes
         }
         every_country = {
-            limit = { is_at_war_with = FROM }
+            limit = { has_country_flag = chosen_for_gauntlet_destruction }
             every_owned_leader = {
                 kill_leader = {
                     show_notification = yes
@@ -1146,136 +1451,40 @@ country_event = {
     hide_window = no
     is_triggered_only = yes
 
-    immediate = {
-        random_owned_leader = {
-            limit = { leader_class = ruler }
-            save_event_target_as = ruler_species
-        }
-    }
+    #immediate = {
+    #    random_owned_leader = {
+    #        limit = { leader_class = ruler }
+    #        save_event_target_as = ruler_species
+    #    }
+    #}
 
     option = {
         name = infinity_gauntlet.182.a
-        custom_tooltip = ig_the_inevitable_tooltip
         remove_relic = r_power_stone
         remove_relic = r_time_stone
         remove_relic = r_reality_stone
         remove_relic = r_soul_stone
         remove_relic = r_mind_stone
         remove_relic = r_space_stone
+        ruler = {
+            add_trait = leader_trait_ruler_the_inevitable
+        }
+        custom_tooltip = ig_the_inevitable_tooltip
+        clone_leader = {
+            target = ruler
+            class = admiral
+            traits = { trait = leader_trait_admiral_the_inevitable }
+            effect = {
+                set_leader_flag = the_inevitable
+            }
+            skill = 10
+        }
         hidden_effect = {
+            ruler = {
+                set_leader_flag = the_inevitable
+                add_skill = 10
+            }
             set_country_flag = has_used_fully_gauntlet_power
-            kill_leader = {
-                type = ruler
-                show_notification = no
-                heir = yes
-            }
-            kill_leader = {
-                type = ruler
-                show_notification = no
-                heir = no
-            }
-            if = {
-                limit = { event_target:ruler_species = { gender = male } }
-                create_leader = {
-                    class = ruler
-                    species = event_target:ruler_species.species
-                    name = Inevitable
-                    skill = 10
-                    leader_age_min = 30
-                    leader_age_max = 30
-                    gender = male
-                    traits = {
-                        trait = leader_trait_ruler_the_inevitable
-                    }
-                    effect = {
-                        set_leader_flag = the_inevitable
-                    }
-                }
-                assign_leader = last_created_leader
-                create_leader = {
-                    class = admiral
-                    species = event_target:ruler_species.species
-                    name = Inevitable
-                    skill = 10
-                    event_leader = yes
-                    leader_age_min = 30
-                    leader_age_max = 30
-                    gender = male
-                    traits = {
-                        trait = leader_trait_admiral_the_inevitable
-                    }
-                    effect = {
-                        set_leader_flag = the_inevitable
-                    }
-                }
-            }
-            else_if = {
-                limit = { event_target:ruler_species = { gender = female } }
-                create_leader = {
-                    class = ruler
-                    species = event_target:ruler_species.species
-                    name = Inevitable
-                    skill = 10
-                    leader_age_min = 30
-                    leader_age_max = 30
-                    gender = female
-                    traits = {
-                        trait = leader_trait_ruler_the_inevitable
-                    }
-                    effect = {
-                        set_leader_flag = the_inevitable
-                    }
-                }
-                assign_leader = last_created_leader
-                create_leader = {
-                    class = admiral
-                    species = event_target:ruler_species.species
-                    name = Inevitable
-                    skill = 10
-                    event_leader = yes
-                    leader_age_min = 30
-                    leader_age_max = 30
-                    gender = female
-                    traits = {
-                        trait = leader_trait_admiral_the_inevitable
-                    }
-                    effect = {
-                        set_leader_flag = the_inevitable
-                    }
-                }
-            }
-            else = {
-                create_leader = {
-                    class = ruler
-                    species = event_target:ruler_species.species
-                    name = Inevitable
-                    skill = 10
-                    leader_age_min = 30
-                    leader_age_max = 30
-                    traits = {
-                        trait = leader_trait_ruler_the_inevitable
-                    }
-                    effect = {
-                        set_leader_flag = the_inevitable
-                    }
-                }
-                assign_leader = last_created_leader
-                create_leader = {
-                    class = admiral
-                    species = event_target:ruler_species.species
-                    name = Inevitable
-                    skill = 10
-                    event_leader = yes
-                    leader_age_min = 30
-                    leader_age_max = 30
-                    traits = {
-                        trait = leader_trait_admiral_the_inevitable
-                    }
-                    effect = {
-                        set_leader_flag = the_inevitable
-                    }
-                }
-            }
             remove_infinity_stone_modifiers_on_stone_lost = yes
             #Generic
             remove_modifier = "infinity_stone_relic_activation_cooldown"
@@ -1354,7 +1563,7 @@ country_event = {
 
 
 #Disarm the Galaxy NOTIFICATION ALL EMPIRES
-event = {
+country_event = {
     id = infinity_gauntlet.186
     title = infinity_gauntlet.186.name
     desc = infinity_gauntlet.186.desc
@@ -1436,3 +1645,79 @@ event = {
         name = infinity_gauntlet.189.a
     }
  }
+
+ #########################################################################################################
+
+ # Destroy 50% of all systems
+ country_event = {
+    id = infinity_gauntlet.200
+    title = infinity_gauntlet.200.name
+    desc = infinity_gauntlet.200.desc
+    picture = GFX_evt_gauntlet_snap
+    show_sound = event_snap
+
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = infinity_gauntlet.200.a
+        snap_ruler_death_chance = yes
+        hidden_effect = {
+            set_country_flag = has_used_fully_gauntlet_power
+            set_country_flag = gauntlet_used_for_evil
+            set_global_flag = gauntlet_used_to_purge_pops
+            remove_country_flag = gauntlet_in_use
+            country_event = { id = infinity_gauntlet.201 }
+        }
+    }
+ }
+
+#Disarm the Galaxy
+country_event = {
+    id = infinity_gauntlet.201
+    hide_window = yes
+    is_triggered_only = yes
+
+    immediate = {
+        every_system = {
+            random_list = {
+                50 = {
+                    destroy_star_system = yes
+                }
+                50 = {}
+            }
+        }
+        every_country = {
+            limit = {
+                OR = {
+                    is_country_type = default
+                    is_country_type = fallen_empire
+                    is_country_type = awakened_fallen_empire
+                }
+            }
+            country_event = { id = infinity_gauntlet.202 }
+        }
+    }
+}
+
+
+#Disarm the Galaxy NOTIFICATION ALL EMPIRES
+country_event = {
+    id = infinity_gauntlet.202
+    title = infinity_gauntlet.202.name
+    desc = infinity_gauntlet.202.desc
+    picture = GFX_evt_vortex
+    show_sound = event_default
+
+    hide_window = no
+    is_triggered_only = yes
+
+    option = {
+        name = infinity_gauntlet.162.a
+        trigger = { NOT = { has_country_flag = gauntlet_used_for_evil } }
+    }
+    option = {
+        name = infinity_gauntlet.162.b
+        trigger = { has_country_flag = gauntlet_used_for_evil }
+    }
+}

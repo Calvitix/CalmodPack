@@ -1,4 +1,9 @@
-#CALVITIX Merge with Starnet OK
+# Original File
+#
+# Calvitix Check 3.0.1  17/04/2021
+#
+#
+#
 #############
 # Amenities buildings
 #############
@@ -16,11 +21,13 @@ building_luxury_residence = {
 		exists = owner
 		owner = {
 			is_regular_empire = yes
-			is_ai = no
 			NOT = { has_valid_civic = civic_shared_burden }
 		}
 	}
 
+	allow = {
+		buildings_simple_allow = yes
+	}
 
 	destroy_trigger = {
 		exists = owner
@@ -75,31 +82,6 @@ building_luxury_residence = {
 	upgrades = {
 		"building_paradise_dome"
 	}
-
-	ai_weight = {
-		weight = 0
-		modifier = {
-			weight = 100 #High weight to gurantee that if the below is true then the AI should build it
-			free_housing < 2 #Prevents the AI from running out of residences when nearly out of tiles
-			OR = {
-				free_jobs > 0 #prevents spamming of residence buildings when no jobs are open
-				AND = {
-					free_housing < 0 #Prevents the AI from running out of residences when nearly out of tiles
-					NOT = { any_owned_pop = { is_unemployed = yes } }
-				}
-			}
-			free_district_slots = 0 #Do not build when city districts can still be built
-		}
-		modifier = {
-			factor = 0
-			has_building = building_luxury_residence
-			owner = { has_technology = tech_paradise_dome }
-		}
-		modifier = {
-				factor = 0
-				unsupervised_destruction = yes
-		}
-	}
 }
 
 building_paradise_dome = {
@@ -120,7 +102,6 @@ building_paradise_dome = {
 				}
 			}
 		}
-		owner = { is_ai = no }
 	}
 
 	allow = {
@@ -131,7 +112,6 @@ building_paradise_dome = {
 		exists = owner
 		OR = {
 			owner = { is_regular_empire = no }
-			#owner = { is_ai = yes }
 			owner = { has_valid_civic = civic_shared_burden }
 			buildings_no_crystals = yes
 			has_modifier = slave_colony
@@ -185,23 +165,6 @@ building_paradise_dome = {
 			NOT = { has_valid_civic = civic_shared_burden }
 		}
 	}
-
-	ai_weight = {
-		weight = 0
-		modifier = {
-			weight = 1
-			buildings_has_crystals = yes
-		}
-		modifier = {
-			factor = 10
-			free_housing < 0
-		}
-		#		weight = 1.5 #0.5
-		modifier = {
-			factor = 0
-			unsupervised_destruction = yes
-		}
-	}
 }
 
 building_communal_housing = {
@@ -218,7 +181,6 @@ building_communal_housing = {
 		NOT = { has_modifier = slave_colony }
 		exists = owner
 		owner = {
-			#is_ai = no calvitix no disable
 			is_regular_empire = yes
 			has_valid_civic = civic_shared_burden
 		}
@@ -287,42 +249,6 @@ building_communal_housing = {
 	upgrades = {
 		"building_communal_housing_large"
 	}
-
-	ai_weight = {
-		weight = 0
-		modifier = {
-			weight = 100 #High weight to gurantee that if the below is true then the AI should build it
-			free_housing < 3 #Prevents the AI from running out of residences when nearly out of tiles
-			OR = {
-				free_jobs > 0 #prevents spamming of residence buildings when no jobs are open
-				AND = {
-					free_housing < 0 #Prevents the AI from running out of residences when nearly out of tiles
-					NOT = { any_owned_pop = { is_unemployed = yes } }
-				}
-			}
-			free_district_slots = 0 #Do not build when city districts can still be built
-		}
-		modifier = {
-			factor = 0
-			has_building = building_communal_housing
-			owner = { has_technology = tech_paradise_dome }
-		}
-		#weight = 0.5
-#EDAI
-			modifier = {
-				weight = 7000
-				free_housing < 1
-				free_district_slots = 0
-				NOT = { is_planet_class = pc_habitat }
-			}
-###
-#STARNET
-			modifier = {
-			factor = 0
-			unsupervised_destruction = yes
-			}
-###
-	}
 }
 
 building_communal_housing_large = {
@@ -344,7 +270,6 @@ building_communal_housing_large = {
 				}
 			}
 		}
-		#owner = { is_ai = no }
 	}
 
 	allow = {
@@ -354,7 +279,6 @@ building_communal_housing_large = {
 	destroy_trigger = {
 		exists = owner
 		OR = {
-			#owner = {is_ai = yes } #calvitix
 			has_modifier = slave_colony
 			buildings_no_crystals = yes
 		}
@@ -406,23 +330,6 @@ building_communal_housing_large = {
 	prerequisites = {
 		"tech_paradise_dome"
 	}
-
-	ai_weight = {
-		weight = 0
-		modifier = {
-			weight = 1
-			buildings_has_crystals = yes
-		}
-		modifier = {
-			factor = 10
-			free_housing < 0
-		}
-		#weight = 1.5  #0.5
-		modifier = {
-			factor = 0
-			unsupervised_destruction = yes
-		}
-	}
 }
 
 #Machine housing
@@ -434,7 +341,6 @@ building_drone_storage = {
 	potential = {
 		exists = owner
 		owner = { is_machine_empire = yes }
-		#owner = { is_ai = no }
 	}
 
 	destroy_trigger = {
@@ -481,63 +387,6 @@ building_drone_storage = {
 
 	upgrades = {
 		"building_drone_megastorage"
-	}
-
-	ai_weight = {
-		weight = 0
-		modifier = {
-			weight = 100 #High weight to gurantee that if the below is true then the AI should build it
-			free_housing < 3 #Prevents the AI from running out of residences when nearly out of tiles
-			OR = {
-				free_jobs > 0 #prevents spamming of residence buildings when no jobs are open
-				AND = {
-					free_housing < 0 #Prevents the AI from running out of residences when nearly out of tiles
-					NOT = { any_owned_pop = { is_unemployed = yes } }
-				}
-			}
-			free_district_slots = 0 #Do not build when city districts can still be built
-		}
-		modifier = {
-			weight = 100 #High weight to gurantee that if the below is true then the AI should build it
-			is_planet_class = pc_habitat
-			free_housing < 4
-			OR = {
-				not = { any_owned_pop = { is_unemployed = yes } }
-				free_jobs > 0 #Servitors can run into a situation with no houses but free jobs open
-			}
-		}
-		modifier = {
-			factor = 0
-			has_building = building_drone_storage
-			owner = { has_technology = tech_micro_replicators }
-		}
-		#weight = 0.5
-#EDAI START		
-		modifier = {
-			weight = 7000
-			free_housing < 1
-			free_district_slots = 0
-			NOT = { is_planet_class = pc_habitat }
-		}
-		modifier = {
-			weight = 7000 #High weight to gurantee that if the below is true then the AI should build it
-			is_planet_class = pc_habitat
-			free_housing < 4
-			OR = {
-				not = { any_owned_pop = { is_unemployed = yes } }
-				free_jobs > 0 #Servitors can run into a situation with no houses but free jobs open
-			}
-		}
-		modifier = {
-			factor = 0
-			has_building = building_drone_storage
-			owner = { has_technology = tech_micro_replicators }
-		}
-#EDAI END
-		modifier = {
-			factor = 0
-			unsupervised_destruction = yes
-		}
 	}
 }
 
@@ -601,25 +450,6 @@ building_drone_megastorage = {
 	prerequisites = {
 		"tech_micro_replicators"
 	}
-
-	ai_weight = {
-		weight = 0.5
-		modifier = {
-			weight = 1.5
-			OR = {
-				buildings_has_crystals = yes
-				num_buildings = { type = building_drone_storage value > 1 }
-			}
-		}
-		modifier = {
-			factor = 10
-			is_planet_class = pc_habitat
-		}
-		modifier = {
-			factor = 0
-			unsupervised_destruction = yes
-		}
-	}
 }
 
 #Hive housing
@@ -630,7 +460,7 @@ building_hive_warren = {
 
 	potential = {
 		exists = owner
-		owner = { is_hive_empire = yes}
+		owner = { is_hive_empire = yes }
 	}
 
 	allow = {
@@ -640,10 +470,10 @@ building_hive_warren = {
 	destroy_trigger = {
 		exists = owner
 		OR = {
-			#AND = {
-			#	owner = { is_ai = yes }
-			#	years_passed < 3
-			#}#Blow up the one on the homeworld. #Calvitix why?
+			AND = {
+				owner = { is_ai = yes }
+				years_passed < 3
+			}#Blow up the one on the homeworld.
 			AND = {
 				planet = {
 					free_building_slots = 0
@@ -667,8 +497,8 @@ building_hive_warren = {
 	}
 
 	planet_modifier = {
-		planet_housing_add = 6
-		job_maintenance_drone_add = 1
+		planet_housing_add = 3
+		planet_amenities_add = 5
 	}
 
 	resources = {
@@ -684,63 +514,6 @@ building_hive_warren = {
 	upgrades = {
 		"building_expanded_warren"
 	}
-	
-	ai_weight = {
-		weight = 0
-		modifier = {
-			weight = 100 #High weight to gurantee that if the below is true then the AI should build it
-			free_housing < 3 #Prevents the AI from running out of residences when nearly out of tiles
-			OR = {
-				free_jobs > 0 #prevents spamming of residence buildings when no jobs are open
-				AND = {
-					free_housing < 0 #Prevents the AI from running out of residences when nearly out of tiles
-					NOT = { any_owned_pop = { is_unemployed = yes } }
-				}
-			}
-			free_district_slots = 0 #Do not build when city districts can still be built
-		}
-		modifier = {
-			weight = 100 #High weight to gurantee that if the below is true then the AI should build it
-			is_planet_class = pc_habitat
-			free_housing < 4
-			OR = {
-				not = { any_owned_pop = { is_unemployed = yes } }
-				free_jobs > 0 #Servitors can run into a situation with no houses but free jobs open
-			}
-		}
-		modifier = {
-			factor = 0
-			has_building = building_hive_warren
-			owner = { has_technology = tech_housing_2 }
-		}
-		#weight = 0.5
-#EDAI START
-		modifier = {
-			weight = 7000
-			free_housing < 1
-			free_district_slots = 0
-			NOT = { is_planet_class = pc_habitat }
-		}
-		modifier = {
-			weight = 7000 #High weight to gurantee that if the below is true then the AI should build it
-			is_planet_class = pc_habitat
-			free_housing < 4
-			OR = {
-				not = { any_owned_pop = { is_unemployed = yes } }
-				free_jobs > 0 #Servitors can run into a situation with no houses but free jobs open
-			}
-		}
-		modifier = {
-			factor = 0
-			has_building = building_hive_warren
-			owner = { has_technology = tech_housing_2 }
-		}
-#EDAI END
-		modifier = {
-		factor = 0
-		unsupervised_destruction = yes
-	}
-	}
 }
 
 building_expanded_warren = {
@@ -751,7 +524,6 @@ building_expanded_warren = {
 
 	potential = {
 		has_building = building_hive_warren
-		#owner = { is_ai = no }
 	}
 
 	allow = {
@@ -807,29 +579,6 @@ building_expanded_warren = {
 	prerequisites = {
 		"tech_housing_2"
 	}
-
-	ai_weight = {
-		weight = 0.5
-		modifier = {
-			weight = 3.5  #1.5
-			OR = {
-				buildings_has_crystals = yes
-				num_buildings = { type = building_hive_warren value > 1 }
-			}
-		}
-		modifier = {
-			factor = 10
-			is_planet_class = pc_habitat
-		}
-		modifier = {
-			factor = 0
-			owner = { has_country_flag = buildings_new_crystal_building }
-		}
-		modifier = {
-			factor = 0
-			unsupervised_destruction = yes
-		}
-	}
 }
 
 building_holo_theatres = {
@@ -840,6 +589,10 @@ building_holo_theatres = {
 	potential = {
 		NOT = {	has_modifier = slave_colony	}
 		owner = { is_regular_empire = yes }
+	}
+
+	allow = {
+		buildings_simple_allow = yes
 	}
 
 	destroy_trigger = {
@@ -853,7 +606,7 @@ building_holo_theatres = {
 				OR = {
 					free_amenities > 30
 					AND = {
-						count_pops = { limit = { is_sapient = yes } count < 75 }
+						count_owned_pop = { limit = { is_sapient = yes } count < 75 }
 						owner = {
 							has_technology = tech_frontier_health
 						}
@@ -934,141 +687,6 @@ building_holo_theatres = {
 			}
 		}
 		text = job_duelist_effect_desc
-	}
-
-	ai_weight = {
-		weight = 0.7
-#EDAI START		
-		modifier = {
-			weight = 12000
-			free_amenities < 5
-			OR = {
-				free_jobs < 3 #makes it come before any free_jobs = 0 building checks. This makes the build a high priority building.
-				#NOT = { has_building = building_holo_theatres }  #calvitix : allow min 2 holotheater
-				num_buildings = { type = building_holo_theatres value < 3 }
-				NOT = { has_building = building_hyper_entertainment_forum }
-			}
-		}
-		modifier = {
-			factor = 0
-			OR = {
-				free_amenities > 20
-
-				# we shouldn't be building more than one of these
-				has_building = building_holo_theatres
-				has_building = building_hyper_entertainment_forum
-
-				# don't build in consumer goods deficit ( if we care about goods )
-				AND = {
-					owner = {
-						OR = {
-							is_regular_empire = yes
-							has_valid_civic = civic_machine_servitor
-						}
-
-						has_monthly_income = {
-							resource = consumer_goods
-							value < 0
-						}
-
-						# this civic changes upkeep to alloys
-						NOT = { has_valid_civic = civic_warrior_culture }
-					}
-				}
-
-				AND = {
-					count_pops = { limit = { is_sapient = yes } count < 75 }
-					owner = {
-						is_ai = yes
-						has_technology = tech_frontier_health
-					}
-					NOR = {
-						has_building = building_clinic
-						has_building = building_hospital
-					}
-				}
-				AND = {
-					owner = {
-						is_ai = yes
-						NOT = { has_policy_flag = robots_outlawed }
-						has_technology = tech_robotic_workers
-					}
-					count_pops = { limit = { is_sapient = yes } count < 75 }
-					NOT = { has_building = building_robot_assembly_plant }
-				}
-			}
-		}
-#EDAI END
-		modifier = {
-			factor = 5
-			free_amenities < 0	
-			free_building_slots > 2
-			not = {
-				has_planet_flag = just_built_theater
-			}
-		}
-
-		modifier ={
-			factor = 0.1
-			num_pops < 15 
-		}
-		modifier ={
-			factor = 0.01
-			free_amenities > 30
-		}
-		modifier ={
-			factor = 0.2
-			free_amenities > 15
-		}
-		modifier ={
-			factor = 0.2
-			free_amenities > 10
-		}
-		modifier = {
-			factor = 20
-			free_amenities < -6
-			num_pops > 14
-		}
-		modifier = {
-			factor = 5
-			free_amenities < -2
-			num_pops > 14
-		}
-		modifier = {
-			factor = 5
-			free_amenities < -8
-			num_pops > 14
-		}
-		modifier = {
-			factor = 3
-			free_amenities < -10
-			num_pops > 14
-		}
-		modifier = {
-			factor = 2
-			has_planet_flag = just_destroyed_theater
-			free_amenities > 10
-		}
-	}
-
-	on_destroy = {
-		set_timed_planet_flag = {
-			flag = just_destroyed_theater
-			days = 35
-		}
-	}
-	on_built = {
-		set_timed_planet_flag = {
-			flag = just_built_theater
-			days = 35
-		}
-		if = {
-			limit = { 
-				free_housing < 0
-				free_district_slots = 0 
-			}
-			city_district_check = yes
-		}	
 	}
 }
 
@@ -1156,49 +774,6 @@ building_hyper_entertainment_forum = {
 		}
 		text = job_duelist_effect_desc
 	}
-
-	ai_weight = {
-		weight = 0.5
-#EDAI START
-		modifier = {
-			factor = 0
-			owner = {
-				has_monthly_income = {
-					resource = consumer_goods
-					value <= 4
-				}
-			}
-		}
-		modifier = {
-			factor = 0
-			buildings_has_exotic_gases = no
-		}
-#EDAI END
-		modifier = {
-			factor = 0
-			is_planet_class = pc_city
-			nor = {
-				any_owned_pop = {
-					is_unemployed = yes
-				}
-				any_owned_pop ={ 
-					has_job = clerk
-				}
-				any_owned_pop = {
-					has_job = maintenance_drone
-				}				
-			}
-		}
-		modifier = {
-			factor = 0
-			owner = { has_country_flag = buildings_new_gas_building }
-		}		
-	}
-	on_built = {
-		planet = { 
-			owner = { set_timed_country_flag = { flag = buildings_new_gas_building days = 480 } }
-		}
-	}
 }
 
 building_clinic = {
@@ -1249,21 +824,6 @@ building_clinic = {
 	triggered_desc = {
 		text = job_healthcare_effect_desc
 	}
-
-	ai_weight = {
-		weight = 75000
-		modifier = {
-			factor = 0
-			OR = {
-				is_planet_class = pc_habitat
-				buildings_stop_pop = yes
-			}
-		}
-		modifier = {
-			factor = 0
-			count_pops = { limit = { is_sapient = yes } count > 75 }
-		}
-	}
 }
 
 building_hospital = {
@@ -1274,7 +834,6 @@ building_hospital = {
 
 	potential = {
 		has_building = building_clinic
-		#owner = { is_ai = no }
 	}
 
 	allow = {
@@ -1296,7 +855,6 @@ building_hospital = {
 
 	planet_modifier = {
 		job_healthcare_add = @b2_jobs
-		planet_amenities_add = 5
 	}
 
 	resources = {
@@ -1321,14 +879,6 @@ building_hospital = {
 
 	triggered_desc = {
 		text = job_healthcare_effect_desc
-	}
-
-	ai_weight = {
-		weight = 0
-		modifier = {
-			weight = 5
-			buildings_has_exotic_gases = yes
-		}
 	}
 }
 
@@ -1368,40 +918,8 @@ building_maintenance_depot = {
 		}
 	}
 
-	prerequisites = {
-		"tech_planetary_government"
-	}
-
-	show_tech_unlock_if = {
-		is_gestalt = yes
-	}
-	
 	triggered_desc = {
 		text = job_maintenance_drone_effect_desc
-	}
-
-	ai_weight = {
-		weight = 0.1
-		modifier = {
-			factor = 0.001
-			free_amenities > 20
-		}
-		modifier = {
-			factor = 0.02
-			free_jobs > 6
-		}
-		modifier = {
-			factor = 20
-			free_amenities < -2
-		}
-		modifier = {
-			factor = 20
-			free_amenities < -5
-		}
-		modifier = {
-			factor = 20
-			free_amenities < -10
-		}
 	}
 }
 
@@ -1414,7 +932,7 @@ building_spawning_pool = {
 	potential = {
 		owner = { is_hive_empire = yes }
 		or = {
-			num_pops < 70
+			num_buildings = { type = any value < 15 }
 			owner = { is_ai = no }
 		}
 	}
@@ -1441,16 +959,6 @@ building_spawning_pool = {
 	triggered_desc = {
 		text = job_spawning_drone_effect_desc
 	}
-
-	ai_weight = {
-		weight = 500000
-		# AA
-		modifier = {
-			weight = 0
-			num_pops > 80
-			free_jobs < 1
-		}
-	}#Best hive mind building in the game - should always be built.
 }
 
 building_slave_huts = {
@@ -1461,6 +969,10 @@ building_slave_huts = {
 
 	potential = {
 		has_modifier = slave_colony
+	}
+
+	allow = {
+		buildings_simple_allow = yes
 	}
 
 	destroy_trigger = {
@@ -1482,27 +994,6 @@ building_slave_huts = {
 		}
 		upkeep = {
 			energy = 1
-		}
-	}	
-	
-	ai_weight = {
-		weight = 1
-#EDAI START
-		modifier = {
-			weight = 7 #High weight to gurantee that if the below is true then the AI should build it
-			free_housing < 5 #Prevents the AI from running out of residences when nearly out of tiles
-			free_jobs > 0 #prevents spamming of residence buildings when no jobs are open
-			free_district_slots = 0 #Do not build when city districts can still be built
-		}
-#EDAI END
-		modifier = {
-			factor = 2
-			free_housing < 0
-		}
-
-		modifier = {
-			factor = 3
-			free_amenities < 2
 		}
 	}
 }
@@ -1528,8 +1019,6 @@ building_overseer_homes = {
 	planet_modifier = {
 		planet_housing_add = 2
 		job_slave_overseer_add = 2
-		# AA
-		planet_crime_add = -5
 	}
 
 	resources = {
@@ -1539,15 +1028,6 @@ building_overseer_homes = {
 		}
 		upkeep = {
 			energy = 1
-		}
-	}
-
-	ai_weight = {
-		weight = 1
-		modifier = {
-			factor = 4
-			planet_crime > 15 #under 15 is usually handled by the planet upgrading its capital
-			free_jobs < 2 
 		}
 	}
 }

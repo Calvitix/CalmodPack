@@ -1,5 +1,5 @@
-version="18.11.2020"
-name="CalmodPack [2.8+]"
+version="16.04.2021"
+name="CalmodPack [3.0+]"
 tags={
 	"ModPack"
 	"Gameplay"
@@ -7,5 +7,5 @@ tags={
 	"Overhaul"
 }
 picture="thumbnail.png"
-supported_version="2.8.*"
+supported_version="3.0.*"
 remote_file_id="2058173175"

@@ -1,9 +1,20 @@
+# Original File
+#
+# Calvitix Check 3.0.1  18/04/2021
+#
+# Merge with Starnet AI
+#
+#
 # See wg_example.txt for an explanation
 
 wg_fe_humiliation = {
 	casus_belli = cb_fe_punishment
-	
 	hide_if_no_cb = yes
+
+	galactic_empire_joins_defender = {
+		from = { is_galactic_emperor = yes }
+		imperial_authority >= 100
+	}
 
 	allowed_peace_offers = {
 		status_quo
@@ -32,8 +43,12 @@ wg_fe_humiliation = {
 
 wg_fe_stop_atrocities = {
 	casus_belli = cb_fe_punishment
-	
 	hide_if_no_cb = yes
+
+	galactic_empire_joins_defender = {
+		from = { is_galactic_emperor = yes }
+		imperial_authority >= 100
+	}
 
 	allowed_peace_offers = {
 		status_quo
@@ -64,8 +79,12 @@ wg_fe_stop_atrocities = {
 
 wg_fe_stop_ai = {
 	casus_belli = cb_fe_punishment
-	
 	hide_if_no_cb = yes
+
+	galactic_empire_joins_defender = {
+		from = { is_galactic_emperor = yes }
+		imperial_authority >= 100
+	}
 
 	allowed_peace_offers = {
 		status_quo
@@ -96,8 +115,12 @@ wg_fe_stop_ai = {
 
 wg_fe_cleanse_holy_worlds = {
 	casus_belli = cb_fe_punishment
-	
 	hide_if_no_cb = yes
+
+	galactic_empire_joins_defender = {
+		from = { is_galactic_emperor = yes }
+		imperial_authority >= 100
+	}
 
 	allowed_peace_offers = {
 		status_quo
@@ -128,8 +151,12 @@ wg_fe_cleanse_holy_worlds = {
 
 wg_fe_cleanse_border_worlds = {
 	casus_belli = cb_fe_punishment
-	
 	hide_if_no_cb = yes
+
+	galactic_empire_joins_defender = {
+		from = { is_galactic_emperor = yes }
+		imperial_authority >= 100
+	}
 
 	allowed_peace_offers = {
 		status_quo
@@ -161,9 +188,13 @@ wg_fe_cleanse_border_worlds = {
 wg_ae_domination = {
 	casus_belli = cb_subjugation
 	set_defender_wargoal = wg_end_threat
-	
 	hide_if_no_cb = yes
 	total_war = yes
+
+	galactic_empire_joins_defender = {
+		from = { is_galactic_emperor = yes }
+		imperial_authority >= 100
+	}
 
 	allowed_peace_offers = {
 		status_quo
@@ -180,6 +211,11 @@ wg_ae_domination = {
 	}
 	on_accept = {
 		if = {
+			limit = { from = { has_been_declared_crisis = yes } }
+			# do nothing;
+			# FEs may go to war against BtC empires, just not vassalize them
+		}
+		else_if = {
 			limit = {
 				is_xenophile = yes
 			}
@@ -190,7 +226,7 @@ wg_ae_domination = {
 				}				
 			}	
 		}
-		if = {
+		else_if = {
 			limit = {
 				is_xenophobe = yes
 			}
@@ -201,7 +237,7 @@ wg_ae_domination = {
 				}	
 			}
 		}
-		if = {
+		else_if = {
 			limit = {
 				is_spiritualist = yes
 			}
@@ -212,7 +248,7 @@ wg_ae_domination = {
 				}		
 			}
 		}
-		if = {
+		else_if = {
 			limit = { 
 				is_materialist = yes
 			}

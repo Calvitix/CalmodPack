@@ -100,18 +100,22 @@ influence_expenditure_edicts = {
 	category = edicts
 	
 	potential = {
-		or = {
-		resource_stockpile_compare = {
-			resource = influence
-			value > 600
+		NOT = {
+			has_crisis_level = crisis_level_2
 		}
-		and = {
-			not = { has_country_flag = acceptable_raw_economy }
+		#always = yes
+		or = {
 			resource_stockpile_compare = {
 				resource = influence
-				value > 400
+				value > 600
 			}
-		}
+			and = {
+				not = { has_country_flag = acceptable_raw_economy }
+				resource_stockpile_compare = {
+					resource = influence
+					value > 400
+				}
+			}
 		}
 	}
 	
@@ -263,6 +267,7 @@ influence_expenditure_claims_late = {
 			OR = {
   	 			has_ethic = ethic_fanatic_pacifist
    				has_ethic = ethic_pacifist
+				has_crisis_level = crisis_level_2
     		}	
 		}
 		resource_stockpile_compare = {

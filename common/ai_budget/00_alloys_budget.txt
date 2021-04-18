@@ -1,4 +1,9 @@
-#CALVITIX STARNET MODIFS
+# Original File, 
+# Calvitix 3.0.1. Check OK, 16/04/2021
+#
+# Merge with STARNET AI  OK
+#
+
 ## Categories used in this file must have use_for_ai_budget = yes defined in economic_categories ##
 ## It is possible to have multiple entries with the same category and resource ##
 
@@ -6,10 +11,10 @@
 ## Expenditure ##
 #################
 alloys_expenditure_buffer = { # Buffer, will not be spent
-	resource = alloys 
+	resource = alloys
 	type = expenditure
 	category = buffer
-	
+
 	potential = {
 		always = no
 	}
@@ -94,6 +99,21 @@ alloys_expenditure_ships_rush ={
 	}
 }
 
+alloys_expenditure_earlyships ={
+	resource = alloys
+	type = expenditure
+	category = ships
+	potential = {
+		years_passed < 10
+	}
+	fraction = {
+		weight = 0.5
+	}
+	static_min = {
+		base = 130
+	}
+}
+
 alloys_expenditure_ships = {
 	resource = alloys 
 	type = expenditure
@@ -104,9 +124,37 @@ alloys_expenditure_ships = {
 	}
 	
 	fraction = {
-		weight = 0.3
-	}	
+		weight = 0.6
 
+		# spend more alloys building ships while at war
+		modifier = {
+			factor = 2
+			OR = {
+				recently_lost_war = yes
+				is_at_war = yes
+			}
+		}
+
+		# spend less alloys on ships if over capacity
+		modifier = {
+			factor = 0.5
+			used_naval_capacity_percent >= 1.0
+		}
+
+		modifier = {
+			factor = 5
+			used_naval_capacity_percent < 1.0
+			OR = {
+				any_neighbor_country = {
+					has_ascension_perk = ap_become_the_crisis
+				}
+				any_country = {
+					is_crisis_faction = yes
+				}
+			}
+		}		
+	}
+	
 	static_min = {
 		base = 0
 		modifier = {
@@ -150,6 +198,49 @@ alloys_expenditure_ships = {
 			resource_stockpile_compare = {
 				resource = alloys
 				value > 2000
+			}
+		}
+	}
+}
+
+alloys_expenditure_ship_upgrades = {
+	resource = alloys 
+	type = expenditure
+	category = ship_upgrades
+	
+	potential = {
+		is_at_war = no
+	}
+	
+	fraction = {
+		weight = 0
+	}	
+	static_min = {
+		base = 0
+		modifier = {
+			add = 600
+			stalemate = yes
+			safespace = no
+		}
+		modifier = {
+			add = 600
+			resource_stockpile_compare = {
+				resource = alloys
+				value > 1000
+			}
+		}
+		modifier = {
+			add = 1000
+			resource_stockpile_compare = {
+				resource = alloys
+				value > 2000
+			}
+		}
+		modifier = {
+			add = 3000
+			resource_stockpile_compare = {
+				resource = alloys
+				value > 3000
 			}
 		}
 	}
@@ -313,48 +404,6 @@ alloys_expenditure_ships_battleships = {
 	#}
 #}
 
-alloys_expenditure_ship_upgrades = {
-	resource = alloys 
-	type = expenditure
-	category = ship_upgrades
-	
-	potential = {
-		is_at_war = no
-	}
-	
-	fraction = {
-		weight = 0
-	}	
-	static_min = {
-		base = 0
-		modifier = {
-			add = 600
-			stalemate = yes
-			safespace = no
-		}
-		modifier = {
-			add = 600
-			resource_stockpile_compare = {
-				resource = alloys
-				value > 1000
-			}
-		}
-		modifier = {
-			add = 1000
-			resource_stockpile_compare = {
-				resource = alloys
-				value > 2000
-			}
-		}
-		modifier = {
-			add = 3000
-			resource_stockpile_compare = {
-				resource = alloys
-				value > 3000
-			}
-		}
-	}
-}
 
 alloys_expenditure_planets = {
 	resource = alloys 
@@ -577,19 +626,48 @@ alloys_expenditure_megastructures = {
 	potential = {
 		is_country_type = default
 		is_at_war = no
+		can_build_megastructures = yes
+#STARNET AI
 		or = {
-		has_galactic_wonders = yes
-		has_technology = tech_strategic_coordination
-		has_origin = origin_void_dwellers
+			has_galactic_wonders = yes
+			has_technology = tech_strategic_coordination
+			has_origin = origin_void_dwellers
 		}
 		ai_colonize_plans < 3
-	}
-	
-	fraction = {
-		weight = 0.4
+#END
 	}
 
-	static_min = {
+	fraction = {
+		weight = 0.4
+
+		# increase budget if megastructures are unfinished
+		modifier = {
+			factor = 3
+			any_owned_megastructure = {
+				NOR = {
+					is_megastructure_type = dyson_sphere_5
+					is_megastructure_type = dyson_sphere_restored
+					is_megastructure_type = spy_orb_4
+					is_megastructure_type = spy_orb_restored
+					is_megastructure_type = think_tank_4
+					is_megastructure_type = think_tank_restored
+					is_megastructure_type = gateway_final
+					is_megastructure_type = gateway_restored
+					is_megastructure_type = matter_decompressor_4
+					is_megastructure_type = matter_decompressor_restored
+					is_megastructure_type = strategic_coordination_center_3
+					is_megastructure_type = strategic_coordination_center_restored
+					is_megastructure_type = mega_art_installation_3
+					is_megastructure_type = mega_art_installation_restored
+					is_megastructure_type = interstellar_assembly_4
+					is_megastructure_type = interstellar_assembly_restored
+					is_megastructure_type = lgate_base
+				}
+			}
+		}
+	}
+
+	static_max = {
 		base = 20000 # current max alloy cost for a stage
 	}
 }
@@ -631,17 +709,17 @@ alloys_expenditure_decisions = {
 ## Upkeep ##
 ############
 alloys_upkeep_buffer = {	# Buffer, will not be spent
-	resource = alloys 
+	resource = alloys
 	type = upkeep
 	category = buffer
-	
+
 	potential = {
 		always = yes
 	}
-	
+
 	fraction = {
 		weight = 0
-	}	
+	}
 }
 
 alloys_upkeep_ships = {

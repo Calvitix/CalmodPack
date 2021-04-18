@@ -1,4 +1,3 @@
-#CALVITIX Merge with Starnet OK
 #############
 # Trade buildings
 #############
@@ -9,21 +8,24 @@ building_commercial_zone = {
 
 	potential = {
 		exists = owner
-		owner = { is_regular_empire = yes }# Calvitix desavtif Starnet Modif is_ai = no }
+		owner = { is_regular_empire = yes }
 		NOT = { has_modifier = slave_colony }
-		NOT = { has_building = building_commercial_zone } #calvitix test avoid spamming
 	}
+
+	allow = {
+		buildings_simple_allow = yes
+	}
+
 	destroy_trigger = {
 		exists = owner
 		OR = {
 			owner = { is_regular_empire = no }
 			has_modifier = slave_colony
-			#and = { owner = { is_ai = yes } years_passed > 2 }  #calvitix why ? alread removed with EDAI check if needed
 		}
 	}
 
 	planet_modifier = {
-		job_clerk_add = 4
+		job_clerk_add = 5
 	}
 
 	resources = {
@@ -52,54 +54,22 @@ building_commercial_zone = {
 		"building_commercial_megaplex"
 	}
 
-	ai_weight = {
-		weight = 0
-		modifier = {
-			weight = 5
-			OR = {
-				has_building = building_holo_theatres
-				has_building = building_hyper_entertainment_forum
-			}
-			OR = {
-				num_buildings = { type = building_research_lab_1 value > 3 } #Prevents AI falling behind on research to all but the most research dedicated players
-				has_building = building_research_lab_2
-				has_building = building_research_lab_3
-			}
-			NOR = {
-				has_building = building_commercial_zone
-				has_building = building_commercial_megaplex
-			}
-		}
-		modifier = {
-			factor = 10
-			exists = owner
-			owner = {
-				is_megacorp = yes
-			}
-			num_buildings = { type = building_commercial_zone value < 3 }
-		}
-		modifier = {
-			factor = 0
-			unsupervised_destruction = yes
-		}
-		modifier = {
-			factor = 0
-			free_jobs > 4
-		}
-		modifier = {
-			factor = 0.001
-			num_buildings = { type = building_commercial_zone value > 5 }
-		}		
-		modifier = {
-			factor = 0.01
-			num_buildings = { type = building_commercial_zone value > 10 }
-		}		
-	}
-
 	ai_resource_production = {
-		energy = 1
+		energy = 2
 		trigger = {
 			always = yes
+		}
+	}
+	ai_resource_production = {
+		energy = 3
+		trigger = {
+			OR = {
+				num_unemployed >= 10
+				num_assigned_jobs = {
+					job = servant
+					value >= 10
+				}
+			}
 		}
 	}
 }
@@ -127,7 +97,6 @@ building_commercial_megaplex = {
 			owner = { is_regular_empire = no }
 			has_modifier = slave_colony
 			buildings_no_crystals = yes
-			#and = { owner = { is_ai = yes } years_passed > 2 }
 		}
 	}
 
@@ -163,32 +132,24 @@ building_commercial_megaplex = {
 		text = job_merchant_effect_desc
 	}
 
-	ai_weight = {
-		weight = 0
-		modifier = {
-			weight = 1
-			buildings_has_crystals = yes
-		}
-		modifier = {
-			factor = 10
-			exists = owner
-			owner = {
-				is_megacorp = yes
-			}
-		}
-		modifier = {
-			factor = 0
-			unsupervised_destruction = yes
-		}
-	}
-
 	ai_resource_production = {
-		energy = 1
+		energy = 4
 		trigger = {
 			always = yes
 		}
 	}
-
+	ai_resource_production = {
+		energy = 6
+		trigger = {
+			OR = {
+				num_unemployed >= 10
+				num_assigned_jobs = {
+					job = servant
+					value >= 10
+				}
+			}
+		}
+	}
 }
 
 building_galactic_stock_exchange = {
@@ -203,6 +164,7 @@ building_galactic_stock_exchange = {
 	}
 
 	allow = {
+		buildings_simple_allow = yes
 		has_major_upgraded_capital = yes
 	}
 
@@ -242,35 +204,26 @@ building_galactic_stock_exchange = {
 		text = job_merchant_effect_desc
 	}
 
-	ai_weight = {
-		#weight = 10 STARNET AI
-		weight = 0
-		modifier = {
-			factor = 0
-			buildings_has_crystals = no
+	ai_resource_production = {
+		energy = 3
+		trigger = {
+			always = yes
 		}
-		modifier = {
-			weight = 10
-			OR = {
-				has_building = building_commercial_megaplex
-				has_building = building_commercial_zone
-				has_district = district_hab_commercial
-				has_district = district_rw_commercial
-			}
-		}
-		modifier = {
-			factor = 10
-			exists = owner
-			owner = {
-				is_megacorp = yes
+	}
+	ai_resource_production = {
+		energy = 5
+		trigger = {
+			solar_system = {
+				has_system_trade_value >= 50
 			}
 		}
 	}
-
 	ai_resource_production = {
-		energy = 1
+		energy = 3
 		trigger = {
-			always = yes
+			solar_system = {
+				has_system_trade_value >= 80
+			}
 		}
 	}
 }

@@ -23,7 +23,7 @@ default = {
 		enabled = yes
 		declare_war = yes
 		min_navy_for_wars = 0.5
-		min_assault_armies_for_wars = 6
+		min_assault_armies_for_wars = @armies_for_declaring_war
 		colonizer = yes
 		internal_policies = yes
 		modification = yes
@@ -54,12 +54,22 @@ default = {
 				max = 3
 			}
 
+			juggernaut = {
+				min = 1
+				max = 1
+			}
+
 			sponsored_colonizer = {
 				min = 1
 				max = 3
 			}
 
 			colossus = {
+				min = 1
+				max = 1
+			}
+
+			star_eater = {
 				min = 1
 				max = 1
 			}
@@ -92,6 +102,45 @@ default = {
 					modifier = {
 						add = -5 #5
 						has_technology = tech_Dreadnought_1
+					}
+				}
+			}
+
+			crisis_cruiser = {
+				fraction = {
+					modifier = {
+						add = 35
+						has_crisis_level = crisis_level_4
+					}
+				}
+			}
+
+			crisis_destroyer = {
+				fraction = {
+					modifier = {
+						add = 50
+						has_crisis_level = crisis_level_3
+					}
+					modifier = {
+						add = -15
+						has_crisis_level = crisis_level_4
+					}
+				}
+			}
+
+			crisis_corvette = {
+				fraction = {
+					modifier = {
+						add = 100
+						has_crisis_level = crisis_level_2
+					}
+					modifier = {
+						add = -25
+						has_crisis_level = crisis_level_3
+					}
+					modifier = {
+						add = -45
+						has_crisis_level = crisis_level_4
 					}
 				}
 			}
@@ -412,7 +461,7 @@ default = {
 		standard_event_module = {}
 		standard_economy_module = {}
 		standard_leader_module = {}
-		standard_diplomacy_module = {}
+		standard_diplomacy_module = { contact_rule = does_first_contact_sites }
 		standard_technology_module = {}
 		standard_trade_routes_module = {}
 		standard_pop_factions_module = {}
@@ -481,85 +530,5 @@ default = {
 		upkeep = {}
 
 		produces = {}
-	}
-}
-
-######################################################
-### VANILLA CRISIS-RELATED COUNTRY TYPE OVERWRITES ###
-######################################################
-
-sentinels = {
-	scaled_difficulty_bonuses = 3.0
-	home_system = sentinel_system
-	custom_diplomacy = yes
-	share_survey_data = no
-	enforces_borders = no
-	needs_survey = no
-	has_complete_sensor = yes
-	observable = yes
-	ai = {
-		enabled = yes
-		modules = {
-			anti_crisis_military_minister_module
-		}
-	}
-	faction = {
-		hostile = no
-		needs_border_access = no
-		needs_colony = no
-		generate_borders = yes
-	}
-
-	modules = {
-		exclusive_diplomacy_module = {} # Nothing is allowed, but we need this for relationships.
-		all_technology_module = {}
-		standard_event_module = {}
-	}
-}
-
-gate_builders = {
-	scaled_difficulty_bonuses = 3.0
-	custom_diplomacy = yes
-	share_survey_data = no
-	enforces_borders = no
-	needs_survey = no
-	has_complete_sensor = yes
-	observable = yes
-	custom_starbase = starbase_gatebuilders
-	ai = {
-		enabled = yes
-		modules = {
-			anti_crisis_military_minister_module
-		}
-	}
-	faction = {
-		hostile = no
-		needs_border_access = no
-		needs_colony = no
-		generate_borders = yes
-	}
-
-	modules = {
-		exclusive_diplomacy_module = {} # Nothing is allowed, but we need this for relationships.
-		all_technology_module = {}
-		standard_event_module = {}
-		standard_economy_module = {}
-	}
-
-	resources = {
-		category = country_base
-		produces = {
-			energy = 100
-			minerals = 10
-			physics_research = 10
-			society_research = 10
-			engineering_research = 10
-			influence = 3
-			unity = 2
-			alloys = 125
-			volatile_motes = 20
-			rare_crystals = 1
-			exotic_gases = 1
-		}
 	}
 }

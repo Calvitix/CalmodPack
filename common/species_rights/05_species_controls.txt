@@ -1,3 +1,11 @@
+
+# Original File
+#
+# Calvitix Check 3.0.1  18/04/2021
+#
+# Merge with Unofficial Patch
+#
+#
 # from = country
 # this = species
 
@@ -9,14 +17,6 @@ migration_control_yes = {
 		modifier = {
 			factor = 0.1
 			from = { NOT = { has_authority = auth_machine_intelligence } }
-		}
-		modifier = {
-			factor = 100
-			has_citizenship_type = { country = from type = citizenship_slavery }
-			OR = {
-				ariphaos_patch_slaves_rare_trait = no
-				ariphaos_patch_slaves_poor_merit = yes
-			}
 		}
 	}
 }
@@ -41,16 +41,19 @@ migration_control_no = {
 			}
 			fail_text = is_undesirables_tooltip
 		}
-		NAND = {
-			has_citizenship_type = { country = from type = citizenship_slavery }
-			OR = {
-				has_slavery_type = { country = from type = slavery_livestock }
-				has_slavery_type = { country = from type = slavery_matrix }
+		custom_tooltip = {
+			fail_text = cant_be_livestock_or_matrix
+			NAND = {
+				has_citizenship_type = { country = from type = citizenship_slavery }
+				OR = {
+					has_slavery_type = { country = from type = slavery_livestock }
+					has_slavery_type = { country = from type = slavery_matrix }
+				}
 			}
 		}
 	}
 	ai_will_do = {
-		factor = 100 #1
+		factor = 1
 	}
 }
 
@@ -63,10 +66,8 @@ population_control_yes = {
 
 	allow = {
 		hidden_trigger = { exists = from }
-		OR = {
-			from = { NOT = { has_policy_flag = population_controls_not_allowed } }
-			has_citizenship_type = { country = from type = citizenship_slavery } 
-			has_citizenship_type = { country = from type = citizenship_robot_servitude }
+		from = {
+			NOT = { has_policy_flag = population_controls_not_allowed }
 		}
 		if = {
 			limit = {
@@ -75,7 +76,7 @@ population_control_yes = {
 					has_citizenship_type = { country = from type = citizenship_purge_machine }
 				}
 			}
-			always = yes
+			hidden_trigger = { always = yes }
 		}
 		else = {
 			custom_tooltip = {
@@ -94,19 +95,12 @@ population_control_yes = {
 		}
 	}
 	ai_will_do = {
-		factor = 1
-		modifier = {
-			factor = 100
-			has_citizenship_type = { country = from type = citizenship_slavery }
-			OR = {
-				ariphaos_patch_slaves_rare_trait = no
-				ariphaos_patch_slaves_poor_merit = yes
-			}
-		}
+		factor = 2
 		modifier = {
 			factor = 0
-			from = {
-				has_origin = origin_necrophage
+			NOR = {
+				has_citizenship_type = { country = from type = citizenship_purge_machine }
+				has_citizenship_type = { country = from type = citizenship_purge }
 			}
 		}
 	}
@@ -137,7 +131,7 @@ population_control_no = {
 		}
 	}
 	ai_will_do = {
-		factor = 2
+		factor = 1
 	}
 }
 
@@ -165,7 +159,7 @@ colonization_control_yes = {
 					has_citizenship_type = { country = from type = citizenship_robot_servitude }
 				}
 			}
-			always = yes
+			hidden_trigger = { always = yes }
 		}
 		else = {
 			custom_tooltip = {
@@ -247,9 +241,11 @@ colonization_control_no = {
 		}
 		custom_tooltip = {
 			fail_text = is_slaves_not_battle_thralls_or_indentured_fail
-			NAND = {
-				has_citizenship_type = { country = from type = citizenship_slavery }
-				NOR = {
+			if = {
+				limit = {
+					has_citizenship_type = { country = from type = citizenship_slavery }
+				}
+				OR = {
 					has_slavery_type = { country = from type = slavery_military }
 					has_slavery_type = { country = from type = slavery_indentured }
 				}
@@ -258,12 +254,6 @@ colonization_control_no = {
 	}
 	ai_will_do = {
 		factor = 1
-		modifier = {
-			factor = 0
-			from = {
-				has_origin = origin_necrophage
-			}
-		}
 		modifier = {
 			factor = 0
 			from = { has_valid_civic = civic_machine_servitor }

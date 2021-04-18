@@ -1,3 +1,10 @@
+# Original File
+#
+# Calvitix Check 3.0.1  18/04/2021
+#
+# Merge with Banned
+#
+#
 ##############################
 # Traditionalist Faction
 ##############################
@@ -20,12 +27,14 @@ traditionalist = {
 		years_passed > 10
 		has_encountered_other_species = yes
 		NOT = { has_ethic = ethic_gestalt_consciousness }
-		count_owned_pops = {
+		NOT = { has_country_flag = suppress_vanilla_factions }
+		count_owned_pop = {
 			count >= 5
 			limit = {
 				has_ethic = ethic_spiritualist
 			}
 		}
+		NOT = { has_modifier = banned_spiritualist }
 	}
 
 	parameters = {
@@ -44,7 +53,6 @@ traditionalist = {
 	}
 
 	can_join_faction = {
-		has_culture_shock = no
 		NOT = { has_trait = trait_nerve_stapled }
 		OR = {
 			has_ethic = ethic_spiritualist
@@ -55,6 +63,14 @@ traditionalist = {
 	attraction = {
 		base = 150
 
+		modifier = {
+			factor = 0
+			exists = from
+			from = {
+				has_modifier = banned_faction
+			}
+		}
+		
 		modifier = {
 			factor = 1.25
 			exists = from
@@ -221,6 +237,7 @@ traditionalist = {
 			owner = {
 				NOR = {
 					any_owned_planet = {
+###mod PD ?
 						OR = {
 							is_planet_class = pc_nuked
 							is_planet_class = pc_irradiated
@@ -232,6 +249,7 @@ traditionalist = {
 							is_planet_class = pc_irradiated
 						}
 						is_terraforming = yes
+###
 					}
 				}
 			}
@@ -514,6 +532,11 @@ traditionalist = {
 								is_ai = no
 								is_country_type = default
 								has_communications = prev
+								has_intel_level = {
+									who = prev
+									category = government
+									level >= 1
+								}
 							}
 							country_event = { id = factions.2000 }
 						}
@@ -634,6 +657,7 @@ traditionalist = {
 				parameter:empire = {
 					has_modifier = suppressed_spiritualist
 				}
+				not = { has_modifier = banned_faction }
 			}
 
 			effect = {
@@ -642,7 +666,79 @@ traditionalist = {
 					remove_modifier = suppressed_spiritualist
 				}
 			}
+			
+####Banned
+			ai_weight = {
+				base = 0
+			}
+		}
+		ban_faction = {
+			title = "BAN_FACTION"
+			description = "BAN_FACTION_DESC"
+			
+			potential = {
+				exists = owner
+				parameter:empire = { 
+					has_modifier = suppressed_spiritualist
+					not = { has_ethic = ethic_spiritualist }
+					not = { has_ethic = ethic_fanatic_spiritualist }
+				}
+				not = { has_modifier = banned_faction }
+			}
 
+			effect = {
+				hidden_effect = {
+					save_event_target_as = MyFaction
+					parameter:empire = {
+						every_owned_pop = {
+							limit = {
+								member_of_faction = event_target:MyFaction
+							}
+							random_list = {
+								10 = {
+									add_modifier = { modifier = pop_faction_banned days = 360 }							
+								}
+								85 = {
+									add_modifier = { modifier = pop_faction_banned days = 720 }
+								}
+								5 = {
+									add_modifier = { modifier = pop_faction_banned days = 1800 }
+								}
+							}
+						}
+					}
+				}
+				add_modifier = { modifier = banned_faction days = 1800 }
+				parameter:empire = {
+					if = {
+						limit = {
+							not = { has_modifier = banned_spiritualist }
+						}
+						add_modifier = { modifier = banned_spiritualist days = -1 }
+					}
+				}
+			}
+			
+			ai_weight = {
+				base = 0
+			}
+		}
+		cancel_ban_faction = {
+			title = "CANCEL_BAN_FACTION"
+			description = "CANCEL_BAN_FACTION_DESC"
+			
+			potential = {
+				exists = owner
+				has_modifier = banned_faction
+			}
+
+			effect = {
+				remove_modifier = banned_faction
+				parameter:empire = {
+					remove_modifier = banned_spiritualist
+				}
+			}
+			
 			ai_weight = {
 				base = 0
 			}

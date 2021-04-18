@@ -1,4 +1,9 @@
-#CALVITIX Merge with Starnet OK
+# Original File
+#
+# Calvitix Check 3.0.1  17/04/2021
+#
+# Merge with Planet. Diversity
+# Merge with Starnet OK
 ##################
 # Unity buildings
 ##################
@@ -83,30 +88,6 @@ building_autochthon_monument = {
 	triggered_desc = {
 		text = job_culture_worker_effect_desc
 	}
-
-	ai_weight = {
-		weight = 0.5 #Calvitix 0
-		modifier = {
-			weight = 5
-			OR = {
-				has_building = building_research_lab_1
-				has_building = building_research_lab_2
-				has_building = building_research_lab_3
-				is_planet_class = pc_habitat
-			}
-			NOR = {
-				has_building = building_autochthon_monument
-				has_building = building_heritage_site
-				has_building = building_hypercomms_forum
-			}
-			owner = {
-				has_monthly_income = {
-					resource = consumer_goods
-					value > 10
-				}
-			}
-		}
-	}
 }
 
 building_heritage_site = {
@@ -119,7 +100,6 @@ building_heritage_site = {
 		exists = owner
 		NOT = { has_modifier = slave_colony }
 		owner = {
-			#is_ai = no #STARNET
 			NOR = {
 				is_gestalt = yes
 				is_spiritualist = yes
@@ -194,19 +174,6 @@ building_heritage_site = {
 
 	triggered_desc = {
 		text = job_culture_worker_effect_desc
-	}
-
-	ai_weight = {
-		weight = 1
-		modifier = {
-			factor = 0
-			owner = {
-				has_monthly_income = {
-					resource = consumer_goods
-					value < 8
-				}
-			}
-		}
 	}
 }
 
@@ -293,42 +260,6 @@ building_hypercomms_forum = {
 	triggered_desc = {
 		text = job_culture_worker_effect_desc
 	}
-
-	ai_weight = {
-		weight = 0.5 #Calvitix 0
-		modifier = {
-			weight = 1
-			buildings_has_crystals = yes
-			owner = {
-				has_monthly_income = {
-					resource = consumer_goods
-					value > 8
-				}
-			}
-		}
-	}
-	
-#STARNET START	
-	on_queued = {
-		IF = {
-			limit = {
-				owner = { has_technology = tech_construction_templates }
-			}
-			owner = { set_timed_country_flag = { flag = buildings_new_crystal_building days = 270 } }
-		}
-		ELSE_IF = {
-			limit = {
-				owner = { has_technology = tech_assembly_pattern }
-			}
-			owner = { set_timed_country_flag = { flag = buildings_new_crystal_building days = 390 } }
-		}
-		else = {
-			planet = {
-				owner = { set_timed_country_flag = { flag = buildings_new_crystal_building days = 510 } }
-			}
-		}
-	}
-#STARNET END
 }
 
 ##################
@@ -414,27 +345,6 @@ building_temple = {
 
 	triggered_desc = {
 		text = job_priest_effect_desc
-	}
-
-	ai_weight = {
-		weight = 25
-		modifier = {
-			factor = 0
-			owner = {
-				has_monthly_income = {
-					resource = consumer_goods
-					value < 8
-				}
-			}
-		}
-		modifier = {
-			factor = 0.1
-			OR = {
-				has_building = building_temple
-				has_building = building_holotemple
-				has_building = building_sacred_nexus
-			}
-		}
 	}
 }
 
@@ -524,19 +434,6 @@ building_holotemple = {
 	triggered_desc = {
 		text = job_priest_effect_desc
 	}
-
-	ai_weight = {
-		weight = 1
-		modifier = {
-			factor = 0
-			owner = {
-				has_monthly_income = {
-					resource = consumer_goods
-					value < 8
-				}
-			}
-		}
-	}
 }
 
 building_sacred_nexus = {
@@ -573,8 +470,6 @@ building_sacred_nexus = {
 					is_spiritualist = no
 				}
 			}
-			owner = { is_ai = yes }
-			buildings_no_crystals = yes
 			has_modifier = slave_colony
 		}
 	}
@@ -621,26 +516,12 @@ building_sacred_nexus = {
 	triggered_desc = {
 		text = job_priest_effect_desc
 	}
-
-	ai_weight = {
-		weight = 0.5 #Calvitix 0
-		modifier = {
-			weight = 1
-			buildings_has_crystals = yes
-			owner = {
-				has_monthly_income = {
-					resource = consumer_goods
-					value > 8
-				}
-			}
-		}
-	}
 }
 
 # Sacrificial Temple (basic)
 building_sacrificial_temple_1 = {
 	base_buildtime = @b1_time
-	add_to_first_building_slot = yes
+	position_priority = 100
 
 	category = unity
 
@@ -715,40 +596,13 @@ building_sacrificial_temple_1 = {
 	}
 
 	triggered_desc = { text = job_death_priest_effect_desc }
-
-	ai_weight = {
-		weight = 25
-		modifier = {
-			factor = 0
-			OR = {
-				owner = {
-					has_monthly_income = {
-						resource = consumer_goods
-						value < 8
-					}
-				}
-				count_pops = {
-					limit = { has_citizenship_type = { type = citizenship_full } }
-					count < 25
-				}
-			}
-		}
-		modifier = {
-			factor = 0.1
-			OR = {
-				has_building = building_sacrificial_temple_1
-				has_building = building_sacrificial_temple_2
-				has_building = building_sacrificial_temple_3
-			}
-		}
-	}
 }
 
 # Grim Holotemple
 building_sacrificial_temple_2 = {
 	base_buildtime = @b2_time
 	can_build = no
-	add_to_first_building_slot = yes
+	position_priority = 100
 
 	category = unity
 
@@ -821,32 +675,13 @@ building_sacrificial_temple_2 = {
 	}
 
 	triggered_desc = { text = job_death_priest_effect_desc }
-
-	ai_weight = {
-		weight = 2
-		modifier = {
-			factor = 0
-			OR = {
-				owner = {
-					has_monthly_income = {
-						resource = consumer_goods
-						value < 8
-					}
-				}
-				count_pops = {
-					limit = { has_citizenship_type = { type = citizenship_full } }
-					count < 60
-				}
-			}
-		}
-	}
 }
 
 # Temple of Grand Sacrifice
 building_sacrificial_temple_3 = {
 	base_buildtime = @b3_time
 	can_build = no
-	add_to_first_building_slot = yes
+	position_priority = 100
 
 	category = unity
 
@@ -923,26 +758,6 @@ building_sacrificial_temple_3 = {
 	}
 
 	triggered_desc = { text = job_death_priest_effect_desc }
-
-	ai_weight = {
-		weight = 0.5 #Calvitix 0
-		modifier = {
-			weight = 1
-			buildings_has_exotic_gases = yes
-			OR = {
-				owner = {
-					has_monthly_income = {
-						resource = consumer_goods
-						value < 8
-					}
-				}
-				count_pops = {
-					limit = { has_citizenship_type = { type = citizenship_full } }
-					count < 80
-				}
-			}
-		}
-	}
 }
 
 #Sanctuary of Repose
@@ -1077,33 +892,6 @@ building_galactic_memorial_1 = {
 			owner = { is_gestalt = yes }
 		}
 		text = "job_chronicle_drone_effect_desc"
-	}
-
-	ai_weight = {
-		weight = 0.5 #Calvitix 0
-		modifier = {
-			weight = 5
-			NOR = {
-				has_building = building_autochthon_monument
-				has_building = building_heritage_site
-				has_building = building_hypercomms_forum
-				has_building = building_galactic_memorial_1
-			}
-			owner = {
-				OR = {
-					is_spiritualist = yes
-					is_pacifist = yes
-					has_valid_civic = civic_death_cult
-					has_valid_civic = civic_warrior_culture
-					has_valid_civic = civic_hive_empath
-					has_valid_civic = civic_machine_servitor
-				}
-				has_monthly_income = {
-					resource = consumer_goods
-					value > 10
-				}
-			}
-		}
 	}
 }
 
@@ -1253,25 +1041,6 @@ building_galactic_memorial_2 = {
 		}
 		text = "job_chronicle_drone_effect_desc"
 	}
-
-	ai_weight = {
-		weight = 1
-		modifier = {
-			factor = 0
-			owner = {
-				OR = {
-					has_monthly_income = {
-						resource = consumer_goods
-						value < 10
-					}
-					has_monthly_income = {
-						resource = energy
-						value < 8
-					}
-				}
-			}
-		}
-	}
 }
 
 #Galactic Memorial
@@ -1409,24 +1178,6 @@ building_galactic_memorial_3 = {
 		}
 		text = "job_chronicle_drone_effect_desc"
 	}
-
-	ai_weight = {
-		weight = 0.5 #Calvitix 0
-		modifier = {
-			weight = 1
-			buildings_has_exotic_gases = yes
-			owner = {
-				has_monthly_income = {
-					resource = consumer_goods
-					value > 10
-				}
-				has_monthly_income = {
-					resource = energy
-					value > 4
-				}
-			}
-		}
-	}
 }
 
 ##################
@@ -1485,6 +1236,15 @@ building_hive_node = {
 		upkeep = {
 			energy = @b1_upkeep
 		}
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = {
+					has_edict = synaptic_reinforcement
+				}
+			}
+			energy = 2
+		}
 	}
 
 	planet_modifier = {
@@ -1503,6 +1263,16 @@ building_hive_node = {
 		}
 	}
 
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				has_edict = synaptic_reinforcement
+			}
+		}
+		job_maintenance_drone_add = 1
+	}
+
 	prerequisites = {
 		"tech_hive_node"
 	}
@@ -1515,62 +1285,19 @@ building_hive_node = {
 		text = job_synapse_drone_effect_desc
 	}
 
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = {
+				has_edict = synaptic_reinforcement
+			}
+		}
+		text = job_maintenance_drone_effect_desc
+	}
+
 	on_queued = {
 		planet = {
 			set_timed_planet_flag = { flag = recent_admin_building_built days = 720 }
-		}
-	}
-
-	ai_weight = {
-		weight = 0.5 #Calvitix 0
-
-#STARNET START
-		modifier = {
-			factor = 0
-			owner = {
-				resource_income_compare = {
-					resource = physics_research
-					value < 300
-				}
-			}
-		}
-		modifier = {
-			factor = 1000
-			owner = { empire_sprawl_over_cap > 20 
-			resource_stockpile_compare = {
-				resource = alloys
-				value > 1500
-			}
-			used_naval_capacity_percent > 0.80 #0.95
-			}
-		}
-
-		modifier = {
-			factor = 20
-			everything_is_fine_gestalt = yes
-			owner = { empire_sprawl_over_cap > 10 }
-		}
-#STARNET END
-		modifier = {
-			weight = 20
-			owner = { empire_sprawl_over_cap > 0 }
-		}
-		modifier = {
-			weight = 50
-			owner = { empire_sprawl_over_cap > 10 }
-		}
-		modifier = {
-			weight = 100
-			owner = { empire_sprawl_over_cap > 20 }
-		}
-		modifier = {
-			weight = 500
-			owner = { empire_sprawl_over_cap > 40 }
-		}
-
-		modifier = {
-			weight = 0.5 #Calvitix 0
-			has_planet_flag = recent_admin_building_built
 		}
 	}
 }
@@ -1637,6 +1364,15 @@ building_hive_cluster = {
 			energy = @b2_upkeep
 			exotic_gases = @b2_rare_upkeep
 		}
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = {
+					has_edict = synaptic_reinforcement
+				}
+			}
+			energy = 2
+		}
 	}
 
 	planet_modifier = {
@@ -1655,6 +1391,16 @@ building_hive_cluster = {
 		}
 	}
 
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				has_edict = synaptic_reinforcement
+			}
+		}
+		job_maintenance_drone_add = 1
+	}
+
 	prerequisites = {
 		"tech_hive_cluster"
 	}
@@ -1667,62 +1413,20 @@ building_hive_cluster = {
 		text = job_synapse_drone_effect_desc
 	}
 
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = {
+				has_edict = synaptic_reinforcement
+			}
+		}
+		text = job_maintenance_drone_effect_desc
+	}
+
 	on_queued = {
 		planet = {
 			set_timed_planet_flag = { flag = recent_admin_building_built days = 720 }
 		}
-	}
-
-	ai_weight = {
-		weight = 10
-		modifier = {
-			factor = 0.5
-			owner = {
-				has_monthly_income = {
-					resource = food
-					value < 25
-				}
-			}
-		}
-		modifier = {
-			factor = 2
-			owner = { empire_sprawl_over_cap > 0 }
-		}
-		modifier = {
-			factor = 2
-			owner = { empire_sprawl_over_cap > 10 }
-		}
-		modifier = {
-			factor = 2
-			owner = { empire_sprawl_over_cap > 20 }
-		}
-		modifier = {
-			factor = 2
-			owner = { empire_sprawl_over_cap > 40 }
-		}
-#STARNET START
-		modifier = {
-			factor = 0
-			owner = {
-				resource_income_compare = {
-					resource = physics_research
-					value < 300
-				}
-			}
-		}
-
-		modifier = {
-			factor = 1000
-			owner = { empire_sprawl_over_cap > 20 
-			resource_stockpile_compare = {
-				resource = alloys
-				value > 1500
-			}
-			used_naval_capacity_percent > 0.80 #0.95
-			}
-			buildings_has_crystals = yes
-		}
-#STARNET END
 	}
 }
 
@@ -1755,21 +1459,8 @@ building_hive_confluence = {
 
 	destroy_trigger = {
 		exists = owner
-#		owner = { is_hive_empire = no }
-#		buildings_no_exotic_gases = yes
-#STARNET START
-		OR = {
-			buildings_no_exotic_gases = yes
-			owner = { is_hive_empire = no }
-			owner = { 
-				is_ai = yes 
-				resource_income_compare = {
-					resource = physics_research
-					value < 300
-				} 
-			}
-		}
-#STARNET END
+		owner = { is_hive_empire = no }
+		buildings_no_exotic_gases = yes
 	}
 
 	convert_to = {
@@ -1789,23 +1480,19 @@ building_hive_confluence = {
 			energy = @b3_upkeep
 			exotic_gases = @b3_rare_upkeep
 		}
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = {
+					has_edict = synaptic_reinforcement
+				}
+			}
+			energy = 2
+		}
 	}
 
 	planet_modifier = {
 		job_synapse_drone_add = @b3_jobs
-	}
-	
-	triggered_planet_modifier = {
-		potential = {
-			exists = owner
-			owner = { is_hive_empire = yes }
-			owner = {
-				has_tradition = tr_plentiful_aspiration_3
-			}
-		}
-		modifier = {
-			job_synapse_drone_add = 4
-		}
 	}
 
 	triggered_planet_modifier = {
@@ -1820,6 +1507,30 @@ building_hive_confluence = {
 		}
 	}
 
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				has_edict = synaptic_reinforcement
+			}
+		}
+		job_maintenance_drone_add = 1
+	}
+
+### PLENTIFUL TRAD
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_hive_empire = yes }
+			owner = {
+				has_tradition = tr_plentiful_aspiration_3
+			}
+		}
+		modifier = {
+			job_synapse_drone_add = 4
+		}
+	}
+####
 	prerequisites = {
 		"tech_hive_confluence"
 	}
@@ -1828,57 +1539,14 @@ building_hive_confluence = {
 		text = job_synapse_drone_effect_desc
 	}
 
-	ai_weight = {
-		weight = 0.5 #Calvitix 0
-		modifier = {
-			weight = 10
-			buildings_has_exotic_gases = yes
+	triggered_desc = {
+		trigger = {
+			exists = owner
 			owner = {
-				has_monthly_income = {
-					resource = food
-					value > 8
-				}
+				has_edict = synaptic_reinforcement
 			}
 		}
-		modifier = {
-			factor = 2
-			owner = { empire_sprawl_over_cap > 0 }
-		}
-		modifier = {
-			factor = 2
-			owner = { empire_sprawl_over_cap > 10 }
-		}
-		modifier = {
-			factor = 2
-			owner = { empire_sprawl_over_cap > 20 }
-		}
-		modifier = {
-			factor = 2
-			owner = { empire_sprawl_over_cap > 40 }
-		}
-#STARNET START
-		modifier = {
-			factor = 0
-			owner = {
-				resource_income_compare = {
-					resource = physics_research
-					value < 300
-				}
-			}
-		}
-
-		modifier = {
-			factor = 1000
-			owner = { empire_sprawl_over_cap > 20 
-			resource_stockpile_compare = {
-				resource = alloys
-				value > 1500
-			}
-			used_naval_capacity_percent > 0.80 #0.95
-			}
-			buildings_has_crystals = yes
-		}
-#STARNET END
+		text = job_maintenance_drone_effect_desc
 	}
 
 	on_queued = {
@@ -1971,30 +1639,6 @@ building_simulation_1 = {
 	triggered_desc = {
 		text = job_evaluator_effect_desc
 	}
-
-	ai_weight = {
-		weight = 0.5
-		modifier = {
-			factor = 0
-			OR = {
-				has_building = building_simulation_1
-				has_building = building_simulation_2
-				has_building = building_simulation_3
-			}
-		}
-#STARNET START
-		modifier = {
-			factor = 10
-			years_passed > 20
-			owner = {
-			is_gestalt = yes
-			resource_income_compare = {
-				resource = unity
-				value < 15
-			} }
-		}
-#STARNET END
-	}
 }
 
 building_simulation_2 = {
@@ -2067,14 +1711,6 @@ building_simulation_2 = {
 	triggered_desc = {
 		text = job_evaluator_effect_desc
 	}
-
-	ai_weight = {
-		weight = 0.5 #Calvitix 0
-		modifier = {
-			weight = 1
-			buildings_has_crystals = yes
-		}
-	}
 }
 
 building_simulation_3 = {
@@ -2146,14 +1782,6 @@ building_simulation_3 = {
 	triggered_desc = {
 		text = job_evaluator_effect_desc
 	}
-
-	ai_weight = {
-		weight = 0.5 #Calvitix 0
-		modifier = {
-			weight = 1
-			buildings_has_crystals = yes
-		}
-	}
 }
 
 ##################
@@ -2170,7 +1798,6 @@ building_corporate_monument = {
 		building_basic_income_check = yes
 		NOT = { has_modifier = slave_colony }
 		owner = {
-			is_ai = no #STARNET
 			is_megacorp = yes
 			is_spiritualist = no
 		}
@@ -2182,7 +1809,6 @@ building_corporate_monument = {
 			has_modifier = slave_colony
 			owner = {
 				OR = {
-					is_ai = yes #STARNET
 					is_megacorp = no
 					is_spiritualist = yes
 				}
@@ -2227,24 +1853,6 @@ building_corporate_monument = {
 	triggered_desc = {
 		text = job_manager_effect_desc
 	}
-
-	ai_weight = {
-		weight = 0.5 #Calvitix 0
-		modifier = {
-			weight = 2
-			owner = {
-				has_monthly_income = {
-					resource = consumer_goods
-					value > 10
-				}
-			}
-			NOR = {
-				has_building = building_corporate_monument
-				has_building = building_corporate_site
-				has_building = building_corporate_forum
-			}
-		}
-	}
 }
 
 building_corporate_site = {
@@ -2258,7 +1866,6 @@ building_corporate_site = {
 		exists = owner
 		NOT = { has_modifier = slave_colony }
 		owner = {
-			is_ai = no #STARNET
 			is_megacorp = yes
 			is_spiritualist = no
 		}
@@ -2276,7 +1883,6 @@ building_corporate_site = {
 			buildings_no_crystals = yes
 			owner = {
 				OR = {
-					is_ai = yes #STARNET
 					is_megacorp = no
 					is_spiritualist = yes
 				}
@@ -2322,20 +1928,6 @@ building_corporate_site = {
 	triggered_desc = {
 		text = job_manager_effect_desc
 	}
-
-	ai_weight = {
-		weight = 0.5 #Calvitix 0
-		modifier = {
-			weight = 1
-			buildings_has_crystals = yes
-			owner = {
-				has_monthly_income = {
-					resource = consumer_goods
-					value > 8
-				}
-			}
-		}
-	}
 }
 
 building_corporate_forum = {
@@ -2349,7 +1941,6 @@ building_corporate_forum = {
 		exists = owner
 		NOT = { has_modifier = slave_colony }
 		owner = {
-			is_ai = no  #STARNET
 			is_megacorp = yes
 			is_spiritualist = no
 		}
@@ -2366,7 +1957,6 @@ building_corporate_forum = {
 			has_modifier = slave_colony
 			owner = {
 				OR = {
-					is_ai = yes #STARNET
 					is_megacorp = no
 					is_spiritualist = yes
 				}
@@ -2408,10 +1998,6 @@ building_corporate_forum = {
 	triggered_desc = {
 		text = job_manager_effect_desc
 	}
-
-	ai_weight = {
-		weight = 1
-	}
 }
 
 ##################
@@ -2431,7 +2017,6 @@ building_autocurating_vault = {
 			is_machine_empire = no
 			is_spiritualist = no
 			is_megacorp = no
-			is_ai = no #STARNET
 		}
 	}
 
@@ -2446,7 +2031,6 @@ building_autocurating_vault = {
 			buildings_no_crystals = yes
 	 		owner = {
 				OR = {
-					is_ai = yes #STARNET
 					is_machine_empire = yes
 					is_spiritualist = yes
 					is_megacorp = yes
@@ -2501,46 +2085,6 @@ building_autocurating_vault = {
 		is_spiritualist = no
 		is_megacorp = no
 	}
-
-	ai_weight = {
-		weight = 0.5 #Calvitix 0
-		modifier = {
-			weight = 1
-			buildings_has_crystals = yes
-			owner = {
-				has_monthly_income = {
-					resource = consumer_goods
-					value > 8
-				}
-			}
-		}
-#STARNET START
-		modifier = {
-			factor = 0
-			owner = { has_country_flag = buildings_new_crystal_building }
-		}
-	}
-
-	on_queued = {
-		IF = {
-			limit = {
-				owner = { has_technology = tech_construction_templates }
-			}
-			owner = { set_timed_country_flag = { flag = buildings_new_crystal_building days = 270 } }
-		}
-		ELSE_IF = {
-			limit = {
-				owner = { has_technology = tech_assembly_pattern }
-			}
-			owner = { set_timed_country_flag = { flag = buildings_new_crystal_building days = 390 } }
-		}
-		else = {
-			planet = {
-				owner = { set_timed_country_flag = { flag = buildings_new_crystal_building days = 510 } }
-			}
-		}
-#STARNET END
-	}
 }
 
 building_citadel_of_faith = {
@@ -2552,7 +2096,7 @@ building_citadel_of_faith = {
 	potential = {
 		exists = owner
 		building_basic_income_check = yes
-		owner = { is_spiritualist = yes is_ai = no }
+		owner = { is_spiritualist = yes }
 		NOT = { has_modifier = slave_colony }
 	}
 
@@ -2565,7 +2109,6 @@ building_citadel_of_faith = {
 		exists = owner
 		OR = {
 			owner = { is_spiritualist = no }
-			owner = { is_ai = yes }
 			has_modifier = slave_colony
 			buildings_no_crystals = yes
 		}
@@ -2602,46 +2145,6 @@ building_citadel_of_faith = {
 	triggered_desc = {
 		text = job_priest_effect_desc
 	}
-
-	ai_weight = {
-		weight = 0.5 #Calvitix 0
-		modifier = {
-			weight = 1
-			buildings_has_crystals = yes
-			owner = {
-				has_monthly_income = {
-					resource = consumer_goods
-					value > 8
-				}
-			}
-		}
-#STARNET START
-		modifier = {
-			factor = 0
-			owner = { has_country_flag = buildings_new_crystal_building }
-		}
-	}
-
-	on_queued = {
-		IF = {
-			limit = {
-				owner = { has_technology = tech_construction_templates }
-			}
-			owner = { set_timed_country_flag = { flag = buildings_new_crystal_building days = 270 } }
-		}
-		ELSE_IF = {
-			limit = {
-				owner = { has_technology = tech_assembly_pattern }
-			}
-			owner = { set_timed_country_flag = { flag = buildings_new_crystal_building days = 390 } }
-		}
-		else = {
-			planet = {
-				owner = { set_timed_country_flag = { flag = buildings_new_crystal_building days = 510 } }
-			}
-		}
-#STARNET END
-	}
 }
 
 building_corporate_vault = {
@@ -2656,7 +2159,6 @@ building_corporate_vault = {
 		building_basic_income_check = yes
 		NOT = { has_modifier = slave_colony }
 		owner = {
-			is_ai = no #STARNET
 			is_megacorp = yes
 			is_spiritualist = no
 		}
@@ -2673,7 +2175,6 @@ building_corporate_vault = {
 			buildings_no_crystals = yes
 			owner = {
 				OR = {
-					is_ai = yes #STARNET
 					is_megacorp = no
 					is_spiritualist = yes
 				}
@@ -2714,46 +2215,6 @@ building_corporate_vault = {
 	show_tech_unlock_if = {
 		is_megacorp = yes
 	}
-
-	ai_weight = {
-		weight = 0.5 #Calvitix 0
-		modifier = {
-			weight = 1
-			buildings_has_crystals = yes
-			owner = {
-				has_monthly_income = {
-					resource = consumer_goods
-					value > 8
-				}
-			}
-		}
-#STARNET START
-		modifier = {
-			factor = 0
-			owner = { has_country_flag = buildings_new_crystal_building }
-		}
-	}
-
-	on_queued = {
-		IF = {
-			limit = {
-				owner = { has_technology = tech_construction_templates }
-			}
-			owner = { set_timed_country_flag = { flag = buildings_new_crystal_building days = 270 } }
-		}
-		ELSE_IF = {
-			limit = {
-				owner = { has_technology = tech_assembly_pattern }
-			}
-			owner = { set_timed_country_flag = { flag = buildings_new_crystal_building days = 390 } }
-		}
-		else = {
-			planet = {
-				owner = { set_timed_country_flag = { flag = buildings_new_crystal_building days = 510 } }
-			}
-		}
-#STARNET END
-	}
 }
 
 building_alpha_hub = {
@@ -2766,7 +2227,7 @@ building_alpha_hub = {
 	potential = {
 		exists = owner
 		building_basic_income_check = yes
-		owner = { is_machine_empire = yes is_ai = no }  #STARNET
+		owner = { is_machine_empire = yes }
 	}
 
 	allow = {
@@ -2777,7 +2238,6 @@ building_alpha_hub = {
 		exists = owner
 		OR = {
 			owner = { is_machine_empire = no }
-			owner = { is_ai = yes } #STARNET
 			buildings_no_crystals = yes
 		}
 	}
@@ -2814,40 +2274,6 @@ building_alpha_hub = {
 	show_tech_unlock_if = {
 		is_machine_empire = yes
 	}
-
-	ai_weight = {
-		weight = 0.5 #Calvitix 0
-		modifier = {
-			weight = 1
-			buildings_has_crystals = yes
-		}
- #STARNET START
-		modifier = {
-			factor = 0
-			owner = { has_country_flag = buildings_new_crystal_building }
-		}
-	}
-
-	on_queued = {
-		IF = {
-			limit = {
-				owner = { has_technology = tech_construction_templates }
-			}
-			owner = { set_timed_country_flag = { flag = buildings_new_crystal_building days = 270 } }
-		}
-		ELSE_IF = {
-			limit = {
-				owner = { has_technology = tech_assembly_pattern }
-			}
-			owner = { set_timed_country_flag = { flag = buildings_new_crystal_building days = 390 } }
-		}
-		else = {
-			planet = {
-				owner = { set_timed_country_flag = { flag = buildings_new_crystal_building days = 510 } }
-			}
-		}
- #STARNET END
-	}
 }
 
 # Servitors
@@ -2860,7 +2286,8 @@ building_organic_sanctuary = {
 		exists = owner
 		owner = { has_valid_civic = civic_machine_servitor }
 	}
-	
+
+#mod ?	
 	allow = {
 		exists = owner
 		OR = {
@@ -2871,6 +2298,7 @@ building_organic_sanctuary = {
 			}
 		}
 	}
+###
 
 	destroy_trigger = {
 		exists = owner
@@ -2880,13 +2308,13 @@ building_organic_sanctuary = {
 			}
 			AND = {
 				owner = { is_ai = yes }
-				count_pops = { limit = { has_citizenship_type = { type = citizenship_organic_trophy } } count <= 20 }
-				num_buildings = { type = building_organic_sanctuary value > 2 }
+				count_owned_pop = { limit = { has_citizenship_type = { type = citizenship_organic_trophy } } count <= 20 }
+				num_buildings = { type = building_organic_sanctuary value > 3 }
 			}
 			AND = {
 				owner = { is_ai = yes }
-				count_pops = { limit = { has_citizenship_type = { type = citizenship_organic_trophy } } count <= 40 }
-				num_buildings = { type = building_organic_paradise value > 2 }
+				count_owned_pop = { limit = { has_citizenship_type = { type = citizenship_organic_trophy } } count <= 40 }
+				num_buildings = { type = building_organic_paradise value > 5 }
 			}
 		}
 	}
@@ -2897,9 +2325,8 @@ building_organic_sanctuary = {
 	}
 
 	planet_modifier = {
-		#planet_housing_add = 10
 		job_bio_trophy_add = 10
-		job_maintenance_drone_add = 1
+		job_artisan_drone_add = 1
 	}
 
 	resources = {
@@ -2914,37 +2341,6 @@ building_organic_sanctuary = {
 
 	upgrades = {
 		"building_organic_paradise"
-	}
-
-	ai_weight = {
-		weight = 0.5 #Calvitix 0
-		modifier = {
-			weight = 1000
-			any_owned_pop = {
-				is_unemployed = yes
-				has_citizenship_type = { type = citizenship_organic_trophy }
-			}
-		}
-		modifier = {
-			weight = 250
-			OR = {
-				has_building = building_factory_1
-				has_building = building_factory_2
-				has_building = building_factory_3
-			}
-			NOR = {
-				has_building = building_organic_sanctuary
-				has_building = building_organic_paradise
-			}
-			planet = {
-				owner = {
-					any_owned_pop = {
-						is_organic_species = yes
-						prevprev = { habitability = { who = prev value > 0.5 } }
-					}
-				}
-			}
-		}
 	}
 }
 
@@ -2969,9 +2365,9 @@ building_organic_paradise = {
 	}
 
 	planet_modifier = {
-		#planet_housing_add = 20
 		job_bio_trophy_add = 20
-		job_maintenance_drone_add = 2
+		job_artisan_drone_add = 2
+		job_maintenance_drone_add = 1
 	}
 
 	resources = {
@@ -2990,39 +2386,5 @@ building_organic_paradise = {
 
 	show_tech_unlock_if = {
 		owner = { has_valid_civic = civic_machine_servitor }
-	}
-
-	ai_weight = {
-		weight = 0.5 #Calvitix 0
- #STARNET START
-		modifier = {
-			weight = 10
-			buildings_has_exotic_gases = yes
-			any_owned_pop = {
-				is_unemployed = yes
-				has_citizenship_type = { type = citizenship_organic_trophy }
-			}
-		}
-	}
-
-	on_queued = {
-		IF = {
-			limit = {
-				owner = { has_technology = tech_construction_templates }
-			}
-			owner = { set_timed_country_flag = { flag = buildings_new_gas_building days = 270 } }
-		}
-		ELSE_IF = {
-			limit = {
-				owner = { has_technology = tech_assembly_pattern }
-			}
-			owner = { set_timed_country_flag = { flag = buildings_new_gas_building days = 390 } }
-		}
-		else = {
-			planet = {
-				owner = { set_timed_country_flag = { flag = buildings_new_gas_building days = 510 } }
-			}
- #STARNET END
-		}
 	}
 }

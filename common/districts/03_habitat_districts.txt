@@ -1,22 +1,28 @@
+# Original File
+#
+# Calvitix Check 3.0.1  17/04/2021
+#
+# TO DO Merge
+#
+#
 @hab_cost = 500
 @hab_maintenance = 2
 
 district_hab_housing = {
 	base_buildtime = 240
 	is_capped_by_modifier = no
-	
+
 	show_on_uncolonized = {
-		has_district_hab_housing = yes
 		uses_district_set = habitat
 	}
-	
+
 	potential = {
-		has_district_hab_housing = yes
 		uses_district_set = habitat
 	}
-	
+
 	resources = {
 		category = planet_districts
+#Calvitix Ressources balance
 		cost = { 
 			trigger = {
 				from = {
@@ -34,76 +40,70 @@ district_hab_housing = {
 		}
 		upkeep = {
 			energy = @hab_maintenance
-		}		
+		}
 	}
+
 	planet_modifier = {
 		planet_housing_add = 8
 	}
+
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
 			owner = { is_gestalt = yes }
 		}
-		modifier = { job_maintenance_drone_add = 2 }
+		modifier = {
+			job_maintenance_drone_add = 2
+		}
 	}
+
 	triggered_desc = {
-		trigger = { 
+		trigger = {
 			exists = owner
 			owner = { is_gestalt = yes }
 		}
 		text = job_maintenance_drone_effect_desc
-	}
-	
-	ai_weight = {
-		weight = 0.5
-		modifier = {
-			factor = 250
-			planet = {
-				num_districts = { type = district_hab_housing value < 1 }
-			}
-		}
-		modifier = {
-			factor = 250
-			planet = {
-				owner = {
-					is_regular_empire = yes
-					has_ascension_perk = ap_master_builders
-				}
-				num_districts = { type = district_hab_housing value < 2 }
-			}
-		}
-	}
-	ai_resource_production = {
-		energy = 1
-		trigger = {
-			always = yes
-		}
 	}
 }
 
 district_hab_energy = {
 	base_buildtime = 240
 	is_capped_by_modifier = no
-	
+
 	show_on_uncolonized = {
-		has_district_hab_energy = yes
 		uses_district_set = habitat
+		OR = {
+			has_planet_flag = energy_habitat
+			AND = {
+				exists = from
+				from = { is_gestalt = yes }
+			}
+		}
 	}
-	
+
 	potential = {
-		has_district_hab_energy = yes
 		uses_district_set = habitat
+		OR = {
+			has_planet_flag = energy_habitat
+			AND = {
+				exists = owner
+				owner = { is_gestalt = yes }
+			}
+		}
 	}
 
 	conversion_ratio = 0.5
 	convert_to = {
 		district_hab_commercial
-	}	
-	#planet_modifier = {
-	#	planet_housing_add = 3
-	#}
+	}
+
+	planet_modifier = {
+		planet_housing_add = 3
+	}
+
 	resources = {
 		category = planet_districts_hab_energy
+#Calvitix Ressources balance
 		cost = { 
 			trigger = {
 				from = {
@@ -121,18 +121,36 @@ district_hab_energy = {
 		}
 		upkeep = {
 			energy = @hab_maintenance
-		}		
+		}
 	}
+
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
-			owner = { 
+			owner = {
 				is_gestalt = no
 				is_fallen_empire_spiritualist = no
 			}
 		}
-		modifier = { job_technician_add = 3 }
+		modifier = {
+			job_technician_add = 3
+		}
 	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_gestalt = no
+				is_fallen_empire_spiritualist = no
+			}
+			has_active_building = building_energy_nexus
+		}
+		modifier = {
+			job_technician_add = 1
+		}
+	}
+
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
@@ -142,20 +160,45 @@ district_hab_energy = {
 			job_fe_acolyte_generator_add = 3
 		}
 	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_fallen_empire_spiritualist = yes }
+			has_active_building = building_energy_nexus
+		}
+		modifier = {
+			job_fe_acolyte_generator_add = 1
+		}
+	}
+
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
 			owner = { is_machine_empire = yes }
-		}		
+		}
 		job_technician_drone_add = 3
 	}
+
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
 			owner = { is_hive_empire = yes }
-		}	
+		}
 		job_technician_drone_add = 4
 	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_gestalt = yes }
+			has_active_building = building_energy_nexus
+		}
+		modifier = {
+			job_technician_drone_add = 1
+		}
+	}
+
 	triggered_desc = {
 		trigger = {
 			exists = owner
@@ -166,7 +209,7 @@ district_hab_energy = {
 	triggered_desc = {
 		trigger = {
 			exists = owner
-			owner = { 
+			owner = {
 				is_gestalt = no
 				is_fallen_empire_spiritualist = no
 			}
@@ -179,83 +222,355 @@ district_hab_energy = {
 			owner = { is_fallen_empire_spiritualist = yes }
 		}
 		text = job_fe_acolyte_generator_effect_desc
-	}	
-	
-	ai_weight = {
-		weight = 1
-		# Is there a negative income?
-		modifier = {
-			factor = 18
-			need_energy = yes
-		}
-		modifier = {
-			factor = 1.4
-			low_energy_storage = yes
-		}
-		# Does the planet have positive modifiers?
-		modifier = {
-			factor = 1.1
-			positive_energy_modifier_low = yes
-		}
-		modifier = {
-			factor = 1.5
-			positive_energy_modifier_medium = yes
-		}
-		modifier = {
-			factor = 2
-			positive_energy_modifier_large = yes
-		}
-		# Does the country have a bad energy economy?
-		modifier = {
-			factor = 2
-			bad_energy_economy = yes
-		}
-		# Workers looking for work
-		modifier = {
-			factor = 5
-			has_unemployed_workers = yes
-		}
-		# No one to work it anyway
-		modifier = {
-			factor = 0
-			AND = {
-				free_jobs > 1
-				has_unemployed_workers = no
-			}
-		}
-		# To much energy already
-		modifier = {
-			factor = 0
-			energy_not_needed = yes
+	}
+
+	ai_resource_production = {
+		energy = 1
+		trigger = {
+			always = yes
 		}
 	}
-	ai_resource_production = {
-		energy = 2
-		trigger = {
-			OR = {
-				low_energy_income = yes
-				medium_energy_income = yes
+}
+
+district_hab_industrial = {
+	base_buildtime = 240
+	is_capped_by_modifier = no
+
+	show_on_uncolonized = {
+		uses_district_set = habitat
+	}
+
+	potential = {
+		uses_district_set = habitat
+	}
+
+	resources = {
+		category = planet_districts_hab_industrial
+		cost = {
+			minerals = @hab_cost
+		}
+		upkeep = {
+			energy = @hab_maintenance
+		}
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = {
+					has_edict = industrial_maintenance
+				}
+			}
+			energy = 2
+		}
+	}
+
+	planet_modifier = {
+		planet_housing_add = 3
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_regular_empire = yes }
+		}
+		modifier = {
+			job_artisan_add = 1
+			job_foundry_add = 1
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_hive_empire = yes }
+		}
+		modifier = {
+			job_alloy_drone_add = 2
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_machine_empire = yes
+				NOT = { has_valid_civic = civic_machine_servitor }
 			}
 		}
+		modifier = {
+			job_fabricator_add = 2
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_machine_empire = yes
+				has_valid_civic = civic_machine_servitor
+			}
+		}
+		modifier = {
+			job_fabricator_add = 1
+			job_artisan_drone_add = 1
+		}
+	}
+
+	# Extra jobs from foundry buildings
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_regular_empire = yes }
+			has_active_building = building_foundry_2
+		}
+		modifier = {
+			job_foundry_add = 1
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_regular_empire = yes }
+			has_active_building = building_foundry_3
+		}
+		modifier = {
+			job_foundry_add = 2
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_machine_empire = yes }
+			has_active_building = building_foundry_2
+		}
+		modifier = {
+			job_fabricator_add = 1
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_machine_empire = yes }
+			has_active_building = building_foundry_3
+		}
+		modifier = {
+			job_fabricator_add = 2
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_hive_empire = yes }
+			has_active_building = building_foundry_2
+		}
+		modifier = {
+			job_alloy_drone_add = 1
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_hive_empire = yes }
+			has_active_building = building_foundry_3
+		}
+		modifier = {
+			job_alloy_drone_add = 2
+		}
+	}
+
+	# Extra jobs from factory buildings
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_regular_empire = yes }
+			has_active_building = building_factory_2
+		}
+		modifier = {
+			job_artisan_add = 1
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_regular_empire = yes }
+			has_active_building = building_factory_3
+		}
+		modifier = {
+			job_artisan_add = 2
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_machine_empire = yes }
+			has_active_building = building_factory_2
+		}
+		modifier = {
+			job_artisan_drone_add = 1
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_machine_empire = yes }
+			has_active_building = building_factory_3
+		}
+		modifier = {
+			job_artisan_drone_add = 2
+		}
+	}
+
+	# Designation Job Changes
+	triggered_planet_modifier = {
+		potential = {
+			has_designation = col_habitat_foundry
+			exists = owner
+			owner = { is_regular_empire = yes }
+		}
+		modifier = {
+			job_artisan_add = -1
+			job_foundry_add = 1
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			has_designation = col_habitat_factory
+			exists = owner
+			owner = { is_regular_empire = yes }
+		}
+		modifier = {
+			job_artisan_add = 1
+			job_foundry_add = -1
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			has_designation = col_habitat_foundry
+			exists = owner
+			owner = {
+				is_machine_empire = yes
+				country_uses_consumer_goods = yes
+			}
+			OR = { # Can only reduce your artisan production if you actually have some
+				has_active_building = building_factory_2
+				has_active_building = building_factory_3
+			}
+		}
+		modifier = {
+			job_artisan_drone_add = -1
+			job_alloy_drone_add = 1
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			has_designation = col_habitat_factory
+			exists = owner
+			owner = {
+				is_machine_empire = yes
+				country_uses_consumer_goods = yes
+			}
+		}
+		modifier = {
+			job_artisan_drone_add = 1
+			job_alloy_drone_add = -1
+		}
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_regular_empire = yes }
+		}
+		text = job_artisan_effect_desc
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = {
+				is_machine_empire = yes
+				has_valid_civic = civic_machine_servitor
+			}
+		}
+		text = job_artisan_drone_effect_desc
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_regular_empire = yes }
+		}
+		text = job_foundry_effect_desc
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_machine_empire = yes }
+		}
+		text = job_fabricator_effect_desc
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_hive_empire = yes }
+		}
+		text = job_alloy_drone_effect_desc
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_machine_empire = yes
+				has_edict = industrial_maintenance
+			}
+		}
+		modifier = {
+			job_maintenance_drone_add = 1
+		}
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = {
+				is_machine_empire = yes
+				has_edict = industrial_maintenance
+			}
+		}
+		text = job_maintenance_drone_effect_desc
 	}
 }
 
 district_hab_science = {
 	base_buildtime = 240
 	is_capped_by_modifier = no
-	
+
 	show_on_uncolonized = {
-		has_district_hab_science = yes
 		uses_district_set = habitat
+		has_planet_flag = research_habitat
 	}
-	
+
 	potential = {
-		has_district_hab_science = yes
 		uses_district_set = habitat
+		has_planet_flag = research_habitat
 	}
 	
 	resources = {
 		category = planet_districts_hab_research
+#Calvitix Ressources balance
 		cost = { 
 			trigger = {
 				from = {
@@ -273,12 +588,12 @@ district_hab_science = {
 		}
 		upkeep = {
 			energy = @hab_maintenance
-		}		
+		}
 	}
 
-	#planet_modifier = {
-	#	planet_housing_add = 3
-	#}
+	planet_modifier = {
+		planet_housing_add = 3
+	}
 
 	triggered_planet_modifier = {
 		potential = {
@@ -289,7 +604,7 @@ district_hab_science = {
 			job_researcher_add = 3
 		}
 	}
-	
+
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
@@ -299,130 +614,56 @@ district_hab_science = {
 			job_brain_drone_add = 3
 		}
 	}
-	
+
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
 			owner = { is_machine_empire = yes }
 		}
-		modifier = {	
+		modifier = {
 			job_calculator_add = 3
 		}
 	}
-	
+
 	triggered_desc = {
-		trigger = { 
+		trigger = {
 			exists = owner
-			owner = { is_regular_empire = yes } 
+			owner = { is_regular_empire = yes }
 		}
 		text = job_researcher_effect_desc
 	}
 
 	triggered_desc = {
-		trigger = { 
+		trigger = {
 			exists = owner
-			owner = { is_hive_empire = yes } 
+			owner = { is_hive_empire = yes }
 		}
 		text = job_brain_drone_effect_desc
 	}
 
 	triggered_desc = {
-		trigger = { 
+		trigger = {
 			exists = owner
-			owner = { is_machine_empire = yes } 
+			owner = { is_machine_empire = yes }
 		}
 		text = job_calculator_effect_desc
-	}		
-	
-	ai_weight = {
-		weight = 3
-		# Economy allows a focus on research
-		modifier = {
-			factor = 10
-			should_invest_into_research = yes
-		}
-		# Specialists looking for work
-		modifier = {
-			factor = 5
-			has_unemployed_specialists = yes
-		}
-		# Does the planet have positive modifiers?
-		modifier = {
-			factor = 1.05
-			positive_society_modifier_low = yes
-		}
-		modifier = {
-			factor = 1.2
-			positive_society_modifier_medium = yes
-		}
-		modifier = {
-			factor = 1.5
-			positive_society_modifier_large = yes
-		}
-		modifier = {
-			factor = 1.05
-			positive_physics_modifier_low = yes
-		}
-		modifier = {
-			factor = 1.2
-			positive_physics_modifier_medium = yes
-		}
-		modifier = {
-			factor = 1.5
-			positive_physics_modifier_large = yes
-		}
-		modifier = {
-			factor = 1.05
-			positive_engineering_modifier_low = yes
-		}
-		modifier = {
-			factor = 1.2
-			positive_engineering_modifier_medium = yes
-		}
-		modifier = {
-			factor = 1.5
-			positive_engineering_modifier_large = yes
-		}
-		modifier = {
-			factor = 0
-			can_invest_into_research = no
-		}
-		# No one to work it anyway
-		modifier = {
-			factor = 0
-			AND = {
-				free_jobs > 1
-				has_unemployed_workers = no
-				has_unemployed_specialists = no
-			}
-		}
-	}
-	ai_resource_production = {
-		engineering_research = 2
-		physics_research = 2
-		society_research = 2
-		trigger = {
-			always = yes
-		}
 	}
 }
 
 district_hab_commercial = {
 	base_buildtime = 240
 	is_capped_by_modifier = no
-	
+
 	show_on_uncolonized = {
-		has_district_hab_commercial = yes
 		uses_district_set = habitat
-		
+
 		exists = from
 		from = { is_gestalt = no }
 	}
-	
+
 	potential = {
-		has_district_hab_commercial = yes
 		uses_district_set = habitat
-		
+
 		exists = owner
 		owner = { is_gestalt = no }
 	}
@@ -430,8 +671,8 @@ district_hab_commercial = {
 	conversion_ratio = 0.5
 	convert_to = {
 		district_hab_energy
-	}	
-	
+	}
+
 	resources = {
 		category = planet_districts_hab_trade
 		cost = {
@@ -439,62 +680,47 @@ district_hab_commercial = {
 		}
 		upkeep = {
 			energy = @hab_maintenance
-		}		
+		}
 	}
-		
+
 	planet_modifier = {
-		#planet_housing_add = 3
-		job_clerk_add = 5
+		planet_housing_add = 3
 	}
-	
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_non_swapped_tradition = tr_prosperity_interstellar_franchising }
+		}
+		modifier = {
+			job_clerk_add = 1
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_fallen_empire_spiritualist = no }
+		}
+		modifier = {
+			job_clerk_add = 5
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_fallen_empire_spiritualist = yes }
+		}
+		modifier = {
+			job_manager_add = 3
+		}
+	}
+
 	triggered_desc = {
 		text = job_clerk_effect_desc
-	}	
-	
-	ai_weight = {
-		weight = 1.5
-		# Is there a negative energy income?
-		modifier = {
-			factor = 18
-			need_energy = yes
-		}
-		modifier = {
-			factor = 1.4
-			low_energy_storage = yes
-		}
-		# Does the country have a bad energy economy?
-		modifier = {
-			factor = 2
-			bad_energy_economy = yes
-		}
-		# Workers looking for work
-		modifier = {
-			factor = 5
-			has_unemployed_workers = yes
-		}
-		# Is the empire a megacorp
-		modifier = {
-			factor = 2
-			exists = owner
-			owner = { is_megacorp = yes }
-		}
-		# No one to work it anyway
-		modifier = {
-			factor = 0
-			AND = {
-				free_jobs > 1
-				has_unemployed_workers = no
-			}
-		}
-		# To much energy already
-		modifier = {
-			factor = 0
-			energy_not_needed = yes
-			exists = owner
-			owner = { is_megacorp = no }
-			
-		}
 	}
+
 	ai_resource_production = {
 		consumer_goods = 1
 		trigger = {
@@ -508,19 +734,19 @@ district_hab_mining = {
 	is_capped_by_modifier = no
 
 	show_on_uncolonized = {
-		has_district_hab_mining = yes
 		uses_district_set = habitat
+		has_planet_flag = mining_habitat
 	}
-	
+
 	potential = {
-		has_district_hab_mining = yes
 		uses_district_set = habitat
+		has_planet_flag = mining_habitat
 	}
-	
-	#planet_modifier = {
-	#	planet_housing_add = 3
-	#}
-	
+
+	planet_modifier = {
+		planet_housing_add = 3
+	}
+
 	resources = {
 		category = planet_districts_hab_mining
 		cost = {
@@ -528,9 +754,9 @@ district_hab_mining = {
 		}
 		upkeep = {
 			energy = @hab_maintenance
-		}		
+		}
 	}
-		
+
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
@@ -540,7 +766,7 @@ district_hab_mining = {
 			job_mining_drone_add = 4
 		}
 	}
-	
+
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
@@ -549,18 +775,43 @@ district_hab_mining = {
 		modifier = {
 			job_mining_drone_add = 3
 		}
-	}	
-		
+	}
+
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
-			owner = { 
+			owner = { is_gestalt = yes }
+			has_active_building = building_mineral_purification_hub
+		}
+		modifier = {
+			job_mining_drone_add = 1
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
 				is_gestalt = no
 				is_fallen_empire_spiritualist = no
 			}
 		}
 		modifier = {
 			job_miner_add = 3
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_gestalt = no
+				is_fallen_empire_spiritualist = no
+			}
+			has_active_building = building_mineral_purification_hub
+		}
+		modifier = {
+			job_miner_add = 1
 		}
 	}
 
@@ -574,6 +825,17 @@ district_hab_mining = {
 		}
 	}
 
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_fallen_empire_spiritualist = yes }
+			has_active_building = building_mineral_purification_hub
+		}
+		modifier = {
+			job_fe_acolyte_mine_add = 1
+		}
+	}
+
 	triggered_desc = {
 		trigger = {
 			exists = owner
@@ -584,7 +846,7 @@ district_hab_mining = {
 	triggered_desc = {
 		trigger = {
 			exists = owner
-			owner = { 
+			owner = {
 				is_gestalt = no
 				is_fallen_empire_spiritualist = no
 			}
@@ -598,93 +860,39 @@ district_hab_mining = {
 			owner = { is_fallen_empire_spiritualist = yes }
 		}
 		text = job_fe_acolyte_mine_effect_desc
-	}	
-	
-	ai_weight = {
-		weight = 1
-		# Is there a negative mineral income?
-		modifier = {
-			factor = 15
-			need_minerals = yes
-		}
-		modifier = {
-			factor = 1.5
-			low_mineral_storage = yes
-		}
-		# Does the planet have positive modifiers?
-		modifier = {
-			factor = 1.1
-			positive_mining_modifier_low = yes
-		}
-		modifier = {
-			factor = 1.5
-			positive_mining_modifier_medium = yes
-		}
-		modifier = {
-			factor = 2
-			positive_mining_modifier_large = yes
-		}
-		# Does the country have a bad mineral economy?
-		modifier = {
-			factor = 2
-			bad_mineral_economy = yes
-		}
-		# Workers looking for work
-		modifier = {
-			factor = 5
-			has_unemployed_workers = yes
-		}
-		# No one to work it anyway
-		modifier = {
-			factor = 0
-			AND = {
-				free_jobs > 1
-				has_unemployed_workers = no
-			}
-		}
-		# To many minerals already
-		modifier = {
-			factor = 0
-			minerals_not_needed = yes
-		}
 	}
+
 	ai_resource_production = {
-		minerals = 2
+		minerals = 1
 		trigger = {
-			OR = {
-				low_mineral_income = yes
-				medium_mineral_income = yes
-			}
+			always = yes
 		}
 	}
 }
 
-
 district_hab_cultural = {
 	base_buildtime = 240
 	is_capped_by_modifier = no
-	
+
 	show_on_uncolonized = {
-		has_district_hab_cultural = yes
 		uses_district_set = habitat
-		
+
 		exists = from
-		from = { 
+		from = {
 			OR = {
-				is_gestalt = no 
+				is_gestalt = no
 				has_valid_civic = civic_machine_servitor
 			}
 		}
 	}
-	
+
 	potential = {
-		has_district_hab_cultural = yes
 		uses_district_set = habitat
-		
+
 		exists = owner
-		owner = { 
+		owner = {
 			OR = {
-				is_gestalt = no 
+				is_gestalt = no
 				has_valid_civic = civic_machine_servitor
 			}
 		}
@@ -693,8 +901,8 @@ district_hab_cultural = {
 	conversion_ratio = 0.5
 	convert_to = {
 		district_hab_energy
-	}	
-	
+	}
+
 	resources = {
 		category = planet_districts_hab_leisure
 		cost = {
@@ -702,17 +910,17 @@ district_hab_cultural = {
 		}
 		upkeep = {
 			energy = @hab_maintenance
-		}		
+		}
 	}
-		
-	#planet_modifier = {
-	#	planet_housing_add = 3
-	#}
+
+	planet_modifier = {
+		planet_housing_add = 3
+	}
 
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
-			owner = { 
+			owner = {
 				is_regular_empire = yes
 				NOT = { has_valid_civic = civic_warrior_culture }
 			}
@@ -726,7 +934,7 @@ district_hab_cultural = {
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
-			owner = { 
+			owner = {
 				is_regular_empire = yes
 				has_valid_civic = civic_warrior_culture
 			}
@@ -740,7 +948,7 @@ district_hab_cultural = {
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
-			owner = { 
+			owner = {
 				is_machine_empire = yes
 				has_valid_civic = civic_machine_servitor
 			}
@@ -749,30 +957,38 @@ district_hab_cultural = {
 			job_bio_trophy_add = 5
 			job_maintenance_drone_add = 1
 		}
-	}	
-	
+	}
+
 	triggered_desc = {
 		trigger = {
 			exists = owner
-			owner = { 
+			owner = {
+				is_regular_empire = yes
+			}
+		}
+		text = job_culture_worker_effect_desc
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = {
 				is_regular_empire = yes
 				has_valid_civic = civic_warrior_culture
 			}
 		}
 		text = job_duelist_effect_desc
-		text = job_culture_worker_effect_desc
 	}
-	
+
 	triggered_desc = {
 		trigger = {
 			exists = owner
-			owner = { 
+			owner = {
 				is_regular_empire = yes
-				NOT = { has_valid_civic = civic_warrior_culture } 
+				NOT = { has_valid_civic = civic_warrior_culture }
 			}
 		}
 		text = job_entertainer_effect_desc
-		text = job_culture_worker_effect_desc
 	}
 
 	triggered_desc = {
@@ -783,39 +999,11 @@ district_hab_cultural = {
 				has_valid_civic = civic_machine_servitor
 			}
 		}
-		text = job_bio_trophy_effect_desc
 		text = job_maintenance_drone_effect_desc
 	}
 	
-	ai_weight = {
-		weight = 1
-		modifier = {
-			factor = 30
-			need_amenities = yes
-		}
-		modifier = {
-			factor = 20
-			can_get_more_amenities = yes
-		}
-		modifier = {
-			factor = 10
-			should_get_more_amenities = yes
-		}
-		modifier = {
-			factor = 0
-			has_enough_amenities = yes
-		}
-		# No one to work it anyway
-		modifier = {
-			factor = 0
-			AND = {
-				free_jobs > 1
-				has_unemployed_workers = no
-			}
-		}
-	}
 	ai_resource_production = {
-		unity = 10
+		unity = 1
 		trigger = {
 			always = yes
 		}

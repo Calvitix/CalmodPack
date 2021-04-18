@@ -1,3 +1,11 @@
+
+# Original File
+#
+# Calvitix Check 3.0.1  18/04/2021
+#
+# Merge with NSC
+# Modified by Calvitix balance
+#
 crew_quarters = {
 	icon = "GFX_spaceport_module_crew_quarters"
 	construction_days = 180
@@ -6,6 +14,7 @@ crew_quarters = {
 
 	resources = {
 		category = starbase_buildings
+###Calvitix Ressources balance
 		cost = { 
 			trigger = {
 				from = {
@@ -36,7 +45,18 @@ crew_quarters = {
 	ai_build_at_chokepoint = yes
 	ai_build_outside_chokepoint = yes
 	ai_weight = {
-		weight = 45
+#STARNET AI
+		weight = 50
+		modifier = {
+			factor = 0
+			years_passed < 30
+		}
+		modifier = {
+		factor = 0 
+		country_uses_food = yes
+		not = { has_starbase_building = hydroponics_bay }
+		}
+###
 	}
 }
 
@@ -51,6 +71,7 @@ hydroponics_bay = {
 
 	resources = {
 		category = starbase_buildings
+###Calvitix Ressources balance
 		cost = { 
 			trigger = {
 				from = {
@@ -69,7 +90,7 @@ hydroponics_bay = {
 			alloys = 50
 		}
 		produces = {
-			food = 3
+			food = 10
 		}
 
 		upkeep = {
@@ -103,6 +124,7 @@ resource_silo = {
 
 	resources = {
 		category = starbase_buildings
+###Calvitix Ressources balance
 		cost = { 
 			trigger = {
 				from = {
@@ -189,6 +211,7 @@ nebula_refinery = {
 
 	resources = {
 		category = starbase_buildings
+###Calvitix Ressources balance
 		cost = { 
 			trigger = {
 				from = {
@@ -212,6 +235,14 @@ nebula_refinery = {
 			minerals = 6
 		}
 
+		produces = {
+			trigger = {
+				exists = owner
+				owner = { has_technology = tech_mine_exotic_gases }
+			}
+			exotic_gases = 1
+		}
+
 		upkeep = {
 			energy = 2
 		}
@@ -232,6 +263,7 @@ listening_post = {
 
 	resources = {
 		category = starbase_buildings
+###Calvitix Ressources balance
 		cost = { 
 			trigger = {
 				from = {
@@ -288,9 +320,24 @@ listening_post = {
 	ai_build_at_chokepoint = yes
 	ai_build_outside_chokepoint = no
 	ai_weight = {
-		weight = 50
-	}
+#STARNET AI
+		weight = 0.1
+		modifier = {
+			factor = 0
+			years_passed < 20
+		}
+		modifier = {
+		factor = 0 
+		country_uses_food = yes
+		not = { has_starbase_building = hydroponics_bay }
+		}
 
+		modifier = {
+			factor = 11
+			years_passed > 30
+		}
+	}	
+###	
 	show_in_tech = "tech_sensors_2"
 }
 
@@ -317,6 +364,7 @@ offworld_trading_company = {
 
 	resources = {
 		category = starbase_buildings
+###Calvitix Ressources balance
 		cost = { 
 			trigger = {
 				from = {
@@ -462,6 +510,7 @@ fleet_academy = {
 
 	resources = {
 		category = starbase_buildings
+###Calvitix Ressources balance
 		cost = { 
 			trigger = {
 				from = {
@@ -524,6 +573,7 @@ naval_logistics_office = {
 
 	resources = {
 		category = starbase_buildings
+###Calvitix Ressources balance
 		cost = { 
 			trigger = {
 				from = {
@@ -591,6 +641,7 @@ titan_yards = {
 
 	resources = {
 		category = starbase_buildings
+###Calvitix Ressources balance
 		cost = { 
 			trigger = {
 				from = {
@@ -650,6 +701,7 @@ colossus_yards = {
 			OR = {
 				has_technology = tech_colossus
 				has_technology = tech_juggernaut		
+				has_technology = tech_btc_1 # star-eater
 			}
 		}
 	}
@@ -664,6 +716,7 @@ colossus_yards = {
 
 	resources = {
 		category = starbase_buildings
+###Calvitix Ressources balance
 		cost = { 
 			trigger = {
 				from = {
@@ -737,6 +790,7 @@ black_hole_observatory = {
 
 	resources = {
 		category = starbase_buildings
+###Calvitix Ressources balance
 		cost = { 
 			trigger = {
 				from = {
@@ -757,7 +811,7 @@ black_hole_observatory = {
 			alloys = 100
 		}			
 		produces = {
-			physics_research = 10
+			physics_research = 10 #15
 		}
 		produces = {
 			trigger = {
@@ -772,7 +826,14 @@ black_hole_observatory = {
 					is_active_resolution = "resolution_galacticstudies_extradimensional_experimentation"
 				}
 			}
-			physics_research = 10
+			physics_research = 10 #15
+		}
+		produces = {
+			trigger = {
+				exists = owner
+				owner = { has_technology = tech_mine_dark_matter }
+			}
+			sr_dark_matter = 1
 		}
 
 		upkeep = {
@@ -806,6 +867,7 @@ target_uplink_computer = {
 
 	resources = {
 		category = starbase_buildings
+###Calvitix Ressources balance
 		cost = { 
 			trigger = {
 				from = {
@@ -824,7 +886,7 @@ target_uplink_computer = {
 				}
 			}
 			alloys = 100
-		}			
+		}
 
 		upkeep = {
 			energy = 2
@@ -860,6 +922,7 @@ defense_grid = {
 
 	resources = {
 		category = starbase_buildings
+###Calvitix Ressources balance
 		cost = { 
 			trigger = {
 				from = {
@@ -878,7 +941,7 @@ defense_grid = {
 				}
 			}
 			alloys = 150
-		}			
+		}
 
 		upkeep = {
 			energy = 2
@@ -895,6 +958,17 @@ defense_grid = {
 	ai_build_outside_chokepoint = no
 	ai_weight = {
 		weight = 10
+#STARNET AI
+		modifier = {
+			factor = 0
+			years_passed < 20
+		}
+		modifier = {
+		factor = 0 
+		country_uses_food = yes
+		not = { has_starbase_building = hydroponics_bay }
+		}
+###
 	}
 }
 
@@ -927,6 +1001,7 @@ deep_space_black_site = {
 
 	resources = {
 		category = starbase_buildings
+###Calvitix Ressources balance
 		cost = { 
 			trigger = {
 				from = {
@@ -944,7 +1019,7 @@ deep_space_black_site = {
 				}
 			}
 			alloys = 100
-		}			
+		}
 
 		produces = {
 			unity = 1
@@ -1022,6 +1097,7 @@ curator_think_tank = {
 
 	resources = {
 		category = starbase_buildings
+###Calvitix Ressources balance
 		cost = { 
 			trigger = {
 				from = {
@@ -1129,6 +1205,7 @@ art_college = {
 
 	resources = {
 		category = starbase_buildings
+###Calvitix Ressources balance
 		cost = { 
 			trigger = {
 				from = {
@@ -1198,6 +1275,7 @@ communications_jammer = {
 
 	resources = {
 		category = starbase_buildings
+###Calvitix Ressources balance
 		cost = { 
 			trigger = {
 				from = {
@@ -1227,7 +1305,18 @@ communications_jammer = {
 	ai_build_at_chokepoint = yes
 	ai_build_outside_chokepoint = no
 	ai_weight = {
-		weight = 1
+		weight = 10
+###STARNET AI
+		modifier = {
+			factor = 0
+			years_passed < 20
+		}
+		modifier = {
+		factor = 0 
+		country_uses_food = yes
+		not = { has_starbase_building = hydroponics_bay }
+		}
+###
 	}
 }
 
@@ -1244,6 +1333,7 @@ disruption_field = {
 
 	resources = {
 		category = starbase_buildings
+###Calvitix Ressources balance
 		cost = { 
 			trigger = {
 				from = {
@@ -1263,7 +1353,6 @@ disruption_field = {
 			alloys = 100
 		}
 
-
 		upkeep = {
 			energy = 2
 		}
@@ -1274,7 +1363,18 @@ disruption_field = {
 	ai_build_at_chokepoint = yes
 	ai_build_outside_chokepoint = no
 	ai_weight = {
-		weight = 1
+		weight = 10
+###STARNET AI
+		modifier = {
+			factor = 0
+			years_passed < 20
+		}
+		modifier = {
+		factor = 0 
+		country_uses_food = yes
+		not = { has_starbase_building = hydroponics_bay }
+		}
+###
 	}
 }
 
@@ -1284,8 +1384,8 @@ warp_fluctuator = {
 
 	potential = {
 		exists = owner
-		owner = { 
-			has_technology = tech_hyper_drive_2 
+		owner = {
+			has_technology = tech_hyper_drive_2
 			is_gestalt = no
 		}
 	}
@@ -1299,6 +1399,7 @@ warp_fluctuator = {
 
 	resources = {
 		category = starbase_buildings
+###Calvitix Ressources balance
 		cost = { 
 			trigger = {
 				from = {
@@ -1318,7 +1419,6 @@ warp_fluctuator = {
 			alloys = 100
 		}
 
-
 		upkeep = {
 			energy = 2
 		}
@@ -1328,12 +1428,89 @@ warp_fluctuator = {
 		starbase_trade_collection_range_add = 1
 	}
 
-	show_in_tech = "tech_hyper_drive_2"
+	show_in_tech = "tech_interstellar_economics"
 
 	ai_build_at_chokepoint = yes
 	ai_build_outside_chokepoint = no
 	ai_weight = {
-		weight = 1
+		weight = 10
+	}
+}
+
+transit_hub = {
+	icon = "GFX_spaceport_module_pioneering_terminal"
+	construction_days = 180
+
+	potential = {
+		exists = owner
+		owner = {
+			has_technology = tech_hyper_drive_2
+		}
+	}
+
+	possible = {
+		custom_tooltip = {
+			fail_text = "requires_starport"
+			has_starbase_size >= starbase_starport
+		}
+		custom_tooltip = {
+			fail_text = "requires_colonized_planet"
+			solar_system = {
+				any_system_planet = {
+					is_owned_by = from
+				}
+			}
+		}
+	}
+
+	resources = {
+		category = starbase_buildings
+###Calvitix Ressources balance
+		cost = { 
+			trigger = {
+				from = {
+					is_ai = no
+				}
+			}
+			alloys = 50
+			energy = 50
+			minerals = 50
+		}
+		cost = {
+			trigger = {
+				from = {
+					is_ai = yes
+				}
+			}
+			alloys = 100
+		}
+
+		upkeep = {
+			energy = 3
+		}
+	}
+
+	system_modifier = {
+		planet_resettlement_unemployed_mult = 1.00
+	}
+
+	show_in_tech = "tech_hyper_drive_2"
+
+	ai_build_at_chokepoint = yes
+	ai_build_outside_chokepoint = yes
+	ai_weight = {
+		weight = 100
+		modifier = {
+			factor = 0
+			NOT = {
+				solar_system = {
+					any_system_planet = {
+						exists = owner
+						owner = { is_country_type = default }
+					}
+				}
+			}
+		}
 	}
 }
 
@@ -1355,6 +1532,7 @@ command_center = {
 
 	resources = {
 		category = starbase_buildings
+###Calvitix Ressources balance
 		cost = { 
 			trigger = {
 				from = {
@@ -1375,7 +1553,6 @@ command_center = {
 			alloys = 250
 		}
 
-
 		upkeep = {
 			energy = 5
 		}
@@ -1388,6 +1565,10 @@ command_center = {
 	ai_build_outside_chokepoint = no
 	ai_weight = {
 		weight = 5
+		modifier = {
+			factor = 0
+			years_passed < 30
+		}
 	}
 }
 
@@ -1465,7 +1646,7 @@ trader_proxy_office = {
 				OR = {
 					any_system_planet = {
 						exists = owner
-						owner = { nhsc_is_playable_empire = yes }
+						owner = { is_country_type = default }
 					}
 					AND = {
 						has_star_flag = enclave
@@ -1526,7 +1707,8 @@ trader_proxy_office = {
 		trade_value_add = 5
 	}
 
-	ai_build_at_chokepoint = yes
+	ai_build_at_chokepoint = no
+	ai_build_outside_chokepoint = yes
 	ai_weight = {
 		weight = 200
 		modifier = {

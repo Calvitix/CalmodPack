@@ -1,3 +1,11 @@
+
+# Original File
+#
+# Calvitix Check 3.0.1  18/04/2021
+#
+# Merge with Starnet AI ?
+#
+#
 # from = country
 # this = species
 
@@ -129,22 +137,24 @@ purge_displacement = {
 	
 	potential = {
 		exists = from
-		from = {
-			NOR = {
-				has_valid_civic = civic_hive_devouring_swarm
-				has_valid_civic = civic_machine_terminator
+		if = {
+			limit = {
+				from = { has_authority = auth_machine_intelligence }
 			}
-		}
-		NAND = {
-			from = { has_civic = civic_machine_assimilator }
-			has_trait = trait_cybernetic			
-		}
-		NAND = {
-			from = { has_authority = auth_machine_intelligence }
-			OR = {
+			from = {
+				NOR = {
+					has_valid_civic = civic_hive_devouring_swarm
+					has_valid_civic = civic_machine_terminator
+				}
+			}
+			NOR = {
 				has_trait = trait_machine_unit
-				has_trait = trait_mechanical	
-			}			
+				has_trait = trait_mechanical
+				AND = {
+					from = { has_civic = civic_machine_assimilator }
+					has_trait = trait_cybernetic
+				}
+			}
 		}
 	}
 	
@@ -165,13 +175,13 @@ purge_displacement = {
 				is_same_species = from
 			}
 		}
-		# custom_tooltip = {
-		# 	fail_text = "CANNOT_DISPLACE_NON_SENTIENT_ROBOTS"
-		# 	OR = {
-		# 		is_robotic_species = no
-		# 		species_has_happiness_with_owner = from
-		# 	}
-		# }
+		custom_tooltip = {
+			fail_text = "CANNOT_DISPLACE_NON_SENTIENT_ROBOTS"
+			OR = {
+				is_robotic_species = no
+				species_has_happiness_with_owner = from
+			}
+		}
 	}
 	ai_will_do = {
 		factor = 1
@@ -328,12 +338,12 @@ purge_processing = {
 					has_ethic = ethic_gestalt_consciousness
 					has_valid_civic = civic_fanatic_purifiers
 					has_policy_flag = purge_allowed
-					AND = {
-						has_policy_flag = pre_sapients_eat
-						prev = {
-							is_sapient = no
-						}
-					}
+					# AND = { #species rights are disabled for presapients
+					# 	has_policy_flag = pre_sapients_eat
+					# 	prev = {
+					# 		is_sapient = no
+					# 	}
+					# }
 				}
 			}
 		}
@@ -404,6 +414,8 @@ purge_necrophage = {
 	}
 	ai_will_do = {
 		factor = 100
+
+### STARNET AI
 		modifier = {
 			factor = 0
 			from = {
@@ -413,5 +425,6 @@ purge_necrophage = {
 				}
 			}
 		}		
+###
 	}
 }

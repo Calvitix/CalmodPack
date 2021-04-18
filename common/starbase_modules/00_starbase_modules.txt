@@ -1,5 +1,22 @@
+
+# Original File
+#
+# Calvitix Check 3.0.1  18/04/2021
+#
+# Merge with NSC
+#
+#
+
 #Calvitix Modifs - to change the values of module (less alloys,..)
 #AI balance too
+# possible section models:
+# SHIPYARD_STARBASE_SECTION
+# REFINERY_STARBASE_SECTION
+# SCIENCE_STARBASE_SECTION
+# HANGAR_STARBASE_SECTION
+# ASSEMBLYYARD_STARBASE_SECTION
+#
+
 shipyard = {
 	icon = "GFX_starbase_shipyard"
 	section = "ASSEMBLYYARD_STARBASE_SECTION"
@@ -8,6 +25,7 @@ shipyard = {
 
 	resources = {
 		category = starbase_modules
+#Calvitix ressources balance
 		cost = { 
 			trigger = {
 				from = {
@@ -39,9 +57,41 @@ shipyard = {
 	ai_build_at_chokepoint = no
 	ai_build_outside_chokepoint = yes
 	ai_weight = {
-		weight = 50
+		weight = 20
 		modifier = {
-			factor = 2
+			factor = 100
+			owner = {
+				OR = {
+					count_owned_starbase = {
+						count = 0
+						limit = { has_starbase_module = shipyard }
+					}
+					AND = {
+						num_starbases >= 4
+						count_owned_starbase = {
+							count < 2
+							limit = { has_starbase_module = shipyard }
+						}
+					}
+					AND = {
+						num_starbases >= 9
+						count_owned_starbase = {
+							count < 3
+							limit = { has_starbase_module = shipyard }
+						}
+					}
+					AND = {
+						num_starbases >= 15
+						count_owned_starbase = {
+							count < 4
+							limit = { has_starbase_module = shipyard }
+						}
+					}
+				}
+			}
+		}
+		modifier = {
+			factor = 3
 			has_starbase_module = shipyard
 			count_starbase_modules = {
 				count < 2
@@ -49,21 +99,14 @@ shipyard = {
 			}
 		}
 		modifier = {
-			factor = 1.5
+			factor = 3
 			has_starbase_module = shipyard
 			count_starbase_modules = {
-				count < 3
+				count < 4
 				type = shipyard
 			}
 		}
-		modifier = {
-			factor = 0.8
-			has_starbase_module = shipyard
-			count_starbase_modules = {
-				count > 2
-				type = shipyard
-			}
-		}
+#Calvitix mod
 		modifier = {
 			factor = 0.5
 			has_starbase_module = shipyard
@@ -91,7 +134,6 @@ shipyard = {
 	}
 }
 
-
 anchorage = {
 	icon = "GFX_starbase_anchorage"
 	section = "ANCHORAGE_STARBASE_SECTION"
@@ -99,6 +141,7 @@ anchorage = {
 
 	resources = {
 		category = starbase_modules
+#Calvitix ressources balance
 		cost = { 
 			trigger = {
 				from = {
@@ -118,24 +161,23 @@ anchorage = {
 			alloys = 50
 		}
 
-
 		upkeep = {
 			energy = 1
 		}
 	}
 
 	country_modifier = {
-		country_naval_cap_add = 15
+		country_naval_cap_add = 10 # 15 # 4
 	}
-
 	triggered_country_modifier = {
 		potential = { has_starbase_building = naval_logistics_office }
-		country_naval_cap_add = 10
+		country_naval_cap_add = 10 #2
 	}
 
 	ai_build_at_chokepoint = no
 	ai_build_outside_chokepoint = yes
 	ai_weight = {
+##NSC
 		weight = 30
 		modifier = {
 			factor = 4
@@ -148,6 +190,7 @@ anchorage = {
 				count < 1
 			}
 		}		
+###
 		modifier = {
 			factor = 2
 			count_starbase_modules = {
@@ -167,13 +210,14 @@ anchorage = {
 	}
 }
 
-
 gun_battery = {
 	section = "BATTERY_STARBASE_SECTION"
+	icon = GFX_spaceport_modules
 	construction_days = 180
 
 	resources = {
 		category = starbase_modules
+#Calvitix ressources balance
 		cost = { 
 			trigger = {
 				from = {
@@ -192,22 +236,24 @@ gun_battery = {
 			alloys = 50
 		}
 
-
 		upkeep = {
 			energy = 1
 		}
 	}
 
 	station_modifier = {
-		starbase_trade_protection_add = 3
+		ship_hull_mult = 0.10
+		ship_armor_mult = 0.10
+		starbase_trade_protection_range_add = 1
+		starbase_trade_protection_add = 5
 	}
 
 	ai_build_at_chokepoint = yes
-	ai_build_outside_chokepoint = yes
+	ai_build_outside_chokepoint = no
 	ai_weight = {
-		weight = 80
+		weight = 80 #10
 		modifier = {
-			factor = 1.5
+			factor = 2
 			exists = owner
 			owner = {
 				OR = {
@@ -231,7 +277,6 @@ gun_battery = {
 	show_in_tech = "tech_mass_drivers_1"
 }
 
-
 missile_battery = {
 	section = "MISSILE_STARBASE_SECTION"
 	icon = "GFX_starbase_missile_battery"
@@ -239,6 +284,7 @@ missile_battery = {
 
 	resources = {
 		category = starbase_modules
+#Calvitix ressources balance
 		cost = { 
 			trigger = {
 				from = {
@@ -257,22 +303,24 @@ missile_battery = {
 			alloys = 50
 		}
 
-
 		upkeep = {
 			energy = 1
 		}
 	}
 
 	station_modifier = {
-		starbase_trade_protection_add = 3
+		ship_hull_mult = 0.10
+		ship_armor_mult = 0.10
+		starbase_trade_protection_range_add = 1
+		starbase_trade_protection_add = 5
 	}
 
 	ai_build_at_chokepoint = yes
-	ai_build_outside_chokepoint = yes
+	ai_build_outside_chokepoint = no
 	ai_weight = {
-		weight = 80
+		weight = 80 #10
 		modifier = {
-			factor = 1.5
+			factor = 2
 			exists = owner
 			owner = { is_preferred_weapons = weapon_type_explosive }
 		}
@@ -287,6 +335,7 @@ missile_battery = {
 		modifier = { factor = 0.5 count_starbase_modules = { type = missile_battery count > 7 } }		
 ####
 	}
+
 	show_in_tech = "tech_missiles_1"
 }
 
@@ -298,6 +347,7 @@ pd_battery = {
 	
 	resources = {
 		category = starbase_modules
+#Calvitix ressources balance
 		cost = { 
 			trigger = {
 				from = {
@@ -366,6 +416,7 @@ large_battery = {
 	
 	resources =	{
 		category = starbase_modules
+#Calvitix ressources balance
 		cost = { 
 			trigger = {
 				from = {
@@ -439,15 +490,18 @@ hangar_bay = {
 		owner = { has_technology = tech_strike_craft_1 }
 	}
 
+##NSC
 	possible = {
 		custom_tooltip = {
 			fail_text = "starbase_h_limit.tooltip.fail"
 			count_starbase_modules = { count < 6 type = hangar_bay }
 		}
 	}
+###
 
 	resources = {
 		category = starbase_modules
+#Calvitix ressources balance
 		cost = { 
 			trigger = {
 				from = {
@@ -468,17 +522,19 @@ hangar_bay = {
 			alloys = 50
 		}
 
-		upkeep = { alloys = 1 energy = 1 }
+		upkeep = { alloys = 1 energy = 1 } ##NSC
 	}
 
 	station_modifier = {
+		ship_hull_mult = 0.10
+		ship_armor_mult = 0.10
 		starbase_trade_protection_range_add = 1
-		starbase_trade_protection_add = 5
+		starbase_trade_protection_add = 10
 	}
 
 	ai_build_outside_chokepoint = yes
 	ai_weight = {
-		weight = 40
+		weight = 40 #10
 		modifier = {
 			factor = 3
 			exists = owner
@@ -527,6 +583,7 @@ xl_battery = {
 	
 	resources = {
 		category = starbase_modules
+#Calvitix ressources balance
 		cost = { 
 			trigger = {
 				from = {
@@ -615,6 +672,7 @@ titanic_battery = {
 
 	resources = {
 		category = starbase_modules
+#Calvitix ressources balance
 		cost = { 
 			trigger = {
 				from = {
@@ -694,6 +752,7 @@ shield_module = {
 	construction_days = 180
 	resources = {
 		category = starbase_modules
+#Calvitix ressources balance
 		cost = { 
 			trigger = {
 				from = {
@@ -745,6 +804,7 @@ armor_module = {
 	construction_days = 180
 	resources = {
 		category = starbase_modules
+#Calvitix ressources balance
 		cost = { 
 			trigger = {
 				from = {
@@ -822,6 +882,7 @@ solar_panel_network = {
 
 	resources = {
 		category = starbase_modules
+#Calvitix ressources balance
 		cost = { 
 			trigger = {
 				from = {
@@ -841,9 +902,8 @@ solar_panel_network = {
 			alloys = 50
 		}
 
-
 		produces = {
-			energy = 4
+			energy = 6
 		}
 
 		produces = {
@@ -859,13 +919,13 @@ solar_panel_network = {
 					is_active_resolution = "resolution_galacticstudies_extradimensional_experimentation"
 				}
 			}
-			energy = 3
+			energy = 6
 		}
 	}
 
 	ai_build_at_chokepoint = no
 	ai_weight = {
-		weight = 40
+		weight = 40 #15
 #CALVITIX
 		modifier = {
 			factor = 0.9
@@ -907,6 +967,7 @@ trading_hub = {
 
 	resources = {
 		category = starbase_modules
+#Calvitix ressources balance
 		cost = { 
 			trigger = {
 				from = {
@@ -925,7 +986,6 @@ trading_hub = {
 			}
 			alloys = 50
 		}
-
 		upkeep = {
 			energy = 1
 		}
@@ -937,7 +997,7 @@ trading_hub = {
 
 	ai_build_at_chokepoint = no
 	ai_weight = {
-		weight = 20
+		weight = 20 #15
 		modifier = {
 			factor = 5
 			NOT = { has_starbase_module = trading_hub }
@@ -957,6 +1017,7 @@ space_power_plant = {
 	construction_days = 120
 	resources = {
 		category = starbase_modules
+#Calvitix ressources balance
 		cost = { 
 			trigger = {
 				from = {
@@ -998,6 +1059,7 @@ asteroid_mining = {
 	construction_days = 120
 	resources =	{
 		category = starbase_modules
+#Calvitix ressources balance
 		cost = { 
 			trigger = {
 				from = {
@@ -1041,6 +1103,7 @@ orbital_lab = {
 	construction_days = 120
 	resources = {
 		category = starbase_modules
+#Calvitix ressources balance
 		cost = { 
 			trigger = {
 				from = {
@@ -1085,6 +1148,7 @@ space_foundry = {
 	construction_days = 120
 	resources = {
 		category = starbase_modules
+#Calvitix ressources balance
 		cost = { 
 			trigger = {
 				from = {
@@ -1128,6 +1192,7 @@ space_factory = {
 	construction_days = 120
 	resources = {
 		category = starbase_modules
+#Calvitix ressources balance
 		cost = { 
 			trigger = {
 				from = {
@@ -1175,6 +1240,7 @@ security_branch_office = {
 	construction_days = 120
 	resources = {
 		category = starbase_modules
+#Calvitix ressources balance
 		cost = { 
 			trigger = {
 				from = {

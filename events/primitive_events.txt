@@ -1,4 +1,12 @@
-#########################################
+
+# Original File
+#
+# Calvitix Check 3.0.1  17/04/2021
+#
+# Merge with JLPicard
+#
+#
+#########################################œ
 #
 # Events concerning Primitive Aliens
 #
@@ -47,7 +55,7 @@ country_event = {
 				"null"
 			}
 		}
-		capital_scope = {
+		home_planet = {
 			if = {
 				limit = {
 					exists = observation_outpost_owner
@@ -66,7 +74,7 @@ country_event = {
 	title = "primitive.11.name"
 	desc = "primitive.11.desc"
 	picture = GFX_evt_metropolis
-	location = FROM
+	location = from # Correction de bug
 
 	is_triggered_only = yes
 
@@ -118,7 +126,7 @@ country_event = {
 			}
 		}
 			
-		capital_scope = {
+		home_planet = {
 			if = {
 				limit = {
 					exists = observation_outpost_owner
@@ -137,7 +145,7 @@ country_event = {
 	title = "primitive.13.name"
 	desc = "primitive.13.desc"
 	picture = GFX_evt_metropolis
-	location = FROM
+	location = from # Correction de bug
 
 	is_triggered_only = yes
 
@@ -188,7 +196,7 @@ country_event = {
 				"null"
 			}
 		}
-		capital_scope = {
+		home_planet = {
 			create_fleet = {
 				name = "NAME_Space_Station"
 				effect = {
@@ -218,7 +226,7 @@ country_event = {
 	title = "primitive.15.name"
 	desc = "primitive.15.desc"
 	picture = GFX_evt_satellite_in_orbit
-	location = FROM
+	location = from # Correction de bug
 
 	is_triggered_only = yes
 
@@ -235,10 +243,10 @@ country_event = {
 	trigger = {
 		is_country_type = primitive
 		has_country_flag = early_space_age
-		#exists = home_planet
-		#home_planet = {
-		#	has_observation_outpost = yes
-		#}
+		exists = home_planet
+		home_planet = {
+			has_observation_outpost = yes
+		}
 		NOR = {
 			any_owned_ship = {
 				is_ship_size = primitive_space_station
@@ -261,7 +269,7 @@ country_event = {
 			flag = recently_advanced
 			days = 2160 #60yrs
 		}
-		capital_scope = {
+		home_planet = {
 			create_fleet = {
 				name = "NAME_Space_Station"
 				effect = {
@@ -291,7 +299,7 @@ country_event = {
 	title = "primitive.19.name"
 	desc = "primitive.19.desc"
 	picture = GFX_evt_satellite_in_orbit
-	location = FROM
+	location = from # Correction de bug
 
 	is_triggered_only = yes
 
@@ -301,7 +309,6 @@ country_event = {
 }
 
 # Entering Space Age (HIDDEN)
-# Ariphaos todo: Make 180 the main event instead.
 country_event = {
 	id = primitive.16
 	hide_window = yes
@@ -322,8 +329,8 @@ country_event = {
 			AND = {
 				NOT = { has_country_flag = recently_advanced }
 				years_passed > 25
-				#exists = home_planet
-				#home_planet = { has_observation_outpost = no }			
+				exists = home_planet
+				home_planet = { has_observation_outpost = no }			
 			}
 		}
 	}
@@ -375,7 +382,7 @@ country_event = {
 			civics = random
 		}
 		set_name = random
-		capital_scope = {
+		home_planet = {
 			if = {
 				limit = {
 					exists = observation_outpost_owner
@@ -388,9 +395,6 @@ country_event = {
 		add_resource = {
 			energy = 500
 			minerals = 1000 # enough for a spaceport and then some
-			alloys = 500 # Starbases cost alloys now.
-			food = 500
-			consumer_goods = 500
 		}
 
 		if = {
@@ -432,21 +436,45 @@ country_event = {
 			
 			if = {
 				limit = { NOT = { is_planet_class = pc_ringworld_habitable } }
-				add_district = district_city
-				add_district = district_city
-				add_district = district_city
-				add_district = district_city
-				add_district = district_farming
-				add_district = district_farming
-				add_district = district_farming
-				add_district = district_mining
-				add_district = district_mining
-				add_district = district_generator
-				add_district = district_generator
+				while = {
+					count = 3
+					add_district = {
+						district_type = district_city
+						ignore_cap = yes
+					}
+				}
+				while = {
+					count = 2
+					add_district = {
+						district_type = district_industrial
+						ignore_cap = yes
+					}
+				}
+				while = {
+					count = 3
+					add_district = {
+						district_type = district_farming
+						ignore_cap = yes
+					}
+				}
+				while = {
+					count = 3
+					add_district = {
+						district_type = district_mining
+						ignore_cap = yes
+					}
+				}
+				while = {
+					count = 3
+					add_district = {
+						district_type = district_generator
+						ignore_cap = yes
+					}
+				}
 
 				add_building = building_research_lab_1
 				add_building = building_foundry_1
-				add_building = building_factory_1
+				add_building = building_commercial_forum
 			}
 			if = {
 				limit = { is_planet_class = pc_ringworld_habitable }
@@ -471,11 +499,11 @@ country_event = {
 				else_if = {
 					limit = {
 						starbase = {
-							NOT = { owner = { is_same_empire = root } } #Aripatch
+							NOT = { owner = { is_same_value = root } }
 						}
 					}	
 					starbase = {
-						owner = { country_event = { id = primitive.180 days = 10 } }
+						owner = { country_event = { id = primitive.180 } }
 					}
 				}
 			}				
@@ -514,16 +542,6 @@ country_event = {
 				has_valid_civic = civic_fanatic_purifiers
 			}
 		}
-		ai_chance = {
-			factor = 10
-			modifier = {
-				factor = 0.1
-				OR = {
-					has_ethic = ethic_fanatic_xenophobe
-					has_ethic = ethic_xenophobe
-				}
-			}
-		}
 
 		if = {
 			limit = {
@@ -546,15 +564,6 @@ country_event = {
 					modifier = opinion_ceded_starbase
 					who = root
 				}
-				capital_scope.solar_system = {
-					every_system_planet = {
-						limit = {
-							exists = owner
-							owner = { is_same_empire = root }
-						}
-						set_owner = root.from			
-					}
-				}
 			}
 		}
 	}
@@ -567,16 +576,6 @@ country_event = {
 				has_valid_civic = civic_hive_devouring_swarm
 				has_valid_civic = civic_fanatic_purifiers
 			}
-		}
-		ai_chance = {
-			factor = 10
-			modifier = {
-				factor = 0.1
-				OR = {
-					has_ethic = ethic_fanatic_xenophile
-					has_ethic = ethic_xenophile
-				}
-			}	
 		}
 
 		if = {
@@ -628,23 +627,27 @@ country_event = {
 	title = "primitive.17.name"
 	desc = "primitive.17.desc"
 	picture = GFX_evt_satellite_in_orbit
-	location = FROM
+	location = from.home_planet # Correction de bug
 
 	is_triggered_only = yes
 
 
 	immediate = {
 		FROM = {
-			capital_scope = {
+			home_planet = {
 				observation_outpost = {
 					dismantle = yes
 				}
 			}
 		}
+		add_intel = {
+			who = from
+			amount = 100
+		}
 	}
 
 	option = {
-		name = primitive.15.a
+		name = primitive.17.a # Correction de bug
 	}
 }
 
@@ -662,7 +665,7 @@ country_event = {
 	}
 
 	mean_time_to_happen = {
-		years = 1000
+		years = 160
 	}
 
 	immediate = {
@@ -692,7 +695,7 @@ country_event = {
 		}
 		set_timed_country_flag = {
 			flag = recently_advanced
-			days = 360000 # 1,000yrs
+			days = 2160 #60yrs
 		}
 		set_primitive_age_effect = { primitive_age = iron_age }
 		change_country_flag = {
@@ -711,7 +714,7 @@ country_event = {
 				"null"
 			}
 		}
-		capital_scope = {
+		home_planet = {
 			if = {
 				limit = {
 					exists = observation_outpost_owner
@@ -730,7 +733,7 @@ country_event = {
 	title = "primitive.21.name"
 	desc = "primitive.21.desc"
 	picture = GFX_evt_medieval_alien_civilization
-	location = FROM
+	location = from # Correction de bug
 
 	is_triggered_only = yes
 
@@ -751,13 +754,13 @@ country_event = {
 	}
 
 	mean_time_to_happen = {
-		years = 1000
+		years = 160
 	}
 
 	immediate = {
 		set_timed_country_flag = {
 			flag = recently_advanced
-			days = 360000 # 1,000yrs
+			days = 2160 #60yrs
 		}
 		set_primitive_age_effect = { primitive_age = late_medieval_age }
 		change_country_flag = {
@@ -776,7 +779,7 @@ country_event = {
 				"null"
 			}
 		}
-		capital_scope = {
+		home_planet = {
 			if = {
 				limit = {
 					exists = observation_outpost_owner
@@ -795,7 +798,7 @@ country_event = {
 	title = "primitive.23.name"
 	desc = "primitive.23.desc"
 	picture = GFX_evt_medieval_alien_civilization
-	location = FROM
+	location = from # Correction de bug
 
 	is_triggered_only = yes
 
@@ -841,7 +844,7 @@ country_event = {
 				"null"
 			}
 		}
-		capital_scope = {
+		home_planet = {
 			if = {
 				limit = {
 					exists = observation_outpost_owner
@@ -860,7 +863,7 @@ country_event = {
 	title = "primitive.25.name"
 	desc = "primitive.25.desc"
 	picture = GFX_evt_medieval_alien_civilization
-	location = FROM
+	location = from # Correction de bug
 
 	is_triggered_only = yes
 
@@ -906,7 +909,7 @@ country_event = {
 				"null"
 			}
 		}
-		capital_scope = {
+		home_planet = {
 			if = {
 				limit = {
 					exists = observation_outpost_owner
@@ -925,7 +928,7 @@ country_event = {
 	title = "primitive.27.name"
 	desc = "primitive.27.desc"
 	picture = GFX_evt_medieval_alien_civilization
-	location = FROM
+	location = from # Correction de bug
 
 	is_triggered_only = yes
 
@@ -972,7 +975,7 @@ country_event = {
 				"null"
 			}
 		}
-		capital_scope = {
+		home_planet = {
 			clear_blockers = yes
 			add_deposit = d_decrepit_dwellings
 			add_deposit = d_failing_infrastructure
@@ -994,7 +997,7 @@ country_event = {
 	title = "primitive.29.name"
 	desc = "primitive.29.desc"
 	picture = GFX_evt_medieval_alien_civilization
-	location = FROM
+	location = from # Correction de bug
 
 	is_triggered_only = yes
 
@@ -1015,7 +1018,7 @@ country_event = {
 	}
 
 	mean_time_to_happen = {
-		years = 1000
+		years = 160
 	}
 
 	immediate = {
@@ -1045,7 +1048,7 @@ country_event = {
 		}
 		set_timed_country_flag = {
 			flag = recently_advanced
-			days = 360000 # 1,000yrs
+			days = 2160 #60yrs
 		}
 		set_primitive_age_effect = { primitive_age = bronze_age }
 		change_country_flag = {
@@ -1064,7 +1067,7 @@ country_event = {
 				"null"
 			}
 		}
-		capital_scope = {
+		home_planet = {
 			if = {
 				limit = {
 					exists = observation_outpost_owner
@@ -1083,7 +1086,7 @@ country_event = {
 	title = "primitive.31.name"
 	desc = "primitive.31.desc"
 	picture = GFX_evt_medieval_alien_civilization
-	location = FROM
+	location = from # Correction de bug
 
 	is_triggered_only = yes
 
@@ -1104,14 +1107,14 @@ planet_event = {
 	}
 
 	trigger = {
-		NOT = { is_planet_class = pc_habitat }
-		NOT = { is_planet_class = pc_ringworld_habitable }
+		is_artificial = no
 		owner = {
 			is_country_type = primitive
 			OR = {
 				has_country_flag = atomic_age
 				has_country_flag = early_space_age
 			}
+			NOT = { has_country_flag = suppress_vanilla_primitive_nuking }
 		}
 		OR = {
 			has_observation_outpost = no
@@ -1205,7 +1208,7 @@ country_event = {
 	title = "primitive.131.name"
 	desc = "primitive.131.desc"
 	picture = GFX_evt_nuclear_explosion
-	location = FROM
+	location = from # Correction de bug
 
 	is_triggered_only = yes
 
@@ -1236,7 +1239,7 @@ country_event = {
 	title = "primitive.131.name"
 	desc = "primitive.133.desc"
 	picture = GFX_evt_nuclear_explosion
-	location = FROM
+	location = from # Correction de bug
 
 	is_triggered_only = yes
 
@@ -1305,7 +1308,7 @@ country_event = {
 	title = "primitive.171.name"
 	desc = "primitive.171.desc"
 	picture = GFX_evt_landing_ship
-	location = FROM
+	location = from # Correction de bug
 	trackable = yes
 
 	is_triggered_only = yes
@@ -1331,7 +1334,7 @@ ship_event = {
 	title = "PROJECT_COMPLETE"
 	desc = "primitive.172.desc"
 	picture = GFX_evt_landing_ship
-	location = FROMFROM
+	location = fromfrom # Correction de bug
 
 	is_triggered_only = yes
 

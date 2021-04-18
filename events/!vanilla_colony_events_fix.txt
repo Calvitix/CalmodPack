@@ -6,7 +6,10 @@
 # Written by Henrik Eklund
 #
 ############################
-
+# Calvitix
+# Check 3.0.1,  16/04/2021
+#MERGE WITH Planet Diversity
+#
 namespace = colony
 
 @tier1influencecontact = 7
@@ -178,6 +181,8 @@ planet_event = {
 	
 	trigger = {
 		num_pops > 0
+		habitable_planet = yes
+		uses_district_set = standard
 		NOR = {
 			has_planet_flag = abandoned_terraforming_planet
 			has_planet_flag = colony_event
@@ -188,6 +193,7 @@ planet_event = {
 			is_planet_class = pc_city
 			is_planet_class = pc_pdshroud
 			is_planet_class = pc_relic
+			is_planet_class = pc_milarc_relic
 			is_planet_class = pc_floating
 			is_planet_class = pc_crystal
 			is_planet_class = pc_graveyard
@@ -204,15 +210,21 @@ planet_event = {
 			is_planet_class = pc_geothermal
 			is_planet_class = pc_biolumen
 			is_planet_class = pc_ecocity
+			is_planet_class = pc_palacearc
+			is_planet_class = pc_capitalarc
 			is_planet_class = pc_necropolis
+			is_planet_class = pc_machine_necropolis
+			is_planet_class = pc_necrohive
 			is_planet_class = pc_irradiated
 			is_planet_class = pc_karst
 			is_planet_class = pc_primal
 			is_planet_class = pc_aquatic
 			is_planet_class = pc_salt
+			is_planet_class = pc_aquifer
 			is_planet_class = pc_coral
 			is_planet_class = pc_storm
 			is_planet_class = pc_rogue
+			is_planet_class = pc_lichen
 			is_planet_class = pc_eyeball
 			is_planet_class = pc_glacio
 			is_planet_class = pc_lanthanide
@@ -220,7 +232,11 @@ planet_event = {
 			is_planet_class = pc_megaflorahive
 			is_planet_class = pc_megafloratol
 			is_planet_class = pc_bioforge
+			is_planet_class = pc_biofort
+			is_planet_class = pc_biocapital
 			is_planet_class = pc_machine_factory
+			is_planet_class = pc_machine_capital
+			is_planet_class = pc_machine_fort
 			is_planet_class = pc_pd_barren_cold_hab
 			is_planet_class = pc_pd_barren_hab
 			is_planet_class = pc_pd_frozen_hab
@@ -460,8 +476,8 @@ planet_event = {
 	id = colony.102
 	title = "colony.102.name"
 	desc = "colony.102.desc"
-	picture = GFX_evt_burning_settlement
-	show_sound = event_air_raid_siren
+	picture = GFX_evt_burning_city
+	show_sound = event_burning_city
 	location = ROOT
 	
 	pre_triggers = {
@@ -536,7 +552,7 @@ planet_event = {
 	option = {
 		name = colony.103.b
 		trigger = {
-			count_pops = {
+			count_owned_pop = {
 				limit = { is_robot_pop = no }
 				count < 9
 			}
@@ -550,11 +566,11 @@ planet_event = {
 		name = colony.103.b
 		trigger = {
 			AND = {
-				count_pops = {
+				count_owned_pop = {
 					limit = { is_robot_pop = no }
 					count > 8
 				}
-				count_pops = {
+				count_owned_pop = {
 					limit = { is_robot_pop = no }
 					count < 17
 				}
@@ -568,7 +584,7 @@ planet_event = {
 	option = {
 		name = colony.103.b
 		trigger = {
-			count_pops = {
+			count_owned_pop = {
 				limit = { is_robot_pop = no }
 				count > 16
 			}
@@ -687,17 +703,17 @@ planet_event = {
 			}
 			create_army = {
 				name = "NAME_Deformed_Creatures"
-				owner = last_created
+				owner = last_created_country
 				type = "mutant_army"
 			}
 			create_army = {
 				name = "NAME_Twisted_Beasts"
-				owner = last_created
+				owner = last_created_country
 				type = "mutant_army"
 			}
 			create_army = {
 				name = "NAME_Mutated_Horrors"
-				owner = last_created
+				owner = last_created_country
 				type = "mutant_army"
 			}
 		}
@@ -772,6 +788,7 @@ planet_event = {
 		}
 		name = colony.107.a
 		change_pc = pc_nuked
+		hidden_effect = { set_planet_flag = nuked_planet_anomalies_disabled }
 		if = { #Destroys colony if no planet pops can live on Tomb Worlds
 			limit = {
 				NOT = {
@@ -814,7 +831,8 @@ planet_event = {
 			}
 		}
 		name = EXCELLENT
-		change_pc = pc_nuked
+		hidden_effect = { change_pc = pc_nuked }
+		set_planet_flag = nuked_planet_anomalies_disabled		
 		hidden_effect = {
 			remove_modifier = "abandoned_terraforming"
 			remove_planet_flag = pdaquapicture

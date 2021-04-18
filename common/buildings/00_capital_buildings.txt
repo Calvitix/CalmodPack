@@ -1,7 +1,18 @@
-#CALVITIX Merge with Starnet OK
+# Original File
+#
+# Calvitix Check 3.0.1  17/04/2021
+# in 3.0, all Ai_weight are deleted
+#
+# Merge with Starnet AI
+# 
+#
 #############
 # Capital buildings
 #############
+@buildings_t1 = 1
+@buildings_t2 = 2
+@buildings_t3 = 3
+@buildings_t4 = 4
 
 # Colony
 building_colony_shelter = {
@@ -10,6 +21,7 @@ building_colony_shelter = {
 	can_demolish = no
 	can_be_ruined = no
 	can_be_disabled = no
+	position_priority = 0
 
 	category = government
 
@@ -37,6 +49,7 @@ building_colony_shelter = {
 	planet_modifier = {
 		planet_housing_add = 3
 		planet_amenities_add = 3
+		planet_max_buildings_add = @buildings_t1
 	}
 
 	triggered_planet_modifier = {
@@ -78,10 +91,6 @@ building_colony_shelter = {
 		}
 		text = job_roboticist_effect_desc
 	}
-
-	ai_weight = {
-		weight = 1
-	}
 }
 
 # Planetary Administration
@@ -92,6 +101,7 @@ building_capital = {
 	can_demolish = no
 	can_be_ruined = no
 	can_be_disabled = no
+	position_priority = 0
 
 	category = government
 
@@ -145,6 +155,8 @@ building_capital = {
 		job_enforcer_add = 1
 		planet_housing_add = 5
 		planet_amenities_add = 5
+		planet_max_buildings_add = @buildings_t2
+		planet_max_branch_office_buildings_add = 1
 	}
 
 	triggered_planet_modifier = {
@@ -239,6 +251,17 @@ building_capital = {
 		}
 	}
 
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_technology = tech_capital_productivity_1 }
+		}
+		modifier = {
+			planet_jobs_upkeep_mult = 0.1
+			planet_jobs_produces_mult = 0.1
+		}
+	}
+
 	resources = {
 		category = planet_buildings
 		cost = {
@@ -316,14 +339,6 @@ building_capital = {
 	triggered_desc = {
 		text = job_enforcer_effect_desc
 	}
-
-	ai_weight = {
-		weight = 1000 # 100 get rid of the colony malus asap
-		modifier = {
-			factor = 0.25
-			owner = { has_resource = { type = minerals amount < 700 } }  # calvitix 500
-		}#This is here to prevent the AI from queuing up to buy this building when it could really do with another mineral district
-	}
 }
 
 # Major Capital
@@ -334,6 +349,7 @@ building_major_capital = {
 	can_demolish = no
 	can_be_ruined = no
 	can_be_disabled = no
+	position_priority = 0
 
 	category = government
 
@@ -383,6 +399,8 @@ building_major_capital = {
 		job_enforcer_add = 2
 		planet_housing_add = 8
 		planet_amenities_add = 8
+		planet_max_buildings_add = @buildings_t3
+		planet_max_branch_office_buildings_add = 2
 	}
 
 	triggered_planet_modifier = {
@@ -478,6 +496,28 @@ building_major_capital = {
 		}
 	}
 
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_technology = tech_capital_productivity_1 }
+		}
+		modifier = {
+			planet_jobs_upkeep_mult = 0.1
+			planet_jobs_produces_mult = 0.1
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_technology = tech_capital_productivity_2 }
+		}
+		modifier = {
+			planet_jobs_upkeep_mult = 0.1
+			planet_jobs_produces_mult = 0.1
+		}
+	}
+
 	resources = {
 		category = planet_buildings
 		cost = {
@@ -569,14 +609,6 @@ building_major_capital = {
 	upgrades = {
 		"building_system_capital"
 	}
-
-	ai_weight = {
-		weight = 30
-		modifier = {
-			factor = 0.25
-			owner = { has_resource = { type = minerals amount < 1000 } }
-		}#This is here to prevent the AI from queuing up to buy this building when it could really do with another mineral district
-	}
 }
 
 building_system_capital = {
@@ -586,6 +618,7 @@ building_system_capital = {
 	can_demolish = no
 	can_be_ruined = no
 	can_be_disabled = no
+	position_priority = 0
 
 	category = government
 
@@ -636,6 +669,8 @@ building_system_capital = {
 		job_enforcer_add = 3
 		planet_housing_add = 12
 		planet_amenities_add = 12
+		planet_max_buildings_add = @buildings_t4
+		planet_max_branch_office_buildings_add = 3
 	}
 
 	triggered_planet_modifier = {
@@ -731,6 +766,39 @@ building_system_capital = {
 		}
 	}
 
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_technology = tech_capital_productivity_1 }
+		}
+		modifier = {
+			planet_jobs_upkeep_mult = 0.1
+			planet_jobs_produces_mult = 0.1
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_technology = tech_capital_productivity_2 }
+		}
+		modifier = {
+			planet_jobs_upkeep_mult = 0.1
+			planet_jobs_produces_mult = 0.1
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_technology = tech_capital_productivity_3 }
+		}
+		modifier = {
+			planet_jobs_upkeep_mult = 0.1
+			planet_jobs_produces_mult = 0.1
+		}
+	}
+
 	resources = {
 		category = planet_buildings
 		cost = {
@@ -809,12 +877,8 @@ building_system_capital = {
 		text = job_enforcer_effect_desc
 	}
 
-	ai_weight = {
-		weight = 20
-		modifier = {
-			factor = 0.25
-			owner = { has_resource = { type = minerals amount < 2000 } }
-		}#This is here to prevent the AI from queuing up to buy this building when it could really do with another mineral district
+	upgrades = {
+		building_imperial_capital
 	}
 }
 
@@ -829,6 +893,7 @@ building_deployment_post = {
 	can_demolish = no
 	can_be_ruined = no
 	can_be_disabled = no
+	position_priority = 0
 
 	category = government
 
@@ -851,12 +916,14 @@ building_deployment_post = {
 	}
 
 	planet_modifier = {
-		planet_housing_add = 5
-		planet_amenities_add = 5
+		planet_housing_add = 3
+		planet_amenities_add = 8
 		job_replicator_add = 2
 		job_patrol_drone_add = 1
-		job_maintenance_drone_add = 1
+		job_maintenance_drone_add = 2
+		planet_max_buildings_add = @buildings_t1
 	}
+
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
@@ -893,10 +960,6 @@ building_deployment_post = {
 	triggered_desc = {
 		text = job_patrol_drone_effect_desc
 	}
-
-	ai_weight = {
-		weight = 100 #1
-	}
 }
 
 # Administrative Array
@@ -907,6 +970,7 @@ building_machine_capital = {
 	can_demolish = no
 	can_be_ruined = no
 	can_be_disabled = no
+	position_priority = 0
 
 	category = government
 
@@ -959,11 +1023,12 @@ building_machine_capital = {
 	}
 
 	planet_modifier = {
-		planet_housing_add = 8
-		planet_amenities_add = 8
+		planet_housing_add = 5
+		planet_amenities_add = 10
 		job_replicator_add = 2
 		job_patrol_drone_add = 1
-		job_maintenance_drone_add = 2
+		job_maintenance_drone_add = 3
+		planet_max_buildings_add = @buildings_t2
 	}
 
 	triggered_planet_modifier = {
@@ -974,6 +1039,17 @@ building_machine_capital = {
 		modifier = {
 			job_replicator_add = -1
 			job_maintenance_drone_add = 1
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_technology = tech_capital_productivity_1 }
+		}
+		modifier = {
+			planet_jobs_upkeep_mult = 0.1
+			planet_jobs_produces_mult = 0.1
 		}
 	}
 
@@ -1002,14 +1078,6 @@ building_machine_capital = {
 	triggered_desc = {
 		text = job_maintenance_drone_effect_desc
 	}
-
-	ai_weight = {
-		weight = 50
-		modifier = {
-			factor = 0.25
-			owner = { has_resource = { type = minerals amount < 500 } }
-		}#This is here to prevent the AI from queuing up to buy this building when it could really do with another mineral district
-	}
 }
 
 # Planetary Processor
@@ -1020,6 +1088,7 @@ building_machine_major_capital = {
 	can_demolish = no
 	can_be_ruined = no
 	can_be_disabled = no
+	position_priority = 0
 
 	category = government
 
@@ -1063,11 +1132,12 @@ building_machine_major_capital = {
 	}
 
 	planet_modifier = {
-		planet_housing_add = 10
-		planet_amenities_add = 10
+		planet_housing_add = 8
+		planet_amenities_add = 12
 		job_replicator_add = 2
 		job_patrol_drone_add = 2
-		job_maintenance_drone_add = 3
+		job_maintenance_drone_add = 4
+		planet_max_buildings_add = @buildings_t3
 	}
 
 	triggered_planet_modifier = {
@@ -1078,6 +1148,28 @@ building_machine_major_capital = {
 		modifier = {
 			job_replicator_add = -1
 			job_maintenance_drone_add = 1
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_technology = tech_capital_productivity_1 }
+		}
+		modifier = {
+			planet_jobs_upkeep_mult = 0.1
+			planet_jobs_produces_mult = 0.1
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_technology = tech_capital_productivity_2 }
+		}
+		modifier = {
+			planet_jobs_upkeep_mult = 0.1
+			planet_jobs_produces_mult = 0.1
 		}
 	}
 
@@ -1106,14 +1198,6 @@ building_machine_major_capital = {
 	upgrades = {
 		"building_machine_system_capital"
 	}
-
-	ai_weight = {
-		weight = 300 #30
-		modifier = {
-			factor = 0.25
-			owner = { has_resource = { type = minerals amount < 1000 } }
-		}#This is here to prevent the AI from queuing up to buy this building when it could really do with another mineral district
-	}
 }
 
 # Primary Nexus
@@ -1124,6 +1208,7 @@ building_machine_system_capital = {
 	can_demolish = no
 	can_be_ruined = no
 	can_be_disabled = no
+	position_priority = 0
 
 	category = government
 
@@ -1169,10 +1254,11 @@ building_machine_system_capital = {
 
 	planet_modifier = {
 		planet_housing_add = 12
-		planet_amenities_add = 12
+		planet_amenities_add = 18
 		job_replicator_add = 2
 		job_patrol_drone_add = 3
-		job_maintenance_drone_add = 4
+		job_maintenance_drone_add = 5
+		planet_max_buildings_add = @buildings_t4
 	}
 	triggered_planet_modifier = {
 		potential = {
@@ -1201,6 +1287,39 @@ building_machine_system_capital = {
 		}
 	}
 
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_technology = tech_capital_productivity_1 }
+		}
+		modifier = {
+			planet_jobs_upkeep_mult = 0.1
+			planet_jobs_produces_mult = 0.1
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_technology = tech_capital_productivity_2 }
+		}
+		modifier = {
+			planet_jobs_upkeep_mult = 0.1
+			planet_jobs_produces_mult = 0.1
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_technology = tech_capital_productivity_3 }
+		}
+		modifier = {
+			planet_jobs_upkeep_mult = 0.1
+			planet_jobs_produces_mult = 0.1
+		}
+	}
+
 	resources = {
 		category = planet_buildings
 		cost = {
@@ -1223,12 +1342,8 @@ building_machine_system_capital = {
 		text = job_patrol_drone_effect_desc
 	}
 
-	ai_weight = {
-		weight = 20
-		modifier = {
-			factor = 0.25
-			owner = { has_resource = { type = minerals amount < 2000 } }
-		}#This is here to prevent the AI from queuing up to buy this building when it could really do with another mineral district
+	upgrades = {
+		"building_imperial_machine_capital"
 	}
 }
 
@@ -1244,6 +1359,7 @@ building_hive_capital = {
 	can_demolish = no
 	can_be_ruined = no
 	can_be_disabled = no
+	position_priority = 0
 
 	category = government
 
@@ -1283,11 +1399,23 @@ building_hive_capital = {
 	}
 
 	planet_modifier = {
-		planet_housing_add = 8
+		planet_housing_add = 5
 		planet_amenities_add = 8
 		job_synapse_drone_add = 2
 		job_maintenance_drone_add = 2
 		job_patrol_drone_add = 1
+		planet_max_buildings_add = @buildings_t2
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_technology = tech_capital_productivity_1 }
+		}
+		modifier = {
+			planet_jobs_upkeep_mult = 0.1
+			planet_jobs_produces_mult = 0.1
+		}
 	}
 
 	resources = {
@@ -1311,10 +1439,6 @@ building_hive_capital = {
 	triggered_desc = {
 		text = job_patrol_drone_effect_desc
 	}
-
-	ai_weight = {
-		weight = 100 #1
-	}
 }
 
 # Hive Nexus
@@ -1325,6 +1449,7 @@ building_hive_major_capital = {
 	can_demolish = no
 	can_be_ruined = no
 	can_be_disabled = no
+	position_priority = 0
 
 	category = government
 
@@ -1355,6 +1480,10 @@ building_hive_major_capital = {
 		building_ancient_palace
 	}
 
+	upgrades = {
+		"building_imperial_hive_capital"
+	}
+
 	allow = {
 		num_pops >= 40
 	}
@@ -1368,11 +1497,45 @@ building_hive_major_capital = {
 	}
 
 	planet_modifier = {
-		planet_housing_add = 15
-		planet_amenities_add = 15
+		planet_housing_add = 10
+		planet_amenities_add = 12
 		job_synapse_drone_add = 3
 		job_maintenance_drone_add = 5
 		job_patrol_drone_add = 2
+		planet_max_buildings_add = @buildings_t4
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_technology = tech_capital_productivity_1 }
+		}
+		modifier = {
+			planet_jobs_upkeep_mult = 0.1
+			planet_jobs_produces_mult = 0.1
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_technology = tech_capital_productivity_2 }
+		}
+		modifier = {
+			planet_jobs_upkeep_mult = 0.1
+			planet_jobs_produces_mult = 0.1
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_technology = tech_capital_productivity_3 }
+		}
+		modifier = {
+			planet_jobs_upkeep_mult = 0.1
+			planet_jobs_produces_mult = 0.1
+		}
 	}
 
 	resources = {
@@ -1396,14 +1559,6 @@ building_hive_major_capital = {
 	triggered_desc = {
 		text = job_patrol_drone_effect_desc
 	}
-
-	ai_weight = {
-		weight = 200 #20
-		modifier = {
-			factor = 0.25
-			owner = { has_resource = { type = minerals amount < 1000 } }
-		}#This is here to prevent the AI from queuing up to buy this building when it could really do with another mineral district
-	}
 }
 
 #############
@@ -1417,6 +1572,8 @@ building_hab_capital = {
 	can_demolish = no
 	can_be_ruined = no
 	can_be_disabled = no
+	position_priority = 0
+
 	icon = building_capital
 
 	category = government
@@ -1437,11 +1594,38 @@ building_hab_capital = {
 			energy = 3
 			alloys = 5
 		}
+		upkeep = {
+			trigger = { owner = { has_swapped_tradition = tr_domination_adopt_void } }
+			alloys = -1
+		}
 	}
 
 	planet_modifier = {
 		planet_housing_add = 3
 		planet_amenities_add = 3
+		planet_max_buildings_add = @buildings_t1
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				has_non_swapped_tradition = tr_domination_imperious_architecture
+			}
+		}
+		modifier = {
+			planet_housing_add = 1
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_swapped_tradition = tr_prosperity_void_works }
+		}
+		modifier = {
+			 planet_max_buildings_add = 1
+		}
 	}
 
 	triggered_planet_modifier = {
@@ -1488,7 +1672,8 @@ building_hab_capital = {
 			exists = owner
 			owner = { is_hive_empire = yes }
 		}
-		job_synapse_drone_add = 1
+		job_synapse_drone_add = 2
+		planet_amenities_add = 3
 	}
 
 	triggered_planet_modifier = {
@@ -1498,8 +1683,11 @@ building_hab_capital = {
 		}
 		job_coordinator_add = 1
 		job_replicator_add = 1
+		job_maintenance_drone_add = 2
+		planet_amenities_add = 3
 	}
-	
+		
+### Mod ?
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
@@ -1511,7 +1699,7 @@ building_hab_capital = {
 			planet_housing_add = 1
 		}
 	}
-
+###
 	triggered_desc = {
 		trigger = {
 			exists = owner
@@ -1560,6 +1748,14 @@ building_hab_capital = {
 	triggered_desc = {
 		trigger = {
 			exists = owner
+			owner = { is_machine_empire = yes }
+		}
+		text = job_maintenance_drone_effect_desc
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
 			owner = { is_hive_empire = yes }
 		}
 		text = job_synapse_drone_effect_desc
@@ -1567,10 +1763,6 @@ building_hab_capital = {
 
 	upgrades = {
 		"building_hab_major_capital"
-	}
-
-	ai_weight = {
-		weight = 100 #1
 	}
 }
 
@@ -1583,6 +1775,8 @@ building_hab_major_capital = {
 	can_demolish = no
 	can_be_ruined = no
 	can_be_disabled = no
+	position_priority = 0
+
 	icon = building_major_capital
 
 	category = government
@@ -1616,14 +1810,42 @@ building_hab_major_capital = {
 			minerals = @b2_minerals
 		}
 		upkeep = {
-			energy = @b2_upkeep
+			energy = 3
 			alloys = 5
+		}
+		upkeep = {
+			trigger = { owner = { has_swapped_tradition = tr_domination_adopt_void } }
+			alloys = -1
 		}
 	}
 
 	planet_modifier = {
 		planet_housing_add = 5
 		planet_amenities_add = 5
+		planet_max_buildings_add = @buildings_t2
+		planet_max_branch_office_buildings_add = 1
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				has_non_swapped_tradition = tr_domination_imperious_architecture
+			}
+		}
+		modifier = {
+			planet_housing_add = 1
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_swapped_tradition = tr_prosperity_void_works }
+		}
+		modifier = {
+			 planet_max_buildings_add = 1
+		}
 	}
 
 	triggered_planet_modifier = {
@@ -1639,7 +1861,8 @@ building_hab_major_capital = {
 			exists = owner
 			owner = { is_hive_empire = yes }
 		}
-		job_synapse_drone_add = 2
+		job_synapse_drone_add = 3
+		planet_amenities_add = 3
 	}
 
 	triggered_planet_modifier = {
@@ -1649,6 +1872,8 @@ building_hab_major_capital = {
 		}
 		job_coordinator_add = 2
 		job_replicator_add = 1
+		job_maintenance_drone_add = 3
+		planet_amenities_add = 3
 	}
 
 	triggered_planet_modifier = {
@@ -1687,7 +1912,6 @@ building_hab_major_capital = {
 			job_executive_add = 2
 		}
 	}
-
 
 	triggered_planet_modifier = {
 		potential = {
@@ -1742,16 +1966,15 @@ building_hab_major_capital = {
 			 planet_max_buildings_add = 2
 		}
 	}
-	
+
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
-			owner = {
-				has_non_swapped_tradition = tr_domination_imperious_architecture
-			}
+			owner = { has_technology = tech_capital_productivity_1 }
 		}
 		modifier = {
-			planet_housing_add = 1
+			planet_jobs_upkeep_mult = 0.1
+			planet_jobs_produces_mult = 0.1
 		}
 	}
 
@@ -1838,17 +2061,17 @@ building_hab_major_capital = {
 	triggered_desc = {
 		trigger = {
 			exists = owner
+			owner = { is_machine_empire = yes }
+		}
+		text = job_maintenance_drone_effect_desc
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
 			owner = { is_hive_empire = yes }
 		}
 		text = job_synapse_drone_effect_desc
-	}
-
-	ai_weight = {
-		weight = 300 #30
-		modifier = {
-			factor = 0.25
-			owner = { has_resource = { type = minerals amount < 500 } }
-		}#This is here to prevent the AI from queuing up to buy this building when it could really do with another mineral district
 	}
 }
 
@@ -1863,6 +2086,8 @@ building_resort_capital = {
 	can_demolish = no
 	can_be_ruined = no
 	can_be_disabled = no
+	position_priority = 0
+
 	icon = building_capital
 
 	category = government
@@ -1890,6 +2115,8 @@ building_resort_capital = {
 		planet_housing_add = 5
 		planet_amenities_add = 5
 		job_entertainer_add = 1
+		planet_max_buildings_add = 5
+		planet_max_branch_office_buildings_add = 1
 	}
 
 	triggered_planet_modifier = {
@@ -1932,7 +2159,8 @@ building_resort_capital = {
 			job_executive_add = 1
 		}
 	}
-	
+
+#### Mod ?	
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
@@ -1944,6 +2172,7 @@ building_resort_capital = {
 			planet_housing_add = 1
 		}
 	}
+####
 
 	triggered_desc = {
 		trigger = {
@@ -1976,10 +2205,6 @@ building_resort_capital = {
 	upgrades = {
 		"building_resort_major_capital"
 	}
-
-	ai_weight = {
-		weight = 100 #1
-	}
 }
 
 # Resort Governing Complex
@@ -1990,6 +2215,8 @@ building_resort_major_capital = {
 	can_demolish = no
 	can_be_ruined = no
 	can_be_disabled = no
+	position_priority = 0
+
 	icon = building_major_capital
 
 	category = government
@@ -2016,7 +2243,7 @@ building_resort_major_capital = {
 	}
 
 	allow = {
-		num_pops >= 10
+		num_pops >= 20
 	}
 
 	resources = {
@@ -2033,6 +2260,8 @@ building_resort_major_capital = {
 		planet_housing_add = 10
 		planet_amenities_add = 10
 		job_entertainer_add = 2
+		planet_max_buildings_add = 11
+		planet_max_branch_office_buildings_add = 2
 	}
 
 	triggered_planet_modifier = {
@@ -2075,16 +2304,15 @@ building_resort_major_capital = {
 			job_executive_add = 1
 		}
 	}
-	
+
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
-			owner = {
-				has_non_swapped_tradition = tr_domination_imperious_architecture
-			}
+			owner = { has_technology = tech_capital_productivity_1 }
 		}
 		modifier = {
-			planet_housing_add = 1
+			planet_jobs_upkeep_mult = 0.1
+			planet_jobs_produces_mult = 0.1
 		}
 	}
 
@@ -2115,10 +2343,6 @@ building_resort_major_capital = {
 		}
 		text = job_executive_effect_desc
 	}
-
-	ai_weight = {
-		weight = 100 #10
-	}
 }
 
 # Thrall-World Capital
@@ -2128,6 +2352,8 @@ building_slave_capital = {
 	can_demolish = no
 	can_be_ruined = no
 	can_be_disabled = no
+	position_priority = 0
+
 	icon = building_capital
 
 	category = government
@@ -2156,6 +2382,8 @@ building_slave_capital = {
 		planet_amenities_add = 5
 		job_slave_overseer_add = 2
 		planet_stability_add = 5
+		planet_max_buildings_add = 5
+		planet_max_branch_office_buildings_add = 1
 	}
 
 	triggered_planet_modifier = {
@@ -2217,10 +2445,6 @@ building_slave_capital = {
 	upgrades = {
 		"building_slave_major_capital"
 	}
-
-	ai_weight = {
-		weight = 100 #1
-	}
 }
 
 # Thrall-World Major Capital
@@ -2231,6 +2455,8 @@ building_slave_major_capital = {
 	can_demolish = no
 	can_be_ruined = no
 	can_be_disabled = no
+	position_priority = 0
+
 	icon = building_major_capital
 
 	category = government
@@ -2249,7 +2475,7 @@ building_slave_major_capital = {
 	}
 
 	allow = {
-		num_pops >= 10
+		num_pops >= 20
 	}
 
 	convert_to = {
@@ -2275,6 +2501,8 @@ building_slave_major_capital = {
 		planet_amenities_add = 10
 		job_slave_overseer_add = 4
 		planet_stability_add = 10
+		planet_max_buildings_add = 11
+		planet_max_branch_office_buildings_add = 2
 	}
 
 	triggered_planet_modifier = {
@@ -2296,10 +2524,19 @@ building_slave_major_capital = {
 			job_executive_add = 2
 		}
 	}
-	
+
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
+			owner = { has_technology = tech_capital_productivity_1 }
+		}
+		modifier = {
+			planet_jobs_upkeep_mult = 0.1
+			planet_jobs_produces_mult = 0.1
+		}
+	}
+
+#mod ?
 			owner = {
 				has_non_swapped_tradition = tr_domination_imperious_architecture
 			}
@@ -2308,6 +2545,17 @@ building_slave_major_capital = {
 			planet_housing_add = 1
 		}
 	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = {
+				NOT = { has_authority = auth_corporate }
+			}
+		}
+		text = job_administrator_effect_desc
+	}
+###
 
 	triggered_desc = {
 		trigger = {
@@ -2332,14 +2580,494 @@ building_slave_major_capital = {
 	triggered_desc = {
 		text = job_slave_overseer_effect_desc
 	}
-
-	ai_weight = {
-		weight = 100 #10
-		modifier = {
-			factor = 0.25
-			owner = { has_resource = { type = minerals amount < 500 } }
-		}#This is here to prevent the AI from queuing up to buy this building when it could really do with another mineral district
-	}
 }
 
 
+# Imperial Capital
+
+building_imperial_capital = {
+	base_buildtime = @b4_time
+	capital = yes
+	can_build = no
+	can_demolish = no
+	can_be_ruined = no
+	can_be_disabled = no
+	position_priority = 0
+
+	category = government
+
+	potential = {
+		exists = owner
+		owner = {
+			is_regular_empire = yes
+			is_galactic_emperor = yes
+		}
+		planet = { is_capital = yes }
+	}
+
+	convert_to = {
+		building_hive_major_capital
+		building_machine_system_capital
+		building_system_capital
+		building_hab_major_capital
+		building_ancient_control_center
+		building_ancient_palace
+	}
+
+	allow = {
+		num_pops >= 80
+	}
+
+	prerequisites = {
+	}
+
+	planet_modifier = {
+		job_enforcer_add = 5
+		planet_housing_add = 18
+		planet_amenities_add = 18
+		planet_max_buildings_add = 11
+		planet_max_branch_office_buildings_add = 3
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				has_non_swapped_tradition = tr_domination_imperious_architecture
+			}
+		}
+		modifier = {
+			planet_housing_add = 1
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_mechanical_empire = yes }
+		}
+		job_roboticist_add = 5
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				NOR = {
+					has_authority = auth_corporate
+					has_civic = civic_exalted_priesthood
+					has_civic = civic_aristocratic_elite
+					has_civic = civic_merchant_guilds
+					has_civic = civic_technocracy
+				}
+			}
+		}
+		modifier = {
+			job_administrator_add = 6
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_authority = auth_corporate }
+		}
+		modifier = {
+			job_executive_add = 6
+		}
+	}
+
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_civic = civic_exalted_priesthood }
+		}
+		modifier = {
+			job_high_priest_add = 3
+			job_administrator_add = 3
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_civic = civic_aristocratic_elite }
+		}
+		modifier = {
+			job_noble_add = 3
+			job_administrator_add = 3
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_civic = civic_technocracy }
+		}
+		modifier = {
+			job_head_researcher_add = 3
+			job_administrator_add = 3
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_civic = civic_merchant_guilds }
+		}
+		modifier = {
+			job_merchant_add = 2
+			job_administrator_add = 2
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_technology = tech_capital_productivity_1 }
+		}
+		modifier = {
+			planet_jobs_upkeep_mult = 0.1
+			planet_jobs_produces_mult = 0.1
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_technology = tech_capital_productivity_2 }
+		}
+		modifier = {
+			planet_jobs_upkeep_mult = 0.1
+			planet_jobs_produces_mult = 0.1
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_technology = tech_capital_productivity_3 }
+		}
+		modifier = {
+			planet_jobs_upkeep_mult = 0.1
+			planet_jobs_produces_mult = 0.1
+		}
+	}
+
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = @b4_minerals
+		}
+		upkeep = {
+			energy = @b4_upkeep
+		}
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = {
+				has_civic = civic_exalted_priesthood
+			}
+		}
+		text = job_high_priest_effect_desc
+	}
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = {
+				has_civic = civic_aristocratic_elite
+			}
+		}
+		text = job_noble_effect_desc
+	}
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = {
+				has_civic = civic_technocracy
+			}
+		}
+		text = job_head_researcher_effect_desc
+	}
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = {
+				has_civic = civic_merchant_guilds
+			}
+		}
+		text = job_merchant_effect_desc
+	}
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = {
+				NOT = { has_authority = auth_corporate }
+				is_regular_empire = yes
+			}
+		}
+		text = job_administrator_effect_desc
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_mechanical_empire = yes }
+		}
+		text = job_roboticist_effect_desc
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = {
+				has_authority = auth_corporate
+			}
+		}
+		text = job_executive_effect_desc
+	}
+	triggered_desc = {
+		text = job_enforcer_effect_desc
+	}
+}
+
+# Imperial Center
+building_imperial_machine_capital = {
+	base_buildtime = @b4_time
+	capital = yes
+	can_build = no
+	can_demolish = no
+	can_be_ruined = no
+	can_be_disabled = no
+	position_priority = 0
+
+	category = government
+
+	potential = {
+		exists = owner
+		owner = {
+			OR = {
+				is_machine_empire = yes
+				is_country_type = ai_empire
+			}
+			is_galactic_emperor = yes
+		}
+		planet = { is_capital = yes }
+	}
+
+	convert_to = {
+		building_hive_major_capital
+		building_machine_system_capital
+		building_system_capital
+		building_hab_major_capital
+		building_ancient_control_center
+		building_ancient_palace
+	}
+
+	allow = {
+		num_pops >= 80
+	}
+
+	prerequisites = {
+	}
+
+	planet_modifier = {
+		planet_housing_add = 18
+		planet_amenities_add = 20
+		job_replicator_add = 4
+		job_patrol_drone_add = 5
+		job_maintenance_drone_add = 6
+		planet_max_buildings_add = 11
+		planet_max_branch_office_buildings_add = 3
+	}
+	triggered_planet_modifier = {
+		potential = {
+			num_pops >= 10
+		}
+		modifier = {
+			job_replicator_add = 1
+		}
+	}
+	triggered_planet_modifier = {
+		potential = {
+			num_pops >= 40
+		}
+		modifier = {
+			job_replicator_add = 1
+		}
+	}
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_civic = civic_machine_assimilator }
+		}
+		modifier = {
+			job_replicator_add = -1
+			job_maintenance_drone_add = 1
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_technology = tech_capital_productivity_1 }
+		}
+		modifier = {
+			planet_jobs_upkeep_mult = 0.1
+			planet_jobs_produces_mult = 0.1
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_technology = tech_capital_productivity_2 }
+		}
+		modifier = {
+			planet_jobs_upkeep_mult = 0.1
+			planet_jobs_produces_mult = 0.1
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_technology = tech_capital_productivity_3 }
+		}
+		modifier = {
+			planet_jobs_upkeep_mult = 0.1
+			planet_jobs_produces_mult = 0.1
+		}
+	}
+
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = @b4_minerals
+		}
+		upkeep = {
+			energy = @b4_upkeep
+		}
+	}
+
+	triggered_desc = {
+		text = job_coordinator_effect_desc
+	}
+
+	triggered_desc = {
+		text = job_replicator_effect_desc
+	}
+
+	triggered_desc = {
+		text = job_patrol_drone_effect_desc
+	}
+}
+
+# Imperial Complex
+building_imperial_hive_capital = {
+	base_buildtime = @b4_time
+	capital = yes
+	can_build = no
+	can_demolish = no
+	can_be_ruined = no
+	can_be_disabled = no
+	position_priority = 0
+
+	category = government
+
+	potential = {
+		exists = owner
+		owner = {
+			OR = {
+				is_hive_empire = yes
+				is_country_type = swarm
+			}
+			is_galactic_emperor = yes
+		}
+		planet = { is_capital = yes }
+	}
+
+	convert_to = {
+		building_hive_major_capital
+		building_machine_system_capital
+		building_system_capital
+		building_hab_major_capital
+		building_ancient_control_center
+		building_ancient_palace
+	}
+
+	allow = {
+		num_pops >= 80
+	}
+
+	prerequisites = {
+	}
+
+	planet_modifier = {
+		planet_housing_add = 20
+		planet_amenities_add = 20
+		job_synapse_drone_add = 5
+		job_maintenance_drone_add = 7
+		job_patrol_drone_add = 4
+		planet_max_buildings_add = 11
+		planet_max_branch_office_buildings_add = 3
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_technology = tech_capital_productivity_1 }
+		}
+		modifier = {
+			planet_jobs_upkeep_mult = 0.1
+			planet_jobs_produces_mult = 0.1
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_technology = tech_capital_productivity_2 }
+		}
+		modifier = {
+			planet_jobs_upkeep_mult = 0.1
+			planet_jobs_produces_mult = 0.1
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_technology = tech_capital_productivity_3 }
+		}
+		modifier = {
+			planet_jobs_upkeep_mult = 0.1
+			planet_jobs_produces_mult = 0.1
+		}
+	}
+
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = @b4_minerals
+		}
+		upkeep = {
+			energy = @b4_upkeep
+		}
+	}
+
+	triggered_desc = {
+		text = job_synapse_drone_effect_desc
+	}
+
+	triggered_desc = {
+		text = job_maintenance_drone_effect_desc
+	}
+
+	triggered_desc = {
+		text = job_patrol_drone_effect_desc
+	}
+}

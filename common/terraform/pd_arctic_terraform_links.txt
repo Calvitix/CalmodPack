@@ -1411,41 +1411,7 @@ terraform_link = {
 		}
 	}
 }
-terraform_link = {
-	from = pc_arctic
-	to = pc_irradiated
-	energy = @terraforming_cost_gaia
-	duration = @terraforming_duration_gaia
-	condition = { OR = { has_ascension_perk = ap_world_shaper has_ascension_perk = ap_hive_worlds } }
-	ai_weight = {
-		weight = 0
-		modifier = {
-			# This should never fire because ap_world_shaper is a requirement.
-			# This is just here for consistency in case the reqs change in the future.
-			# Low weight, because this is highly likely to kill other species
-			weight = 3
-			has_country_flag = gai_likes_irradiated
-			NOT = { has_country_flag = gai_likes_arctic }
-			NOR = {
-				has_ascension_perk = ap_hive_worlds #hive
-				has_ascension_perk = ap_machine_worlds #robot
-				has_ascension_perk = ap_world_shaper #gaia
-			}
-		}
-		modifier = {
-			factor = 5
-			NOT = { has_country_flag = gai_likes_not_irradiated }
-		}
-		modifier = {
-			factor = 0.25
-			resource_stockpile_compare = { resource = energy value < 10000 }
-		}
-		modifier = {
-			factor = 0
-			resource_stockpile_compare = { resource = energy value < 5000 }
-		}
-	}
-}
+
 terraform_link = {
 	from = pc_arctic
 	to = pc_karst
@@ -1525,6 +1491,41 @@ terraform_link = {
 				has_ascension_perk = ap_machine_worlds #robot
 				has_ascension_perk = ap_world_shaper #gaia
 			}
+		}
+		modifier = {
+			factor = 0.25
+			resource_stockpile_compare = { resource = energy value < 10000 }
+		}
+		modifier = {
+			factor = 0
+			resource_stockpile_compare = { resource = energy value < 5000 }
+		}
+	}
+}
+terraform_link = {
+	from = pc_arctic
+	to = pc_aquifer
+	energy = @terraforming_cost_gaia
+	duration = @terraforming_duration_gaia
+	condition = { OR = { has_ascension_perk = ap_world_shaper has_ascension_perk = ap_hive_worlds } }
+	ai_weight = {
+		weight = 0
+		modifier = {
+			# This should never fire because ap_world_shaper is a requirement.
+			# This is just here for consistency in case the reqs change in the future.
+			# Low weight, because this is highly likely to kill other species
+			weight = 3
+			has_country_flag = gai_likes_irradiated
+			NOT = { has_country_flag = gai_likes_arctic }
+			NOR = {
+				has_ascension_perk = ap_hive_worlds #hive
+				has_ascension_perk = ap_machine_worlds #robot
+				has_ascension_perk = ap_world_shaper #gaia
+			}
+		}
+		modifier = {
+			factor = 5
+			NOT = { has_country_flag = gai_likes_not_irradiated }
 		}
 		modifier = {
 			factor = 0.25
@@ -1631,7 +1632,7 @@ terraform_link = {
 	to = pc_eyeball
 	energy = @terraforming_cost_gaia
 	duration = @terraforming_duration_gaia
-	condition = { OR = { has_ascension_perk = ap_world_shaper has_ascension_perk = ap_hive_worlds } }
+	condition = { OR = { has_ascension_perk = ap_world_shaper has_ascension_perk = ap_hive_worlds } from = { is_moon = no } }
 	ai_weight = {
 		weight = 0
 		modifier = {

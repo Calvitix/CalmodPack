@@ -488,21 +488,22 @@ country_event = {
     }
  }
 
- country_event = {
-    id = ig_menu.100
-    hide_window = yes
-    fire_only_once = yes
+# Doesn't work, conclusion is that the on action for this triggers before the game actually loads so it won't work this way
+event = {
+   id = ig_menu.100
+   hide_window = yes
+   is_triggered_only = yes
 
-    trigger = {
-        NOT = { has_global_flag = ig_menu_opened_first_time }
-        is_multiplayer = no
-    }
+   trigger = {
+       NOT = { has_global_flag = ig_menu_opened_first_time }
+       is_multiplayer = no
+   }
 
-    immediate = {
-        set_global_flag = ig_menu_opened_first_time
-        every_country = {
-            limit = { is_ai = no }
-            country_event = { id = ig_menu.0 }
-        }
-    }
- }
+   immediate = {
+       set_global_flag = ig_menu_opened_first_time
+       every_playable_country = {
+           limit = { is_ai = no }
+           country_event = { id = ig_menu.0 }
+       }
+   }
+}

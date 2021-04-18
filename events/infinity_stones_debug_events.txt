@@ -150,13 +150,23 @@ namespace = ig_debug
         trigger = {
             any_country = {
                 has_relic = r_power_stone
+                is_in_federation_with = root
+                zero_can_see_what_relic_empire_has = yes
             }
+            NOT = { has_relic = r_power_stone }
         }
         allow = {
             if = {
                 limit = { ROOT = { NOT = { is_same_value = event_target:power_stone_holder } } }
                 resource_stockpile_compare = { resource = energy value >= 20000 }
                 resource_stockpile_compare = { resource = influence value >= 500 }
+                event_target:power_stone_holder = {
+                    is_in_federation_with = root
+                    OR = {
+                        opinion = { who = root value >= 350 }
+                        is_ai = no
+                    }
+                }
             }
         }
         if = {
@@ -174,13 +184,23 @@ namespace = ig_debug
         trigger = {
             any_country = {
                 has_relic = r_time_stone
+                is_in_federation_with = root
+                zero_can_see_what_relic_empire_has = yes
             }
+            NOT = { has_relic = r_time_stone }
         }
         allow = {
             if = {
                 limit = { ROOT = { NOT = { is_same_value = event_target:time_stone_holder } } }
                 resource_stockpile_compare = { resource = energy value >= 20000 }
                 resource_stockpile_compare = { resource = influence value >= 500 }
+                event_target:time_stone_holder = {
+                    is_in_federation_with = root
+                    OR = {
+                        opinion = { who = root value >= 350 }
+                        is_ai = no
+                    }
+                }
             }
         }
         if = {
@@ -198,13 +218,23 @@ namespace = ig_debug
         trigger = {
             any_country = {
                 has_relic = r_reality_stone
+                is_in_federation_with = root
+                zero_can_see_what_relic_empire_has = yes
             }
+            NOT = { has_relic = r_reality_stone }
         }
         allow = {
             if = {
                 limit = { ROOT = { NOT = { is_same_value = event_target:reality_stone_holder } } }
                 resource_stockpile_compare = { resource = energy value >= 20000 }
                 resource_stockpile_compare = { resource = influence value >= 500 }
+                event_target:reality_stone_holder = {
+                    is_in_federation_with = root
+                    OR = {
+                        opinion = { who = root value >= 350 }
+                        is_ai = no
+                    }
+                }
             }
         }
         if = {
@@ -222,13 +252,23 @@ namespace = ig_debug
         trigger = {
             any_country = {
                 has_relic = r_soul_stone
+                is_in_federation_with = root
+                zero_can_see_what_relic_empire_has = yes
             }
+            NOT = { has_relic = r_soul_stone }
         }
         allow = {
             if = {
                 limit = { ROOT = { NOT = { is_same_value = event_target:soul_stone_holder } } }
                 resource_stockpile_compare = { resource = energy value >= 20000 }
                 resource_stockpile_compare = { resource = influence value >= 500 }
+                event_target:soul_stone_holder = {
+                    is_in_federation_with = root
+                    OR = {
+                        opinion = { who = root value >= 350 }
+                        is_ai = no
+                    }
+                }
             }
         }
         if = {
@@ -246,13 +286,23 @@ namespace = ig_debug
         trigger = {
             any_country = {
                 has_relic = r_mind_stone
+                is_in_federation_with = root
+                zero_can_see_what_relic_empire_has = yes
             }
+            NOT = { has_relic = r_mind_stone }
         }
         allow = {
             if = {
                 limit = { ROOT = { NOT = { is_same_value = event_target:mind_stone_holder } } }
                 resource_stockpile_compare = { resource = energy value >= 20000 }
                 resource_stockpile_compare = { resource = influence value >= 500 }
+                event_target:mind_stone_holder = {
+                    is_in_federation_with = root
+                    OR = {
+                        opinion = { who = root value >= 350 }
+                        is_ai = no
+                    }
+                }
             }
         }
         if = {
@@ -270,13 +320,23 @@ namespace = ig_debug
         trigger = {
             any_country = {
                 has_relic = r_space_stone
+                is_in_federation_with = root
+                zero_can_see_what_relic_empire_has = yes
             }
+            NOT = { has_relic = r_space_stone }
         }
         allow = {
             if = {
                 limit = { ROOT = { NOT = { is_same_value = event_target:space_stone_holder } } }
                 resource_stockpile_compare = { resource = energy value >= 20000 }
                 resource_stockpile_compare = { resource = influence value >= 500 }
+                event_target:space_stone_holder = {
+                    is_in_federation_with = root
+                    OR = {
+                        opinion = { who = root value >= 350 }
+                        is_ai = no
+                    }
+                }
             }
         }
         if = {
@@ -781,7 +841,7 @@ country_event = {
             }
             while = {
                 count = 200
-                random_pop = {
+                random_owned_pop = {
                     kill_pop = yes
                 }
             }
@@ -871,23 +931,41 @@ country_event = {
     is_triggered_only = yes
 
     immediate = {
-        random_system = {
-            spawn_system = { initializer = "aarch_system_initializer" }
+        if = {
+            limit = {
+                NOT = { has_global_flag = ig_mind_stone_systems_exist }
+            }
+            spawn_in_mind_stone_system = yes
         }
-        random_system = {
-            spawn_system = { initializer = "pama_initializer" }
+        if = {
+            limit = {
+                NOT = { has_global_flag = ig_power_stone_systems_exist }
+            }
+            spawn_in_power_stone_system = yes
         }
-        random_system = {
-            spawn_system = { initializer = "morag_system_initializer" }
+        if = {
+            limit = {
+                NOT = { has_global_flag = ig_reality_stone_systems_exist }
+            }
+            spawn_in_reality_stone_system = yes
         }
-        random_system = {
-            spawn_system = { initializer = "malekith_system_initializer" }
+        if = {
+            limit = {
+                NOT = { has_global_flag = ig_space_stone_systems_exist }
+            }
+            spawn_in_space_stone_system = yes
         }
-        random_system = {
-            spawn_system = { initializer = "time_displaced_sol_system_initializer" }
+        if = {
+            limit = {
+                NOT = { has_global_flag = ig_time_stone_systems_exist }
+            }
+            spawn_in_time_stone_system = yes
         }
-        random_system = {
-            spawn_system = { initializer = "helgentara_system_initializer" }
+        if = {
+            limit = {
+                NOT = { has_global_flag = ig_soul_stone_systems_exist }
+            }
+            spawn_in_soul_stone_system = yes
         }
     }
 }
@@ -1154,7 +1232,7 @@ country_event = {
         name = infinity_stones_new_gauntlet.11.f
         custom_tooltip = gauntlet_option_six
         hidden_effect = {
-            country_event = { id = infinity_gauntlet.71 }
+            country_event = { id = infinity_gauntlet.72 }
         }
     }
     #END HUNGER

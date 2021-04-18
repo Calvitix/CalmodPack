@@ -1,4 +1,12 @@
 
+# Original File
+#
+# Calvitix Check 3.0.1  17/04/2021
+#
+# Merge with JLPicard
+#
+#
+#œ
 ############################
 #
 # Shroud Events
@@ -21,79 +29,103 @@ country_event = {
 	}
 	desc = {
 		text = utopia.3000.1.desc
-		trigger = { NOT = { has_country_flag = shroud_intro } }
+		trigger = { normal_shroud_message = yes }
 	}
 	desc = {
 		text = utopia.3000.2.desc
-		trigger = { NOT = { has_country_flag = shroud_intro } }
+		trigger = { normal_shroud_message = yes }
 	}
 	desc = {
 		text = utopia.3000.3.desc
-		trigger = { NOT = { has_country_flag = shroud_intro } }
+		trigger = { normal_shroud_message = yes }
 	}
 	desc = {
 		text = utopia.3000.4.desc
-		trigger = { NOT = { has_country_flag = shroud_intro } }
+		trigger = { normal_shroud_message = yes }
 	}
 	desc = {
 		text = utopia.3000.5.desc
-		trigger = { NOT = { has_country_flag = shroud_intro } }
+		trigger = { normal_shroud_message = yes }
 	}
 	desc = {
 		text = utopia.3000.6.desc
-		trigger = { NOT = { has_country_flag = shroud_intro } }
+		trigger = { normal_shroud_message = yes }
 	}
 	desc = {
 		text = utopia.3000.7.desc
-		trigger = { NOT = { has_country_flag = shroud_intro } }
+		trigger = { normal_shroud_message = yes }
 	}
 	desc = {
 		text = utopia.3000.8.desc
-		trigger = { NOT = { has_country_flag = shroud_intro } }
+		trigger = { normal_shroud_message = yes }
 	}
 	desc = {
 		text = utopia.3000.9.desc
-		trigger = { NOT = { has_country_flag = shroud_intro } }
+		trigger = { normal_shroud_message = yes }
 	}
 	desc = {
 		text = utopia.3000.10.desc
-		trigger = { NOT = { has_country_flag = shroud_intro } }
+		trigger = { normal_shroud_message = yes }
 	}
 	desc = {
 		text = utopia.3000.11.desc
-		trigger = { NOT = { has_country_flag = shroud_intro } }
+		trigger = { normal_shroud_message = yes }
 	}
 	desc = {
 		text = utopia.3000.12.desc
-		trigger = { NOT = { has_country_flag = shroud_intro } }
+		trigger = { normal_shroud_message = yes }
 	}
 	desc = {
 		text = utopia.3000.13.desc
-		trigger = { NOT = { has_country_flag = shroud_intro } }
+		trigger = { normal_shroud_message = yes }
 	}
 	desc = {
 		text = utopia.3000.14.desc
-		trigger = { NOT = { has_country_flag = shroud_intro } }
+		trigger = { normal_shroud_message = yes }
 	}
 	desc = {
 		text = utopia.3000.15.desc
-		trigger = { NOT = { has_country_flag = shroud_intro } }
+		trigger = { normal_shroud_message = yes }
 	}
 	desc = {
 		text = utopia.3000.16.desc
-		trigger = { NOT = { has_country_flag = shroud_intro } }
+		trigger = { normal_shroud_message = yes }
 	}
 	desc = {
 		text = utopia.3000.17.desc
-		trigger = { NOT = { has_country_flag = shroud_intro } }
+		trigger = { normal_shroud_message = yes }
 	}
 	desc = {
 		text = utopia.3000.18.desc
-		trigger = { NOT = { has_country_flag = shroud_intro } }
+		trigger = { normal_shroud_message = yes }
 	}
 	desc = {
 		text = utopia.3000.19.desc
-		trigger = { NOT = { has_country_flag = shroud_intro } }
+		trigger = { normal_shroud_message = yes }
+	}
+	desc = {
+		text = utopia.3000.20.desc
+		trigger = { crisis_shroud_message = yes }
+	}
+	desc = {
+		text = utopia.3000.21.desc
+		trigger = { crisis_shroud_message = yes }
+	}
+	desc = {
+		text = utopia.3000.22.desc
+		trigger = { crisis_shroud_message = yes }
+	}
+	desc = {
+		text = utopia.3000.23.desc
+		trigger = { crisis_shroud_message = yes }
+	}
+	desc = {
+		text = utopia.3000.24.desc
+		trigger = { crisis_shroud_message = yes }
+	}
+	desc = {
+		text = utopia.3000.25.desc
+		trigger = { crisis_shroud_message = yes }
 	}
 	diplomatic_title = BLANK_STRING
 	diplomatic = yes
@@ -205,37 +237,21 @@ country_event = {
 				}
 				10 = {
 					if = {
-						# These results don't get you extra tech progress any longer.
-						limit = {
-							NOR = {
-								has_technology = tech_psionic_shield
-								has_tech_option = tech_psionic_shield
-							}
-						}
+						limit = { NOT = { has_technology = tech_psionic_shield } }
 						country_event = { id = utopia.3170 }
 					}
 					else = { country_event = { id = utopia.3200 } }
 				}
 				10 = {
 					if = {
-						limit = {
-							NOR = {
-								has_technology = tech_precognition_interface
-								has_tech_option = tech_precognition_interface
-							}
-						}
+						limit = { NOT = { has_technology = tech_precognition_interface } }
 						country_event = { id = utopia.3180 }
 					}
 					else = { country_event = { id = utopia.3200 } }
 				}
 				10 = {
 					if = {
-						limit = {
-							NOR = {
-								has_technology = tech_psi_jump_drive_1
-								has_tech_option = tech_psi_jump_drive_1
-							}
-						}
+						limit = { NOT = { has_technology = tech_psi_jump_drive_1 } }
 						country_event = { id = utopia.3160 }
 					}
 					else = { country_event = { id = utopia.3200 } }
@@ -3674,55 +3690,18 @@ country_event = {
 
 	immediate = {
 		set_country_flag = shroud_diplomacy_engaged
-		# Check to make sure we actually do have a psychic ruler or heir...
-		if = {
-			limit = {
-				any_owned_leader = {
-					leader_class = ruler
-					has_trait = leader_trait_ruler_psionic
-				}
-			}
-			random_owned_leader = {
-				limit = {
-					leader_class = ruler
-					has_trait = leader_trait_ruler_psionic
-				}
-				save_event_target_as = leader_1
-				random_list = {
-					33 = { set_leader_flag = high_psi }
-					33 = { set_leader_flag = medium_psi }
-					33 = { set_leader_flag = low_psi }
-				}
-			}
-		}
-		else = {
-			random_owned_leader = {
-				limit = {
-					OR = {
-						has_trait = leader_trait_admiral_psionic
-						has_trait = leader_trait_general_psionic
-						has_trait = leader_trait_governor_psionic
-						has_trait = leader_trait_scientist_psionic
-					}
-				}
-				save_event_target_as = leader_1
-				random_list = {
-					33 = { set_leader_flag = high_psi }
-					33 = { set_leader_flag = medium_psi }
-					33 = { set_leader_flag = low_psi }
-				}
+		random_owned_leader = {
+			limit = { leader_class = ruler }
+			save_event_target_as = leader_1
+			random_list = {
+				33 = { set_leader_flag = high_psi }
+				33 = { set_leader_flag = medium_psi }
+				33 = { set_leader_flag = low_psi }
 			}
 		}
 		random_owned_leader = {
 			limit = {
 				NOT = { is_same_value = event_target:leader_1 } 
-				NOT = { leader_class = ruler }
-				OR = {
-					has_trait = leader_trait_admiral_psionic
-					has_trait = leader_trait_general_psionic
-					has_trait = leader_trait_governor_psionic
-					has_trait = leader_trait_scientist_psionic
-				}
 			}
 			save_event_target_as = leader_2
 			random_list = {
@@ -3737,13 +3716,6 @@ country_event = {
 					is_same_value = event_target:leader_1
 					is_same_value = event_target:leader_2
 				} 
-				NOT = { leader_class = ruler }
-				OR = {
-					has_trait = leader_trait_admiral_psionic
-					has_trait = leader_trait_general_psionic
-					has_trait = leader_trait_governor_psionic
-					has_trait = leader_trait_scientist_psionic
-				}
 			}
 			save_event_target_as = leader_3
 			random_list = {
@@ -3786,14 +3758,7 @@ country_event = {
 			random_list = {
 				70 = { country_event = { id = utopia.3191 }}
 				20 = { country_event = { id = utopia.3192 }}
-				# Make the zro crystal apply equally to all options.
-				10 = {
-					modifier = {
-						factor = 0
-						has_relic = r_zro_crystal
-					}
-					country_event = { id = utopia.3193 }
-				}
+				10 = { country_event = { id = utopia.3193 }}
 			}
 		}
 	}
@@ -3808,13 +3773,7 @@ country_event = {
 			random_list = {
 				50 = { country_event = { id = utopia.3191 }}
 				30 = { country_event = { id = utopia.3192 }}
-				20 = {
-					modifier = {
-						factor = 0
-						has_relic = r_zro_crystal
-					}
-					country_event = { id = utopia.3193 }
-				}
+				20 = { country_event = { id = utopia.3193 }}
 			}
 		}
 	}
@@ -3829,13 +3788,7 @@ country_event = {
 			random_list = {
 				30 = { country_event = { id = utopia.3191 }}
 				40 = { country_event = { id = utopia.3192 }}
-				30 = {
-					modifier = {
-						factor = 0
-						has_relic = r_zro_crystal
-					}
-					country_event = { id = utopia.3193 }
-				}
+				30 = { country_event = { id = utopia.3193 }}
 			}
 		}
 	}
@@ -3850,13 +3803,7 @@ country_event = {
 			random_list = {
 				70 = { country_event = { id = utopia.3191 }}
 				20 = { country_event = { id = utopia.3192 }}
-				10 = {
-					modifier = {
-						factor = 0
-						has_relic = r_zro_crystal
-					}
-					country_event = { id = utopia.3193 }
-				}
+				10 = { country_event = { id = utopia.3193 }}
 			}
 		}
 	}
@@ -3871,13 +3818,7 @@ country_event = {
 			random_list = {
 				50 = { country_event = { id = utopia.3191 }}
 				30 = { country_event = { id = utopia.3192 }}
-				20 = {
-					modifier = {
-						factor = 0
-						has_relic = r_zro_crystal
-					}
-					country_event = { id = utopia.3193 }
-				}
+				20 = { country_event = { id = utopia.3193 }}
 			}
 		}
 	}
@@ -3892,13 +3833,7 @@ country_event = {
 			random_list = {
 				30 = { country_event = { id = utopia.3191 }}
 				40 = { country_event = { id = utopia.3192 }}
-				30 = {
-					modifier = {
-						factor = 0
-						has_relic = r_zro_crystal
-					}
-					country_event = { id = utopia.3193 }
-				}
+				30 = { country_event = { id = utopia.3193 }}
 			}
 		}
 	}
@@ -4009,7 +3944,6 @@ country_event = {
 			event_target:chosen_leader = { 
 				add_trait = leader_trait_admiral_chosen
 				add_ruler_trait = leader_trait_ruler_chosen 
-				set_leader_flag = leader_trait_chosen
 				remove_trait = leader_trait_admiral_psionic
 			}
 			break = yes
@@ -4019,7 +3953,6 @@ country_event = {
 			event_target:chosen_leader = { 
 				add_trait = leader_trait_general_chosen
 				add_ruler_trait = leader_trait_ruler_chosen 
-				set_leader_flag = leader_trait_chosen
 				remove_trait = leader_trait_general_psionic
 			}
 			break = yes
@@ -4029,7 +3962,6 @@ country_event = {
 			event_target:chosen_leader = { 
 				add_trait = leader_trait_governor_chosen
 				add_ruler_trait = leader_trait_ruler_chosen  
-				set_leader_flag = leader_trait_chosen
 				remove_trait = leader_trait_governor_psionic
 			}
 			break = yes
@@ -4039,7 +3971,6 @@ country_event = {
 			event_target:chosen_leader = { 
 				add_trait = leader_trait_ruler_chosen
 				add_ruler_trait = leader_trait_ruler_chosen  
-				set_leader_flag = leader_trait_chosen
 				remove_trait = leader_trait_ruler_psionic
 			}
 			break = yes
@@ -4049,7 +3980,6 @@ country_event = {
 			event_target:chosen_leader = { 
 				add_trait = leader_trait_scientist_chosen
 				add_ruler_trait = leader_trait_ruler_chosen
-				set_leader_flag = leader_trait_chosen
 				remove_trait = leader_trait_scientist_psionic
 			}
 			break = yes
@@ -5126,7 +5056,7 @@ country_event = {
 					is_colonizable = yes				
 				}
 			}
-			random_planet = {
+			random_system_planet = {
 				limit = {
 					has_owner = no
 					is_colonizable = yes
@@ -5144,7 +5074,7 @@ country_event = {
 					is_colonizable = yes				
 				}
 			}
-			random_planet = {
+			random_system_planet = {
 				limit = {
 					has_owner = no
 					is_colonizable = yes
@@ -5238,7 +5168,7 @@ country_event = {
 		every_owned_fleet = { 
 			destroy_fleet = this 
 		}		
-		every_planet = {
+		every_galaxy_planet = {
 			limit = { has_modifier = covenant_shroud_marked }
 			remove_modifier = covenant_shroud_marked
 			remove_all_armies = yes
@@ -5291,7 +5221,8 @@ country_event = {
 				limit = { 
 					is_planet_class = pc_habitat 
 				}
-				ariphaos_patch_remove_habitat = yes
+				destroy_colony = yes
+				remove_planet = yes						
 			}
 			else_if = {
 				limit = {
@@ -5335,7 +5266,7 @@ country_event = {
 			}
 			effect = {
 				save_global_event_target_as = the_end_of_the_cycle
-				set_name = "Absorbed [Root.GetSpeciesNamePlural]"
+				set_name = "[Root.GetSpeciesNamePlural] absorbés" # VANILLE "Absorbed [Root.GetSpeciesNamePlural]"
 				set_owner = event_target:shroud_country
 				create_ship = {
 					name = "NAME_Reckoning"
@@ -5633,7 +5564,7 @@ planet_event = {
 				}
 				# we do this here to prevent issues with removing planet mid-event	
 				# might result in some weirdness if player is slow to click, but player having a habitat should be very rare at this point				
-				ariphaos_patch_remove_habitat = yes
+				remove_planet = yes		
 			}		
 		}
 	}	
@@ -6339,8 +6270,10 @@ country_event = {
 		name = "utopia.3401.a"
 		trigger = {
 			any_relation = {
-				is_country_type = shroud
-				has_communications = root
+				AND = {
+					is_country_type = shroud
+					has_communications = root
+				}
 			}
 		}
 	}
@@ -6360,8 +6293,10 @@ country_event = {
 				has_ethic = ethic_fanatic_materialist
 				has_ethic = ethic_materialist
 				any_relation = {
-					is_country_type = shroud
-					has_communications = root
+					AND = {
+						is_country_type = shroud
+						has_communications = root
+					}
 				}
 			}
 		}

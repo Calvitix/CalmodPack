@@ -5,13 +5,13 @@ decision_gpm_machine_world_core_relic = {
 	#enactment_time = 0
 
     potential = {
-		# space_owner = { is_regular_empire = yes }
 		OR = {
 			gpm_is_planet_class_normal_uninhabitable = yes
 			gpm_is_planet_class_gas_giant = yes
 			is_planet_class = pc_broken
 		}
-		FROM = { has_country_flag = relic_machine_world_core_activated }
+		exists = space_owner
+		space_owner = { has_country_flag = relic_machine_world_core_activated }
 	}
 	
 	allow = {
@@ -19,7 +19,7 @@ decision_gpm_machine_world_core_relic = {
 	}
 
     effect = {
-		hidden_effect = { FROM = { remove_country_flag = relic_machine_world_core_activated } }
+		hidden_effect = { space_owner = { remove_country_flag = relic_machine_world_core_activated } }
 		custom_tooltip = decision_gpm_machine_world_core_relic_tt
 		change_pc = pc_machine
 		hidden_effect = {
@@ -55,8 +55,8 @@ decision_gpm_shield_generator_arrays = {
 	}
 
     potential = {
-		# space_owner = { is_regular_empire = yes }
-		FROM = {
+		exists = owner
+		owner = {
 			check_variable = {
 				which = "gpm_shield_generator_decision_count"
 				value > 0
@@ -72,7 +72,7 @@ decision_gpm_shield_generator_arrays = {
     effect = {
 		custom_tooltip = decision_gpm_shield_generator_arrays_tt
 		hidden_effect = {
-			from = {
+			owner = {
 				change_variable = {
 					which = "gpm_shield_generator_decision_count"
 					value = -1
@@ -127,8 +127,8 @@ decision_gpm_Floating_Island_Housing = {
 	}
 
     potential = {
-		# space_owner = { is_regular_empire = yes }
-		FROM = {
+		exists = owner
+		owner = {
 			check_variable = {
 				which = "gpm_r_gravity_engine_decision_count"
 				value > 0
@@ -145,7 +145,7 @@ decision_gpm_Floating_Island_Housing = {
 		add_deposit = gpm_d_floating_islands_housing
 		# custom_tooltip = decision_gpm_Floating_Island_Housing_effects
 		hidden_effect = {
-			from = {
+			owner = {
 				change_variable = {
 					which = "gpm_r_gravity_engine_decision_count"
 					value = -1
@@ -158,7 +158,7 @@ decision_gpm_Floating_Island_Housing = {
 		weight = 100
 		modifier = {
 			factor = 50
-			from = {
+			owner = {
 				resource_stockpile_compare = {
 					resource = minerals
 					value >= 2000
