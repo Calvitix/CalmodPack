@@ -1,3 +1,10 @@
+# Eco File
+#
+# Calvitix Check 3.0.1  18/04/2021
+#
+# 
+#
+#
 eco_building_waste_recovery = {
 	base_buildtime = 360
 	base_cap_amount = 1
@@ -36,8 +43,21 @@ eco_building_waste_recovery = {
 	
 	resources = {
 		category = planet_buildings
+#Calvitix ressource balance
+		cost = { 
+			trigger = {
+				from = {
+					is_ai = no
+				}
+			}
+		alloys = 10 minerals = 400}
 		cost = {
-			minerals = 200
+			trigger = {
+				from = {
+					is_ai = yes
+				}
+			}
+			minerals = 400
 		}
 		upkeep = {
 			waste = 20
@@ -78,7 +98,7 @@ eco_building_waste_recovery = {
 	}
 	
 	ai_weight = {
-		weight = 100
+		weight = 10 #100
 		modifier = {
 			factor = 1
 			has_modifier = eco_minimal
@@ -155,8 +175,21 @@ eco_building_industrial_symbiosis = {
 	
 	resources = {
 		category = planet_buildings
+#Calvitix ressource balance
+		cost = { 
+			trigger = {
+				from = {
+					is_ai = no
+				}
+			}
+		alloys = 20 minerals = 600}
 		cost = {
-			minerals = 500
+			trigger = {
+				from = {
+					is_ai = yes
+				}
+			}
+			minerals = 600
 		}
 		upkeep = {
 			waste = 40
@@ -197,7 +230,7 @@ eco_building_industrial_symbiosis = {
 	}
 	
 	ai_weight = {
-		weight = 100
+		weight = 20 #100
 		modifier = {
 			factor = 1
 			has_modifier = eco_minimal
@@ -274,7 +307,20 @@ eco_building_industrial_metabolism = {
 	
 	resources = {
 		category = planet_buildings
+#Calvitix ressource balance
+		cost = { 
+			trigger = {
+				from = {
+					is_ai = no
+				}
+			}
+		alloys = 40 minerals = 800}
 		cost = {
+			trigger = {
+				from = {
+					is_ai = yes
+				}
+			}
 			minerals = 800
 		}
 		upkeep = {
@@ -350,7 +396,7 @@ eco_building_industrial_metabolism = {
 
 eco_building_zero_waste = {
 	base_buildtime = 600
-	can_build = no
+	can_build = yes
 
 	category = waste
 	
@@ -393,7 +439,21 @@ eco_building_zero_waste = {
 	
 	resources = {
 		category = planet_buildings
+#Calvitix ressource balance
+		cost = { 
+			trigger = {
+				from = {
+					is_ai = no
+				}
+			}
+			alloys = 80 minerals = 1000 sr_dark_matter = 100
+		}
 		cost = {
+			trigger = {
+				from = {
+					is_ai = yes
+				}
+			}
 			minerals = 1000
 			sr_dark_matter = 100
 		}
@@ -433,7 +493,7 @@ eco_building_zero_waste = {
 	}
 	
 	ai_weight = {
-		weight = 0
+		weight = 0.5
 		modifier = {
 			factor = 1
 			has_modifier = eco_minimal
@@ -505,7 +565,7 @@ building_waste_reprocessing_center = {
 	resources = {
 		category = planet_buildings
 		cost = {
-			minerals = 100
+			minerals = 200 #100
 		}
 		produces = {
 			minerals = 10
@@ -545,6 +605,15 @@ eco_building_junkyard = {
 	
 	potential = {
 		NOT = { is_planet_class = pc_machine }
+#Calvitix ressource balance
+		OR = {
+				owner = { is_ai = no }
+				AND = { 
+					NOT = { has_modifier = eco_minimal }
+					NOT = { has_modifier = eco_clean }
+					NOT = { has_modifier = eco_pristine	}
+				}
+		}		
 	}
 	
 	triggered_planet_modifier = {
@@ -623,7 +692,7 @@ eco_building_junkyard = {
 	resources = {
 		category = planet_buildings
 		cost = {
-			minerals = 200
+			minerals = 300 #200
 		}
 		upkeep = {
 			energy = 1
@@ -645,9 +714,33 @@ eco_building_junkyard = {
 		}
 		text = job_waste_drone_effect_desc
 	}
+
+#Calvitix ressource balance
+	destroy_trigger = {
+		free_building_slots = 0
+		or = {
+			has_modifier = eco_pristine
+			has_modifier = eco_clean		
+		}
+		#supervised_destruction = yes
+		not = {
+				has_planet_flag = just_destroyed_building
+		}
+	}
+
+	on_destroy = {
+		set_timed_planet_flag = {
+			flag = just_destroyed_building
+			days = 36
+		}
+	}
 	
 	ai_weight = {
-		weight = 0
+		weight = 1
+		modifier = {
+			factor = 0.1
+			has_modifier = eco_minimal
+		}	
 		modifier = {
 			weight = 5
 			has_modifier = eco_heavy
@@ -657,20 +750,28 @@ eco_building_junkyard = {
 			has_modifier = eco_waste_mod
 		}
 		modifier = {
-			weight = 10
+			factor = 10
 			has_modifier = eco_extreme
 		}
 		modifier = {
-			weight = 10
+			factor = 10
 			has_modifier = eco_waste_high
 		}
 		modifier = {
-			weight = 20
+			factor = 40
 			has_modifier = eco_catastrophic
 		}
 		modifier = {
 			factor = 0
 			has_building = eco_building_junkyard
 		}
+		modifier = {
+			factor = 0
+			has_modifier = eco_clean
+		}	
+		modifier = {
+			factor = 0
+			has_modifier = eco_pristine
+		}	
 	}
 }

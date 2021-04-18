@@ -1,3 +1,16 @@
+####################################################################################
+# Original File
+#
+# Calvitix Check 3.0.1  16/04/2021
+#
+# Merge with Planet. Diversity
+
+
+
+######## Planetary Diversity overwrites to Vanilla (v. 26.12.2020) merged 	########
+######## with changes from Real Space New Frontiers (v. 26.12.2020) 		########
+####################################################################################
+
 ## Possible Deposit Variables ##
 # resources, resource and amount
 # potential trigger (planet scope)
@@ -11,6 +24,7 @@
 # should_swap_deposit_on_terraforming = yes/no
 # all_terraforming_swap_types = yes/no
 # use_weights_for_terraforming_swap_types = yes/no
+#calvitix : merge with ## Planetary Exploration Deposits by Annatar ##
 
 @high = 16
 @med = 8
@@ -30,24 +44,80 @@ d_arid_highlands = {
 	is_for_colonizeable = yes
 	use_for_min_max_adjustments = yes
 	
+	category = deposit_cat_blockers
+	
+	use_weights_for_blocker_swap_types = yes
+	blocker_swap_types = {
+		d_veiny_cliffs
+		d_ore_rich_caverns
+		d_rich_mountain
+		d_dust_caverns
+		d_crystalline_caverns
+		d_betharian_deposit
+		d_karst_cave
+	}
+	
 	use_weights_for_terraforming_swap_types = yes
 	should_swap_deposit_on_terraforming = yes
 	terraforming_swap_types = {
 		d_hot_springs
 		d_buzzing_plains # gaia
 		d_strong_currents
+		d_arid_highlands
+		d_rushing_waterfalls
+		d_frigid_plateau
+		d_veiny_cliffs
+		d_prosperous_mesa
 	}
 	
-	category = deposit_cat_energy
+	time = 180
+	resources = {
+		category = deposit_blockers
+		cost = {
+			energy = 500
+		}
+	}
 	
 	planet_modifier = { 
 		district_generator_max = 1
 	}
 	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_regular_empire = yes }
+		}
+		modifier = {
+			job_pioneer_add = 1
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_hive_empire = yes }
+		}
+		modifier = {
+			job_opportunist_drone_add = 1
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_machine_empire = yes }
+		}
+		modifier = {	
+			job_scout_drone_add = 1
+		}
+	}
+	
 	potential = {
 		OR = {
 		is_dry = yes
+		is_planet_class = pc_continental
 		is_planet_class = pc_tidallylocked
+		is_planet_class = pc_sterile
 		is_planet_class = pc_supercon
 		is_planet_class = pc_graveyard		
 		
@@ -56,14 +126,46 @@ d_arid_highlands = {
 		is_planet_class_pc_desolate = yes
 		is_planet_class_pc_primordial = yes
 		}
-	}
+		NOR = {
+			has_modifier = "underground_world"
+			has_modifier = "arctic_tidally_locked"
+			has_modifier = "ocean_tidally_locked"
+			has_modifier = "boreal_world"
+			has_modifier = "young_world"
+		}	}
 	
 	drop_weight = {
-		weight = @high	
+		weight = 6
 		modifier = {
 			factor = @planet_type_bonus
 			is_dry = yes
 		}
+		modifier = {
+			factor = 2
+			OR = {
+				is_planet_class = pc_arid
+				has_modifier = "pangea_world"
+			}
+		}
+		modifier = {
+			factor = 0.5
+			has_modifier = "mediterranean_world"
+		}
+		modifier = {
+			factor = 0.25
+			OR = {
+				has_modifier = "prairie_world"
+				is_planet_class = pc_continental
+			}
+		}
+		modifier = {
+			factor = 0
+			OR = {
+				has_modifier = "underground_world"
+				has_modifier = "arctic_tidally_locked"
+				has_modifier = "ocean_tidally_locked"
+			}
+		}		
 	}
 }
 
@@ -95,15 +197,9 @@ d_strong_currents = {
 			factor = @planet_type_bonus
 			is_planet_class = pc_aquatic
 		}
-		#NF
-		modifier = {
-			factor = 0
-			OR = {
-				has_modifier = "underground_world"
-				has_modifier = "arctic_tidally_locked"
-				has_modifier = "ocean_tidally_locked"
-			}
-		}		
+	}
+	ai_weight = {
+		weight = 0
 	}
 }
 
@@ -119,10 +215,51 @@ d_hot_springs = {
 		d_arid_highlands
 		d_buzzing_plains # gaia
 		d_strong_currents
+		d_hot_springs
+		d_rushing_waterfalls
+		d_underwater_vent
+		d_geothermal_vent
+		d_ore_rich_caverns
+		d_submerged_ore_veins
+		d_active_volcano
+		d_deep_sinkhole
+		d_noxious_swamp
+		d_bubbling_swamp
+		d_fuming_bog
 	}	
 	
-	planet_modifier = { 
+	planet_modifier = {
 		district_generator_max = 1
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_regular_empire = yes }
+		}
+		modifier = {
+			job_pioneer_add = 1
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_hive_empire = yes }
+		}
+		modifier = {
+			job_opportunist_drone_add = 1
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_machine_empire = yes }
+		}
+		modifier = {	
+			job_scout_drone_add = 1
+		}
 	}
 	
 	potential = {
@@ -147,11 +284,19 @@ d_hot_springs = {
 			
 			is_planet_class_pc_marginal_warm = yes
 			is_planet_class_pc_marginal_cold = yes
+			has_modifier = "arctic_tidally_locked"
+			is_planet_class = pc_sterile			
 		}	
+		NOR = {
+			has_modifier = "cryokarst_world"
+			has_modifier = "panthalassic_world"
+			has_modifier = "storm_world"
+			has_modifier = "lava_world"
+		}
 	}
 	
 	drop_weight = {
-		weight = @high	
+		weight = 2
 		modifier = {
 			factor = @planet_type_bonus
 			is_dry = yes
@@ -160,7 +305,34 @@ d_hot_springs = {
 			factor = @planet_type_bonus
 			is_pd_exotic = yes
 		}
-		#NF 
+		modifier = {
+			factor = 5
+			has_modifier = "geothermal_world"
+		}
+		modifier = {
+			factor = 3
+			has_modifier = "young_world"
+		}
+		modifier = {
+			factor = 2
+			has_modifier = "primal_world"
+		}
+		modifier = {
+			factor = 1.5
+			has_modifier = "unstable_tectonics"
+		}
+		modifier = {
+			factor = 0.5
+			OR = {
+				is_planet_class = pc_alpine
+				has_modifier = "glacial_world"
+				has_modifier = "ice_world"
+			}
+		}
+		modifier = {
+			factor = 0.25
+			has_modifier = "swamp_world"
+		}
 		modifier = {
 			factor = 0
 			OR = {
@@ -215,6 +387,12 @@ d_rushing_waterfalls = {
 		d_frozen_gas_lake
 		d_powerful_geyser
 		d_underwater_jets
+		d_rushing_waterfalls
+		d_veiny_cliffs
+		d_lush_jungle
+		d_arid_highlands
+		d_frigid_plateau
+		d_deep_sinkhole
 	}
 	
 	category = deposit_cat_energy
@@ -225,26 +403,53 @@ d_rushing_waterfalls = {
 	
 	potential = {
 		OR = {
-		is_wet = yes
-		is_planet_class = pc_superhabitable
-		is_planet_class = pc_floating
-		is_planet_class = pc_crystal
-		is_planet_class = pc_technoorganic
-		is_planet_class = pc_biolumen
-		is_planet_class = pc_karst
-		is_planet_class = pc_storm
-		
-		is_planet_class_pc_marginal_warm = yes
+			is_wet = yes
+			is_planet_class = pc_gaia
+			is_planet_class = pc_superhabitable
+			is_planet_class = pc_floating
+			is_planet_class = pc_crystal
+			is_planet_class = pc_technoorganic
+			is_planet_class = pc_biolumen
+			is_planet_class = pc_karst
+			is_planet_class = pc_storm
+			
+			is_planet_class_pc_marginal_warm = yes
+			has_modifier = "oasis_world"
+			has_modifier = "equatorial_world"
+			has_modifier = "plateau_world"
+		}
+		NOR = {
+			has_modifier = "swamp_world"
+			has_modifier = "panthalassic_world"
 		}
 	}
 	
 	drop_weight = {
-		weight = @med
+		weight = 5
 		modifier = {
 			factor = @planet_type_bonus
 			is_dry = yes
-		}		
-		#NF
+		}
+		modifier = {
+			factor = 5
+			has_modifier = "monsoon_world"
+		}
+		modifier = {
+			factor = 2
+			has_modifier = "plateau_world"
+		}
+		modifier = {
+			factor = 1.5
+			has_modifier = "boreal_world"
+		}
+		modifier = {
+			factor = 0.25
+			OR = {
+				is_planet_class = pc_alpine
+				has_modifier = "oasis_world"
+				has_modifier = "equatorial_world"
+			}
+		}
 		modifier = {
 			factor = 0
 			OR = {
@@ -261,6 +466,7 @@ d_searing_desert = {
 	use_for_min_max_adjustments = yes
 	
 	category = deposit_cat_energy
+	icon = d_flat_desert
 	
 	use_weights_for_terraforming_swap_types = yes
 	should_swap_deposit_on_terraforming = yes
@@ -269,6 +475,17 @@ d_searing_desert = {
 		d_rushing_waterfalls
 		d_powerful_geyser
 		d_underwater_jets
+		d_searing_desert
+		d_mineral_fields
+		d_lichen_fields
+		d_bountiful_plains
+		d_green_hills
+		d_nutritious_mudland
+		d_fertile_lands
+		d_quicksand_basin
+		d_dune_sea
+		d_forgiving_tundra
+		d_radioactive_wasteland
 	}
 	
 	planet_modifier = { 
@@ -277,11 +494,12 @@ d_searing_desert = {
 	
 	potential = {	
 		OR = {
+			is_dry = yes
+			is_planet_class = pc_continental
 			is_planet_class = pc_gaia
 			is_planet_class = pc_pdshroud
 			is_planet_class = pc_nuked
 			is_planet_class = pc_relic
-			is_planet_class = pc_milarc_relic
 			is_planet_class = pc_irradiated
 			is_planet_class = pc_tidallylocked
 			is_planet_class = pc_supercon
@@ -289,86 +507,111 @@ d_searing_desert = {
 			is_planet_class = pc_floating
 			is_planet_class = pc_crystal
 			is_planet_class = pc_technoorganic
-			is_planet_class = pc_sterile			
-			is_dry = yes
 			
 			is_planet_class_pc_irradiated_marginal = yes
 			is_planet_class_pc_hothouse = yes
 			is_planet_class_pc_primordial = yes
+			is_planet_class = pc_sterile
+		}
+		NOR = {
+			has_modifier = "underground_world"
+			has_modifier = "salt_world"
+			has_modifier = "boreal_world"
+			has_modifier = "arctic_tidally_locked"
+			has_modifier = "ocean_tidally_locked"
+			has_modifier = "prairie_world"
 		}
 	}
 	
 	drop_weight = {
-		weight = @med
+		weight = 6
 		modifier = {
 			factor = @planet_type_bonus
 			is_dry = yes
-		}		
-		#NF
+		}
 		modifier = {
-			factor = 0
+			factor = 3
 			OR = {
-				has_modifier = "underground_world"
-				has_modifier = "arctic_tidally_locked"
-				has_modifier = "ocean_tidally_locked"
+				has_modifier = "dune_world"
+				has_modifier = "pangea_world"
+			}
+		}
+		modifier = {
+			factor = 2
+			is_planet_class = pc_desert
+		}
+		modifier = {
+			factor = 0.5
+			OR = {
+				has_modifier = "oasis_world"
+				has_modifier = "mediterranean_world"
+				is_planet_class = pc_savannah
+			}
+		}
+		modifier = {
+			factor = 0.25
+			OR = {
+				is_planet_class = pc_gaia
+				is_planet_class = pc_continental
+				has_modifier = "steppe_world"
 			}
 		}
 	}
 }
 
-d_frozen_gas_lake = {
-	is_for_colonizeable = yes
-	use_for_min_max_adjustments = yes
-	
-	category = deposit_cat_energy
-	
-	use_weights_for_terraforming_swap_types = yes
-	should_swap_deposit_on_terraforming = yes
-	terraforming_swap_types = {
-		d_searing_desert
-		d_rushing_waterfalls
-		d_powerful_geyser
-		d_underwater_jets
-	}	
-	
-	planet_modifier = { 
-		district_generator_max = 2
-	}
-	
-	potential = {
-		OR = {
-			is_planet_class = pc_gaia
-			is_planet_class = pc_pdshroud
-			is_planet_class = pc_relic
-			is_planet_class = pc_milarc_relic
-			is_cold = yes
-			is_planet_class = pc_ammonia
-			is_planet_class = pc_sulfur
-			is_planet_class = pc_acid
-			is_planet_class = pc_methane
-			is_planet_class = pc_graveyard
-			is_planet_class = pc_floating
-			is_planet_class = pc_crystal
-			is_planet_class = pc_technoorganic
-			is_planet_class = pc_geothermal
-			
-			is_planet_class_pc_desolate = yes
-			is_planet_class_pc_marginal_cold = yes
-		}
-	}
-	
-	drop_weight = {
-		weight = @med
-		modifier = {
-			factor = @planet_type_bonus
-			is_dry = yes
-		}	
-		modifier = {
-			factor = @planet_type_bonus
-			is_pd_exotic = yes
-		}	
-	}
-}
+#d_frozen_gas_lake = {
+#	is_for_colonizeable = yes
+#	use_for_min_max_adjustments = yes
+#	
+#	category = deposit_cat_energy
+#	
+#	use_weights_for_terraforming_swap_types = yes
+#	should_swap_deposit_on_terraforming = yes
+#	terraforming_swap_types = {
+#		d_searing_desert
+#		d_rushing_waterfalls
+#		d_powerful_geyser
+#		d_underwater_jets
+#	}	
+#	
+#	planet_modifier = { 
+#		district_generator_max = 2
+#	}
+#	
+#	potential = {
+#		OR = {
+#			is_planet_class = pc_gaia
+#			is_planet_class = pc_pdshroud
+#			is_planet_class = pc_relic
+#			is_cold = yes
+#			is_planet_class = pc_ammonia
+#			is_planet_class = pc_sulfur
+#			is_planet_class = pc_acid
+#			is_planet_class = pc_methane
+#			is_planet_class = pc_graveyard
+#			is_planet_class = pc_floating
+#			is_planet_class = pc_crystal
+#			is_planet_class = pc_technoorganic
+#			is_planet_class = pc_geothermal
+#			
+#			is_planet_class_pc_desolate = yes
+#			is_planet_class_pc_marginal_cold = yes
+#			has_modifier = "arctic_tidally_locked"
+#		}
+#	}
+#	
+#	drop_weight = {
+#		weight = @med
+#		modifier = {
+#			factor = @planet_type_bonus
+#			is_dry = yes
+#		}	
+#		modifier = {
+#			factor = @planet_type_bonus
+#			is_pd_exotic = yes
+#		}	
+#	}
+#}
 
 d_powerful_geyser = {
 	is_for_colonizeable = yes
@@ -405,6 +648,94 @@ d_powerful_geyser = {
 	}
 }
 
+d_salt_flat = { #New
+	is_for_colonizeable = yes
+	use_for_min_max_adjustments = yes
+	
+	category = deposit_cat_energy
+	
+	use_weights_for_terraforming_swap_types = yes
+	should_swap_deposit_on_terraforming = yes
+	terraforming_swap_types = {
+		d_mineral_fields
+		d_lichen_fields
+		d_bountiful_plains
+		d_nutritious_mudland
+		d_fertile_lands
+		d_quicksand_basin
+		d_dune_sea
+		d_forgiving_tundra
+		d_radioactive_wasteland
+	}
+	
+	planet_modifier = { 
+		district_generator_max = 1
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_regular_empire = yes }
+		}
+		modifier = {
+			job_pioneer_add = 1
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_hive_empire = yes }
+		}
+		modifier = {
+			job_opportunist_drone_add = 1
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_machine_empire = yes }
+		}
+		modifier = {	
+			job_scout_drone_add = 1
+		}
+	}
+	
+	potential = {
+		OR = {
+			is_dry = yes
+			is_planet_class = pc_tidallylocked
+		}
+		NOR = {
+			has_modifier = "underground_world"
+			has_modifier = "arctic_tidally_locked"
+			has_modifier = "ocean_tidally_locked"
+		}
+	}
+	
+	drop_weight = {
+		weight = 3
+		modifier = {
+			factor = 20
+			has_modifier = "salt_world"
+		}
+		modifier = {
+			factor = 0.5
+			is_planet_class = pc_desert
+		}
+		modifier = {
+			factor = 0.25
+			OR = {
+				is_planet_class = pc_arid
+				is_planet_class = pc_savannah
+				is_planet_class = pc_tidallylocked
+				has_modifier = "prairie_world"
+			}
+		}
+	}
+}
+
 d_geothermal_vent = {
 	is_for_colonizeable = yes
 	use_for_min_max_adjustments = yes
@@ -416,6 +747,17 @@ d_geothermal_vent = {
 	terraforming_swap_types = {
 		d_tempestous_mountain
 		d_underwater_vent
+		d_hot_springs
+		d_rushing_waterfalls
+		d_geothermal_vent
+		d_underwater_vent
+		d_ore_rich_caverns
+		d_submerged_ore_veins
+		d_active_volcano
+		d_deep_sinkhole
+		d_noxious_swamp
+		d_bubbling_swamp
+		d_fuming_bog
 	}
 	
 	planet_modifier = { 
@@ -427,14 +769,12 @@ d_geothermal_vent = {
 			is_planet_class = pc_arctic
 			is_planet_class = pc_tundra
 			is_planet_class = pc_rogue
-			is_planet_class = pc_lichen
 			is_planet_class = pc_eyeball
 			is_planet_class = pc_glacio
 			is_planet_class = pc_lanthanide
 			is_planet_class = pc_savannah
 			is_planet_class = pc_desert
 			is_planet_class = pc_salt
-			is_planet_class = pc_aquifer
 			is_planet_class = pc_coral
 			is_planet_class = pc_storm
 			is_planet_class = pc_arid
@@ -459,6 +799,12 @@ d_geothermal_vent = {
 			is_planet_class_pc_hothouse = yes
 			is_planet_class_pc_desolate = yes
 			is_planet_class_pc_irradiated_marginal = yes
+			is_planet_class = pc_tidallylocked
+			is_planet_class = pc_sterile
+		}
+		NOR = {
+			has_modifier = "cryokarst_world"
+			has_modifier = "ocean_tidally_locked"
 		}
 	}
 	
@@ -467,7 +813,30 @@ d_geothermal_vent = {
 		modifier = {
 			factor = @planet_type_bonus
 			is_dry = yes
-		}		
+		}
+		modifier = {
+			factor = 5
+			has_modifier = "geothermal_world"
+		}
+		modifier = {
+			factor = 2
+			OR = {
+				has_modifier = "young_world"
+				has_modifier = "primal_world"
+				has_modifier = "lava_world"
+			}
+		}
+		modifier = {
+			factor = 1.5
+			has_modifier = "unstable_tectonics"
+		}
+		modifier = {
+			factor = 0
+			OR = {
+				has_modifier = "cryokarst_world"
+				has_modifier = "ocean_tidally_locked"
+			}
+		}
 	}
 }
 
@@ -482,10 +851,19 @@ d_underwater_vent = {
 	terraforming_swap_types = {
 		d_geothermal_vent
 		d_tempestous_mountain
+		d_submerged_ore_veins
+		d_active_volcano
+		d_noxious_swamp
+		d_bubbling_swamp
+		d_fuming_bog
+		d_salt_flat
+		d_marvelous_oasis
+		d_massive_glacier
 	}
 	
 	planet_modifier = { 
 		district_generator_max = 3
+		planet_structures_cost_mult = 0.25
 	}
 	
 	potential = {
@@ -508,7 +886,12 @@ d_underwater_vent = {
 			is_planet_class = pc_crystal
 			is_planet_class = pc_technoorganic
 			is_planet_class = pc_storm
-		}
+			has_modifier = "mediterranean_world"
+			has_modifier = "oasis_world"
+			has_modifier = "cryokarst_world"
+			has_modifier = "melting_world"
+			has_modifier = "ocean_tidally_locked"
+			has_modifier = "ice_world"		}
 	}
 	
 	drop_weight = {
@@ -517,6 +900,32 @@ d_underwater_vent = {
 			factor = @planet_type_bonus
 			is_dry = yes
 		}		
+		modifier = {
+			factor = 3
+			OR = {
+				has_modifier = "panthalassic_world"
+				has_modifier = "ice_world"
+			}
+		}
+		modifier = {
+			factor = 2
+			has_modifier = "melting_world"
+		}
+		modifier = {
+			factor = 1.5
+			has_modifier = "unstable_tectonics"
+		}
+		modifier = {
+			factor = 0.5
+			OR = {
+				is_planet_class = pc_gaia
+				is_planet_class = pc_relic
+				is_planet_class = pc_ocean	
+				is_planet_class = pc_continental
+				has_modifier = "mediterranean_world"
+				has_modifier = "oasis_world"
+			}
+		}
 	}
 }
 
@@ -524,17 +933,44 @@ d_tempestous_mountain = {
 	is_for_colonizeable = yes
 	use_for_min_max_adjustments = yes
 	
-	category = deposit_cat_energy
+	category = deposit_cat_blockers
+	
+	use_weights_for_blocker_swap_types = yes
+	blocker_swap_types = {
+		d_veiny_cliffs
+		d_ore_rich_caverns
+		d_rich_mountain
+		d_dust_caverns
+		d_crystalline_caverns
+		d_betharian_deposit
+		d_karst_cave
+	}
 	
 	use_weights_for_terraforming_swap_types = yes
 	should_swap_deposit_on_terraforming = yes
 	terraforming_swap_types = {
 		d_geothermal_vent
 		d_underwater_vent
+		d_arid_highlands
+		d_tempestous_mountain
+		d_frigid_plateau
+		d_prosperous_mesa
+		d_rich_mountain
+		d_mountain_range
+		d_active_volcano
+	}
+	
+	time = 180
+	resources = {
+		category = deposit_blockers
+		cost = {
+			energy = 500
+		}
 	}
 	
 	planet_modifier = { 
-		district_generator_max = 3
+		district_generator_max = 2
+		planet_jobs_physics_research_produces_mult = 0.05
 	}
 	
 	potential = {
@@ -576,11 +1012,13 @@ d_tempestous_mountain = {
 			is_planet_class = pc_megaflorahive	
 			is_planet_class = pc_megafloratol		
 			is_planet_class = pc_ash				
+			is_planet_class = pc_sterile
 			
 			is_planet_class_pc_marginal_warm = yes
 			is_planet_class_pc_marginal_cold = yes
 			is_planet_class_pc_primordial = yes
 		}
+		NOT = { has_modifier = "panthalassic_world" }
 	}
 	
 	drop_weight = {
@@ -593,8 +1031,250 @@ d_tempestous_mountain = {
 			factor = @planet_type_bonus
 			is_pd_exotic = yes
 		}
+		modifier = {
+			factor = 3
+			OR = {
+				has_modifier = "rocky_world"
+				has_modifier = "ash_world"
+			}
+		}
+		modifier = {
+			factor = 2
+			OR = {
+				has_modifier = "monsoon_world"
+				has_modifier = "pangea_world"
+				has_modifier = "storm_world"
+			}
+		}
+		modifier = {
+			factor = 1.5
+			has_modifier = "hazardous_weather"
+		}
+	}
+	
+	ai_weight = {
+		weight = 0
 	}
 }
+
+d_great_vortex = { #New
+	is_for_colonizeable = yes
+	use_for_min_max_adjustments = yes
+	
+	category = deposit_cat_blockers
+	
+	all_blocker_swap_types = yes
+	use_weights_for_terraforming_swap_types = yes
+	should_swap_deposit_on_terraforming = yes
+	terraforming_swap_types = {
+		d_arid_highlands
+		d_great_vortex
+		d_frigid_plateau
+		d_prosperous_mesa
+		d_rich_mountain
+		d_mountain_range
+		d_active_volcano
+	}
+	
+	time = 180
+	resources = {
+		category = deposit_blockers
+		cost = {
+			energy = 500
+		}
+	}
+	
+	planet_modifier = { 
+		district_generator_max = 2
+		planet_jobs_physics_research_produces_mult = 0.05
+		pop_environment_tolerance = -0.05
+	}
+	
+	potential = {
+		OR = {
+			is_dry = yes
+			is_planet_class = pc_gaia
+			is_planet_class = pc_relic
+			is_planet_class = pc_sterile
+			has_modifier = "pangea_world"
+		}
+		NOT = { has_modifier = "underground_world" }
+	}
+	
+	drop_weight = {
+		weight = 1
+		modifier = {
+			factor = 5
+			has_modifier = "coriolis_world"
+		}
+		modifier = {
+			factor = 2
+			has_modifier = "pangea_world"
+		}
+		modifier = {
+			factor = 2
+			is_extreme_subclass = yes
+		}
+		modifier = {
+			factor = 1.5
+			has_modifier = "hazardous_weather"
+		}
+	}
+	
+	ai_weight = {
+		weight = 0
+	}
+}
+
+d_stormy_water = { #New
+	is_for_colonizeable = yes
+	use_for_min_max_adjustments = yes
+	
+	category = deposit_cat_blockers
+	
+	use_weights_for_blocker_swap_types = yes
+	blocker_swap_types = {
+		d_underwater_vent
+		d_submerged_ore_veins
+		d_teeming_reef
+		d_crystal_reef
+	}
+	
+	use_weights_for_terraforming_swap_types = yes
+	should_swap_deposit_on_terraforming = yes
+	terraforming_swap_types = {
+		d_arid_highlands
+		d_great_vortex
+		d_stormy_water
+		d_frigid_plateau
+		d_prosperous_mesa
+		d_rich_mountain
+		d_mountain_range
+		d_active_volcano
+	}
+	
+	time = 180
+	resources = {
+		category = deposit_blockers
+		cost = {
+			energy = 500
+		}
+	}
+	
+	planet_modifier = { 
+		district_generator_max = 2
+		planet_jobs_physics_research_produces_mult = 0.05
+		pop_environment_tolerance = -0.05
+	}
+	
+	potential = {
+		OR = {
+			is_planet_class = pc_ocean
+		}
+	}
+	
+	drop_weight = {
+		weight = 1
+		modifier = {
+			factor = 5
+			has_modifier = "storm_world"
+		}
+		modifier = {
+			factor = 2
+			is_extreme_subclass = yes
+		}
+		modifier = {
+			factor = 1.5
+			has_modifier = "hazardous_weather"
+		}
+	}
+	
+	ai_weight = {
+		weight = 0
+	}
+}
+
+d_frigid_plateau = { #New
+	is_for_colonizeable = yes
+	use_for_min_max_adjustments = yes
+	
+	category = deposit_cat_blockers
+	
+	use_weights_for_blocker_swap_types = yes
+	blocker_swap_types = {
+		d_veiny_cliffs
+		d_ore_rich_caverns
+		d_rich_mountain
+		d_dust_caverns
+		d_crystalline_caverns
+		d_betharian_deposit
+		d_karst_cave
+	}
+	
+	use_weights_for_terraforming_swap_types = yes
+	should_swap_deposit_on_terraforming = yes
+	terraforming_swap_types = {
+		d_rushing_waterfalls
+		d_arid_highlands
+		d_frigid_plateau
+		d_veiny_cliffs
+		d_prosperous_mesa
+	}
+	
+	time = 180
+	resources = {
+		category = deposit_blockers
+		cost = {
+			energy = 500
+		}
+	}
+	
+	planet_modifier = {
+		district_generator_max = 1
+		planet_jobs_energy_produces_mult = -0.10
+	}
+	
+	potential = {
+		OR = {
+			is_cold = yes
+			is_planet_class = pc_continental
+			has_modifier = "arctic_tidally_locked"
+		}
+		NOT = { has_modifier = "cryokarst_world" }
+	}
+	
+	drop_weight = {
+		weight = 4
+		modifier = {
+			factor = 3
+			has_modifier = "plateau_world"
+		}
+		modifier = {
+			factor = 2
+			OR = {
+				is_planet_class = pc_alpine
+				has_modifier = "boreal_world"
+			}
+		}
+		modifier = {
+			factor = 0.5
+			has_modifier = "bog_world"
+		}
+		modifier = {
+			factor = 0.25
+			OR = {
+				has_modifier = "geothermal_world"
+				has_modifier = "ice_world"
+				is_planet_class = pc_continental
+			}
+		}
+	}
+	
+	ai_weight = {
+		weight = 0.25
+	}
+}
+
 
 ###################
 #### MINERALS #####
@@ -643,10 +1323,16 @@ d_veiny_cliffs = {
 		d_mineral_fields
 		d_mineral_striations # gaia
 		d_coral_deposit
+		d_rushing_waterfalls
+		d_arid_highlands
+		d_frigid_plateau
+		d_veiny_cliffs
+		d_prosperous_mesa
 	}
 	
 	planet_modifier = { 
 		district_mining_max = 1
+		planet_jobs_minerals_produces_mult = 0.05
 	}
 	
 	potential = {
@@ -690,15 +1376,56 @@ d_veiny_cliffs = {
 			
 			is_planet_class_pc_marginal_warm = yes
 			is_planet_class_pc_marginal_cold = yes
+			is_planet_class = pc_tidallylocked
+			is_planet_class = pc_sterile
+		}
+		NOR = {
+			has_modifier = "cryokarst_world"
+			has_modifier = "underground_world"
+			has_modifier = "panthalassic_world"
+			has_modifier = "ocean_tidally_locked"
 		}
 	}
 	
 	drop_weight = {
-		weight = @high
+		weight = 10
 		modifier = {
 			factor = @planet_type_bonus
 			is_cold = yes
-		}		
+		}
+		modifier = {
+			factor = 2
+			has_modifier = "ultra_rich"
+		}
+		modifier = {
+			factor = 1.5
+			has_modifier = "mineral_rich"
+		}
+		modifier = {
+			factor = 0.5
+			has_modifier = "mineral_poor"
+		}
+		modifier = {
+			factor = 3
+			has_modifier = "mineral_world"
+		}
+		modifier = {
+			factor = 2
+			has_modifier = "crag_world"
+		}
+		modifier = {
+			factor = 0.5
+			OR = {
+				is_planet_class = pc_desert
+				is_planet_class = pc_tropical
+				is_planet_class = pc_ocean
+				is_planet_class = pc_tundra
+			}
+		}
+		modifier = {
+			factor = 0.25
+			has_modifier = "ice_world"
+		}
 	}
 }
 
@@ -714,6 +1441,17 @@ d_mineral_fields = {
 		d_veiny_cliffs
 		d_mineral_striations # gaia
 		d_coral_deposit
+		d_searing_desert
+		d_mineral_fields
+		d_lichen_fields
+		d_bountiful_plains
+		d_green_hills
+		d_nutritious_mudland
+		d_fertile_lands
+		d_quicksand_basin
+		d_dune_sea
+		d_forgiving_tundra
+		d_radioactive_wasteland
 	}
 	
 	planet_modifier = { 
@@ -763,11 +1501,17 @@ d_mineral_fields = {
 			is_planet_class_pc_desolate = yes
 			is_planet_class_pc_primordial = yes
 			is_planet_class_pc_irradiated_marginal = yes
+			is_planet_class = pc_sterile
+		}
+		NOR = {
+			has_modifier = "cryokarst_world"
+			has_modifier = "panthalassic_world"
+			has_modifier = "ocean_tidally_locked"
 		}
 	}
 	
 	drop_weight = {
-		weight = @high	
+		weight = 16	
 		modifier = {
 			factor = @planet_type_bonus
 			is_cold = yes
@@ -776,6 +1520,38 @@ d_mineral_fields = {
 			factor = @planet_type_bonus
 			is_pd_exotic = yes
 		}
+		modifier = {
+			factor = 2
+			has_modifier = "ultra_rich"
+		}
+		modifier = {
+			factor = 1.5
+			has_modifier = "mineral_rich"
+		}
+		modifier = {
+			factor = 0.5
+			has_modifier = "mineral_poor"
+		}
+		modifier = {
+			factor = 2
+			OR = {
+				has_modifier = "underground_world"
+				has_modifier = "cold_desert"
+				has_modifier = "equatorial_world"
+			}
+		}
+		modifier = {
+			factor = 0.5
+			OR = {
+				is_planet_class = pc_tropical
+				is_planet_class = pc_ocean
+				is_planet_class = pc_alpine
+			}
+		}
+		modifier = {
+			factor = 0.25
+			has_modifier = "ice_world"
+		}		
 	}
 }
 
@@ -806,6 +1582,10 @@ d_submerged_caves = {
 			factor = @planet_type_bonus
 			is_planet_class = pc_aquatic
 		}
+		modifier = {
+			factor = 0
+			has_modifier = "panthalassic_world"
+		}
 	}
 }
 
@@ -820,6 +1600,11 @@ d_prosperous_mesa = {
 	terraforming_swap_types = {
 		d_ore_rich_caverns
 		d_submerged_caves
+		d_rushing_waterfalls
+		d_arid_highlands
+		d_frigid_plateau
+		d_veiny_cliffs
+		d_prosperous_mesa
 	}
 	
 	planet_modifier = { 
@@ -867,14 +1652,63 @@ d_prosperous_mesa = {
 			
 			is_planet_class_pc_marginal_warm = yes
 			is_planet_class_pc_marginal_cold = yes
+			is_planet_class = pc_tidallylocked
+			is_planet_class = pc_sterile
+		}
+		NOR = {
+			has_modifier = "cryokarst_world"
+			has_modifier = "underground_world"
+			has_modifier = "panthalassic_world"
+			has_modifier = "ocean_tidally_locked"
 		}
 	}
 	
 	drop_weight = {
-		weight = @med
+		weight = 8
 		modifier = {
 			factor = @planet_type_bonus
 			is_cold = yes
+		}
+		modifier = {
+			factor = 2
+			has_modifier = "ultra_rich"
+		}
+		modifier = {
+			factor = 1.5
+			has_modifier = "mineral_rich"
+		}
+		modifier = {
+			factor = 0.5
+			has_modifier = "mineral_poor"
+		}
+		modifier = {
+			factor = 3
+			has_modifier = "mesa_world"
+		}
+		modifier = {
+			factor = 2
+			has_modifier = "plateau_world"
+		}
+		modifier = {
+			factor = 1.5
+			has_modifier = "pangea_world"
+		}
+		modifier = {
+			factor = 0.5
+			is_planet_class = pc_desert
+		}
+		modifier = {
+			factor = 0.25
+			OR = {
+				is_planet_class = pc_tropical
+				is_planet_class = pc_ocean
+				has_modifier = "steppe_world"
+				has_modifier = "ice_world"
+			}
+		}
+		modifier = {
+			factor = 0
+			has_modifier = "underground_world"
 		}
 	}
 }
@@ -890,10 +1724,16 @@ d_ore_rich_caverns = {
 	terraforming_swap_types = {
 		d_prosperous_mesa
 		d_submerged_caves
+		d_ore_rich_caverns
+		d_fungal_caves
+		d_deep_sinkhole
+		d_dust_caverns
+		d_crystalline_caverns
 	}
 	
 	planet_modifier = { 
 		district_mining_max = 2
+		planet_jobs_minerals_produces_mult = 0.05
 	}
 	
 	potential = {
@@ -949,11 +1789,19 @@ d_ore_rich_caverns = {
 			is_planet_class_pc_desolate = yes
 			is_planet_class_pc_primordial = yes
 			is_planet_class_pc_irradiated_marginal = yes
+			has_modifier = "underground_world"
+			is_planet_class = pc_tidallylocked
+			is_planet_class = pc_sterile
+		}
+		NOR = {
+			has_modifier = "cryokarst_world"
+			has_modifier = "panthalassic_world"
+			has_modifier = "ocean_tidally_locked"
 		}
 	}
 	
 	drop_weight = {
-		weight = @med
+		weight = 6
 		modifier = {
 			factor = @planet_type_bonus
 			is_cold = yes
@@ -961,6 +1809,44 @@ d_ore_rich_caverns = {
 		modifier = {
 			factor = @planet_type_bonus
 			is_pd_exotic = yes
+		}
+		modifier = {
+			factor = 5
+			has_modifier = "underground_world"
+		}
+		modifier = {
+			factor = 2
+			has_modifier = "ultra_rich"
+		}
+		modifier = {
+			factor = 1.5
+			has_modifier = "mineral_rich"
+		}
+		modifier = {
+			factor = 0.5
+			has_modifier = "mineral_poor"
+		}
+		modifier = {
+			factor = 5
+			OR = {
+				has_modifier = "underground_world"
+				has_modifier = "mineral_world"
+			}
+		}
+		modifier = {
+			factor = 4
+			has_modifier = "karstic_world"
+		}
+		modifier = {
+			factor = 2
+			has_modifier = "crag_world"
+		}
+		modifier = {
+			factor = 0.25
+			OR = {
+				is_planet_class = pc_ocean
+				has_modifier = "ice_world"
+			}
 		}
 	}
 }
@@ -975,6 +1861,13 @@ d_rich_mountain = {
 	should_swap_deposit_on_terraforming = yes
 	terraforming_swap_types = {
 		d_submerged_ore_veins
+		d_arid_highlands
+		d_tempestous_mountain
+		d_frigid_plateau
+		d_prosperous_mesa
+		d_rich_mountain
+		d_mountain_range
+		d_active_volcano
 	}
 	
 	planet_modifier = { 
@@ -1044,11 +1937,19 @@ d_rich_mountain = {
 			is_planet_class_pc_desolate = yes
 			is_planet_class_pc_primordial = yes
 			is_planet_class_pc_irradiated_marginal = yes
+			is_planet_class = pc_tidallylocked
+			is_planet_class = pc_sterile
+		}
+		NOR = {
+			has_modifier = "cryokarst_world"
+			has_modifier = "underground_world"
+			has_modifier = "panthalassic_world"
+			has_modifier = "ocean_tidally_locked"
 		}
 	}
 	
 	drop_weight = {
-		weight = @low
+		weight = 4
 		modifier = {
 			factor = @planet_type_bonus
 			is_cold = yes
@@ -1056,6 +1957,41 @@ d_rich_mountain = {
 		modifier = {
 			factor = @planet_type_bonus
 			is_pd_exotic = yes
+		}
+		modifier = {
+			factor = 2
+			has_modifier = "ultra_rich"
+		}
+		modifier = {
+			factor = 1.5
+			has_modifier = "mineral_rich"
+		}
+		modifier = {
+			factor = 0.5
+			has_modifier = "mineral_poor"
+		}
+		modifier = {
+			factor = 5
+			has_modifier = "mineral_world"
+		}
+		modifier = {
+			factor = 2
+			is_planet_class = pc_alpine
+		}
+		modifier = {
+			factor = 0.25
+			OR = {
+				is_planet_class = pc_ocean
+				has_modifier = "ice_world"
+			}
+		}
+		modifier = {
+			factor = 0
+			OR = {
+				has_modifier = "underground_world"
+				has_modifier = "cryokarst_world"
+				has_modifier = "ocean_tidally_locked"
+			}
 		}
 	}
 }
@@ -1070,10 +2006,14 @@ d_submerged_ore_veins = {
 	should_swap_deposit_on_terraforming = yes
 	terraforming_swap_types = {
 		d_rich_mountain
+		d_submerged_ore_veins
+		d_veiny_cliffs
+		d_teeming_reef
 	}	
 	
 	planet_modifier = { 
-		district_mining_max = 3
+		district_mining_max = 2
+		planet_structures_cost_mult = 0.25
 	}
 	
 	potential = {
@@ -1109,14 +2049,49 @@ d_submerged_ore_veins = {
 			
 			is_planet_class_pc_marginal_warm = yes
 			is_planet_class_pc_marginal_cold = yes
+			has_modifier = "oasis_world"
+			has_modifier = "mediterranean_world"
+			has_modifier = "melting_world"
+			has_modifier = "ocean_tidally_locked"
 		}
+		NOR = { has_modifier = "underground_world" }
 	}
 	
 	drop_weight = {
-		weight = @low
+		weight = 10
 		modifier = {
-			factor = @planet_type_bonus
-			is_cold = yes
+			factor = 2
+			has_modifier = "ultra_rich"
+		}
+		modifier = {
+			factor = 1.5
+			has_modifier = "mineral_rich"
+		}
+		modifier = {
+			factor = 0.5
+			has_modifier = "mineral_poor"
+		}
+		modifier = {
+			factor = 2
+			OR = {
+				has_modifier = "panthalassic_world"
+				has_modifier = "ice_world"
+			}
+		}
+		modifier = {
+			factor = 0.5
+			OR = {
+				is_planet_class = pc_continental
+				is_planet_class = pc_gaia
+				is_planet_class = pc_relic
+			}
+		}
+		modifier = {
+			factor = 0.25
+			OR = {
+				has_modifier = "oasis_world"
+				has_modifier = "mediterranean_world"
+			}
 		}
 	}
 }
@@ -1124,6 +2099,7 @@ d_submerged_ore_veins = {
 ###################
 #####  FOOD   #####
 ###################
+
 d_sea_grass = {
 	is_for_colonizeable = yes
 	use_for_min_max_adjustments = yes
@@ -1177,10 +2153,23 @@ d_lichen_fields = {
 		d_nutritious_mudland
 		d_natural_farmland # gaia
 		d_sea_grass
+		d_searing_desert
+		d_mineral_fields
+		d_lichen_fields
+		d_bountiful_plains
+		d_green_hills
+		d_nutritious_mudland
+		d_fertile_lands
+		d_quicksand_basin
+		d_dune_sea
+		d_forgiving_tundra
+		d_radioactive_wasteland
+		
 	}	
 	
 	planet_modifier = { 
 		district_farming_max = 1
+		planet_jobs_food_produces_mult = -0.10
 	}
 	
 	potential = {
@@ -1196,11 +2185,20 @@ d_lichen_fields = {
 			is_planet_class = pc_ash
 			
 			is_planet_class_pc_marginal_cold = yes
-		}	
+			has_modifier = "young_world"
+		}
+		NOR = {
+			has_modifier = "cryokarst_world"
+			has_modifier = "equatorial_world"
+			has_modifier = "lava_world"
+			has_modifier = "glacial_world"
+			has_modifier = "ice_world"
+			has_modifier = "cold_desert"
+		}
 	}
 	
 	drop_weight = {
-		weight = @high
+		weight = 1 
 		modifier = {
 			factor = 0.33
 			is_planet_class = pc_nuked
@@ -1209,7 +2207,31 @@ d_lichen_fields = {
 		modifier = {
 			factor = @planet_type_bonus
 			is_wet = yes
-		}		
+		}
+		modifier = {
+			factor = 1.5
+			has_modifier = "lush_planet"
+		}
+		modifier = {
+			factor = 0.5
+			has_modifier = "bleak_planet"
+		}
+		modifier = {
+			factor = 0.5
+			is_planet_class = pc_arctic
+		}
+		modifier = {
+			factor = 0.25
+			OR = {
+				is_planet_class = pc_nuked
+				has_modifier = "geothermal_world"
+				has_modifier = "mineral_world"
+			}
+		}
+		modifier = {
+			factor = 0
+			has_modifier = "cryokarst_world"
+		}
 	}
 }
 
@@ -1230,10 +2252,19 @@ d_bountiful_plains = {
 		d_nutritious_mudland
 		d_natural_farmland # gaia
 		d_sea_grass
+		d_searing_desert
+		d_mineral_fields
+		d_bountiful_plains
+
+		d_fertile_lands
+		d_quicksand_basin
+		d_dune_sea
+		d_forgiving_tundra
+		d_radioactive_wasteland
 	}
 	
 	planet_modifier = {
-		district_farming_max = 1
+		district_farming_max = 2
 	}
 	
 	potential = {
@@ -1250,67 +2281,69 @@ d_bountiful_plains = {
 		is_planet_class = pc_semiarid
 		is_planet_class = pc_steppe
 		}
-	}
-	
-	drop_weight = {
-		weight = @high
-		modifier = {
-			factor = @planet_type_bonus
-			is_wet = yes
-		}		
-	}
-}
-
-d_rugged_woods = {
-	is_for_colonizeable = yes
-	use_for_min_max_adjustments = yes
-	
-	category = deposit_cat_food
-	
-	terraforming_swap_types = {
-		d_natural_farmland # gaia
-		d_lichen_fields
-		d_bountiful_plains
-		d_green_hills
-		d_forgiving_tundra
-		d_boggy_fens
-		d_nutritious_mudland
-		d_sea_grass
-	}
-
-	planet_modifier = { 
-		district_farming_max = 1
-	}
-	
-	potential = {
-		OR = {
-		is_planet_class = pc_continental
-		is_planet_class = pc_cascadian
-		is_planet_class = pc_boreal
-		is_planet_class = pc_snow
-		is_planet_class = pc_superhabitable
-		is_planet_class = pc_tidallylocked
-		is_planet_class = pc_supercon
-		is_planet_class = pc_crystal
-		is_planet_class = pc_technoorganic
-		is_planet_class = pc_retinal
-		is_planet_class = pc_forest
-		is_planet_class = pc_lake	
-		is_planet_class = pc_tepid
-		is_planet_class = pc_megaflora
-		is_planet_class = pc_megaflorahive
-		is_planet_class = pc_megafloratol		
-		
-		is_planet_class_pc_marginal_warm = yes
+		NOR = {
+			has_modifier = "arid_tidally_locked"
+			has_modifier = "panthalassic_world"
+			has_modifier = "storm_world"
+			has_modifier = "young_world"
+			has_modifier = "swamp_world"
+			has_modifier = "ocean_tidally_locked"
+			has_modifier = "dust_world"
+			has_modifier = "mesa_world"
 		}
 	}
 	
 	drop_weight = {
-		weight = @high
+		weight = 2
 		modifier = {
 			factor = @planet_type_bonus
 			is_wet = yes
 		}		
+		modifier = {
+			factor = 1.5
+			has_modifier = "lush_planet"
+		}
+		modifier = {
+			factor = 0.5
+			has_modifier = "bleak_planet"
+		}
+		modifier = {
+			factor = 3
+			OR = {
+				is_wet = yes
+				is_planet_class = pc_savannah
+			}
+		}
+		modifier = {
+			factor = 2
+			OR = {
+				has_modifier = "steppe_world"
+				has_modifier = "mediterranean_world"
+			}
+		}
+		modifier = {
+			factor = 0.5
+			OR = {
+				has_modifier = "coriolis_world"
+				has_modifier = "pangea_world"
+				has_modifier = "jungle_world"
+			}
+		}
+		modifier = {
+			factor = 0.25
+			OR = {
+				is_planet_class = pc_ocean
+				is_planet_class = pc_tropical
+				is_planet_class = pc_arid
+			}
+		}
+		modifier = {
+			factor = 0
+			OR = {
+				has_modifier = "arid_tidally_locked"
+				has_modifier = "ocean_tidally_locked"
+			}
+		}
 	}
 }
 
@@ -1331,10 +2364,49 @@ d_green_hills = {
 		d_nutritious_mudland
 		d_natural_farmland # gaia
 		d_sea_grass
+		d_searing_desert
+		d_mineral_fields
+		d_green_hills
+		d_nutritious_mudland
+		d_fertile_lands
+		d_quicksand_basin
+		d_dune_sea
+		d_forgiving_tundra
+		d_radioactive_wasteland
 	}	
 	
 	planet_modifier = { 
 		district_farming_max = 1
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_regular_empire = yes }
+		}
+		modifier = {
+			job_pioneer_add = 1
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_hive_empire = yes }
+		}
+		modifier = {
+			job_opportunist_drone_add = 1
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_machine_empire = yes }
+		}
+		modifier = {	
+			job_scout_drone_add = 1
+		}
 	}
 	
 	potential = {
@@ -1347,64 +2419,76 @@ d_green_hills = {
 			is_planet_class = pc_biolumen
 			is_planet_class = pc_geothermal
 			is_planet_class = pc_floating
+			is_planet_class = pc_tundra
+			is_planet_class = pc_alpine
+			is_planet_class = pc_gaia
+			is_planet_class = pc_tidallylocked
+			has_modifier = "equatorial_world"
+			has_modifier = "prairie_world"
+		}
+		NOR = {
+			has_modifier = "panthalassic_world"
+			has_modifier = "storm_world"
+			has_modifier = "cold_desert"
+			has_modifier = "mineral_world"
+			has_modifier = "arid_tidally_locked"
+			has_modifier = "ocean_tidally_locked"
 		}
 	}
 	
 	drop_weight = {
-		weight = @high
+		weight = 4
 		modifier = {
 			factor = @planet_type_bonus
 			is_wet = yes
 		}		
+		modifier = {
+			factor = 1.5
+			has_modifier = "lush_planet"
+		}
+		modifier = {
+			factor = 0.5
+			has_modifier = "bleak_planet"
+		}
+		modifier = {
+			factor = 2
+			OR = {
+				has_modifier = "geothermal_world"
+				has_modifier = "prairie_world"
+			}
+		}
+		modifier = {
+			factor = 3
+			is_wet = yes
+		}
+		modifier = {
+			factor = 0.5
+			OR = {
+				is_planet_class = pc_ocean
+				is_planet_class = pc_tundra
+				has_modifier = "jungle_world"
+			}
+		}
+		modifier = {
+			factor = 0.25
+			OR = {
+				is_planet_class = pc_alpine
+				has_modifier = "monsoon_world"
+				has_modifier = "swamp_world"
+				has_modifier = "poisonous_world"
+				has_modifier = "crag_world"
+			}
+		}
+		modifier = {
+			factor = 0
+			OR = {
+				has_modifier = "panthalassic_world"
+				has_modifier = "storm_world"
+			}
+		}
 	}
 }
 
-d_forgiving_tundra = {
-	is_for_colonizeable = yes
-	use_for_min_max_adjustments = yes
-	
-	category = deposit_cat_food
-	
-	use_weights_for_terraforming_swap_types = yes
-	should_swap_deposit_on_terraforming = yes
-	terraforming_swap_types = {
-		d_lichen_fields
-		d_bountiful_plains
-		d_rugged_woods
-		d_green_hills
-		d_boggy_fens
-		d_nutritious_mudland
-		d_natural_farmland # gaia
-		d_sea_grass
-	}	
-	
-	planet_modifier = { 
-		district_farming_max = 1
-	}
-	
-	potential = {
-		OR = {
-			is_planet_class = pc_alpine
-			is_planet_class = pc_highland
-			is_planet_class = pc_duneforest
-			is_planet_class = pc_tundra
-			is_planet_class = pc_rogue
-			is_planet_class = pc_lichen
-			is_planet_class = pc_eyeball
-			is_planet_class = pc_glacio
-			is_planet_class = pc_lanthanide
-			is_planet_class = pc_storm
-		}		
-	}
-	
-	drop_weight = {
-		weight = @high
-		modifier = {
-			factor = @planet_type_bonus
-			is_wet = yes
-		}		
-	}
-}
 
 d_boggy_fens = {
 	is_for_colonizeable = yes
@@ -1423,10 +2507,17 @@ d_boggy_fens = {
 		d_nutritious_mudland
 		d_natural_farmland # gaia
 		d_sea_grass
+		d_bubbling_swamp
+		d_fuming_bog
+		d_quicksand_basin
+		d_noxious_swamp
+		d_massive_glacier
+		d_boggy_fens
 	}	
 	
 	planet_modifier = { 
 		district_farming_max = 1
+		planet_jobs_society_research_produces_mult = 0.05
 	}
 	
 	potential = {
@@ -1438,14 +2529,57 @@ d_boggy_fens = {
 		is_planet_class = pc_mushroom
 		is_planet_class = pc_wetswamp
 		}
+		NOR = {
+			has_modifier = "panthalassic_world"
+			has_modifier = "cold_desert"
+		}
 	}
 	
 	drop_weight = {
-		weight = @high
+		weight = 3
 		modifier = {
 			factor = @planet_type_bonus
 			is_wet = yes
 		}		
+		modifier = {
+			factor = 1.5
+			has_modifier = "lush_planet"
+		}
+		modifier = {
+			factor = 0.5
+			has_modifier = "bleak_planet"
+		}
+		modifier = {
+			factor = 3
+			has_modifier = "bog_world"
+		}
+		modifier = {
+			factor = 2
+			is_wet = yes
+		}
+		modifier = {
+			factor = 2
+			OR = {
+				has_modifier = "swamp_world"
+				has_modifier = "poisonous_world"
+			}
+		}
+		modifier = {
+			factor = 0.5
+			is_planet_class = pc_ocean
+		}
+		modifier = {
+			factor = 0.25
+			OR = {
+				is_planet_class = pc_tundra
+				has_modifier = "jungle_world"
+				has_modifier = "crag_world"
+			}
+		}
+		modifier = {
+			factor = 0
+			has_modifier = "panthalassic_world"
+		}
 	}
 }
 
@@ -1466,6 +2600,12 @@ d_nutritious_mudland = {
 		d_boggy_fens
 		d_natural_farmland # gaia
 		d_sea_grass
+		d_nutritious_mudland
+		d_bubbling_swamp
+		d_fuming_bog
+		d_quicksand_basin
+		d_noxious_swamp
+		d_massive_glacier
 	}	
 	
 	planet_modifier = { 
@@ -1487,10 +2627,15 @@ d_nutritious_mudland = {
 		is_planet_class = pc_methane
 		is_planet_class = pc_primal
 		}
+		NOR = { 
+			has_modifier = "underground_world"
+			has_modifier = "dune_world"
+			has_modifier = "dust_world"
+		}
 	}
 	
 	drop_weight = {
-		weight = @high
+		weight = 3
 		modifier = {
 			factor = @planet_type_bonus
 			is_wet = yes
@@ -1498,7 +2643,27 @@ d_nutritious_mudland = {
 		modifier = {
 			factor = @planet_type_bonus
 			is_pd_exotic = yes
-		}	
+		}
+		modifier = {
+			factor = 1.5
+			has_modifier = "lush_planet"
+		}
+		modifier = {
+			factor = 0.5
+			is_planet_class = pc_desert
+		}
+		modifier = {
+			factor = 0.25
+			OR = {
+				has_modifier = "salt_world"
+				has_modifier = "mesa_world"
+				has_modifier = "prairie_world"
+			}
+		}
+		modifier = {
+			factor = 0
+			has_modifier = "underground_world"
+		}		
 	}
 }
 
@@ -1547,10 +2712,47 @@ d_fungal_caves = {
 		d_fertile_lands
 		d_great_river
 		d_kelp_forests
-	}	
+		d_ore_rich_caverns
+		d_fungal_caves
+		d_deep_sinkhole
+		d_dust_caverns
+		d_crystalline_caverns
+	}
 	
-	planet_modifier = { 
-		district_farming_max = 2
+	resources = {
+		produces = {
+			food = 1
+		}
+	}
+		
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_regular_empire = yes }
+		}
+		modifier = {
+			job_smuggler_add = 1
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_hive_empire = yes }
+		}
+		modifier = {
+			job_aberrant_drone_add = 1
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_machine_empire = yes }
+		}
+		modifier = {	
+			job_renegade_drone_add = 1
+		}
 	}
 	
 	potential = {
@@ -1564,11 +2766,13 @@ d_fungal_caves = {
 			is_planet_class = pc_storm
 			
 			is_planet_class_pc_marginal_cold = yes
+			has_modifier = "underground_world"
 		}	
+		NOT = { has_modifier = "cryokarst_world" }		
 	}
 	
 	drop_weight = {
-		weight = @med
+		weight = 2
 		modifier = {
 			factor = 0.33
 			is_planet_class = pc_nuked
@@ -1579,6 +2783,27 @@ d_fungal_caves = {
 			factor = @planet_type_bonus
 			is_wet = yes
 		}		
+		modifier = {
+			factor = 2
+			OR = {
+				has_modifier = "underground_world"
+				has_modifier = "karstic_world"
+				has_modifier = "coriolis_world"
+			}
+		}
+		modifier = {
+			factor = 0.5
+			has_modifier = "glacial_world"
+		}
+		modifier = {
+			factor = 0.25
+			OR = {
+				is_planet_class = pc_nuked
+				has_modifier = "cold_desert"
+				has_modifier = "equatorial_world"
+				has_modifier = "ice_world"
+			}
+		}
 	}
 }
 
@@ -1586,7 +2811,27 @@ d_lush_jungle = {
 	is_for_colonizeable = yes
 	use_for_min_max_adjustments = yes
 	
-	category = deposit_cat_food
+	category = deposit_cat_blockers
+	
+	use_weights_for_blocker_swap_types = yes
+	blocker_swap_types = {
+		d_rushing_waterfalls
+		d_veiny_cliffs
+		d_mineral_fields
+		d_ore_rich_caverns
+		d_rich_mountain
+		d_bountiful_plains
+		d_green_hills
+		d_boggy_fens
+		d_fertile_lands
+		d_black_soil
+		d_dust_caverns
+		d_bubbling_swamp
+		d_fuming_bog
+		d_crystalline_caverns
+		d_betharian_deposit
+		d_karst_cave
+	}
 	
 	use_weights_for_terraforming_swap_types = yes
 	should_swap_deposit_on_terraforming = yes
@@ -1595,14 +2840,65 @@ d_lush_jungle = {
 		d_fertile_lands
 		d_great_river
 		d_kelp_forests
-	}	
+		d_lush_jungle
+		d_black_soil
+		d_marvelous_oasis
+		d_huge_tree
+		d_dense_jungle
+		d_noxious_swamp
+		d_rugged_woods
+		d_forgiving_tundra
+		d_fungal_forest
+	}
+	
+	time = 180
+	resources = {
+		category = deposit_blockers
+		cost = {
+			energy = 500
+		}
+		produces = {
+			food = 1
+		}
+	}
 	
 	planet_modifier = { 
-		district_farming_max = 2
+		planet_jobs_society_research_produces_mult = 0.05
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_regular_empire = yes }
+		}
+		modifier = {
+			job_pioneer_add = 1
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_hive_empire = yes }
+		}
+		modifier = {
+			job_opportunist_drone_add = 1
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_machine_empire = yes }
+		}
+		modifier = {	
+			job_scout_drone_add = 1
+		}
 	}
 	
 	potential = {
 		OR = {
+			has_modifier = "oasis_world"
 			is_planet_class = pc_gaia
 			is_planet_class = pc_pdshroud
 			is_planet_class = pc_tropical
@@ -1621,6 +2917,14 @@ d_lush_jungle = {
 			is_planet_class = pc_technoorganic
 			is_planet_class = pc_primal
 		}
+		NOR = {
+			has_modifier = "fungal_world"
+			has_modifier = "panthalassic_world"
+			has_modifier = "algic_seas"
+			has_modifier = "storm_world"
+			has_modifier = "young_world"
+			has_modifier = "boreal_world"
+		}
 	}
 	
 	drop_weight = {
@@ -1628,6 +2932,43 @@ d_lush_jungle = {
 		modifier = {
 			factor = @planet_type_bonus
 			is_wet = yes
+		}
+		weight = 10
+		modifier = {
+			factor = 1.5
+			has_modifier = "lush_planet"
+		}
+		modifier = {
+			factor = 0.5
+			has_modifier = "bleak_planet"
+		}
+		modifier = {
+			factor = 4
+			has_modifier = "jungle_world"
+		}
+		modifier = {
+			factor = 0.5
+			OR = {
+				is_planet_class = pc_continental
+				has_modifier = "oasis_world"
+				has_modifier = "poisonous_world"
+			}
+		}
+		modifier = {
+			factor = 0.25
+			OR = {
+				is_planet_class = pc_ocean
+				has_modifier = "pangea_world"
+			}
+		}
+		modifier = {
+			factor = 0
+			OR = {
+				has_modifier = "fungal_world"
+				has_modifier = "panthalassic_world"
+				has_modifier = "algic_seas"
+				has_modifier = "storm_world"
+			}
 		}
 	}
 }
@@ -1645,10 +2986,21 @@ d_fertile_lands = {
 		d_lush_jungle
 		d_great_river
 		d_kelp_forests
+		d_searing_desert
+		d_mineral_fields
+		d_lichen_fields
+		d_bountiful_plains
+		d_green_hills
+		d_nutritious_mudland
+		d_fertile_lands
+		d_quicksand_basin
+		d_dune_sea
+		d_forgiving_tundra
+		d_radioactive_wasteland
 	}	
 	
 	planet_modifier = { 
-		district_farming_max = 2
+		district_farming_max = 3
 	}
 	
 	potential = {
@@ -1683,11 +3035,18 @@ d_fertile_lands = {
 			is_planet_class = pc_megafloratol		
 			
 			is_planet_class_pc_marginal_warm = yes
+			has_modifier = "equatorial_world"
+			has_modifier = "arctic_tidally_locked"
+			has_modifier = "prairie_world"
+		}
+		NOR = {
+			has_modifier = "young_world"
+			has_modifier = "panthalassic_world"
 		}
 	}
 	
 	drop_weight = {
-		weight = @med
+		weight = 4
 		modifier = {
 			factor = @planet_type_bonus
 			is_wet = yes
@@ -1696,6 +3055,28 @@ d_fertile_lands = {
 			factor = @planet_type_bonus
 			is_pd_exotic = yes
 		}
+		modifier = {
+			factor = 1.5
+			has_modifier = "lush_planet"
+		}
+		modifier = {
+			factor = 0.5
+			has_modifier = "bleak_planet"
+		}
+		modifier = {
+			factor = 0.5
+			is_planet_class = pc_tropical
+		}
+		modifier = {
+			factor = 0.25
+			OR = {
+				is_planet_class = pc_ocean
+				has_modifier = "equatorial_world"
+				has_modifier = "pangea_world"
+				has_modifier = "swamp_world"
+				has_modifier = "jungle_world"
+			}
+		}
 	}
 }
 
@@ -1703,7 +3084,7 @@ d_great_river = {
 	is_for_colonizeable = yes
 	use_for_min_max_adjustments = yes
 	
-	category = deposit_cat_food
+	category = deposit_cat_energy
 	
 	use_weights_for_terraforming_swap_types = yes
 	should_swap_deposit_on_terraforming = yes
@@ -1712,10 +3093,22 @@ d_great_river = {
 		d_lush_jungle
 		d_fertile_lands
 		d_kelp_forests
+		d_great_river
+		d_rushing_waterfalls
+		d_black_soil
+		d_forgiving_tundra
+		d_grand_canyon
 	}	
+
+	resources = {
+		produces = {
+			food = 1
+		}
+	}
 	
-	planet_modifier = { 
-		district_farming_max = 2
+	planet_modifier = {
+		district_generator_max = 1
+		planet_jobs_food_produces_mult = 0.05
 	}
 	
 	potential = {
@@ -1733,6 +3126,16 @@ d_great_river = {
 			is_planet_class = pc_graveyard
 			is_planet_class = pc_hadesert
 			is_planet_class = pc_karst
+			is_planet_class = pc_tidallylocked
+		}
+		NOR = {
+			has_modifier = "underground_world"
+			has_modifier = "dust_world"
+			has_modifier = "dune_world"
+			has_modifier = "salt_world"
+			has_modifier = "arctic_tidally_locked"
+			has_modifier = "ocean_tidally_locked"
+			has_modifier = "coriolis_world"
 		}
 	}	
 	
@@ -1741,7 +3144,131 @@ d_great_river = {
 		modifier = {
 			factor = @planet_type_bonus
 			is_wet = yes
-		}		
+		}
+		weight = 2
+		modifier = {
+			factor = 0.5
+			OR = {
+				has_modifier = "karstic_world"
+				has_modifier = "mesa_world"
+			}
+		}
+		modifier = {
+			factor = 0.25
+			is_planet_class = pc_desert
+		}
+		modifier = {
+			factor = 0
+			OR = {
+				has_modifier = "underground_world"
+				has_modifier = "dune_world"
+				has_modifier = "salt_world"
+				has_modifier = "dust_world"
+				has_modifier = "arid_tidally_locked"
+				has_modifier = "ocean_tidally_locked"
+			}
+		}
+	}
+}
+
+d_huge_tree = { #New
+	is_for_colonizeable = yes
+	use_for_min_max_adjustments = yes
+	
+	category = deposit_cat_blockers
+	
+	use_weights_for_blocker_swap_types = yes
+	blocker_swap_types = {
+		d_rushing_waterfalls
+		d_veiny_cliffs
+		d_mineral_fields
+		d_ore_rich_caverns
+		d_rich_mountain
+		d_bountiful_plains
+		d_green_hills
+		d_boggy_fens
+		d_fertile_lands
+		d_black_soil
+		d_dust_caverns
+		d_bubbling_swamp
+		d_fuming_bog
+		d_crystalline_caverns
+		d_betharian_deposit
+		d_karst_cave
+	}
+	
+	use_weights_for_terraforming_swap_types = yes
+	should_swap_deposit_on_terraforming = yes
+	terraforming_swap_types = {
+		d_lush_jungle
+		d_black_soil
+		d_marvelous_oasis
+		d_huge_tree
+		d_dense_jungle
+		d_noxious_swamp
+		d_rugged_woods
+		d_forgiving_tundra
+	}
+
+	time = 180
+	resources = {
+		category = deposit_blockers
+		cost = {
+			energy = 500
+		}
+		produces = {
+			food = 1
+		}
+	}
+	
+	planet_modifier = { 
+		planet_jobs_society_research_produces_mult = 0.10
+	}
+	
+	potential = {
+		OR = {
+			is_planet_class = pc_continental
+			is_planet_class = pc_tropical
+			is_planet_class = pc_gaia
+			has_modifier = "veld_world"
+		}
+		NOR = {
+			has_modifier = "boreal_world"
+			has_modifier = "young_world"
+			has_modifier = "poisonous_world"
+			has_modifier = "fungal_world"
+		}
+	}
+	
+	drop_weight = {
+		weight = 2
+		modifier = {
+			factor = 1.5
+			has_modifier = "lush_planet"
+		}
+		modifier = {
+			factor = 0.5
+			has_modifier = "bleak_planet"
+		}
+		modifier = {
+			factor = 10
+			has_modifier = "forest_world"
+		}
+		modifier = {
+			factor = 3
+			has_modifier = "veld_world"
+		}
+		modifier = {
+			factor = 0.25
+			OR = {
+				is_planet_class = pc_continental
+				has_modifier = "crag_world"
+			}
+		}
+	}
+	
+	ai_weight = {
+		weight = 0
 	}
 }
 
@@ -1764,6 +3291,7 @@ d_black_soil = {
 	
 	planet_modifier = { 
 		district_farming_max = 3
+		planet_jobs_food_produces_mult = 0.05
 	}
 	
 	potential = {
@@ -1801,14 +3329,39 @@ d_black_soil = {
 			is_planet_class = pc_primal
 			
 			is_planet_class_pc_marginal_warm = yes
+			has_modifier = "equatorial_world"
+		}
+		NOR = {
+			has_modifier = "young_world"
+			has_modifier = "panthalassic_world"
+			has_modifier = "arid_tidally_locked"
+			has_modifier = "ocean_tidally_locked"
 		}
 	}
 	
 	drop_weight = {
-		weight = @low
+		weight = 4
 		modifier = {
 			factor = @planet_type_bonus
 			is_wet = yes
+		}
+		modifier = {
+			factor = 3
+			has_modifier = "prairie_world"
+		}		
+		modifier = {
+			factor = 0.5
+			OR = {
+				is_planet_class = pc_savannah
+				has_modifier = "pangea_world"
+			}
+		}
+		modifier = {
+			factor = 0.25
+			OR = {
+				is_planet_class = pc_ocean
+				has_modifier = "coriolis_world"
+			}
 		}
 	}
 }
@@ -1843,7 +3396,14 @@ d_hydrocarbon_lakes = {
 		modifier = {
 			factor = @planet_type_bonus
 			is_planet_class = pc_methane
-		}		
+		}
+		modifier = {
+			factor = 0
+			OR = {
+				has_modifier = "arid_tidally_locked"
+				has_modifier = "ocean_tidally_locked"
+			}
+		}				
 	}
 }
 
@@ -1896,10 +3456,16 @@ d_teeming_reef = {
 		d_fungal_forest
 		d_hydrocarbon_lakes
 		d_ammonia_seas
+		d_submerged_ore_veins
+		d_salt_flat
+		d_massive_glacier
+		d_toxic_kelp
+		d_teeming_reef
 	}	
 	
 	planet_modifier = { 
-		district_farming_max = 3
+		district_farming_max = 2
+		planet_jobs_society_research_produces_mult = 0.05
 	}
 	
 	potential = {		
@@ -1914,14 +3480,50 @@ d_teeming_reef = {
 			is_planet_class = pc_floating
 			is_planet_class = pc_crystal
 			is_planet_class = pc_technoorganic
+			has_modifier = "mediterranean_world"
+			has_modifier = "oasis_world"
+			has_modifier = "cryokarst_world"
+			has_modifier = "ocean_tidally_locked"
 		}
 	}
 	
 	drop_weight = {
-		weight = @low
+		weight = 8
 		modifier = {
 			factor = @planet_type_bonus
 			is_wet = yes
+		}
+		modifier = {
+			factor = 1.5
+			has_modifier = "lush_planet"
+		}
+		modifier = {
+			factor = 0.5
+			has_modifier = "bleak_planet"
+		}
+		modifier = {
+			factor = 3
+			has_modifier = "atoll_world"
+		}
+		modifier = {
+			factor = 2
+			OR = {
+				has_modifier = "panthalassic_world"
+				has_modifier = "young_world"
+			}
+		}
+		modifier = {
+			factor = 0.5
+			OR = {
+				is_planet_class = pc_continental
+				is_planet_class = pc_gaia
+				has_modifier = "mediterranean_world"
+				has_modifier = "oasis_world"
+			}
+		}
+		modifier = {
+			factor = 0.25
+			has_modifier = "boreal_world"
 		}
 	}
 }
@@ -1930,7 +3532,18 @@ d_marvelous_oasis = {
 	is_for_colonizeable = yes
 	use_for_min_max_adjustments = yes
 	
-	category = deposit_cat_food
+	category = deposit_cat_blockers
+	
+	use_weights_for_blocker_swap_types = yes
+	blocker_swap_types = {
+		d_salt_flat
+		d_mineral_fields
+		d_green_hills
+		d_dust_desert
+		d_bubbling_swamp
+		d_fuming_bog
+		d_betharian_deposit
+	}
 	
 	use_weights_for_terraforming_swap_types = yes
 	should_swap_deposit_on_terraforming = yes
@@ -1942,16 +3555,52 @@ d_marvelous_oasis = {
 		d_hydrocarbon_lakes
 		d_ammonia_seas
 	}	
+	time = 180
+	resources = {
+		category = deposit_blockers
+		cost = {
+			energy = 500
+		}
+		produces = {
+			food = 1
+		}
+	}
 	
-	planet_modifier = { 
-		district_farming_max = 3
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_regular_empire = yes }
+		}
+		modifier = {
+			job_pioneer_add = 1
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_hive_empire = yes }
+		}
+		modifier = {
+			job_opportunist_drone_add = 1
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_machine_empire = yes }
+		}
+		modifier = {	
+			job_scout_drone_add = 1
+		}
 	}
 	
 	potential = {
 		OR = {
-			is_planet_class = pc_arid
-			is_planet_class = pc_outback
 			is_planet_class = pc_desert
+			is_planet_class = pc_arid
+			has_modifier = "arid_tidally_locked"							is_planet_class = pc_outback
 			is_planet_class = pc_salt
 			is_planet_class = pc_aquifer
 			is_planet_class = pc_coral
@@ -1961,14 +3610,43 @@ d_marvelous_oasis = {
 			is_planet_class = pc_med
 			is_planet_class = pc_hadesert
 		}
+		NOR = {
+			has_modifier = "underground_world"
+			has_modifier = "dust_world"
+		}
 	}
 	
 	drop_weight = {
-		weight = @low
+		weight = 4
 		modifier = {
 			factor = @planet_type_bonus
 			is_wet = yes
-		}		
+		}
+		modifier = {
+			factor = 1.5
+			has_modifier = "lush_planet"
+		}
+		modifier = {
+			factor = 0.5
+			has_modifier = "bleak_planet"
+		}
+		modifier = {
+			factor = 0.5
+			is_planet_class = pc_arid
+		}
+		modifier = {
+			factor = 0.25
+			OR = {
+				has_modifier = "salt_world"
+				has_modifier = "dune_world"
+				has_modifier = "mediterranean_world"
+				has_modifier = "mesa_world"
+			}
+		}
+		modifier = {
+			factor = 0
+			has_modifier = "underground_world"
+		}
 	}
 }
 
@@ -1987,10 +3665,51 @@ d_tropical_island = {
 		d_fungal_forest
 		d_hydrocarbon_lakes
 		d_ammonia_seas
+		d_veiny_cliffs
+		d_rich_mountain
+		d_submerged_ore_veins
+		d_active_volcano
+		d_rugged_woods
+		d_forgiving_tundra
+		d_tropical_island
 	}	
+	resources = {
+		produces = {
+			food = 1
+		}
+	}
 	
-	planet_modifier = { 
-		district_farming_max = 3
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_regular_empire = yes }
+		}
+		modifier = {
+			job_pioneer_add = 1
+			job_smuggler_add = 1
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_hive_empire = yes }
+		}
+		modifier = {
+			job_opportunist_drone_add = 1
+			job_aberrant_drone_add = 1
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_machine_empire = yes }
+		}
+		modifier = {	
+			job_scout_drone_add = 1
+			job_renegade_drone_add = 1
+		}
 	}
 	
 	potential = {
@@ -2005,15 +3724,48 @@ d_tropical_island = {
 			is_planet_class = pc_mangrove
 			is_planet_class = pc_hajungle
 			is_planet_class = pc_biolumen
+			is_wet = yes
+			has_modifier = "oasis_world"
+			has_modifier = "mediterranean_world"
+		}
+		NOR = {
+			has_modifier = "fungal_world"
+			has_modifier = "swamp_world"
+			has_modifier = "poisonous_world"
+			has_modifier = "panthalassic_world"
+			has_modifier = "storm_world"
+			has_modifier = "boreal_world"
+			has_modifier = "young_world"
 		}
 	}
 	
 	drop_weight = {
-		weight = @low
+		weight = 4
 		modifier = {
 			factor = @planet_type_bonus
 			is_wet = yes
 		}		
+		modifier = {
+			factor = 1.5
+			has_modifier = "lush_planet"
+		}
+		modifier = {
+			factor = 0.5
+			has_modifier = "bleak_planet"
+		}
+		modifier = {
+			factor = 2
+			is_planet_class = pc_ocean
+		}
+		modifier = {
+			factor = 0.25
+			OR = {
+				is_planet_class = pc_tropical
+				has_modifier = "oasis_world"
+				has_modifier = "mediterranean_world"
+				has_modifier = "crag_world"
+			}
+		}
 	}
 }
 
@@ -2021,39 +3773,125 @@ d_fungal_forest = {
 	is_for_colonizeable = yes
 	use_for_min_max_adjustments = yes
 	
+	category = deposit_cat_blockers
+	
+	use_weights_for_blocker_swap_types = yes
+	blocker_swap_types = {
+		d_hot_springs
+		d_geothermal_vent
+		d_veiny_cliffs
+		d_mineral_fields
+		d_ore_rich_caverns
+		d_rich_mountain
+		d_lichen_fields
+		d_dust_caverns
+		d_fuming_bog
+		d_frozen_gas_lake
+		d_crystalline_caverns
+		d_betharian_deposit
+		d_karst_cave
+	}
+	
 	use_weights_for_terraforming_swap_types = yes
 	should_swap_deposit_on_terraforming = yes
 	terraforming_swap_types = {
+		d_lush_jungle
 		d_black_soil
 		d_teeming_reef
 		d_marvelous_oasis
 		d_tropical_island
 		d_hydrocarbon_lakes
 		d_ammonia_seas
+		d_huge_tree
+		d_dense_jungle
+		d_noxious_swamp
+		d_rugged_woods
+		d_forgiving_tundra
+		d_fungal_forest
 	}	
 	
-	category = deposit_cat_food
-	
-	planet_modifier = { 
-		district_farming_max = 3
+	time = 180
+	resources = {
+		category = deposit_blockers
+		cost = {
+			energy = 500
+		}
+		produces = {
+			food = 1
+		}
 	}
 	
+	planet_modifier = { 
+		planet_jobs_society_research_produces_mult = 0.10
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_regular_empire = yes }
+		}
+		modifier = {
+			job_pioneer_add = 1
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_hive_empire = yes }
+		}
+		modifier = {
+			job_opportunist_drone_add = 1
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_machine_empire = yes }
+		}
+		modifier = {	
+			job_scout_drone_add = 1
+		}
+	}
+		
 	potential = {
 		OR = {
 			is_cold = yes
 			is_planet_class = pc_storm
 		
 			is_planet_class_pc_marginal_cold = yes
+			has_modifier = "fungal_world"
+		}
+		NOR = {
+			has_modifier = "cryokarst_world"
+			has_modifier = "equatorial_world"
+			has_modifier = "glacial_world"
+			has_modifier = "ice_world"
 		}
 	}
 	
 	drop_weight = {
-		weight = @low
+		weight = 1
 		modifier = {
-			factor = @planet_type_bonus
-			is_wet = yes
-			is_planet_class = pc_karst
-		}		
+			factor = 5
+			has_modifier = "fungal_world"
+		}
+		modifier = {
+			factor = 0.5
+			is_planet_class = pc_arctic
+		}
+		modifier = {
+			factor = 0.25
+			OR = {
+				has_modifier = "mineral_world"
+				has_modifier = "cold_desert"
+			}
+		}
+	}
+	
+	ai_weight = {
+		weight = 0
 	}
 }
 
@@ -2067,6 +3905,11 @@ d_dust_caverns = {
 	
 	potential = {
 		can_have_habitable_deposits = yes
+		NOR = {
+			has_modifier = "panthalassic_world"
+			has_modifier = "ocean_tidally_locked"
+			has_modifier = "cryokarst_world"
+		}
 	}
 	
 	planet_modifier = { 
@@ -2112,6 +3955,26 @@ d_dust_caverns = {
 			is_planet_class = pc_primal
 		}
 		modifier = {
+			factor = 3
+			OR = {
+				has_modifier = "underground_world"
+				has_modifier = "karstic_world"
+				has_modifier = "mesa_world"
+			}
+		}			
+		modifier = {
+			factor = 2
+			is_planet_class = pc_gaia
+		}
+		modifier = {
+			factor = 2
+			is_extreme_subclass = yes
+		}
+		modifier = {
+			factor = 1.5
+			is_dry = yes
+		}		
+		modifier = {
 			factor = 0
 			solar_system = {
 				OR = {
@@ -2130,6 +3993,15 @@ d_dust_desert = {
 	
 	potential = {
 		can_have_habitable_deposits = yes
+		NOR = {
+			has_modifier = "swamp_world"
+			has_modifier = "poisonous_world"
+			has_modifier = "panthalassic_world"
+			has_modifier = "glacial_world"
+			has_modifier = "ice_world"
+			has_modifier = "ocean_tidally_locked"
+			has_modifier = "cryokarst_world"
+		}
 	}
 	
 	planet_modifier = { 
@@ -2175,6 +4047,30 @@ d_dust_desert = {
 			is_planet_class = pc_desolate
 		}
 		modifier = {
+			factor = 5
+			has_modifier = "dune_world"
+		}
+		modifier = {
+			factor = 3
+			has_modifier = "coriolis_world"
+		}
+		modifier = {
+			factor = 2
+			has_modifier = "dust_world"
+		}			
+		modifier = {
+			factor = 2
+			is_planet_class = pc_gaia
+		}
+		modifier = {
+			factor = 2
+			is_extreme_subclass = yes
+		}
+		modifier = {
+			factor = 1.5
+			is_dry = yes
+		}
+		modifier = {
 			factor = 0
 			solar_system = {
 				OR = {
@@ -2187,6 +4083,57 @@ d_dust_desert = {
 	}
 }
 
+d_sand_worm = { #New
+	is_for_colonizeable = yes
+	
+	category = deposit_cat_rare_blocker
+	
+	all_blocker_swap_types = yes
+	
+	potential = {
+		is_planet_class = pc_desert 
+	}
+	
+	time = 180
+	resources = {
+		category = deposit_blockers
+		cost = {
+			energy = 500
+		}
+	}
+	
+	planet_modifier = { 
+		building_mote_harvesters_max = 3
+		planet_jobs_society_research_produces_mult = 0.15
+		pop_environment_tolerance = -0.10
+	}
+	
+	drop_weight = {
+		weight = 0.1
+		modifier = {
+			factor = 5
+			has_modifier = "dune_world"
+		}
+		modifier = {
+			factor = 2
+			is_extreme_subclass = yes
+		}
+		modifier = {
+			factor = 0
+			solar_system = {
+				OR = {
+					has_star_flag = empire_home_system
+					has_star_flag = sol_system
+					has_star_flag = deneb_system
+				}
+			}
+		}
+	}
+	
+	ai_weight = {
+		weight = 0
+	}
+}
 
 ####################
 #####   GASES  #####
@@ -2198,6 +4145,18 @@ d_bubbling_swamp = {
 
 	potential = {
 		can_have_habitable_deposits = yes
+		NOR = {
+			has_modifier = "dune_world"
+			has_modifier = "underground_world"
+			has_modifier = "dust_world"
+			has_modifier = "panthalassic_world"
+			has_modifier = "storm_world"
+			has_modifier = "glacial_world"
+			has_modifier = "ice_world"
+			has_modifier = "ocean_tidally_locked"
+			has_modifier = "cryokarst_world"
+			has_modifier = "mineral_world"
+		}
 	}
 
 	planet_modifier = { 
@@ -2237,6 +4196,26 @@ d_bubbling_swamp = {
 		modifier = {
 			factor = 2
 			is_planet_class = pc_marginal_warm
+		}
+		modifier = {
+			factor = 10
+			OR = {
+				has_modifier = "poisonous_world"
+				has_modifier = "bog_world"
+				has_modifier = "swamp_world"
+			}
+		}			
+		modifier = {
+			factor = 2
+			is_planet_class = pc_gaia
+		}
+		modifier = {
+			factor = 2
+			is_extreme_subclass = yes
+		}
+		modifier = {
+			factor = 1.5
+			is_wet = yes
 		}
 		modifier = {
 			factor = 0
@@ -2298,6 +4277,122 @@ d_fuming_bog = {
 			is_planet_class = pc_marginal_cold
 		}
 		modifier = {
+			factor = 10
+			has_modifier = "bog_world"
+		}
+		modifier = {
+			factor = 4
+			OR = {
+				has_modifier = "poisonous_world"
+				has_modifier = "swamp_world"
+			}
+		}		
+		modifier = {
+			factor = 2
+			is_planet_class = pc_gaia
+		}
+		modifier = {
+			factor = 2
+			is_extreme_subclass = yes
+		}
+		modifier = {
+			factor = 1.5
+			is_wet = yes
+		}
+		modifier = {
+			factor = 0
+			solar_system = {
+				OR = {
+					has_star_flag = empire_home_system
+					has_star_flag = sol_system
+					has_star_flag = deneb_system
+				}
+			}
+		}
+	}
+}
+
+d_frozen_gas_lake = {
+	is_for_colonizeable = yes
+	category = deposit_cat_rare
+	
+	potential = {
+		OR = {
+			is_planet_class = pc_continental
+			is_cold = yes
+			is_planet_class = pc_nuked
+			is_planet_class = pc_gaia
+			is_planet_class = pc_relic
+			is_planet_class = pc_tidallylocked
+		}
+		NOR = {
+			has_modifier = "young_world"
+			has_modifier = "ocean_tidally_locked"
+			has_modifier = "arid_tidally_locked"
+		}
+	}
+
+	planet_modifier = { 
+		building_gas_extractors_max = 2
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_regular_empire = yes }
+		}
+		modifier = {
+			job_pioneer_add = 1
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_hive_empire = yes }
+		}
+		modifier = {
+			job_opportunist_drone_add = 1
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_machine_empire = yes }
+		}
+		modifier = {	
+			job_scout_drone_add = 1
+		}
+	}
+	
+	drop_weight = {
+		weight = 0.1
+		modifier = {
+			factor = 10
+			OR = {
+				has_modifier = "glacial_world"
+				has_modifier = "cryokarst_world"
+				has_modifier = "ice_world"
+			}
+		}
+		modifier = {
+			factor = 2
+			has_modifier = "geothermal_world"
+		}		
+		modifier = {
+			factor = 2
+			is_planet_class = pc_gaia
+		}
+		modifier = {
+			factor = 2
+			is_extreme_subclass = yes
+		}
+		modifier = {
+			factor = 1.5
+			is_cold = yes
+		}
+		modifier = {
 			factor = 0
 			solar_system = {
 				OR = {
@@ -2320,6 +4415,12 @@ d_crystalline_caverns = {
 	
 	potential = {
 		can_have_habitable_deposits = yes
+		NOR = {
+			has_modifier = "panthalassic_world"
+			has_modifier = "storm_world"
+			has_modifier = "ocean_tidally_locked"
+			has_modifier = "cryokarst_world"
+		}
 	}
 
 	planet_modifier = { 
@@ -2366,6 +4467,26 @@ d_crystalline_caverns = {
 			is_planet_class_pc_underground_icy = yes
 		}
 		modifier = {
+			factor = 6
+			OR = {
+				has_modifier = "underground_world"
+				has_modifier = "karstic_world"
+				has_modifier = "mineral_world"
+			}
+		}		
+		modifier = {
+			factor = 2
+			is_planet_class = pc_gaia
+		}
+		modifier = {
+			factor = 2
+			is_extreme_subclass = yes
+		}
+		modifier = {
+			factor = 1.5
+			is_cold = yes
+		}
+		modifier = {
 			factor = 0
 			solar_system = {
 				OR = {
@@ -2374,22 +4495,20 @@ d_crystalline_caverns = {
 					has_star_flag = deneb_system
 				}
 			}
-		}		
+		}
 	}
 }
 
 d_crystal_forest = {
 	is_for_colonizeable = yes
-	category = deposit_cat_rare
 	
+	category = deposit_cat_rare_blocker
+	
+	all_blocker_swap_types = yes
 	use_weights_for_terraforming_swap_types = yes
 	should_swap_deposit_on_terraforming = yes
 	terraforming_swap_types = {
 		d_crystal_reef
-	}	
-	
-	planet_modifier = { 
-		building_crystal_mines_max = 2
 	}
 
 	potential = {
@@ -2400,9 +4519,55 @@ d_crystal_forest = {
 			is_planet_class = pc_irradiated
 			is_planet_class = pc_gaia
 			is_planet_class = pc_pdshroud
+			is_planet_class = pc_sterile
+			has_modifier = "cryokarst_world"
+			has_modifier = "underground_world"
+			has_modifier = "ocean_tidally_locked"
+		}
+	}
+
+	time = 180
+	resources = {
+		category = deposit_blockers
+		cost = {
+			energy = 500
 		}
 	}
 	
+	planet_modifier = { 
+		building_crystal_mines_max = 2
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_regular_empire = yes }
+		}
+		modifier = {
+			job_pioneer_add = 1
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_hive_empire = yes }
+		}
+		modifier = {
+			job_opportunist_drone_add = 1
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_machine_empire = yes }
+		}
+		modifier = {	
+			job_scout_drone_add = 1
+		}
+	}
+		
 	drop_weight = {
 		weight = @low_rare
 		modifier = {
@@ -2434,6 +4599,22 @@ d_crystal_forest = {
 			is_planet_class = pc_technoorganic
 		}
 		modifier = {
+			factor = 10
+			has_modifier = "mineral_world"
+		}
+		modifier = {
+			factor = 5
+			has_modifier = "glacial_world"
+		}
+		modifier = {
+			factor = 2
+			is_extreme_subclass = yes
+		}
+		modifier = {
+			factor = 1.5
+			is_cold = yes
+		}
+		modifier = {
 			factor = 0
 			solar_system = {
 				OR = {
@@ -2442,7 +4623,11 @@ d_crystal_forest = {
 					has_star_flag = deneb_system
 				}
 			}
-		}	
+		}
+	}
+	
+	ai_weight = {
+		weight = 0
 	}
 }
 
@@ -2516,6 +4701,33 @@ d_crystal_reef = {
 			is_planet_class = pc_technoorganic
 		}
 		modifier = {
+			factor = 10
+			has_modifier = "storm_world"
+		}
+		modifier = {
+			factor = 3
+			OR = {
+				has_modifier = "cryokarst_world"
+				has_modifier = "ice_world"
+			}
+		}
+		modifier = {
+			factor = 2
+			has_modifier = "panthalassic_world"
+		}		
+		modifier = {
+			factor = 2
+			is_planet_class = pc_gaia
+		}
+		modifier = {
+			factor = 2
+			is_extreme_subclass = yes
+		}
+		modifier = {
+			factor = 1.5
+			is_cold = yes
+		}
+		modifier = {
 			factor = 0
 			solar_system = {
 				OR = {
@@ -2524,7 +4736,588 @@ d_crystal_reef = {
 					has_star_flag = deneb_system
 				}
 			}
-		}	
+		}
+	}
+}
+
+###################
+#### EXPLORING ####
+###################
+
+d_rugged_woods = {
+	is_for_colonizeable = yes
+	use_for_min_max_adjustments = yes
+	
+	category = deposit_cat_blockers
+
+
+	use_weights_for_blocker_swap_types = yes
+	blocker_swap_types = {
+		d_rushing_waterfalls
+		d_veiny_cliffs
+		d_mineral_fields
+		d_ore_rich_caverns
+		d_rich_mountain
+		d_bountiful_plains
+		d_green_hills
+		d_boggy_fens
+		d_fertile_lands
+		d_black_soil
+		d_dust_caverns
+		d_bubbling_swamp
+		d_fuming_bog
+		d_crystalline_caverns
+		d_betharian_deposit
+		d_karst_cave
+		
+	}
+	
+	use_weights_for_terraforming_swap_types = yes
+	should_swap_deposit_on_terraforming = yes
+	terraforming_swap_types = {
+		d_lush_jungle
+		d_black_soil
+		d_marvelous_oasis
+		d_huge_tree
+		d_dense_jungle
+		d_noxious_swamp
+		d_rugged_woods
+		d_forgiving_tundra
+		d_fungal_forest
+		d_vast_crevasse
+		d_natural_farmland # gaia
+		d_lichen_fields
+		d_bountiful_plains
+		d_green_hills
+		d_forgiving_tundra
+		d_boggy_fens
+		d_nutritious_mudland
+		d_sea_grass		
+	}
+
+	planet_modifier = { 
+		district_farming_max = 1
+	}
+	
+	potential = {
+		OR = {
+		is_planet_class = pc_continental
+		is_planet_class = pc_cascadian
+		is_planet_class = pc_boreal
+		is_planet_class = pc_snow
+		is_planet_class = pc_superhabitable
+		is_planet_class = pc_tidallylocked
+		is_planet_class = pc_supercon
+		is_planet_class = pc_crystal
+		is_planet_class = pc_technoorganic
+		is_planet_class = pc_retinal
+		is_planet_class = pc_forest
+		is_planet_class = pc_lake	
+		is_planet_class = pc_tepid
+		is_planet_class = pc_megaflora
+		is_planet_class = pc_megaflorahive
+		is_planet_class = pc_megafloratol		
+		
+		is_planet_class_pc_marginal_warm = yes
+		}
+	}
+	
+	time = 180
+	resources = {
+		category = deposit_blockers
+		cost = {
+			energy = 500
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_regular_empire = yes }
+		}
+		modifier = {
+			job_pioneer_add = 1
+			job_smuggler_add = 1
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_hive_empire = yes }
+		}
+		modifier = {
+			job_opportunist_drone_add = 1
+			job_aberrant_drone_add = 1
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_machine_empire = yes }
+		}
+		modifier = {	
+			job_scout_drone_add = 1
+			job_renegade_drone_add = 1
+		}
+	}
+	
+	potential = {
+		is_planet_class = pc_continental
+		NOT = { has_modifier = "young_world" }
+	}
+	
+	drop_weight = {
+		weight = 16
+		modifier = {
+			factor = 2
+			has_modifier = "boreal_world"
+		}
+		modifier = {
+			factor = 0.5
+			OR = {
+				has_modifier = "rocky_world"
+				has_modifier = "forest_world"
+				has_modifier = "pangea_world"
+			}
+		}
+	}
+	
+	ai_weight = {
+		weight = 0.5
+	}
+}
+
+d_forgiving_tundra = {
+	is_for_colonizeable = yes
+	use_for_min_max_adjustments = yes
+	
+	category = deposit_cat_blockers
+	
+	use_weights_for_blocker_swap_types = yes
+	blocker_swap_types = {
+		d_hot_springs
+		d_geothermal_vent
+		d_veiny_cliffs
+		d_mineral_fields
+		d_ore_rich_caverns
+		d_rich_mountain
+		d_lichen_fields
+		d_boggy_fens
+		d_fungal_caves
+		d_dust_caverns
+		d_fuming_bog
+		d_frozen_gas_lake
+		d_crystalline_caverns
+		d_betharian_deposit
+		d_karst_cave
+		d_lichen_fields
+		d_bountiful_plains
+		d_rugged_woods
+		d_green_hills
+		d_boggy_fens
+		d_nutritious_mudland
+		d_natural_farmland # gaia
+		d_sea_grass		
+	}
+	
+	use_weights_for_terraforming_swap_types = yes
+	should_swap_deposit_on_terraforming = yes
+	terraforming_swap_types = {
+		d_lush_jungle
+		d_black_soil
+		d_marvelous_oasis
+		d_huge_tree
+		d_dense_jungle
+		d_noxious_swamp
+		d_rugged_woods
+		d_forgiving_tundra
+		d_fungal_forest
+		d_vast_crevasse
+	}	
+
+	planet_modifier = { 
+		district_farming_max = 1
+	}
+	
+	time = 180
+	resources = {
+		category = deposit_blockers
+		cost = {
+			energy = 500
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_regular_empire = yes }
+		}
+		modifier = {
+			job_pioneer_add = 1
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_hive_empire = yes }
+		}
+		modifier = {
+			job_opportunist_drone_add = 1
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_machine_empire = yes }
+		}
+		modifier = {	
+			job_scout_drone_add = 1
+		}
+	}
+	
+	potential = {
+		OR = {
+			is_planet_class = pc_alpine
+			is_planet_class = pc_highland
+			is_planet_class = pc_duneforest
+			is_planet_class = pc_tundra
+			is_planet_class = pc_rogue
+			is_planet_class = pc_lichen
+			is_planet_class = pc_eyeball
+			is_planet_class = pc_glacio
+			is_planet_class = pc_lanthanide
+			is_planet_class = pc_storm
+		}		
+		NOR = {
+			has_modifier = "geothermal_world"
+			has_modifier = "bog_world"
+		}
+	}
+	
+	drop_weight = {
+		weight = 16
+		modifier = {
+			factor = 0.5
+			is_planet_class = pc_alpine
+		}
+		modifier = {
+			factor = 0.25
+			OR = {
+				has_modifier = "mineral_world"
+				has_modifier = "cold_desert"
+			}
+		}
+	}
+	
+	ai_weight = {
+		weight = 0.5
+	}
+}
+
+d_grand_canyon = { #New
+	is_for_colonizeable = yes
+	use_for_min_max_adjustments = yes
+	
+	category = deposit_cat_blockers
+	
+	use_weights_for_blocker_swap_types = yes
+	blocker_swap_types = {
+		d_geothermal_vent
+		d_veiny_cliffs
+		d_mineral_fields
+		d_ore_rich_caverns
+		d_dust_caverns
+		d_crystalline_caverns
+		d_karst_cave
+	}
+	
+	use_weights_for_terraforming_swap_types = yes
+	should_swap_deposit_on_terraforming = yes
+	terraforming_swap_types = {
+		d_great_river
+		d_rushing_waterfalls
+		d_grand_canyon
+		d_rugged_woods
+		d_forgiving_tundra
+		d_fungal_forest
+		d_vast_crevasse
+	}	
+	
+	time = 180
+	resources = {
+		category = deposit_blockers
+		cost = {
+			energy = 500
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_regular_empire = yes }
+		}
+		modifier = {
+			job_pioneer_add = 2
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_hive_empire = yes }
+		}
+		modifier = {
+			job_opportunist_drone_add = 2
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_machine_empire = yes }
+		}
+		modifier = {	
+			job_scout_drone_add = 2
+		}
+	}
+	
+	potential = {
+		OR = {
+			is_dry = yes
+			has_modifier = "pangea_world"
+			is_planet_class = pc_sterile
+		}
+		NOR = {
+			has_modifier = "steppe_world"
+			has_modifier = "underground_world"
+			has_modifier = "salt_world"
+			has_modifier = "coriolis_world"
+		}
+	}
+	
+	drop_weight = {
+		weight = 16
+		modifier = {
+			factor = 2
+			has_modifier = "mesa_world"
+		}
+		modifier = {
+			factor = 0.5
+			is_planet_class = pc_desert
+		}
+		modifier = {
+			factor = 0.25
+			OR = {
+				is_planet_class = pc_savannah
+				is_planet_class = pc_sterile
+			}
+		}
+	}
+	
+	ai_weight = {
+		weight = 0.5
+	}
+}
+
+d_vast_crevasse = { #New
+	is_for_colonizeable = yes
+	use_for_min_max_adjustments = yes
+	
+	category = deposit_cat_blockers
+	
+	use_weights_for_blocker_swap_types = yes
+	blocker_swap_types = {
+		d_hot_springs
+		d_geothermal_vent
+		d_ore_rich_caverns
+		d_fungal_caves
+		d_dust_caverns
+		d_frozen_gas_lake
+		d_crystalline_caverns
+		d_betharian_deposit
+		d_karst_cave
+	}
+	
+	use_weights_for_terraforming_swap_types = yes
+	should_swap_deposit_on_terraforming = yes
+	terraforming_swap_types = {
+		d_great_river
+		d_rushing_waterfalls
+		d_grand_canyon
+		d_rugged_woods
+		d_forgiving_tundra
+		d_fungal_forest
+		d_vast_crevasse
+	}	
+	
+	time = 180
+	resources = {
+		category = deposit_blockers
+		cost = {
+			energy = 500
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_regular_empire = yes }
+		}
+		modifier = {
+			job_pioneer_add = 1
+			job_smuggler_add = 2
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_hive_empire = yes }
+		}
+		modifier = {
+			job_opportunist_drone_add = 1
+			job_aberrant_drone_add = 2
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_machine_empire = yes }
+		}
+		modifier = {	
+			job_scout_drone_add = 1
+			job_renegade_drone_add = 2
+		}
+	}
+	
+	potential = {
+		is_cold = yes	
+		NOT = { has_modifier = "cryokarst_world" }
+	}
+	
+	drop_weight = {
+		weight = 16
+		modifier = {
+			factor = 2
+			OR = {
+				has_modifier = "glacial_world"
+				has_modifier = "ice_world"
+			}
+		}
+		modifier = {
+			factor = 0.5
+			is_planet_class = pc_alpine
+		}
+		modifier = {
+			factor = 0.25
+			is_planet_class = pc_tundra
+		}
+	}
+	
+	ai_weight = {
+		weight = 0.5
+	}
+}
+
+d_maze_cliff_formations = { #New
+	is_for_colonizeable = yes
+	use_for_min_max_adjustments = yes
+	
+	category = deposit_cat_blockers
+	
+	use_weights_for_blocker_swap_types = yes
+	blocker_swap_types = {
+		d_underwater_vent
+		d_veiny_cliffs
+		d_ore_rich_caverns
+		d_submerged_ore_veins
+		d_teeming_reef
+		d_dust_caverns
+		d_crystalline_caverns
+		d_betharian_deposit
+		d_karst_cave
+	}
+	
+	use_weights_for_terraforming_swap_types = yes
+	should_swap_deposit_on_terraforming = yes
+	terraforming_swap_types = {
+		d_submerged_ore_veins
+		d_veiny_cliffs
+		d_teeming_reef
+		d_maze_cliff_formations
+	}	
+	
+	time = 180
+	resources = {
+		category = deposit_blockers
+		cost = {
+			energy = 500
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_regular_empire = yes }
+		}
+		modifier = {
+			job_smuggler_add = 2
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_hive_empire = yes }
+		}
+		modifier = {
+			job_aberrant_drone_add = 2
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_machine_empire = yes }
+		}
+		modifier = {	
+			job_renegade_drone_add = 2
+		}
+	}
+	
+	potential = {
+		OR = {
+			is_planet_class = pc_ocean
+			is_planet_class = pc_continental
+			has_modifier = "mediterranean_world"
+			has_modifier = "oasis_world"
+		}
+		NOT = { has_modifier = "panthalassic_world" }
+	}
+	
+	drop_weight = {
+		weight = 4
+		modifier = {
+			factor = 3
+			has_modifier = "storm_world"
+		}
+		modifier = {
+			factor = 0.25
+			OR = {
+				is_planet_class = pc_continental
+				has_modifier = "mediterranean_world"
+				has_modifier = "oasis_world"
+			}
+		}
+	}
+	
+	ai_weight = {
+		weight = 0.5
 	}
 }
 
@@ -2592,7 +5385,7 @@ d_betharian_deposit = {
 		}	
 		modifier = {
 			factor = 3
-			is_planet_class = pc_irradiated_marginal
+			#is_planet_class = pc_irradiated_marginal
 		}	
 		modifier = {
 			factor = 0
@@ -2609,14 +5402,64 @@ d_betharian_deposit = {
 
 d_alien_pets_deposit = {
 	is_for_colonizeable = yes
-	category = deposit_cat_rare
+	category = deposit_cat_rare_blocker
+	
+	all_blocker_swap_types = yes
 	
 	potential = {
 		can_have_habitable_deposits = yes
+		NOR = {
+			has_modifier = "panthalassic_world"
+			has_modifier = "storm_world"
+			has_modifier = "ocean_tidally_locked"
+			has_modifier = "glacial_world"
+			has_modifier = "ice_world"
+		}
+	}
+	
+	time = 180
+	resources = {
+		category = deposit_blockers
+		cost = {
+			energy = 500
+		}
 	}
 	
 	planet_modifier = {
 		building_xeno_zoo_max = 1
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_regular_empire = yes }
+		}
+		modifier = {
+			job_pioneer_add = 1
+			job_smuggler_add = 1
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_hive_empire = yes }
+		}
+		modifier = {
+			job_opportunist_drone_add = 1
+			job_aberrant_drone_add = 1
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_machine_empire = yes }
+		}
+		modifier = {	
+			job_scout_drone_add = 1
+			job_renegade_drone_add = 1
+		}
 	}
 	
 	drop_weight = {
@@ -2625,6 +5468,10 @@ d_alien_pets_deposit = {
 			factor = 2
 			is_planet_class = pc_gaia
 		}		
+		modifier = {
+			factor = 2
+			is_extreme_subclass = yes
+		}
 		modifier = {
 			factor = 2
 			is_planet_class = pc_pdshroud
@@ -2676,7 +5523,619 @@ d_alien_pets_deposit = {
 			}
 		}		
 	}
+	
+	ai_weight = {
+		weight = 0
+	}
 }
+
+d_boneyard = { #New
+	is_for_colonizeable = yes
+	category = deposit_cat_rare_blocker
+	
+	all_blocker_swap_types = yes
+	
+	potential = {
+		OR = {
+			is_dry = yes
+			is_wet = yes
+			is_cold = yes
+			is_planet_class = pc_nuked
+			is_planet_class = pc_gaia
+			is_planet_class = pc_relic
+			is_planet_class = pc_tidallylocked
+			is_planet_class = pc_sterile
+		}
+		NOR = {
+			has_modifier = "panthalassic_world"
+			has_modifier = "storm_world"
+			has_modifier = "ocean_tidally_locked"
+		}
+	}
+	
+	time = 180
+	resources = {
+		category = deposit_blockers
+		cost = {
+			energy = 500
+		}
+	}
+	
+	planet_modifier = {
+		planet_jobs_society_research_produces_mult = 0.15
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_regular_empire = yes }
+		}
+		modifier = {
+			job_pioneer_add = 2
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_hive_empire = yes }
+		}
+		modifier = {
+			job_opportunist_drone_add = 2
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_machine_empire = yes }
+		}
+		modifier = {	
+			job_scout_drone_add = 2
+		}
+	}
+	
+	drop_weight = {
+		weight = 0.25
+		modifier = {
+			factor = 2
+			is_dry = yes
+		}
+		modifier = {
+			factor = 2
+			is_extreme_subclass = yes
+		}
+		modifier = {
+			factor = 0
+			solar_system = {
+				OR = {
+					has_star_flag = empire_home_system
+					has_star_flag = sol_system
+					has_star_flag = deneb_system
+				}
+			}
+		}
+	}
+	
+	ai_weight = {
+		weight = 0
+	}
+}
+
+d_ancient_ruins = { #New
+	is_for_colonizeable = yes
+	icon = d_ruins_small
+	category = deposit_cat_rare_blocker
+	
+	all_blocker_swap_types = yes
+	
+	potential = {
+		OR = {
+			is_dry = yes
+			is_wet = yes
+			is_cold = yes
+			is_planet_class = pc_gaia
+			is_planet_class = pc_tidallylocked
+			is_planet_class = pc_sterile
+		}
+		NOR = {
+			has_modifier = "panthalassic_world"
+			has_modifier = "storm_world"
+			has_modifier = "ocean_tidally_locked"
+		}
+	}
+	
+	time = 180
+	resources = {
+		category = deposit_blockers
+		cost = {
+			energy = 500
+		}
+	}
+	
+	planet_modifier = {
+		planet_jobs_society_research_produces_mult = 0.25
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_regular_empire = yes }
+		}
+		modifier = {
+			job_pioneer_add = 2
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_hive_empire = yes }
+		}
+		modifier = {
+			job_opportunist_drone_add = 2
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_machine_empire = yes }
+		}
+		modifier = {	
+			job_scout_drone_add = 2
+		}
+	}
+	
+	drop_weight = {
+		weight = 0.25
+		modifier = {
+			factor = 10
+			has_modifier = "ancient_world"
+		}
+		modifier = {
+			factor = 2
+			is_extreme_subclass = yes
+		}
+		modifier = {
+			factor = 1.5
+			has_modifier = "ancient_cities"
+		}
+		modifier = {
+			factor = 0
+			solar_system = {
+				OR = {
+					has_star_flag = empire_home_system
+					has_star_flag = sol_system
+					has_star_flag = deneb_system
+				}
+			}
+		}
+	}
+	
+	ai_weight = {
+		weight = 0
+	}
+}
+
+d_relic_landfill = { #New
+	is_for_colonizeable = yes
+	icon = d_organic_landfill
+	category = deposit_cat_rare_blocker
+	
+	all_blocker_swap_types = yes
+	
+	potential = {
+		OR = {
+			is_dry = yes
+			is_wet = yes
+			is_cold = yes
+			is_planet_class = pc_nuked
+			is_planet_class = pc_relic
+			is_planet_class = pc_tidallylocked
+			is_planet_class = pc_sterile
+		}
+		NOR = {
+			has_modifier = "panthalassic_world"
+			has_modifier = "storm_world"
+			has_modifier = "ocean_tidally_locked"
+		}
+	}
+	
+	time = 180
+	resources = {
+		category = deposit_blockers
+		cost = {
+			energy = 500
+		}
+	}
+	
+	planet_modifier = {
+		planet_jobs_engineering_research_produces_mult = 0.15
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_regular_empire = yes }
+		}
+		modifier = {
+			job_pioneer_add = 1
+			job_smuggler_add = 2
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_hive_empire = yes }
+		}
+		modifier = {
+			job_opportunist_drone_add = 1
+			job_aberrant_drone_add = 2
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_machine_empire = yes }
+		}
+		modifier = {	
+			job_scout_drone_add = 1
+			job_renegade_drone_add = 2
+		}
+	}
+	
+	drop_weight = {
+		weight = 0.25
+		modifier = {
+			factor = 5
+			has_modifier = "depleted_world"
+		}
+		modifier = {
+			factor = 2
+			is_planet_class = pc_relic
+		}
+		modifier = {
+			factor = 2
+			is_extreme_subclass = yes
+		}
+		modifier = {
+			factor = 0
+			solar_system = {
+				OR = {
+					has_star_flag = empire_home_system
+					has_star_flag = sol_system
+					has_star_flag = deneb_system
+				}
+			}
+		}
+	}
+	
+	ai_weight = {
+		weight = 0
+	}
+}
+
+d_levitating_rocks = { #New
+	is_for_colonizeable = yes
+	category = deposit_cat_rare_blocker
+	
+	all_blocker_swap_types = yes
+	
+	potential = {
+		OR = {
+			is_dry = yes
+			is_wet = yes
+			is_cold = yes
+			is_planet_class = pc_nuked
+			is_planet_class = pc_gaia
+			is_planet_class = pc_relic
+			is_planet_class = pc_tidallylocked
+		}
+		NOR = {
+			has_modifier = "panthalassic_world"
+			has_modifier = "storm_world"
+			has_modifier = "ocean_tidally_locked"
+			has_modifier = "ice_world"
+		}
+	}
+	
+	time = 180
+	resources = {
+		category = deposit_blockers
+		cost = {
+			energy = 500
+		}
+	}
+	
+	planet_modifier = {
+		planet_jobs_physics_research_produces_mult = 0.15
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_regular_empire = yes }
+		}
+		modifier = {
+			job_pioneer_add = 2
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_hive_empire = yes }
+		}
+		modifier = {
+			job_opportunist_drone_add = 2
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_machine_empire = yes }
+		}
+		modifier = {	
+			job_scout_drone_add = 2
+		}
+	}
+	
+	drop_weight = {
+		weight = 0.25
+		modifier = {
+			factor = 2
+			is_extreme_subclass = yes
+		}
+		modifier = {
+			factor = 0
+			solar_system = {
+				OR = {
+					has_star_flag = empire_home_system
+					has_star_flag = sol_system
+					has_star_flag = deneb_system
+				}
+			}
+		}
+	}
+	
+	ai_weight = {
+		weight = 0
+	}
+}
+
+d_karst_cave = { #New
+	is_for_colonizeable = yes
+	category = deposit_cat_rare
+	
+	potential = {
+		OR = {
+			is_dry = yes
+			is_wet = yes
+			is_cold = yes
+			is_planet_class = pc_nuked
+			is_planet_class = pc_gaia
+			is_planet_class = pc_relic
+			is_planet_class = pc_tidallylocked
+			is_planet_class = pc_sterile
+		}
+		NOR = {
+			has_modifier = "underground_world"
+			has_modifier = "cryokarst_world"
+			has_modifier = "panthalassic_world"
+			has_modifier = "ocean_tidally_locked"
+		}
+	}
+	
+	planet_modifier = {
+		planet_max_districts_add = 1
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_regular_empire = yes }
+		}
+		modifier = {
+			job_smuggler_add = 1
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_hive_empire = yes }
+		}
+		modifier = {
+			job_aberrant_drone_add = 1
+		}
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_machine_empire = yes }
+		}
+		modifier = {	
+			job_renegade_drone_add = 1
+		}
+	}
+	
+	drop_weight = {
+		weight = 0.25
+		modifier = {
+			factor = 20
+			has_modifier = "karstic_world"
+		}
+		modifier = {
+			factor = 5
+			has_modifier = "mesa_world"
+		}
+	}
+}
+
+###################
+##### STARTING ####
+###################
+
+d_solar_array = {
+	is_for_colonizeable = yes
+	
+	planet_modifier = { 
+		district_generator_max = 1
+	}
+	
+	drop_weight = {
+		weight = 0
+	}
+}
+
+d_urban_agglomeration = {
+	is_for_colonizeable = yes
+	icon = d_city
+	
+	planet_modifier = { 
+		district_generator_max = 2
+	}
+	
+	drop_weight = {
+		weight = 0
+	}
+}
+
+d_reactor_zone = {
+	is_for_colonizeable = yes
+	icon = d_reactor
+	
+	planet_modifier = { 
+		district_generator_max = 2
+	}
+	
+	drop_weight = {
+		weight = 0
+	}
+}
+
+d_reserve_deposits = {
+	is_for_colonizeable = yes
+	icon = d_veiny_cliffs
+	
+	planet_modifier = { 
+		district_mining_max = 1
+	}
+	
+	drop_weight = {
+		weight = 0
+	}
+}
+
+d_deep_ore_mines = {
+	is_for_colonizeable = yes
+	icon = d_mining_tunnels
+	
+	planet_modifier = { 
+		district_mining_max = 2
+	}
+	
+	drop_weight = {
+		weight = 0
+	}
+}
+
+d_rich_abyss = {
+	is_for_colonizeable = yes
+	icon = d_submerged_ore_veins
+	
+	planet_modifier = { 
+		district_mining_max = 3
+	}
+	
+	drop_weight = {
+		weight = 0
+	}
+}
+
+d_hydroponic_complex = {
+	is_for_colonizeable = yes
+	icon = d_building_complex
+	
+	planet_modifier = { 
+		district_farming_max = 1
+	}
+	
+	drop_weight = {
+		weight = 0
+	}
+}
+
+d_agrothermal_plains = {
+	is_for_colonizeable = yes
+	icon = d_fuming_bog
+	
+	planet_modifier = { 
+		district_farming_max = 2
+	}
+	
+	drop_weight = {
+		weight = 0
+	}
+}
+
+d_converted_lands = {
+	is_for_colonizeable = yes
+	icon = d_black_soil
+	
+	planet_modifier = { 
+		district_farming_max = 2
+	}
+	
+	drop_weight = {
+		weight = 0
+	}
+}
+
+d_irrigated_fields = {
+	is_for_colonizeable = yes
+	icon = d_green_hills
+	
+	planet_modifier = { 
+		district_farming_max = 2
+	}
+	
+	drop_weight = {
+		weight = 0
+	}
+}
+
+d_agrarian_dome = {
+	is_for_colonizeable = yes
+	icon = d_quarantine_zone
+	
+	planet_modifier = { 
+		district_farming_max = 3
+	}
+	
+	drop_weight = {
+		weight = 0
+	}
+}
+
+d_algae_tracts = {
+	is_for_colonizeable = yes
+	icon = d_toxic_kelp
+	
+	planet_modifier = { 
+		district_farming_max = 3
+	}
+	
+	drop_weight = {
+		weight = 0
+	}
+}
+
 
 ### Gaia Swaps
 
@@ -3399,6 +6858,7 @@ d_hab_nanites_1 = {
 	}
 
 	drop_weight = {
-		weight = 0
+		weight = 0.01
+		#does not occur naturally, but needs a non-zero weight
 	}
 }
