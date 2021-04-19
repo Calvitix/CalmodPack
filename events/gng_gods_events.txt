@@ -618,12 +618,7 @@ planet_event = {
 	
 	trigger = {
 		has_observation_outpost = yes
-		observation_outpost = {
-			OR = {
-				has_mission = deity_persona
-				has_mission = deity_persona
-			}
-		}
+		observation_outpost = { has_mission = deity_persona }
 		observation_outpost_owner = { 
 			is_ai = no
 			not = { has_policy_flag = slavery_not_allowed }
@@ -776,12 +771,7 @@ planet_event = {
 	
 	trigger = {
 		has_observation_outpost = yes
-		observation_outpost = {
-			OR = {
-				has_mission = deity_persona
-				has_mission = deity_persona
-			}
-		}
+		observation_outpost = { has_mission = deity_persona }
 		observation_outpost_owner = { 
 			is_ai = no
 			not = { has_policy_flag = slavery_not_allowed }
@@ -794,8 +784,6 @@ planet_event = {
 			}
 			NOT = { has_ethic = "ethic_pacifist" }
 			NOT = { has_ethic = "ethic_fanatic_pacifist" }
-			#NOT = { has_ethic = "ethic_authoritarian" }
-			#NOT = { has_ethic = "ethic_fanatic_authoritarian" }
 		}
 		OR = {
 			has_planet_flag = pf_militants_unteched
@@ -885,8 +873,6 @@ planet_event = {
 
 			NOT = { has_ethic = "ethic_pacifist" }
 			NOT = { has_ethic = "ethic_fanatic_pacifist" }
-			#NOT = { has_ethic = "ethic_authoritarian" }
-			#NOT = { has_ethic = "ethic_fanatic_authoritarian" }
 		}
 		OR = {
 			has_planet_flag = pf_militants_unteched
@@ -956,12 +942,7 @@ planet_event = {
 	
 	trigger = {
 		has_observation_outpost = yes
-		observation_outpost = {
-			OR = {
-				has_mission = deity_persona
-				has_mission = deity_persona
-			}
-		}
+		observation_outpost = { has_mission = deity_persona }
 		observation_outpost_owner = { 
 			is_ai = no
 			not = { has_policy_flag = slavery_not_allowed }
@@ -1099,25 +1080,7 @@ planet_event = {
 	hide_window = yes
 	
 	trigger = {
-		has_observation_outpost = yes
-		observation_outpost = {
-			OR = {
-				has_mission = deity_persona
-				has_mission = deity_persona
-			}
-		}
-		observation_outpost_owner = { 
-			is_ai = no
-			not = { has_policy_flag = slavery_not_allowed }
-		}
-		owner = {
-			is_country_type = primitive
-			OR = {
-				has_country_flag = bronze_age
-				has_country_flag = iron_age
-				has_country_flag = late_medieval_age
-			}
-		}
+		is_deity_persona_candidate = yes
 		has_planet_flag = pf_aintbuyingit_planet
 	}
 	
@@ -1137,12 +1100,7 @@ planet_event = {
 	
 	trigger = {
 		has_observation_outpost = yes
-		observation_outpost = {
-			OR = {
-				has_mission = deity_persona
-				has_mission = deity_persona
-			}
-		}
+		observation_outpost = { has_mission = deity_persona }
 		observation_outpost_owner = { 
 			is_ai = no
 			not = { has_policy_flag = slavery_not_allowed }
@@ -1329,25 +1287,7 @@ planet_event = {
 	hide_window = yes
 	
 	trigger = {
-		has_observation_outpost = yes
-		observation_outpost = {
-			OR = {
-				has_mission = deity_persona
-				has_mission = deity_persona
-			}
-		}
-		observation_outpost_owner = { 
-			is_ai = no
-			not = { has_policy_flag = slavery_not_allowed }
-		}
-		owner = {
-			is_country_type = primitive
-			OR = {
-				has_country_flag = bronze_age
-				has_country_flag = iron_age
-				has_country_flag = late_medieval_age
-			}
-		}
+		is_deity_persona_candidate = yes
 		has_planet_flag = pf_devoutbelievers_planet
 	}
 	
@@ -1366,25 +1306,7 @@ planet_event = {
 	hide_window = yes
 	
 	trigger = {
-		has_observation_outpost = yes
-		observation_outpost = {
-			OR = {
-				has_mission = deity_persona
-				has_mission = deity_persona
-			}
-		}
-		observation_outpost_owner = { 
-			is_ai = no
-			not = { has_policy_flag = slavery_not_allowed }
-		}
-		owner = {
-			is_country_type = primitive
-			OR = {
-				has_country_flag = bronze_age
-				has_country_flag = iron_age
-				has_country_flag = late_medieval_age
-			}
-		}
+		is_deity_persona_candidate = yes
 		NOT = { has_planet_flag = pf_abductions_planet }
 		NOT = { has_planet_flag = pf_abductions_askagain }
 		count_owned_pop = {
@@ -1410,25 +1332,7 @@ planet_event = {
 	hide_window = yes
 	
 	trigger = {
-		has_observation_outpost = yes
-		observation_outpost = {
-			OR = {
-				has_mission = deity_persona
-				has_mission = deity_persona
-			}
-		}
-		observation_outpost_owner = { 
-			is_ai = no
-			not = { has_policy_flag = slavery_not_allowed }
-		}
-		owner = {
-			is_country_type = primitive
-			OR = {
-				has_country_flag = bronze_age
-				has_country_flag = iron_age
-				has_country_flag = late_medieval_age
-			}
-		}
+		is_deity_persona_candidate = yes
 		NOT = { has_planet_flag = pf_abductions_planet }
 		has_planet_flag = pf_abductions_askagain
 	}
@@ -1477,7 +1381,10 @@ country_event = {
 				}
 			}
 			random_owned_planet = {
-				limit = { is_colony = yes }
+				limit = { 
+					is_colony = yes 
+					num_pops > 0
+				}
 				create_pop = {
 					species = event_target:enslavedpeeps
 					ethos = event_target:ownerethos
@@ -1511,14 +1418,20 @@ country_event = {
 				}
 			}
 			random_owned_planet = {
-				limit = { is_colony = yes }
+				limit = { 
+					is_colony = yes
+					num_pops > 0					
+				}
 				create_pop = {
 					species = event_target:enslavedpeeps
 					ethos = event_target:ownerethos
 				}	
 			}
 			random_owned_planet = {
-				limit = { is_colony = yes }
+				limit = { 
+					is_colony = yes 
+					num_pops > 0
+				}
 				create_pop = {
 					species = event_target:enslavedpeeps
 					ethos = event_target:ownerethos
@@ -1569,27 +1482,8 @@ planet_event = {
 	hide_window = yes
 	
 	trigger = {
-		has_observation_outpost = yes
-		observation_outpost = {
-			OR = {
-				has_mission = deity_persona
-				has_mission = deity_persona
-			}
-		}
-		observation_outpost_owner = { 
-			is_ai = no
-			not = { has_policy_flag = slavery_not_allowed }
-		}
-		owner = {
-			is_country_type = primitive
-			OR = {
-				has_country_flag = bronze_age
-				has_country_flag = iron_age
-				has_country_flag = late_medieval_age
-			}
-		}
+		is_deity_persona_candidate = yes
 		has_planet_flag = pf_abductions_planet
-		#has_planet_flag = pf_devoutbelievers_planet
 		NOT = { has_planet_flag = pf_repeat_abductions }
 		NOT = { has_planet_flag = pf_abductions_askagain }
 		count_owned_pop = {
@@ -1616,25 +1510,7 @@ planet_event = {
 	hide_window = yes
 	
 	trigger = {
-		has_observation_outpost = yes
-		observation_outpost = {
-			OR = {
-				has_mission = deity_persona
-				has_mission = deity_persona
-			}
-		}
-		observation_outpost_owner = { 
-			is_ai = no
-			not = { has_policy_flag = slavery_not_allowed }
-		}
-		owner = {
-			is_country_type = primitive
-			OR = {
-				has_country_flag = bronze_age
-				has_country_flag = iron_age
-				has_country_flag = late_medieval_age
-			}
-		}
+		is_deity_persona_candidate = yes
 		has_planet_flag = pf_repeat_abductions
 		NOT = { has_planet_flag = pf_abductions_askagain }
 	}
@@ -1659,12 +1535,7 @@ planet_event = {
 	
 	trigger = {
 		has_observation_outpost = yes
-		observation_outpost = {
-			OR = {
-				has_mission = deity_persona
-				has_mission = deity_persona
-			}
-		}
+		observation_outpost = { has_mission = deity_persona }
 		observation_outpost_owner = { 
 			is_ai = no
 			not = { has_policy_flag = slavery_not_allowed }
@@ -1712,17 +1583,9 @@ country_event = {
 					dismantle = yes
 				}
 				set_owner = root
-				# purge = no
 				every_planet_army = {
 					remove_army = yes
 				}
-				# every_owned_pop = {
-				#	enslave_pop = yes
-				#	add_modifier = {
-				#		modifier = culture_shock_iron_age
-				#		days = 360
-				#	}				
-				#}
 				event_target:primitive_civ = { destroy_country = yes }
 			}
 		}

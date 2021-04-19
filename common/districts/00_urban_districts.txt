@@ -2,8 +2,8 @@
 #
 # Calvitix Check 3.0.1  17/04/2021
 #
-# TODO Merge with DO_
-#
+# Merge with STARNET
+# Merge with Plentiful Trad
 #
 @base_cost = 300
 @city_cost = 500
@@ -76,6 +76,12 @@ district_city = {
 			exists = owner
 			owner = {
 				is_regular_empire = yes
+###STARNET AI
+				or = {
+				is_ai = no
+				years_passed < 15
+				years_passed > 90 }
+###
 			}
 		}
 		modifier = {
@@ -735,12 +741,13 @@ district_industrial = {
 	ai_resource_production = {
 		alloys = 1
 		trigger = {
-			always = yes
+			planet = { not = { has_designation = col_factory } } #STARNET AI
 		}
 	}
 	ai_resource_production = {
 		consumer_goods = 1
 		trigger = {
+			planet = { not = { has_designation = col_foundry } } #STARNET AI
 			owner = {
 				country_uses_consumer_goods = yes
 			}
