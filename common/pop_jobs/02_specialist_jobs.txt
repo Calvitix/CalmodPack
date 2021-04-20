@@ -4,6 +4,8 @@
 #
 # Merge with Starnet AI
 # Merge with RS Planetary Exploration
+# Merge with Venture megacorp
+
 ###################
 # Specialist Jobs
 ###################
@@ -1322,13 +1324,28 @@ bureaucrat = {
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
-			owner = { has_valid_civic = civic_byzantine_bureaucracy }
+			OR = {
+				owner = { has_valid_civic = civic_byzantine_bureaucracy }
+				owner = { has_valid_civic = civic_thought_auditing } #megacorp_mod
+			}
 		}
 		modifier = {
 			planet_stability_add = 1
 		}
 	}
 
+	triggered_planet_modifier = { ####################################megacorp_mod
+	
+		potential = {
+			exists = owner
+			owner = { has_valid_civic = civic_thought_auditing }
+			
+		}
+		modifier = {
+			planet_crime_add = -5
+		}
+	}							######################################megacorp_mod
+	
 	country_modifier = {
 		country_admin_cap_add = 10
 	}
@@ -1434,6 +1451,13 @@ chemist = {
 		produces = {
 			volatile_motes = 2
 		}
+		produces = { ############################################megacorp_mod
+			trigger = {
+				exists = owner
+				owner = { has_valid_civic = civic_refining_consortium }
+			}
+			volatile_motes = 1
+		} 			#############################################megacorp_mod
 		upkeep = {
 			minerals = 10
 		}
@@ -1495,6 +1519,13 @@ translucer = {
 		produces = {
 			rare_crystals = 2
 		}
+		produces = { 	############################################megacorp_mod
+			trigger = {
+				exists = owner
+				owner = { has_valid_civic = civic_refining_consortium }
+			}
+			rare_crystals = 1
+		}				############################################megacorp_mod
 		upkeep = {
 			minerals = 10
 		}
@@ -1567,6 +1598,13 @@ gas_refiner = {
 		produces = {
 			exotic_gases = 2
 		}
+		produces = { 	############################################megacorp_mod
+			trigger = {
+				exists = owner
+				owner = { has_valid_civic = civic_refining_consortium }
+			}
+			exotic_gases = 1
+		}				############################################megacorp_mod
 		upkeep = {
 			minerals = 10
 		}
@@ -1773,12 +1811,52 @@ manager = {
 		}
 	}
 
+	triggered_planet_modifier = { 	############################################megacorp_mod
+		potential = {
+			exists = owner
+			owner = { has_valid_civic = civic_efficiency_expert }
+		}
+		modifier = {
+			trade_value_add = 2
+		}		
+	}								
+	
+	triggered_planet_modifier = {
+		potential = {
+			has_trait = trait_thrifty
+			exists = owner
+			owner = { has_valid_civic = civic_efficiency_expert }
+		}
+		modifier = {
+			trade_value_add = 0.5
+		}		
+	}								############################################megacorp_mod
+	
+	triggered_planet_modifier = {
+		potential = {
+			has_trait = trait_nuumismatic_administration
+			exists = owner
+			owner = { has_valid_civic = civic_efficiency_expert }
+		}
+		modifier = {
+			trade_value_add = 0.5
+		}		
+	}								############################################megacorp_mod
+	
 	resources = {
 		category = planet_managers
 		produces = {
 			unity = 3
 			society_research = 2
 		}
+		produces = {				############################################megacorp_mod
+			trigger = {
+				exists = owner
+				owner = { has_valid_civic = civic_efficiency_expert }
+			}
+			unity = 1
+			society_research = -2
+		}							############################################megacorp_mod
 		upkeep = {
 			consumer_goods = 2
 		}

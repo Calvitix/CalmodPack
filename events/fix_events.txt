@@ -1,0 +1,460 @@
+namespace = fix_ai_actions
+
+country_event = {
+	id = fix_ai_actions.0
+	hide_window = yes
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	trigger = {
+		is_ai = no
+	}
+
+	immediate = {
+		country_event = {
+			id = fix_ai_actions.3
+		}
+	}
+}
+country_event = {
+	id = fix_ai_actions.1
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		if = {
+			limit = {
+				NOT = {
+					has_global_flag = ai_and_player_flag
+				}
+			}
+			is_ai = yes
+		}
+		has_global_flag = ai_unemployment_flag
+	}
+
+	immediate = {
+		random_owned_planet = {
+			limit = {
+				num_unemployed > 0
+			}
+			random_owned_pop = {
+				limit = {
+					is_unemployed = yes
+					NOT = {
+						has_job = bio_trophy
+					}
+				}
+				prevprev = {
+					random_owned_planet = {
+						limit = {
+							is_colony = yes
+							free_jobs > 0
+						}
+						resettle_pop = {
+							pop = prevprev
+							planet = this
+						}
+					}
+				}
+			}
+		}
+	}
+}
+event = {
+	id = fix_ai_actions.2
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		set_global_flag = ai_gateway_construction_flag
+		set_global_flag = ai_xeno_compatibility_flag
+		set_global_flag = ai_habitat_construction_flag
+		set_global_flag = ai_unemployment_flag
+		set_global_flag = ai_corvette_destroyer_spam_flag
+		#set_global_flag = ai_population_time_control_flag
+		set_global_flag = ai_population_count_control_flag
+		remove_global_flag = ai_and_player_flag
+	}
+}
+country_event = {
+	id = fix_ai_actions.3
+	title = "fix_ai_actions.1.name"
+	desc = "fix_ai_actions.1.desc"
+	picture = GFX_evt_ai_planet
+	show_sound = event_mystic_reveal
+	hide_window = no
+
+	is_triggered_only = yes
+
+	trigger = {
+		is_ai = no
+	}
+
+	option = { 
+		name = "fix_ai_actions.1.a" custom_tooltip = "fix_ai_actions_event.3.custom_tooltip.a"
+		allow = {
+			hidden_trigger = {
+				has_global_flag = ai_gateway_construction_flag
+			}
+		}
+		remove_global_flag = ai_gateway_construction_flag
+		hidden_effect = {
+			country_event = {
+				id = fix_ai_actions.3
+			}
+		}
+	}
+	option = { 
+		name = "fix_ai_actions.1.b" custom_tooltip = "fix_ai_actions_event.3.custom_tooltip.b"
+		allow = {
+			hidden_trigger = {
+				has_global_flag = ai_xeno_compatibility_flag
+			}
+		}
+		remove_global_flag = ai_xeno_compatibility_flag
+		hidden_effect = {
+			country_event = {
+				id = fix_ai_actions.3
+			}
+		}
+	}
+	option = { 
+		name = "fix_ai_actions.1.c" custom_tooltip = "fix_ai_actions_event.3.custom_tooltip.c"
+		allow = {
+			hidden_trigger = {
+				has_global_flag = ai_habitat_construction_flag
+			}
+		}
+		remove_global_flag = ai_habitat_construction_flag
+		hidden_effect = {
+			country_event = {
+				id = fix_ai_actions.3
+			}
+		}
+	}
+	option = { 
+		name = "fix_ai_actions.1.d" custom_tooltip = "fix_ai_actions_event.3.custom_tooltip.d"
+		allow = {
+			hidden_trigger = {
+				has_global_flag = ai_unemployment_flag
+			}
+		}
+		remove_global_flag = ai_unemployment_flag
+		hidden_effect = {
+			country_event = {
+				id = fix_ai_actions.3
+			}
+		}
+	}
+	option = { 
+		name = "fix_ai_actions.1.e" custom_tooltip = "fix_ai_actions_event.3.custom_tooltip.e"
+		allow = {
+			hidden_trigger = {
+				has_global_flag = ai_corvette_destroyer_spam_flag
+			}
+		}
+		remove_global_flag = ai_corvette_destroyer_spam_flag
+		hidden_effect = {
+			country_event = {
+				id = fix_ai_actions.3
+			}
+		}
+	}
+	# option = { 
+	# 	name = "fix_ai_actions.1.f" custom_tooltip = "fix_ai_actions_event.3.custom_tooltip.f"
+	# 	allow = {
+	# 		hidden_trigger = {
+	# 			has_global_flag = ai_population_time_control_flag
+	# 		}
+	# 	}
+	# 	remove_global_flag = ai_population_time_control_flag
+	# 	hidden_effect = {
+	# 		country_event = {
+	# 			id = fix_ai_actions.3
+	# 		}
+	# 	}
+	# }
+	option = { 
+		name = "fix_ai_actions.1.g" custom_tooltip = "fix_ai_actions_event.3.custom_tooltip.g"
+		allow = {
+			hidden_trigger = {
+				has_global_flag = ai_population_count_control_flag
+			}
+		}
+		remove_global_flag = ai_population_count_control_flag
+		hidden_effect = {
+			country_event = {
+				id = fix_ai_actions.3
+			}
+		}
+	}
+	option = { 
+		name = "fix_ai_actions.1.h" custom_tooltip = "fix_ai_actions_event.3.custom_tooltip.h"
+		allow = {
+			hidden_trigger = {
+				NOT = {
+					has_global_flag = ai_and_player_flag
+				}
+			}
+		}
+		set_global_flag = ai_and_player_flag
+		hidden_effect = {
+			country_event = {
+				id = fix_ai_actions.3
+			}
+		}
+	}
+	option = { 
+		name = "fix_ai_actions.1.i" #custom_tooltip = "fix_ai_actions_event.3.custom_tooltip.h"
+	}
+}
+country_event = {
+	id = fix_ai_actions.4
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		if = {
+			limit = {
+				NOT = {
+					has_global_flag = ai_and_player_flag
+				}
+			}
+			is_ai = yes
+		}
+		has_global_flag = ai_corvette_destroyer_spam_flag
+	}
+
+	immediate = {
+		random_owned_fleet = {
+			limit = {
+				count_owned_ship = {
+					limit = {
+						is_ship_size = corvette
+					}
+					count > 60
+				}
+			}
+			if = {
+				limit = { 
+					prev = {
+						has_technology = tech_destroyers
+					}
+				}
+				random_owned_ship = {
+					limit = {
+						is_ship_size = corvette
+					}
+					delete_ship = this
+				}
+				random_owned_ship = {
+					limit = {
+						is_ship_size = corvette
+					}
+					delete_ship = this
+				}
+				create_ship = {
+					name = random
+					random_existing_design = destroyer
+				}
+			}
+		}
+		random_owned_fleet = {
+			limit = {
+				count_owned_ship = {
+					limit = {
+						is_ship_size = destroyer
+					}
+					count > 30
+				}
+			}
+			if = {
+				limit = { 
+					prev = {
+						has_technology = tech_cruisers
+					}
+				}
+				random_owned_ship = {
+					limit = {
+						is_ship_size = destroyer
+					}
+					delete_ship = this
+				}
+				random_owned_ship = {
+					limit = {
+						is_ship_size = destroyer
+					}
+					delete_ship = this
+				}
+				create_ship = {
+					name = random
+					random_existing_design = cruiser
+				}
+			}
+		}
+	}
+}
+country_event = {
+	id = fix_ai_actions.5
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		is_ai = yes
+	}
+
+	immediate = {
+		add_modifier = {
+			modifier = micro_marketing
+		}
+	}
+}
+country_event = {
+	id = fix_ai_actions.6
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		if = {
+			limit = {
+				NOT = {
+					has_global_flag = ai_and_player_flag
+				}
+			}
+			is_ai = yes
+		}
+		has_global_flag = ai_population_count_control_flag
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				num_pops > 99
+				num_pops < 199
+			}
+			add_modifier = {
+				modifier = pop_conversion_count_1
+			}
+			remove_modifier = pop_conversion_count_2
+			remove_modifier = pop_conversion_count_3
+			remove_modifier = pop_conversion_count_4
+			remove_modifier = pop_conversion_count_5
+			remove_modifier = pop_conversion_count_6
+			remove_modifier = pop_conversion_count_7
+			remove_modifier = pop_conversion_count_8
+		}
+		if = {
+			limit = {
+				num_pops > 199
+				num_pops < 299
+			}
+			add_modifier = {
+				modifier = pop_conversion_count_2
+			}
+			remove_modifier = pop_conversion_count_1
+			remove_modifier = pop_conversion_count_3
+			remove_modifier = pop_conversion_count_4
+			remove_modifier = pop_conversion_count_5
+			remove_modifier = pop_conversion_count_6
+			remove_modifier = pop_conversion_count_7
+			remove_modifier = pop_conversion_count_8
+		}
+		if = {
+			limit = {
+				num_pops > 299
+				num_pops < 399
+			}
+			add_modifier = {
+				modifier = pop_conversion_count_3
+			}
+			remove_modifier = pop_conversion_count_1
+			remove_modifier = pop_conversion_count_2
+			remove_modifier = pop_conversion_count_4
+			remove_modifier = pop_conversion_count_5
+			remove_modifier = pop_conversion_count_6
+			remove_modifier = pop_conversion_count_7
+			remove_modifier = pop_conversion_count_8
+		}
+		if = {
+			limit = {
+				num_pops > 399
+				num_pops < 499
+			}
+			add_modifier = {
+				modifier = pop_conversion_count_4
+			}
+			remove_modifier = pop_conversion_count_1
+			remove_modifier = pop_conversion_count_2
+			remove_modifier = pop_conversion_count_3
+			remove_modifier = pop_conversion_count_5
+			remove_modifier = pop_conversion_count_6
+			remove_modifier = pop_conversion_count_7
+			remove_modifier = pop_conversion_count_8
+		}
+		if = {
+			limit = {
+				num_pops > 499
+				num_pops < 599
+			}
+			add_modifier = {
+				modifier = pop_conversion_count_5
+			}
+			remove_modifier = pop_conversion_count_1
+			remove_modifier = pop_conversion_count_2
+			remove_modifier = pop_conversion_count_3
+			remove_modifier = pop_conversion_count_4
+			remove_modifier = pop_conversion_count_6
+			remove_modifier = pop_conversion_count_7
+			remove_modifier = pop_conversion_count_8
+		}
+		if = {
+			limit = {
+				num_pops > 599
+				num_pops < 699
+			}
+			add_modifier = {
+				modifier = pop_conversion_count_6
+			}
+			remove_modifier = pop_conversion_count_1
+			remove_modifier = pop_conversion_count_2
+			remove_modifier = pop_conversion_count_3
+			remove_modifier = pop_conversion_count_4
+			remove_modifier = pop_conversion_count_5
+			remove_modifier = pop_conversion_count_7
+			remove_modifier = pop_conversion_count_8
+		}
+		if = {
+			limit = {
+				num_pops > 699
+				num_pops < 799
+			}
+			add_modifier = {
+				modifier = pop_conversion_count_7
+			}
+			remove_modifier = pop_conversion_count_1
+			remove_modifier = pop_conversion_count_2
+			remove_modifier = pop_conversion_count_3
+			remove_modifier = pop_conversion_count_4
+			remove_modifier = pop_conversion_count_5
+			remove_modifier = pop_conversion_count_6
+			remove_modifier = pop_conversion_count_8
+		}
+		if = {
+			limit = {
+				num_pops > 799
+				#num_pops < 899
+			}
+			add_modifier = {
+				modifier = pop_conversion_count_8
+			}
+			remove_modifier = pop_conversion_count_1
+			remove_modifier = pop_conversion_count_2
+			remove_modifier = pop_conversion_count_3
+			remove_modifier = pop_conversion_count_4
+			remove_modifier = pop_conversion_count_5
+			remove_modifier = pop_conversion_count_6
+			remove_modifier = pop_conversion_count_7
+		}
+	}
+}

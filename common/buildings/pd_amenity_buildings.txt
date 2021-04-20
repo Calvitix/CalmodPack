@@ -1,3 +1,10 @@
+# Planetary Diversity File
+#
+# Calvitix Check 3.0.1  20/04/2021
+#
+# Merge Venture megacorp 20/04/2021
+#
+#
 #############
 # Amenities buildings
 #############
@@ -26,7 +33,12 @@ building_luxury_residence = {
 		exists = owner
 		owner = {
 			is_regular_empire = yes
-			NOT = { has_valid_civic = civic_shared_burden }
+			NOT = { 
+				OR = {
+						has_valid_civic = civic_shared_burden 
+						has_valid_civic = civic_employee_ownership #megacorp
+				} 
+			}
 		}
 	}
 
@@ -46,7 +58,12 @@ building_luxury_residence = {
 				}
 			}
 			owner = { is_regular_empire = no }
-			owner = { has_valid_civic = civic_shared_burden }
+			owner = { 
+				OR = {
+						has_valid_civic = civic_shared_burden 
+						has_valid_civic = civic_employee_ownership #megacorp
+				}
+			}
 			has_modifier = slave_colony
 		}
 	}
@@ -149,7 +166,12 @@ building_paradise_dome = {
 		exists = owner
 		OR = {
 			owner = { is_regular_empire = no }
-			owner = { has_valid_civic = civic_shared_burden }
+			owner = { 
+				OR = { 
+					has_valid_civic = civic_shared_burden 
+					has_valid_civic = civic_employee_ownership #megacorp
+				}
+			}
 			buildings_no_crystals = yes
 			has_modifier = slave_colony
 		}
@@ -198,7 +220,10 @@ building_paradise_dome = {
 	show_tech_unlock_if = {
 		owner = {
 			is_regular_empire = yes
-			NOT = { has_valid_civic = civic_shared_burden }
+			NOR = { 
+				has_valid_civic = civic_shared_burden 
+				has_valid_civic = civic_employee_ownership #megacorp
+			}
 		}
 	}
 
@@ -213,6 +238,28 @@ building_paradise_dome = {
 			free_housing < 0
 		}
 	}
+	
+###megacorp		
+	on_queued = {
+		IF = {
+			limit = {
+				owner = { has_technology = tech_construction_templates }
+			}
+			owner = { set_timed_country_flag = { flag = buildings_new_crystal_building days = 270 } }
+		}
+		ELSE_IF = {
+			limit = {
+				owner = { has_technology = tech_assembly_pattern }
+			}
+			owner = { set_timed_country_flag = { flag = buildings_new_crystal_building days = 390 } }
+		}
+		else = {
+			planet = { 
+				owner = { set_timed_country_flag = { flag = buildings_new_crystal_building days = 510 } }
+			}
+		}
+	}
+###		
 }
 
 building_communal_housing = {
@@ -239,15 +286,19 @@ building_communal_housing = {
 		}
 		NOT = { has_modifier = slave_colony }
 		exists = owner
-		owner = {
+		owner = { 
 			is_regular_empire = yes
-			has_valid_civic = civic_shared_burden
+			OR = { 
+				has_valid_civic = civic_shared_burden 
+				has_valid_civic = civic_employee_ownership #megacorp
+			}
 		}
 	}
 
-	allow = {
-		buildings_simple_allow = yes
-	}
+	#disabled by megacorp / activ by pd
+	#allow = {
+	#	buildings_simple_allow = yes
+	#}
 
 	destroy_trigger = {
 		exists = owner
@@ -378,7 +429,10 @@ building_communal_housing_large = {
 	show_tech_unlock_if = {
 		owner = {
 			is_regular_empire = yes
-			has_valid_civic = civic_shared_burden
+			OR = { 
+				has_valid_civic = civic_shared_burden 
+				has_valid_civic = civic_employee_ownership #megacorp 
+			}
 		}
 	}
 
@@ -417,6 +471,15 @@ building_communal_housing_large = {
 		}
 	}
 
+###megacorp
+	show_tech_unlock_if = {
+		OR = { 
+				has_valid_civic = civic_shared_burden 
+				has_valid_civic = civic_employee_ownership 
+			}
+	}
+###	
+
 	prerequisites = {
 		"tech_paradise_dome"
 	}
@@ -432,4 +495,26 @@ building_communal_housing_large = {
 			free_housing < 0
 		}
 	}
+
+###megacorp	
+	on_queued = {
+		IF = {
+			limit = {
+				owner = { has_technology = tech_construction_templates }
+			}
+			owner = { set_timed_country_flag = { flag = buildings_new_crystal_building days = 270 } }
+		}
+		ELSE_IF = {
+			limit = {
+				owner = { has_technology = tech_assembly_pattern }
+			}
+			owner = { set_timed_country_flag = { flag = buildings_new_crystal_building days = 390 } }
+		}
+		else = {
+			planet = {
+				owner = { set_timed_country_flag = { flag = buildings_new_crystal_building days = 510 } }
+			}
+		}
+	}	
+###	
 }

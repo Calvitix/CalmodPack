@@ -1,0 +1,26 @@
+can_modify_species = {
+	root.owner = {
+		if = {
+			limit = {
+				is_ai = yes
+			}
+			count_exact_species = {
+				count < 3
+				limit = {
+					OR = {
+						is_same_species = prevprev
+						is_subspecies = prevprev
+					}
+				}
+			}
+		}
+		else = {
+			OR = {
+				NOT = {
+					has_trait = trait_self_modified
+				}
+				is_same_species = root
+			}
+		}
+	}
+}
