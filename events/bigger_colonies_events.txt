@@ -63,68 +63,71 @@ country_event = {
 	hide_window = yes
     is_triggered_only = yes	
     immediate = {
-        every_galaxy_planet = {
-            limit = { 
-				OR = { 
-					habitable_planet = yes 
-					is_planet_class = pc_nuked 
-				} 
+		if {
+			limit = {
 				NOR = {
-					exists = from  #calvitix debug (from au lieu de owner)
-					from = { has_civic = civic_life_seeded }
-					from = { has_civic = civic_post_apocalyptic }
+					has_civic = civic_life_seeded
+					has_civic = civic_post_apocalyptic
 				}
-				NOT = { has_planet_flag = bigger_colony_checked }
-				NOT = { is_planet_class = pc_ringworld_habitable } #Calvitix
 			}
-			set_planet_flag = bigger_colony_checked
-			random_list = {
-				2 = { modifier = { factor = 0 has_global_flag = bigger_colonies_chance_all } }
-				2 = { 	
-					modifier = { factor = 0.4 has_global_flag = bigger_colonies_chance_low }
-					modifier = { factor = 2 has_global_flag = bigger_colonies_chance_high }
-					if = {
-						limit = { is_moon = no has_owner = no }
-						if = {# selected planet goes directly to size 25. 
-							limit = { planet_size < 25 } 
-							set_planet_size = 24 
-							while = { count = 5 bc_add_random_deposit = yes }				
-							while = { count = 3 bc_add_random_blocker = yes }	
-							while = { count = 1 bc_add_random_diversity_mod_deposit = yes } # !!District Diversity Mod
+			every_galaxy_planet = {
+				limit = { 
+					OR = { 
+						habitable_planet = yes 
+						is_planet_class = pc_nuked 
+					} 
+					NOT = { has_planet_flag = bigger_colony_checked }
+					NOT = { is_planet_class = pc_ringworld_habitable } #Calvitix
+				}
+				set_planet_flag = bigger_colony_checked
+				random_list = {
+					2 = { modifier = { factor = 0 has_global_flag = bigger_colonies_chance_all } }
+					2 = { 	
+						modifier = { factor = 0.4 has_global_flag = bigger_colonies_chance_low }
+						modifier = { factor = 2 has_global_flag = bigger_colonies_chance_high }
+						if = {
+							limit = { is_moon = no has_owner = no }
+							if = {# selected planet goes directly to size 25. 
+								limit = { planet_size < 25 } 
+								set_planet_size = 24 
+								while = { count = 5 bc_add_random_deposit = yes }				
+								while = { count = 3 bc_add_random_blocker = yes }	
+								while = { count = 1 bc_add_random_diversity_mod_deposit = yes } # !!District Diversity Mod
+							}
+							while = {#selected planet can go up from size 25 to 60.
+								count = 15 # 35 
+								random_list = {
+									1 = {} 
+									1 = { 
+										change_planet_size = 1
+										random_list = { 1 = {} 2 = { bc_add_random_deposit = yes } }
+										random_list = { 1 = {} 1 = { bc_add_random_blocker = yes } }
+										random_list = { 1 = {} 1 = { bc_add_random_diversity_mod_deposit = yes } } # !!District Diversity Mod
+									}						
+								} 
+							}
 						}
-						while = {#selected planet can go up from size 25 to 60.
-							count = 15 # 35 
-							random_list = {
-								1 = {} 
-								1 = { 
-									change_planet_size = 1
-									random_list = { 1 = {} 2 = { bc_add_random_deposit = yes } }
-									random_list = { 1 = {} 1 = { bc_add_random_blocker = yes } }
-									random_list = { 1 = {} 1 = { bc_add_random_diversity_mod_deposit = yes } } # !!District Diversity Mod
-								}						
-							} 
-						}
-					}
-					else_if = {
-						limit = { is_moon = yes has_owner = no }
-						if = {# selected moon goes directly to size 15. 
-							limit = { planet_size < 15 } 
-							set_planet_size = 15 
-							while = { count = 3 bc_add_random_deposit = yes }
-							while = { count = 2 bc_add_random_blocker = yes }
-							while = { count = 1 bc_add_random_diversity_mod_deposit = yes } # !!District Diversity Mod						
-						}
-						while = {#selected moon can go up from size 15 to 35.
-							count = 10 # 20 
-							random_list = {
-								1 = {} 
-								1 = { 
-									change_planet_size = 1
-									random_list = { 1 = {} 2 = { bc_add_random_deposit = yes } }
-									random_list = { 1 = {} 1 = { bc_add_random_blocker = yes } }
-									random_list = { 1 = {} 1 = { bc_add_random_diversity_mod_deposit = yes } } # !!District Diversity Mod
-								}						
-							} 
+						else_if = {
+							limit = { is_moon = yes has_owner = no }
+							if = {# selected moon goes directly to size 15. 
+								limit = { planet_size < 15 } 
+								set_planet_size = 15 
+								while = { count = 3 bc_add_random_deposit = yes }
+								while = { count = 2 bc_add_random_blocker = yes }
+								while = { count = 1 bc_add_random_diversity_mod_deposit = yes } # !!District Diversity Mod						
+							}
+							while = {#selected moon can go up from size 15 to 35.
+								count = 10 # 20 
+								random_list = {
+									1 = {} 
+									1 = { 
+										change_planet_size = 1
+										random_list = { 1 = {} 2 = { bc_add_random_deposit = yes } }
+										random_list = { 1 = {} 1 = { bc_add_random_blocker = yes } }
+										random_list = { 1 = {} 1 = { bc_add_random_diversity_mod_deposit = yes } } # !!District Diversity Mod
+									}						
+								} 
+							}
 						}
 					}
 				}
