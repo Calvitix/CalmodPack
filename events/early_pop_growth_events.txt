@@ -1,0 +1,78 @@
+namespace = early_pop_growth
+
+planet_event = {
+	id = early_pop_growth.1
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		NOT = { has_planet_flag = had_fervor }
+		owner = { is_country_type = default }
+	}
+
+	immediate = {
+		set_planet_flag = had_fervor
+		add_modifier = { modifier = colonial_fervor_modifier days = 7200 }
+	}
+}
+
+planet_event = {
+	id = early_pop_growth.2
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		owner = {
+			OR = {
+				is_country_type = default
+				is_country_type = awakened_fallen_empire
+			}
+			NOR = {
+				has_valid_civic = civic_hive_devouring_swarm
+				has_valid_civic = civic_machine_terminator
+				has_valid_civic = civic_fanatic_purifiers
+				has_valid_civic = civic_machine_assimilator
+			}
+		}
+		original_owner = no
+	}
+
+	immediate = {
+		add_modifier = { modifier = recently_conquered_modifier days = 3600 }
+	}
+}
+
+planet_event = {
+	id = early_pop_growth.3
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		owner = {
+			OR = {
+				is_country_type = default
+				is_country_type = awakened_fallen_empire
+			}
+			is_gestalt = no
+		}
+		original_owner = yes
+	}
+
+	immediate = {
+		add_modifier = { modifier = recently_liberated_modifier days = 3600 }
+	}
+}
+
+planet_event = {
+	id = early_pop_growth.4
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_modifier = colonial_fervor_modifier
+	}
+
+	immediate = {
+		remove_modifier = colonial_fervor_modifier
+	}
+}
