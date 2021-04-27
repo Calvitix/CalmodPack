@@ -1,3 +1,11 @@
+# Expanded Events File
+#
+# Calvitix Check 3.0.2  25/04/2021
+#
+#
+# Merge with Expanded Events  25/04/2021
+# 
+#
 ############################
 #
 # Observation Post Events
@@ -21,6 +29,7 @@ country_event = {
 	
 	immediate = {
 		FROMFROM = {
+			owner = { save_event_target_as = primitive_country }
 			observation_outpost_owner = {
 				# Xenoist Faction Enlightenment Demand
 				set_timed_country_flag = {
@@ -31,11 +40,14 @@ country_event = {
 					limit = { has_event_chain = mandate_uplift_chain }
 					country_event = { id = moremandate.83 }
 				}
+				add_intel = {
+					who = event_target:primitive_country
+					amount = 100
+				}
 			}
 			observation_outpost = {
 				dismantle = yes
 			}			
-			owner = { save_event_target_as = primitive_country }
 			solar_system = {
 				if = {
 					limit = {
@@ -43,6 +55,10 @@ country_event = {
 					}
 					starbase = {
 						set_owner = event_target:primitive_country
+						if = {
+							limit = { has_starbase_size = starbase_outpost }
+							set_starbase_size = starbase_starport
+						}
 					}						
 				}
 				every_system_planet = {
@@ -156,5 +172,28 @@ country_event = {
 	
 	option = {
 		name = "observation.2000.a"
+		if = {
+			limit = {
+				has_global_flag = better_diplo_installed
+				is_galactic_community_member = yes
+				OR = {
+					is_active_resolution = "resolution_galacticcooperation_indigenous_protection_protocols"
+					is_active_resolution = "resolution_galacticcooperation_interstellar_mediation"
+					is_active_resolution = "resolution_galacticcooperation_sanctity_of_life"
+				}
+			}
+			add_monthly_resource_mult = {
+				resource = society_research
+				value = @tier5researchreward
+				min = @tier5researchmin
+				max = @tier5researchmax
+			}
+			add_monthly_resource_mult = {
+				resource = unity
+				value = @tier4unityreward
+				min = @tier4unitymin
+				max = @tier4unitymax
+			}
+		}
 	}
 }

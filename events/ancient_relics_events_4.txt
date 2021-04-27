@@ -1,3 +1,11 @@
+# Original File
+#
+# Calvitix Check 3.0.1  23/04/2021
+#
+# Merge with Arisphaos Unofficial patch
+#
+#
+
 ################################
 #
 # Ancient Relics Events
@@ -388,25 +396,19 @@ planet_event = {
 		has_owner = yes
 		is_homeworld = no
 		original_owner = yes
-		is_ai = no
 		has_ground_combat = no
 		is_capital = no
 		is_occupied_flag = no
 	}
 
 	trigger = {
+		owner = { is_ai = no }
 		has_ancrel = yes
 		num_pops > 0
 		OR = {
-			is_planet_class = pc_desert
-			is_planet_class = pc_tropical
-			is_planet_class = pc_arid
-			is_planet_class = pc_continental
-			is_planet_class = pc_ocean
-			is_planet_class = pc_tundra
-			is_planet_class = pc_arctic
-			is_planet_class = pc_alpine
-			is_planet_class = pc_savannah
+			is_dry = yes
+			is_wet = yes
+			is_cold = yes
 		}
 		NOT = { exists = archaeological_site }
 		NOR = { 
@@ -571,8 +573,16 @@ event = {
 
 	trigger = {
 		mid_game_years_passed >= 20
+		OR = { #expand. events mod
+			NOT = { end_game_years_passed >= 200 }
+			count_country = {
+				limit = { is_ai = no }
+				count > 1
+			}
+		}
 		has_ancrel = yes
 		NOT = { has_global_flag = zarqlan_spawned }
+		has_crisis = no
 		any_country = {
 			OR = {
 				is_country_type = fallen_empire
@@ -581,6 +591,7 @@ event = {
 			has_country_flag = fallen_empire_2
 			any_playable_country = {
 				is_ai = no
+				is_homicidal = no
 				has_communications = prev
 			}
 		}
@@ -815,7 +826,26 @@ fleet_event = {
 country_event = {
 	id = ancrel.6130
 	title = TRANSMISSION
-	desc = "ancrel.6130.desc"
+	desc = { #expand. events mod
+		text = "ancrel.6130.desc"
+		trigger = {
+			is_robot_empire = no
+			is_homicidal = no
+		}
+	}
+	desc = {
+		text = "ancrel.6130.desc.robot"
+		trigger = {
+			is_robot_empire = yes
+			is_homicidal = no
+		}
+	}
+	desc = {
+		text = "ancrel.6130.desc.homicidal"
+		trigger = {
+			is_homicidal = yes
+		}
+	}
 	
 	diplomatic = yes
 	
@@ -863,6 +893,64 @@ country_event = {
 			modifier = chosen_of_zarqlan
 		}
 	}
+	##expanded events mod
+	option = {
+		name = ancrel.6130.b
+		exclusive_trigger = {
+			OR = {
+				is_materialist = yes
+				is_xenophobe = yes
+			}
+			is_spiritualist = no
+			is_robot_empire = no
+			is_homicidal = no
+		}
+		add_modifier = {
+			modifier = chosen_of_zarqlan
+		}
+		hidden_effect = {
+			country_event = { id = countryexpanded.105 }
+		}
+	}
+	option = {
+		name = ancrel.6130.b
+		exclusive_trigger = {
+			OR = {
+				is_materialist = yes
+				is_xenophobe = yes
+				is_machine_empire = yes
+			}
+			is_robot_empire = yes
+			is_spiritualist = no
+			is_homicidal = no
+		}
+		response_text = ancrel.6130.b.response
+		add_modifier = {
+			modifier = chosen_of_zarqlan
+		}
+	}
+	option = {
+		name = ancrel.6130.fp
+		exclusive_trigger = { has_valid_civic = civic_fanatic_purifiers }
+		add_modifier = {
+			modifier = chosen_of_zarqlan
+		}
+	}
+	option = {
+		name = ancrel.6130.ds
+		exclusive_trigger = { has_valid_civic = civic_hive_devouring_swarm }
+		add_modifier = {
+			modifier = chosen_of_zarqlan
+		}
+	}
+	option = {
+		name = ancrel.6130.de
+		exclusive_trigger = { has_valid_civic = civic_machine_terminator }
+		add_modifier = {
+			modifier = chosen_of_zarqlan
+		}
+	}
+###	
 }
 
 # Severed Head Relic Activation
@@ -1290,6 +1378,31 @@ fleet_event = {
 	option = {
 		name = CURIOUS
 		small_artifact_reward = yes
+		owner = { #expanded events mod
+			if = {
+				limit = { is_gestalt = no }
+				add_monthly_resource_mult = {
+					resource = energy
+					value = @tier1materialreward
+					min = @tier1materialmin
+					max = @tier1materialmax
+				}
+				add_monthly_resource_mult = {
+					resource = consumer_goods
+					value = @tier1materialreward
+					min = @tier1materialmin
+					max = @tier1materialmax
+				}
+			}
+			else = {
+				add_monthly_resource_mult = {
+					resource = energy
+					value = @tier2materialreward
+					min = @tier2materialmin
+					max = @tier2materialmax
+				}
+			}
+		}
 	}
 }
 
@@ -1313,10 +1426,39 @@ fleet_event = {
 		from = { set_site_progress_locked = no } 
 	}
 	
+###expanded events mod
 	option = {
 		name = CURIOUS
 		small_artifact_reward = yes
+		owner = {
+			if = {
+				limit = {
+					has_tech_option = tech_resort_colonies
+				}
+				add_research_option = tech_resort_colonies
+				add_tech_progress = {
+					tech = tech_resort_colonies
+					progress = 0.05
+				}
+			}
+			else_if = {
+				limit = {
+					NOT = { has_technology = tech_resort_colonies }
+					can_research_technology = tech_resort_colonies
+				}
+				add_research_option = tech_resort_colonies
+			}
+			else = {
+				add_monthly_resource_mult = {
+					resource = society_research
+					value = @tier1researchreward
+					min = @tier1researchmin
+					max = @tier1researchmax
+				}
+			}
+		}
 	}
+	###
 }
 
 # Stage 3 - The Final Days
@@ -1367,9 +1509,21 @@ fleet_event = {
 	
 	option = {
 		name = CURIOUS
+		custom_tooltip = ancrel.6215.a.tooltip
 		medium_artifact_reward = yes
 		owner = {
-			add_resource = { energy = 4000 }
+###expanded events mod
+			if = {
+				limit = { is_gestalt = no }
+				add_resource = { energy = 2000 }
+				add_resource = { consumer_goods = 1000 }
+				add_resource = { rare_crystals = 250 }
+			}
+			else = {
+				add_resource = { energy = 4000 }
+				add_resource = { rare_crystals = 250 }
+			}
+			set_country_flag = star_petal_completed # ability to make luxury habitats
 		}
 	}
 }
@@ -1433,7 +1587,7 @@ fleet_event = {
 	id = ancrel.6260
 	title = "ancrel.6260.name"
 	desc = "ancrel.6260.desc"
-	picture = GFX_evt_barren_dig_site
+	picture = GFX_evt_space_walk
 	show_sound = event_finding_loot
 	
 	archaeology = yes
@@ -1452,11 +1606,118 @@ fleet_event = {
 		name = CURIOUS
 		medium_artifact_reward = yes
 		owner = {
-			add_monthly_resource_mult = {
-				resource = engineering_research
-				value = @tier5researchreward
-				min = @tier5researchmin
-				max = @tier5researchmax
+###expanded events mod
+			if = {
+				limit = { NOT = { has_technology = tech_powered_exoskeletons } }
+				give_technology = { tech = tech_powered_exoskeletons }
+			}
+			if = {
+				limit = {
+					NOT = { has_technology = tech_robotic_workers }
+					can_research_technology = tech_robotic_workers
+				}
+				give_technology = { tech = tech_robotic_workers }
+				add_monthly_resource_mult = {
+					resource = engineering_research
+					value = @tier4researchreward
+					min = @tier4researchmin
+					max = @tier4researchmax
+				}
+			}
+			else_if = {
+				limit = {
+					NOT = { has_technology = tech_robomodding }
+					can_research_technology = tech_robomodding
+				}
+				give_technology = { tech = tech_robomodding }
+				add_monthly_resource_mult = {
+					resource = engineering_research
+					value = @tier3researchreward
+					min = @tier3researchmin
+					max = @tier3researchmax
+				}
+			}
+			else_if = {
+				limit = {
+					NOT = { has_technology = tech_droid_workers }
+					can_research_technology = tech_droid_workers
+				}
+				give_technology = { tech = tech_droid_workers }
+				add_monthly_resource_mult = {
+					resource = engineering_research
+					value = @tier2researchreward
+					min = @tier2researchmin
+					max = @tier2researchmax
+				}
+			}
+			else_if = {
+				limit = {
+					NOT = { has_technology = tech_robomodding_points_1 }
+					can_research_technology = tech_robomodding_points_1
+				}
+				add_research_option = tech_robomodding_points_1
+				add_tech_progress = {
+					tech = tech_robomodding_points_1
+					progress = 0.80
+				}
+			}
+			else_if = {
+				limit = {
+					NOT = { has_technology = tech_robomodding_points_2 }
+					can_research_technology = tech_robomodding_points_2
+				}
+				add_research_option = tech_robomodding_points_2
+				add_tech_progress = {
+					tech = tech_robomodding_points_2
+					progress = 0.25
+				}
+			}
+			else_if = {
+				limit = {
+					NOT = { has_technology = tech_robomodding_m }
+					can_research_technology = tech_robomodding_m
+				}
+				give_technology = { tech = tech_robomodding_m }
+				add_monthly_resource_mult = {
+					resource = engineering_research
+					value = @tier3researchreward
+					min = @tier3researchmin
+					max = @tier3researchmax
+				}
+			}
+			else_if = {
+				limit = {
+					NOT = { has_technology = tech_binary_motivators }
+					can_research_technology = tech_binary_motivators
+				}
+				add_research_option = tech_binary_motivators
+				add_tech_progress = {
+					tech = tech_binary_motivators
+					progress = 0.80
+				}
+			}
+			else_if = {
+				limit = {
+					NOT = { has_technology = tech_nanite_assemblers }
+					can_research_technology = tech_nanite_assemblers
+				}
+				add_research_option = tech_nanite_assemblers
+				add_tech_progress = {
+					tech = tech_nanite_assemblers
+					progress = 0.25
+				}
+			}
+			else = {
+				add_monthly_resource_mult = {
+					resource = engineering_research
+					value = @tier5researchreward
+					min = @tier5researchmin
+					max = @tier5researchmax
+				}
+			}
+			custom_tooltip = ancrel.6260.tooltip
+			hidden_effect = {
+				set_country_flag = battle_robot_completed
 			}
 		}
 	}

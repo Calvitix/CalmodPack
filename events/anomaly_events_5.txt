@@ -3,6 +3,7 @@
 # Calvitix Check 3.0.1  23/04/2021
 #
 # Merge with Arisphaos Unofficial patch
+# Merge with Expanded Events mod
 #
 #
 
@@ -24,7 +25,14 @@ namespace = anomaly
 ship_event = {
 	id = anomaly.4000
 	title = "anomaly.4000.name"
-	desc = "anomaly.4000.desc"
+	desc = {
+		trigger = { has_ship_flag = acid_jungles_good }
+		text = "anomaly.4000.desc"
+	}
+	desc = {
+		trigger = { has_ship_flag = acid_jungles_bad }
+		text = "anomaly.4000.desc.alt"
+	}
 	picture = GFX_evt_aggressive_flora
 	show_sound = event_alien_nature
 	location = FROM
@@ -37,25 +45,76 @@ ship_event = {
 				country_event = { id = story.5 days = 30 }
 			}
 		}
+		if = { #expanded events mod
+			limit = { leader = { has_skill > 4 } }
+			set_ship_flag = acid_jungles_good
+		}
+		else = {
+			random_list = {
+				1 = {
+					set_ship_flag = acid_jungles_good
+					modifier = {
+						factor = 2
+						leader = { has_trait = leader_trait_expertise_biology }
+					}
+					modifier = {
+						factor = 2
+						leader = { has_trait = leader_trait_expertise_new_worlds }
+					}
+					modifier = {
+						factor = 2
+						leader = { has_skill > 2 }
+					}
+					modifier = {
+						factor = 2
+						leader = { has_skill > 3 }
+					}
+				}
+				1 = {
+					set_ship_flag = acid_jungles_bad
+					leader = { add_trait = "leader_trait_paranoid" }
+				}
+			}
+		}
 	}
 
-	option = {
+	option = { #expand. events mod
 		name = EXCELLENT
-		custom_tooltip = "anomaly.4000.a.tooltip"
+		trigger = { has_ship_flag = acid_jungles_good }
+		FROM = {
+			add_deposit = d_acid_jungles
+			add_deposit = d_noxious_swamp
+			add_deposit = d_noxious_swamp
+		}
 		hidden_effect = {
 			owner = {
 				country_event = { id = story.3 days = 30 }
 			}
-			FROM = {
-				add_modifier = {
-					modifier = "acid_jungles"
-					days = -1
-				}
-				add_deposit = d_noxious_swamp
-				add_deposit = d_noxious_swamp
+		}
+	}
+	option = {
+		name = anomaly_failure.4000.a
+		trigger = { has_ship_flag = acid_jungles_bad }
+		FROM = {
+			add_deposit = d_acid_jungles
+			add_deposit = d_noxious_swamp
+			add_deposit = d_noxious_swamp
+			add_deposit = d_noxious_swamp
+			add_deposit = d_noxious_swamp
+			add_deposit = d_noxious_swamp
+		}
+		hidden_effect = {
+			owner = {
+				country_event = { id = story.3 days = 30 }
 			}
 		}
-
+	}
+	
+	after = {
+		hidden_effect = {
+			remove_ship_flag = acid_jungles_good
+			remove_ship_flag = acid_jungles_bad
+		}
 	}
 }
 
@@ -282,6 +341,7 @@ ship_event = {
 		}
 		name = "anomaly.4015.b"
 		owner = {
+			small_artifact_chance = yes
 			add_monthly_resource_mult = {
 				resource = physics_research
 				value = @tier1researchreward
@@ -315,11 +375,15 @@ ship_event = {
 				OR = {
 					has_ethic = ethic_fanatic_xenophile
 					has_valid_civic = civic_memorialist
+					has_valid_civic = civic_memorialist_corp
+					has_valid_civic = civic_hive_memorialist
+					has_valid_civic = civic_machine_memorialist
 				}
 			}
 		}
 		name = "anomaly.4015.phile"
 		owner = {
+			small_artifact_chance = yes
 			add_monthly_resource_mult = {
 				resource = physics_research
 				value = @tier1researchreward
@@ -363,7 +427,7 @@ country_event = {
 					source = event_target:anomaly_planet
 					use_bypasses = no
 					min_jumps = 1
-					max_jumps = 8
+					max_jumps = 24
 				}
 				has_owner = yes
 				owner = {
@@ -512,34 +576,31 @@ ship_event = {
 	
 	is_triggered_only = yes
 
-	immediate = { owner = { country_event = { id = story.5 days = 30 } } }
+	immediate = {
+		owner = { country_event = { id = story.5 days = 30 } }
+		FROM = {
+			save_event_target_as = graveyard_planet
+		}
+	}
 
 	option = {
 		trigger = {
 			leader = { has_trait = leader_trait_expertise_propulsion }
 		}	
 		name = anomaly.4020.b
-		if = {
-			limit = {
-				from = { is_colonizable = no }
+		FROM = {
+			add_modifier = {
+				modifier = "ship_graveyard"
+				days = -1
 			}
-			custom_tooltip = "anomaly.4020.a.tooltip"
-			hidden_effect = {
-				FROM = { add_deposit = d_alloys_2 }
+			if = {
+				limit = { habitable_planet = no }
+				add_deposit = d_alloys_2
 			}
-		}
-		else = {
-			from = { add_deposit = d_metal_boneyard }
-		}
-		hidden_effect = {
-			from = {
-				add_modifier = {
-					modifier = "ship_graveyard"
-					days = -1
-				}
-			}
+			else = { add_deposit = d_ship_graveyard }
 		}
 		owner = {
+			set_country_flag = lcluster_clue_graveyard
 			pop_lcluster_event = yes
 		}
 	}
@@ -550,27 +611,19 @@ ship_event = {
 			}
 		}
 		name = anomaly.4020.a
-		if = {
-			limit = {
-				from = { is_colonizable = no }
+		FROM = {
+			add_modifier = {
+				modifier = "ship_graveyard"
+				days = -1
 			}
-			custom_tooltip = "anomaly.4020.a.tooltip"
-			hidden_effect = {
-				FROM = { add_deposit = d_alloys_2 }
+			if = {
+				limit = { habitable_planet = no }
+				add_deposit = d_alloys_2
 			}
-		}
-		else = {
-			from = { add_deposit = d_metal_boneyard }
-		}
-		hidden_effect = {
-			from = {
-				add_modifier = {
-					modifier = "ship_graveyard"
-					days = -1
-				}
-			}
+			else = { add_deposit = d_ship_graveyard }
 		}
 		owner = {
+			set_country_flag = lcluster_clue_graveyard
 			pop_lcluster_event = yes
 		}
 	}
@@ -1226,6 +1279,11 @@ ship_event = {
 				OR = {
 					has_trait = leader_trait_meticulous
 					has_trait = leader_trait_spark_of_genius
+					has_trait = leader_trait_expertise_particles
+					has_trait = leader_trait_expertise_field_manipulation
+					has_trait = leader_trait_expertise_computing
+					has_trait = leader_trait_custom_AI_assistant
+					has_trait = leader_trait_sapient_AI_assistant
 				}
 			}
 		}
@@ -1239,6 +1297,23 @@ ship_event = {
 			leader = { has_trait = leader_trait_paranoid }
 		}
 		name = "anomaly.4045.b"
+		hidden_effect = {
+			ship_event = { id = anomaly.4049 }
+		}
+	}
+	option = {
+		trigger = {
+			leader = {
+				NOT = { has_trait = leader_trait_paranoid } # use above option instead
+				OR = {
+					has_trait = leader_trait_carefree
+					has_trait = leader_trait_roamer
+					has_trait = leader_trait_cataloger
+					has_trait = leader_trait_expertise_biology
+				}
+			}
+		}
+		name = "anomaly.4045.b.alt"
 		hidden_effect = {
 			ship_event = { id = anomaly.4049 }
 		}
@@ -1427,6 +1502,7 @@ ship_event = {
 				reset_planet = yes
 			}
 		}
+		owner = { gain_negative_media_coverage = yes }
 	}
 
 	option = {
@@ -1446,7 +1522,18 @@ ship_event = {
 ship_event = {
 	id = anomaly.4049 
 	title = "anomaly.4045.name"
-	desc = "anomaly.4049.desc"
+	desc = {
+		trigger = {
+			leader = { has_trait = leader_trait_paranoid }
+		}
+		text = "anomaly.4049.desc"
+	}
+	desc = {
+		trigger = {
+			leader = { NOT = { has_trait = leader_trait_paranoid } }
+		}
+		text = "anomaly.4049.desc.alt"
+	}
 	picture = GFX_evt_unspeakable_horror
 	show_sound = event_mystic_reveal
 	location = FROMFROMFROM
@@ -1494,7 +1581,9 @@ ship_event = {
 	immediate = {
 		hidden_effect = {
 			leader = {
+				add_trait = leader_trait_expertise_statecraft
 				add_trait = leader_trait_expertise_psionics
+				add_trait = leader_trait_scientist_psionic
 				add_experience = 100
 			}
 		}
@@ -1509,6 +1598,7 @@ ship_event = {
 		custom_tooltip = "anomaly.4050.a.tooltip"
 	}
 }
+
 #If abandoning for crews sake
 ship_event = {
 	id = anomaly.4051
@@ -1835,7 +1925,14 @@ ship_event = {
 
 	is_triggered_only = yes
 
-	immediate = { from = { clear_deposits = yes } }
+	immediate = {
+		from = {
+			if = {
+				limit = { habitable_planet = no }
+				clear_deposits = yes
+			}
+		}
+	}
 
 	option = {
 		name = anomaly.4055.a
@@ -1862,24 +1959,42 @@ ship_event = {
 				}
 			}
 			FROM = {
-				add_deposit = d_minerals_4
-				add_deposit = d_minerals_2
+				if = {
+					limit = { habitable_planet = no }
+					add_deposit = d_minerals_4
+					add_deposit = d_minerals_2
+					add_deposit = d_rare_crystals_1
+				}
+				else = {
+					add_deposit = d_rich_mountain
+					add_deposit = d_crystalline_caverns
+				}
 			}
 		}
 	}
 	option = {
 		name = anomaly.4055.b
+		custom_tooltip = "anomaly.4055.b.tooltip"
 		hidden_effect = {
+			root = {
+				add_modifier = {
+					modifier = protege_onboard
+					days = 7200
+				}
+			}
 			FROM = {
-				add_deposit = d_minerals_4
-				add_deposit = d_minerals_2
+				if = {
+					limit = { habitable_planet = no }
+					add_deposit = d_minerals_4
+					add_deposit = d_minerals_2
+					add_deposit = d_rare_crystals_1
+				}
+				else = {
+					add_deposit = d_rich_mountain
+					add_deposit = d_crystalline_caverns
+				}
 			}
 		}
-		add_modifier = {
-			modifier = protege_onboard
-			days = 7200
-		}
-		custom_tooltip = "anomaly.4055.b.tooltip"
 	}	
 }
 
@@ -2118,6 +2233,7 @@ ship_event = {
 			}
 		}
 		owner = {
+			small_artifact_chance = yes
 			if = {
 				limit = {
 					has_tech_option = tech_mining_1
@@ -2147,6 +2263,7 @@ ship_event = {
 			}
 		}
 		owner = {
+			small_artifact_chance = yes
 			if = {
 				limit = {
 					has_tech_option = tech_mining_2
@@ -2173,6 +2290,7 @@ ship_event = {
 				has_technology = tech_mining_2
 			}
 		}
+		small_artifact_chance = yes
 		from = {
 			fromfrom = {
 				hidden_effect = {
@@ -2418,6 +2536,7 @@ ship_event = {
 	option = {
 		name = SCRAPIT
 		owner = {
+			small_artifact_chance = yes
 			add_monthly_resource_mult = {
 				resource = minerals
 				value = @tier1materialreward
@@ -2533,7 +2652,7 @@ ship_event = {
 		name = SCRAPIT
 		owner = {
 			add_monthly_resource_mult = {
-				resource = minerals
+				resource = alloys
 				value = @tier1materialreward
 				min = @tier1materialmin
 				max = @tier1materialmax
@@ -3161,6 +3280,7 @@ ship_event = {
 		}
 		name = SCRAPIT
 		custom_tooltip = "anomaly.4105.a.tooltip"
+		small_artifact_reward = yes
 		hidden_effect = {
 			from = {
 				add_deposit = d_engineering_4
@@ -3181,6 +3301,7 @@ ship_event = {
 		}
 		name = anomaly.4105.a
 		custom_tooltip = "anomaly.4105.b.tooltip"
+		small_artifact_reward = yes
 		hidden_effect = {
 			owner = {
 				set_country_flag = edict_renewable_energy
@@ -3204,6 +3325,7 @@ ship_event = {
 		}
 		name = anomaly.4105.a.mach
 		custom_tooltip = "anomaly.4105.b.tooltip"
+		small_artifact_reward = yes
 		hidden_effect = {
 			owner = {
 				set_country_flag = edict_renewable_energy
@@ -3233,7 +3355,12 @@ ship_event = {
 			leader = {
 				OR = {
 					has_trait = leader_trait_expertise_propulsion
+					has_trait = leader_trait_expertise_industry
+					has_trait = leader_trait_expertise_computing
+					has_trait = leader_trait_custom_AI_assistant
+					has_trait = leader_trait_sapient_AI_assistant
 					has_trait = leader_trait_roamer
+					has_trait = leader_trait_cataloger
 					has_trait = leader_trait_carefree
 				}
 
@@ -3246,6 +3373,15 @@ ship_event = {
 			name = "ROBOT_CLEANERS_PROJECT"
 			owner = root
 			location = from
+		}
+	}
+	
+	after = {
+		if = {
+			limit = { exists = leader }
+			leader = {
+				add_trait = leader_trait_expertise_propulsion
+			}
 		}
 	}
 }
@@ -3264,15 +3400,15 @@ ship_event = {
 		hidden_effect = {
 			fromfromfrom = {
 				change_pc = pc_continental
-				reset_planet = yes
+				reroll_planet_modifiers = yes
+				reroll_deposits = yes
 				
 				add_modifier = {
 					modifier = fallen_robots
 					days = -1
 				}
 
-				add_deposit = d_engineering_4
-
+				add_deposit = d_fallen_robots
 				add_deposit = d_bomb_crater
 				add_deposit = d_city_ruins
 			}
@@ -3287,6 +3423,7 @@ ship_event = {
 				has_country_flag = edict_renewable_energy
 			}
 		}
+		small_artifact_reward = yes
 	}
 	option = {
 		name = AMAZING
@@ -3301,6 +3438,7 @@ ship_event = {
 				set_country_flag = edict_renewable_energy
 			}
 		}
+		small_artifact_reward = yes
 	}
 }
 
@@ -3582,105 +3720,111 @@ ship_event = {
 				modifier = science_inspiration
 				days = 3600
 			}
+			gain_possitive_media_coverage = yes
 		}
 	}
 }
 
 #### Repurpose Mining Station #############################################################################
 ##story5
-#ship_event = {
-#	id = anomaly.4125
-#	title = "anomaly.4125.name"
-#	desc = {
-#		trigger = {
-#			leader = {
-#				NOT = { has_trait = leader_trait_expertise_voidcraft }
-#			}
-#		}
-#		text = "anomaly.4125.desc"
-#	}
-#	desc = {
-#		trigger = {
-#			leader = {
-#				has_trait = leader_trait_expertise_voidcraft
-#			}
-#		}
-#		text = "anomaly.4125.zerog.desc"
-#	}
-#	picture = GFX_evt_satellite_in_orbit
-#	show_sound = event_sensor_ping
-#	location = from
-#
-#	is_triggered_only = yes
-#
-#	immediate = {
-#		hidden_effect = {
-#			owner = { country_event = { id = story.5 days = 30 } }
-#			from = { clear_deposits = yes }
-#		}
-#	}
-#
-#	option = {
-#		trigger = {
-#			leader = {
-#				NOT = { has_trait = leader_trait_expertise_voidcraft }
-#			}
-#		}
-#		name = anomaly.4125.a
-#		custom_tooltip = "anomaly.4125.a.tooltip"
-#		hidden_effect = {
-#			from = {
-#				add_deposit = d_energy_4
-#				create_mining_station = {
-#					owner = ROOT
-#				}
-#				add_modifier = {
-#					modifier = abandoned_mining
-#					days = -1
-#				}
-#			}
-#		}
-#	}
-#	option = {
-#		trigger = {
-#			leader = {
-#				has_trait = leader_trait_expertise_voidcraft
-#			}
-#		}
-#		name = anomaly.4125.a
-#		custom_tooltip = "anomaly.4125.b.tooltip"
-#		hidden_effect = {
-#			from = {
-#				add_deposit = d_energy_4
-#				create_mining_station = {
-#					owner = ROOT
-#				}
-#				add_modifier = {
-#					modifier = abandoned_mining
-#					days = -1
-#				}
-#			}
-#			owner = {
-#				add_modifier = {
-#					modifier = zero_gravity_revelation
-#					days = -1
-#				}
-#			}
-#		}
-#	}
-#	option = {
-#		name = SCRAPIT
-#		owner = {
-#			add_monthly_resource_mult = {
-#				resource = minerals
-#				value = @tier1materialreward
-#				min = @tier1materialmin
-#				max = @tier1materialmax
-#			}
-#		}
-#	}
-#}
+ship_event = {
+	id = anomaly.4125
+	title = "anomaly.4125.name"
+	desc = {
+		trigger = {
+			leader = {
+				NOT = { has_trait = leader_trait_expertise_voidcraft }
+			}
+		}
+		text = "anomaly.4125.desc"
+	}
+	desc = {
+		trigger = {
+			leader = {
+				has_trait = leader_trait_expertise_voidcraft
+			}
+		}
+		text = "anomaly.4125.zerog.desc"
+	}
+	picture = GFX_evt_satellite_in_orbit
+	show_sound = event_sensor_ping
+	location = from
 
+	is_triggered_only = yes
+
+	immediate = {
+		hidden_effect = {
+			owner = { country_event = { id = story.5 days = 30 } }
+			from = { clear_deposits = yes }
+		}
+	}
+
+	option = {
+		trigger = {
+			leader = {
+				NOT = { has_trait = leader_trait_expertise_voidcraft }
+			}
+		}
+		name = anomaly.4125.a
+		custom_tooltip = "anomaly.4125.a.tooltip"
+		hidden_effect = {
+			from = {
+				set_deposit = d_energy_4
+				create_mining_station = {
+					owner = ROOT
+				}
+				add_modifier = {
+					modifier = abandoned_mining
+					days = -1
+				}
+			}
+		}
+	}
+	option = {
+		trigger = {
+			leader = {
+				has_trait = leader_trait_expertise_voidcraft
+			}
+		}
+		name = anomaly.4125.a
+		custom_tooltip = "anomaly.4125.b.tooltip"
+		hidden_effect = {
+			from = {
+				set_deposit = d_energy_4
+				create_mining_station = {
+					owner = ROOT
+				}
+				add_modifier = {
+					modifier = abandoned_mining
+					days = -1
+				}
+			}
+			owner = {
+				add_modifier = {
+					modifier = zero_gravity_revelation
+					days = -1
+				}
+			}
+		}
+	}
+	option = {
+		name = SCRAPIT
+		owner = {
+			add_monthly_resource_mult = {
+				resource = minerals
+				value = @tier1materialreward
+				min = @tier1materialmin
+				max = @tier1materialmax
+			}
+			add_monthly_resource_mult = {
+				resource = alloys
+				value = @tier1materialreward
+				min = @tier1materialmin
+				max = @tier1materialmax
+			}
+		}
+	}
+}
 ### Fountain of Youth #############################################################################
 ship_event = {
 	id = anomaly.4130
@@ -3802,10 +3946,17 @@ ship_event = {
 		hidden_effect = { owner = { country_event = { id = story.5 days = 30 } } }
 		owner = {
 			set_country_flag = masters_writings_politics_found
+			random_owned_planet ={
+				limit = {
+					is_capital = yes
+				}
+				save_event_target_as = HomePlanet
+			}
 		}
 	}
 	option = {
 		name = RESEARCHIT
+		small_artifact_reward = yes
 		owner = {
 			# planet/owner project, best start in country scope, instead of location scope
 			enable_special_project = {
@@ -3818,17 +3969,34 @@ ship_event = {
 	option = {
 		name = anomaly.4135.b
 		owner = {
-			add_monthly_resource_mult = {
-				resource = energy
-				value = @tier2materialreward
-				min = @tier2materialmin
-				max = @tier2materialmax
+			if = {
+				limit = { has_ancrel = yes }
+				add_monthly_resource_mult = {
+					resource = energy
+					value = @tier3materialreward
+					min = @tier3materialmin
+					max = @tier3materialmax
+				}
+				add_monthly_resource_mult = {
+					resource = minerals
+					value = @tier3materialreward
+					min = @tier3materialmin
+					max = @tier3materialmax
+				}
 			}
-			add_monthly_resource_mult = {
-				resource = minerals
-				value = @tier2materialreward
-				min = @tier2materialmin
-				max = @tier2materialmax
+			else = {
+				add_monthly_resource_mult = {
+					resource = energy
+					value = @tier2materialreward
+					min = @tier2materialmin
+					max = @tier2materialmax
+				}
+				add_monthly_resource_mult = {
+					resource = minerals
+					value = @tier2materialreward
+					min = @tier2materialmin
+					max = @tier2materialmax
+				}
 			}
 		}
 	}
@@ -3889,11 +4057,18 @@ ship_event = {
 		owner = {
 			set_country_flag = masters_writings_philosophy_found
 			set_country_flag = anomaly_140_triggered
+			random_owned_planet ={
+				limit = {
+					is_capital = yes
+				}
+				save_event_target_as = HomePlanet
+			}
 		}
 	}
 
 	option = {
 		name = RESEARCHIT
+		small_artifact_reward = yes
 		owner = {
 			# planet/owner project, best start in country scope, instead of location scope
 			enable_special_project = {
@@ -3906,13 +4081,30 @@ ship_event = {
 	option = {
 		name = anomaly.4135.b
 		owner = {
-			add_monthly_resource_mult = {
-				resource = energy
-				value = @tier2materialreward
-				min = @tier2materialmin
-				max = @tier2materialmax
+			if = {
+				limit = { is_gestalt = no }
+				add_monthly_resource_mult = {
+					resource = energy
+					value = @tier3materialreward
+					min = @tier3materialmin
+					max = @tier3materialmax
+				}
+				add_resource = { consumer_goods = 500 }
 			}
-			add_resource = { consumer_goods = 500 }
+			else = {
+				add_monthly_resource_mult = {
+					resource = energy
+					value = @tier3materialreward
+					min = @tier3materialmin
+					max = @tier3materialmax
+				}
+				add_monthly_resource_mult = {
+					resource = minerals
+					value = @tier2materialreward
+					min = @tier2materialmin
+					max = @tier2materialmax
+				}
+			}
 		}
 	}
 }
@@ -3971,11 +4163,18 @@ ship_event = {
 		hidden_effect = { owner = { country_event = { id = story.5 days = 30 } } }	
 		owner = {
 			set_country_flag = masters_writings_diplomacy_found
+			random_owned_planet ={
+				limit = {
+					is_capital = yes
+				}
+				save_event_target_as = HomePlanet
+			}
 		}
 	}
 
 	option = {
 		name = RESEARCHIT
+		small_artifact_reward = yes
 		owner = {
 			# planet/owner project, best start in country scope, instead of location scope
 			enable_special_project = {
@@ -3988,17 +4187,34 @@ ship_event = {
 	option = {
 		name = anomaly.4135.b
 		owner = {
-			add_monthly_resource_mult = {
-				resource = energy
-				value = @tier2materialreward
-				min = @tier2materialmin
-				max = @tier2materialmax
+			if = {
+				limit = { has_ancrel = yes }
+				add_monthly_resource_mult = {
+					resource = energy
+					value = @tier3materialreward
+					min = @tier3materialmin
+					max = @tier3materialmax
+				}
+				add_monthly_resource_mult = {
+					resource = minerals
+					value = @tier3materialreward
+					min = @tier3materialmin
+					max = @tier3materialmax
+				}
 			}
-			add_monthly_resource_mult = {
-				resource = minerals
-				value = @tier2materialreward
-				min = @tier2materialmin
-				max = @tier2materialmax
+			else = {
+				add_monthly_resource_mult = {
+					resource = energy
+					value = @tier2materialreward
+					min = @tier2materialmin
+					max = @tier2materialmax
+				}
+				add_monthly_resource_mult = {
+					resource = minerals
+					value = @tier2materialreward
+					min = @tier2materialmin
+					max = @tier2materialmax
+				}
 			}
 		}
 	}
@@ -4097,8 +4313,20 @@ ship_event = {
 
 	is_triggered_only = yes
 
+	immediate = {
+		owner = {
+			random_owned_planet = {
+				limit = {
+					is_capital = yes
+				}
+				save_event_target_as = HomePlanet
+			}
+		}
+	}
+
 	option = {
 		name = RESEARCHIT
+		small_artifact_chance = yes
 		owner = {
 			# planet/owner project, best start in country scope, instead of location scope
 			enable_special_project = {
@@ -4111,6 +4339,7 @@ ship_event = {
 	option = {
 		name = anomaly.4156.b
 		owner = {
+			small_artifact_chance = yes
 			add_monthly_resource_mult = {
 				resource = influence
 				value = @tier3influencereward
@@ -4892,6 +5121,7 @@ ship_event = {
 				}
 				add_deposit = d_frozen_gas_lake
 				add_deposit = d_frozen_gas_lake
+				add_deposit = d_bubbling_swamp
 			}
 			root = {
 				owner = {
@@ -4904,39 +5134,37 @@ ship_event = {
 		name = anomaly.4170.a
 		custom_tooltip = anomaly.4170.a.tooltip
 	}
-	#option = {
-	#	trigger = {
-	#		owner = {
-	#			NOT = {
-	#				has_ethic = ethic_fanatic_materialist
-	#			}
-	#		}
-	#	}
-	#	name = anomaly.4170.b
-	#	custom_tooltip = anomaly.4170.b.tooltip
-	#	hidden_effect = {
-	#		root = {
-	#			owner = {
-	#				remove_country_flag = limited_modifier_gas_rich_planet
-	#				add_monthly_resource_mult = {
-	#					resource = influence
-	#					value = @tier1influencereward
-	#					min = @tier1influencemin
-	#					max = @tier1influencemax
-	#				}
-	#			}
-	#		}
-	#		from = {
-	#			remove_modifier = gas_rich_planet
-	#			add_modifier = {
-	#				modifier = gas_responsible_mining
-	#				days = -1
-	#			}
-	#			add_deposit = d_frozen_gas_lake
-	#			add_deposit = d_geothermal_vent
-	#		}
-	#	}
-	#}
+	option = {
+		trigger = {
+			owner = {
+				NOT = {
+					has_ethic = ethic_fanatic_materialist
+				}
+			}
+		}
+		name = anomaly.4170.b
+		custom_tooltip = anomaly.4170.b.tooltip
+		hidden_effect = {
+			root = {
+				owner = {
+					remove_country_flag = limited_modifier_gas_rich_planet
+					add_monthly_resource_mult = {
+						resource = influence
+						value = @tier1influencereward
+						min = @tier1influencemin
+						max = @tier1influencemax
+					}
+				}
+			}
+			from = {
+				remove_modifier = gas_rich_planet
+				add_modifier = {
+					modifier = gas_responsible_mining
+					days = -1
+				}
+			}
+		}
+	}
 }
 #Hidden effect event triggered on colonization
 planet_event = {
@@ -4955,14 +5183,14 @@ planet_event = {
 			remove_modifier = gas_rich_planet
 			add_modifier = {
 				modifier = gas_rich_planet_fo_realz
-				days = 730
+				days = 7200
 			}
 			random_list = {
 				30 = {
-					planet_event = { id = anomaly_failure.4170 days = 360 }
+					planet_event = { id = anomaly_failure.4170 days = 2000 random = 2000 }
 				}
 				70 = {
-					planet_event = { id = anomaly.4172 days = 720 }
+					planet_event = { id = anomaly.4172 days = 7200 }
 				}
 			}
 		}

@@ -61,24 +61,74 @@ ship_event = {
 
 	is_triggered_only = yes
 
-	immediate = { owner = { country_event = { id = story.5 days = 30 } } }
-
+	immediate = {
+		owner = {
+			country_event = { id = story.5 days = 30 }
+			set_country_flag = anomaly_5_happened
+		}
+	}
+	
 	option = {
 		name = anomaly.5.a
 		owner = {
-			add_monthly_resource_mult = {
-				resource = energy
-				value = @tier1materialreward
-				min = @tier1materialmin
-				max = @tier1materialmax
-			}
-			pop_lcluster_event = yes
 			if = {
-				limit = { has_ancrel = yes }
-				small_artifact_reward = yes
+				limit = { is_gestalt = no }
+				add_monthly_resource_mult = {
+					resource = energy
+					value = @tier1materialreward
+					min = @tier1materialmin
+					max = @tier1materialmax
+				}
+				add_monthly_resource_mult = {
+					resource = consumer_goods
+					value = @tier1materialreward
+					min = @tier1materialmin
+					max = @tier1materialmax
+				}
 			}
+			else = {
+				add_monthly_resource_mult = {
+					resource = energy
+					value = @tier2materialreward
+					min = @tier2materialmin
+					max = @tier2materialmax
+				}
+			}
+			hidden_effect = {
+				set_country_flag = lcluster_clue_pirate
+				if = {
+					limit = {
+						ROOT = {
+							leader = {
+								OR = {
+									has_trait = leader_trait_expertise_computing
+									has_trait = leader_trait_custom_AI_assistant
+									has_trait = leader_trait_sapient_AI_assistant
+									has_trait = leader_trait_archaeologist
+									has_trait = leader_trait_archaeologist_ancrel
+								}
+							}
+						}
+						has_distar = yes
+						has_country_flag = encountered_first_lgate
+						NOR = {
+							has_global_flag = l_cluster_opened
+							has_completed_event_chain_counter = {
+								event_chain = l_cluster_chain
+								counter = clues
+							}
+						}
+					}
+					country_event = { id = distar.9000 days = 10 }
+				}
+				else = {
+					pop_lcluster_event = yes
+				}
+			}
+			small_artifact_reward = yes
 		}
 	}
+				
 }
 
 ### Asteroid Fauna
@@ -173,7 +223,18 @@ ship_event = {
 ship_event = {
 	id = anomaly.30
 	title = "anomaly.30.name"
-	desc = "anomaly.30.desc"
+	desc = {
+		trigger = {
+			NOT = { has_ship_flag = anomaly_30_clue }
+		}
+		text = "anomaly.30.desc"
+	}
+	desc = {
+		trigger = {
+			has_ship_flag = anomaly_30_clue
+		}
+		text = "anomaly.30.desc.clue"
+	}
 	picture = GFX_evt_junkheap
 	show_sound = event_ship_bridge
 	location = FROM
@@ -183,10 +244,52 @@ ship_event = {
 	immediate = {
 		from = { clear_deposits = yes }
 		owner = { country_event = { id = story.5 days = 30 } }
+		if = {
+			limit = {
+				has_distar = yes
+				NOT = { has_global_flag = l_cluster_opened }
+				owner = { has_event_chain = l_cluster_chain }
+				leader = {
+					OR = {
+						has_trait = leader_trait_meticulous
+						has_trait = leader_trait_cataloger
+						has_trait = leader_trait_expertise_materials
+					}
+				}
+			}
+			set_ship_flag = anomaly_30_clue
+		}
 	}
 
 	option = {
 		name = anomaly.30.a
+		owner = {
+			hidden_effect = {
+				set_country_flag = lcluster_clue_junkyard
+				pop_lcluster_event = yes
+			}
+		}
+	}
+	option = {
+		name = FASCINATING
+		trigger = {
+			has_ship_flag = anomaly_30_clue
+		}
+		allow = {
+			leader = {
+				OR = {
+					has_trait = leader_trait_meticulous
+					has_trait = leader_trait_cataloger
+					has_trait = leader_trait_expertise_materials
+				}
+			}
+		}
+		owner = {	
+			generate_lcluster_clue = yes
+			add_resource = { nanites = 250 }
+		}
+	}
+	after = {
 		hidden_effect = {
 			FROM = {
 				add_modifier = {
@@ -194,11 +297,14 @@ ship_event = {
 					days = -1
 				}
 			}
+			remove_ship_flag = anomaly_30_clue
 		}
-		FROM = {
+		FROM = { 
 			set_deposit = d_minerals_3
+			add_deposit = d_alloys_1
 		}
 		owner = {
+			small_artifact_chance = yes
 			pop_lcluster_event = yes
 		}
 	}
@@ -226,6 +332,7 @@ ship_event = {
 				min = @tier1researchmin
 				max = @tier1researchmax
 			}
+			small_artifact_chance = yes
 		}
 	}
 }
@@ -257,6 +364,7 @@ ship_event = {
 	immediate = {
 		owner = {
 			country_event = { id = story.5 days = 30 }
+			set_country_flag = anomaly_40_happened
 			save_event_target_as = MyCountry
 		}
 		from = {
@@ -340,6 +448,15 @@ ship_event = {
 
 	option = {
 		name = INTERESTING
+		trigger = {
+			leader = {
+				NOR = {
+					has_trait = leader_trait_expertise_propulsion
+					has_trait = leader_trait_expertise_field_manipulation
+					has_trait = leader_trait_expertise_military_theory
+				}
+			}
+		}
 		hidden_effect = {
 			FROM = {
 				add_modifier = {
@@ -349,7 +466,44 @@ ship_event = {
 			}
 		}
 		FROM = {
-			set_deposit = d_physics_3
+			set_deposit = d_physics_4
+		}
+	}
+	option = {
+		name = FASCINATING
+		trigger = {
+			leader = {
+				OR = {
+					has_trait = leader_trait_expertise_propulsion
+					has_trait = leader_trait_expertise_field_manipulation
+					has_trait = leader_trait_expertise_military_theory
+				}
+			}
+		}
+		hidden_effect = {
+			FROM = {
+				add_modifier = {
+					modifier = "target_range"
+					days = -1
+				}
+			}
+		}
+		FROM = {
+			set_deposit = d_physics_4
+		}
+		owner = {
+			add_monthly_resource_mult = {
+				resource = physics_research
+				value = @tier2researchreward
+				min = @tier2researchmin
+				max = @tier2researchmax
+			}
+			add_monthly_resource_mult = {
+				resource = engineering_research
+				value = @tier1researchreward
+				min = @tier1researchmin
+				max = @tier1researchmax
+			}
 		}
 	}
 }
@@ -367,6 +521,7 @@ ship_event = {
 
 	immediate = {
 		from = { clear_deposits = yes }
+		owner = { set_country_flag = anomaly_55_happened }
 	}
 
 	option = {
@@ -405,7 +560,18 @@ ship_event = {
 ship_event = {
 	id = anomaly.65
 	title = "anomaly.65.name"
-	desc = "anomaly.65.desc"
+	desc = {
+		trigger = {
+			leader = { NOT = { has_trait = leader_trait_expertise_voidcraft } }
+		}
+		text = "anomaly.65.desc"
+	}
+	desc = {
+		trigger = {
+			leader = { has_trait = leader_trait_expertise_voidcraft }
+		}
+		text = "anomaly.65.desc.void"
+	}
 	picture = GFX_evt_crashed_station
 	show_sound = event_ship_bridge
 	location = FROM
@@ -419,6 +585,9 @@ ship_event = {
 
 	option = {
 		name = EXCELLENT
+		trigger = {
+			leader = { NOT = { has_trait = leader_trait_expertise_voidcraft } }
+		}
 		hidden_effect = {
 			FROM = {
 				add_modifier = {
@@ -429,6 +598,37 @@ ship_event = {
 		}
 		FROM = {
 			set_deposit = d_minerals_3
+		}
+	}
+	option = {
+		name = EXCELLENT
+		custom_tooltip = anomaly.65.b.tooltip
+		trigger = {
+			leader = { has_trait = leader_trait_expertise_voidcraft }
+		}
+		hidden_effect = {
+			FROM = {
+				add_modifier = {
+					modifier = "ore_freighter"
+					days = -1
+				}
+			}
+		}
+		FROM = {
+			set_deposit = d_minerals_3
+		}
+		create_fleet = {
+			effect = {
+				set_owner = ROOT.owner
+
+				create_ship = {
+					name = random
+					random_existing_design = constructor
+				}
+
+				set_fleet_stance = evasive
+				set_location = FROM
+			}
 		}
 	}
 }
@@ -446,7 +646,10 @@ ship_event = {
 
 	immediate = {
 		from = { clear_deposits = yes }
-		owner = { country_event = { id = story.2 days = 30 } }
+		owner = {
+			set_country_flag = anomaly_300_happened
+			country_event = { id = story.2 days = 30 }
+		}
 	}
 
 	option = {
@@ -481,12 +684,30 @@ ship_event = {
 	option = {
 		name = REMARKABLE
 		owner = {
-			add_monthly_resource_mult = {
-				resource = energy
-				value = @tier1materialreward
-				min = @tier1materialmin
-				max = @tier1materialmax
+			if = {
+				limit = { is_gestalt = no }
+				add_monthly_resource_mult = {
+					resource = energy
+					value = @tier1materialreward
+					min = @tier1materialmin
+					max = @tier1materialmax
+				}
+				add_monthly_resource_mult = {
+					resource = consumer_goods
+					value = @tier1materialreward
+					min = @tier1materialmin
+					max = @tier1materialmax
+				}
 			}
+			else = {
+				add_monthly_resource_mult = {
+					resource = energy
+					value = @tier2materialreward
+					min = @tier2materialmin
+					max = @tier2materialmax
+				}
+			}
+			small_artifact_reward = yes
 		}
 	}
 }
@@ -495,17 +716,50 @@ ship_event = {
 ship_event = {
 	id = anomaly.310
 	title = "anomaly.310.name"
-	desc = "anomaly.310.desc"
+	desc = {
+		trigger = {
+			leader = {
+				NOR = {
+					has_trait = leader_trait_expertise_computing
+					has_trait = leader_trait_custom_AI_assistant
+					has_trait = leader_trait_sapient_AI_assistant
+				}
+			}
+
+		}
+		text = "anomaly.310.desc"
+	}
+	desc = {
+		trigger = {
+			leader = {
+				OR = {
+					has_trait = leader_trait_expertise_computing
+					has_trait = leader_trait_custom_AI_assistant
+					has_trait = leader_trait_sapient_AI_assistant
+				}
+			}
+		}
+		text = "anomaly.310.desc.computing"
+	}
 	picture = GFX_evt_gas_giant_station
 	show_sound = event_ship_bridge
 	location = FROM
-
+	
 	is_triggered_only = yes
 
 	immediate = { owner = { country_event = { id = story.5 days = 30 } } }
-
+	
 	option = {
 		name = INTRIGUING
+		trigger = {
+			leader = {
+				NOR = {
+					has_trait = leader_trait_expertise_computing
+					has_trait = leader_trait_custom_AI_assistant
+					has_trait = leader_trait_sapient_AI_assistant
+				}
+			}
+		}
 		owner = {
 			add_monthly_resource_mult = {
 				resource = society_research
@@ -513,8 +767,30 @@ ship_event = {
 				min = @tier1researchmin
 				max = @tier1researchmax
 			}
+			small_artifact_reward = yes
 		}
 	}
+	option = {
+		name = FASCINATING
+		trigger = {
+			leader = {
+				OR = {
+					has_trait = leader_trait_expertise_computing
+					has_trait = leader_trait_custom_AI_assistant
+					has_trait = leader_trait_sapient_AI_assistant
+				}
+			}
+		}
+		owner = {
+			add_monthly_resource_mult = {
+				resource = society_research
+				value = @tier3researchreward
+				min = @tier3researchmin
+				max = @tier3researchmax
+			}
+			small_artifact_reward = yes
+		}
+	}	
 }
 
 ### Aerostat Colonies
@@ -553,7 +829,30 @@ ship_event = {
 ship_event = {
 	id = anomaly.320
 	title = "anomaly.320.name"
-	desc = "anomaly.320.desc"
+	desc = {
+		trigger = {
+			leader {
+				NOR = {
+					has_trait = leader_trait_expertise_voidcraft
+					has_trait = leader_trait_meticulous
+					has_trait = leader_trait_roamer
+				}
+			}
+		}
+		text = "anomaly.320.desc"
+	}
+	desc = {
+		trigger = {
+			leader {
+				OR = {
+					has_trait = leader_trait_expertise_voidcraft
+					has_trait = leader_trait_meticulous
+					has_trait = leader_trait_roamer
+				}
+			}
+		}
+		text = "anomaly.320.desc.void"
+	}
 	picture = GFX_evt_ruined_system
 	show_sound = event_ship_bridge
 	location = FROM
@@ -567,6 +866,15 @@ ship_event = {
 
 	option = {
 		name = INTERESTING
+		trigger = {
+			leader {
+				NOR = {
+					has_trait = leader_trait_expertise_voidcraft
+					has_trait = leader_trait_meticulous
+					has_trait = leader_trait_roamer
+				}
+			}
+		}
 		hidden_effect = {
 			FROM = {
 				add_modifier = {
@@ -575,10 +883,43 @@ ship_event = {
 				}
 			}
 		}
-		FROM = {
+		FROM = {  
 			set_deposit = d_minerals_3
+			add_deposit = d_alloys_1
 		}
 	}
+	option = {
+		name = EXCELLENT
+		trigger = {
+			leader {
+				OR = {
+					has_trait = leader_trait_expertise_voidcraft
+					has_trait = leader_trait_meticulous
+					has_trait = leader_trait_roamer
+				}
+			}
+		}
+		hidden_effect = {
+			FROM = {
+				add_modifier = {
+					modifier = "debris_field"
+					days = -1
+				}
+			}
+		}
+		FROM = {  
+			set_deposit = d_minerals_3
+			add_deposit = d_alloys_1
+		}
+		owner = {
+			add_monthly_resource_mult = {
+				resource = engineering_research
+				value = @tier2researchreward
+				min = @tier2researchmin
+				max = @tier2researchmax
+			}
+		}
+	}	
 }
 
 ### Crushed Cruiser
@@ -920,6 +1261,7 @@ ship_event = {
 				min = @tier1researchmin
 				max = @tier1researchmax
 			}
+			small_artifact_chance = yes
 		}
 	}
 }
@@ -1033,6 +1375,14 @@ ship_event = {
 
 	option = {
 		name = anomaly.670.a
+		trigger = { #expand. events mod
+			leader = {
+				NOR = {
+					has_trait = leader_trait_expertise_biology
+					has_trait = leader_trait_expertise_new_worlds
+				}
+			}
+		}
 		hidden_effect = {
 			FROM = {
 				add_modifier = {
@@ -1044,6 +1394,50 @@ ship_event = {
 		FROM = {
 			add_deposit = d_society_2
 			add_deposit = d_physics_2
+		}
+	}
+	option = { #expand. events mod
+		name = anomaly.280.a
+		trigger = {
+			leader = {
+				OR = {
+					has_trait = leader_trait_expertise_biology
+					has_trait = leader_trait_expertise_new_worlds
+				}
+			}
+		}
+		hidden_effect = {
+			FROM = {
+				add_modifier = {
+					modifier = "greenhouse_effect"
+					days = -1
+				}
+			}
+		}
+		FROM = {
+			add_deposit = d_society_2
+			add_deposit = d_physics_2
+		}
+		owner = {
+			if = {
+				limit = { has_global_flag = EcologyMod_active }
+				if = {
+					limit = { is_gestalt = yes }
+					add_modifier = { modifier = runaway_greenhouse_lessons_gestalt_eco days = -1 }
+				}
+				else = {
+					add_modifier = { modifier = runaway_greenhouse_lessons_eco days = -1 }
+				}
+			}
+			else = {
+				if = {
+					limit = { is_gestalt = yes }
+					add_modifier = { modifier = runaway_greenhouse_lessons_gestalt days = -1 }
+				}
+				else = {
+					add_modifier = { modifier = runaway_greenhouse_lessons days = -1 }
+				}
+			}
 		}
 	}
 }
@@ -1062,6 +1456,16 @@ ship_event = {
 	immediate = {
 		from = { clear_deposits = yes }
 		owner = { country_event = { id = story.1 days = 2 } }
+		owner = { #expand. events mod
+			set_timed_country_flag = { flag = found_recent_toxic_life days = 1800 }
+		}
+		FROM = {
+			if = {
+				limit = { is_planetary_diversity_active = yes }
+				change_pc = pc_ammonia
+				reset_planet = yes
+			}
+		}
 	}
 
 	option = {
@@ -1128,6 +1532,12 @@ ship_event = {
 		FROM = {
 			create_mining_station = {
 				owner = ROOT
+			}
+		}
+		owner = {
+			add_resource = {
+				minerals = 250
+				alloys = 50
 			}
 		}
 	}
@@ -1231,8 +1641,22 @@ ship_event = {
 		text = anomaly.2512.desc
 	}
 	desc = {
-		trigger = {	owner = { has_authority = auth_machine_intelligence } }
+		trigger = {
+			owner = {
+				has_authority = auth_machine_intelligence
+				has_civic = civic_machine_servitor
+			}
+		}
 		text = anomaly.2512.desc.mach
+	}
+	desc = { #expand. events mod
+		trigger = {
+			owner = {
+				has_authority = auth_machine_intelligence
+				NOT = { has_civic = civic_machine_servitor }
+			}
+		}
+		text = anomaly.2512.desc.mach.gen
 	}
 	picture = GFX_evt_unspeakable_horror
 	show_sound = event_laboratory_sound
@@ -1285,6 +1709,14 @@ ship_event = {
 	option = {
 		name = INTERESTING
 		leader = { add_experience = 200 }
+		owner = { #expand. events mod
+			add_monthly_resource_mult = {
+				resource = society_research
+				value = @tier1researchreward
+				min = @tier1researchmin
+				max = @tier1researchmax
+			}
+		}
 	}
 }
 
@@ -1310,7 +1742,7 @@ ship_event = {
 		name = FASCINATING
 		from = {
 			enable_special_project = {
-				name = "GIGANTIC_SKELETON_PROJECT"
+				name = "GIGANTIC_SKELETON_PROJECT_MOD"
 				location = this
 				owner = root.owner
 			}
@@ -1321,7 +1753,7 @@ ship_event = {
 		name = "anomaly.2520.a.term"
 		from = {
 			enable_special_project = {
-				name = "GIGANTIC_SKELETON_PROJECT"
+				name = "GIGANTIC_SKELETON_PROJECT_MOD"
 				location = this
 				owner = root.owner
 			}
@@ -1371,6 +1803,14 @@ ship_event = {
 
 	option = {
 		name = ASTOUNDING
+		hidden_effect = {
+			FROMFROM = {
+				add_modifier = {
+					modifier = "transdimensional_being"
+					days = -1
+				}
+			}
+		}
 		leader = { add_experience = 200 }
 		owner = {
 			add_monthly_resource_mult = {
@@ -1423,6 +1863,12 @@ ship_event = {
 
 	is_triggered_only = yes
 
+	immediate = {
+		FROMFROM = { 
+			save_event_target_as = starship_graveyard_scope
+		}
+	}
+	
 	option = {
 		name = EXCELLENT
 		hidden_effect = {
@@ -1438,12 +1884,14 @@ ship_event = {
 		}
 		leader = { add_experience = 200 }
 		owner = {
+			small_artifact_reward = yes
 			add_monthly_resource_mult = {
 				resource = engineering_research
 				value = @tier3researchreward
 				min = @tier3researchmin
 				max = @tier3researchmax
 			}
+			set_country_flag = lcluster_clue_battle
 			pop_lcluster_event = yes
 		}
 	}
@@ -1462,6 +1910,7 @@ ship_event = {
 
 	option = {
 		name = INTERESTING
+		small_artifact_chance = yes
 		hidden_effect = {
 			FROMFROM = {
 				add_modifier = {
@@ -1521,6 +1970,7 @@ ship_event = {
 		name = AMAZING
 		leader = { add_experience = 200 }
 		owner = {
+			small_artifact_reward = yes
 			add_monthly_resource_mult = {
 				resource = engineering_research
 				value = @tier1researchreward
@@ -1543,6 +1993,7 @@ ship_event = {
 
 	option = {
 		name = INTRIGUING
+		small_artifact_reward = yes
 		hidden_effect = {
 			FROMFROM = {
 				add_modifier = {
@@ -1682,7 +2133,12 @@ ship_event = {
 
 	is_triggered_only = yes
 
-	immediate = { owner = { country_event = { id = story.5 days = 30 } } }
+	immediate = {
+		owner = {
+			set_country_flag = anomaly_2560_happened
+			country_event = { id = story.5 days = 30 }
+		}
+	}
 
 	option = {
 		name = "anomaly.2560.a"

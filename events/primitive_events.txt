@@ -95,7 +95,7 @@ country_event = {
 	}
 
 	mean_time_to_happen = {
-		years = 100
+		years = 75
 
 		modifier = {
 			factor = 0.6
@@ -166,7 +166,7 @@ country_event = {
 	}
 
 	mean_time_to_happen = {
-		years = 100
+		years = 50
 
 		modifier = {
 			factor = 0.6
@@ -337,11 +337,15 @@ country_event = {
 	}
 
 	mean_time_to_happen = {
-		years = 100
+		years = 125
 
 		modifier = {
 			factor = 0.6
 			has_country_flag = acquired_tech
+		}
+		modifier = {
+			factor = 0.1
+			has_country_flag = primitives_ftl_experiments
 		}
 	}
 
@@ -378,9 +382,574 @@ country_event = {
 			limit = { is_species_class = PLANT }
 			set_graphical_culture = plantoid_01
 		}		
-		change_government = {
-			authority = random
-			civics = random
+		if = {
+			limit = { has_country_flag = human_primitive }
+			change_government = {
+				authority = auth_democratic
+				civics = random
+			}
+		}
+		else = {
+			change_government = {
+				authority = random
+				civics = random
+			}
+		}
+		# Governments Done
+		#primitives_death_cult
+		#primitives_fanatic_purifier
+		#primitives_slave_revolt
+		#primitives_mechanist
+		#primitives_military_unification
+		#primitives_agrarian_idyll
+		#primitives_corporate_dominion
+		#primitives_exalted_priesthood
+		#primitives_idealistic_foundation
+		#primitives_warrior_culture
+		#primitives_feudal_elite
+		#primitives_technocracy
+		#primitives_shared_burden
+		#primitives_slavers_guild
+		switch = {
+			trigger = has_country_flag
+			primitives_death_cult = {
+				if = {
+					limit = {
+						OR = {
+							has_ethic = ethic_spiritualist
+							has_ethic = ethic_fanatic_spiritualist
+						}
+						NOT = { has_ethic = ethic_fanatic_egalitarian }
+						OR = {
+							NOT = { has_global_flag = expanded_pops_active }
+							NOT = { has_authority = auth_cooperative }
+						}
+					}
+					if = {
+						limit = {
+							is_megacorp = yes
+						}
+						change_government = {
+							civics = {
+								civic = civic_death_cult_corporate
+								civic = random
+							}
+						}
+					}
+					change_government = {
+						civics = {
+							civic = civic_death_cult
+							civic = random
+						}
+					}
+				}
+			}
+			
+			primitives_fanatic_purifier = {
+				if = {
+					limit = {
+						has_ethic = ethic_fanatic_xenophobe
+						OR = {
+							has_ethic = ethic_militarist
+							has_ethic = ethic_spiritualist
+						}
+					}
+					if = {
+						limit = {
+							is_megacorp = yes
+						}
+						change_government = {
+							authority = auth_oligarchic
+						}
+					}
+					change_government = {
+						civics = {
+							civic = civic_fanatic_purifiers
+							civic = random
+						}
+					}
+					add_resource = { minerals = 3000 }
+					add_resource = { energy = 3000 }
+					add_resource = { alloys = 3000 }
+					create_fleet = {
+						set_take_point = yes
+						effect = {
+							set_owner = prev
+							
+							while = {
+								count = 9
+								create_ship = {
+									name = random
+									random_existing_design = corvette
+								}
+							}
+							
+							set_location = prev.capital_star
+						}
+					}
+				}
+			}
+			
+			primitives_imperial_cult = {
+				if = {
+					limit = {
+						OR = {
+							has_ethic = ethic_authoritarian
+							has_ethic = ethic_fanatic_authoritarian
+						}
+						OR = {
+							has_ethic = ethic_spiritualist
+							has_ethic = ethic_fanatic_spiritualist
+						}
+					}
+					random_list = {
+						55 = {
+							change_government = {
+								authority = auth_imperial
+								civics = {
+									civic = civic_imperial_cult
+									civic = random
+								}
+							}
+						}
+						25 = {
+							change_government = {
+								authority = auth_imperial
+								civics = {
+									civic = civic_imperial_cult
+									civic = civic_aristocratic_elite
+								}
+							}
+						}
+						20 = {
+							change_government = {
+								authority = auth_imperial
+								civics = {
+									civic = civic_imperial_cult
+									civic = civic_feudal_realm
+								}
+							}
+						}
+					}
+				}
+			}
+			primitives_slave_revolt = {
+				if = {
+					limit = {
+						OR {
+							has_ethic = ethic_xenophile
+							has_ethic = ethic_fanatic_xenophile
+						}
+					}
+					change_government = {
+						authority = auth_imperial
+						civics = {
+							civic = civic_beacon_of_liberty
+							civic = civic_free_haven
+						}
+					}
+				}
+				if = {
+					limit = {
+						NOR {
+							has_ethic = ethic_xenophile
+							has_ethic = ethic_fanatic_xenophile
+							has_ethic = ethic_xenophobe
+							has_ethic = ethic_fanatic_xenophobe
+						}
+					}
+					change_government = {
+						authority = auth_democratic
+						civics = {
+							civic = civic_beacon_of_liberty
+							civic = random
+						}
+					}
+				}
+				if = {
+					limit = {
+						OR {
+							has_ethic = ethic_xenophobe
+							has_ethic = ethic_fanatic_xenophobe
+						}
+					}
+					change_government = {
+						authority = auth_democratic
+						civics = {
+							civic = civic_idealistic_foundation
+							civic = random
+						}
+					}
+				}
+			}
+			primitives_mechanist = {
+				set_origin = origin_mechanists
+			}
+			primitives_military_unification = {
+				change_government = {
+					authority = auth_dictatorial
+					civics = {
+						civic = civic_police_state
+						civic = random
+					}
+				}
+				if = {
+					limit = {
+						is_militarist = yes
+						has_global_flag = expanded_pops_active
+					}
+					set_origin = origin_militarist
+				}
+			}
+			primitives_agrarian_idyll = {
+				if = {
+					limit = {
+						OR = {
+							has_ethic = ethic_pacifist
+							has_ethic = ethic_fanatic_pacifist
+						}
+					}
+					if = {
+						limit = {
+							is_megacorp = yes
+							has_global_flag = expanded_pops_active
+						}
+						change_government = {
+							civics = {
+								civic = civic_agribusiness
+								civic = random
+							}
+						}
+					}
+					else_if = {
+						limit = {
+							is_megacorp = yes
+							NOT = { has_global_flag = expanded_pops_active }
+						}
+						change_government = {
+							authority = auth_oligarchic
+							civics = {
+								civic = civic_agrarian_idyll
+								civic = random
+							}
+						}
+					}
+					else = {
+						change_government = {
+							civics = {
+								civic = civic_agrarian_idyll
+								civic = random
+							}
+						}
+					}
+				}
+			}
+			primitives_corporate_dominion = {
+				if = {
+					limit = {
+						has_megacorp = yes
+						OR = {
+							has_ethic = ethic_fanatic_authoritarian
+							has_ethic = ethic_fanatic_egalitarian
+							has_ethic = ethic_fanatic_xenophobe
+						}
+					}
+					if = {
+						limit = {
+							has_global_flag = expanded_pops_active
+							has_ethic = ethic_fanatic_egalitarian
+						}
+						change_government = {
+							authority = auth_cooperative
+							civics = {
+								civic = random
+								civic = random
+							}
+						}
+					}
+					else_if = {
+						limit = {
+							has_global_flag = expanded_pops_active
+							has_ethic = ethic_fanatic_authoritarian
+						}
+						change_government = {
+							authority = auth_private
+							civics = {
+								civic = random
+								civic = random
+							}
+						}
+					}
+					else = {
+						change_government = {
+							civics = {
+								civic = civic_merchant_guilds
+								civic = random
+							}
+						}
+					}
+				}
+				else_if = {
+					limit = { has_megacorp = no }
+					change_government = {
+						authority = auth_oligarchic
+						civics = {
+							civic = civic_corporate_dominion
+							civic = random
+						}
+					}
+				}
+				else_if = {
+					limit = {
+						has_megacorp = yes
+						has_global_flag = expanded_pops_active
+						has_ethic = ethic_egalitarian
+					}
+					change_government = {
+						authority = auth_cooperative
+						civics = {
+							civic = random
+							civic = random
+						}
+					}
+				}
+				else_if = {
+					limit = {
+						has_megacorp = yes
+						has_global_flag = expanded_pops_active
+						has_ethic = ethic_authoritarian
+					}
+					change_government = {
+						authority = auth_private
+						civics = {
+							civic = random
+							civic = random
+						}
+					}
+				}
+				else_if = {
+					limit = { has_megacorp = yes }
+					change_government = {
+						authority = auth_corporate
+						civics = {
+							civic = random
+							civic = random
+						}
+					}
+				}
+			}
+			primitives_exalted_priesthood = {
+				if = {
+					limit = {
+						OR = {
+							has_ethic = ethic_spiritualist
+							has_ethic = ethic_fanatic_spiritualist
+						}
+						NOT = {	has_ethic = ethic_fanatic_egalitarian }
+					}
+					if = {
+						limit = { is_megacorp = yes }
+						change_government = {
+							authority = auth_corporate
+							civics = {
+								civic = civic_gospel_of_the_masses
+								civic = random
+							}
+						}
+					}
+					else = {
+						random_list = {
+							80 = {
+								modifier = {
+									factor = 0
+									has_ethic = ethic_fanatic_authoritarian
+								}
+								change_government = {
+									authority = auth_oligarchic
+									civics = {
+										civic = civic_exalted_priesthood
+										civic = random
+									}
+								}
+							}
+							80 = {
+								modifier = {
+									factor = 0
+									has_ethic = ethic_egalitarian
+								}
+								change_government = {
+									authority = auth_dictatorial
+									civics = {
+										civic = civic_exalted_priesthood
+										civic = random
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			primitives_idealistic_foundation = {
+				if = {
+					limit = {
+						is_egalitarian = yes
+					}
+					change_government = {
+						authority = auth_democratic
+						civics = {
+							civic = civic_idealistic_foundation
+							civic = random
+						}
+					}
+				}
+				else_if = {
+					limit = { is_authoritarian = no }
+					change_government = {
+						authority = auth_democratic
+					}
+				}
+			}
+			primitives_warrior_culture = {
+				if = {
+					limit = {
+						OR = {
+							has_ethic = ethic_militarist
+							has_ethic = ethic_fanatic_militarist
+						}
+					}
+					if = {
+						limit = {
+							is_megacorp = yes
+						}
+						change_government = {
+							civics = {
+								civic = civic_private_military_companies
+								civic = random
+							}
+						}
+					}
+					else = {
+						change_government = {
+							civics = {
+								civic = civic_warrior_culture
+								civic = random
+							}
+						}
+					}
+				}
+			}
+			primitives_feudal_elite = {
+				if = {
+					limit = {
+						NOR = {
+							has_ethic = ethic_egalitarian
+							has_ethic = ethic_fanatic_egalitarian
+						}
+					}
+					change_government = {
+						authority = auth_imperial
+						civics = {
+							civic = civic_aristocratic_elite
+							civic = civic_feudal_realm
+						}
+					}
+				}
+			}
+			primitives_technocracy = {
+				if = {
+					limit = {
+						has_ethic = ethic_fanatic_materialist
+					}
+					if = {
+						limit = {
+							is_megacorp = yes
+							has_global_flag = expanded_pops_active
+						}
+						change_government = {
+							civics = {
+								civic = civic_technocracy_corp
+								civic = random
+							}
+						}
+					}
+					else_if = {
+						limit = {
+							is_megacorp = yes
+							NOT = { has_global_flag = expanded_pops_active }
+						}
+						change_government = {
+							authority = auth_oligarchic
+							civics = {
+								civic = civic_technocracy
+								civic = random
+							}
+						}
+					}
+					else = {
+						change_government = {
+							civics = {
+								civic = civic_technocracy
+								civic = random
+							}
+						}
+					}
+				}
+			}
+			primitives_shared_burden = {
+				if = {
+					limit = {
+						has_ethic = ethic_fanatic_egalitarian
+						is_xenophobe = no
+					}
+					if = {
+						limit = { has_authority = auth_democratic }
+						change_government = {
+							civics = {
+								civic = civic_shared_burden
+								civic = random
+							}
+						}
+					}
+					else_if = {
+						limit = {
+							has_global_flag = expanded_pops_active
+							has_authority = auth_cooperative
+						}
+						change_government = {
+							civics = {
+								civic = civic_worker_coop
+								civic = random
+							}
+						}
+					}
+				}
+			}
+			primitives_slavers_guild = {
+				if = {
+					limit = {
+						is_authoritarian = yes
+					}
+					if = {
+						limit = {
+							is_megacorp = yes
+						}
+						change_government = {
+							civics = {
+								civic = civic_indentured_assets
+								civic = random
+							}
+						}
+					}
+					else = {
+						change_government = {
+							civics = {
+								civic = civic_slaver_guilds
+								civic = random
+							}
+						}
+					}
+				}
+			}
 		}
 		set_name = random
 		capital_scope = {
@@ -393,12 +962,23 @@ country_event = {
 				}
 			}
 		}
+		if = {
+			limit = { has_origin = origin_enlightened }
+			home_planet = {
+				add_modifier = { modifier = prosp_uni_mod }
+				if = {
+					limit = { has_global_flag = expanded_pops_active }
+					add_deposit = d_default
+				}
+			}
+		}
 		add_resource = {
 			energy = 500
 			minerals = 1000 # enough for a spaceport and then some
-			alloys = 500 # Starbases cost alloys now.
-			food = 500
-			consumer_goods = 500
+			food = 200
+			alloys = 500
+			consumer_goods = 100
+			influence = 400
 		}
 
 		if = {
@@ -417,7 +997,88 @@ country_event = {
 			}
 		}
 
-		add_resource = { influence = 300 }
+		create_fleet = {
+			effect = {
+				set_owner = prev
+
+				create_ship = {
+					name = random
+					random_existing_design = science
+				}
+
+				set_fleet_stance = evasive				
+				#set_location = prev.capital_star
+				set_location = prev.capital_scope.star
+				
+				owner = {
+					create_leader = {
+						class = scientist
+						species = owner_main_species
+						name = random
+						skill = 2
+					}
+				}
+				set_leader = last_created_leader
+			}			
+		}
+			
+		#constructor
+		create_fleet = {
+			effect = {
+				set_owner = prev
+				
+				create_ship = {
+					name = random
+					random_existing_design = constructor
+				}
+				
+				set_fleet_stance = evasive
+				set_location = prev.capital_star
+			}
+		}
+		
+		#military
+		create_fleet = {
+			set_take_point = yes
+			effect = {
+				set_owner = prev
+				
+				while = {
+					count = 2
+					create_ship = {
+						name = random
+						random_existing_design = corvette
+					}
+				}
+				
+				set_location = prev.capital_star
+			}
+		}
+		create_leader = {
+			class = scientist
+			species = owner_main_species
+			name = random
+			skill = 2
+		}
+		create_leader = {
+			class = scientist
+			species = owner_main_species
+			name = random
+			skill = 2
+		}
+		create_leader = {
+			class = scientist
+			species = owner_main_species
+			name = random
+			skill = 2
+		}
+		create_leader = {
+			class = governor
+			species = owner_main_species
+			name = random
+			skill = 2
+		}
+		
 		capital_scope = {
 			clear_blockers = yes
 			while = {
@@ -487,6 +1148,10 @@ country_event = {
 				
 				add_building = building_chemical_plant
 				add_building = building_foundry_1
+				add_deposit = d_arcane_generator
+				add_deposit = d_decrepit_tunnels_1
+				add_deposit = d_decrepit_tunnels_2
+				add_deposit = d_decrepit_tunnels_3
 			}
 
 			remove_all_armies = yes
@@ -507,7 +1172,7 @@ country_event = {
 						}
 					}	
 					starbase = {
-						owner = { country_event = { id = primitive.180 } }
+						owner = { country_event = { id = primitive.180 days = 10 } }
 					}
 				}
 			}				
@@ -699,6 +1364,18 @@ country_event = {
 
 	mean_time_to_happen = {
 		years = 1000
+		modifier = {
+			factor = 1.5
+			any_owned_planet = { has_modifier = mineral_poor }
+		}
+		modifier = {
+			factor = 0.75
+			any_owned_planet = { has_modifier = mineral_rich }
+		}
+		modifier = {
+			factor = 0.5
+			any_owned_planet = { has_modifier = ultra_rich }
+		}
 	}
 
 	immediate = {
@@ -787,13 +1464,13 @@ country_event = {
 	}
 
 	mean_time_to_happen = {
-		years = 1000
+		years = 400
 	}
 
 	immediate = {
 		set_timed_country_flag = {
 			flag = recently_advanced
-			days = 360000 # 1,000yrs
+			days = 2160 #60yrs
 		}
 		set_primitive_age_effect = { primitive_age = late_medieval_age }
 		change_country_flag = {
@@ -982,7 +1659,15 @@ country_event = {
 	}
 
 	mean_time_to_happen = {
-		years = 100
+		years = 75
+		modifier = {
+			factor = 0.75
+			any_owned_planet = { has_modifier = mineral_rich }
+		}
+		modifier = {
+			factor = 0.5
+			any_owned_planet = { has_modifier = ultra_rich }
+		}
 	}
 
 	immediate = {
@@ -1051,7 +1736,19 @@ country_event = {
 	}
 
 	mean_time_to_happen = {
-		years = 1000
+		years = 2000
+		modifier = {
+			factor = 0.01
+			has_country_flag = primitives_almost_out_of_stone_age
+		}
+		modifier = {
+			factor = 0.9
+			any_owned_planet = { has_modifier = mineral_rich }
+		}
+		modifier = {
+			factor = 0.8
+			any_owned_planet = { has_modifier = ultra_rich }
+		}
 	}
 
 	immediate = {
@@ -1081,7 +1778,7 @@ country_event = {
 		}
 		set_timed_country_flag = {
 			flag = recently_advanced
-			days = 360000 # 1,000yrs
+			days = 2160 #60yrs
 		}
 		set_primitive_age_effect = { primitive_age = bronze_age }
 		change_country_flag = {
@@ -1135,16 +1832,19 @@ planet_event = {
 	id = primitive.130
 	hide_window = yes
 
+	pre_triggers = {
+		has_owner = yes
+	}
+
 	trigger = {
 		is_artificial = no
-		has_owner = yes
 		owner = {
 			is_country_type = primitive
+			NOT = { has_country_flag = human_primitive }
 			OR = {
 				has_country_flag = atomic_age
 				has_country_flag = early_space_age
 			}
-			NOT = { has_country_flag = suppress_vanilla_primitive_nuking }
 		}
 		OR = {
 			has_observation_outpost = no
@@ -1170,6 +1870,23 @@ planet_event = {
 			owner = { has_country_flag = early_space_age }
 		}
 		modifier = {
+			factor = 5
+			owner = { has_ethic = ethic_pacifist }
+		}
+		modifier = {
+			factor = 10
+			owner = { has_ethic = ethic_fanatic_pacifist }
+		}
+		modifier = {
+			factor = 0.75
+			owner = {
+				OR = {
+					has_ethic = ethic_militarist
+					has_ethic = ethic_fanatic_militarist
+				}
+			}
+		}
+		modifier = {
 			factor = 0.75
 			has_observation_outpost = yes
 			observation_outpost = { has_mission = specimen_collection }
@@ -1182,38 +1899,194 @@ planet_event = {
 	}
 
 	immediate = {
-		owner = {
-			random_owned_ship = {
-				limit = { is_ship_size = primitive_space_station }
-				fleet = { destroy_fleet = THIS }
-			}
-		}
 		if = {
 			limit = {
 				has_observation_outpost = yes
 			}
-			observation_outpost_owner = {
-				random_list = {
-					25 = {
-						country_event = { id = primitive.131 }
-						modifier = {
-							factor = 0 # won't turn planet uninhabitable if it's not a planet
-							root = {
-								OR = {
-									is_planet_class = pc_ringworld_habitable
-									is_planet_class = pc_habitat
+			if = {
+				limit = {
+					exists = owner
+					owner = { has_country_flag = primitives_discover_observer }
+				}
+				observation_outpost_owner = {
+					random_list = {
+						50 = {
+							country_event = { id = primitivesexpanded.311 }
+							modifier = {
+								factor = 0
+								ROOT = {
+									exists = owner
+									owner = { has_ethic = ethic_fanatic_xenophobe }
+								}
+							}
+							modifier = {
+								factor = 0.5
+								ROOT = {
+									exists = owner
+									owner = { has_ethic = ethic_xenophobe }
+								}
+							}
+							modifier = {
+								factor = 0.5
+								ROOT = {
+									exists = owner
+									owner = { has_ethic = ethic_fanatic_militarist }
+								}
+							}
+							modifier = {
+								factor = 0.75
+								ROOT = {
+									exists = owner
+									owner = { has_ethic = ethic_militarist }
+								}
+							}
+							modifier = {
+								factor = 4
+								ROOT = {
+									exists = owner
+									owner = {
+										OR = {
+											has_ethic = ethic_pacifist
+											has_ethic = ethic_fanatic_pacifist
+										}
+									}
+								}
+							}
+							modifier = {
+								factor = 2
+								ROOT = {
+									exists = owner
+									owner = {
+										OR = {
+											has_ethic = ethic_xenophile
+											has_ethic = ethic_fanatic_xenophile
+										}
+									}
+								}
+							}
+						}
+						10 = {
+							owner = {
+								random_owned_ship = {
+									limit = { is_ship_size = primitive_space_station }
+									fleet = { destroy_fleet = THIS }
+								}
+							}
+							country_event = { id = primitive.131 }
+							modifier = {
+								factor = 0 # won't turn planet uninhabitable if it's not a planet
+								root = {
+									OR = {
+										is_planet_class = pc_ringworld_habitable
+										is_planet_class = pc_habitat
+									}
+								}
+							}
+						}
+						30 = {
+							owner = {
+								random_owned_ship = {
+									limit = { is_ship_size = primitive_space_station }
+									fleet = { destroy_fleet = THIS }
+								}
+							}
+							country_event = { id = primitive.133 }
+						}
+						10 = {
+							country_event = { id = primitivesexpanded.69 }
+							modifier = {
+								factor = 0 # won't turn planet uninhabitable if it's not a planet
+								root = {
+									OR = {
+										is_planet_class = pc_ringworld_habitable
+										is_planet_class = pc_habitat
+										NOT = { host_has_dlc = Apocalypse }
+										NOT = { has_global_flag = has_primitive_worlds }
+									}
+								}
+							}
+						}
+						10 = {
+							country_event = { id = primitivesexpanded.70 }
+							modifier = {
+								factor = 0 # won't turn planet uninhabitable if it's not a planet
+								root = {
+									OR = {
+										is_planet_class = pc_ringworld_habitable
+										is_planet_class = pc_habitat
+										NOT = { host_has_dlc = Apocalypse }
+										has_global_flag = has_primitive_worlds
+									}
 								}
 							}
 						}
 					}
-					75 = { country_event = { id = primitive.133 } }
 				}
-			}	
-		}	
+			}
+			else = {
+				owner = {
+					random_owned_ship = {
+						limit = { is_ship_size = primitive_space_station }
+						fleet = { destroy_fleet = THIS }
+					}
+				}
+				observation_outpost_owner = {
+					random_list = {
+						20 = {
+							country_event = { id = primitive.131 }
+							modifier = {
+								factor = 0 # won't turn planet uninhabitable if it's not a planet
+								root = {
+									OR = {
+										is_planet_class = pc_ringworld_habitable
+										is_planet_class = pc_habitat
+									}
+								}
+							}
+						}
+						70 = { country_event = { id = primitive.133 } }
+						10 = {
+							country_event = { id = primitivesexpanded.69 }
+							modifier = {
+								factor = 0 # won't turn planet uninhabitable if it's not a planet
+								root = {
+									OR = {
+										is_planet_class = pc_ringworld_habitable
+										is_planet_class = pc_habitat
+										NOT = { host_has_dlc = Apocalypse }
+										NOT = { has_global_flag = has_primitive_worlds }
+									}
+								}
+							}
+						}
+						10 = {
+							country_event = { id = primitivesexpanded.70 }
+							modifier = {
+								factor = 0 # won't turn planet uninhabitable if it's not a planet
+								root = {
+									OR = {
+										is_planet_class = pc_ringworld_habitable
+										is_planet_class = pc_habitat
+										NOT = { host_has_dlc = Apocalypse }
+										has_global_flag = has_primitive_worlds
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 		else = {
 			owner = {
+				random_owned_ship = {
+					limit = { is_ship_size = primitive_space_station }
+					fleet = { destroy_fleet = THIS }
+				}
+			}
+			owner = {
 				random_list = {
-					25 = {
+					20 = {
 						country_event = { id = primitive.131 }
 						modifier = {
 							factor = 0 # won't turn planet uninhabitable if it's not a planet
@@ -1225,7 +2098,35 @@ planet_event = {
 							}
 						}
 					}
-					75 = { country_event = { id = primitive.133 } }
+					70 = { country_event = { id = primitive.133 } }
+					10 = {
+						country_event = { id = primitivesexpanded.69 }
+						modifier = {
+							factor = 0 # won't turn planet uninhabitable if it's not a planet
+							root = {
+								OR = {
+									is_planet_class = pc_ringworld_habitable
+									is_planet_class = pc_habitat
+									NOT = { host_has_dlc = Apocalypse }
+									NOT = { has_global_flag = has_primitive_worlds }
+								}
+							}
+						}
+					}
+					10 = {
+						country_event = { id = primitivesexpanded.70 }
+						modifier = {
+							factor = 0 # won't turn planet uninhabitable if it's not a planet
+							root = {
+								OR = {
+									is_planet_class = pc_ringworld_habitable
+									is_planet_class = pc_habitat
+									NOT = { host_has_dlc = Apocalypse }
+									has_global_flag = has_primitive_worlds
+								}
+							}
+						}
+					}
 				}
 			}
 		}

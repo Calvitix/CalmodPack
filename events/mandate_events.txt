@@ -1,11 +1,11 @@
-# Original File
+# Expanded Events File
 #
-# Calvitix Check 3.0.1  18/04/2021
-#
-# Merge with ???
+# Calvitix Check 3.0.2  25/04/2021
 #
 #
-
+# Merge with Expanded Events  25/04/2021
+# 
+#
 # District Overhaul 2 Override
 # mandate.180 is altered, so that every district counts
 
@@ -50,8 +50,8 @@ country_event = {
 	id = mandate.2
 	title = mandate.2.title
 	desc = mandate.2.desc
-	picture = GFX_evt_galactic_senate
-	show_sound = event_default
+	picture = GFX_evt_civil_action
+	show_sound = event_assembly_fight
 
 	is_triggered_only = yes
 
@@ -83,7 +83,7 @@ country_event = {
 			has_event_chain = mandate_ai_outlaw_chain
 			has_event_chain = mandate_ai_allow_chain
 			has_event_chain = mandate_ai_emancipation_chain
-			has_event_chain = mandate_army_recruitment
+			has_event_chain = mandate_army_recruitment_chain
 			has_event_chain = mandate_alliance_chain
 			has_event_chain = mandate_isolation_chain
 			has_event_chain = mandate_allow_war_chain
@@ -592,9 +592,8 @@ country_event = {
 	id = mandate.142
 	title = mandate.142.title
 	desc = mandate.142.desc
-	picture = GFX_evt_wormhole
-	show_sound = event_default
-
+	picture = GFX_evt_civil_action
+	show_sound = event_assembly_fight
 	is_triggered_only = yes
 
 	option = {
@@ -691,7 +690,7 @@ country_event = {
 	id = mandate.161
 	title = mandate.161.title
 	desc = mandate.161.desc
-	picture = GFX_evt_throne_room
+	picture = GFX_evt_diplomatic_visit
 	show_sound = event_default
 
 	is_triggered_only = yes
@@ -915,6 +914,18 @@ planet_event = {
 					}
 				}
 			}
+			district_industrial = {
+				owner = {
+					if = {
+						limit = { has_event_chain = mandate_district_city_chain }
+						add_event_chain_counter = { 
+							event_chain = "mandate_district_city_chain" 
+							counter = "built_district"
+							amount = 1
+						}
+					}
+				}
+			}
 			district_rw_city = {
 				owner = {
 					if = {
@@ -1096,7 +1107,55 @@ planet_event = {
 					}
 				}
 			}
+			district_arcology_housing = {
+				owner = {
+					if = {
+						limit = { has_event_chain = mandate_district_city_chain }
+						add_event_chain_counter = { 
+							event_chain = "mandate_district_city_chain" 
+							counter = "built_district"
+							amount = -1
+						}
+					}
+				}
+			}
+			district_hab_housing = {
+				owner = {
+					if = {
+						limit = { has_event_chain = mandate_district_city_chain }
+						add_event_chain_counter = { 
+							event_chain = "mandate_district_city_chain" 
+							counter = "built_district"
+							amount = -1
+						}
+					}
+				}
+			}
+			district_industrial = {
+				owner = {
+					if = {
+						limit = { has_event_chain = mandate_district_city_chain }
+						add_event_chain_counter = { 
+							event_chain = "mandate_district_city_chain" 
+							counter = "built_district"
+							amount = -1
+						}
+					}
+				}
+			}
 			district_generator = {
+				owner = {
+					if = {
+						limit = { has_event_chain = mandate_district_generator_chain }
+						add_event_chain_counter = { 
+							event_chain = "mandate_district_generator_chain" 
+							counter = "built_district"
+							amount = -1
+						}
+					}
+				}
+			}
+			district_generator_uncapped = {
 				owner = {
 					if = {
 						limit = { has_event_chain = mandate_district_generator_chain }
@@ -1120,7 +1179,43 @@ planet_event = {
 					}
 				}
 			}
+			district_mining_uncapped = {
+				owner = {
+					if = {
+						limit = { has_event_chain = mandate_district_mining_chain }
+						add_event_chain_counter = { 
+							event_chain = "mandate_district_mining_chain" 
+							counter = "built_district"
+							amount = -1
+						}
+					}
+				}
+			}
+			district_hab_mining = {
+				owner = {
+					if = {
+						limit = { has_event_chain = mandate_district_mining_chain }
+						add_event_chain_counter = { 
+							event_chain = "mandate_district_mining_chain" 
+							counter = "built_district"
+							amount = -1
+						}
+					}
+				}
+			}
 			district_farming = {
+				owner = {
+					if = {
+						limit = { has_event_chain = mandate_district_farming_chain }
+						add_event_chain_counter = { 
+							event_chain = "mandate_district_farming_chain" 
+							counter = "built_district"
+							amount = -1
+						}
+					}
+				}
+			}
+			district_farming_uncapped = {
 				owner = {
 					if = {
 						limit = { has_event_chain = mandate_district_farming_chain }

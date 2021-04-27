@@ -1,3 +1,11 @@
+# Expanded Events File
+#
+# Calvitix Check 3.0.2  25/04/2021
+#
+#
+# Merge with Expanded Events  25/04/2021
+# 
+#
 ############################
 #
 # Anomaly Events
@@ -29,6 +37,8 @@ country_event = {
 				is_colony = no	
 				has_anomaly = no
 				is_capital = no
+				NOT = { has_modifier = holy_planet }
+				NOT = { has_modifier = phaseshifted }
 			}
 			save_event_target_as = new_colony
 		}		
@@ -61,21 +71,37 @@ country_event = {
 				set_owner = root
 				set_controller = root
 				prevent_anomaly = yes 
-				create_species = {
-					name = "NAME_Awoken_Robot"
-					plural = "NAME_Awoken_Robot"
-					class = ROBOT
-					namelist = FUN3
-					portrait = "default_robot"
-					traits = {
-						trait = "trait_mechanical"
-						trait = "trait_robot_awoken"
+				if = {
+					limit = { host_has_dlc = "Synthetic Dawn Story Pack" }
+					create_species = {
+						name = "NAME_Awoken_Robot"
+						plural = "NAME_Awoken_Robot"
+						class = ROBOT
+						namelist = FUN3
+						portrait = "sd_fun_robot"
+						traits = {
+							trait = "trait_mechanical"
+							trait = "trait_robot_awoken"
+						}
+					}
+				}
+				else = {
+					create_species = {
+						name = "NAME_Awoken_Robot"
+						plural = "NAME_Awoken_Robot"
+						class = ROBOT
+						namelist = FUN3
+						portrait = "default_robot"
+						traits = {
+							trait = "trait_mechanical"
+							trait = "trait_robot_awoken"
+						}
 					}
 				}
 				while = {
 					count = 3
 					create_pop = {
-						species = last_created
+						species = last_created_species
 					}					
 				}
 			}
@@ -131,6 +157,9 @@ country_event = {
 					is_capital = no
 				}
 			}	
+		}
+		hidden_effect = {
+			country_event = { id = anomaly.1197 }
 		}
 		hidden_effect = {
 			country_event = { id = anomaly.1197 }
@@ -204,8 +233,11 @@ country_event = {
 				random_system_planet = {
 					limit = {
 						habitable_planet = yes
-						has_owner = no
+						is_colony = no	
+						has_anomaly = no
 						is_capital = no
+						NOT = { has_modifier = holy_planet }
+						NOT = { has_modifier = phaseshifted }
 					}
 					save_event_target_as = colonized_planet
     				set_surveyed = {
@@ -213,21 +245,37 @@ country_event = {
     					surveyor = root
     				}
     				prevent_anomaly = yes
-    				create_species = {
-						name = "NAME_Awoken_Robot"
-						plural = "NAME_Awoken_Robot"
-						class = ROBOT
-						namelist = FUN3
-						portrait = "default_robot"
-						traits = {
-							trait = "trait_mechanical"
-							trait = "trait_robot_awoken"
+    				if = {
+						limit = { host_has_dlc = "Synthetic Dawn Story Pack" }
+						create_species = {
+							name = "NAME_Awoken_Robot"
+							plural = "NAME_Awoken_Robot"
+							class = ROBOT
+							namelist = FUN3
+							portrait = "sd_fun_robot"
+							traits = {
+								trait = "trait_mechanical"
+								trait = "trait_robot_awoken"
+							}
+						}
+					}
+					else = {
+						create_species = {
+							name = "NAME_Awoken_Robot"
+							plural = "NAME_Awoken_Robot"
+							class = ROBOT
+							namelist = FUN3
+							portrait = "default_robot"
+							traits = {
+								trait = "trait_mechanical"
+								trait = "trait_robot_awoken"
+							}
 						}
 					}
 					create_country = {
 						name = "NAME_Awoken"
 						name_list = FUN3
-						species = last_created
+						species = last_created_species
 						type = default
 						ethos = {
 							ethic = ethic_fanatic_materialist
@@ -235,8 +283,6 @@ country_event = {
 						}
 						authority = random
 						civics = random
-						origin = origin_enlightened
-						auto_delete = no
 						flag = {
 							icon = {
 								category = "blocky"
@@ -253,9 +299,14 @@ country_event = {
 								"null"
 							}
 						}
-						day_zero_contact = no
+						exclude_day_zero_contact = root
 						effect = {
 							establish_communications_no_message = root
+							root = {
+								every_federation_ally = {
+									establish_communications = prevprev
+								}
+							}
 							set_country_flag = limbo_country
 							set_country_flag = synthetic_empire
 							species = {
@@ -313,20 +364,20 @@ country_event = {
 					set_owner = last_created_country
 					set_capital = yes
 					while = {
-						count = 16
+						count = 6
 						create_pop = {
-							species = last_created
+							species = last_created_species
 						}					
 					}
+					add_district = district_city
+					add_district = district_city
+					add_district = district_industrial
+					add_district = district_industrial
 					add_building = building_research_lab_1
-					add_building = building_foundry_1
-					add_building = building_factory_1
 					add_district = district_generator
 					add_district = district_generator
 					add_district = district_mining
 					add_district = district_mining
-					add_district = district_city
-					add_district = district_city
 					root = { country_event = { id = anomaly.1196 days = 10 } }
 				}
 			}
@@ -369,6 +420,8 @@ country_event = {
 					is_colony = no	
 					has_anomaly = no
 					is_capital = no
+					NOT = { has_modifier = holy_planet }
+					NOT = { has_modifier = phaseshifted }
 					NOR = {
 						exists = owner
 						exists = controller
@@ -430,6 +483,8 @@ country_event = {
 						is_colony = no	
 						has_anomaly = no
 						is_capital = no
+						NOT = { has_modifier = holy_planet }
+						NOT = { has_modifier = phaseshifted }
 						NOR = {
 							exists = owner
 							exists = controller
@@ -442,21 +497,37 @@ country_event = {
 				set_owner = root
 				set_controller = root
 				prevent_anomaly = yes
-				create_species = {
-					name = "NAME_Awoken_Robot"
-					plural = "NAME_Awoken_Robot"
-					class = ROBOT
-					namelist = FUN3
-					portrait = "default_robot"
-					traits = {
-						trait = "trait_mechanical"
-						trait = "trait_robot_awoken"
+				if = {
+					limit = { host_has_dlc = "Synthetic Dawn Story Pack" }
+					create_species = {
+						name = "NAME_Awoken_Robot"
+						plural = "NAME_Awoken_Robot"
+						class = ROBOT
+						namelist = FUN3
+						portrait = "sd_fun_robot"
+						traits = {
+							trait = "trait_mechanical"
+							trait = "trait_robot_awoken"
+						}
+					}
+				}
+				else = {
+					create_species = {
+						name = "NAME_Awoken_Robot"
+						plural = "NAME_Awoken_Robot"
+						class = ROBOT
+						namelist = FUN3
+						portrait = "default_robot"
+						traits = {
+							trait = "trait_mechanical"
+							trait = "trait_robot_awoken"
+						}
 					}
 				}
 				while = {
 					count = 3
 					create_pop = {
-						species = last_created
+						species = last_created_species
 					}					
 				}
 			}
@@ -588,10 +659,11 @@ country_event = {
 				random_system_planet = {
 					limit = {
 						habitable_planet = yes
-						has_owner = no	
+						is_colony = no	
 						has_anomaly = no
-						is_colony = no
 						is_capital = no
+						NOT = { has_modifier = holy_planet }
+						NOT = { has_modifier = phaseshifted }
 					}
 					save_event_target_as = colonized_planet
 					set_surveyed = {
@@ -599,21 +671,37 @@ country_event = {
     					surveyor = root
     				}
     				prevent_anomaly = yes
-    				create_species = {
-						name = "NAME_Awoken_Robot"
-						plural = "NAME_Awoken_Robot"
-						class = ROBOT
-						namelist = FUN3
-						portrait = "default_robot"
-						traits = {
-							trait = "trait_mechanical"
-							trait = "trait_robot_awoken"
+    				if = {
+						limit = { host_has_dlc = "Synthetic Dawn Story Pack" }
+						create_species = {
+							name = "NAME_Awoken_Robot"
+							plural = "NAME_Awoken_Robot"
+							class = ROBOT
+							namelist = FUN3
+							portrait = "sd_fun_robot"
+							traits = {
+								trait = "trait_mechanical"
+								trait = "trait_robot_awoken"
+							}
+						}
+					}
+					else = {
+						create_species = {
+							name = "NAME_Awoken_Robot"
+							plural = "NAME_Awoken_Robot"
+							class = ROBOT
+							namelist = FUN3
+							portrait = "default_robot"
+							traits = {
+								trait = "trait_mechanical"
+								trait = "trait_robot_awoken"
+							}
 						}
 					}
 					create_country = {
 						name = "NAME_Awoken"
 						name_list = FUN3
-						species = last_created
+						species = last_created_species
 						type = default
 						ethos = {
 							ethic = ethic_fanatic_materialist
@@ -621,7 +709,6 @@ country_event = {
 						}
 						authority = random
 						civics = random
-						origin = origin_enlightened
 						auto_delete = no
 						flag = {
 							icon = {
@@ -639,9 +726,14 @@ country_event = {
 								"null"
 							}
 						}
-						day_zero_contact = no
+						exclude_day_zero_contact = root
 						effect = {
 							establish_communications_no_message = root
+							root = {
+								every_federation_ally = {
+									establish_communications = prevprev
+								}
+							}
 							add_trust = {
 								amount = 10
 								who = root
@@ -704,20 +796,20 @@ country_event = {
 					set_owner = event_target:awoken_country
 					set_capital = yes
 					while = {
-						count = 16
+						count = 6
 						create_pop = {
-							species = last_created
+							species = last_created_species
 						}					
 					}
+					add_district = district_city
+					add_district = district_city
+					add_district = district_industrial
+					add_district = district_industrial
 					add_building = building_research_lab_1
-					add_building = building_foundry_1
-					add_building = building_factory_1
 					add_district = district_generator
 					add_district = district_generator
 					add_district = district_mining
 					add_district = district_mining
-					add_district = district_city
-					add_district = district_city
 					create_army = {
 						name = "NAME_Awoken_Army"
 						owner = event_target:awoken_country

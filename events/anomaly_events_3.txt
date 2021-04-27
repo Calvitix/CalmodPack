@@ -110,18 +110,18 @@ ship_event = {
 		}
 	}
 	
-	#option = {
-	#	name = anomaly.85.b
-	#	owner = { save_event_target_as = ship_owner }
-	#	solar_system = {
-	#		every_system_planet = {
-	#			set_surveyed = {
-	#				surveyed = yes
-	#				surveyor = event_target:ship_owner
-	#			}
-	#		}
-	#	}
-	#}
+	option = {
+		name = anomaly.85.b
+		owner = { save_event_target_as = ship_owner }
+		solar_system = {
+			every_system_planet = {
+				set_surveyed = {
+					surveyed = yes
+					surveyor = event_target:ship_owner
+				}
+			}
+		}
+	}
 }
 
 ### Cunning Flora
@@ -144,6 +144,7 @@ ship_event = {
 				location = this
 				owner = root
 			}
+			hidden_effect = { set_planet_flag = cunning_flora_flag }
 		}
 		hidden_effect = { owner = { country_event = { id = story.1 days = 30 } } }
 	}
@@ -170,6 +171,7 @@ ship_event = {
 					days = -1
 				}
 				add_deposit = d_savage_wildlands
+				add_deposit = d_dense_jungle #expand. events mod
 			}
 		}
 	}
@@ -204,6 +206,7 @@ ship_event = {
 			}
 		}
 		owner = {
+			small_artifact_reward = yes
 			add_monthly_resource_mult = {
 				resource = influence
 				value = @tier1influencereward
@@ -219,6 +222,8 @@ ship_event = {
 		trigger = {
 			any_system = {
 				OR = {
+					# United Nations of Earth
+					has_star_flag = sol_system
 					# Commonwealth of Man NPC system
 					has_star_flag = com_sol
 					# Tomb World
@@ -240,6 +245,7 @@ ship_event = {
 			add_experience = 200
 		}
 		owner = {
+			small_artifact_reward = yes
 			add_monthly_resource_mult = {
 				resource = engineering_research
 				value = @tier3researchreward
@@ -255,6 +261,8 @@ ship_event = {
 			random_system = {
 				limit = {
 					OR = {
+						# United Nations of Earth
+						has_star_flag = sol_system
 						# Commonwealth of Man NPC system
 						has_star_flag = com_sol
 						# Tomb World
@@ -291,6 +299,7 @@ ship_event = {
 	option = {
 		name = anomaly.95.c
 		owner = {
+			small_artifact_reward = yes
 			add_monthly_resource_mult = {
 				resource = engineering_research
 				value = @tier3researchreward
@@ -491,6 +500,7 @@ ship_event = {
 			}
 		}
 		owner = {
+			small_artifact_reward = yes
 			add_monthly_resource_mult = {
 				resource = influence
 				value = @tier1influencereward
@@ -506,6 +516,8 @@ ship_event = {
 		trigger = {
 			any_system = {
 				OR = {
+					# United Nations of Earth
+					has_star_flag = sol_system
 					# Commonwealth of Man NPC system
 					has_star_flag = com_sol
 					# Tomb World
@@ -527,6 +539,7 @@ ship_event = {
 			add_experience = 200
 		}
 		owner = {
+			small_artifact_reward = yes
 			add_monthly_resource_mult = {
 				resource = society_research
 				value = @tier3researchreward
@@ -542,6 +555,8 @@ ship_event = {
 			random_system = {
 				limit = {
 					OR = {
+						# United Nations of Earth
+						has_star_flag = sol_system
 						# Commonwealth of Man NPC system
 						has_star_flag = com_sol
 						# Tomb World
@@ -580,6 +595,7 @@ ship_event = {
 	option = {
 		name = anomaly.105.c
 		owner = {
+			small_artifact_reward = yes
 			add_monthly_resource_mult = {
 				resource = engineering_research
 				value = @tier3researchreward
@@ -764,6 +780,10 @@ ship_event = {
 	location = FROM
 
 	is_triggered_only = yes
+
+	trigger = { #expand. events mod
+		owner = { NOT = { has_country_flag = UHB_ANCIENT_RUINS_1_FLAG } }
+	}
 
 	option = {
 		name = anomaly.120.a
@@ -964,34 +984,45 @@ country_event = {
 }
 
 ### Derelict Star Chart, molten planet only
-#ship_event = {
-#	id = anomaly.125
-#	title = "anomaly.125.name"
-#	desc = "anomaly.125.desc"
-#	picture = GFX_evt_molten
-#	show_sound = event_ship_thrusters
-#	location = FROM
-#
-#	is_triggered_only = yes
-#
-#	option = {
-#		name = anomaly.125.a
-#		solar_system = {
-#			every_system_planet = {
-#				set_surveyed = {
-#					surveyed = yes
-#					surveyor = root.owner
-#				}
-#			}
-#		}
-#	}
-#}
+ship_event = {
+	id = anomaly.125
+	title = "anomaly.125.name"
+	desc = "anomaly.125.desc"
+	picture = GFX_evt_molten
+	show_sound = event_ship_thrusters
+	location = FROM
+
+	is_triggered_only = yes
+
+	option = {
+		name = anomaly.125.a
+		solar_system = {
+			every_system_planet = {
+				set_surveyed = {
+					surveyed = yes
+					surveyor = root.owner
+				}
+			}
+		}
+	}
+}
 
 ### Transient Gravitational Anomaly, asteroid only
 ship_event = {
 	id = anomaly.130
 	title = "anomaly.130.name"
-	desc = "anomaly.130.desc"
+	desc = { #expand. events mod
+		trigger = {
+			leader = { NOT = { has_trait = leader_trait_expertise_field_manipulation } }
+		}
+		text = "anomaly.130.desc"
+	}
+	desc = {
+		trigger = {
+			leader = { has_trait = leader_trait_expertise_field_manipulation }
+		}
+		text = "anomaly.130.desc.field"
+	}
 	picture = GFX_evt_wormhole
 	show_sound = event_space_cloud
 	location = FROM
@@ -1005,6 +1036,9 @@ ship_event = {
 
 	option = {
 		name = anomaly.130.a
+		trigger = {
+			leader = { NOT = { has_trait = leader_trait_expertise_field_manipulation } }
+		}
 		owner = {
 			add_monthly_resource_mult = {
 				resource = physics_research
@@ -1015,6 +1049,17 @@ ship_event = {
 		}
 		leader = { add_experience = 100 }
 	}
+	option = {
+		trigger = {
+			leader = { has_trait = leader_trait_expertise_field_manipulation }
+		}
+		name = anomaly.130.b
+		FROM = {
+			hidden_effect = { clear_deposits = yes }
+			set_deposit = d_physics_6
+		}
+		leader = { add_experience = 100 }
+	}
 }
 
 ### Abandoned Playground, GEN_PLAYGROUND_CAT
@@ -1022,10 +1067,30 @@ ship_event = {
 ship_event = {
 	id = anomaly.135
 	title = "anomaly.135.name"
-	desc = "anomaly.135.desc"
+	desc = { #expand. events mod
+		trigger = {
+			NOT = { has_ship_flag = leader_died }
+			owner = { is_machine_empire = no }
+		}
+		text = "anomaly.135.desc"
+	}
+	desc = {
+		trigger = {
+			NOT = { has_ship_flag = leader_died }
+			owner = { is_machine_empire = yes }
+		}
+		text = "anomaly.135.desc.mach"
+	}
+	desc = {
+		trigger = {
+			has_ship_flag = leader_died
+		}
+		text = "anomaly.135.desc.alt"
+	}
 	picture = GFX_evt_huge_monument
 	show_sound = event_administrative_work
 	location = FROM
+	force_open = yes
 
 	is_triggered_only = yes
 	auto_opens = yes
@@ -1039,10 +1104,56 @@ ship_event = {
 		}
 	}
 
-	immediate = { owner = { country_event = { id = story.5 days = 30 } } }
+	immediate = {
+		owner = { country_event = { id = story.5 days = 30 } }
+		if = {
+			limit = {
+				leader = {
+					has_skill < 5
+					NOT = { has_trait = leader_trait_expertise_materials }
+				}
+			}
+			random_list = {
+				3 = {
+				}
+				1 = {
+					set_ship_flag = leader_died
+					owner = {
+						create_leader = {
+							class = scientist
+							sub_type = survey
+							name = random
+							species = owner_main_species
+						}
+						last_created_leader = {
+							save_event_target_as = second_in_command
+						}
+					}
+				}
+			}
+		}
+	}
 
 	option = {
 		name = INTRIGUING
+		trigger = { NOT = { has_ship_flag = leader_died } }
+	}
+	
+	option = {
+		name = UNFORTUNATE
+		trigger = { has_ship_flag = leader_died }
+		custom_tooltip = anomaly_failure.400.a.tooltip
+		hidden_effect = {
+			kill_leader = {
+				type = scientist
+				show_notification = no
+			}
+			fleet = { set_leader = event_target:second_in_command }
+		}
+	}
+	
+	after = {
+		hidden_effect = { remove_ship_flag = leader_died }
 		owner = {
 			add_monthly_resource_mult = {
 				resource = society_research
@@ -1055,6 +1166,23 @@ ship_event = {
 				value = @tier3researchreward
 				min = @tier3researchmin
 				max = @tier3researchmax
+			}
+			small_artifact_reward = yes
+		}
+		if = {
+			limit = {
+				from = {
+					can_be_terraforming_candidate = yes
+				}
+			}
+			custom_tooltip = TERRAFORMING_CANDIDATE_EFFECT
+			hidden_effect = {
+				from = {
+					add_modifier = {
+						modifier = "terraforming_candidate"
+						days = -1
+					}
+				}		
 			}
 		}
 	}
@@ -1635,7 +1763,10 @@ ship_event = {
 
 	is_triggered_only = yes
 
-	immediate = { from = { clear_deposits = yes } }
+	immediate = {
+		from = { clear_deposits = yes }
+		owner = { set_country_flag = anomaly_155_happened }
+	}
 
 	option = {
 		name = FASCINATING
@@ -1661,7 +1792,14 @@ ship_event = {
 ship_event = {
 	id = anomaly.160
 	title = "anomaly.160.name"
-	desc = "anomaly.160.desc"
+	desc = { #exp. event
+		trigger = { owner = { is_gestalt = no } }
+		text = "anomaly.160.desc"
+	}
+	desc = {
+		trigger = { owner = { has_civic = civic_machine_servitor } }
+		text = "anomaly.160.desc.serv"
+	}
 	picture = GFX_evt_alien_nature
 	show_sound = event_alien_nature
 	location = FROM
@@ -1670,6 +1808,7 @@ ship_event = {
 
 	option = {
 		name = REMARKABLE
+		trigger = { owner = { is_gestalt = no } }
 		owner = {
 			add_modifier = {
 				modifier = inspired_arts
@@ -1677,6 +1816,16 @@ ship_event = {
 			}
 		}
 	}
+	option = {
+		name = CURIOUS
+		trigger = { owner = { has_civic = civic_machine_servitor } }
+		owner = {
+			add_modifier = {
+				modifier = inspired_arts_serv
+				days = 7200
+			}
+		}
+	}	
 }
 
 # Exiled scientist
@@ -1942,28 +2091,37 @@ ship_event = {
 # Planetary Projection followup
 planet_event = {
 	id = anomaly.191
-	hide_window = yes
+	title = "anomaly.191.name"
+	desc = "anomaly.191.desc"
+	show_sound = event_radio_chatter
+	picture = GFX_evt_asteroid_approaching_planet
+	location = fromfrom
+
 	is_triggered_only = yes
 
-	immediate = {
-		add_modifier = {
-			modifier = projecting_moon
-			days = -1
+	option = {
+		name = INTRIGUING
+		custom_tooltip = anomaly.191.a.tooltip
+		hidden_effect = { owner = { country_event = { id = story.5 days = 30 } } }
+		hidden_effect = {
+			add_modifier = {
+				modifier = projecting_moon
+				days = -1
+			}
+			add_deposit = d_engineering_6
+			set_surveyed = {
+				surveyed = yes
+				surveyor = event_target:ship_owner
+			}
+			remove_planet_flag = projecting_moon
 		}
-		add_deposit = d_engineering_3
-		set_surveyed = {
-			surveyed = yes
-			surveyor = event_target:ship_owner
-		}
-		remove_planet_flag = projecting_moon
-		from.owner = { country_event = { id = anomaly.192 } }
 	}
 }
 
 country_event = {
 	id = anomaly.192
-	title = "anomaly.191.name"
-	desc = "anomaly.191.desc"
+	title = "anomaly.192.name"
+	desc = "anomaly.192.desc"
 	show_sound = event_radio_chatter
 	picture = GFX_evt_asteroid_approaching_planet
 	location = fromfromfrom
@@ -1994,6 +2152,9 @@ ship_event = {
 		leader = {
 			add_experience = 200
 		}
+		FROM = {
+			add_deposit = d_misty_shores
+		}
 	}
 }
 
@@ -2011,7 +2172,12 @@ ship_event = {
 	immediate = { from = { clear_deposits = yes } }
 
 	option = {
-		name = EXCELLENT
+		name = anomaly.200.a
+		trigger = {
+			leader = {
+				NOT = { has_trait = leader_trait_expertise_field_manipulation }
+			}
+		}
 		hidden_effect = { owner = { country_event = { id = story.5 days = 30 } } }
 		owner = {
 			add_monthly_resource_mult = {
@@ -2022,7 +2188,49 @@ ship_event = {
 			}
 		}
 		from = {
+			add_modifier = { modifier = ancient_geothermal_plant days = -1 }
 			add_deposit = d_engineering_3
+		}
+	}
+	option = {
+		name = anomaly.200.a
+		trigger = {
+			leader = {
+				has_trait = leader_trait_expertise_field_manipulation
+			}
+		}
+		hidden_effect = { owner = { country_event = { id = story.5 days = 30 } } }
+		owner = {
+			add_monthly_resource_mult = {
+				resource = energy
+				value = @tier3materialreward
+				min = @tier3materialmin
+				max = @tier3materialmax
+			}
+		}
+		from = {
+			add_modifier = { modifier = ancient_geothermal_plant days = -1 }
+			add_deposit = d_engineering_3
+		}
+	}
+	option = {
+		name = anomaly.200.b
+		trigger = {
+			leader = {
+				OR = {
+					has_trait = leader_trait_expertise_materials
+					has_trait = leader_trait_expertise_industry
+				}
+			}
+		}
+		allow = { owner = { resource_stockpile_compare = { resource = alloys value >= 200 } } }
+		hidden_effect = { owner = { country_event = { id = story.5 days = 30 } } }
+		owner = {
+			add_resource = { alloys = -200 }
+		}
+		from = {
+			add_modifier = { modifier = ancient_geothermal_plant days = -1 }
+			add_deposit = d_energy_10
 		}
 	}
 }
@@ -2304,13 +2512,17 @@ ship_event = {
 	option = {
 		name = anomaly.230.a
 		custom_tooltip = anomaly.230.a.tooltip
+		custom_tooltip = TERRAFORMING_CANDIDATE_EFFECT
 		hidden_effect = {
-			from = {
+			FROMFROM = {
 				add_modifier = {
 					modifier = grimacing
 					days = -1
 				}
-				
+				add_modifier = {
+					modifier = "terraforming_candidate"
+					days = -1
+				}
 				add_deposit = d_physics_4
 			}
 		}
@@ -2367,6 +2579,21 @@ ship_event = {
 
 	option = {
 		name = UNFORTUNATE
+		custom_tooltip = anomaly.230.a.tooltip
+		custom_tooltip = TERRAFORMING_CANDIDATE_EFFECT
+		hidden_effect = {
+			FROMFROM = {
+				add_modifier = {
+					modifier = grimacing
+					days = -1
+				}
+				add_modifier = {
+					modifier = "terraforming_candidate"
+					days = -1
+				}
+				add_deposit = d_physics_4
+			}
+		}
 	}
 }
 
@@ -2570,11 +2797,13 @@ ship_event = {
 
 	option = {
 		name = anomaly.255.a
+		small_artifact_reward = yes
 		hidden_effect = { owner = { country_event = { id = story.5 days = 30 } } }
 	}
 
 	option = {
 		name = anomaly.255.b
+		small_artifact_reward = yes
 		hidden_effect = { owner = { country_event = { id = story.5 days = 30 } } }
 		from = {
 			enable_special_project = {
@@ -2800,6 +3029,7 @@ ship_event = {
 		custom_tooltip = anomaly.260.a.tooltip
 		hidden_effect = { owner = { country_event = { id = story.5 days = 30 } } }
 		owner = {
+			small_artifact_chance = yes
 			add_monthly_resource_mult = {
 				resource = engineering_research
 				value = @tier2researchreward

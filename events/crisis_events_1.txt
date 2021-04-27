@@ -67,11 +67,59 @@ country_event = {
 		set_global_flag = galactic_crisis_happened
 		observer_event = { id = observer.27 }
 		every_country = {
-			limit = { is_country_type = default }
+			limit = {
+				OR = { is_country_type = default } #is_country_type = ascended_empire is_country_type = lost_empire }
+				NOT = { has_event_chain = coming_storm_chain }
+			}
 			country_event = { id = crisis.11 }
 		}
+		if = {
+			limit = {
+				any_country = { has_country_flag = spy_orb_spots_crisis }
+			}
+			random_rim_system = {
+				limit = {
+					OR = {
+						# No owner or neighbors
+						NOT = {
+							any_neighbor_system = {
+								exists = space_owner
+							}
+							exists = space_owner
+						}
+						# Owned but not by fallen empire
+						AND = {
+							exists = space_owner
+							space_owner = {
+								NOR = {
+									is_country_type = fallen_empire
+									is_country_type = awakened_fallen_empire
+								}
+							}
+						}
+					}
+					# No neighboring fallen empires
+					NOT = {
+						any_neighbor_system = {
+							exists = space_owner
+							space_owner = {	
+								OR = {
+									is_country_type = fallen_empire
+									is_country_type = awakened_fallen_empire
+								}
+							}
+						}
+					}
+				}
+				set_star_flag = swarm_invasion_target_1
+			}
+			every_country = {
+				limit = { has_country_flag = spy_orb_spots_crisis }
+				country_event = { id = megaexpanded.2 }
+			}
+		}
 	}
-}
+	}
 
 # Approaching Subspace Echoes
 country_event = {
@@ -203,8 +251,16 @@ country_event = {
 		every_country = {
 			limit = {
 				is_country_type = default
+				NOT = { has_country_flag = spy_orb_spots_crisis }
 			}
 			country_event = { id = crisis.13 }
+		}
+		every_country = {
+			limit = {
+				OR = { is_country_type = default is_country_type = ascended_empire is_country_type = lost_empire }
+				has_country_flag = spy_orb_spots_crisis
+			}
+			country_event = { id = megaexpanded.3 }
 		}
 	}
 }
@@ -282,7 +338,11 @@ country_event = {
 		remove_global_flag = prethoryn_approaching_rim
 		set_global_flag = prethoryn_transmission
 		every_country = {
-			limit = { is_country_type = default }
+			limit = { 
+			is_country_type = default 
+			has_country_flag = spy_orb_spots_crisis
+			
+			}
 			country_event = { id = crisis.15 }
 		}
 	}
@@ -720,7 +780,7 @@ country_event = {
 			OR = {
 				has_government = gov_megacorporation
 				has_government = gov_trade_league
-				has_authority = auth_corporate
+				is_megacorp = yes
 			}
 			NOR = {
 				has_ethic = "ethic_fanatic_egalitarian"
@@ -3321,7 +3381,7 @@ country_event = {
 			OR = {
 				has_government = gov_megacorporation
 				has_government = gov_trade_league
-				has_authority = auth_corporate
+				is_megacorp = yes
 			}
 			NOR = {
 				has_ethic = "ethic_fanatic_xenophile"
@@ -3681,7 +3741,7 @@ country_event = {
 					effect = {
 						set_owner = root
 						while = {
-							count = 6
+							count = 12
 							create_ship = {
 								name = random
 								prefix = no
@@ -3690,7 +3750,7 @@ country_event = {
 							}
 						}
 						while = {
-							count = 16
+							count = 32
 							create_ship = {
 								name = random
 								prefix = no

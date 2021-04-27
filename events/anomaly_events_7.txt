@@ -34,11 +34,28 @@ ship_event = {
 
 	option = {
 		name = OK
+		small_artifact_reward = yes
 		from = {
 			enable_special_project = {
 				name = "LIMBO_1_PROJECT"
 				location = this
 				owner = root
+			}
+		}
+		if = {
+			limit = {
+				from = {
+					can_be_terraforming_candidate = yes
+				}
+			}
+			custom_tooltip = TERRAFORMING_CANDIDATE_EFFECT
+			hidden_effect = {
+				from = {
+					add_modifier = {
+						modifier = "terraforming_candidate"
+						days = -1
+					}
+				}		
 			}
 		}
 	}
@@ -52,6 +69,7 @@ ship_event = {
 		text = anomaly.186.desc.v1
 		trigger = { 
 			hidden:owner = {
+				is_machine_empire = no
 				OR = {
 					has_policy_flag = ai_outlawed
 					has_ethic = ethic_spiritualist
@@ -67,8 +85,11 @@ ship_event = {
 	desc = {
 		text = anomaly.186.desc.v3
 		trigger = {
-			hidden:owner = { 
-				has_technology = tech_synthetic_workers
+			hidden:owner = {
+				OR = {
+					has_technology = tech_synthetic_workers
+					is_machine_empire = yes
+				}
 				NOR = {
 					has_policy_flag = ai_outlawed
 					has_ethic = ethic_spiritualist
@@ -100,7 +121,10 @@ ship_event = {
 		name = "anomaly.186.c"
 		trigger = {
 			owner = {
-				has_technology = tech_synthetic_workers
+				OR = {
+					has_technology = tech_synthetic_workers
+					is_machine_empire = yes
+				}
 				NOR = {
 					has_policy_flag = ai_outlawed
 					has_ethic = ethic_spiritualist
@@ -127,6 +151,7 @@ ship_event = {
 		name = "anomaly.186.d"
 		trigger = {
 			owner = {
+				is_machine_empire = no
 				OR = {
 					NOT = {	
 						has_technology = tech_synthetic_workers

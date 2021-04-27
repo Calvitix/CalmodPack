@@ -1691,6 +1691,9 @@ planet_event = { #message 2
 			}
 			owner = {
 				set_country_flag = dportal_trader
+				set_variable = { which = dportal_empire_crisis value = 0 }
+				set_variable = { which = dportal_empire_victory value = 0 }
+				set_variable = { which = dportal_empire_final_victory value = 0 }
 			}
 		}
 	}
@@ -1714,6 +1717,9 @@ planet_event = { #message 2
 			}
 			owner = {
 				set_country_flag = dportal_trader
+				set_variable = { which = dportal_empire_crisis value = 0 }
+				set_variable = { which = dportal_empire_victory value = 0 }
+				set_variable = { which = dportal_empire_final_victory value = 0 }
 			}
 		}
 	}
@@ -1845,6 +1851,9 @@ planet_event = { #message 5
 			}
 			owner = {
 				set_country_flag = dportal_trader
+				set_variable = { which = dportal_empire_crisis value = 0 }
+				set_variable = { which = dportal_empire_victory value = 0 }
+				set_variable = { which = dportal_empire_final_victory value = 0 }
 			}
 		}
 	}
@@ -1860,6 +1869,9 @@ planet_event = { #message 5
 			}
 			owner = {
 				set_country_flag = dportal_trader
+				set_variable = { which = dportal_empire_crisis value = 0 }
+				set_variable = { which = dportal_empire_victory value = 0 }
+				set_variable = { which = dportal_empire_final_victory value = 0 }
 			}
 		}
 	}
@@ -1879,7 +1891,7 @@ event = {
 	immediate = {
 		random_playable_country = {
 			limit = { has_country_flag = dportal_trader }
-			country_event = { id = colony.3030 }
+			country_event = { id = colony.3030 days = 1 random = 1080 }
 		}
 	}
 }
@@ -1892,10 +1904,11 @@ country_event = { #Mirror portal followup events
 	
 	trigger = {
 		has_country_flag = dportal_trader
-		any_owned_planet = {
-			has_planet_flag = dportal_trader
+		NOR = {
+			has_country_flag = dportal_empire_crisis_flag
+			has_country_flag = dportal_empire_truce_flag
+			has_country_flag = dportal_empire_victory_flag
 		}
-		NOT = { has_country_flag = dportal_empire_crisis_flag }
 	}
 	
 	immediate = {
@@ -1911,9 +1924,67 @@ country_event = { #Mirror portal followup events
 					has_modifier = dportal_trade_normal
 				}
 				random_list = {
-					60 = { } #no effect
-					10 = { planet_event = { id = colony.3031 }} #trade goes up
-					10 = { planet_event = { id = colony.3032 }} #trade goes down	
+					100 = {
+						#no effect
+						random = {
+							chance = 50
+							dportal_planet_random_event = yes
+						}
+					}
+					10 = {
+						planet_event = { id = colony.3031 } #trade goes up
+						dportal_planet_random_event = yes
+						modifier = {
+							factor = 1.25
+							owner = { has_country_flag = dportal_empire_weapon_1 }
+						}
+						modifier = {
+							factor = 1.25
+							owner = { has_country_flag = dportal_empire_weapon_2 }
+						}
+						modifier = {
+							factor = 1.15
+							owner = { has_country_flag = dportal_empire_precursor_alloys }
+						}
+						modifier = {
+							factor = 1.15
+							owner = {
+								check_variable = { which = dportal_warps_closed value > 0 }
+							}
+						}
+						modifier = {
+							factor = 1.2
+							owner = {
+								check_variable = { which = dportal_warps_closed value > 1 }
+							}
+						}
+						modifier = {
+							factor = 1.2
+							owner = {
+								check_variable = { which = dportal_warps_closed value > 2 }
+							}
+						}
+						modifier = {
+							factor = 1.25
+							owner = {
+								check_variable = { which = dportal_warps_closed value > 3 }
+							}
+						}
+						modifier = {
+							factor = 1.5
+							owner = {
+								check_variable = { which = dportal_warps_closed value > 4 }
+							}
+						}
+					}
+					10 = {
+						modifier {
+							factor = 1.75
+							has_country_flag = worm_events_available
+						}
+						planet_event = { id = colony.3032 } #trade goes down
+						dportal_planet_random_event = yes
+					}
 				}
 			}
 			else_if = {
@@ -1921,9 +1992,67 @@ country_event = { #Mirror portal followup events
 					has_modifier = dportal_trade_low
 				}
 				random_list = {
-					20 = { } #no effect
-					20 = { planet_event = { id = colony.3031 }} #trade goes up
-					10 = { planet_event = { id = colony.3032 }} #trade goes down	
+					20 = {
+						#no effect
+						random = {
+							chance = 40
+							dportal_planet_random_event = yes
+						}
+					}
+					20 = {
+						planet_event = { id = colony.3031 } #trade goes up
+						dportal_planet_random_event = yes
+						modifier = {
+							factor = 1.25
+							owner = { has_country_flag = dportal_empire_weapon_1 }
+						}
+						modifier = {
+							factor = 1.25
+							owner = { has_country_flag = dportal_empire_weapon_2 }
+						}
+						modifier = {
+							factor = 1.15
+							owner = { has_country_flag = dportal_empire_precursor_alloys }
+						}
+						modifier = {
+							factor = 1.15
+							owner = {
+								check_variable = { which = dportal_warps_closed value > 0 }
+							}
+						}
+						modifier = {
+							factor = 1.2
+							owner = {
+								check_variable = { which = dportal_warps_closed value > 1 }
+							}
+						}
+						modifier = {
+							factor = 1.2
+							owner = {
+								check_variable = { which = dportal_warps_closed value > 2 }
+							}
+						}
+						modifier = {
+							factor = 1.25
+							owner = {
+								check_variable = { which = dportal_warps_closed value > 3 }
+							}
+						}
+						modifier = {
+							factor = 1.5
+							owner = {
+								check_variable = { which = dportal_warps_closed value > 4 }
+							}
+						}
+					}
+					10 = {
+						modifier {
+							factor = 1.75
+							has_country_flag = worm_events_available
+						}
+						planet_event = { id = colony.3032 } #trade goes down
+						dportal_planet_random_event = yes
+					}	
 				}
 			}
 			else_if = {
@@ -1931,16 +2060,71 @@ country_event = { #Mirror portal followup events
 					has_modifier = dportal_trade_high
 				}
 				random_list = {
-					30 = {} #no effect
-					10 = { planet_event = { id = colony.3031 }} #trade goes up
-					20 = { planet_event = { id = colony.3032 }} #trade goes down	
+					40 = {
+						#no effect
+						random = {
+							chance = 60
+							dportal_planet_random_event = yes
+						}
+					}
+					10 = {
+						planet_event = { id = colony.3031 } #trade goes up
+						dportal_planet_random_event = yes
+						modifier = {
+							factor = 1.25
+							owner = { has_country_flag = dportal_empire_weapon_1 }
+						}
+						modifier = {
+							factor = 1.25
+							owner = { has_country_flag = dportal_empire_weapon_2 }
+						}
+						modifier = {
+							factor = 1.15
+							owner = { has_country_flag = dportal_empire_precursor_alloys }
+						}
+						modifier = {
+							factor = 1.15
+							owner = {
+								check_variable = { which = dportal_warps_closed value > 0 }
+							}
+						}
+						modifier = {
+							factor = 1.2
+							owner = {
+								check_variable = { which = dportal_warps_closed value > 1 }
+							}
+						}
+						modifier = {
+							factor = 1.2
+							owner = {
+								check_variable = { which = dportal_warps_closed value > 2 }
+							}
+						}
+						modifier = {
+							factor = 1.25
+							owner = {
+								check_variable = { which = dportal_warps_closed value > 3 }
+							}
+						}
+						modifier = {
+							factor = 1.5
+							owner = {
+								check_variable = { which = dportal_warps_closed value > 4 }
+							}
+						}
+					}
+					20 = {
+						modifier {
+							factor = 1.75
+							has_country_flag = worm_events_available
+						}
+						planet_event = { id = colony.3032 } #trade goes down
+						dportal_planet_random_event = yes
+					}
 				}
 			}
-			
 		}
-		
 	}
-
 }
 
 planet_event = { #trade up
@@ -2020,6 +2204,77 @@ planet_event = { #trade up
 					value = 3
 					min = 50
 				}				
+				hidden_effect = {
+					if = {
+						limit = {
+							check_variable = {
+								which = dportal_empire_crisis
+								value > 0
+							}
+						}
+						change_variable = {
+							which = dportal_empire_crisis
+							value = -1
+						}
+					}
+					else = {
+						change_variable = {
+							which = dportal_empire_victory
+							value = 1
+						}
+						if = {
+							limit = {
+								check_variable = {
+									which = dportal_empire_victory
+									value > 11
+								}
+								NOT = { ROOT = { has_planet_flag = the_final_warp_breach } }
+							}
+							ROOT = {
+								planet_event = { id = colonyexpanded.501 days = 60 random = 360 }
+							}
+						}
+						else_if = {
+							limit = {
+								check_variable = {
+									which = dportal_empire_victory
+									value > 11
+								}
+								ROOT = { has_planet_flag = the_final_warp_breach }
+							}
+							ROOT = {
+								planet_event = { id = colonyexpanded.552 days = 60 random = 360 }
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		if = {
+			limit = {
+				NOT = { has_planet_flag = warp_breach_research_start }
+				exists = owner
+				owner = {
+					check_variable = {
+						which = dportal_empire_final_victory
+						value > 4
+					}
+					is_at_war = no
+					has_crisis = no
+					OR = {
+						has_technology = tech_jump_drive_1
+						has_technology = tech_psi_jump_drive_1
+					}
+				}
+			}
+			hidden_effect = {
+				random_list = {
+					1 = {
+						planet_event = { id = colonyexpanded.550 days = 180 random = 360 }
+					}
+					2 = { }
+				}
 			}
 		}
 	}
@@ -2080,11 +2335,55 @@ planet_event = { #trade down
 		}
 		else_if = {
 			limit = {
-				has_modifier = dportal_trade_low
-				owner = {
-					check_variable = {
-						which = dportal_empire_crisis
-						value < 5
+				AND = {
+					has_modifier = dportal_trade_low
+					owner = {
+						check_variable = {
+							which = dportal_empire_victory
+							value > 5
+						}
+					}
+				}
+			}
+			owner = { 
+				hidden_effect = {
+					change_variable = {
+						which = dportal_empire_victory
+						value = -2
+					}
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				AND = {
+					has_modifier = dportal_trade_low
+					owner = {
+						check_variable = {
+							which = dportal_empire_victory
+							value > 0
+						}
+					}
+				}
+			}
+			owner = { 
+				hidden_effect = {
+					change_variable = {
+						which = dportal_empire_victory
+						value = -1
+					}
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				AND = {
+					has_modifier = dportal_trade_low
+					owner = {
+						check_variable = {
+								which = dportal_empire_crisis
+								value < 5
+						}
 					}
 				}
 			}
@@ -2099,27 +2398,36 @@ planet_event = { #trade down
 		}
 		else_if = {
 			limit = {
-				has_modifier = dportal_trade_low
-				owner = {
-					check_variable = {
-							which = dportal_empire_crisis
-							value >= 5
+				AND = {
+					has_modifier = dportal_trade_low
+					owner = {
+						check_variable = {
+								which = dportal_empire_crisis
+								value >= 5
+						}
 					}
 				}
 			}
-			add_modifier = {
-				modifier = "dportal_trade_crisis"
-				days = -1
-			}
 			hidden_effect = {
 				remove_modifier = dportal_trade_low
+				add_modifier = {
+					modifier = "dportal_trade_crisis"
+					days = -1
+				}
 				planet_event = { id = colony.3033 days = 1825 random = 1825 }
+				planet_event = { id = colonyexpanded.500 days = 360 random = 360 }
+				planet_event = { id = colonyexpanded.500 days = 720 random = 720 }
+				planet_event = { id = colonyexpanded.500 days = 1080 random = 720 }
+				planet_event = { id = colonyexpanded.500 days = 1440 random = 720 }
+				planet_event = { id = colonyexpanded.500 days = 1800 random = 720 }
+				planet_event = { id = colonyexpanded.500 days = 2160 random = 720 }
+				planet_event = { id = colonyexpanded.500 days = 2520 random = 720 }
 				owner = { set_country_flag = dportal_empire_crisis_flag }
 			}
 		}
 	}
 	option = {
-		name = colony.3032.a
+		name = colony.3032.a 
 		if = {
 			limit = {
 				NAND = {
@@ -2168,11 +2476,85 @@ planet_event = { #trade down
 		}
 		else_if = {
 			limit = {
-				has_modifier = dportal_trade_low
-				owner = {
-					check_variable = {
+				AND = {
+					has_modifier = dportal_trade_low
+					owner = {
+						check_variable = {
+							which = dportal_empire_victory
+							value > 5
+						}
+					}
+				}
+			}
+			owner = { 
+				hidden_effect = {
+					change_variable = {
+						which = dportal_empire_victory
+						value = -2
+					}
+				}
+			}
+			hidden_effect = {
+				random_list = {
+					1 = {
+						if = {
+							limit = {
+								owner = {
+									has_country_flag = worm_events_available
+								}
+							}
+							planet_event = { id = countryexpanded.210 days = 60 random = 360 }
+						}
+					}
+					9999 = { }
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				AND = {
+					has_modifier = dportal_trade_low
+					owner = {
+						check_variable = {
+							which = dportal_empire_victory
+							value > 0
+						}
+					}
+				}
+			}
+			owner = { 
+				hidden_effect = {
+					change_variable = {
+						which = dportal_empire_victory
+						value = -1
+					}
+				}
+			}
+			hidden_effect = {
+				random_list = {
+					1 = {
+						if = {
+							limit = {
+								owner = {
+									has_country_flag = worm_events_available
+								}
+							}
+							planet_event = { id = countryexpanded.210 days = 60 random = 360 }
+						}
+					}
+					4999 = { }
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				AND = {
+					has_modifier = dportal_trade_low
+					owner = {
+						check_variable = {
 							which = dportal_empire_crisis
 							value < 5
+						}
 					}
 				}
 			}
@@ -2184,24 +2566,95 @@ planet_event = { #trade down
 					}
 				}
 			}
+			hidden_effect = {
+				random_list = {
+					1 = {
+						modifier = {
+							factor = 2
+							owner = {
+								check_variable = {
+										which = dportal_empire_crisis
+										value = 2
+								}
+							}
+						}
+						modifier = {
+							factor = 10
+							owner = {
+								check_variable = {
+										which = dportal_empire_crisis
+										value = 3
+								}
+							}
+						}
+						modifier = {
+							factor = 500
+							owner = {
+								check_variable = {
+										which = dportal_empire_crisis
+										value = 4
+								}
+							}
+						}
+						modifier = {
+							factor = 1999
+							owner = {
+								check_variable = {
+										which = dportal_empire_crisis
+										value = 5
+								}
+							}
+						}
+						if = {
+							limit = {
+								owner = {
+									has_country_flag = worm_events_available
+								}
+							}
+							planet_event = { id = countryexpanded.210 days = 60 random = 360 }
+						}
+					}
+					1999 = { }
+				}
+			}
 		}
 		else_if = {
 			limit = {
-				has_modifier = dportal_trade_low
-				owner = {
-					check_variable = {
-							which = dportal_empire_crisis
-							value >= 5
+				AND = {
+					has_modifier = dportal_trade_low
+					owner = {
+						check_variable = {
+								which = dportal_empire_crisis
+								value >= 5
+						}
 					}
 				}
 			}
-			add_modifier = {
-				modifier = "dportal_trade_crisis"
-				days = -1
-			}
 			hidden_effect = {
 				remove_modifier = dportal_trade_low
-				planet_event = { id = colony.3033 days = 1825 random = 1825 }
+				add_modifier = {
+					modifier = "dportal_trade_crisis"
+					days = -1
+				}
+				if = {
+					limit = {
+						owner = {
+							has_country_flag = worm_events_available
+						}
+					}
+					planet_event = { id = countryexpanded.210 days = 60 random = 360 }
+					planet_event = { id = colonyexpanded.500 days = 180 random = 180 }
+				}
+				else = {
+					planet_event = { id = colony.3033 days = 1825 random = 1825 }
+					planet_event = { id = colonyexpanded.500 days = 360 random = 360 }
+					planet_event = { id = colonyexpanded.500 days = 720 random = 720 }
+					planet_event = { id = colonyexpanded.500 days = 1080 random = 720 }
+					planet_event = { id = colonyexpanded.500 days = 1440 random = 720 }
+					planet_event = { id = colonyexpanded.500 days = 1800 random = 720 }
+					planet_event = { id = colonyexpanded.500 days = 2160 random = 720 }
+					planet_event = { id = colonyexpanded.500 days = 2520 random = 720 }
+				}
 				owner = { set_country_flag = dportal_empire_crisis_flag }
 			}
 		}

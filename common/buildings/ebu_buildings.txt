@@ -190,10 +190,48 @@ eb_hydrofarm2 = {
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
-			owner = { is_regular_empire = yes }
+			owner = {
+				is_regular_empire = yes
+				is_fallen_empire_spiritualist = no
+			}
 		}
 		modifier = {
-			job_farmer_add = 5
+			job_farmer_add = 4
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_gestalt = no
+				is_fallen_empire_spiritualist = no
+			}
+			has_active_building = building_food_processing_center
+		}
+		modifier = {
+			job_farmer_add = 1
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_fallen_empire_spiritualist = yes }
+		}
+		modifier = {
+			job_fe_acolyte_farm_add = 4
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_fallen_empire_spiritualist = yes }
+			has_active_building = building_food_processing_center
+		}
+		modifier = {
+			job_fe_acolyte_farm_add = 1
 		}
 	}
 
@@ -213,22 +251,34 @@ eb_hydrofarm2 = {
 			owner = { is_gestalt = yes }
 		}
 		modifier = {
-			job_agri_drone_add = 5
+			job_agri_drone_add = 4
 		}
 	}
-	
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_gestalt = yes }
+			has_active_building = building_food_processing_center
+		}
+		modifier = {
+			job_agri_drone_add = 1
+		}
+	}
+
 	resources = {
 		category = planet_buildings
 		cost = {
 			minerals = 600
-			volatile_motes = 10
+			alloys = 50
+			volatile_motes = 50
 		}
 		upkeep = {
 			energy = 5
 			volatile_motes = 1
 		}
-	}	
-	
+	}
+
 	triggered_desc = {
 		trigger = {
 			exists = owner
@@ -239,104 +289,31 @@ eb_hydrofarm2 = {
 	triggered_desc = {
 		trigger = {
 			exists = owner
-			owner = { is_gestalt = no }
+			owner = {
+				is_gestalt = no
+				is_fallen_empire_spiritualist = no
+			}
 		}
 		text = job_farmer_effect_desc
+	}
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_fallen_empire_spiritualist = yes }
+		}
+		text = job_fe_acolyte_farm_effect_desc
+	}
+
+	prerequisites = {
+		"tech_food_processing_1"
 	}
 	
 	upgrades = {
 		"eb_hydrofarm3"
 	}
-	
-	prerequisites = {
-		"tech_food_processing_1"
-	}
-	
-	ai_weight = {
-		weight = 0
-		modifier = {
-			weight = 501
-			OR = {
-				free_jobs < 3
-				buildings_unemployed = yes
-			}
-			OR = {
-				num_free_districts = { type = district_farming value = 0 } 
-				free_district_slots = 0
-			}
-			owner = {
-				OR = {
-					is_mechanical_empire = no
-					AND = {
-						is_mechanical_empire = yes
-						OR = {
-							has_civic = civic_machine_servitor
-							has_civic = civic_machine_assimilator
-						}
-					}
-				}
-				has_monthly_income = {
-					resource = food
-					value < 0
-				}
-			}
-		}
-		modifier = {
-			weight = 1001
-			OR = {
-				free_housing > 3
-				owner = { is_gestalt = no }
-			}
-			OR = {
-				free_jobs < 3
-				buildings_unemployed = yes
-			}
-			OR = {
-				is_planet_class = pc_habitat
-				is_planet_class = pc_city
-				is_planet_class = pc_relic
-			}
-			OR = {
-				owner = {
-					OR = {
-						is_mechanical_empire = no
-						AND = {
-							is_mechanical_empire = yes
-							OR = {
-								has_civic = civic_machine_servitor
-								has_civic = civic_machine_assimilator
-							}
-						}
-					}
-					has_monthly_income = {
-						resource = food
-						value < 125
-					}
-				}
-				has_building = building_hydroponics_farm
-			}
-		}
-		modifier = {
-			factor = 0
-			owner = {
-				has_monthly_income = {
-					resource = food
-					value > 1
-				}
-			}
-			OR = {
-				is_planet_class = pc_city
-				is_planet_class = pc_relic
-			}
-		}
-		modifier = {
-			factor = 0
-			owner = { has_monthly_income = { resource = volatile_motes value <= 1 } }
-        }
-	}
 
 	ai_resource_production = {
-		food = 1
+		food = 2
 		trigger = {
 			always = yes
 		}
@@ -348,14 +325,56 @@ eb_hydrofarm3 = {
 	can_build = no
 
 	category = resource
+	
+	allow = {
+		has_upgraded_capital = yes
+	}
 
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
-			owner = { is_regular_empire = yes }
+			owner = {
+				is_regular_empire = yes
+				is_fallen_empire_spiritualist = no
+			}
 		}
 		modifier = {
-			job_farmer_add = 10
+			job_farmer_add = 6
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_gestalt = no
+				is_fallen_empire_spiritualist = no
+			}
+			has_active_building = building_food_processing_center
+		}
+		modifier = {
+			job_farmer_add = 1
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_fallen_empire_spiritualist = yes }
+		}
+		modifier = {
+			job_fe_acolyte_farm_add = 6
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_fallen_empire_spiritualist = yes }
+			has_active_building = building_food_processing_center
+		}
+		modifier = {
+			job_fe_acolyte_farm_add = 1
 		}
 	}
 
@@ -375,22 +394,34 @@ eb_hydrofarm3 = {
 			owner = { is_gestalt = yes }
 		}
 		modifier = {
-			job_agri_drone_add = 10
+			job_agri_drone_add = 6
 		}
 	}
-	
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_gestalt = yes }
+			has_active_building = building_food_processing_center
+		}
+		modifier = {
+			job_agri_drone_add = 1
+		}
+	}
+
 	resources = {
 		category = planet_buildings
 		cost = {
-			minerals = 900
-			volatile_motes = 25
+			minerals = 800
+			alloys = 50
+			volatile_motes = 100
 		}
 		upkeep = {
-			energy = 10
+			energy = 8
 			volatile_motes = 2
 		}
-	}	
-	
+	}
+
 	triggered_desc = {
 		trigger = {
 			exists = owner
@@ -401,100 +432,27 @@ eb_hydrofarm3 = {
 	triggered_desc = {
 		trigger = {
 			exists = owner
-			owner = { is_gestalt = no }
+			owner = {
+				is_gestalt = no
+				is_fallen_empire_spiritualist = no
+			}
 		}
 		text = job_farmer_effect_desc
 	}
-	
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_fallen_empire_spiritualist = yes }
+		}
+		text = job_fe_acolyte_farm_effect_desc
+	}
+
 	prerequisites = {
 		"tech_food_processing_2"
 	}
-	
-	ai_weight = {
-		weight = 0
-		modifier = {
-			weight = 502
-			OR = {
-				free_jobs < 3
-				buildings_unemployed = yes
-			}
-			OR = {
-				num_free_districts = { type = district_farming value = 0 } 
-				free_district_slots = 0
-			}
-			owner = {
-				OR = {
-					is_mechanical_empire = no
-					AND = {
-						is_mechanical_empire = yes
-						OR = {
-							has_civic = civic_machine_servitor
-							has_civic = civic_machine_assimilator
-						}
-					}
-				}
-				has_monthly_income = {
-					resource = food
-					value < 0
-				}
-			}
-		}
-		modifier = {
-			weight = 1002
-			OR = {
-				free_housing > 3
-				owner = { is_gestalt = no }
-			}
-			OR = {
-				free_jobs < 3
-				buildings_unemployed = yes
-			}
-			OR = {
-				is_planet_class = pc_habitat
-				is_planet_class = pc_city
-				is_planet_class = pc_relic
-			}
-			OR = {
-				owner = {
-					OR = {
-						is_mechanical_empire = no
-						AND = {
-							is_mechanical_empire = yes
-							OR = {
-								has_civic = civic_machine_servitor
-								has_civic = civic_machine_assimilator
-							}
-						}
-					}
-					has_monthly_income = {
-						resource = food
-						value < 125
-					}
-				}
-				has_building = building_hydroponics_farm
-			}
-		}
-		modifier = {
-			factor = 0
-			owner = {
-				has_monthly_income = {
-					resource = food
-					value > 1
-				}
-			}
-			OR = {
-				is_planet_class = pc_city
-				is_planet_class = pc_relic
-			}
-		}
-		modifier = {
-            factor = 0
-            owner = { has_monthly_income = { resource = volatile_motes value <= 2 } }
-        }
-	}
 
 	ai_resource_production = {
-		food = 1
+		food = 3
 		trigger = {
 			always = yes
 		}
@@ -505,7 +463,7 @@ eb_hydrofarm3 = {
 eb_mineral2 = {
 	base_buildtime = 360
 	can_build = no
-	
+
 	category = resource
 	
 	triggered_planet_modifier = {
@@ -514,7 +472,20 @@ eb_mineral2 = {
 			owner = { is_regular_empire = yes }
 		}
 		modifier = {
-			job_miner_add = 5
+			job_miner_add = 4
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_gestalt = no
+			}
+			has_active_building = building_mineral_purification_plant
+		}
+		modifier = {
+			job_miner_add = 1
 		}
 	}
 
@@ -524,7 +495,18 @@ eb_mineral2 = {
 			owner = { is_gestalt = yes }
 		}
 		modifier = {
-			job_mining_drone_add = 5
+			job_mining_drone_add = 4
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_gestalt = yes }
+			has_active_building = building_mineral_purification_plant
+		}
+		modifier = {
+			job_mining_drone_add = 1
 		}
 	}
 	
@@ -532,7 +514,8 @@ eb_mineral2 = {
 		category = planet_buildings
 		cost = {
 			minerals = 600
-			rare_crystals = 10
+			alloys = 50
+			rare_crystals = 50
 		}
 		upkeep = {
 			energy = 5
@@ -558,86 +541,12 @@ eb_mineral2 = {
 	prerequisites = {
 		tech_mineral_purification_2
 	}
-	
 	upgrades = {
 		"eb_mineral3"
 	}
-	
-	ai_weight = {
-		weight = 0
-		modifier = {
-			weight = 501
-			OR = { 
-				NOT = { is_planet_class = pc_habitat }
-				has_planet_flag = mining_habitat
-			}
-			OR = {
-				free_jobs < 3
-				buildings_unemployed = yes
-			}
-			OR = {
-				num_free_districts = { type = district_mining value = 0 } 
-				free_district_slots = 0
-			}#Don't build when you can still get farming districts
-			owner = {
-				has_monthly_income = {
-					resource = minerals
-					value < 0
-				}
-			}
-		}
-		modifier = {
-			weight = 1001
-			OR = {
-				free_housing > 3
-				owner = { is_gestalt = no }
-			}
-			OR = {
-				free_jobs < 3
-				buildings_unemployed = yes
-			}
-			OR = {
-				AND = {
-					is_planet_class = pc_habitat
-					has_planet_flag = mining_habitat
-				}
-				NOR = { 
-					is_planet_class = pc_ringworld_habitable 
-					is_planet_class = pc_cybrex
-					has_modifier = resort_colony
-				}
-			}
-			OR = {
-				owner = {
-					has_monthly_income = {
-						resource = minerals
-						value < 125
-					}
-				}
-				has_building = eb_mineral
-			}
-		}
-		modifier = {
-			factor = 0
-			owner = {
-				has_monthly_income = {
-					resource = minerals
-					value > 1
-				}
-			}
-			OR = {
-				is_planet_class = pc_city
-				is_planet_class = pc_relic
-			}
-		}
-		modifier = {
-            factor = 0
-			owner = { has_monthly_income = { resource = rare_crystals value <= 1 } }
-        }
-	}
 
 	ai_resource_production = {
-		minerals = 1
+		minerals = 2
 		trigger = {
 			always = yes
 		}
@@ -647,7 +556,7 @@ eb_mineral2 = {
 eb_mineral3 = {
 	base_buildtime = 360
 	can_build = no
-	
+
 	category = resource
 	
 	triggered_planet_modifier = {
@@ -656,7 +565,20 @@ eb_mineral3 = {
 			owner = { is_regular_empire = yes }
 		}
 		modifier = {
-			job_miner_add = 10
+			job_miner_add = 6
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_gestalt = no
+			}
+			has_active_building = building_mineral_purification_plant
+		}
+		modifier = {
+			job_miner_add = 1
 		}
 	}
 
@@ -666,18 +588,30 @@ eb_mineral3 = {
 			owner = { is_gestalt = yes }
 		}
 		modifier = {
-			job_mining_drone_add = 10
+			job_mining_drone_add = 6
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_gestalt = yes }
+			has_active_building = building_mineral_purification_plant
+		}
+		modifier = {
+			job_mining_drone_add = 1
 		}
 	}
 	
 	resources = {
 		category = planet_buildings
 		cost = {
-			minerals = 900
-			volatile_motes = 25
+			minerals = 800
+			alloys = 50
+			rare_crystals = 100
 		}
 		upkeep = {
-			energy = 10
+			energy = 8
 			rare_crystals = 2
 		}
 	}	
@@ -700,93 +634,30 @@ eb_mineral3 = {
 	prerequisites = {
 		eb_mineral_tech
 	}
-	
-	ai_weight = {
-		weight = 0
-		modifier = {
-			weight = 502
-			OR = { 
-				NOT = { is_planet_class = pc_habitat }
-				has_planet_flag = mining_habitat
-			}
-			OR = {
-				free_jobs < 3
-				buildings_unemployed = yes
-			}
-			OR = {
-				num_free_districts = { type = district_mining value = 0 } 
-				free_district_slots = 0
-			}#Don't build when you can still get farming districts
-			owner = {
-				has_monthly_income = {
-					resource = minerals
-					value < 0
-				}
-			}
-		}
-		modifier = {
-			weight = 1002
-			OR = {
-				free_housing > 3
-				owner = { is_gestalt = no }
-			}
-			OR = {
-				free_jobs < 3
-				buildings_unemployed = yes
-			}
-			OR = {
-				AND = {
-					is_planet_class = pc_habitat
-					has_planet_flag = mining_habitat
-				}
-				NOR = { 
-					is_planet_class = pc_ringworld_habitable 
-					is_planet_class = pc_cybrex
-					has_modifier = resort_colony
-				}
-			}
-			OR = {
-				owner = {
-					has_monthly_income = {
-						resource = minerals
-						value < 125
-					}
-				}
-				has_building = eb_mineral
-			}
-		}
-		modifier = {
-			factor = 0
-			owner = {
-				has_monthly_income = {
-					resource = minerals
-					value > 1
-				}
-			}
-			OR = {
-				is_planet_class = pc_city
-				is_planet_class = pc_relic
-			}
-		}
-		modifier = {
-            factor = 0
-            owner = { has_monthly_income = { resource = rare_crystals value <= 2 } }
-        }
-	}
 
 	ai_resource_production = {
-		minerals = 1
+		minerals = 3
 		trigger = {
 			always = yes
 		}
 	}
 }
 
+#Mining Habs
 eb_mineral_hab2 = {
 	base_buildtime = 360
 	can_build = no
-	
+
 	category = resource
+	
+	potential = {
+		OR = { 
+			is_planet_class = pc_habitat
+			is_planet_class = pc_ringworld_habitable
+			is_planet_class = pc_cybrex
+		}
+		NOT = { has_modifier = resort_colony }
+	}
 	
 	triggered_planet_modifier = {
 		potential = {
@@ -794,7 +665,20 @@ eb_mineral_hab2 = {
 			owner = { is_regular_empire = yes }
 		}
 		modifier = {
-			job_miner_add = 3
+			job_miner_add = 2
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_gestalt = no
+			}
+			has_active_building = building_mineral_purification_plant
+		}
+		modifier = {
+			job_miner_add = 1
 		}
 	}
 	
@@ -824,7 +708,18 @@ eb_mineral_hab2 = {
 			owner = { is_gestalt = yes }
 		}
 		modifier = {
-			job_mining_drone_add = 3
+			job_mining_drone_add = 2
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_gestalt = yes }
+			has_active_building = building_mineral_purification_plant
+		}
+		modifier = {
+			job_mining_drone_add = 1
 		}
 	}
 	
@@ -852,7 +747,8 @@ eb_mineral_hab2 = {
 		category = planet_buildings
 		cost = {
 			minerals = 600
-			rare_crystals = 10
+			alloys = 50
+			rare_crystals = 50
 		}
 		upkeep = {
 			energy = 5
@@ -877,7 +773,7 @@ eb_mineral_hab2 = {
 			}
 		}
 		text = eb_mineral_hab_bad
-	}	
+	}
 	
 	triggered_desc = {
 		trigger = {
@@ -892,7 +788,7 @@ eb_mineral_hab2 = {
 			owner = { is_gestalt = no }
 		}
 		text = job_miner_effect_desc
-	}
+	}	
 	
 	prerequisites = {
 		tech_mineral_purification_2
@@ -901,82 +797,9 @@ eb_mineral_hab2 = {
 	upgrades = {
 		"eb_mineral_hab3"
 	}
-	
-	ai_weight = {
-		weight = 0
-		modifier = {
-			weight = 501
-			OR = { 
-				NOT = { is_planet_class = pc_habitat }
-				has_planet_flag = mining_habitat
-			}
-			OR = {
-				free_jobs < 3
-				buildings_unemployed = yes
-			}
-			OR = {
-				num_free_districts = { type = district_mining value = 0 } 
-				free_district_slots = 0
-			}#Don't build when you can still get farming districts
-			owner = {
-				has_monthly_income = {
-					resource = minerals
-					value < 0
-				}
-			}
-		}
-		modifier = {
-			weight = 1001
-			OR = {
-				free_housing > 3
-				owner = { is_gestalt = no }
-			}
-			OR = {
-				free_jobs < 3
-				buildings_unemployed = yes
-			}
-			OR = {
-				AND = {
-					is_planet_class = pc_habitat
-					has_planet_flag = mining_habitat
-				}
-				NOR = { 
-					is_planet_class = pc_ringworld_habitable 
-					is_planet_class = pc_cybrex
-					has_modifier = resort_colony
-				}
-			}
-			OR = {
-				owner = {
-					has_monthly_income = {
-						resource = minerals
-						value < 125
-					}
-				}
-				has_building = eb_mineral
-			}
-		}
-		modifier = {
-			factor = 0
-			owner = {
-				has_monthly_income = {
-					resource = minerals
-					value > 1
-				}
-			}
-			OR = {
-				is_planet_class = pc_city
-				is_planet_class = pc_relic
-			}
-		}
-		modifier = {
-            factor = 0
-			owner = { has_monthly_income = { resource = rare_crystals value <= 1 } }
-        }
-	}
 
 	ai_resource_production = {
-		minerals = 1
+		minerals = 2
 		trigger = {
 			always = yes
 		}
@@ -986,8 +809,17 @@ eb_mineral_hab2 = {
 eb_mineral_hab3 = {
 	base_buildtime = 360
 	can_build = no
-	
+
 	category = resource
+	
+	potential = {
+		OR = { 
+			is_planet_class = pc_habitat
+			is_planet_class = pc_ringworld_habitable
+			is_planet_class = pc_cybrex
+		}
+		NOT = { has_modifier = resort_colony }
+	}
 	
 	triggered_planet_modifier = {
 		potential = {
@@ -995,7 +827,20 @@ eb_mineral_hab3 = {
 			owner = { is_regular_empire = yes }
 		}
 		modifier = {
-			job_miner_add = 6
+			job_miner_add = 3
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_gestalt = no
+			}
+			has_active_building = building_mineral_purification_plant
+		}
+		modifier = {
+			job_miner_add = 1
 		}
 	}
 	
@@ -1015,7 +860,7 @@ eb_mineral_hab3 = {
 			}
 		}
 		modifier = {
-			job_miner_add = 4
+			job_miner_add = 3
 		}
 	}
 
@@ -1025,7 +870,18 @@ eb_mineral_hab3 = {
 			owner = { is_gestalt = yes }
 		}
 		modifier = {
-			job_mining_drone_add = 6
+			job_mining_drone_add = 3
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_gestalt = yes }
+			has_active_building = building_mineral_purification_plant
+		}
+		modifier = {
+			job_mining_drone_add = 1
 		}
 	}
 	
@@ -1045,18 +901,19 @@ eb_mineral_hab3 = {
 			}
 		}
 		modifier = {
-			job_mining_drone_add = 4
+			job_mining_drone_add = 3
 		}
 	}
 	
 	resources = {
 		category = planet_buildings
 		cost = {
-			minerals = 900
-			volatile_motes = 25
+			minerals = 800
+			alloys = 50
+			rare_crystals = 100
 		}
 		upkeep = {
-			energy = 10
+			energy = 8
 			rare_crystals = 2
 		}
 	}
@@ -1078,7 +935,7 @@ eb_mineral_hab3 = {
 			}
 		}
 		text = eb_mineral_hab_bad
-	}	
+	}
 	
 	triggered_desc = {
 		trigger = {
@@ -1093,87 +950,14 @@ eb_mineral_hab3 = {
 			owner = { is_gestalt = no }
 		}
 		text = job_miner_effect_desc
-	}
+	}	
 	
 	prerequisites = {
 		eb_mineral_tech
 	}
-	
-	ai_weight = {
-		weight = 0
-		modifier = {
-			weight = 502
-			OR = { 
-				NOT = { is_planet_class = pc_habitat }
-				has_planet_flag = mining_habitat
-			}
-			OR = {
-				free_jobs < 3
-				buildings_unemployed = yes
-			}
-			OR = {
-				num_free_districts = { type = district_mining value = 0 } 
-				free_district_slots = 0
-			}#Don't build when you can still get farming districts
-			owner = {
-				has_monthly_income = {
-					resource = minerals
-					value < 0
-				}
-			}
-		}
-		modifier = {
-			weight = 1002
-			OR = {
-				free_housing > 3
-				owner = { is_gestalt = no }
-			}
-			OR = {
-				free_jobs < 3
-				buildings_unemployed = yes
-			}
-			OR = {
-				AND = {
-					is_planet_class = pc_habitat
-					has_planet_flag = mining_habitat
-				}
-				NOR = { 
-					is_planet_class = pc_ringworld_habitable 
-					is_planet_class = pc_cybrex
-					has_modifier = resort_colony
-				}
-			}
-			OR = {
-				owner = {
-					has_monthly_income = {
-						resource = minerals
-						value < 125
-					}
-				}
-				has_building = eb_mineral
-			}
-		}
-		modifier = {
-			factor = 0
-			owner = {
-				has_monthly_income = {
-					resource = minerals
-					value > 1
-				}
-			}
-			OR = {
-				is_planet_class = pc_city
-				is_planet_class = pc_relic
-			}
-		}
-		modifier = {
-            factor = 0
-            owner = { has_monthly_income = { resource = rare_crystals value <= 2 } }
-        }
-	}
 
 	ai_resource_production = {
-		minerals = 1
+		minerals = 3
 		trigger = {
 			always = yes
 		}
@@ -1185,8 +969,12 @@ eb_mineral_hab3 = {
 eb_energy2 = {
 	base_buildtime = 360
 	can_build = no
-	
+
 	category = resource
+	
+	potential = {
+		NOT = { has_modifier = resort_colony }
+	}
 	
 	triggered_planet_modifier = {
 		potential = {
@@ -1194,7 +982,20 @@ eb_energy2 = {
 			owner = { is_regular_empire = yes }
 		}
 		modifier = {
-			job_technician_add = 5
+			job_technician_add = 4
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_gestalt = no
+			}
+			has_active_building = building_energy_grid
+		}
+		modifier = {
+			job_technician_add = 1
 		}
 	}
 
@@ -1204,7 +1005,18 @@ eb_energy2 = {
 			owner = { is_gestalt = yes }
 		}
 		modifier = {
-			job_technician_drone_add = 5
+			job_technician_drone_add = 4
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_gestalt = yes }
+			has_active_building = building_energy_grid
+		}
+		modifier = {
+			job_technician_drone_add = 1
 		}
 	}
 	
@@ -1212,10 +1024,11 @@ eb_energy2 = {
 		category = planet_buildings
 		cost = {
 			minerals = 600
-			exotic_gases = 10
+			alloys = 50
+			exotic_gases = 50
 		}
 		upkeep = {
-			minerals = 2.5
+			minerals = 5
 			exotic_gases = 1
 		}
 	}	
@@ -1242,78 +1055,9 @@ eb_energy2 = {
 	upgrades = {
 		"eb_energy3"
 	}
-	
-	ai_weight = {
-		weight = 0
-		modifier = {
-			weight = 501
-			OR = { 
-				NOT = { is_planet_class = pc_habitat }
-				has_planet_flag = energy
-			}
-			OR = {
-				free_jobs < 3
-				buildings_unemployed = yes
-			}
-			OR = {
-				num_free_districts = { type = district_mining value = 0 } 
-				free_district_slots = 0
-			}#Don't build when you can still get farming districts
-			owner = {
-				has_monthly_income = {
-					resource = energy
-					value < 0
-				}
-			}
-		}
-		modifier = {
-			weight = 1001
-			OR = {
-				free_housing > 3
-				owner = { is_gestalt = no }
-			}
-			OR = {
-				free_jobs < 3
-				buildings_unemployed = yes
-			}
-			OR = {
-				AND = {
-					is_planet_class = pc_habitat
-					has_planet_flag = energy_habitat
-				}
-				NOT = { has_modifier = resort_colony }
-			}
-			OR = {
-				owner = {
-					has_monthly_income = {
-						resource = energy
-						value < 125
-					}
-				}
-				has_building = eb_energy
-			}
-		}
-		modifier = {
-			factor = 0
-			owner = {
-				has_monthly_income = {
-					resource = energy
-					value > 1
-				}
-			}
-			OR = {
-				is_planet_class = pc_city
-				is_planet_class = pc_relic
-			}
-		}
-		modifier = {
-            factor = 0.0
-        	owner = { has_monthly_income = { resource = exotic_gases value <= 1 } }
-        }
-	}
 
 	ai_resource_production = {
-		energy = 1
+		energy = 2
 		trigger = {
 			always = yes
 		}
@@ -1323,8 +1067,12 @@ eb_energy2 = {
 eb_energy3 = {
 	base_buildtime = 360
 	can_build = no
-	
+
 	category = resource
+	
+	potential = {
+		NOT = { has_modifier = resort_colony }
+	}
 	
 	triggered_planet_modifier = {
 		potential = {
@@ -1332,7 +1080,20 @@ eb_energy3 = {
 			owner = { is_regular_empire = yes }
 		}
 		modifier = {
-			job_technician_add = 10
+			job_technician_add = 6
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_gestalt = no
+			}
+			has_active_building = building_energy_grid
+		}
+		modifier = {
+			job_technician_add = 1
 		}
 	}
 
@@ -1342,18 +1103,30 @@ eb_energy3 = {
 			owner = { is_gestalt = yes }
 		}
 		modifier = {
-			job_technician_drone_add = 10
+			job_technician_drone_add = 6
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_gestalt = yes }
+			has_active_building = building_energy_grid
+		}
+		modifier = {
+			job_technician_drone_add = 1
 		}
 	}
 	
 	resources = {
 		category = planet_buildings
 		cost = {
-			minerals = 900
-			exotic_gases = 25
+			minerals = 800
+			alloys = 50
+			exotic_gases = 100
 		}
 		upkeep = {
-			minerals = 5
+			minerals = 8
 			exotic_gases = 2
 		}
 	}	
@@ -1377,349 +1150,8 @@ eb_energy3 = {
 		eb_energy_tech
 	}
 	
-	ai_weight = {
-		weight = 0
-		modifier = {
-			weight = 502
-			OR = { 
-				NOT = { is_planet_class = pc_habitat }
-				has_planet_flag = energy
-			}
-			OR = {
-				free_jobs < 3
-				buildings_unemployed = yes
-			}
-			OR = {
-				num_free_districts = { type = district_mining value = 0 } 
-				free_district_slots = 0
-			}#Don't build when you can still get farming districts
-			owner = {
-				has_monthly_income = {
-					resource = energy
-					value < 0
-				}
-			}
-		}
-		modifier = {
-			weight = 1002
-			OR = {
-				free_housing > 3
-				owner = { is_gestalt = no }
-			}
-			OR = {
-				free_jobs < 3
-				buildings_unemployed = yes
-			}
-			OR = {
-				AND = {
-					is_planet_class = pc_habitat
-					has_planet_flag = energy_habitat
-				}
-				NOT = { has_modifier = resort_colony }
-			}
-			OR = {
-				owner = {
-					has_monthly_income = {
-						resource = energy
-						value < 125
-					}
-				}
-				has_building = eb_energy
-			}
-		}
-		modifier = {
-			factor = 0
-			owner = {
-				has_monthly_income = {
-					resource = energy
-					value > 1
-				}
-			}
-			OR = {
-				is_planet_class = pc_city
-				is_planet_class = pc_relic
-			}
-		}
-		modifier = {
-            factor = 0.0
-        	owner = { has_monthly_income = { resource = exotic_gases value <= 2 } }
-        }
-	}
-
 	ai_resource_production = {
-		energy = 1
-		trigger = {
-			always = yes
-		}
-	}
-}
-
-eb_energy_hab2 = {
-	base_buildtime = 360
-	can_build = no
-	
-	category = resource
-	
-	triggered_planet_modifier = {
-		potential = {
-			exists = owner
-			owner = { is_regular_empire = yes }
-		}
-		modifier = {
-			job_technician_add = 5
-		}
-	}
-
-	triggered_planet_modifier = {
-		potential = {
-			exists = owner
-			owner = { is_gestalt = yes }
-		}
-		modifier = {
-			job_technician_drone_add = 5
-		}
-	}
-	
-	resources = {
-		category = planet_buildings
-		cost = {
-			minerals = 600
-			exotic_gases = 10
-		}
-		upkeep = {
-			minerals = 2.5
-			exotic_gases = 1
-		}
-	}	
-	
-	triggered_desc = {
-		trigger = {
-			exists = owner
-			owner = { is_gestalt = yes }
-		}
-		text = job_technician_drone_effect_desc
-	}
-	triggered_desc = {
-		trigger = {
-			exists = owner
-			owner = { is_gestalt = no }
-		}
-		text = job_technician_effect_desc
-	}
-	
-	prerequisites = {
-		tech_power_hub_2
-	}
-	
-	upgrades = {
-		"eb_energy_hab3"
-	}
-	
-	ai_weight = {
-		weight = 0
-		modifier = {
-			weight = 501
-			OR = { 
-				NOT = { is_planet_class = pc_habitat }
-				has_planet_flag = energy
-			}
-			OR = {
-				free_jobs < 3
-				buildings_unemployed = yes
-			}
-			OR = {
-				num_free_districts = { type = district_mining value = 0 } 
-				free_district_slots = 0
-			}#Don't build when you can still get farming districts
-			owner = {
-				has_monthly_income = {
-					resource = energy
-					value < 0
-				}
-			}
-		}
-		modifier = {
-			weight = 1001
-			OR = {
-				free_housing > 3
-				owner = { is_gestalt = no }
-			}
-			OR = {
-				free_jobs < 3
-				buildings_unemployed = yes
-			}
-			OR = {
-				AND = {
-					is_planet_class = pc_habitat
-					has_planet_flag = energy_habitat
-				}
-				NOT = { has_modifier = resort_colony }
-			}
-			OR = {
-				owner = {
-					has_monthly_income = {
-						resource = energy
-						value < 125
-					}
-				}
-				has_building = eb_energy
-			}
-		}
-		modifier = {
-			factor = 0
-			owner = {
-				has_monthly_income = {
-					resource = energy
-					value > 1
-				}
-			}
-			OR = {
-				is_planet_class = pc_city
-				is_planet_class = pc_relic
-			}
-		}
-		modifier = {
-            factor = 0.0
-            owner = { has_monthly_income = { resource = exotic_gases value <= 1 } }
-        }
-	}
-
-	ai_resource_production = {
-		energy = 1
-		trigger = {
-			always = yes
-		}
-	}
-}
-
-eb_energy_hab3 = {
-	base_buildtime = 360
-	can_build = no
-	
-	category = resource
-	
-	triggered_planet_modifier = {
-		potential = {
-			exists = owner
-			owner = { is_regular_empire = yes }
-		}
-		modifier = {
-			job_technician_add = 10
-		}
-	}
-
-	triggered_planet_modifier = {
-		potential = {
-			exists = owner
-			owner = { is_gestalt = yes }
-		}
-		modifier = {
-			job_technician_drone_add = 10
-		}
-	}
-	
-	resources = {
-		category = planet_buildings
-		cost = {
-			minerals = 900
-			exotic_gases = 25
-		}
-		upkeep = {
-			minerals = 5
-			exotic_gases = 2
-		}
-	}	
-	
-	triggered_desc = {
-		trigger = {
-			exists = owner
-			owner = { is_gestalt = yes }
-		}
-		text = job_technician_drone_effect_desc
-	}
-	triggered_desc = {
-		trigger = {
-			exists = owner
-			owner = { is_gestalt = no }
-		}
-		text = job_technician_effect_desc
-	}
-	
-	prerequisites = {
-		eb_energy_tech
-	}
-	
-	ai_weight = {
-		weight = 0
-		modifier = {
-			weight = 502
-			OR = { 
-				NOT = { is_planet_class = pc_habitat }
-				has_planet_flag = energy
-			}
-			OR = {
-				free_jobs < 3
-				buildings_unemployed = yes
-			}
-			OR = {
-				num_free_districts = { type = district_mining value = 0 } 
-				free_district_slots = 0
-			}#Don't build when you can still get farming districts
-			owner = {
-				has_monthly_income = {
-					resource = energy
-					value < 0
-				}
-			}
-		}
-		modifier = {
-			weight = 1002
-			OR = {
-				free_housing > 3
-				owner = { is_gestalt = no }
-			}
-			OR = {
-				free_jobs < 3
-				buildings_unemployed = yes
-			}
-			OR = {
-				AND = {
-					is_planet_class = pc_habitat
-					has_planet_flag = energy_habitat
-				}
-				NOT = { has_modifier = resort_colony }
-			}
-			OR = {
-				owner = {
-					has_monthly_income = {
-						resource = energy
-						value < 125
-					}
-				}
-				has_building = eb_energy
-			}
-		}
-		modifier = {
-			factor = 0
-			owner = {
-				has_monthly_income = {
-					resource = energy
-					value > 1
-				}
-			}
-			OR = {
-				is_planet_class = pc_city
-				is_planet_class = pc_relic
-			}
-		}
-		modifier = {
-            factor = 0.0
-            owner = { has_monthly_income = { resource = exotic_gases value <= 2 } }
-        }
-	}
-
-	ai_resource_production = {
-		energy = 1
+		energy = 3
 		trigger = {
 			always = yes
 		}

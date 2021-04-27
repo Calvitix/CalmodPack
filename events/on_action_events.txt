@@ -4,7 +4,10 @@
 #
 # Merge with Arisphaos Unofficial patch
 #
+# Merge with Expanded Event  26/04/2021
+# 
 #
+
 #########################################
 #
 # on_action_events
@@ -1968,6 +1971,7 @@ country_event = {
 		}
 	}
 
+	### Mod Added ###
 	# CoM to UNE
 	desc = {
 		text = "action.1.desc_90"
@@ -1976,8 +1980,253 @@ country_event = {
 			event_target:contact_empire = {
 				has_country_flag = special_intro_for@root
 				has_country_flag = human_2
+				OR = {
+					is_militarist = yes
+					is_xenophobe = yes
+				}
 			}
 			has_country_flag = human_1
+###expanded events mod
+			OR = {
+				AND = {
+					exists = ruler
+					ruler = {
+						species = { species_portrait = human }
+					}
+				}
+				event_target:contact_empire = { is_xenophobe = no }
+			}
+		}
+	}
+	desc = {
+		text = "action.1.desc_90.b"
+		trigger = {
+			first_contact_custom_greeting = no
+			event_target:contact_empire = {
+				has_country_flag = special_intro_for@root
+				has_country_flag = human_2
+				is_xenophobe = yes
+			}
+			has_country_flag = human_1
+			exists = ruler
+			ruler = {
+				NOT = { species = { species_portrait = human } }
+			}
+		}
+	}
+	desc = {
+		text = "action.1.desc_90.c"
+		trigger = {
+			first_contact_custom_greeting = no
+			event_target:contact_empire = {
+				has_country_flag = special_intro_for@root
+				has_country_flag = human_2
+				is_militarist = no
+				is_xenophobe = no
+			}
+			has_country_flag = human_1
+		}
+	}
+	
+	desc = {
+		text = action.1.desc_trade_league
+		trigger = {
+			first_contact_custom_greeting = no
+			NOT = { is_same_species = event_target:contact_empire }
+			event_target:contact_empire = {
+				is_country_type = default
+				has_government = gov_trade_league
+				NOT = { has_country_flag = special_intro_for@root }
+			}
+		}
+	}
+	desc = {
+		text = action.1.desc_megachurch
+		trigger = {
+			first_contact_custom_greeting = no
+			NOT = { is_same_species = event_target:contact_empire }
+			event_target:contact_empire = {
+				is_country_type = default
+				OR = {
+					has_government = gov_megachurch
+					has_government = gov_private_megachurch
+					has_government = gov_subversive_cult
+					has_government = gov_private_subversive_cult
+				}
+				is_xenophile = no
+				NOT = { has_country_flag = special_intro_for@root }
+			}
+		}
+	}
+	desc = {
+		text = action.1.desc_megachurch_phile
+		trigger = {
+			first_contact_custom_greeting = no
+			NOT = { is_same_species = event_target:contact_empire }
+			event_target:contact_empire = {
+				is_country_type = default
+				OR = {
+					has_government = gov_megachurch
+					has_government = gov_private_megachurch
+					has_government = gov_subversive_cult
+					has_government = gov_private_subversive_cult
+				}
+				is_xenophile = yes
+				NOT = { has_country_flag = special_intro_for@root }
+			}
+		}
+	}
+	# expanded pops governments
+	desc = {
+		text = action.1.desc_befriender_1
+		trigger = {
+			first_contact_custom_greeting = no
+			NOT = { is_same_species = event_target:contact_empire }
+			event_target:contact_empire = {
+				is_country_type = default
+				OR = {
+					has_government = gov_benevolent_empire
+					has_government = gov_compassionate_order
+				}
+				NOT = { has_country_flag = special_intro_for@root }
+			}
+		}
+	}
+	desc = {
+		text = action.1.desc_befriender_2
+		trigger = {
+			first_contact_custom_greeting = no
+			NOT = { is_same_species = event_target:contact_empire }
+			event_target:contact_empire = {
+				is_country_type = default
+				has_government = gov_friendship_committee
+				NOT = { has_country_flag = special_intro_for@root }
+			}
+		}
+	}
+	desc = {
+		text = action.1.desc_befriender_3
+		trigger = {
+			first_contact_custom_greeting = no
+			NOT = { is_same_species = event_target:contact_empire }
+			event_target:contact_empire = {
+				is_country_type = default
+				has_government = gov_harmony_assembly
+				NOT = { has_country_flag = special_intro_for@root }
+			}
+		}
+	}
+	desc = {
+		text = action.1.desc_iron_despot
+		trigger = {
+			first_contact_custom_greeting = no
+			NOT = { is_same_species = event_target:contact_empire }
+			event_target:contact_empire = {
+				is_country_type = default
+				OR = {
+					has_government = gov_iron_despot
+					has_government = gov_totalitarian_iron_despot
+				}
+				NOT = { has_country_flag = special_intro_for@root }
+			}
+		}
+	}
+	desc = {
+		text = action.1.desc_enlightened_iron_despot
+		trigger = {
+			first_contact_custom_greeting = no
+			NOT = { is_same_species = event_target:contact_empire }
+			event_target:contact_empire = {
+				is_country_type = default
+				has_government = gov_enlightened_iron_despot
+				NOT = { has_country_flag = special_intro_for@root }
+			}
+		}
+	}
+	desc = {
+		text = action.1.desc_plutocratic_iron_despot
+		trigger = {
+			first_contact_custom_greeting = no
+			NOT = { is_same_species = event_target:contact_empire }
+			event_target:contact_empire = {
+				is_country_type = default
+				has_government = gov_plutocratic_iron_despot
+				NOT = { has_country_flag = special_intro_for@root }
+			}
+		}
+	}
+	desc = {
+		text = action.1.desc_shroud_pact
+		trigger = {
+			first_contact_custom_greeting = no
+			NOT = { is_same_species = event_target:contact_empire }
+			event_target:contact_empire = {
+				is_country_type = default
+				is_xenophobe = no
+				OR = {
+					has_government = gov_celestial_choir
+					has_government = gov_celestial_theocracy
+					has_government = gov_celestial_monarchy
+				}
+				NOT = { has_country_flag = special_intro_for@root }
+			}
+		}
+	}
+	desc = {
+		text = action.1.desc_shroud_pact.phobe
+		trigger = {
+			first_contact_custom_greeting = no
+			NOT = { is_same_species = event_target:contact_empire }
+			event_target:contact_empire = {
+				is_country_type = default
+				is_xenophobe = yes
+				OR = {
+					has_government = gov_celestial_choir
+					has_government = gov_celestial_theocracy
+					has_government = gov_celestial_monarchy
+				}
+				NOT = { has_country_flag = special_intro_for@root }
+			}
+		}
+	}
+	desc = {
+		text = action.1.desc_worker_coop
+		trigger = {
+			first_contact_custom_greeting = no
+			NOT = { is_same_species = event_target:contact_empire }
+			event_target:contact_empire = {
+				is_country_type = default
+				OR = {
+					has_government = gov_cooperative
+					has_government = gov_worker_cooperative
+				}
+				NOT = { has_country_flag = special_intro_for@root }
+			}
+		}
+	}
+	desc = {
+		text = action.1.desc_charter_company
+		trigger = {
+			first_contact_custom_greeting = no
+			NOT = { is_same_species = event_target:contact_empire }
+			event_target:contact_empire = {
+				is_country_type = default
+				has_government = gov_charter_company
+				NOT = { has_country_flag = special_intro_for@root }
+			}
+		}
+	}
+	desc = {
+		text = action.1.desc_royal_company
+		trigger = {
+			first_contact_custom_greeting = no
+			NOT = { is_same_species = event_target:contact_empire }
+			event_target:contact_empire = {
+				is_country_type = default
+				has_government = gov_royal_company
+				NOT = { has_country_flag = special_intro_for@root }
+			}
+###
 		}
 	}
 
@@ -2023,8 +2272,190 @@ country_event = {
 	# 	- Note 2: If none of them return true, it will pick the first one in the list. So it should be something suitably generic.
 
 	# copy any changes in these options to action.100 below
-
+	
+###expanded events mod
+	### Mod Added ###
+	option = {
+		name = action.1.human_1.b
+		response_text = action.1.human_1.b.response
+		is_dialog_only = yes
+		trigger = {
+			has_country_flag = human_1
+			has_authority = auth_democratic
+			exists = ruler
+			ruler = {
+				NOT = { species = { species_portrait = human } }
+			}
+			event_target:contact_empire = {
+				has_country_flag = human_2
+				is_xenophobe = yes
+			}
+		}
+	}
+	option = {
+		name = action.1.human_1.c
+		response_text = action.1.human_1.c.response
+		is_dialog_only = yes
+		trigger = {
+			has_country_flag = human_1
+			NOT = { has_authority = auth_democratic }
+			exists = ruler
+			ruler = {
+				NOT = { species = { species_portrait = human } }
+			}
+			event_target:contact_empire = {
+				has_country_flag = human_2
+				is_xenophobe = yes
+			}
+		}
+	}
+	option = {
+		name = action.1.human_1.d
+		response_text = action.1.human_1.d.response
+		is_dialog_only = yes
+		trigger = {
+			has_country_flag = human_1
+			NOT = { has_country_flag = some_human_survivors }
+			OR = {
+				event_target:contact_empire = { is_xenophobe = no }
+				AND = {
+					exists = ruler
+					ruler = {
+						species = { species_portrait = human }
+					}
+				}
+			}
+			event_target:contact_empire = {
+				has_country_flag = human_2
+				OR = {
+					is_xenophobe = yes
+					is_militarist = yes
+				}
+			}
+		}
+	}
+	option = {
+		name = action.1.human_1.d
+		response_text = action.1.human_1.d.response.b
+		is_dialog_only = yes
+		trigger = {
+			has_country_flag = human_1
+			NOT = { has_country_flag = some_human_survivors }
+			event_target:contact_empire = {
+				has_country_flag = human_2
+				is_xenophobe = no
+				is_militarist = no
+			}
+		}
+	}
+	option = {
+		name = action.1.human_1.e
+		response_text = action.1.human_1.e.response
+		is_dialog_only = yes
+		trigger = {
+			has_country_flag = human_1
+			has_country_flag = some_human_survivors
+			OR = {
+				event_target:contact_empire = { is_xenophobe = no }
+				AND = {
+					exists = ruler
+					ruler = {
+						species = { species_portrait = human }
+					}
+				}
+			}
+			event_target:contact_empire = {
+				has_country_flag = human_2
+			}
+		}
+	}
+	option = {
+		name = action.1.human_2.a
+		response_text = action.1.human_2.a.response
+		is_dialog_only = yes
+		trigger = {
+			has_country_flag = human_2
+			event_target:contact_empire = {
+				NOT = { has_country_flag = some_human_survivors }
+				has_country_flag = human_1
+				OR = {
+					ROOT = { is_xenophobe = no }
+					AND = {
+						exists = ruler
+						ruler = {
+							species = { species_portrait = human }
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = action.1.human_2.a
+		response_text = action.1.human_2.a.response.b
+		is_dialog_only = yes
+		trigger = {
+			has_country_flag = human_2
+			event_target:contact_empire = {
+				has_country_flag = some_human_survivors
+				has_country_flag = human_1
+				OR = {
+					ROOT = { is_xenophobe = no }
+					AND = {
+						exists = ruler
+						ruler = {
+							species = { species_portrait = human }
+						}
+					}
+				}
+			}
+		}
+	}
+	option = {
+		name = action.1.human_2.b
+		response_text = action.1.human_2.b.response
+		is_dialog_only = yes
+		trigger = {
+			has_country_flag = human_2
+			is_xenophobe = yes
+			event_target:contact_empire = {
+				has_country_flag = human_1
+				exists = ruler
+				ruler = {
+					species = { species_portrait = human }
+				}
+			}
+		}
+	}
+	### End of Mod Added ###
 	option = { #friendly
+		### Mod Added ###
+		name = {
+			text = action.1.human_1.a
+			trigger = {
+				has_country_flag = human_1
+				OR = {
+					event_target:contact_empire = { is_xenophobe = no }
+					AND = {
+						exists = ruler
+						ruler = {
+							species = { species_portrait = human }
+						}
+					}
+				}
+				event_target:contact_empire = { has_country_flag = human_2 }
+			}
+		}
+		name = {
+			text = action.1.human_1.a
+			trigger = {
+				has_country_flag = human_2
+				is_xenophobe = no
+				event_target:contact_empire = { has_country_flag = human_1 }
+			}
+		}
+		### End of Mod Added ###
 		name = {
 			text = action.1.e
 			trigger = {
@@ -2242,6 +2673,30 @@ country_event = {
 				NOT = { has_ethic = ethic_fanatic_xenophobe }
 				event_target:contact_empire = { is_same_species = root }
 			}
+			### Mod Added ###
+			NAND = {
+				has_country_flag = human_1
+				exists = ruler
+				ruler = {
+					NOT = { species = { species_portrait = human } }
+				}
+				event_target:contact_empire = {
+					has_country_flag = human_2
+					is_xenophobe = yes
+				}
+			}
+			NAND = {
+				has_country_flag = human_2
+				is_xenophobe = yes
+				event_target:contact_empire = {
+					has_country_flag = human_1
+					exists = ruler
+					ruler = {
+						species = { species_portrait = human }
+					}
+				}
+			}
+			### End of Mod Added ###
 		}
 
 		ai_chance = {
@@ -2646,6 +3101,71 @@ country_event = {
 					if = {
 						limit = { NOT = { has_country_flag = StoryFirst } }
 						set_country_flag = StoryFirst
+					}
+				}
+			}
+			
+			### Mod Added ###
+			hidden_effect = {
+				if = {
+					limit = {
+						event_target:contact_empire = {
+							has_origin = origin_lost_colony
+							has_country_flag = human_2
+						}
+						has_country_flag = human_1
+					}
+					set_country_flag = found_com
+					remove_point_of_interest = com_search_poi.6
+					country_event = { id = countryexpanded.42 days = 5 }
+					if = {
+						limit = {
+							exists = ruler
+							ruler = {
+								NOT = { species = { species_portrait = human } }
+							}
+						}
+						set_country_flag = une_alien_president
+					}
+				}
+				if = {
+					limit = {
+						OR = {
+							AND = {
+								event_target:contact_empire = { has_country_flag = lost_colony_parent_of@root }
+								has_origin = origin_lost_colony
+							}
+							AND = {
+								event_target:contact_empire = { has_country_flag = human_1 }
+								has_country_flag = human_2
+								has_origin = origin_lost_colony
+							}
+						}
+					}
+					set_country_flag = contact_with_earth
+					add_monthly_resource_mult = {
+						resource = unity
+						value = @tier2unityreward
+					}
+					if = {
+						limit = {
+							event_target:contact_empire = {
+								exists = ruler
+								ruler = {
+									NOT = { species = { species_portrait = human } }
+								}
+							}
+						}
+						set_country_flag = une_alien_president
+						event_target:contact_empire = {
+							every_system_within_border = {
+								add_claims = {
+									who = ROOT
+									num_of_claims = 2
+									show_notification = yes
+								}
+							}
+						}
 					}
 				}
 			}
@@ -4607,6 +5127,7 @@ country_event = {
 		}
 	}
 
+	### Mod Added ###
 	# CoM to UNE
 	desc = {
 		text = "action.1.desc_90"
@@ -4615,11 +5136,254 @@ country_event = {
 			event_target:contact_empire = {
 				has_country_flag = special_intro_for@root
 				has_country_flag = human_2
+				OR = {
+					is_militarist = yes
+					is_xenophobe = yes
+				}
+			}
+			has_country_flag = human_1
+			OR = {
+				AND = {
+					exists = ruler
+					ruler = {
+						species = { species_portrait = human }
+					}
+				}
+				event_target:contact_empire = { is_xenophobe = no }
+			}
+		}
+	}
+	desc = {
+		text = "action.1.desc_90.b"
+		trigger = {
+			first_contact_custom_greeting = no
+			event_target:contact_empire = {
+				has_country_flag = special_intro_for@root
+				has_country_flag = human_2
+				is_xenophobe = yes
+			}
+			has_country_flag = human_1
+			exists = ruler
+			ruler = {
+				NOT = { species = { species_portrait = human } }
+			}
+		}
+	}
+	desc = {
+		text = "action.1.desc_90.c"
+		trigger = {
+			first_contact_custom_greeting = no
+			event_target:contact_empire = {
+				has_country_flag = special_intro_for@root
+				has_country_flag = human_2
+				is_militarist = no
+				is_xenophobe = no
 			}
 			has_country_flag = human_1
 		}
 	}
-
+	
+	desc = {
+		text = action.1.desc_trade_league
+		trigger = {
+			first_contact_custom_greeting = no
+			NOT = { is_same_species = event_target:contact_empire }
+			event_target:contact_empire = {
+				is_country_type = default
+				has_government = gov_trade_league
+				NOT = { has_country_flag = special_intro_for@root }
+			}
+		}
+	}
+	desc = {
+		text = action.1.desc_megachurch
+		trigger = {
+			first_contact_custom_greeting = no
+			NOT = { is_same_species = event_target:contact_empire }
+			event_target:contact_empire = {
+				is_country_type = default
+				OR = {
+					has_government = gov_megachurch
+					has_government = gov_private_megachurch
+					has_government = gov_subversive_cult
+					has_government = gov_private_subversive_cult
+				}
+				is_xenophile = no
+				NOT = { has_country_flag = special_intro_for@root }
+			}
+		}
+	}
+	desc = {
+		text = action.1.desc_megachurch_phile
+		trigger = {
+			first_contact_custom_greeting = no
+			NOT = { is_same_species = event_target:contact_empire }
+			event_target:contact_empire = {
+				is_country_type = default
+				OR = {
+					has_government = gov_megachurch
+					has_government = gov_private_megachurch
+					has_government = gov_subversive_cult
+					has_government = gov_private_subversive_cult
+				}
+				is_xenophile = yes
+				NOT = { has_country_flag = special_intro_for@root }
+			}
+		}
+	}
+	# expanded pops governments
+	desc = {
+		text = action.1.desc_befriender_1
+		trigger = {
+			first_contact_custom_greeting = no
+			NOT = { is_same_species = event_target:contact_empire }
+			event_target:contact_empire = {
+				is_country_type = default
+				OR = {
+					has_government = gov_benevolent_empire
+					has_government = gov_compassionate_order
+				}
+				NOT = { has_country_flag = special_intro_for@root }
+			}
+		}
+	}
+	desc = {
+		text = action.1.desc_befriender_2
+		trigger = {
+			first_contact_custom_greeting = no
+			NOT = { is_same_species = event_target:contact_empire }
+			event_target:contact_empire = {
+				is_country_type = default
+				has_government = gov_friendship_committee
+				NOT = { has_country_flag = special_intro_for@root }
+			}
+		}
+	}
+	desc = {
+		text = action.1.desc_befriender_3
+		trigger = {
+			first_contact_custom_greeting = no
+			NOT = { is_same_species = event_target:contact_empire }
+			event_target:contact_empire = {
+				is_country_type = default
+				has_government = gov_harmony_assembly
+				NOT = { has_country_flag = special_intro_for@root }
+			}
+		}
+	}
+	desc = {
+		text = action.1.desc_iron_despot
+		trigger = {
+			first_contact_custom_greeting = no
+			NOT = { is_same_species = event_target:contact_empire }
+			event_target:contact_empire = {
+				is_country_type = default
+				OR = {
+					has_government = gov_iron_despot
+					has_government = gov_totalitarian_iron_despot
+				}
+				NOT = { has_country_flag = special_intro_for@root }
+			}
+		}
+	}
+	desc = {
+		text = action.1.desc_enlightened_iron_despot
+		trigger = {
+			first_contact_custom_greeting = no
+			NOT = { is_same_species = event_target:contact_empire }
+			event_target:contact_empire = {
+				is_country_type = default
+				has_government = gov_enlightened_iron_despot
+				NOT = { has_country_flag = special_intro_for@root }
+			}
+		}
+	}
+	desc = {
+		text = action.1.desc_plutocratic_iron_despot
+		trigger = {
+			first_contact_custom_greeting = no
+			NOT = { is_same_species = event_target:contact_empire }
+			event_target:contact_empire = {
+				is_country_type = default
+				has_government = gov_plutocratic_iron_despot
+				NOT = { has_country_flag = special_intro_for@root }
+			}
+		}
+	}
+	desc = {
+		text = action.1.desc_shroud_pact
+		trigger = {
+			first_contact_custom_greeting = no
+			NOT = { is_same_species = event_target:contact_empire }
+			event_target:contact_empire = {
+				is_country_type = default
+				is_xenophobe = no
+				OR = {
+					has_government = gov_celestial_choir
+					has_government = gov_celestial_theocracy
+					has_government = gov_celestial_monarchy
+				}
+				NOT = { has_country_flag = special_intro_for@root }
+			}
+		}
+	}
+	desc = {
+		text = action.1.desc_shroud_pact.phobe
+		trigger = {
+			first_contact_custom_greeting = no
+			NOT = { is_same_species = event_target:contact_empire }
+			event_target:contact_empire = {
+				is_country_type = default
+				is_xenophobe = yes
+				OR = {
+					has_government = gov_celestial_choir
+					has_government = gov_celestial_theocracy
+					has_government = gov_celestial_monarchy
+				}
+				NOT = { has_country_flag = special_intro_for@root }
+			}
+		}
+	}
+	desc = {
+		text = action.1.desc_worker_coop
+		trigger = {
+			first_contact_custom_greeting = no
+			NOT = { is_same_species = event_target:contact_empire }
+			event_target:contact_empire = {
+				is_country_type = default
+				OR = {
+					has_government = gov_cooperative
+					has_government = gov_worker_cooperative
+				}
+				NOT = { has_country_flag = special_intro_for@root }
+			}
+		}
+	}
+	desc = {
+		text = action.1.desc_charter_company
+		trigger = {
+			first_contact_custom_greeting = no
+			NOT = { is_same_species = event_target:contact_empire }
+			event_target:contact_empire = {
+				is_country_type = default
+				has_government = gov_charter_company
+				NOT = { has_country_flag = special_intro_for@root }
+			}
+		}
+	}
+	desc = {
+		text = action.1.desc_royal_company
+		trigger = {
+			first_contact_custom_greeting = no
+			NOT = { is_same_species = event_target:contact_empire }
+			event_target:contact_empire = {
+				is_country_type = default
+				has_government = gov_royal_company
+				NOT = { has_country_flag = special_intro_for@root }
+			}
+		}
+	}
+	
 	diplomatic = yes
 	is_triggered_only = yes
 
@@ -4656,8 +5420,188 @@ country_event = {
 	}
 
 	# Options are 1:1 copy from action.1
-
+	### Mod Added ###
+	option = {
+		name = action.1.human_1.b
+		response_text = action.1.human_1.b.response
+		is_dialog_only = yes
+		trigger = {
+			has_country_flag = human_1
+			has_authority = auth_democratic
+			exists = ruler
+			ruler = {
+				NOT = { species = { species_portrait = human } }
+			}
+			event_target:contact_empire = {
+				has_country_flag = human_2
+				is_xenophobe = yes
+			}
+		}
+	}
+	option = {
+		name = action.1.human_1.c
+		response_text = action.1.human_1.c.response
+		is_dialog_only = yes
+		trigger = {
+			has_country_flag = human_1
+			NOT = { has_authority = auth_democratic }
+			exists = ruler
+			ruler = {
+				NOT = { species = { species_portrait = human } }
+			}
+			event_target:contact_empire = {
+				has_country_flag = human_2
+				is_xenophobe = yes
+			}
+		}
+	}
+	option = {
+		name = action.1.human_1.d
+		response_text = action.1.human_1.d.response
+		is_dialog_only = yes
+		trigger = {
+			has_country_flag = human_1
+			NOT = { has_country_flag = some_human_survivors }
+			OR = {
+				event_target:contact_empire = { is_xenophobe = no }
+				AND = {
+					exists = ruler
+					ruler = {
+						species = { species_portrait = human }
+					}
+				}
+			}
+			event_target:contact_empire = {
+				has_country_flag = human_2
+				OR = {
+					is_xenophobe = yes
+					is_militarist = yes
+				}
+			}
+		}
+	}
+	option = {
+		name = action.1.human_1.d
+		response_text = action.1.human_1.d.response.b
+		is_dialog_only = yes
+		trigger = {
+			has_country_flag = human_1
+			NOT = { has_country_flag = some_human_survivors }
+			event_target:contact_empire = {
+				has_country_flag = human_2
+				is_xenophobe = no
+				is_militarist = no
+			}
+		}
+	}
+	option = {
+		name = action.1.human_1.e
+		response_text = action.1.human_1.e.response
+		is_dialog_only = yes
+		trigger = {
+			has_country_flag = human_1
+			has_country_flag = some_human_survivors
+			OR = {
+				event_target:contact_empire = { is_xenophobe = no }
+				AND = {
+					exists = ruler
+					ruler = {
+						species = { species_portrait = human }
+					}
+				}
+			}
+			event_target:contact_empire = {
+				has_country_flag = human_2
+			}
+		}
+	}
+	option = {
+		name = action.1.human_2.a
+		response_text = action.1.human_2.a.response
+		is_dialog_only = yes
+		trigger = {
+			has_country_flag = human_2
+			event_target:contact_empire = {
+				NOT = { has_country_flag = some_human_survivors }
+				has_country_flag = human_1
+				OR = {
+					ROOT = { is_xenophobe = no }
+					AND = {
+						exists = ruler
+						ruler = {
+							species = { species_portrait = human }
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = action.1.human_2.a
+		response_text = action.1.human_2.a.response.b
+		is_dialog_only = yes
+		trigger = {
+			has_country_flag = human_2
+			event_target:contact_empire = {
+				has_country_flag = some_human_survivors
+				has_country_flag = human_1
+				OR = {
+					ROOT = { is_xenophobe = no }
+					AND = {
+						exists = ruler
+						ruler = {
+							species = { species_portrait = human }
+						}
+					}
+				}
+			}
+		}
+	}
+	option = {
+		name = action.1.human_2.b
+		response_text = action.1.human_2.b.response
+		is_dialog_only = yes
+		trigger = {
+			has_country_flag = human_2
+			is_xenophobe = yes
+			event_target:contact_empire = {
+				has_country_flag = human_1
+				exists = ruler
+				ruler = {
+					species = { species_portrait = human }
+				}
+			}
+		}
+	}
+	### End of Mod Added ###
 	option = { #friendly
+		### Mod Added ###
+		name = {
+			text = action.1.human_1.a
+			trigger = {
+				has_country_flag = human_1
+				OR = {
+					event_target:contact_empire = { is_xenophobe = no }
+					AND = {
+						exists = ruler
+						ruler = {
+							species = { species_portrait = human }
+						}
+					}
+				}
+				event_target:contact_empire = { has_country_flag = human_2 }
+			}
+		}
+		name = {
+			text = action.1.human_1.a
+			trigger = {
+				has_country_flag = human_2
+				is_xenophobe = no
+				event_target:contact_empire = { has_country_flag = human_1 }
+			}
+		}
+		### End of Mod Added ###
 		name = {
 			text = action.1.e
 			trigger = {
@@ -4875,6 +5819,30 @@ country_event = {
 				NOT = { has_ethic = ethic_fanatic_xenophobe }
 				event_target:contact_empire = { is_same_species = root }
 			}
+			### Mod Added ###
+			NAND = {
+				has_country_flag = human_1
+				exists = ruler
+				ruler = {
+					NOT = { species = { species_portrait = human } }
+				}
+				event_target:contact_empire = {
+					has_country_flag = human_2
+					is_xenophobe = yes
+				}
+			}
+			NAND = {
+				has_country_flag = human_2
+				is_xenophobe = yes
+				event_target:contact_empire = {
+					has_country_flag = human_1
+					exists = ruler
+					ruler = {
+						species = { species_portrait = human }
+					}
+				}
+			}
+			### End of Mod Added ###
 		}
 
 		ai_chance = {
@@ -5279,6 +6247,71 @@ country_event = {
 					if = {
 						limit = { NOT = { has_country_flag = StoryFirst } }
 						set_country_flag = StoryFirst
+					}
+				}
+			}
+			
+			### Mod Added ###
+			hidden_effect = {
+				if = {
+					limit = {
+						event_target:contact_empire = {
+							has_origin = origin_lost_colony
+							has_country_flag = human_2
+						}
+						has_country_flag = human_1
+					}
+					set_country_flag = found_com
+					remove_point_of_interest = com_search_poi.6
+					country_event = { id = countryexpanded.42 days = 5 }
+					if = {
+						limit = {
+							exists = ruler
+							ruler = {
+								NOT = { species = { species_portrait = human } }
+							}
+						}
+						set_country_flag = une_alien_president
+					}
+				}
+				if = {
+					limit = {
+						OR = {
+							AND = {
+								event_target:contact_empire = { has_country_flag = lost_colony_parent_of@root }
+								has_origin = origin_lost_colony
+							}
+							AND = {
+								event_target:contact_empire = { has_country_flag = human_1 }
+								has_country_flag = human_2
+								has_origin = origin_lost_colony
+							}
+						}
+					}
+					set_country_flag = contact_with_earth
+					add_monthly_resource_mult = {
+						resource = unity
+						value = @tier2unityreward
+					}
+					if = {
+						limit = {
+							event_target:contact_empire = {
+								exists = ruler
+								ruler = {
+									NOT = { species = { species_portrait = human } }
+								}
+							}
+						}
+						set_country_flag = une_alien_president
+						event_target:contact_empire = {
+							every_system_within_border = {
+								add_claims = {
+									who = ROOT
+									num_of_claims = 2
+									show_notification = yes
+								}
+							}
+						}
 					}
 				}
 			}

@@ -3,7 +3,7 @@
 # Calvitix Check 3.0.1  23/04/2021
 #
 # Merge with Arisphaos Unofficial patch
-#
+# Merge with Expanded Events  25/04/2021
 #
 ############################
 ###  ANOMALY CATEGORIES  ###
@@ -25,14 +25,57 @@ crashed_ship_asteroid_category = {
 	}
 
 	on_success = {
-		1 = anomaly.35
-		1 = {
+		2 = anomaly.35
+		2 = {
 			modifier = {
 				factor = 0
 				from = { has_any_strategic_resource = yes }
 			}
 			anomaly_event = anomaly.65
 		}
+# Expanded Events mod
+		2 = anomalymod.202
+		2 = anomalymod.221
+		0 = {
+			modifier = {
+				add = 2
+				owner = {
+					has_technology = tech_destroyers
+				}
+			}
+			anomaly_event = anomalymod.222
+		}
+		0 = {
+			modifier = {
+				add = 1
+				leader = {
+					NOR = {
+						has_skill > 3
+						has_trait = leader_trait_meticulous
+						has_trait = leader_trait_cataloger
+						has_trait = leader_trait_expertise_propulsion
+					}
+				}
+			}
+			anomaly_event = anomaly_failure.1
+		}
+		0 = {
+			modifier = {
+				add = 1
+				owner = {
+					NOT = { has_country_flag = anomaly_failure_400_happened }
+				}
+				leader = {
+					has_skill < 4
+					OR = {
+						has_trait = leader_trait_carefree
+						has_trait = leader_trait_paranoid
+					}
+				}
+			}
+			anomaly_event = anomaly_failure.400
+		}
+# Expanded Events mod
 	}
 }
 
@@ -58,6 +101,18 @@ origin_asteroid_category = {
 			anomaly_event = anomaly.1
 		}
 		1 = anomaly.15
+# Expanded Events mod
+		1 = anomalymod.208
+		0 = {
+			modifier = {
+				add = 1
+				owner = {
+					has_country_flag = host_system_supernova_country
+				}
+			}
+			anomaly_event = anomalymod.212
+		}
+# Expanded Events mod
 		0 = {
 			modifier = {
 				add = @distar_weight
@@ -69,6 +124,7 @@ origin_asteroid_category = {
 			}
 			anomaly_event = distar.225
 		}
+		1 = anomaly_failure.2
 	}
 }
 
@@ -86,7 +142,45 @@ debris_asteroid_category = {
 		}
 	}
 
-	on_success = anomaly.30
+# Expanded Events mod
+	on_success = {
+		2 = anomaly.30
+		2 = anomalymod.258
+		0 = {
+			modifier = {
+				add = 1
+				owner = {
+					NOT = { has_country_flag = anomaly_failure_400_happened }
+				}
+				leader = {
+					NOR = {
+						has_skill > 3
+						has_trait = leader_trait_cataloger
+						has_trait = leader_trait_meticulous
+						has_trait = leader_trait_expertise_industry
+					}
+				}
+			}
+			anomaly_event = anomaly_failure.3
+		}
+		0 = {
+			modifier = {
+				add = 1
+				owner = {
+					NOT = { has_country_flag = anomaly_failure_400_happened }
+				}
+				leader = {
+					has_skill < 4
+					OR = {
+						has_trait = leader_trait_carefree
+						has_trait = leader_trait_paranoid
+					}
+				}
+			}
+			anomaly_event = anomaly_failure.400
+		}
+	}
+# Expanded Events mod
 }
 
 # Energy Emissions (Asteroid)
@@ -103,14 +197,35 @@ emissions_asteroid_category = {
 	}
 
 	on_success = {
-		1 = {
+		2 = {
 			modifier = {
 				factor = 0
 				from = { has_any_strategic_resource = yes }
 			}
 			anomaly_event = anomaly.50
 		}
-		1 = anomaly.60
+# Expanded Events mod
+		2 = anomaly.60
+		2 = anomalymod.219
+		2 = anomalymod.263
+		0 = {
+			modifier = {
+				add = 1
+				owner = {
+					NOT = { has_country_flag = anomaly_failure_400_happened }
+				}
+				leader = {
+					has_skill < 4
+					OR = {
+						has_trait = leader_trait_carefree
+						has_trait = leader_trait_paranoid
+					}
+				}
+			}
+			anomaly_event = anomaly_failure.400
+		}
+		1 = anomaly_failure.404
+# Expanded Events mod
 	}
 }
 
@@ -128,14 +243,30 @@ hatch_asteroid_category = {
 	}
 
 	on_success = {
-		1 = anomaly.5
-		1 = {
+# Expanded Events mod
+		2 = anomaly.5
+		2 = {
 			modifier = {
 				factor = 0
 				from = { has_any_strategic_resource = yes }
 			}
 			anomaly_event = anomaly.25
 		}
+		0 = {
+			modifier = {
+				add = 1
+				owner = { NOT = { has_country_flag = anomaly_5_happened } }
+				leader = {
+					OR = {
+						has_skill < 3
+						has_trait = leader_trait_carefree
+					}
+				}
+			}
+			anomaly_event = anomaly_failure.5
+		}
+		1 = anomaly_failure.405
+# Expanded Events mod
 	}
 }
 
@@ -155,7 +286,25 @@ collision_asteroid_category = {
 
 	max_once = yes
 
-	on_success = anomaly.55
+# Expanded Events mod
+	on_success = {
+		2 = anomaly.55
+		2 = anomalymod.262
+		0 = {
+			modifier = {
+				add = 1
+				owner = { NOT = { has_country_flag = anomaly_55_happened } }
+				leader = {
+					has_skill < 3
+					NOT = { has_trait = leader_trait_meticulous }
+					NOT = { has_trait = leader_trait_cataloger }
+					NOT = { has_trait = leader_trait_expertise_new_worlds }
+				}
+			}
+			anomaly_event = anomaly_failure.6
+		}
+	}
+# Expanded Events mod
 }
 
 # Abandoned Station (Asteroid)
@@ -174,7 +323,27 @@ station_asteroid_category = {
 
 	max_once = yes
 
-	on_success = anomaly.40
+# Expanded Events mod
+	on_success = {
+		2 = anomaly.40
+		0 = {
+			modifier = {
+				add = 1
+				owner = { NOT = { has_country_flag = anomaly_40_happened } }
+				leader = {
+					OR = {
+						has_skill < 3
+						has_trait = leader_trait_carefree
+					}
+					NOT = { has_trait = leader_trait_meticulous }
+					NOT = { has_trait = leader_trait_cataloger }
+					NOT = { has_trait = leader_trait_expertise_voidcraft }
+				}
+			}
+			anomaly_event = anomaly_failure.7
+		}
+	}
+# Expanded Events mod
 }
 
 # Life Signs (Asteroid)
@@ -193,7 +362,62 @@ life_asteroid_category = {
 
 	max_once = yes
 
-	on_success = anomaly.10
+# Expanded Events mod
+	on_success = {
+		2 = anomaly.10
+		3 = {
+			modifier = {
+				factor = 0
+				solar_system = {
+					NOT = {
+						any_system_planet = {
+							OR = {
+								habitable_planet = yes
+								is_nuked = yes
+							}
+						}
+					}
+				}
+			}
+			anomaly_event = anomalymod.228
+		}
+		0 = {
+			modifier = {
+				add = 1
+				leader = {
+					NOR = {
+						has_skill > 3
+						has_trait = leader_trait_meticulous
+						has_trait = leader_trait_cataloger
+						has_trait = leader_trait_custom_AI_assistant
+						has_trait = leader_trait_sapient_AI_assistant
+						has_trait = leader_trait_expertise_computing
+						has_trait = leader_trait_expertise_new_worlds
+						has_trait = leader_trait_expertise_biology
+					}
+				}
+			}
+			anomaly_event = anomaly_failure.8
+		}
+		0 = {
+			modifier = {
+				add = 1
+				owner = {
+					NOT = { has_country_flag = anomaly_failure_400_happened }
+				}
+				leader = {
+					has_skill < 4
+					OR = {
+						has_trait = leader_trait_carefree
+						has_trait = leader_trait_paranoid
+					}
+				}
+			}
+			anomaly_event = anomaly_failure.400
+		}
+		1 = anomaly_failure.403
+	}
+# Expanded Events mod
 }
 
 # Atmospheric Object (Gas Giant)
@@ -205,13 +429,80 @@ object_gasgiant_category = {
 	spawn_chance = {		
 		modifier = {
 			add = 3
-			is_planet_class = pc_gas_giant
+			is_gas_giant = yes
 		}
 	}
 
 	on_success = {
-		1 = anomaly.325
-		1 = anomaly.335
+# Expanded Events mod
+		2 = anomaly.325
+		2 = anomaly.335
+		0 = {
+			modifier = {
+				add = 2
+				exists = owner
+				owner = {
+					any_country = {
+						OR = {
+							is_country_type = tiyanki
+							is_country_type = amoeba
+							is_country_type = crystal
+							is_country_type = drone
+							is_country_type = cloud
+						}
+						OR = {
+							has_communications = PREV
+							PREV = { has_communications = PREV }
+						}
+					}
+				}
+			}
+			anomaly_event = anomalymod.253
+		}
+		0 = {
+			modifier = {
+				add = 1
+				leader = {
+					NOR = {
+						has_skill > 4
+						has_trait = leader_trait_carefree
+					}
+				}
+			}
+			anomaly_event = anomalymod.259
+		}
+		0 = {
+			modifier = {
+				add = 1
+				owner = { NOT = { has_country_flag = anomaly_failure_901_happened } }
+				leader = {
+					NOR = {
+						has_skill > 3
+						has_trait = leader_trait_roamer
+						has_trait = leader_trait_expertise_voidcraft
+						has_trait = leader_trait_expertise_propulsion
+					}
+				}
+			}
+			anomaly_event = anomaly_failure.901
+		}
+		0 = {
+			modifier = {
+				add = 1
+				owner = { NOT = { has_country_flag = anomaly_failure_901_happened } }
+				leader = {
+					NOR = {
+						has_skill > 3
+						has_trait = leader_trait_roamer
+						has_trait = leader_trait_expertise_voidcraft
+						has_trait = leader_trait_expertise_propulsion
+					}
+				}
+			}
+			anomaly_event = anomaly_failure.902
+		}
+		1 = anomaly_failure.903
+# Expanded Events mod
 	}
 }
 
@@ -224,14 +515,27 @@ moon_gasgiant_category = {
 	spawn_chance = {		
 		modifier = {
 			add = 3
-			is_planet_class = pc_gas_giant
+			is_gas_giant = yes
 			has_any_strategic_resource = no
 		}
 	}
 
 	max_once = yes
 
-	on_success = anomaly.340
+# Expanded Events mod
+	on_success = {
+		2 = anomaly.340
+		0 = {
+			modifier = {
+				add = 1
+				leader = {
+					has_skill < 5
+				}
+			}
+			anomaly_event = anomalymod.260
+		}
+	}
+# Expanded Events mod
 }
 
 # Life Signs (Gas Giant)
@@ -243,14 +547,82 @@ life_gasgiant_category = {
 	spawn_chance = {		
 		modifier = {
 			add = 3
-			is_planet_class = pc_gas_giant
+			is_gas_giant = yes
 			has_any_strategic_resource = no
 		}
 	}
 
 	max_once = yes
 
-	on_success = anomaly.300
+# Expanded Events mod
+	on_success = {
+		2 = {
+			modifier = {
+				factor = 0
+				owner = { has_country_flag = anomaly_300_happened }
+			}
+			anomaly_event = anomaly.300
+		}
+		2 = anomalymod.257
+		0 = {
+			modifier = {
+				add = 2
+				exists = owner
+				owner = {
+					is_homicidal = no
+				}
+			}
+			anomaly_event = anomalymod.224
+		}
+		0 = {
+			modifier = {
+				add = 1
+				owner = { NOT = { has_country_flag = anomaly_300_happened } }
+				leader = {
+					NOR = {
+						has_skill > 3
+						has_trait = leader_trait_meticulous
+						has_trait = leader_trait_cataloger
+						has_trait = leader_trait_expertise_new_worlds
+						has_trait = leader_trait_expertise_biology
+					}
+				}
+			}
+			anomaly_event = anomaly_failure.11
+		}
+		0 = {
+			modifier = {
+				add = 1
+				owner = { NOT = { has_country_flag = anomaly_failure_901_happened } }
+				leader = {
+					NOR = {
+						has_skill > 3
+						has_trait = leader_trait_roamer
+						has_trait = leader_trait_expertise_voidcraft
+						has_trait = leader_trait_expertise_propulsion
+					}
+				}
+			}
+			anomaly_event = anomaly_failure.901
+		}
+		0 = {
+			modifier = {
+				add = 1
+				owner = { NOT = { has_country_flag = anomaly_failure_901_happened } }
+				leader = {
+					NOR = {
+						has_skill > 3
+						has_trait = leader_trait_roamer
+						has_trait = leader_trait_expertise_voidcraft
+						has_trait = leader_trait_expertise_propulsion
+					}
+				}
+			}
+			anomaly_event = anomaly_failure.902
+		}
+		1 = anomaly_failure.1404
+	}
+# Expanded Events mod
 }
 
 # Atmospheric Storms (Gas Giant)
@@ -262,7 +634,7 @@ storms_gasgiant_category = {
 	spawn_chance = {		
 		modifier = {
 			add = 3
-			is_planet_class = pc_gas_giant
+			is_gas_giant = yes
 			has_any_strategic_resource = no
 		}
 	}
@@ -279,19 +651,53 @@ aerostat_gasgiant_category = {
 	spawn_chance = {		
 		modifier = {
 			add = 3
-			is_planet_class = pc_gas_giant
+			is_gas_giant = yes
 		}
 	}
 	
 	on_success = {
-		1 = anomaly.310
-		1 = {
+		2 = anomaly.310
+		2 = {
 			modifier = {
 				factor = 0
 				from = { has_any_strategic_resource = yes }
 			}
 			anomaly_event = anomaly.315
 		}
+# Expanded Events mod
+		2 = anomalymod.201
+		1 = anomaly_failure.13 # not really a failure unless you mess up the timed project
+		0 = {
+			modifier = {
+				add = 1
+				owner = { NOT = { has_country_flag = anomaly_failure_901_happened } }
+				leader = {
+					NOR = {
+						has_skill > 3
+						has_trait = leader_trait_roamer
+						has_trait = leader_trait_expertise_voidcraft
+						has_trait = leader_trait_expertise_propulsion
+					}
+				}
+			}
+			anomaly_event = anomaly_failure.901
+		}
+		0 = {
+			modifier = {
+				add = 1
+				owner = { NOT = { has_country_flag = anomaly_failure_901_happened } }
+				leader = {
+					NOR = {
+						has_skill > 3
+						has_trait = leader_trait_roamer
+						has_trait = leader_trait_expertise_voidcraft
+						has_trait = leader_trait_expertise_propulsion
+					}
+				}
+			}
+			anomaly_event = anomaly_failure.902
+		}
+# Expanded Events mod
 	}
 }
 
@@ -304,7 +710,7 @@ cargo_gasgiant_category = {
 	spawn_chance = {		
 		modifier = {
 			add = 3
-			is_planet_class = pc_gas_giant
+			is_gas_giant = yes
 		}
 	}
 	
@@ -320,7 +726,7 @@ debris_gasgiant_category = {
 	spawn_chance = {		
 		modifier = {
 			add = 3
-			is_planet_class = pc_gas_giant
+			is_gas_giant = yes
 		}
 	}
 
@@ -376,14 +782,41 @@ impact_uninhabitable_category = {
 	}
 	
 	on_success = {
-		1 = {
+		2 = {
 			modifier = {
 				factor = 0
 				from = { has_any_strategic_resource = yes }
 			}
 			anomaly_event = anomaly.600
 		}
-		1 = anomaly.605
+# Expanded Events mod
+		2 = anomaly.605
+		2 = anomalymod.203
+		0 = {
+			modifier = {
+				add = 2
+				from = {
+					OR = {
+						is_barren = yes
+						is_planet_class = pc_molten
+					}
+				}
+			}
+			anomaly_event = anomalymod.204
+		}
+		0 = {
+			modifier = {
+				add = 1
+				leader = {
+					has_skill < 3
+					NOT = { has_trait = leader_trait_meticulous }
+					NOT = { has_trait = leader_trait_cataloger }
+					NOT = { has_trait = leader_trait_expertise_new_worlds }
+				}
+			}
+			anomaly_event = anomaly_failure.16
+		}
+# Expanded Events mod
 	}
 }
 
@@ -401,16 +834,63 @@ energy_uninhabitable_category = {
 	}
 	
 	on_success = {
-		1 = {
+		2 = {
 			modifier = {
 				factor = 0
 				from = { has_any_strategic_resource = yes }
 			}
 			anomaly_event = anomaly.610
 		}
-		1 = anomaly.615
-		1 = anomaly.655
-		1 = distar.1040
+# Expanded Events mod
+		2 = anomaly.615
+		2 = anomaly.655
+		2 = distar.1040
+		1 = anomaly_failure.1403
+		0 = {
+			modifier = {
+				add = 1
+				owner = {
+					NOT = { has_country_flag = anomaly_failure_1400_happened }
+				}
+				leader = {
+					has_skill < 3
+					NOT = { has_trait = leader_trait_expertise_particles }
+					NOT = { has_trait = leader_trait_expertise_field_manipulation }
+				}
+			}
+			anomaly_event = anomaly_failure.1400
+		}
+		0 = {
+			modifier = {
+				add = 1
+				owner = {
+					NOT = { has_country_flag = anomaly_failure_1400_happened }
+				}
+				leader = {
+					has_skill < 3
+					NOT = { has_trait = leader_trait_carefree } # gets event below
+					NOT = { has_trait = leader_trait_meticulous }
+					NOT = { has_trait = leader_trait_cataloger }
+					NOT = { has_trait = leader_trait_expertise_particles }
+					NOT = { has_trait = leader_trait_expertise_field_manipulation }
+				}
+			}
+			anomaly_event = anomaly_failure.1401
+		}
+		0 = {
+			modifier = {
+				add = 1
+				owner = {
+					NOT = { has_country_flag = anomaly_failure_1400_happened }
+				}
+				leader = {
+					has_trait = leader_trait_carefree
+					NOT = { has_trait = leader_trait_expertise_voidcraft }
+				}
+			}
+			anomaly_event = anomaly_failure.1402
+		}
+# Expanded Events mod
 	}
 }
 
@@ -427,9 +907,69 @@ signal_uninhabitable_category = {
 		}
 	}
 	
+# Expanded Events mod
 	on_success = {
-		1 = anomaly.625
-		1 = anomaly.630
+		3 = anomaly.625
+		3 = anomaly.630
+		2 = anomalymod.264
+		0 = {
+			modifier = {
+				add = 1
+				leader = {
+					has_skill < 3
+					NOT = { has_trait = leader_trait_meticulous }
+					NOT = { has_trait = leader_trait_cataloger }
+					NOT = { has_trait = leader_trait_expertise_propulsion }
+					NOT = { has_trait = leader_trait_expertise_field_manipulation }
+				}
+			}
+			anomaly_event = anomaly_failure.18
+		}
+		1 = anomaly_failure.1405
+		0 = {
+			modifier = {
+				add = 1
+				owner = {
+					NOT = { has_country_flag = anomaly_failure_1400_happened }
+				}
+				leader = {
+					has_skill < 3
+					NOT = { has_trait = leader_trait_expertise_particles }
+				}
+			}
+			anomaly_event = anomaly_failure.1400
+		}
+		0 = {
+			modifier = {
+				add = 1
+				owner = {
+					NOT = { has_country_flag = anomaly_failure_1400_happened }
+				}
+				leader = {
+					has_skill < 3
+					NOT = { has_trait = leader_trait_carefree } # gets event below
+					NOT = { has_trait = leader_trait_meticulous }
+					NOT = { has_trait = leader_trait_cataloger }
+					NOT = { has_trait = leader_trait_expertise_particles }
+					NOT = { has_trait = leader_trait_expertise_field_manipulation }
+				}
+			}
+			anomaly_event = anomaly_failure.1401
+		}
+		0 = {
+			modifier = {
+				add = 1
+				owner = {
+					NOT = { has_country_flag = anomaly_failure_1400_happened }
+				}
+				leader = {
+					has_trait = leader_trait_carefree
+					NOT = { has_trait = leader_trait_expertise_voidcraft }
+				}
+			}
+			anomaly_event = anomaly_failure.1402
+		}
+# Expanded Events mod
 	}
 }
 
@@ -475,12 +1015,40 @@ life_toxic_category = {
 	spawn_chance = {		
 		modifier = {
 			add = 3
-			is_planet_class = pc_toxic
+			is_toxic = yes
 			has_any_strategic_resource = no
 		}
 	}
 
-	on_success = anomaly.690
+# Expanded Events mod
+	on_success = {
+		2 = {
+			anomaly_event = anomalymod.200
+			max_once = no
+		}
+		2 = {
+			anomaly_event = anomaly.690
+			max_once = no
+		}
+		2 = anomalymod.243
+		0 = {
+			modifier = {
+				add = 1
+				owner = {
+					NOT = { has_country_flag = anomaly_failure_21_happened }
+				}
+				leader = {
+					has_skill < 3
+					NOT = { has_trait = leader_trait_meticulous }
+					NOT = { has_trait = leader_trait_cataloger }
+					NOT = { has_trait = leader_trait_expertise_new_worlds }
+					NOT = { has_trait = leader_trait_expertise_biology }
+				}
+			}
+			anomaly_event = anomaly_failure.21
+		}
+	}
+# Expanded Events mod
 }
 
 
@@ -492,7 +1060,7 @@ life_frozen_category = {
 	spawn_chance = {		
 		modifier = {
 			add = 3
-			is_planet_class = pc_frozen
+			is_frozen = yes
 			has_any_strategic_resource = no
 		}
 		modifier = {
@@ -506,7 +1074,30 @@ life_frozen_category = {
 		}
 	}
 	
-	on_success = anomaly.2510
+# Expanded Events mod
+	on_success = {
+		2 = anomaly.2510
+		2 = anomalymod.229
+		2 = anomalymod.232
+		0 = {
+			modifier = {
+				add = 1
+				owner = {
+					NOT = { has_country_flag = anomaly_failure_21_happened }
+				}
+				leader = {
+					has_skill < 3
+					NOT = { has_trait = leader_trait_meticulous }
+					NOT = { has_trait = leader_trait_cataloger }
+					NOT = { has_trait = leader_trait_expertise_new_worlds }
+					NOT = { has_trait = leader_trait_expertise_biology }
+				}
+			}
+			anomaly_event = anomaly_failure.21
+		}
+	}
+# Expanded Events mod
+#	on_success = anomaly.2510
 }
 
 
@@ -518,34 +1109,106 @@ life_barren_category = {
 	spawn_chance = {		
 		modifier = {
 			add = 3
-			OR = {
-				is_planet_class = pc_barren
-				is_planet_class = pc_barren_cold
-			}
+			is_barren = yes
 			has_any_strategic_resource = no
 		}
 	}
 	
-	on_success = anomaly.695
+# Expanded Events mod
+	on_success = {
+		2 = anomaly.695
+		2 = {
+			modifier = {
+				factor = 0
+				NOT = {
+					FROM = {
+						can_be_terraforming_candidate = yes
+					}
+				}
+			}
+			anomaly_event = anomalymod.218
+		}
+		2 = anomalymod.223
+		0 = {
+			modifier = {
+				add = 1
+				owner = {
+					NOT = { has_country_flag = anomaly_failure_21_happened }
+				}
+				leader = {
+					has_skill < 3
+					NOT = { has_trait = leader_trait_meticulous }
+					NOT = { has_trait = leader_trait_cataloger }
+					NOT = { has_trait = leader_trait_expertise_new_worlds }
+					NOT = { has_trait = leader_trait_expertise_biology }
+				}
+			}
+			anomaly_event = anomaly_failure.21
+		}
+	}
+# Expanded Events mod
 }
 
 
 station_uninhabitable_category = {
 	desc = "station_uninhabitable_category_desc"
-	picture = GFX_evt_ship_travel
+	picture = GFX_evt_space_station
 	level = 1
 	
 	spawn_chance = {		
 		modifier = {
-			add = 3
+			add = 1
+			years_passed > 10
 			uninhabitable_regular_planet = yes
 			num_minerals > 0
-			exists = space_owner
-			space_owner = { is_same_empire = from.owner }
+			solar_system  = {
+				any_system = {
+					distance = {
+						source = prev
+						use_bypasses = no
+						min_jumps = 1
+						max_jumps = 3
+					}
+					exists = space_owner
+					space_owner = { is_same_empire = from.owner }
+				}
+			}
 		}
 	}
 	
-	on_success = anomaly.700
+	
+# Expanded Events mod
+	on_success = {
+		2 = {
+			anomaly_event = anomaly.700
+			max_once = no
+		}
+		0 = {
+			modifier = {
+				add = 1
+				leader = {
+					has_skill < 3
+					NOT = { has_trait = leader_trait_meticulous }
+					NOT = { has_trait = leader_trait_cataloger }
+					NOT = { has_trait = leader_trait_expertise_materials }
+					NOT = { has_trait = leader_trait_expertise_voidcraft }
+				}
+			}
+			anomaly_event = anomaly_failure.22
+		}
+	}
+# Expanded Events mod
+
+	#on_fail = anomaly_failure.22
+#
+	#on_critical_fail = {
+	#	1 = anomaly_failure.1400
+	#	1 = anomaly_failure.1401
+	#	1 = anomaly_failure.1402
+	#	1 = anomaly_failure.1403
+	#	1 = anomaly_failure.1404
+	#	1 = anomaly_failure.1405
+	#}
 }
 
 
@@ -590,7 +1253,7 @@ inhabited_toxic_category = {
 	spawn_chance = {		
 		modifier = {
 			add = 3
-			is_planet_class = pc_toxic
+			is_toxic = yes
 			has_any_strategic_resource = no
 		}
 	}
@@ -678,7 +1341,7 @@ signal_gasgiant_category = {
 	spawn_chance = {		
 		modifier = {
 			add = 1
-			is_planet_class = pc_gas_giant
+			is_gas_giant = yes
 		}
 	}
 
@@ -696,11 +1359,22 @@ ship_gasgiant_category = {
 	spawn_chance = {		
 		modifier = {
 			add = 3
-			is_planet_class = pc_gas_giant
+			is_gas_giant = yes
 		}
 	}
 	
-	on_success = anomaly.2560
+	on_success = {
+		3 = anomaly.2560
+		0 = {
+			modifier = {
+				add = 1
+				owner = {
+					NOT = { has_country_flag = anomaly_2560_happened }
+				}
+			}
+			anomaly_event = anomalymod.261
+		}
+	}
 }
 
 
@@ -713,7 +1387,7 @@ terminal_gasgiant_category = {
 	spawn_chance = {		
 		modifier = {
 			add = 3
-			is_planet_class = pc_gas_giant
+			is_gas_giant = yes
 			is_moon = no
 		}
 	}
@@ -786,8 +1460,7 @@ living_metal_category = {
 		modifier = {
 			add = 0.1
 			OR = {
-				is_planet_class = pc_barren
-				is_planet_class = pc_barren_cold
+				is_barren = yes
 				is_asteroid = yes
 			}
 			has_any_strategic_resource = no

@@ -951,14 +951,27 @@ country_event = {
 	
 	trigger = {
 		has_country_flag = new_baldarak_settled
-		NOR = { 
-			has_country_flag = new_baldarak_contact_lost
-			has_country_flag = baldarak_science_academy
+		OR = {
+			NOT = { has_country_flag = new_baldarak_contact_lost }
+			has_country_flag = new_baldarak_occupation_4
+			has_country_flag = baldarak_revolution_4
 		}
+		NOT = { has_country_flag = baldarak_science_academy }
 	}
 	
 	mean_time_to_happen = {
 		months = 320
+		modifier = { #expand. events mod
+			factor = 0.5
+			OR = {
+				has_country_flag = new_baldarak_occupation_4
+				has_country_flag = baldarak_revolution_4
+			}
+		}
+		modifier = {
+			factor = 0.5
+			mid_game_years_passed >= 25
+		}
 	}
 	
 	immediate = {
@@ -990,10 +1003,12 @@ country_event = {
 	
 	trigger = {
 		has_country_flag = new_baldarak_settled
-		NOR = { 
-			has_country_flag = new_baldarak_contact_lost
-			has_country_flag = baldarak_spring_cleaning
+		OR = {
+			NOT = { has_country_flag = new_baldarak_contact_lost }
+			has_country_flag = new_baldarak_occupation_4
+			has_country_flag = baldarak_revolution_4
 		}
+		NOT = { has_country_flag = baldarak_spring_cleaning }
 	}
 	
 	mean_time_to_happen = {
@@ -1006,6 +1021,7 @@ country_event = {
 	
 	option = {
 		name = anomaly.5026.a
+		small_artifact_chance = yes
 		add_monthly_resource_mult = {
 			resource = minerals
 			value = @tier1materialreward

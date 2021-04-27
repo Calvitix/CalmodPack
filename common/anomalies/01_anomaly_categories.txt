@@ -3,6 +3,7 @@
 # Calvitix Check 3.0.1  23/04/2021
 #
 # Merge with Arisphaos Unofficial patch
+# Merge with Expanded Events  25/04/2021
 #
 #
 AST_WAVELENGTHS_1_CAT = {
@@ -14,6 +15,7 @@ AST_WAVELENGTHS_1_CAT = {
 		modifier = {
 			add = 3
 			is_asteroid = yes
+			has_any_strategic_resource = no
 		}
 	}
 	
@@ -112,13 +114,16 @@ AST_DEBRIS_FIELD_1_CAT = {
 							has_star_flag = com_sol
 							has_star_flag = nuked_sol
 							has_star_flag = lost_colony_sol
+							has_star_flag = sol_system
 						}
 					}
 					any_country = {
 						OR = {
 							has_country_flag = human_1
-							has_country_flag = humans_early_space_age
+							is_country_type = primitive							
 						}
+						has_country_flag = humans_early_space_age
+						
 					}
 				}
 				owner = {
@@ -160,6 +165,7 @@ AST_DEBRIS_FIELD_1_CAT = {
 							has_star_flag = com_sol
 							has_star_flag = nuked_sol
 							has_star_flag = lost_colony_sol
+							has_star_flag = sol_system
 						}
 					}
 					any_country = {
@@ -185,9 +191,26 @@ AST_DEBRIS_FIELD_1_CAT = {
 				factor = 0
 				NOT = {
 					owner = {
-						has_country_flag = story7
-						leader = { has_trait = trait_ruler_champion_of_the_people }
+#expanded events mod
+						OR = {
+							has_country_flag = story7
+							any_relation = {
+								has_communications = prev
+								OR = {
+									is_country_type = default
+									is_country_type = fallen_empire
+									is_country_type = awakened_fallen_empire 
+								}
+							}
+						}
+						leader = {
+							OR = {
+								has_trait = trait_ruler_champion_of_the_people
+								has_trait = trait_ruler_charismatic
+							}
+						}
 					}
+###
 				}
 			}	
 			anomaly_event = anomaly.3040
@@ -202,13 +225,33 @@ HBL_LUSH_PLANET_1_CAT = {
 	
 	spawn_chance = {
 		modifier = {
-			add = 3
+			add = 5
 			OR = {
-				is_planet_class = pc_continental
-				is_planet_class = pc_tropical
+				is_continental = yes
+				is_tropical = yes
 			}
+			is_arid = no
+			is_gaia = no
 			# Risa Fix: Remove misapplied Sol blockers.
 		}
+#expanded events mod
+		modifier = {
+			factor = @anomaly_habitable
+			colonizeable_planet = yes
+		}
+		modifier = {
+			factor = 2
+			is_gaia = yes
+		}
+		modifier = {
+			factor = 3
+			is_nuked = yes
+		}
+		modifier = {
+			factor = 2
+			years_passed > 75
+		}
+###
 	}
 	
 	on_success = {
@@ -246,6 +289,17 @@ HBL_LUSH_PLANET_1_CAT = {
 			}
 			anomaly_event = anomaly.3130
 		}
+#expanded events mod
+		0 = {
+			modifier = {
+				add = 1
+				owner = {
+					is_homicidal = no
+				}
+			}
+			anomaly_event = anomalymod.220
+		}
+###
 	}
 }
 
@@ -262,12 +316,25 @@ UHB_ANCIENT_RUINS_1_CAT = {
 			is_ringworld = no
 			NOT = {
 				habitable_planet = yes
-				is_planet_class = pc_gas_giant
+				is_gas_giant = yes
 			}
 		}
 	}
 	
-	on_success = anomaly.120
+#expanded events mod
+	on_success = {
+		1 = anomaly.120
+		0 = {
+			modifier = {
+				add = 1
+				from = {
+					can_be_terraforming_candidate = yes
+				}
+			}
+			anomaly_event = anomalymod.225
+		}
+	}
+###
 }
 
 #UHB_MOLTEN_CHART_CAT = {
@@ -296,9 +363,7 @@ GEN_PLAYGROUND_CAT = {
 			is_asteroid = no
 			is_star = no
 			is_ringworld = no
-			NOT = {
-				is_planet_class = pc_gas_giant
-			}
+			is_gas_giant = no
 		}
 		modifier = {
 			factor = 0
@@ -321,29 +386,50 @@ AST_SHRINE_1_CAT = {
 			add = 3
 			is_asteroid = yes
 			FROM = {
+				owner = { is_ai = no }
+			}
+		}
+	}
+	
+	on_success = {
+		0 = {
+			modifier = {
+				add = 1
 				owner = {
-					is_ai = no
 					NOR = {
 						species_portrait = human
 						capital_scope.solar_system = {
 							has_star_flag = sol
 						}
+						has_ethic = ethic_gestalt_consciousness
+						has_origin = origin_shoulders_of_giants
 					}
 				}
 			}
+			anomaly_event = anomaly.140
 		}
-		modifier = {
-			factor = 0
-			from.owner = {
-				OR = {
-					has_ethic = ethic_gestalt_consciousness
-					has_origin = origin_shoulders_of_giants
+#expanded events mod
+		0 = {
+			modifier = {
+				add = 1
+				from = { has_any_strategic_resource = no }
+				owner = {
+					OR = {
+						species_portrait = human
+						capital_scope.solar_system = {
+							has_star_flag = sol
+						}
+						has_ethic = ethic_gestalt_consciousness
+						has_origin = origin_shoulders_of_giants
+					}
 				}
 			}
+			anomaly_event = anomalymod.265 # alien temple
+#expanded events mod
 		}
 	}
 	
-	on_success = anomaly.140
+	#on_success = anomaly.140
 }
 
 HBL_MUSIC_1_CAT = {
@@ -356,6 +442,24 @@ HBL_MUSIC_1_CAT = {
 			add = 3
 			habitable_planet = yes
 		}
+#expanded events mod
+		modifier = {
+			factor = @anomaly_habitable
+			colonizeable_planet = yes
+		}
+		modifier = {
+			factor = 2
+			is_gaia = yes
+		}
+		modifier = {
+			factor = 3
+			is_nuked = yes
+		}
+		modifier = {
+			factor = 2
+			years_passed > 75
+		}
+#expanded events mod
 	}
 	
 	on_success = {
@@ -380,11 +484,12 @@ GAS_ZRO_ICE_CAT = {
 	desc = "GAS_ZRO_ICE_DESC"
 	picture = "GFX_evt_gas_giant"
 	level = 6
+	should_ai_and_humans_use = yes
 	
 	spawn_chance = {
 		modifier = {
 			add = 3
-			is_planet_class = pc_gas_giant
+			is_gas_giant = yes
 			FROM = {
 				owner = {
 					OR = {
@@ -404,6 +509,7 @@ AST_ILLICIT_DARK_CAT = {
 	desc = "AST_ILLICIT_DARK_DESC"
 	picture = "GFX_evt_asteroid_approaching_planet"
 	level = 7
+	should_ai_and_humans_use = yes
 	
 	spawn_chance = {
 		modifier = {
@@ -413,7 +519,19 @@ AST_ILLICIT_DARK_CAT = {
 		}
 	}
 	
-	on_success = anomaly.155
+#expanded events mod
+	on_success = {
+		2 = anomaly.155
+		0 = {
+			modifier = {
+				add = 1
+				owner = { NOT = { has_country_flag = anomaly_155_happened } }
+			}
+			anomaly_event = anomaly_failure.2655
+		}
+	}
+#expanded events mod end
+	
 }
 
 TOX_PURPLE_RAIN_CAT = {
@@ -424,17 +542,28 @@ TOX_PURPLE_RAIN_CAT = {
 	spawn_chance = {
 		modifier = {
 			add = 3
-			is_planet_class = pc_toxic
-		}
-		modifier = {
-			factor = 0
-			from.owner = {
-				has_ethic = ethic_gestalt_consciousness
-			}
+			is_toxic = yes
 		}
 	}
 	
-	on_success = anomaly.160
+#expanded events mod
+	on_success = {
+		1 = anomalymod.240
+		0 = {
+			modifier = {
+				add = 1
+				owner = {
+					OR = {
+						NOT = { has_ethic = ethic_gestalt_consciousness }
+						has_civic = civic_machine_servitor
+					}
+				}
+			}
+			anomaly_event = anomaly.160
+		}
+	}
+#expanded events mod end	
+	#on_success = anomaly.160
 }
 
 FROZ_BASE_CAT = {
@@ -445,7 +574,7 @@ FROZ_BASE_CAT = {
 	spawn_chance = {
 		modifier = {
 			add = 3
-			is_planet_class = pc_frozen
+			is_frozen = yes
 			# Risa Fix: not needed, anomaly.170 is max_once, and this can block anomaly.175
 			#FROM = {	
 			#	owner = {
@@ -476,12 +605,45 @@ TROP_PETS_CAT = {
 	
 	spawn_chance = {
 		modifier = {
-			add = 3
-			is_planet_class = pc_tropical
+			add = 5
+			is_tropical = yes
+		}
+#expanded events mod
+		modifier = {
+			factor = @anomaly_habitable
+			colonizeable_planet = yes
+		}
+		modifier = {
+			factor = 2
+			is_gaia = yes
+		}
+		modifier = {
+			factor = 3
+			is_nuked = yes
+		}
+		modifier = {
+			factor = 2
+			years_passed > 75
+#expanded events mod end
 		}
 	}
 	
-	on_success = anomaly.180
+#expanded events mod
+	on_success = {
+		1 = anomaly.180
+		0 = {
+			modifier = {
+				add = 1
+				owner = {
+					NOT = { has_country_flag = found_presapients }
+				}
+			}
+			anomaly_event = uplift.6040
+		}
+	}
+#expanded events mod end
+	
+	#on_success = anomaly.180
 }
 
 BARR_BASE_CAT = {
@@ -498,7 +660,7 @@ BARR_BASE_CAT = {
 		modifier = {
 			factor = 0
 			from.owner = {
-				has_ethic = ethic_gestalt_consciousness
+				is_hive_empire = yes
 			}
 		}
 	}
@@ -515,6 +677,7 @@ PROJ_MOON_CAT = {
 		modifier = {
 			add = 3
 			uninhabitable_regular_planet = yes
+			is_gas_giant = no
 			has_any_strategic_resource = no
 			has_moon = yes
 			num_moons < 2
@@ -535,12 +698,52 @@ SEA_CAT = {
 	
 	spawn_chance = {
 		modifier = {
-			add = 3
-			is_planet_class = pc_ocean
+			add = 5 #3
+			is_ocean = yes
+		}
+#expanded events mod
+		modifier = {
+			factor = @anomaly_habitable
+			colonizeable_planet = yes
+		}
+		modifier = {
+			factor = 2
+			is_gaia = yes
+		}
+		modifier = {
+			factor = 3
+			is_nuked = yes
+		}
+		modifier = {
+			factor = 2
+			years_passed > 75
 		}
 	}
 	
-	on_success = anomaly.195
+	on_success = {
+		1 = anomaly.195
+		1 = anomalymod.226
+		1 = {
+			modifier = {
+				factor = 0
+				from = {
+					is_moon = yes
+				}
+			}
+			modifier = {
+				factor = 0
+				from = {
+					OR = {
+						has_modifier = "titanic_life"
+						has_modifier = "bleak_planet"
+					}
+				}
+			}
+			anomaly_event = anomalymod.244
+		}
+	}
+#expanded events mod end
+	#on_success = anomaly.195
 }
 
 MOLTEN_BASE_CAT = {
@@ -569,6 +772,24 @@ LEVELED_CAT = {
 			add = 3
 			habitable_planet = yes
 		}
+#expanded events mod
+		modifier = {
+			factor = @anomaly_habitable
+			colonizeable_planet = yes
+		}
+		modifier = {
+			factor = 2
+			is_gaia = yes
+		}
+		modifier = {
+			factor = 3
+			is_nuked = yes
+		}
+		modifier = {
+			factor = 2
+			years_passed > 75
+		}
+#expanded events mod end
 	}
 	
 	on_success = anomaly.205
@@ -598,14 +819,33 @@ HAB_CORN_CAT = {
 	level = 4
 	
 	spawn_chance = {
+#expanded events mod
 		modifier = {
-			add = 3
+			add = 4 #3
 			OR = {
-				is_planet_class = pc_tropical
-				is_planet_class = pc_continental
-				is_planet_class = pc_ocean
+				is_tropical = yes
+				is_continental = yes
+				is_ocean = yes
 			}
+			is_arid = no
 		}
+		modifier = {
+			factor = @anomaly_habitable
+			colonizeable_planet = yes
+		}
+		modifier = {
+			factor = 2
+			is_gaia = yes
+		}
+		modifier = {
+			factor = 3
+			is_nuked = yes
+		}
+		modifier = {
+			factor = 2
+			years_passed > 75
+		}
+#expanded events mod end
 	}
 	
 	on_success = {
@@ -634,17 +874,40 @@ HAB_MAT_CAT = {
 	level = 4
 	
 	spawn_chance = {
+#expanded events mod end
 		modifier = {
-			add = 3
+			add = 4 # 3
 			OR = {
-				is_planet_class = pc_tropical
-				is_planet_class = pc_continental
-				is_planet_class = pc_arid
+				is_tropical = yes
+				is_continental = yes
+				is_arid = yes
 			}
+		}
+		modifier = {
+			factor = @anomaly_habitable
+			colonizeable_planet = yes
+		}
+		modifier = {
+			factor = 2
+			is_gaia = yes
+		}
+		modifier = {
+			factor = 3
+			is_nuked = yes
+		}
+		modifier = {
+			factor = 2
+			years_passed > 75
 		}
 	}
 	
-	on_success = anomaly.220
+	on_success = {
+		1 = anomaly.220
+		1 = anomalymod.207
+		1 = anomalymod.227
+	}
+#expanded events mod end
+	#on_success = anomaly.220
 }
 
 ATM_ANOMALY_CAT = {
@@ -656,6 +919,7 @@ ATM_ANOMALY_CAT = {
 		modifier = {
 			add = 3
 			uninhabitable_regular_planet = yes
+			is_gas_giant = no
 			has_any_strategic_resource = no
 		}
 	}
@@ -672,6 +936,7 @@ FRBR_GRIMACING_CAT = {
 		modifier = {
 			add = 3
 			is_planet_class = pc_barren
+			can_be_terraforming_candidate = yes
 			has_any_strategic_resource = no
 			planet_size < 26
 			planet_size > 9
@@ -689,7 +954,7 @@ FROZ_ILLUMINATED_CAT = {
 	spawn_chance = {
 		modifier = {
 			add = 3
-			is_planet_class = pc_frozen
+			is_frozen = yes
 			from = {
 				owner = {
 					has_technology = tech_lasers_1
@@ -714,7 +979,7 @@ GAS_CLOUDY_CAT = {
 	spawn_chance = {
 		modifier = {
 			add = 3
-			is_planet_class = pc_gas_giant
+			is_gas_giant = yes
 			has_any_strategic_resource = no
 			# Risa fix: make it not interfere with gas giant civ chain
 			NOR = {	
@@ -735,10 +1000,28 @@ GAIA_MOVE_CAT = {
 	level = 3
 	
 	spawn_chance = {
+#expanded events mod
 		modifier = {
-			add = 3
-			is_planet_class = pc_gaia
+			add = 5 # 3
+			is_gaia = yes
 		}
+		modifier = {
+			factor = @anomaly_habitable
+			colonizeable_planet = yes
+		}
+		modifier = {
+			factor = 2
+			is_gaia = yes
+		}
+		modifier = {
+			factor = 3
+			is_nuked = yes
+		}
+		modifier = {
+			factor = 2
+			years_passed > 75
+		}
+#expanded events mod end
 	}
 	
 	on_success = anomaly.245
@@ -752,7 +1035,7 @@ FROZ_BOX_CAT = {
 	spawn_chance = {
 		modifier = {
 			add = 3
-			is_planet_class = pc_frozen
+			is_frozen = yes
 		}
 	}
 	
@@ -765,14 +1048,32 @@ CONT_SIGNS_CAT = {
 	level = 4
 	
 	spawn_chance = {
+#expanded events mod
 		modifier = {
-			add = 3
+			add = 4 # 3
 			OR = {
-				is_planet_class = pc_continental
-				is_planet_class = pc_tropical
-				is_planet_class = pc_tundra
+				is_continental = yes
+				is_tropical = yes
+				is_tundra = yes
 			}
 		}
+		modifier = {
+			factor = @anomaly_habitable
+			colonizeable_planet = yes
+		}
+		modifier = {
+			factor = 2
+			is_gaia = yes
+		}
+		modifier = {
+			factor = 3
+			is_nuked = yes
+		}
+		modifier = {
+			factor = 2
+			years_passed > 75
+		}
+#expanded events mod end
 	}
 	
 	on_success = anomaly.255
@@ -784,9 +1085,27 @@ FROZ_BASE2_CAT = {
 	level = 4
 	
 	spawn_chance = {
+#expanded events mod
 		modifier = {
-			add = 3
-			is_planet_class = pc_arctic
+			add = 5 # 3
+			is_arctic = yes
+		}
+		modifier = {
+			factor = @anomaly_habitable
+			colonizeable_planet = yes
+		}
+		modifier = {
+			factor = 2
+			is_gaia = yes
+		}
+		modifier = {
+			factor = 3
+			is_nuked = yes
+		}
+		modifier = {
+			factor = 2
+			years_passed > 75
+#expanded events mod end
 		}
 	}
 	
@@ -847,6 +1166,7 @@ BAR_COLONY_CAT = {
 	}
 	
 	on_success = {
+		#1 = anomaly.280	# TODO [MO] was commented out
 		1 = {
 			modifier = {
 				factor = 0
@@ -855,6 +1175,8 @@ BAR_COLONY_CAT = {
 			anomaly_event = anomaly.285
 		}
 		1 = anomaly.3015
+		1 = anomalymod.205 # Rework of anomaly.280
+		1 = anomalymod.206
 	}
 }
 
@@ -866,7 +1188,7 @@ TOX_MAT_CAT = {
 	spawn_chance = {
 		modifier = {
 			add = 3
-			is_planet_class = pc_toxic
+			is_toxic = yes
 			has_any_strategic_resource = no
 		}
 	}
@@ -894,6 +1216,7 @@ AST_CLUSTER_CAT = {
 					NOR = {
 						has_trait = leader_trait_carefree
 						has_trait = leader_trait_meticulous
+						has_trait = leader_trait_cataloger
 					}
 				}
 			}
@@ -949,8 +1272,24 @@ GAEA_CHECKERED_CAT = {
 	
 	spawn_chance = {
 		modifier = {
-			add = 3
-			is_planet_class = pc_gaia
+			add = 5
+			is_gaia = yes
+		}
+		modifier = {
+			factor = @anomaly_habitable
+			colonizeable_planet = yes
+		}
+		modifier = {
+			factor = 2
+			is_gaia = yes
+		}
+		modifier = {
+			factor = 3
+			is_nuked = yes
+		}
+		modifier = {
+			factor = 2
+			years_passed > 75
 		}
 	}
 	
@@ -964,11 +1303,27 @@ GEN_ABANDONED_SHIP_CAT = {
 	
 	spawn_chance = {
 		modifier = {
-			add = 3
+			add = 4
 			OR = {
-				is_planet_class = pc_continental
-				is_planet_class = pc_arid
+				is_continental = yes
+				is_arid = yes
 			}
+		}
+		modifier = {
+			factor = @anomaly_habitable
+			colonizeable_planet = yes
+		}
+		modifier = {
+			factor = 2
+			is_gaia = yes
+		}
+		modifier = {
+			factor = 3
+			is_nuked = yes
+		}
+		modifier = {
+			factor = 2
+			years_passed > 75
 		}
 	}
 	
@@ -982,8 +1337,24 @@ GEN_DESERT_CAT = {
 	
 	spawn_chance = {
 		modifier = {
-			add = 3
-			is_planet_class = pc_desert
+			add = 5
+			is_desert = yes
+		}
+		modifier = {
+			factor = @anomaly_habitable
+			colonizeable_planet = yes
+		}
+		modifier = {
+			factor = 2
+			is_gaia = yes
+		}
+		modifier = {
+			factor = 3
+			is_nuked = yes
+		}
+		modifier = {
+			factor = 2
+			years_passed > 75
 		}
 	}
 	
@@ -994,6 +1365,7 @@ GEN_DESERT_CAT = {
 				leader = {
 					OR = {
 						has_trait = leader_trait_meticulous
+						has_trait = leader_trait_cataloger
 						has_trait = leader_trait_carefree
 					}
 				}
@@ -1016,7 +1388,7 @@ TOX_STRUCTURES_CAT = {
 	spawn_chance = {
 		modifier = {
 			add = 3
-			is_planet_class = pc_toxic
+			is_toxic = yes
 			has_any_strategic_resource = no
 		}
 	}
@@ -1031,8 +1403,8 @@ TROP_WOODS_CAT = {
 	
 	spawn_chance = {
 		modifier = {
-			add = 3
-			is_planet_class = pc_tropical
+			add = 5
+			is_tropical = yes
 		}
 		modifier = {
 			factor = 0
@@ -1042,6 +1414,22 @@ TROP_WOODS_CAT = {
 					has_civic = civic_machine_servitor
 				}
 			}
+		}
+		modifier = {
+			factor = @anomaly_habitable
+			colonizeable_planet = yes
+		}
+		modifier = {
+			factor = 2
+			is_gaia = yes
+		}
+		modifier = {
+			factor = 3
+			is_nuked = yes
+		}
+		modifier = {
+			factor = 2
+			years_passed > 75
 		}
 	}
 	
@@ -1094,11 +1482,12 @@ UHB_BUOY_CAT = {
 		modifier = {
 			add = 3
 			OR = {
-				is_planet_class = pc_toxic
-				is_planet_class = pc_barren_cold
-				is_planet_class = pc_barren
-				is_planet_class = pc_frozen
-				is_planet_class = pc_nuked
+				is_toxic = yes
+				is_barren = yes
+				is_frozen = yes
+				is_nuked = yes
+				is_planet_class = pc_methane
+				is_planet_class = pc_ammonia
 			}
 			NOT = { has_planet_flag = nuked_planet_anomalies_disabled }
 			from.owner = {
@@ -1107,6 +1496,26 @@ UHB_BUOY_CAT = {
 					has_ethic = ethic_gestalt_consciousness
 				}
 			}
+		}
+		modifier = {
+			factor = @anomaly_unhabitable
+			colonizeable_planet = no
+		}
+		modifier = {
+			factor = @anomaly_habitable
+			colonizeable_planet = yes
+		}
+		modifier = {
+			factor = 2
+			is_gaia = yes
+		}
+		modifier = {
+			factor = 3
+			is_nuked = yes
+		}
+		modifier = {
+			factor = 2
+			years_passed > 75
 		}
 	}
 	
@@ -1120,11 +1529,27 @@ GAIA_RECORD_CAT = {
 	
 	spawn_chance = {
 		modifier = {
-			add = 3
+			add = 5
 			OR = {
-				is_planet_class = pc_gaia
-				is_planet_class = pc_continental
+				is_gaia = yes
+				is_continental = yes
 			}
+		}
+		modifier = {
+			factor = @anomaly_habitable
+			colonizeable_planet = yes
+		}
+		modifier = {
+			factor = 2
+			is_gaia = yes
+		}
+		modifier = {
+			factor = 3
+			is_nuked = yes
+		}
+		modifier = {
+			factor = 2
+			years_passed > 75
 		}
 	}
 	

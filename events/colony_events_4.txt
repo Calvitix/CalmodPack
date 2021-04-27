@@ -632,7 +632,7 @@ planet_event = {
 		}
 		owner = {
 			add_monthly_resource_mult = {
-				resource = minerals
+				resource = alloys
 				value = @tier1materialreward
 				min = @tier1materialmin
 				max = @tier1materialmax
@@ -662,7 +662,7 @@ planet_event = {
 		}
 		owner = {
 			add_monthly_resource_mult = {
-				resource = minerals
+				resource = alloys
 				value = @tier1materialreward
 				min = @tier1materialmin
 				max = @tier1materialmax
@@ -694,7 +694,7 @@ planet_event = {
 		}
 		owner = {
 			add_monthly_resource_mult = {
-				resource = minerals
+				resource = alloys
 				value = @tier1materialreward
 				min = @tier1materialmin
 				max = @tier1materialmax
@@ -3331,6 +3331,20 @@ planet_event = {
 		name = UNFORTUNATE
 		add_deposit = d_decrepit_dwellings
 		add_deposit = d_failing_infrastructure
+		hidden_effect = {
+			random_list = {
+				50 = {
+					random_owned_pop = {
+						limit = { is_valid_refugee_pop = yes }
+						save_event_target_as = refugee_pop #Must be saved for refugee_pop_effect to work
+						refugee_pop_effect = yes
+					}
+				}
+				50 = {
+					# nothing
+				}
+			}
+		}
 	}
 	option = {
 		name = colony.2050.b
@@ -3398,8 +3412,18 @@ planet_event = {
 					has_government = gov_military_commissariat
 					has_government = gov_citizen_republic
 					has_government = gov_megacorporation
+					has_government = gov_private
+					has_government = gov_criminal_syndicate
+					has_government = gov_private_criminal_syndicate
+					has_government = gov_subversive_cult
+					has_government = gov_private_subversive_cult
 					has_government = gov_military_dictatorship
 					has_government = gov_star_empire
+					has_government = gov_mortal_empire
+					has_government = gov_grim_council
+					has_government = gov_band_blood
+					has_government = gov_sacrificial_megachurch
+					has_government = gov_private_sacrificial_megachurch
 				}
 			}
 		}
@@ -3412,6 +3436,7 @@ planet_event = {
    			}	
 		}
 		random_owned_pop = {
+			limit = { is_pop_category = worker }
 			add_modifier = {
 				modifier = pop_angered
 				days = 7300
@@ -3420,10 +3445,25 @@ planet_event = {
 		random_owned_pop = {
 			limit = {
 				NOT = { has_modifier = pop_angered }
+				is_pop_category = worker
 			}
 			add_modifier = {
 				modifier = pop_angered
 				days = 7300
+			}
+		}
+		hidden_effect = {
+			random_list = {
+				50 = {
+					random_owned_pop = {
+						limit = { is_valid_refugee_pop = yes }
+						save_event_target_as = refugee_pop #Must be saved for refugee_pop_effect to work
+						refugee_pop_effect = yes
+					}
+				}
+				50 = {
+					# nothing
+				}
 			}
 		}
 	}

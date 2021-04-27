@@ -73,6 +73,22 @@ ship_event = {
 	
 	option = {
 		name = CURIOUS
+		FROM = { #expand. events mod
+			if = {
+				limit = {
+					can_be_terraforming_candidate = yes
+				}
+				custom_tooltip = TERRAFORMING_CANDIDATE_EFFECT
+				hidden_effect = {
+					from = {
+						add_modifier = {
+							modifier = "terraforming_candidate"
+							days = -1
+						}
+					}		
+				}
+			}
+		}
 		hidden_effect = {
 			owner = { country_event = { id = story.5 days = 30 } }
 			from = { create_archaeological_site = grunur_digsite_1 }
@@ -446,6 +462,20 @@ fleet_event = {
 				save_event_target_as = baol_colony_3
 			}
 		}
+		if = { #expand. events mod
+			limit = { NOT = { exists = event_target:baol_colony_3 } }
+			solar_system = {
+				spawn_system = {
+					min_distance >= 10
+					max_distance <= 25
+					initializer = "ancrel_expanded_init_baol_1"
+				}
+			}
+			random_galaxy_planet = {
+				limit = { has_planet_flag = baol_expanded_planet }
+				save_event_target_as = baol_colony_3
+			}
+		}
 	}
 
 	option = {
@@ -467,7 +497,55 @@ fleet_event = {
 ship_event = {
 	id = ancrel.2012
 	title = "ancrel.2012.name"
-	desc = "ancrel.2012.desc"
+	desc = { #expand. events mod
+		text = "ancrel.2012.desc"
+		trigger = {
+			event_target:baol_colony_3 = {
+				NOR = {
+					is_gaia = yes
+					has_modifier = lush_planet
+					has_modifier = mineral_rich
+					has_modifier = ultra_rich
+					has_deposit = d_dust_caverns
+					has_deposit = d_dust_desert
+					has_deposit = d_bubbling_swamp
+					has_deposit = d_fuming_bog
+					has_deposit = d_crystalline_caverns
+					has_deposit = d_crystal_forest
+					has_deposit = d_crystal_reef
+				}
+			}
+		}
+	}
+	desc = {
+		text = "ancrel.2012.desc_lush"
+		trigger = {
+			event_target:baol_colony_3 = {
+				OR = {
+					is_gaia = yes
+					has_modifier = lush_planet
+				}
+			}
+		}
+	}
+	desc = {
+		text = "ancrel.2012.desc_rich"
+		trigger = {
+			event_target:baol_colony_3 = {
+				OR = {
+					has_modifier = mineral_rich
+					has_modifier = ultra_rich
+					has_deposit = d_dust_caverns
+					has_deposit = d_dust_desert
+					has_deposit = d_bubbling_swamp
+					has_deposit = d_fuming_bog
+					has_deposit = d_crystalline_caverns
+					has_deposit = d_crystal_forest
+					has_deposit = d_crystal_reef
+				}
+			}
+		}
+	}
 	picture = GFX_evt_baol_ruins
 	show_sound = event_scanner
 	location = event_target:baol_colony_3
@@ -593,6 +671,22 @@ country_event = {
 	is_triggered_only = yes
 
 	immediate = {
+		random_system = { #expand. events mod
+			limit = { has_star_flag = last_baol_system }
+			save_event_target_as = last_baol_system
+			random_system_planet = {
+				limit = { is_molten = yes }
+				set_deposit = d_energy_5
+			}
+			random_system_planet = {
+				limit = { is_planet_class = pc_broken }
+				set_deposit = d_alloys_5
+			}
+			random_system_planet = {
+				limit = { is_gas_giant = yes }
+				set_deposit = d_energy_5
+			}
+		}
 		random_system = {
 			limit = { has_star_flag = last_baol_system }
 			save_event_target_as = last_baol_system
@@ -955,9 +1049,20 @@ planet_event = { #Baol Life-Seeding complete
 
 	is_triggered_only = yes
 
-	immediate = {
+	after = { #expand. events mod
 		owner = {
 			set_country_flag = has_used_baol_lifseeding
+		}
+		hidden_effect = {
+			if = {
+				limit = { has_planet_flag = damaged_homeworld }
+				planet_event = { id = countryexpanded.22 }
+			}
+			if = {
+				limit = { has_planet_flag = has_new_frontiers_mod }
+				planet_event = { id = newfrontiers_action.2 }
+			}
+			planet_event = { id = action.68 }
 		}
 	}
 
@@ -1008,6 +1113,7 @@ planet_event = { #Baol Life-Seeding complete
 					has_policy_flag = slavery_allowed
 					has_ethic = ethic_gestalt_consciousness
 				}
+				NOT = { has_valid_civic = civic_machine_servitor } #expand. events mod
 			}
 		}
 		name = ancrel.2025.c
@@ -1865,6 +1971,12 @@ fleet_event = {
 				}
 				give_technology = { tech = tech_colonization_3 }
 			}
+			else_if = { #expand. events mod
+				limit = {
+					NOT = { has_technology = tech_society_2 }
+				}
+				give_technology = { tech = tech_society_2 }
+			}
 			ELSE = {
 				add_monthly_resource_mult = {
 					resource = society_research
@@ -1884,6 +1996,12 @@ fleet_event = {
 					can_research_technology = tech_colonization_3
 				}
 				give_technology = { tech = tech_colonization_3 }
+			}
+			else_if = { #expand. events mod
+				limit = {
+					NOT = { has_technology = tech_society_2 }
+				}
+				give_technology = { tech = tech_society_2 }
 			}
 			ELSE = {
 				add_monthly_resource_mult = {

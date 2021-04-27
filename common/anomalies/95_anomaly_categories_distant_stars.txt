@@ -3,7 +3,8 @@
 # Calvitix Check 3.0.1  23/04/2021
 #
 # Merge with Arisphaos Unofficial patch
-#
+# Merge with Expanded Events  25/04/2021
+# 
 #
 DISTAR_WRECK_CAT = {
 	desc = "DISTAR_WRECK_CAT_DESC"
@@ -118,7 +119,7 @@ DISTAR_NANO_CAT = {
 			has_distar = yes
 			OR = {
 				is_planet_class = pc_barren_cold
-				is_planet_class = pc_frozen
+				is_frozen = yes
 			}
 		}
 	}
@@ -145,7 +146,11 @@ DISTAR_FLOW_CAT = {
 			is_star = yes
 			solar_system = {
 				any_system_megastructure = {
-					is_megastructure_type = gateway_ruined
+					OR = { #expanded Events mod
+						is_megastructure_type = gateway_ruined
+						is_megastructure_type = gateway_restored
+						is_megastructure_type = lgate_base
+					}
 				}
 			}
 		}
@@ -165,7 +170,7 @@ DISTAR_LOST_CAT = {
 	spawn_chance = {
 		modifier = {
 			add = 1
-			is_planet_class = pc_gas_giant
+			is_gas_giant = yes
 		}
 		modifier = {
 			factor = 0
@@ -196,6 +201,7 @@ DISTAR_TIME_CAT = {
 			OR = {
 				is_star_class = sc_neutron_star
 				is_star_class = sc_pulsar
+				is_star_class = sc_magnetar #exp.events mod
 			}
 		}
 		modifier = {
@@ -207,6 +213,14 @@ DISTAR_TIME_CAT = {
 				}
 			}
 		}
+		#exp.events mod
+		modifier = {
+			factor = 50
+			from.owner = {
+				has_country_flag = worm_events_available
+			}
+		}
+		###
 	}
 
 	max_once_global = yes
@@ -290,6 +304,27 @@ DISTAR_DEAD_GOD_CAT = {
 					}
 				}
 				add_modifier = { modifier = dead_god_planet_hidden days = -1 }
+###exp.events mod
+				add_deposit = d_zro_deposit_2
+				random_list = {
+					1 = {
+						set_planet_flag = dead_god_is_real_planet
+						owner = { set_country_flag = dead_god_is_real }
+					}
+					1 = {
+					}
+				}
+				owner = {
+					set_country_flag = mem_primitives_religion
+					set_country_flag = dead_god_original_primitives
+					shift_ethic = ethic_spiritualist
+					random_owned_pop = { pop_change_ethic = ethic_spiritualist }
+					random_owned_pop = { pop_change_ethic = ethic_spiritualist }
+					species = {
+						set_species_flag = is_worshipper_species
+					}
+				}
+###
 			}
 		}
 	}
@@ -310,10 +345,11 @@ DISTAR_ELECTRO_CAT = {
 			OR = {
 				is_asteroid = yes
 				is_planet_class = pc_molten
-				is_planet_class = pc_barren
-				is_planet_class = pc_barren_cold
-				is_planet_class = pc_toxic
-				is_planet_class = pc_frozen
+###exp.events mod
+				is_barren = yes
+				is_toxic = yes
+				is_frozen = yes
+###
 			}
 		}
 	}
@@ -330,7 +366,7 @@ DISTAR_RUM_CAT = {
 		modifier = {
 			add = 1
 			has_distar = yes
-			is_planet_class = pc_gas_giant
+			is_gas_giant = yes
 			is_inside_nebula = yes
 			OR = {
 				from.owner = {
@@ -396,6 +432,24 @@ DISTAR_SOOTHE_CAT = {
 				from.owner = { has_ethic = ethic_gestalt_consciousness }
 			}
 		}
+###exp.events mod
+		modifier = {
+			factor = @anomaly_habitable
+			colonizeable_planet = yes
+		}
+		modifier = {
+			factor = 2
+			is_gaia = yes
+		}
+		modifier = {
+			factor = 3
+			is_nuked = yes
+		}
+		modifier = {
+			factor = 2
+			years_passed > 75
+		}
+###exp.events mod
 	}
 
 	on_success = distar.95
@@ -418,6 +472,24 @@ DISTAR_SOOTHE_GC_CAT = {
 				from.owner = { NOT = { has_ethic = ethic_gestalt_consciousness } }
 			}
 		}
+###exp.events mod
+		modifier = {
+			factor = @anomaly_habitable
+			colonizeable_planet = yes
+		}
+		modifier = {
+			factor = 2
+			is_gaia = yes
+		}
+		modifier = {
+			factor = 3
+			is_nuked = yes
+		}
+		modifier = {
+			factor = 2
+			years_passed > 75
+		}
+###exp.events mod
 	}
 
 	on_success = distar.100
@@ -435,6 +507,28 @@ DISTAR_EXO_CAT = {
 			habitable_planet = yes
 			planet_size > 15
 		}
+###exp.events mod
+		modifier = {
+			factor = @anomaly_habitable
+			colonizeable_planet = yes
+		}
+		modifier = {
+			factor = 2
+			is_gaia = yes
+		}
+		modifier = {
+			factor = 3
+			is_nuked = yes
+		}
+		modifier = {
+			factor = 2
+			years_passed > 75
+		}
+		modifier = {
+			factor = 0
+			has_modifier = "underground_world"
+		}
+###exp.events mod end
 	}
 
 	on_spawn = {
@@ -443,6 +537,80 @@ DISTAR_EXO_CAT = {
 		#	limit = { has_blocker = yes	}
 		#	set_blocker = "exofungus_blocker"
 		#}
+###exp.events mod
+		every_deposit = {
+			limit = {
+				OR = {
+					is_deposit_type = d_mountain_range
+					is_deposit_type = d_active_volcano
+					is_deposit_type = d_dangerous_wildlife_blocker
+					is_deposit_type = d_dense_jungle
+					is_deposit_type = d_toxic_kelp
+					is_deposit_type = d_deep_sinkhole
+					is_deposit_type = d_quicksand_basin
+					is_deposit_type = d_noxious_swamp
+					is_deposit_type = d_massive_glacier
+					is_deposit_type = d_impassable_erg
+					is_deposit_type = d_saline_lakes
+					is_deposit_type = d_dusty_pit
+					is_deposit_type = d_igneous_traps
+					is_deposit_type = d_viscous_morass
+					is_deposit_type = d_flooded_plain
+					is_deposit_type = d_ice_crust
+					is_deposit_type = d_impenetrable_taiga
+				}
+			}
+			remove_deposit = yes
+		}
+		random_list = {
+			1 = {
+				modifier = {
+					factor = 0
+					planet_size > 14
+				}
+				while = {
+					count = 2
+					add_deposit = "d_exofungus_blocker"
+				}
+			}
+			2 = {
+				while = {
+					count = 3
+					add_deposit = "d_exofungus_blocker"
+				}
+			}
+			3 = {
+				modifier = {
+					factor = 0.33
+					planet_size < 12
+				}
+				while = {
+					count = 4
+					add_deposit = "d_exofungus_blocker"
+				}
+			}
+			2 = {
+				modifier = {
+					factor = 0
+					planet_size < 12
+				}
+				while = {
+					count = 5
+					add_deposit = "d_exofungus_blocker"
+				}
+			}
+			1 = {
+				modifier = {
+					factor = 0
+					planet_size < 14
+				}
+				while = {
+					count = 6
+					add_deposit = "d_exofungus_blocker"
+				}
+			}
+		}
+###exp.events mod end
 		add_modifier = { modifier = exofungus days = -1 }
 	}
 
@@ -494,9 +662,27 @@ DISTAR_OCEAN_CAT = {
 
 	spawn_chance = {
 		modifier = {
-			add = 1
+###exp.events mod
+			add = 3
 			has_distar = yes
-			is_planet_class = pc_ocean
+			is_ocean = yes
+		}
+		modifier = {
+			factor = @anomaly_habitable
+			colonizeable_planet = yes
+		}
+		modifier = {
+			factor = 2
+			is_gaia = yes
+		}
+		modifier = {
+			factor = 3
+			is_nuked = yes
+		}
+		modifier = {
+			factor = 2
+			years_passed > 75
+###exp.events mod end
 		}
 	}
 
@@ -557,8 +743,24 @@ DISTAR_DIAMOND_CAT = {
 			is_star = yes #Necessary b/c is_star_class actually means is_system_class
 			#is_star_class = sc_f
 			NOT = { has_deposit_for = shipclass_mining_station }
-			is_planet_class = pc_f_star	# so this can be spawned in bi-/trinary system as well
+			#is_planet_class = pc_f_star	# so this can be spawned in bi-/trinary system as well
+###exp.events mod end
+			OR = {
+				AND = {
+					is_planet_class = pc_f_star
+					NOT = { has_global_flag = has_real_space_mod }
+				}
+				AND = {
+					is_planet_class = pc_d_star
+					has_global_flag = has_real_space_mod
+				}
+			}
 		}
+		modifier = {
+			factor = 2
+			has_global_flag = has_real_space_mod
+		}
+###
 	}
 
 	null_spawn_chance = 0.5  # 50% chance to spawn
@@ -604,11 +806,10 @@ DISTAR_MERCURY_CAT = {
 			add = 0.1
 			has_distar = yes
 			OR = {
-				is_planet_class = "pc_molten"
-				is_planet_class = "pc_barren"
-				is_planet_class = "pc_barren_cold"
-				is_planet_class = "pc_frozen"
-				is_planet_class = "pc_toxic"
+				is_planet_class = pc_molten
+				is_barren = yes
+				is_frozen = yes
+				is_toxic = yes
 			}
 			has_any_strategic_resource = no
 		}
@@ -630,7 +831,7 @@ DISTAR_WARFORM_CAT = {
 		modifier = {
 			add = 1
 			has_distar = yes
-			is_planet_class = "pc_toxic"
+			is_toxic = yes
 		}
 	}
 
@@ -651,17 +852,38 @@ DISTAR_BRAINSLUG_CAT = {
 
 	spawn_chance = {
 		modifier = {
-			add = 10
+###exp.events mod
+			add = 33
 			has_distar = yes
 			habitable_planet = yes
+			NOT = { exists = owner } # no primitives
+			NOT = { has_global_flag = distar_170_happened }
 			OR = {
 				has_deposit = d_dangerous_wildlife_blocker
 				has_planet_modifier = pm_dangerous_wildlife
 			}
 		}
+		modifier = {
+			factor = @anomaly_habitable
+			colonizeable_planet = yes
+		}
+		modifier = {
+			factor = 2
+			is_gaia = yes
+		}
+		modifier = {
+			factor = 3
+			is_nuked = yes
+		}
+		modifier = {
+			factor = 2
+			years_passed > 75
+		}
+###exp.events mod end
 	}
 
 	on_spawn = {
+		set_global_flag = distar_170_happened ###exp.events mod
 		add_deposit = d_abandoned_primitive_homesteads
 	}
 
@@ -704,7 +926,8 @@ DISTAR_FLYTRAP_CAT = {
 		modifier = {
 			add = 10
 			habitable_planet = yes
-			NOR = { is_planet_class = pc_desert is_planet_class = pc_arctic }
+			is_desert = no
+			is_arctic = no
 		}
 		modifier = {
 			factor = 0
@@ -715,6 +938,24 @@ DISTAR_FLYTRAP_CAT = {
 				}
 			}
 		}
+###exp.events mod
+		modifier = {
+			factor = @anomaly_habitable
+			colonizeable_planet = yes
+		}
+		modifier = {
+			factor = 2
+			is_gaia = yes
+		}
+		modifier = {
+			factor = 3
+			is_nuked = yes
+		}
+		modifier = {
+			factor = 2
+			years_passed > 75
+		}
+###exp.events mod end
 	}
 
 	on_spawn = {
@@ -748,11 +989,40 @@ DISTAR_ZONE_CAT = {
 	level = 2
 
 	spawn_chance = {
+###exp.events mod
 		modifier = {
-			add = 1
+			add = 5
 			has_distar = yes
 			habitable_planet = yes
+			is_city = no
+			is_nuked = no
+			NOR = {
+				has_modifier = ancient_world
+				has_modifier = ancient_cities
+			}
 			NOT = { exists = owner }
+			NOT = {
+				from.owner = { has_country_flag = the_zone_spawned }
+			}
+		}
+		modifier = {
+			factor = @anomaly_habitable
+			colonizeable_planet = yes
+		}
+		modifier = {
+			factor = 2
+			is_gaia = yes
+		}
+		modifier = {
+			factor = 2
+			years_passed > 75
+		}
+		modifier = {
+			factor = 50
+			from.owner = {
+				has_country_flag = worm_events_available
+			}
+###exp.events mod end
 		}
 	}
 
@@ -760,6 +1030,9 @@ DISTAR_ZONE_CAT = {
 	max_once = yes
 
 	on_spawn = {
+		from.owner = { ###exp.events mod
+			set_country_flag = the_zone_spawned
+		}
 	}
 
 	on_success = distar.220
@@ -895,14 +1168,14 @@ DISTAR_SOY_CAT = {
 
 	spawn_chance = {
 		modifier = {
-			add = 1
-			OR = {
-				is_planet_class = pc_tropical
-				is_planet_class = pc_continental
-				is_planet_class = pc_savannah
-				is_planet_class = pc_alpine
-				is_planet_class = pc_ocean
-				is_planet_class = pc_gaia
+			add = 2
+			OR = { ###exp.events mod
+				is_tropical = yes
+				is_continental = yes
+				is_savannah = yes
+				is_alpine = yes
+				is_ocean = yes
+				is_gaia = yes
 			}
 		}
 		modifier = {
@@ -915,6 +1188,25 @@ DISTAR_SOY_CAT = {
 				}
 			}
 		}
+###exp.events mod
+		modifier = {
+			factor = @anomaly_habitable
+			colonizeable_planet = yes
+		}
+		modifier = {
+			factor = 2
+			is_gaia = yes
+		}
+		modifier = {
+			factor = 3
+			is_nuked = yes
+		}
+		modifier = {
+			factor = 2
+			years_passed > 75
+		}
+###exp.events mod end
+		
 	}
 
 	on_spawn = {
@@ -979,7 +1271,7 @@ DISTAR_NANOCITY_CAT = {
 			has_distar = yes
 			OR = {
 				is_planet_class = pc_barren_cold
-				is_planet_class = pc_frozen
+				is_frozen = yes
 			}
 		}
 	}
@@ -1001,17 +1293,42 @@ DISTAR_NANOSAND_CAT = {
 
 	spawn_chance = {
 		modifier = {
-			add = 1
+			add = 2
 			has_distar = yes
 			OR = {
-				is_planet_class = pc_desert
-				is_planet_class = pc_gaia
+				is_desert = yes
+				is_gaia = yes
+				is_nuked = yes
 				AND = {
 					is_planet_class = pc_barren
 					has_any_strategic_resource = no
 				}
 			}
 		}
+###exp.events mod
+		modifier = {
+			add = 0.2
+			has_distar = yes
+			is_planet_class = pc_barren
+			has_any_strategic_resource = no
+		}
+		modifier = {
+			factor = @anomaly_habitable
+			colonizeable_planet = yes
+		}
+		modifier = {
+			factor = 2
+			is_gaia = yes
+		}
+		modifier = {
+			factor = 4
+			is_nuked = yes
+		}
+		modifier = {
+			factor = 2
+			years_passed > 75
+		}
+###exp.events mod end
 	}
 
 	max_once_global = no
@@ -1032,7 +1349,8 @@ DISTAR_MEDGAS_CAT = {
 	spawn_chance = {
 		modifier = { #Normal chance to spawn if player has completed chain
 			add = 1
-			is_planet_class = pc_gas_giant
+			is_gas_giant = yes ###exp.events mod
+
 			has_any_strategic_resource = no
 			from.owner = {
 				has_completed_event_chain_counter = {
@@ -1043,7 +1361,8 @@ DISTAR_MEDGAS_CAT = {
 		}
 		modifier = { #Higher chance to spawn if player has ongoing chain
 			add = 5
-			is_planet_class = pc_gas_giant
+			is_gas_giant = yes ###exp.events mod
+
 			has_any_strategic_resource = no
 			from.owner = {
 				has_event_chain = "l_cluster_chain"
@@ -1093,7 +1412,8 @@ debris_gasgiant_category_temp = {
 		modifier = {
 			add = 0.35
 			has_distar = yes
-			is_planet_class = pc_gas_giant
+			is_gas_giant = yes ###exp.events mod
+
 		}
 		modifier = {
 			factor = 0
@@ -1102,6 +1422,7 @@ debris_gasgiant_category_temp = {
 					species_portrait = mam5
 					species_portrait = fun4
 					is_gestalt = yes
+					is_synthetic_empire = yes ###exp.events mod
 				}
 			}
 		}
@@ -1177,6 +1498,7 @@ ast_debris_field_1_cat_2 = {
 				factor = 0
 				owner = {
 					OR = {
+						is_homicidal = yes ###exp.events mod
 						has_ethic = ethic_gestalt_consciousness
 						species_portrait = mol8
 					}
@@ -1261,10 +1583,37 @@ atomic_clock_cat = {
 							is_colony = no
 							is_under_colonization = no
 						}
+						# pulsars for wraith ###exp.events mod
+
+						AND = {
+							has_leviathans = yes
+							OR = {
+								is_planet_class = pc_pulsar
+								is_planet_class = pc_neutron_star
+								is_planet_class = pc_magnetar
+							}
+						}###exp.events mod end
+
 					}
 				}
 			}
 		}
+###exp.events mod
+		# more likely to spawn in holy world systems, because that could lead to some unfortunate / hilarious outcomes
+		modifier = {
+			add = 15
+			NOR = {
+				has_deposit_for = shipclass_research_station
+				has_deposit_for = shipclass_mining_station
+			}
+			solar_system = {
+				any_system_planet = {
+					habitable_planet = yes
+					has_modifier = holy_planet
+				}
+			}
+		}
+###exp.events mod end
 		modifier = {
 			factor = 0
 			NOR = {
@@ -1284,13 +1633,31 @@ gaia_planet_cat = {
 	max_once_global = no
 
 	spawn_chance = {
+###exp.events mod
 		modifier = {
-			add = 3
+			add = 5
 			has_distar = yes
-			is_planet_class = pc_gaia
+			is_gaia = yes
+		}
+		modifier = {
+			factor = @anomaly_habitable
+			colonizeable_planet = yes
+		}
+		modifier = {
+			factor = 2
+			is_gaia = yes
+		}
+		modifier = {
+			factor = 3
+			is_nuked = yes
+		}
+		modifier = {
+			factor = 2
+			years_passed > 75
 		}
 	}
-
+###exp.events mod end
+	
 	on_success = distar.1060
 }
 
@@ -1307,14 +1674,32 @@ corrupt_data_cat = {
 			is_under_colonization = no
 			NOR = {
 				solar_system = { has_star_flag = empire_cluster }
-				is_planet_class = pc_gaia
+				is_gaia = yes
 				has_deposit = d_betharian_deposit
 				has_deposit = d_alien_pets_deposit
 				exists = archaeological_site
 			}
 		}
+###exp.events mod
+		modifier = {
+			factor = @anomaly_habitable
+			colonizeable_planet = yes
+		}
+		modifier = {
+			factor = 2
+			is_gaia = yes
+		}
+		modifier = {
+			factor = 3
+			is_nuked = yes
+		}
+		modifier = {
+			factor = 2
+			years_passed > 75
+		}
 	}
-
+###exp.events mod end
+	
 	on_success = distar.1065
 }
 
@@ -1342,9 +1727,48 @@ irregular_energy_cat = {
 				}
 			}
 		}
+###exp.events mod
+		modifier = {
+			factor = 0
+			is_regular_star = no
+		}
 	}
+	
+	on_success = {
+		1 = anomalymod.241
+		1 = {
+			modifier = {
+				factor = 0
+				from = {
+					OR = {
+						is_main_sequence_star = no
+						is_planet_class = pc_m_star # live for a very long time
+					}
+				}
+			}
+			anomaly_event = anomalymod.242
+		}
+		5 = {
+			modifier = {
+				factor = 0
+				owner = {
+					OR = {
+						has_ethic = ethic_gestalt_consciousness
+						owner_species = {
+							OR = {
+								has_trait = trait_mechanical
+								has_trait = trait_machine_unit
+							}
+						}
+					}
+				}
+			}
+			anomaly_event = distar.1070
+		}
+	}
+###exp.events mod end
 
-	on_success = distar.1070
+	#on_success = distar.1070
 }
 
 peculiar_patterns_cat = {
@@ -1353,16 +1777,34 @@ peculiar_patterns_cat = {
 
 	spawn_chance = {
 		modifier = {
-			add = 0.1
+			add = 1
 			has_distar = yes
-			OR = {
-				is_planet_class = pc_gaia
-				is_planet_class = pc_continental
-				is_planet_class = pc_savannah
-				is_planet_class = pc_tropical
-				is_planet_class = pc_ocean
+			OR = { ###exp.events mod
+				is_gaia = yes
+				is_continental = yes
+				is_savannah = yes
+				is_tropical = yes
+				is_ocean = yes
 			}
 		}
+###exp.events mod
+		modifier = {
+			factor = @anomaly_habitable
+			colonizeable_planet = yes
+		}
+		modifier = {
+			factor = 2
+			is_gaia = yes
+		}
+		modifier = {
+			factor = 3
+			is_nuked = yes
+		}
+		modifier = {
+			factor = 2
+			years_passed > 75
+		}
+###exp.events mod end
 	}
 	on_success = {
 		0 = {
@@ -1370,10 +1812,10 @@ peculiar_patterns_cat = {
 				add = 1
 				From = {
 					OR = {
-						is_planet_class = pc_gaia
-						is_planet_class = pc_continental
-						is_planet_class = pc_savannah
-						is_planet_class = pc_tropical
+						is_gaia = yes
+						is_continental = yes
+						is_savannah = yes
+						is_tropical = yes
 					}
 				}
 			}
@@ -1385,10 +1827,10 @@ peculiar_patterns_cat = {
 				add = 1
 				From = {
 					OR = {
-						is_planet_class = pc_gaia
-						is_planet_class = pc_continental
-						is_planet_class = pc_savannah
-						is_planet_class = pc_tropical
+						is_gaia = yes
+						is_continental = yes
+						is_savannah = yes
+						is_tropical = yes
 					}
 				}
 			}
@@ -1399,7 +1841,7 @@ peculiar_patterns_cat = {
 			modifier = {
 				add = 1
 				From = {
-					is_planet_class = pc_ocean
+					is_ocean = yes
 				}
 			}
 			anomaly_event = distar.2010
@@ -1417,10 +1859,9 @@ tomb_world_cat = {
 			add = 3
 			has_distar = yes
 			OR = {
-				is_planet_class = pc_toxic
-				is_planet_class = pc_nuked
-				is_planet_class = pc_barren
-				is_planet_class = pc_barren_cold
+				is_toxic = yes
+				is_nuked = yes
+				is_barren = yes
 			}
 			NOT = { has_planet_flag = nuked_planet_anomalies_disabled }
 		}
@@ -1431,8 +1872,8 @@ tomb_world_cat = {
 				add = 1
 				From = {
 					OR = {
-						is_planet_class = pc_toxic
-						is_planet_class = pc_nuked
+						is_toxic = yes
+						is_nuked = yes
 					}
 				}
 			}
@@ -1442,10 +1883,7 @@ tomb_world_cat = {
 			modifier = {
 				add = 1
 				From = {
-					OR = {
-						is_planet_class = pc_barren
-						is_planet_class = pc_barren_cold
-					}
+					is_barren = yes
 				}
 			}
 			modifier = {
@@ -1474,6 +1912,24 @@ alien_life_cat = {
 			habitable_planet = yes
 			NOT = { has_modifier = dangerous_wildlife }
 		}
+###exp.events mod
+		modifier = {
+			factor = @anomaly_habitable
+			colonizeable_planet = yes
+		}
+		modifier = {
+			factor = 2
+			is_gaia = yes
+		}
+		modifier = {
+			factor = 3
+			is_nuked = yes
+		}
+		modifier = {
+			factor = 2
+			years_passed > 75
+		}
+###exp.events mod end
 	}
 	on_success = distar.2020
 }
@@ -1626,7 +2082,7 @@ disco_impossible_organism_cat = {
 	spawn_chance = {
 		modifier = {
 			add = 2
-			is_planet_class = pc_toxic
+			is_toxic = yes
 			has_any_strategic_resource = no
 		}
 		modifier = {
@@ -1662,6 +2118,7 @@ disco_stranded_scientist_cat = {
 			factor = 0
 			from.owner = {
 				OR = {
+					is_homicidal = yes ###exp.events mod
 					has_ethic = ethic_gestalt_consciousness
 					has_ethic = ethic_fanatic_xenophobe
 					species_portrait = human
@@ -1681,11 +2138,11 @@ disco_molluscoid_miners_cat = {
 
 	spawn_chance = {
 		modifier = {
-			add = 2
+			add = 4
 			OR = {
-				is_planet_class = pc_desert
-				is_planet_class = pc_arid
-				is_planet_class = pc_savannah
+				is_desert = yes
+				is_arid = yes
+				is_savannah = yes
 			}
 			has_any_strategic_resource = no
 		}
@@ -1699,6 +2156,24 @@ disco_molluscoid_miners_cat = {
 				}
 			}
 		}
+###exp.events mod
+		modifier = {
+			factor = @anomaly_habitable
+			colonizeable_planet = yes
+		}
+		modifier = {
+			factor = 2
+			is_gaia = yes
+		}
+		modifier = {
+			factor = 3
+			is_nuked = yes
+		}
+		modifier = {
+			factor = 2
+			years_passed > 75
+		}
+###exp.events mod end
 	}
 
 	on_success = distar.3030
@@ -1760,8 +2235,17 @@ disco_breathing_rift_cat = {
 				is_star_class = sc_black_hole
 				is_star_class = sc_neutron_star
 				is_star_class = sc_pulsar
+###exp.events mod
+				is_star_class = sc_magnetar
 			}
 		}
+		modifier = {
+			factor = 50
+			from.owner = {
+				has_country_flag = worm_events_available
+			}
+		}
+###exp.events mod end
 	}
 
 	on_success = distar.3060
