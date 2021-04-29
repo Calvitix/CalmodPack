@@ -656,48 +656,7 @@ country_event = {
 	
 	option = {
 		name = countryexpanded.15.a
-		if = {
-			limit = {
-				NOT = { has_technology = tech_administrative_ai }
-			}
-			add_research_option = tech_administrative_ai
-			add_tech_progress = {
-				tech = tech_administrative_ai
-				progress = 0.50
-			}
-		}
-		else_if = {
-			limit = {
-				NOT = { has_technology = tech_self_aware_logic }
-			}
-			add_research_option = tech_self_aware_logic
-			add_tech_progress = {
-				tech = tech_self_aware_logic
-				progress = 0.33
-			}
-		}
-		else_if = {
-			limit = {
-				NOT = { has_technology = tech_sapient_ai }
-				NOT = { has_ethic = ethic_gestalt_consciousness }
-			}
-			add_research_option = tech_sapient_ai
-			add_tech_progress = {
-				tech = tech_sapient_ai
-				progress = 0.25
-			}
-		}
-		else_if = {
-			limit = {
-				NOT = { has_technology = tech_positronic_implants }
-				has_ethic = ethic_gestalt_consciousness
-			}
-			add_research_option = tech_positronic_implants
-			add_tech_progress = {
-				tech = tech_positronic_implants
-				progress = 0.25
-			}
-		}
+		give_next_ai_tech_option_effect = yes
 	}
 }
 
@@ -9221,6 +9180,33 @@ country_event = {
 				}
 			}
 		}
+		if = {
+			limit = { is_ai = yes }
+			create_fleet = {
+				effect = {
+					set_owner = prev
+
+					create_ship = {
+						name = random
+						random_existing_design = science
+					}
+
+					set_fleet_stance = evasive				
+					#set_location = prev.capital_star
+					set_location = prev.capital_scope.star
+					
+					owner = {
+						create_leader = {
+							class = scientist
+							species = owner_main_species
+							name = random
+							skill = 2
+						}
+					}
+					set_leader = last_created_leader
+				}			
+			}
+		}
 		set_country_flag = Story5
 		# Determine Watchers
 		random_list = {
@@ -12603,6 +12589,36 @@ country_event = {
 	show_sound = event_dig_site
 
 	is_triggered_only = yes
+	
+	immediate = {
+		if = {
+			limit = { is_ai = yes }
+			create_fleet = {
+				effect = {
+					set_owner = prev
+
+					create_ship = {
+						name = random
+						random_existing_design = science
+					}
+
+					set_fleet_stance = evasive				
+					#set_location = prev.capital_star
+					set_location = prev.capital_scope.star
+					
+					owner = {
+						create_leader = {
+							class = scientist
+							species = owner_main_species
+							name = random
+							skill = 2
+						}
+					}
+					set_leader = last_created_leader
+				}			
+			}
+		}
+	}
 
 	option = {
 		name = countryexpanded.458.a
