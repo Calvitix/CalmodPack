@@ -1,3 +1,9 @@
+# RS New Frontiers File
+#
+# Calvitix Check 3.0.3b  02/05/2021
+#
+# 
+#
 ############################
 #
 # Decision Events
@@ -30,13 +36,14 @@ planet_event = {
 		if = {
 			limit = { owner = { any_owned_planet = { has_modifier = refugee_reception_center } } }
 			random_owned_pop = {
-				owner = {
-					random_owned_planet = {
-						limit = { has_modifier = refugee_reception_center }
-						resettle_pop = {
-							pop = prevprev
-							planet = this
-						}
+				save_event_target_as = evacuated_pop
+			}
+			owner = {
+				random_owned_planet = {
+					limit = { has_modifier = refugee_reception_center }
+					resettle_pop = {
+						pop = event_target:evacuated_pop
+						planet = this
 					}
 				}
 			}
@@ -44,13 +51,14 @@ planet_event = {
 		else = {
 			limit = { owner = { any_owned_planet = { has_modifier = receiving_terminal } } }
 			random_owned_pop = {
-				owner = {
-					random_owned_planet = {
-						limit = { has_modifier = receiving_terminal }
-						resettle_pop = {
-							pop = prev
-							planet = this
-						}
+				save_event_target_as = evacuated_pop
+			}
+			owner = {
+				random_owned_planet = {
+					limit = { has_modifier = receiving_terminal }
+					resettle_pop = {
+						pop = event_target:evacuated_pop
+						planet = this
 					}
 				}
 			}
@@ -82,7 +90,7 @@ country_event = {
 	
 	option = {
 		name = "newfrontiers_decision_event.2.a"
-		custom_tooltip = newfrontiers_decision_event.2.a.tooltip
+		#custom_tooltip = newfrontiers_decision_event.2.a.tooltip
 		hidden_effect = {
 			capital_scope = {
 				create_fleet = {
@@ -1418,7 +1426,7 @@ planet_event = {
 	id = newfrontiers_decision_event.36
 	title = "newfrontiers_decision_event.36.name"
 	desc = "newfrontiers_decision_event.36.desc"
-	picture = GFX_alien_propaganda
+	picture = GFX_evt_alien_propaganda
 	location = ROOT
 	is_triggered_only = yes
 	show_sound = event_air_raid_siren

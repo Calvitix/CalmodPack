@@ -3,24 +3,33 @@ namespace = BiggerColonies
 ### Initialiser
 # if multiplayer -> spawn engine with default settings
 # if not multiplayer -> show menu and let user decide
-event = {
+#event = {
+#	id = BiggerColonies.0
+#	hide_window = yes
+#	is_triggered_only = yes
+#	immediate = {
+#		if = {
+#			limit = { is_multiplayer = yes }
+#			set_global_flag = bigger_colonies_chance_default
+#			random_country = { country_event = { id = BiggerColonies.2 } }
+#		}
+#		else_if = {
+#			limit = { is_multiplayer = no }
+#			random_country = {
+#				limit = { is_ai = no }
+#				country_event = { id = BiggerColonies.1 }
+#			}
+#		}
+#	}
+#}
+
+country_event = {
 	id = BiggerColonies.0
 	hide_window = yes
 	is_triggered_only = yes
-	immediate = {
-		if = {
-			limit = { is_multiplayer = yes }
-			set_global_flag = bigger_colonies_chance_default
-			random_country = { country_event = { id = BiggerColonies.2 } }
-		}
-		else_if = {
-			limit = { is_multiplayer = no }
-			random_country = {
-				limit = { is_ai = no }
-				country_event = { id = BiggerColonies.1 }
-			}
-		}
-	}
+	fire_only_once = yes
+	trigger = { is_ai = no }
+	immediate = { country_event = { id = BiggerColonies.1 } }
 }
 
 country_event = {
@@ -36,25 +45,26 @@ country_event = {
 		name = BiggerColonies.1.Low
 		custom_tooltip = mod_bigger_colonies
 		set_global_flag = bigger_colonies_chance_low
-		country_event = { id = BiggerColonies.2 days = 1 }
+		#country_event = { id = BiggerColonies.2 days = 1 }
+		country_event = { id = BiggerColonies.2 }
 	}
 	option = {
 		name = BiggerColonies.1.Default
 		custom_tooltip = mod_bigger_colonies
 		set_global_flag = bigger_colonies_chance_default
-		country_event = { id = BiggerColonies.2 days = 1 }
+		country_event = { id = BiggerColonies.2 }
 	}
 	option = {
 		name = BiggerColonies.1.High
 		custom_tooltip = mod_bigger_colonies
 		set_global_flag = bigger_colonies_chance_high
-		country_event = { id = BiggerColonies.2 days = 1 }
+		country_event = { id = BiggerColonies.2 }
 	}
 	option = {
 		name = BiggerColonies.1.All
 		custom_tooltip = mod_bigger_colonies
 		set_global_flag = bigger_colonies_chance_all
-		country_event = { id = BiggerColonies.2 days = 1 }
+		country_event = { id = BiggerColonies.2 }
 	}
 }
 
@@ -66,6 +76,7 @@ country_event = {
         every_galaxy_planet = {
             limit = { 
 				habitable_colony = yes
+				exist = owner
 				NOR = { owner = { has_origin = origin_life_seeded } owner = { has_origin = origin_post_apocalyptic } }
 				NOT = { has_planet_flag = bigger_colony_checked }
 				NOT = { is_planet_class = pc_ringworld_habitable } #Calvitix				
@@ -80,7 +91,7 @@ country_event = {
 						limit = { is_moon = no has_owner = no }
 						if = {# selected planet goes directly to size 25. 
 							limit = { planet_size < 25 } 
-							set_planet_size = 24 
+							set_planet_size = 24 #25 Calvitix
 							while = { count = 5 bc_add_random_deposit = yes }				
 							while = { count = 3 bc_add_random_blocker = yes }	
 							while = { count = 1 bc_add_random_diversity_mod_deposit = yes } # !!District Diversity Mod

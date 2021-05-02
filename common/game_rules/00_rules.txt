@@ -202,7 +202,7 @@ should_abduct_pop = {
 			has_purge_type = { type = purge_matrix country = root }
 			has_purge_type = { type = purge_processing country = root }
 			has_purge_type = { type = purge_labor_camps country = root }
-			has_purge_type = { type = purge_necrophage country = root }
+			has_purge_type = { type = purge_necrophage country = root } #3.0.3b
 		}
 	}
 }
@@ -248,7 +248,7 @@ can_generate_leader_from_pop = {
 	has_citizenship_rights = yes
 	NOT = { has_trait = trait_syncretic_proles }
 	NOT = { has_trait = trait_nerve_stapled }
-	NOT = { has_trait = trait_plentiful_traditions_cocoon } #Plentiful_perk
+	NOT = { has_trait = trait_plentiful_traditions_pt_cocoon } #Plentiful_perk
 	NOT = { has_trait = trait_memorex_comatos } #expanded event mod
 	NOT = { has_trait = trait_infested_basic } #expanded event mod
 	OR = {
@@ -279,6 +279,16 @@ can_generate_leader_from_species = {
 			has_trait = "trait_mechanical"
 		}
 		has_citizenship_type = { type = citizenship_full country = root }
+	}
+}
+
+# #3.0.3b Checks whether this species can become espionage assets (note that some checks are also done in code)
+#Root = country
+#This = species
+can_create_espionage_asset_from_species = {
+	OR = {
+		NOT = { has_trait = "trait_mechanical" }
+		root = { has_technology = "tech_droid_workers" }
 	}
 }
 
@@ -343,7 +353,7 @@ can_release_vassal_from_species = {
 			has_trait = trait_hive_mind
 			has_trait = trait_mechanical
 			has_trait = trait_nerve_stapled
-			has_trait = trait_plentiful_traditions_cocoon #Plentiful_perk
+			has_trait = trait_plentiful_traditions_pt_cocoon #Plentiful_perk
 		}
 	}
 }
@@ -578,7 +588,7 @@ can_terraform_planet = {
 can_colonize_with_pop = {
 	has_colonization_control = {
 		value = no
-		country =root
+		country = root
 	}
 	OR = {
 		NOT = { has_trait = trait_self_modified }
@@ -602,7 +612,7 @@ can_colonize_with_pop = {
 	#plentiful_perks
 	
 	NOT = {
-		has_trait = trait_plentiful_traditions_cocoon #Plentiful_perk
+		has_trait = trait_plentiful_traditions_pt_cocoon #Plentiful_perk
 	}
 }
 
@@ -632,7 +642,7 @@ can_colonize_with_species = {
 	#plentiful_perks
 	
 	NOT = {
-		has_trait = trait_plentiful_traditions_cocoon
+		has_trait = trait_plentiful_traditions_pt_cocoon
 	}
 }
 
@@ -675,7 +685,7 @@ species_has_happiness = {
 	#plentiful_perks
 	
 	NOT = {
-		has_trait = trait_plentiful_traditions_cocoon
+		has_trait = trait_plentiful_traditions_pt_cocoon
 	}	
 }
 
@@ -720,7 +730,7 @@ can_species_procreate = {
 	#plentiful_perks
 	
 	NOT = {
-		has_trait = trait_plentiful_traditions_cocoon
+		has_trait = trait_plentiful_traditions_pt_cocoon
 	}
 	
 	if = {
@@ -751,7 +761,7 @@ can_species_be_assembled = {
 			root.owner = {
 				has_ascension_perk = ap_total_assimilation				
 			}
-			has_trait = trait_plentiful_traditions_cocoon
+			has_trait = trait_plentiful_traditions_pt_cocoon
 		}
 		AND = {
 			is_robotic = yes
@@ -771,6 +781,10 @@ can_species_be_assembled = {
 				}
 			}
 		}
+	}
+	has_population_control = { #3.0.3b
+		value = no
+		country = root.owner
 	}
 }
 
@@ -1326,7 +1340,7 @@ pop_generates_crime = {
 	#plentiful_perks
 	
 	NOT = {
-		has_trait = trait_plentiful_traditions_cocoon
+		has_trait = trait_plentiful_traditions_pt_cocoon
 	}	
 }
 
@@ -1709,18 +1723,41 @@ has_enough_pops_for_necrophage_on_planet = {
 
 # Root = current planet
 # This = pop
-# Migration Controls policy and target habitability is checked in code.
+# Purge, Sapience, Migration Controls policy (ignored by Gestalts and Synths), and target habitability are checked in code.
 can_pop_auto_migrate = {
 	planet = {
 		NOT = { has_modifier = planet_culture_shock }
+		OR = { #3.0.3b
+			colony_age > 60
+			is_capital = yes # Don't break Doomsday!
+		}
 	}
-	is_sapient = yes
 	is_unemployed = yes
 	is_being_assimilated = no
-	is_enslaved = no
-	is_non_sapient_robot = no
-	is_shackled_robot = no
+	OR = {
+		AND = {
+			is_shackled_robot = no
+			is_enslaved = no
+		}
+		planet = {
+			has_building = building_slave_processing
+		}
+	}
 }
+
+can_planet_receive_auto_migration = {
+	NOR = {
+		planet_devastation >= 10
+		has_modifier = planet_culture_shock
+		has_modifier = doomsday_1
+		has_modifier = doomsday_2
+		has_modifier = doomsday_3
+		has_modifier = doomsday_4
+		has_modifier = doomsday_5
+	}
+}
+#3.0.3b end
+
 
 # This = country contacting
 # From = target country
@@ -1816,7 +1853,7 @@ can_use_envoys_to_lower_imperial_authority = {
 	#plentiful_perks
 	
 	NOT = {
-		has_trait = trait_plentiful_traditions_cocoon
+		has_trait = trait_plentiful_traditions_pt_cocoon
 	}
 	
 }

@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.0.1  23/04/2021
+# Calvitix Check 3.0.3b  30/04/2021
 #
 # Merge with Arisphaos Unofficial patch
 #
@@ -3470,6 +3470,15 @@ country_event = {
 					25 = { shift_ethic = "ethic_fanatic_authoritarian" }
 				}
 				every_owned_pop = { pop_change_ethic = "ethic_authoritarian" }
+				if = {
+					limit = {
+						OR = {
+							has_authority = auth_democratic
+							has_authority = auth_oligarchic
+						} 
+					}
+					change_government = { authority = auth_imperial }
+				}
 			}
 		}
 	}
@@ -3574,6 +3583,15 @@ country_event = {
 					25 = { shift_ethic = "ethic_fanatic_egalitarian" }
 				}
 				every_owned_pop = { pop_change_ethic = "ethic_egalitarian" }
+				if = {
+					limit = {
+						OR = {
+							has_authority = auth_dictatorial
+							has_authority = auth_imperial
+						} 
+					}
+					change_government = { authority = auth_democratic }
+				}
 			}
 		}
 	}
@@ -5845,6 +5863,15 @@ country_event = {
 	immediate = {
 		set_timed_country_flag = { flag = indoctrination_cooldown days = 540 }
 		shift_ethic = "ethic_authoritarian"
+		if = {
+			limit = {
+				OR = {
+					has_authority = auth_democratic
+					has_authority = auth_oligarchic
+				} 
+			}
+			change_government = { authority = auth_imperial }
+		}
 		capital_scope = {
 			observation_outpost_owner = { country_event = { id = observation.3139 } }
 		}
@@ -5904,6 +5931,15 @@ country_event = {
 	immediate = {
 		set_timed_country_flag = { flag = indoctrination_cooldown days = 540 }
 		shift_ethic = "ethic_egalitarian"
+		if = {
+			limit = {
+				OR = {
+					has_authority = auth_imperial
+					has_authority = auth_dictatorial
+				} 
+			}
+			change_government = { authority = auth_democratic }
+		}
 		capital_scope = {
 			observation_outpost_owner = { country_event = { id = observation.3141 } }
 		}

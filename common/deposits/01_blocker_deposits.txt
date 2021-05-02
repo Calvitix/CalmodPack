@@ -1,9 +1,10 @@
 # Original File
 #
-# Calvitix Check 3.0.1  18/04/2021
+# Calvitix Check 3.0.3b  02/05/2021
 #
 # Merge with Aripatch
-# Merge with RS New Frontiers
+# Merge with RS New Frontiers  02/05/2021
+# Merge with RS Planetary Exploration 02/05/2021
 # Merge with Eco mod + Calvitix addition
 #
 ## Possible Deposit Variables ##
@@ -85,6 +86,13 @@ d_mountain_range = {
 			}
 		}
 		modifier = {
+			factor = 3
+			OR = {
+				has_modifier = "adiabatic_world"
+				has_modifier = "highland_world"
+			}
+		}
+		modifier = {
 			factor = 0.25
 			has_modifier = "steppe_world"
 		}
@@ -145,6 +153,7 @@ d_active_volcano = {
 			OR = {
 				has_modifier = "primal_world"
 				is_planet_class = pc_sterile
+				has_modifier = "awakened_world"
 			}
 		}
 		modifier = {
@@ -238,14 +247,14 @@ d_dangerous_wildlife_blocker = {
 		}
 		modifier = {
 			factor = 0
-			is_planet_class = pc_sterile
-		}
-		modifier = {
-			factor = 0
 			num_free_districts = {
 				type = district_city
 				value < 2
 			}
+		}
+		modifier = {
+			factor = 0
+			is_planet_class = pc_sterile
 		}
 	}
 
@@ -269,6 +278,7 @@ d_dense_jungle = {
 		OR = {
 			is_wet = yes
 			has_modifier = "oasis_world"
+			has_modifier = "geothermal_world"
 		}
 	}
 	
@@ -345,6 +355,10 @@ d_dense_jungle = {
 			has_modifier = "forest_world"
 		}
 		modifier = {
+			factor = 0.25
+			has_modifier = "geothermal_world"
+		}
+		modifier = {
 			factor = 0
 			num_free_districts = {
 				type = district_city
@@ -354,7 +368,6 @@ d_dense_jungle = {
 		modifier = {
 			factor = 0
 			OR = {
-				has_modifier = "fungal_world"
 				has_modifier = "panthalassic_world"
 				has_modifier = "boreal_world"
 				has_modifier = "young_world"
@@ -407,10 +420,6 @@ d_toxic_kelp = {
 
 	drop_weight = {
 		weight = @blocker_high
-		modifier = {
-			factor = 4
-			has_modifier = "algic_seas"
-		}
 		modifier = {
 			factor = 2
 			is_planet_class = pc_ocean
@@ -509,7 +518,6 @@ d_deep_sinkhole = {
 			OR = {
 				is_planet_class = pc_arid
 				is_planet_class = pc_savannah
-				is_planet_class = pc_sterile
 			}
 		}
 		modifier = {
@@ -631,9 +639,14 @@ d_noxious_swamp = {
 	}
 
 	potential = {
-		is_cold = yes
+		OR = {
+			is_cold = yes
+			is_planet_class = pc_tundra
+			is_planet_class = pc_continental
+			is_planet_class = pc_tropical	
+		}
 	}
-
+	
 	planet_modifier = {
 		planet_max_districts_add = -1
 		planet_jobs_society_research_produces_mult = 0.05
@@ -687,17 +700,13 @@ d_noxious_swamp = {
 	drop_weight = {
 		weight = @blocker_high
 		modifier = {
-			factor = 2
-			is_planet_class = pc_tundra
-		}
-		modifier = {
-			factor = 5
-			has_modifier = "poisonous_world"
-		}
-		modifier = {
 			factor = 3
 			has_modifier = "swamp_world"
 			has_modifier = "bog_world"
+		}
+		modifier = {
+			factor = 2
+			has_modifier = "taiga_world"
 		}
 		modifier = {
 			factor = 0.25
@@ -822,7 +831,6 @@ d_massive_glacier = {
 			factor = 0.5
 			OR = {
 				has_modifier = "boreal_world"
-				has_modifier = "equatorial_world"
 				is_planet_class = pc_tidallylocked
 			}
 		}
@@ -1037,10 +1045,6 @@ d_radioactive_wasteland = {
 				value < 2
 			}
 		}
-		modifier = {
-			factor = 0
-			has_modifier = "lava_world"
-		}
 	}
 }
 
@@ -1106,10 +1110,6 @@ d_city_ruins = {
 	drop_weight = {
 		weight = @blocker_high
 		modifier = {
-			factor = 3
-			has_modifier = "ancient_world"
-		}
-		modifier = {
 			factor = 2
 			has_modifier = "depleted_world"
 		}
@@ -1119,10 +1119,6 @@ d_city_ruins = {
 				type = district_city
 				value < 2
 			}
-		}
-		modifier = {
-			factor = 0.1
-			has_modifier = "lava_world"
 		}
 	}
 }

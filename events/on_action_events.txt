@@ -7319,6 +7319,87 @@ planet_event = {
 	}
 }
 
+# Purging: Gain resources from forced labor etc
+planet_event = {
+	id = action.22
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		fromfrom = {
+			OR = {
+				has_purge_type = { country = from type = purge_labor_camps }
+				has_purge_type = { country = from type = purge_matrix }
+				has_purge_type = { country = from type = purge_processing }
+			}
+		}
+		is_controlled_by = FROM
+	}
+
+	immediate = {
+		# Values are monthly amount * 4
+		if = {
+			limit = {
+				fromfrom = { has_purge_type = { country = from type = purge_labor_camps }  }
+			}
+			if = {
+				limit = {
+					fromfrom = {
+						is_robotic_species = no
+						is_lithoid = no
+					}
+				}
+				from = {
+					add_resource = {
+						food = 24
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					fromfrom = { is_lithoid = yes }
+				}
+				from = {
+					add_resource = {
+						minerals = 16
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					fromfrom = { is_robotic_species = yes }
+				}
+				from = {
+					add_resource = {
+						alloys = 12
+					}
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				fromfrom = { has_purge_type = { country = from type = purge_matrix }  }
+			}
+			from = {
+				add_resource = {
+					energy = 24
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				fromfrom = { has_purge_type = { country = from type = purge_processing }  }
+			}
+			from = {
+				add_resource = {
+					food = 12
+					minerals = 12
+				}
+			}
+		}
+	}
+}
+
 # Sets <planet_class>_surveyed country flag
 ship_event = {
 	id = action.24

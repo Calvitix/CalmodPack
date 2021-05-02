@@ -367,7 +367,7 @@ planet_event = {
 			create_leader = {
 				class = general
 				species = event_target:flusion_katzens
-				name = "Léorton"
+				name = "Léorton" #calvitix trad
 				skill = 4
 				gender = male
 				traits = {
@@ -397,7 +397,7 @@ planet_event = {
 			set_name = "Impérium des Félidés" #"Katzenartig Imperium"
 		}
 		while = { count = 12	create_army = { name = "Forces spéciales félidéennes"	owner = event_target:flusion_primitives_country species = event_target:flusion_katzens type = "flusion_army" } }
-		while = { count = 1		create_army = { name = "Blindés félins géants"	owner = event_target:flusion_primitives_country type = "riesigerkatzenpanzer_defence" leader = event_target:katzen_general } }
+		while = { count = 1		create_army = { name = "Blindés félins géants"	owner = event_target:flusion_primitives_country species = event_target:flusion_katzens type = "riesigerkatzenpanzer_defence" leader = event_target:katzen_general } }
 	}
 }
 
@@ -514,8 +514,8 @@ country_event = {
 				effect = {
 					set_owner = event_target:flusion_primitives_country
 					create_ship = {
-						name =  "Lune du Kaiser d'improbabilité infinie"
-						design = "Improbable Lune du Kaiser"
+						name =  "Lune Impériale d'improbabilité infinie"
+						design = "Improbable Lune Impériale"
 						upgradable = no
 						effect = {
 							set_ship_flag = kaiser_moon_ship
@@ -571,8 +571,8 @@ country_event = {
 				effect = {
 					set_owner = event_target:flusion_primitives_country
 					create_ship = {
-						name = "Lune du Kaiser en Stellarite"
-						design = "Lune du Kaiser en Stellarite"
+						name = "Lune Impériale en Stellarite"
+						design = "Lune Impériale en Stellarite"
 						upgradable = no
 						effect = {
 							set_ship_flag = kaiser_moon_ship
@@ -628,7 +628,7 @@ country_event = {
 					set_owner = event_target:flusion_primitives_country
 					create_ship = {
 						name = "Suprématie impériale"
-						design = "Lune du Kaiser"
+						design = "Lune Impériale"
 						upgradable = no
 						effect = {
 							set_ship_flag = kaiser_moon_ship
@@ -687,7 +687,7 @@ country_event = {
 					set_owner = event_target:flusion_primitives_country
 					create_ship = {
 						name = "Suprématie impériale"
-						design = "Lune du Kaiser"
+						design = "Lune Impériale"
 						upgradable = no
 						effect = {
 							set_ship_flag = kaiser_moon_ship
@@ -2059,6 +2059,7 @@ country_event = { #hello
 		}
 		trigger = {
 			NOT = { has_country_flag = kaiser_gave_aeternum_intel }
+			has_country_flag = aeternite_agency_unlocked
 			any_country = { is_country_type = dormant_aeternum }
 		}
 		hidden_effect = {
@@ -4516,47 +4517,6 @@ country_event = { #Manage war forges
 
 	immediate = {
 		country_event = { id = giga_katzen.030 days = 30 }
-		if = {
-			limit = {
-				event_target:gigaflusion = {
-					free_housing >= 10
-				}
-			}
-			event_target:flusion_primitives_country = {
-				every_owned_planet = {
-					limit = {
-						is_colony = yes
-						count_owned_pop = {
-							count > 28
-						}
-						NOR = {
-							has_planet_flag = gigaflusion
-							has_planet_flag = resettled_to_flusion
-						}
-						owner = { is_country_type = katzenartig_imperium }
-					}
-					set_planet_flag = resettled_to_flusion
-					every_owned_pop = {
-						random = {
-							chance = 10
-							resettle_pop = {
-								pop = THIS
-								planet = event_target:gigaflusion
-							}
-						}
-					}
-				}
-			}
-		}
-		if = {
-			limit = {
-				event_target:gigaflusion = {
-					free_housing < 50
-					free_district_slots >= 1
-				}
-			}
-			event_target:gigaflusion = { add_district = district_city_katzen }
-		}
 		event_target:flusion_primitives_country = {
 			set_variable = {
 				which = "kaiser_ehof_count"
@@ -5114,7 +5074,7 @@ country_event = { #stellarite kaiser declares war on literally everyone
 				declare_war = {
 					target = PREV
 					attacker_war_goal = "wg_katzen_conquest"
-					name = "Croisade galactique des félidés"
+					name = "Croisade Galactique des félidés"
 				}
 			}
 		}
@@ -5175,7 +5135,7 @@ country_event = { #infinite kaiser declares war on literally everyone
 				declare_war = {
 					target = PREV
 					attacker_war_goal = "wg_katzen_conquest"
-					name = "Croisade galactique des félidés"
+					name = "Croisade Galactique des félidés"
 				}
 			}
 		}
@@ -5289,7 +5249,7 @@ country_event = { #Katzen expansion: Every year, all nearby unclaimed systems ar
 					"null"
 				}
 			}
-			set_name = "Grand Empire félidéen"
+			set_name = "Empire Majeur félidéen"
 			every_country = { country_event = { id = giga_katzen.04001 } }
 		}
 
@@ -9717,6 +9677,7 @@ event = {
 						has_planet_flag = flusion_city_texture_applied
 						has_planet_flag = flusion_voidsphere_texture_applied
 						has_planet_flag = flusion_shrouded_texture_applied
+						has_planet_flag = flusion_fluffy_texture_applied
 					}
 				}
 				AND = {
@@ -9781,7 +9742,11 @@ event = {
 				}
 				AND = {
 					is_planet_class = pc_shrouded
-					has_planet_flag = flusion_shrouded_texture_applied
+					NOT = { has_planet_flag = flusion_shrouded_texture_applied }
+				}
+				AND = {
+					is_planet_class = pc_fluffy
+					NOT = { has_planet_flag = flusion_fluffy_texture_applied }
 				}
 			}
 		}
@@ -9958,6 +9923,15 @@ event = {
 				if = { limit = { has_modifier = flusion_rich_modifier } remove_modifier = flusion_rich_modifier  }
 				set_planet_flag = flusion_shrouded_texture_applied
 			}
+			else_if = { # Fluffy
+				limit = {
+					is_planet_class = pc_plush
+					NOT = { has_planet_flag = flusion_fluffy_texture_applied }
+				}
+				clear_flusion_texture_flags = yes
+				set_planet_entity = { entity = flusion_planet_fluffy_entity }
+				set_planet_flag = flusion_fluffy_texture_applied
+			}
 			else_if = { # Continental/Wet (Restored)
 				limit = {
 					OR = {
@@ -9984,6 +9958,7 @@ event = {
 						has_planet_flag = flusion_city_texture_applied
 						has_planet_flag = flusion_voidsphere_texture_applied
 						has_planet_flag = flusion_shrouded_texture_applied
+						has_planet_flag = flusion_fluffy_texture_applied
 					}
 				}
 				clear_flusion_texture_flags = yes
