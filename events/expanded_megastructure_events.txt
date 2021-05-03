@@ -3,7 +3,7 @@
 # Calvitix Check 3.0.2  25/04/2021
 #
 #
-# Merge with Expanded Events  25/04/2021
+# Merge with Expanded Events  03/05/2021
 # 
 #
 ############################
@@ -434,6 +434,69 @@ country_event = {
 			modifier = prepared_for_the_end
 			days = -1
 		}
+	}
+}
+
+##################################
+# Crisis Sphere
+# Reserved 15 - 19
+##################################
+
+# Contingency prioritizes crisis sphere
+
+country_event = {
+	id = megaexpanded.15
+	hide_window = yes
+	is_triggered_only = yes
+	
+	trigger = {
+		has_global_flag = ai_invasion_ongoing
+		any_system_within_border = {
+			OR = {
+				has_megastructure = crisis_sphere_0
+				has_megastructure = crisis_sphere_1
+				has_megastructure = crisis_sphere_2
+				has_megastructure = crisis_sphere_3
+			}
+		}
+	}
+	
+	immediate = {
+		country_event = { id = megaexpanded.16 days = 30 random = 1050 } # in case there is more than one crisis empire
+	}
+}
+
+country_event = {
+	id = megaexpanded.16
+	hide_window = yes
+	is_triggered_only = yes
+	
+	trigger = {
+		has_global_flag = ai_invasion_ongoing
+		any_system_within_border = {
+			OR = {
+				has_megastructure = crisis_sphere_0
+				has_megastructure = crisis_sphere_1
+				has_megastructure = crisis_sphere_2
+				has_megastructure = crisis_sphere_3
+			}
+		}
+	}
+	
+	immediate = {
+		save_event_target_as = crisis_beacon_target_country
+		random_system_within_border = {
+			limit = {
+				OR = {
+					has_megastructure = crisis_sphere_0
+					has_megastructure = crisis_sphere_1
+					has_megastructure = crisis_sphere_2
+					has_megastructure = crisis_sphere_3
+				}
+			}
+			save_event_target_as = crisis_beacon_target_capital
+		}
+		espionage_crisis_beacon_lure = { TYPE = ai_empire }
 	}
 }
 

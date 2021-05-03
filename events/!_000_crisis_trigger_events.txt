@@ -3,7 +3,7 @@
 # Calvitix Check 3.0.2  25/04/2021
 #
 #
-# Merge with Expanded Events  25/04/2021
+# Merge with Expanded Events  03/05/2021
 # 
 #
 ######################################
@@ -38,6 +38,7 @@ event = {
 					has_technology = tech_psi_jump_drive_1
 				}
 			}
+			is_active_resolution = resolution_galacticstudies_extradimensional_experimentation
 		}
 		NOT = { has_global_flag = galactic_crisis_happened }
 	}
@@ -192,13 +193,18 @@ event = {
 						NOT = { allowed_crisis_type = unbidden }
 						NOR = {
 							has_global_flag = atomic_clock_invader
-							has_global_flag = warp_breach_researched_global
 							is_active_resolution = "resolution_galacticstudies_extradimensional_experimentation"
 							any_country = {
 								OR = { is_country_type = default is_country_type = ascended_empire is_country_type = lost_empire }
 								OR = {
 									has_technology = "tech_psi_jump_drive_1"
 									has_technology = "tech_jump_drive_1"
+									has_country_flag = dportal_trader # warp beasts
+									#fucking with the shroud alerts the unbidden
+									has_megastructure = crisis_sphere_0
+									has_megastructure = crisis_sphere_1
+									has_megastructure = crisis_sphere_2
+									has_megastructure = crisis_sphere_3
 								}							
 							}						
 						}
@@ -273,10 +279,9 @@ event = {
 					}
 					modifier = {
 						factor = 1.2
-						any_system = {
-							any_system_planet = {
+						any_country = {
+							any_owned_planet = {
 								has_planet_flag = mass_effect_citadel
-								has_owner = yes 
 							}
 						}
 					}
@@ -296,19 +301,21 @@ event = {
 							has_global_flag = graveyard_nexus_contingency
 							any_country = {
 								OR = { is_country_type = default is_country_type = ascended_empire is_country_type = lost_empire }
-								has_technology = tech_synthetic_workers
-								any_owned_pop = {
-									has_trait = trait_mechanical
+								OR = {
+									AND = {
+										has_technology = tech_synthetic_workers
+										any_owned_pop = { has_trait = trait_mechanical }
+									}
+									is_machine_empire = yes
 								}
 							}
 							any_country = {
 								is_country_type = fallen_empire
 								has_authority = auth_machine_intelligence
 							}
-							any_system = {
-								any_system_planet = {
+							any_country = {
+								any_owned_planet = {
 									has_planet_flag = mass_effect_citadel
-									has_owner = yes 
 								}
 							}
 							any_country = {

@@ -3,7 +3,7 @@
 # Calvitix Check 3.0.2  25/04/2021
 #
 #
-# Merge with Expanded Events  25/04/2021
+# Merge with Expanded Events  03/05/2021
 # 
 #
 ############################
@@ -465,7 +465,7 @@ country_event = {
 	
 	immediate = {
 		random_galaxy_planet = {
-			limit = { has_planet_flag = has_hidden_worm@root.owner }
+			limit = { has_planet_flag = has_hidden_worm@root }
 			save_event_target_as = hidden_worm_planet
 		}
 		if = {
@@ -479,6 +479,18 @@ country_event = {
 				planet_event = { id = expandedrelics.6 }
 			}
 			set_timed_country_flag = { flag = resolution_breached_fired_cracker days = 3600 }
+		}
+		if = {
+			limit = { NOT = { has_global_flag = tech_hidden_worm_can_spread } }
+			every_playable_country = {
+				limit = {
+					NOR = {
+						is_same_value = ROOT
+						is_same_value = fromfrom.target
+					}
+				}
+				country_event = { id = expandedrelics.7 days = 30 }
+			}
 		}
 		if = {
 			limit = {
@@ -507,7 +519,7 @@ country_event = {
 						has_espionage_type = operation_awaken_worm
 						target = { is_same_value = event_target:target_country } #Redundant only so long as operations are limited to one at a time
 					}
-					espionage_operation_event = { id = expandedspy.9 days = 2 } #Privateers already at large
+					espionage_operation_event = { id = expandedspy.9 days = 2 } # Worm has been recently activated
 				}
 			}
 		}
@@ -519,7 +531,7 @@ country_event = {
             fromfrom = { has_espionage_operation_flag = smooth_exit }
         }
         fromfrom.spynetwork = {
-            add_spy_network_level = -40
+            add_spy_network_level = -60
         }
     }
 	option = { #We're done here (messy)
@@ -528,7 +540,7 @@ country_event = {
             fromfrom = { NOT = { has_espionage_operation_flag = smooth_exit } }
         }
         fromfrom.spynetwork = {
-            add_spy_network_level = -50
+            add_spy_network_level = -70
         }
     }
 }
@@ -544,6 +556,9 @@ espionage_operation_event = {
 
 	option = {
 		name = OK
+	}
+	
+	after = {
 		destroy_espionage_operation = root
 	}
 }

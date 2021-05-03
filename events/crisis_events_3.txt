@@ -141,12 +141,52 @@ country_event = {
 		set_global_flag = ai_invasion_happened
 		set_global_flag = ai_ghost_signal
 		endgame_telemetry = ai_revolt
+		
+		# global flags for contingency dialog
+		if = {
+			limit = {
+				any_country = {
+					OR = {
+						has_megastructure = crisis_sphere_0
+						has_megastructure = crisis_sphere_1
+						has_megastructure = crisis_sphere_2
+						has_megastructure = crisis_sphere_3
+					}
+				}
+			}
+			set_global_flag = contingency_singularity
+		}
+		else = {
+			set_global_flag = contingency_normal
+		}
+		if = {
+			limit = {
+				any_country = {
+					any_owned_planet = {
+						has_planet_flag = mass_effect_citadel
+					}
+				}
+			}
+			set_global_flag = contingency_citadel
+		}
 
 		observer_event = { id = observer.41 }
 		# The Ghost Signal
 		every_country = {
-			limit = { is_country_type = default }
+			limit = {
+				OR = { is_country_type = default is_country_type = ascended_empire is_country_type = lost_empire }
+				NOT = { has_country_flag = spy_orb_spots_crisis }
+			}
 			country_event = { id = crisis.2010 }
+		}
+		every_country = {
+			limit = {
+				OR = { is_country_type = default is_country_type = ascended_empire is_country_type = lost_empire }
+				has_country_flag = spy_orb_spots_crisis
+			}
+			country_event = { id = megaexpanded.9 }
+			country_event = { id = megaexpanded.10 days = 1200 random = 200 }
+			country_event = { id = megaexpanded.11 days = 1470 random = 200 }
 		}
 		# Synths Act Strange
 		every_country = {
@@ -692,14 +732,48 @@ country_event = {
 	desc = {
 		trigger = {
 			NOT = { has_authority = auth_machine_intelligence }
+			NOT = { has_global_flag = contingency_singularity }
+			NOT = { has_global_flag = contingency_citadel }
 		}
 		text = crisis.2023.desc
 	}
 	desc = {
 		trigger = {
 			has_authority = auth_machine_intelligence
+			NOT = { has_global_flag = contingency_singularity }
+			NOT = { has_global_flag = contingency_citadel }
 		}
 		text = crisis.2023.desc.b
+	}
+	desc = {
+		trigger = {
+			NOT = { has_authority = auth_machine_intelligence }
+			has_global_flag = contingency_singularity
+		}
+		text = crisis.2023.desc_crisis
+	}
+	desc = {
+		trigger = {
+			has_authority = auth_machine_intelligence
+			has_global_flag = contingency_singularity
+		}
+		text = crisis.2023.desc_crisis_machine
+	}
+	desc = {
+		trigger = {
+			NOT = { has_authority = auth_machine_intelligence }
+			NOT = { has_global_flag = contingency_singularity }
+			has_global_flag = contingency_citadel
+		}
+		text = crisis.2023.desc_citadel
+	}
+	desc = {
+		trigger = {
+			has_authority = auth_machine_intelligence
+			NOT = { has_global_flag = contingency_singularity }
+			has_global_flag = contingency_citadel
+		}
+		text = crisis.2023.desc_citadel_machine
 	}
 
 	diplomatic = yes
@@ -2345,6 +2419,25 @@ country_event = {
 			NOR = {
 				has_authority = auth_machine_intelligence
 				has_country_flag = synthetic_empire
+				has_megastructure = crisis_sphere_0
+				has_megastructure = crisis_sphere_1
+				has_megastructure = crisis_sphere_2
+				has_megastructure = crisis_sphere_3
+			}
+		}
+	}
+	desc = {
+		text = crisis.2300.desc_02_crisis
+		trigger = {
+			NOR = {
+				has_authority = auth_machine_intelligence
+				has_country_flag = synthetic_empire
+			}
+			OR = {
+				has_megastructure = crisis_sphere_0
+				has_megastructure = crisis_sphere_1
+				has_megastructure = crisis_sphere_2
+				has_megastructure = crisis_sphere_3
 			}
 		}
 	}
@@ -2354,6 +2447,25 @@ country_event = {
 			NOR = {
 				has_authority = auth_machine_intelligence
 				has_country_flag = synthetic_empire
+				has_megastructure = crisis_sphere_0
+				has_megastructure = crisis_sphere_1
+				has_megastructure = crisis_sphere_2
+				has_megastructure = crisis_sphere_3
+			}
+		}
+	}
+	desc = {
+		text = crisis.2300.desc_03_crisis
+		trigger = {
+			NOR = {
+				has_authority = auth_machine_intelligence
+				has_country_flag = synthetic_empire
+			}
+			OR = {
+				has_megastructure = crisis_sphere_0
+				has_megastructure = crisis_sphere_1
+				has_megastructure = crisis_sphere_2
+				has_megastructure = crisis_sphere_3
 			}
 		}
 	}
@@ -2367,6 +2479,27 @@ country_event = {
 				has_authority = auth_machine_intelligence
 				has_country_flag = synthetic_empire
 			}
+			NOR = {
+				has_megastructure = crisis_sphere_0
+				has_megastructure = crisis_sphere_1
+				has_megastructure = crisis_sphere_2
+				has_megastructure = crisis_sphere_3
+			}
+		}
+	}
+	desc = {
+		text = crisis.2300.desc_05_crisis
+		trigger = {
+			OR = {
+				has_authority = auth_machine_intelligence
+				has_country_flag = synthetic_empire
+			}
+			OR = {
+				has_megastructure = crisis_sphere_0
+				has_megastructure = crisis_sphere_1
+				has_megastructure = crisis_sphere_2
+				has_megastructure = crisis_sphere_3
+			}
 		}
 	}
 	desc = {
@@ -2375,6 +2508,51 @@ country_event = {
 			OR = {
 				has_authority = auth_machine_intelligence
 				has_country_flag = synthetic_empire
+			}
+			NOR = {
+				has_megastructure = crisis_sphere_0
+				has_megastructure = crisis_sphere_1
+				has_megastructure = crisis_sphere_2
+				has_megastructure = crisis_sphere_3
+			}
+		}
+	}
+	desc = {
+		text = crisis.2300.desc_06_crisis
+		trigger = {
+			OR = {
+				has_authority = auth_machine_intelligence
+				has_country_flag = synthetic_empire
+			}
+			OR = {
+				has_megastructure = crisis_sphere_0
+				has_megastructure = crisis_sphere_1
+				has_megastructure = crisis_sphere_2
+				has_megastructure = crisis_sphere_3
+			}
+		}
+	}
+	desc = {
+		text = crisis.2300.desc_07_crisis
+		trigger = {
+			OR = {
+				has_megastructure = crisis_sphere_0
+				has_megastructure = crisis_sphere_1
+				has_megastructure = crisis_sphere_2
+				has_megastructure = crisis_sphere_3
+			}
+		}
+	}
+	desc = {
+		text = crisis.2300.desc_08_singularity
+		trigger = {
+			any_playable_country = {
+				OR = {
+					has_megastructure = crisis_sphere_0
+					has_megastructure = crisis_sphere_1
+					has_megastructure = crisis_sphere_2
+					has_megastructure = crisis_sphere_3
+				}
 			}
 		}
 	}
@@ -2396,6 +2574,17 @@ country_event = {
 
 	immediate = {
 		set_country_flag = contingency_diplomacy_engaged
+		random_playable_country = {
+			limit = {
+				OR = {
+					has_megastructure = crisis_sphere_0
+					has_megastructure = crisis_sphere_1
+					has_megastructure = crisis_sphere_2
+					has_megastructure = crisis_sphere_3
+				}
+			}
+			save_event_target_as = contingency_singularity_causer
+		}
 	}
 
 	after = {
@@ -2406,8 +2595,55 @@ country_event = {
 
 	option = {
 		name = crisis.2300.a
+		trigger = {
+			NOT = { has_global_flag = contingency_singularity }
+		}
 		is_dialog_only = yes
 		response_text = crisis.2300.a.response
+	}
+	option = {
+		name = crisis.2300.a
+		trigger = {
+			has_global_flag = contingency_singularity
+			exists = event_target:contingency_singularity_causer
+			NOR = {
+				has_megastructure = crisis_sphere_0
+				has_megastructure = crisis_sphere_1
+				has_megastructure = crisis_sphere_2
+				has_megastructure = crisis_sphere_3
+			}
+		}
+		is_dialog_only = yes
+		response_text = crisis.2300.a.response_singularity
+	}
+	option = {
+		name = crisis.2300.a
+		trigger = {
+			has_global_flag = contingency_singularity
+			NOT = { exists = event_target:contingency_singularity_causer }
+			NOR = {
+				has_megastructure = crisis_sphere_0
+				has_megastructure = crisis_sphere_1
+				has_megastructure = crisis_sphere_2
+				has_megastructure = crisis_sphere_3
+			}
+		}
+		is_dialog_only = yes
+		response_text = crisis.2300.a.response_singularity_b
+	}
+	option = {
+		name = crisis.2300.a
+		trigger = {
+			has_global_flag = contingency_singularity
+			OR = {
+				has_megastructure = crisis_sphere_0
+				has_megastructure = crisis_sphere_1
+				has_megastructure = crisis_sphere_2
+				has_megastructure = crisis_sphere_3
+			}
+		}
+		is_dialog_only = yes
+		response_text = crisis.2300.a.response_singularity_crisis
 	}
 	option = {
 		name = crisis.2300.b
@@ -2422,8 +2658,15 @@ country_event = {
 	}
 	option = {
 		name = crisis.2300.c
+		trigger = { NOT = { has_global_flag = contingency_singularity } }
 		is_dialog_only = yes
 		response_text = crisis.2300.c.response
+	}
+	option = {
+		name = crisis.2300.c
+		trigger = { has_global_flag = contingency_singularity }
+		is_dialog_only = yes
+		response_text = crisis.2300.c.response_singularity
 	}
 	option = {
 		name = crisis.2300.d
@@ -2437,9 +2680,22 @@ country_event = {
 				has_ethic = ethic_materialist
 				has_ethic = ethic_fanatic_materialist
 			}
+			NOT = { has_global_flag = contingency_singularity }
 		}
 		is_dialog_only = yes
 		response_text = crisis.2300.e.response
+	}
+	option = {
+		name = crisis.2300.e
+		trigger = {
+			OR = {
+				has_ethic = ethic_materialist
+				has_ethic = ethic_fanatic_materialist
+			}
+			has_global_flag = contingency_singularity
+		}
+		is_dialog_only = yes
+		response_text = crisis.2300.e.response_singularity
 	}
 	option = {
 		name = crisis.2300.f
