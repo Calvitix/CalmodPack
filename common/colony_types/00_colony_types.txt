@@ -36,6 +36,10 @@ col_default = {
 
 	weight_modifier = {
 		base = 10
+		modifier = {
+			factor = 100
+			owner = { is_ai = yes }
+		}
 	}
 }
 
@@ -58,6 +62,10 @@ col_default_machine = {
 
 	weight_modifier = {
 		base = 10
+		modifier = {
+			factor = 100
+			owner = { is_ai = yes }
+		}
 	}
 }
 
@@ -209,7 +217,7 @@ col_mining = {
 			num_free_districts = { type = district_hive value <= @small_planet_threshold }
 		}
 		modifier = {
-			add = 3
+			add = 2
 			num_free_districts = { type = district_mining value > @free_districts_medium_threshold }
 			num_free_districts = { type = district_farming value < @free_districts_low_threshold }
 			num_free_districts = { type = district_generator value < @free_districts_low_threshold }
@@ -218,12 +226,12 @@ col_mining = {
 			num_free_districts = { type = district_hive value <= @small_planet_threshold }
 		}
 		modifier = {
-			add = 2
+			add = 3
 			has_designation = col_mining
 		}
 		modifier = {
 			# add = 5
-			add = 20
+			add = 10
 			OR = {
 				has_modifier = asteroid_belt
 				has_modifier = mineral_rich
@@ -237,6 +245,7 @@ col_mining = {
 				has_modifier = gpm_rugged_terrain
 				has_modifier = gpm_colossal_cliffs
 				has_modifier = gpm_titanic_geo_form
+				has_modifier = asteroid_impacts
 			}
 		}
 		modifier = {
@@ -244,14 +253,36 @@ col_mining = {
 			add = 40
 			has_modifier = gpm_precursor_mines
 		}
+###STARNET AI
 		modifier = {
-			add = 5
-			num_districts = { type = district_mining value >= @built_districts_medium_threshold }
+			add = 3
+			num_districts = { type = district_mining value >= 1 }
+		}
+		modifier = {
+			add = 3
+			num_districts = { type = district_mining value >= 2 }
+		}
+		modifier = {
+			add = 3
+			num_districts = { type = district_mining value >= 3 }
+		}
+		modifier = {
+			add = 6
+			num_districts = { type = district_mining value >= 4 }
+		}
+		modifier = {
+			add = 6
+			num_districts = { type = district_mining value >= 6 }
 		}
 		modifier = {
 			factor = 0
 			num_districts = { type = district_mining value = 0 }
 		}
+		modifier = {
+			factor = 1.5
+			has_planet_flag = str_acceptable_habitability
+		}
+###
 	}
 }
 
@@ -337,7 +368,7 @@ col_farming = {
 			num_free_districts = { type = district_hive value <= @small_planet_threshold }
 		}
 		modifier = {
-			add = 3
+			add = 2
 			num_free_districts = { type = district_mining value < @free_districts_low_threshold }
 			num_free_districts = { type = district_farming value > @free_districts_medium_threshold }
 			num_free_districts = { type = district_generator value < @free_districts_low_threshold }
@@ -346,7 +377,7 @@ col_farming = {
 			num_free_districts = { type = district_hive value <= @small_planet_threshold }
 		}
 		modifier = {
-			add = 2
+			add = 3
 			has_designation = col_farming
 		}
 		modifier = {
@@ -392,16 +423,39 @@ col_farming = {
 				has_modifier = gpm_acidic_seas
 				has_modifier = gpm_trubbles
 				has_modifier = gpm_blizzards
+				has_modifier = bleak_planet
 			}
 		}
+#STARNET AI
 		modifier = {
-			add = 5
-			num_districts = { type = district_farming value >= @built_districts_medium_threshold }
+			add = 3
+			num_districts = { type = district_farming value >= 1 }
+		}
+		modifier = {
+			add = 3
+			num_districts = { type = district_farming value >= 2 }
+		}
+		modifier = {
+			add = 3
+			num_districts = { type = district_farming value >= 3 }
+		}
+		modifier = {
+			add = 6
+			num_districts = { type = district_farming value >= 4 }
+		}
+		modifier = {
+			add = 6
+			num_districts = { type = district_farming value >= 6 }
 		}
 		modifier = {
 			factor = 0
 			num_districts = { type = district_farming value = 0 }
 		}
+		modifier = {
+			factor = 1.5
+			has_planet_flag = str_acceptable_habitability
+		}
+###
 	}
 }
 
@@ -476,7 +530,7 @@ col_generator = {
 
 	weight_modifier = {
 		modifier = {
-			add = 1
+			add = 3
 			num_free_districts = { type = district_mining value < @free_districts_low_threshold }
 			num_free_districts = { type = district_farming value < @free_districts_low_threshold }
 			num_free_districts = { type = district_generator value > @free_districts_low_threshold }
@@ -485,7 +539,7 @@ col_generator = {
 			num_free_districts = { type = district_hive value <= @small_planet_threshold }
 		}
 		modifier = {
-			add = 3
+			add = 5
 			num_free_districts = { type = district_mining value < @free_districts_low_threshold }
 			num_free_districts = { type = district_farming value < @free_districts_low_threshold }
 			num_free_districts = { type = district_generator value > @free_districts_medium_threshold }
@@ -525,13 +579,34 @@ col_generator = {
 			has_modifier = gpm_weak_magnetic_field_2
 		}
 		modifier = {
-			add = 5
-				num_districts = { type = district_generator value >= @built_districts_medium_threshold }
+			add = 3
+			num_districts = { type = district_generator value >= 1 }
+		}
+		modifier = {
+			add = 3
+			num_districts = { type = district_generator value >= 2 }
+		}
+		modifier = {
+			add = 3
+			num_districts = { type = district_generator value >= 3 }
+		}
+		modifier = {
+			add = 6
+			num_districts = { type = district_generator value >= 4 }
+		}
+		modifier = {
+			add = 6
+			num_districts = { type = district_generator value >= 6 }
 		}
 		modifier = {
 			factor = 0
 			num_districts = { type = district_generator value = 0 }
 		}
+		modifier = {
+			factor = 1.5
+			has_planet_flag = str_acceptable_habitability
+		}
+###
 	}
 }
 
@@ -752,9 +827,71 @@ col_foundry = {
 			add = 5
 			has_designation = col_foundry
 		}
+
+		modifier = {
+			add = 0
+			has_designation = col_factory
+			str_industrial_switcher = no
+		}
+
+		modifier = {
+			add = 20
+			has_designation = col_factory
+			str_factory_to_foundry_switcher = yes
+			or = { 
+				owner = {
+					resource_stockpile_compare = {
+						resource = consumer_goods
+						value > 1000
+					}
+					resource_income_compare = {
+						resource = consumer_goods
+						value > 30
+					}
+				}
+				owner = {
+					resource_stockpile_compare = {
+						resource = consumer_goods
+						value > 500
+					}
+					resource_income_compare = {
+						resource = alloys
+						value < 15
+					}
+					resource_income_compare = {
+						resource = consumer_goods
+						value > 30
+					}
+				}
+			}
+		}
+
 		modifier = {
 			add = 5
-			num_districts = { type = district_industrial value >= @built_districts_medium_threshold }
+			str_foundry_to_factory_switcher = yes
+		}
+	
+
+
+		modifier = {
+			add = 5
+			num_districts = { type = district_industrial value >= 1 }
+		}
+		modifier = {
+			add = 5
+			num_districts = { type = district_industrial value >= 2 }
+		}
+		modifier = {
+			add = 5
+			num_districts = { type = district_industrial value >= 3 }
+		}
+		modifier = {
+			add = 10
+			num_districts = { type = district_industrial value >= 4 }
+		}
+		modifier = {
+			add = 10
+			num_districts = { type = district_industrial value >= 6 }
 		}
 		modifier = {
 			factor = 0
@@ -783,9 +920,67 @@ col_foundry = {
 			has_building = building_foundry_2
 		}
 		modifier = {
+			add = 2
+			owner = {
+			resource_income_compare = {
+				resource = consumer_goods
+				value > 20
+			}
+			resource_income_compare = {
+				resource = consumer_goods
+				value > 1000
+			} }
+			num_buildings = { type = building_factory_1 value = 0 }
+			num_buildings = { type = building_factory_2 value = 0 }
+		}
+		modifier = {
 			factor = 0
-			num_buildings = { type = building_foundry_1 value = 0 }
-			num_buildings = { type = building_foundry_2 value = 0 }
+			owner = {
+			or = {
+			and = {
+			resource_stockpile_compare = {
+				resource = minerals
+				value < 100
+			}
+			resource_stockpile_compare = {
+				resource = minerals
+				value < 5
+			}
+			}
+			and = {
+				resource_stockpile_compare = {
+					resource = food
+					value < 200
+				}
+				resource_stockpile_compare = {
+					resource = food
+					value < -50
+				}
+			}
+			and = {
+				resource_stockpile_compare = {
+					resource = food
+					value < 100
+				}
+				resource_stockpile_compare = {
+					resource = food
+					value < -15
+				}
+			}
+			} 
+		}
+		}
+		modifier = {
+			add = 2
+			owner = {
+			resource_income_compare = {
+				resource = consumer_goods
+				value > 20
+			}
+			resource_income_compare = {
+				resource = consumer_goods
+				value > 1000
+			} }
 		}
 	}
 }
@@ -846,7 +1041,7 @@ col_factory = {
 
 	weight_modifier = {
 		modifier = {
-			add = 2
+			add = 4
 			owner = { has_monthly_income = { resource = consumer_goods value < 5 } }
 			OR = {
 				num_free_districts = { type = district_city value >= @free_districts_high_threshold }
@@ -854,14 +1049,133 @@ col_factory = {
 				num_free_districts = { type = district_nexus value >= @free_districts_high_threshold }
 			}
 		}
+### STARNET AI		
+		modifier = {
+			add = 100
+			or = {
+			has_designation = col_factory
+			has_designation = col_foundry
+			}
+			owner = { 
+			resource_income_compare = {
+				resource = consumer_goods
+				value < 0
+			}
+			resource_stockpile_compare = {
+				resource = consumer_goods
+				value < 10
+			} }
+		}
+		
+
+		modifier = {
+			add = 5
+			has_designation = col_foundry
+		}
+
+		modifier = {
+			add = 0
+			has_designation = col_foundry
+			str_industrial_switcher = no
+		}
+
+		modifier = {
+			add = 5
+			str_factory_to_foundry_switcher = yes
+		}
+
+		modifier = {
+			add = 50
+			has_designation = col_foundry
+			str_foundry_to_factory_switcher = yes
+			or = { 
+				owner = {
+					resource_stockpile_compare = {
+						resource = consumer_goods
+						value < 300
+					}
+					resource_income_compare = {
+						resource = consumer_goods
+						value < 0
+					}
+				}
+				owner = {
+					resource_stockpile_compare = {
+						resource = consumer_goods
+						value < 500
+					}
+					resource_income_compare = {
+						resource = consumer_goods
+						value < -20
+					}
+				}
+			}
+		}
+
+		modifier = {
+			add = 2
+			owner = {
+			used_naval_capacity_percent > 0.9
+			resource_income_compare = {
+				resource = alloys
+				value > 700
+			}
+			resource_stockpile_compare = {
+				resource = alloys
+				value > 7000
+			} }
+			num_buildings = { type = building_factory_1 value = 0 }
+			num_buildings = { type = building_factory_2 value = 0 }
+		}
+		modifier = {
+			add = 2
+			owner = {
+			used_naval_capacity_percent > 0.9
+			resource_income_compare = {
+				resource = alloys
+				value > 700
+			}
+			resource_stockpile_compare = {
+				resource = alloys
+				value > 7000
+			} }
+		}
+
 		modifier = {
 			add = 5
 			has_designation = col_factory
+			owner = { 
+			or = {
+			resource_income_compare = {
+				resource = consumer_goods
+				value < 20 }
+			resource_stockpile_compare = {
+				resource = consumer_goods
+				value < 350
+			}
+			} }
 		}
 		modifier = {
 			add = 5
-			num_districts = { type = district_industrial value >= @built_districts_medium_threshold }
+			num_districts = { type = district_industrial value >= 1 }
 		}
+		modifier = {
+			add = 5
+			num_districts = { type = district_industrial value >= 2 }
+		}
+		modifier = {
+			add = 5
+			num_districts = { type = district_industrial value >= 3 }
+		}
+		modifier = {
+			add = 10
+			num_districts = { type = district_industrial value >= 4 }
+		}
+		modifier = {
+			add = 10
+			num_districts = { type = district_industrial value >= 6 }
+		}
+###
 		modifier = {
 			factor = 0
 			num_districts = { type = district_industrial value = 0 }
@@ -881,18 +1195,34 @@ col_factory = {
 			}
 		}
 		modifier = {
-			add = 2
+			add = 6 # 2
 			has_building = building_factory_1
 		}
 		modifier = {
-			add = 4
+			add = 10
 			has_building = building_factory_2
 		}
 		modifier = {
-			factor = 0
-			num_buildings = { type = building_factory_1 value = 0 }
-			num_buildings = { type = building_factory_2 value = 0 }
-			num_buildings = { type = building_factory_3 value = 0 }
+			add = 2
+			owner = {
+				resource_income_compare = {
+					resource = consumer_goods
+					value < 0
+				}
+			}
+			not = { has_designation = col_foundry }
+		}
+		modifier = {
+			add = 2
+			owner = {
+				resource_income_compare = {
+					resource = consumer_goods
+					value < 0
+				}
+			}
+			not = { has_designation = col_foundry }
+			num_buildings = { type = building_foundry_1 value = 0 }
+			num_buildings = { type = building_foundry_2 value = 0 }
 		}
 	}
 }
@@ -1167,20 +1497,26 @@ col_research = {
 			num_buildings = { type = building_research_lab_1 value >= 4 }
 		}
 		modifier = {
-			add = 5
+			add = 4
 			num_buildings = { type = building_research_lab_1 value >= 5 }
 		}
 		modifier = {
-			add = 4
+			add = 8
 			num_buildings = { type = building_research_lab_2 value >= 1 }
 		}
 		modifier = {
-			add = 5
+			add = 8
 			num_buildings = { type = building_research_lab_2 value >= 2 }
 		}
 		modifier = {
-			add = 10
+			add = 8
 			num_buildings = { type = building_research_lab_3 value >= 1 }
+		}
+		modifier = {
+			factor = 0
+			num_buildings = { type = building_research_lab_1 value = 0 }
+			num_buildings = { type = building_research_lab_2 value = 0 }
+			num_buildings = { type = building_research_lab_3 value = 0 }
 		}
 	}
 }
@@ -1844,6 +2180,80 @@ col_rural_gestalt = {
 			num_districts = { type = district_generator value > @built_districts_medium_threshold }
 			num_districts = { type = district_hive value <= @built_districts_high_threshold }
 		}
+###STARNET AI
+		modifier = {
+			add = 1.5
+			num_districts = { type = district_mining value >= 1 }
+		}
+		modifier = {
+			add = 1.5
+			num_districts = { type = district_mining value >= 2 }
+		}
+		modifier = {
+			add = 1.5
+			num_districts = { type = district_mining value >= 3 }
+		}
+		modifier = {
+			add = 3
+			num_districts = { type = district_mining value >= 4 }
+		}
+		modifier = {
+			add = 3
+			num_districts = { type = district_mining value >= 6 }
+		}
+
+		modifier = {
+			add = 1.5
+			num_districts = { type = district_farming value >= 1 }
+		}
+		modifier = {
+			add = 1.5
+			num_districts = { type = district_farming value >= 2 }
+		}
+		modifier = {
+			add = 1.5
+			num_districts = { type = district_farming value >= 3 }
+		}
+		modifier = {
+			add = 3
+			num_districts = { type = district_farming value >= 4 }
+		}
+		modifier = {
+			add = 3
+			num_districts = { type = district_farming value >= 6 }
+		}
+
+
+
+		modifier = {
+			add = 1.5
+			num_districts = { type = district_generator value >= 1 }
+		}
+		modifier = {
+			add = 1.5
+			num_districts = { type = district_generator value >= 2 }
+		}
+		modifier = {
+			add = 1.5
+			num_districts = { type = district_generator value >= 3 }
+		}
+		modifier = {
+			add = 3
+			num_districts = { type = district_generator value >= 4 }
+		}
+		modifier = {
+			add = 3
+			num_districts = { type = district_generator value >= 6 }
+		}
+
+
+		modifier = {
+			factor = 1.5
+			has_planet_flag = str_acceptable_habitability
+		}
+
+###
+
 		modifier = {
 			add = 1
 			has_designation = col_rural_gestalt
@@ -1928,6 +2338,79 @@ col_rural = {
 			num_districts = { type = district_generator value > @built_districts_medium_threshold }
 			num_districts = { type = district_city value <= @built_districts_high_threshold }
 		}
+###STARNET AI
+		modifier = {
+			add = 1.5
+			num_districts = { type = district_mining value >= 1 }
+		}
+		modifier = {
+			add = 1.5
+			num_districts = { type = district_mining value >= 2 }
+		}
+		modifier = {
+			add = 1.5
+			num_districts = { type = district_mining value >= 3 }
+		}
+		modifier = {
+			add = 3
+			num_districts = { type = district_mining value >= 4 }
+		}
+		modifier = {
+			add = 3
+			num_districts = { type = district_mining value >= 6 }
+		}
+
+		modifier = {
+			add = 1.5
+			num_districts = { type = district_farming value >= 1 }
+		}
+		modifier = {
+			add = 1.5
+			num_districts = { type = district_farming value >= 2 }
+		}
+		modifier = {
+			add = 1.5
+			num_districts = { type = district_farming value >= 3 }
+		}
+		modifier = {
+			add = 3
+			num_districts = { type = district_farming value >= 4 }
+		}
+		modifier = {
+			add = 3
+			num_districts = { type = district_farming value >= 6 }
+		}
+
+
+
+		modifier = {
+			add = 1.5
+			num_districts = { type = district_generator value >= 1 }
+		}
+		modifier = {
+			add = 1.5
+			num_districts = { type = district_generator value >= 2 }
+		}
+		modifier = {
+			add = 1.5
+			num_districts = { type = district_generator value >= 3 }
+		}
+		modifier = {
+			add = 3
+			num_districts = { type = district_generator value >= 4 }
+		}
+		modifier = {
+			add = 3
+			num_districts = { type = district_generator value >= 6 }
+		}
+
+
+		modifier = {
+			factor = 1.5
+			has_planet_flag = str_acceptable_habitability
+		}
+
+###
 		modifier = {
 			add = 1
 			has_designation = col_rural
@@ -2721,13 +3204,13 @@ col_bureau = {
 	}
 
 	weight_modifier = {
-		base = 1
+		base = 10 # 1
 		modifier = {
-			add = 5
-			owner = { empire_sprawl_over_cap > 30 }
+			add = 3 # 5
+			owner = { empire_sprawl_over_cap > 20 } #30
 		}
 		modifier = {
-			add = 5
+			add = 15 #5
 			has_designation = col_bureau
 		}
 		modifier = {

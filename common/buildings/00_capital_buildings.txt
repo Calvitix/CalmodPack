@@ -3,7 +3,7 @@
 # Calvitix Check 3.0.3b  30/04/2021
 # in 3.0, all Ai_weight are deleted
 #
-# Merge with Starnet AI
+# Merge with Starnet AI 03/05/2021
 # Merge with Growtho & Conquest 3
 # Merge with MegacorpMod 21/04/2021
 # Merge with Planetary Div
@@ -61,8 +61,23 @@ building_colony_shelter = {
 		potential = {
 			exists = owner
 			owner = { is_mechanical_empire = no }
+			or = {
+				owner = { is_ai = no }
+				nor = { has_designation = col_default resettlement_cheesy_disable = yes }
+			}
 		}
 		job_colonist_add = 2
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_mechanical_empire = no }
+			has_planet_flag = prescripted_ideal
+			owner = { is_ai = yes }
+			has_designation = col_default
+			}
+		job_colonist_add = 1
 	}
 
 	triggered_planet_modifier = {
@@ -385,6 +400,11 @@ building_capital = {
 	}
 	triggered_desc = {
 		text = job_enforcer_effect_desc
+	}
+	#please upgrade
+	ai_resource_production = {
+		alloys = 11
+		trigger = { num_pops > 6 }
 	}
 }
 

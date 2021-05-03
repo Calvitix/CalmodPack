@@ -74,11 +74,11 @@ building_luxury_residence = {
 			or = {
 			and = {
 				num_pops > 13
-				free_housing < 1
+				free_housing < 15
 				}
 			and = {
 					num_pops > 20
-					free_housing < 1
+					free_housing < 25
 				}
 			}
 			}
@@ -148,6 +148,57 @@ building_luxury_residence = {
 	#upgrades = {
 	#	"building_paradise_dome"
 	#}
+	ai_resource_production = {
+		alloys = 10
+		trigger = { 
+			num_pops > 15
+			or = { free_amenities < -4 num_pops > 20 }
+			free_housing < 25
+			free_jobs > 1
+			free_building_slots > 0
+			or = { has_planet_flag = str_good_habitability 
+			has_planet_flag = str_acceptable_habitability }
+			owner = {
+				has_country_flag = str_has_room_to_grow
+				resource_stockpile_compare = {
+					resource = alloys
+					value > 1000
+				}
+				resource_income_compare = {
+					resource = alloys
+					value > 20
+				}
+			}
+		}
+	}
+	#ai_resource_production = {
+		#energy = 4
+		#trigger = { 
+			#num_pops > 15
+			#free_amenities < -4
+			#free_housing < 20
+			#free_jobs > 1
+			#or = { has_planet_flag = str_good_habitability 
+			#has_planet_flag = str_acceptable_habitability }
+			#owner = {
+				#has_country_flag = str_has_room_to_grow
+			#}
+		#}
+	#}
+	#ai_resource_production = {
+		#minerals = 4
+		#trigger = { 
+			#num_pops > 15
+			#free_amenities < -4
+			#free_housing < 20
+			#free_jobs > 1
+			#or = { has_planet_flag = str_good_habitability 
+			#has_planet_flag = str_acceptable_habitability }
+			#owner = {
+				#has_country_flag = str_has_room_to_grow
+			#}
+		#}
+	#}	
 }
 
 building_paradise_dome = {
@@ -323,11 +374,11 @@ building_communal_housing = {
 			or = {
 			and = {
 				num_pops > 13
-				free_housing < 1
+				free_housing < 15
 				}
 			and = {
 					num_pops > 20
-					free_housing < 1
+					free_housing < 20
 				}
 			}
 			}
@@ -550,7 +601,7 @@ building_drone_storage = {
 		OR = {
 			AND = {
 				free_building_slots = 0
-				free_jobs < 1
+				free_jobs < -2
 				free_housing > 10
 				owner = {
 					is_ai = yes
@@ -564,6 +615,10 @@ building_drone_storage = {
 
 	allow = {
 		buildings_simple_allow = yes
+		or = {
+			owner = { is_ai = no }
+			free_jobs > -1
+		}
 	}
 
 	convert_to = {
@@ -736,6 +791,39 @@ building_hive_warren = {
 		"ebh_hive_warren"
 		#"building_expanded_warren"
 	}
+	ai_resource_production = {
+		alloys =  10
+		trigger = { 
+			num_pops > 15
+			free_amenities < -4
+			free_housing < 20
+			free_jobs > 1
+			free_building_slots > 0
+			or = { has_planet_flag = str_good_habitability 
+			has_planet_flag = str_acceptable_habitability }
+			owner = {
+				has_country_flag = str_has_room_to_grow
+				resource_income_compare = {
+					resource = alloys
+					value > 20
+				}
+			}
+		}
+	}
+	#ai_resource_production = {
+		#minerals = 1
+		#trigger = { 
+			#num_pops > 15
+			#free_amenities < -4
+			#free_housing < 20
+			#free_jobs > 1
+			#or = { has_planet_flag = str_good_habitability 
+			#has_planet_flag = str_acceptable_habitability }
+			#owner = {
+				#has_country_flag = str_has_room_to_grow
+			#}
+		#}
+	#}
 }
 
 building_expanded_warren = {
@@ -821,7 +909,13 @@ building_holo_theatres = {
 	}
 
 	allow = {
-		buildings_simple_allow = yes
+		or = {
+		owner = { is_ai = no }
+		and = {
+		free_amenities < -9
+		num_pops > 12
+		}
+		}
 	}
 
 	destroy_trigger = {
@@ -918,6 +1012,17 @@ building_holo_theatres = {
 			}
 		}
 		text = job_duelist_effect_desc
+	}
+	
+	#Fake production FTW
+
+	ai_resource_production = {
+		alloys = 10
+		trigger = { free_amenities < -15 }
+	}
+	ai_resource_production = {
+		energy = 10
+		trigger = { free_amenities < -15 }
 	}
 }
 

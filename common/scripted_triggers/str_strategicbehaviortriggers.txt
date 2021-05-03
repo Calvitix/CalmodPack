@@ -23,28 +23,27 @@ prepare_for_war = {
             }
         }
     }
-    has_country_flag = acceptable_mineral_economy
-    or = {
+    resource_stockpile_compare = {
+        resource = minerals
+        value > 1500
+    }
+    resource_income_compare = {resource = minerals value > 40}
+    str_raw_ecocrisis_level_0 = no
+    and = {
         used_naval_capacity_integer > 25
-        num_ascension_perks > 1
+        or = {
+            has_ascension_perk = ap_interstellar_dominion
+            and = {
+                has_ascension_perk = ap_executive_vigor
+                has_edict = mining_subsidies
+                has_edict = capacity_subsidies
+            }
+            and = { num_ascension_perks > 1 has_tradition = tr_supremacy_adopt }
+        }
         resource_stockpile_compare = {
             resource = alloys
             value > 1000
-        }
-        and = {
-            fleet_power > 1000
-            any_neighbor_country = {
-                is_country_type = default
-                fleet_power < 500
-            prev = {
-                or = {
-                is_hostile_to = prev
-                is_unfriendly_to = prev
-                }
-            }
-        }
-        }
-    }
+        }    }
 }
 
 
@@ -53,21 +52,39 @@ scared_of_neighbour = {
     or = {
         any_relation = {
             years_passed < 20
-            is_ai = no
+            years_passed > 5
             is_country_type = default
-            or = {
+            and = { num_owned_planets < 2
+                not = { has_origin = origin_shattered_ring }    
+            }
             and = {
-                fleet_power > 250
-                prev = { fleet_power < 500 } }
-            and = {
-                fleet_power > 500
-                prev = { fleet_power < 750 } }
-            and = {
-                fleet_power > 1000
-                prev = { fleet_power < 1500 } }
-            and = {
-                fleet_power > 1500
-                prev = { fleet_power < 2500 } }
+		resource_income_compare =  { resource = alloys value > 30 }
+		resource_stockpile_compare =  { resource = alloys value < 400 }
+            }
+        }
+        
+        any_relation = {
+            years_passed > 5
+            num_guaranteed_colonies > 0
+            and = { num_owned_planets < 2
+                not = { has_origin = origin_shattered_ring }    
+            }
+            resource_income_compare = {
+                resource = alloys
+                value > 25
+            }
+        }
+
+        
+        any_relation = {
+            years_passed > 10
+            num_guaranteed_colonies > 0
+            and = { num_owned_planets < 3
+                not = { has_origin = origin_shattered_ring }    
+            }
+            resource_income_compare = {
+                resource = alloys
+                value > 25
             }
         }
     
@@ -108,7 +125,7 @@ cruisers_good = {
     has_technology = tech_cruisers
     not = {
         any_neighbor_country = {
-            nhsc_is_playable_empire = yes
+            is_country_type = default
             has_technology = tech_battleships
         }
     }
@@ -116,7 +133,6 @@ cruisers_good = {
 
 #If ai ends up in a stalemate with huge fleet and no courage to fight
 #they will try to ramp up their science/unity while waiting
-
 
 stalemate = {
     used_naval_capacity_percent > 0.95
@@ -182,6 +198,7 @@ safespace = {
 
 
 needs_shipyard = { #country scope
+    years_passed > 10
     nor = {
         and = {
             max_naval_capacity < 40
@@ -245,21 +262,24 @@ has_ecumen = {
 can_you_please_stop_building_ships = {
     or = {
         and = {
+        years_passed < 80
         used_naval_capacity_percent > 2
         resource_income_compare = {
             resource = energy
-            value < 200
+            value < 150
         }
         }
         and = {
+        years_passed < 100
         used_naval_capacity_percent > 1.5
         resource_income_compare = {
             resource = energy
-            value < 100
+            value < 50
         }
         }
     and = {
-    used_naval_capacity_percent > 1.25
+    years_passed < 150
+    used_naval_capacity_percent > 1.5
     resource_income_compare = {
         resource = energy
         value < 0
@@ -268,6 +288,21 @@ can_you_please_stop_building_ships = {
     and = {
         used_naval_capacity_percent > 1
         ai_colonize_plans > 0
+    }
+    and = {
+        years_passed > 80
+        resource_income_compare = {
+            resource = energy
+            value < -100
+        }
+    }
+    and = {
+        years_passed > 80
+        used_naval_capacity_integer < 1000
+        resource_income_compare = {
+            resource = energy
+            value < -50
+        }
     }
     }
 }

@@ -530,7 +530,11 @@ building_sacrificial_temple_1 = {
 		NOT = { has_modifier = slave_colony }
 		OR = {
 			owner = { is_ai = no }
-			free_building_slots > 0
+			and = { free_building_slots > 0 
+				nor = { has_building = building_sacrificial_temple_1 
+				has_building = building_sacrificial_temple_2 has_building = building_sacrificial_temple_3  } 
+				free_district_slots = 0 
+			}
 		}
 	}
 
@@ -549,6 +553,13 @@ building_sacrificial_temple_1 = {
 				}
 			}
 			has_modifier = slave_colony
+			and = {
+				owner = { is_ai = no }
+				num_buildings = {
+					type = building_sacrificial_temple_1
+					value > 1
+				}
+			}
 		}
 	}
 
@@ -829,14 +840,14 @@ building_galactic_memorial_1 = {
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
-			owner = { is_gestalt = no }
+			owner = { is_gestalt = no is_ai = no }
 		}
 		job_death_chronicler_add = @b1_jobs
 	}
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
-			owner = { is_gestalt = yes }
+			owner = { is_gestalt = yes is_ai = no }
 		}
 		job_chronicle_drone_add = @b1_jobs
 	}
@@ -884,6 +895,15 @@ building_galactic_memorial_1 = {
 			owner = { is_gestalt = yes }
 		}
 		text = "job_chronicle_drone_effect_desc"
+	}
+	ai_resource_production = {
+		alloys = 10
+		trigger = { num_pops > 30 owner = {
+			OR = {
+				has_valid_civic = civic_memorialist
+				has_valid_civic = civic_hive_memorialist
+				has_valid_civic = civic_machine_memorialist
+			} } }
 	}
 }
 
@@ -2263,6 +2283,13 @@ building_organic_sanctuary = {
 
 	upgrades = {
 		"building_organic_paradise"
+	}
+	ai_resource_production = {
+		alloys = 10
+		trigger = {
+			count_owned_pop = { limit = { has_citizenship_type = { type = citizenship_organic_trophy } } count > 0 }
+			free_building_slots > 0
+		}
 	}
 }
 
