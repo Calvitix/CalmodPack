@@ -2,7 +2,7 @@
 #
 # Calvitix Check 3.0.3b  03/05/2021
 #
-# Merge with STARNET AI
+# Merge with STARNET AI 04/05/2021
 #
 #
 ## Categories used in this file must have use_for_ai_budget = yes defined in economic_categories ##
@@ -32,6 +32,7 @@ influence_expenditure_decisions = {
 	
 	potential = {
 		always = yes
+###Starnet AI
 		or = {
 			not = { has_country_flag = saving_influence_arcology }
 			and = {
@@ -42,6 +43,7 @@ influence_expenditure_decisions = {
 				}
 			}
 		}
+###
 	}
 	
 	fraction = {
@@ -98,33 +100,63 @@ influence_expenditure_edicts_initial = {
 		base = 800
 	}
 }
+
+influence_expenditure_important_edicts = {
+	resource = influence 
+	type = expenditure
+	category = edicts
+	
+	potential = {
+		years_passed > 20
+		nand = {
+			has_edict = capacity_subsidies
+			has_edict = mining_subsidies
+		}
+	}
+	
+	fraction = {
+		weight = 0.2
+	}	
+
+	static_min = {
+		base = 800
+	}
+}
+
+
 influence_expenditure_edicts = {
 	resource = influence 
 	type = expenditure
 	category = edicts
 	
 	potential = {
+###Starnet AI
 		or = {
-		resource_stockpile_compare = {
-			resource = influence
-			value > 600
-		}
-		and = {
-			not = { has_country_flag = acceptable_raw_economy }
 			resource_stockpile_compare = {
 				resource = influence
-				value > 400
+				value > 600
 			}
-		}
+			and = {
+				not = { has_country_flag = acceptable_raw_economy }
+				resource_stockpile_compare = {
+					resource = influence
+					value > 400
+				}
+			}
+###Starnet AI end
 		}
 	}
 	
 	fraction = {
-		weight = 0.9
+		weight = 0.9 #0.5
 	}	
 	static_min = {
-		base = 800
+		base = 800 #100
 	}
+	
+	#static_max = {
+	#	base = 300
+	#}	
 }
 
 influence_expenditure_claims_rusher = {
@@ -149,6 +181,7 @@ influence_expenditure_stations = {
 	category = stations
 	
 	potential = {
+###Starnet AI
 		not = { has_country_flag = saving_influence_arcology }
 		or = {
 		prepare_for_war = no
@@ -172,13 +205,15 @@ influence_expenditure_stations = {
 				value < 300
 			}
 		}
+###Starnet AI end
 	}
 	
 	fraction = {
-		weight = 0.40
+		weight = 0.40 #0.5
 	}	
 	static_min = {
-		base = 0
+		base = 0 #75
+###Starnet AI
 		modifier = {
 			add = 200
 			resource_stockpile_compare = {
@@ -186,9 +221,11 @@ influence_expenditure_stations = {
 				value > 250
 			}
 		}
+###Starnet AI end
 	}
 }
 
+###Starnet AI
 influence_expenditure_stations_wartime = {
 	resource = influence 
 	type = expenditure
@@ -207,7 +244,38 @@ influence_expenditure_stations_wartime = {
 		weight = 0.2
 	}	
 }
+###Starnet AI end
+influence_expenditure_claims_militarist = {
+	resource = influence 
+	type = expenditure
+	category = claims
+	
+	potential = {
+		has_ethic = ethic_militarist
+		has_potential_claims = yes
+	}
+	
+	fraction = {
+		weight = 0.05
+	}
+}
 
+influence_expenditure_claims_fanatic_militarist = {
+	resource = influence 
+	type = expenditure
+	category = claims
+	
+	potential = {
+   		has_ethic = ethic_fanatic_militarist
+   		has_potential_claims = yes
+	}
+	
+	fraction = {
+		weight = 0.10
+	}
+}
+
+### Starnet AI
 influence_expenditure_claims_early = {
 	resource = influence 
 	type = expenditure
@@ -222,6 +290,7 @@ influence_expenditure_claims_early = {
 			OR = {
   	 			has_ethic = ethic_fanatic_pacifist
    				has_ethic = ethic_pacifist
+				has_crisis_level = crisis_level_2
     		}	
 		}
 		or = {
@@ -300,6 +369,8 @@ influence_expenditure_claims_while_preparing = {
 		base = 400
 	}
 }
+### Starnet AI end
+
 
 influence_expenditure_megastructures = {
 	resource = influence

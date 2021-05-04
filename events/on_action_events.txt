@@ -5,6 +5,7 @@
 # Merge with Arisphaos Unofficial patch
 #
 # Merge with Expanded Event  26/04/2021
+# Merge with JL PICARD 04/05/2021
 # 
 #
 
@@ -6324,7 +6325,7 @@ country_event = {
 	id = action.5
 	title = "action.5.name"
 	picture = GFX_evt_medieval_alien_civilization
-	location = FROMFROM
+	location = fromfrom # Correction de bug
 	show_sound = event_primitive_civilization
 
 	desc = { # Stone Age
@@ -6381,7 +6382,7 @@ country_event = {
 	id = action.6
 	title = "action.5.name"
 	picture = GFX_evt_metropolis
-	location = FROMFROM
+	location = fromfrom # Correction de bug
 	show_sound = event_scanner
 
 	desc = { # Industrial Age
@@ -6516,6 +6517,7 @@ country_event = {
 	}
 	picture = GFX_evt_throne_room
 	show_sound = event_radio_chatter
+	location = fromfrom.capital_scope # Correction de bug
 
 	is_triggered_only = yes
 
@@ -6802,6 +6804,7 @@ country_event = {
 	}
 	picture = GFX_evt_throne_room
 	show_sound = event_radio_chatter
+	location = from.capital_scope # Correction de bug
 
 	is_triggered_only = yes
 
@@ -9111,8 +9114,21 @@ event = {
 	hide_window = yes
 	is_triggered_only = yes
 
+	trigger = {
+		any_playable_country = {
+			num_unique_species > 1
+			any_owned_species = {
+				has_citizenship_type = {
+					type = citizenship_assimilation
+					country = prev
+				}
+			}
+		}
+	}
+
 	immediate = {
 		log = "action.64"
+		set_update_modifiers_batch = begin
         every_playable_country = {
             limit = {
                 num_unique_species > 1
@@ -9381,6 +9397,7 @@ event = {
                 planet_event = { id = action.65 }
             }
         }
+		set_update_modifiers_batch = end
     }
 }
 
@@ -9750,18 +9767,44 @@ country_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		last_changed_policy = robot_pop_policy
-		has_policy_flag = robots_outlawed
-		any_owned_army = {
-			OR = {
-				army_type = robotic_army
-				army_type = robotic_defense_army
+		OR = {
+			AND = {
+				last_changed_policy = artificial_intelligence_policy
+				has_policy_flag = ai_outlawed
+				any_owned_army = {
+					OR = {
+						army_type = robotic_army
+						army_type = robotic_defense_army
+					}
+				}
+			}
+			AND = {
+				last_changed_policy = robot_pop_policy
+				has_policy_flag = robots_outlawed
+				any_owned_army = {
+					OR = {
+						army_type = robotic_army
+						army_type = robotic_defense_army
+					}
+				}
 			}
 		}
 	}
 
 	immediate = {
 		if = {
+			limit = { last_changed_policy = artificial_intelligence_policy has_policy_flag = ai_outlawed }
+			every_owned_army = {
+				limit = {
+					OR = {
+						army_type = robotic_army
+						army_type = robotic_defense_army
+					}
+				}
+				remove_army = yes
+			}
+		}
+		else_if = {
 			limit = { last_changed_policy = robot_pop_policy has_policy_flag = robots_outlawed }
 			every_owned_army = {
 				limit = {
@@ -10086,7 +10129,7 @@ event = {
 						}
 					}
 					solar_system = {
-						NOT = {
+						NOR = {
 							any_fleet_in_system = {
 								exists = owner
 								owner = {
@@ -10094,6 +10137,18 @@ event = {
 									OR = {
 										is_hostile = prevprevprev.owner
 										is_at_war_with = prevprevprev.owner
+									}
+								}
+							}
+							any_system_planet = {
+								exists = owner
+								NOT = { is_same_value = prevprev }
+								owner = {
+									NOT = { is_same_value = prevprevprev.owner }
+									OR = {
+										is_country_type = default
+										is_country_type = fallen_empire
+										is_country_type = awakened_fallen_empire
 									}
 								}
 							}
@@ -10111,6 +10166,31 @@ event = {
 							is_country_type = default
 							is_country_type = fallen_empire
 							is_country_type = awakened_fallen_empire
+						}
+					}
+					solar_system = {
+						NOR = {
+							any_fleet_in_system = {
+								exists = owner
+								owner = {
+									NOT = { is_same_value = prevprevprev.owner }
+									OR = {
+										is_hostile = prevprevprev.owner
+										is_at_war_with = prevprevprev.owner
+									}
+								}
+							}
+							any_system_planet = {
+								exists = owner
+								owner = {
+									NOT = { is_same_value = prevprev.owner }
+									OR = {
+										is_country_type = default
+										is_country_type = fallen_empire
+										is_country_type = awakened_fallen_empire
+									}
+								}
+							}
 						}
 					}
 				}
@@ -11290,63 +11370,63 @@ event = {
 	immediate = {
 		if = {
 			limit = {
-									NOT = { is_on_market = volatile_motes }
+				NOT = { is_on_market = volatile_motes }
 				any_playable_country = {
 					is_galactic_community_member = yes
 					resource_stockpile_compare = {  resource = volatile_motes value >= 1 }
 				}
 			}
-										enable_on_market = volatile_motes
+			enable_on_market = volatile_motes
 		}
 		else_if = {
 			limit = {
-									NOT = { is_on_market = exotic_gases }
+				NOT = { is_on_market = exotic_gases }
 				any_playable_country = {
 					is_galactic_community_member = yes
 					resource_stockpile_compare = {  resource = exotic_gases value >= 1 }
 				}
 			}
-										enable_on_market = exotic_gases
+			enable_on_market = exotic_gases
 		}
 		else_if = {
 			limit = {
-									NOT = { is_on_market = rare_crystals }
+				NOT = { is_on_market = rare_crystals }
 				any_playable_country = {
 					is_galactic_community_member = yes
 					resource_stockpile_compare = {  resource = rare_crystals value >= 1 }
 				}
 			}
-										enable_on_market = rare_crystals
+			enable_on_market = rare_crystals
 		}
 		else_if = {
 			limit = {
-									NOT = { is_on_market = sr_living_metal }
+				NOT = { is_on_market = sr_living_metal }
 				any_playable_country = {
 					is_galactic_community_member = yes
 					resource_stockpile_compare = {  resource = sr_living_metal value >= 1 }
 				}
 			}
-										enable_on_market = sr_living_metal
+			enable_on_market = sr_living_metal
 		}
 		else_if = {
 			limit = {
-									NOT = { is_on_market = sr_zro }
+				NOT = { is_on_market = sr_zro }
 				any_playable_country = {
 					is_galactic_community_member = yes
 					resource_stockpile_compare = {  resource = sr_zro value >= 1 }
 				}
 			}
-										enable_on_market = sr_zro
+			enable_on_market = sr_zro
 		}
 		else_if = {
 			limit = {
-									NOT = { is_on_market = sr_dark_matter }
+				NOT = { is_on_market = sr_dark_matter }
 				any_playable_country = {
 					is_galactic_community_member = yes
 					resource_stockpile_compare = {  resource = sr_dark_matter value >= 1 }
 				}
 			}
-										enable_on_market = sr_dark_matter
+			enable_on_market = sr_dark_matter
 		}
 	}
 }
@@ -12324,6 +12404,18 @@ country_event = {
 		}
 		else = {
 			set_origin = origin_default
+		}
+		if = {
+			limit = {
+				has_civic = civic_galactic_sovereign
+			}
+			force_remove_civic = civic_galactic_sovereign
+		}
+		if = {
+			limit = {
+				has_civic = civic_galactic_sovereign_megacorp
+			}
+			force_remove_civic = civic_galactic_sovereign_megacorp
 		}
 	}
 }

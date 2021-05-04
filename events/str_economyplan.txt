@@ -1,3 +1,7 @@
+# STARNET AI File
+#
+# Merge with STARNET AI OK  04/05/2021
+#
 namespace = str_economy_plan
 
 event = {
@@ -35,6 +39,55 @@ country_event = {
 			remove_country_flag = str_has_misplaced_factory
 			remove_country_flag = str_has_misplaced_foundry
 			remove_country_flag = str_consumer_goods_margin
+			remove_country_flag = str_deleted_extra_shipyard
+
+			if = {
+				limit = {
+					or = {
+					count_owned_starbase = {
+						count >= 7
+						limit = { has_starbase_module = shipyard }
+					}
+					and = {
+						max_naval_capacity < 500
+						count_owned_starbase = {
+							count >= 5
+							limit = { has_starbase_module = shipyard }
+						}
+					}
+					}
+				}
+				every_owned_starbase = {
+					if = {
+						limit = { 
+						has_starbase_module = shipyard 
+						owner = { not = { has_country_flag = str_deleted_extra_shipyard } }
+					}
+					owner = { set_country_flag = str_deleted_extra_shipyard }
+					remove_starbase_module = { module = shipyard }
+					remove_starbase_module = { module = shipyard }
+					remove_starbase_module = { module = shipyard }
+					remove_starbase_module = { module = shipyard }
+					remove_starbase_module = { module = shipyard }
+					remove_starbase_module = { module = shipyard }
+					remove_starbase_building = { building = fleet_academy }
+					}
+				}
+			}
+
+			if = {
+				limit = {
+					years_passed > 2
+					not = { has_country_flag = str_capital_starbase_cleared }
+				}
+				set_country_flag =  str_capital_starbase_cleared 
+				capital_scope = {
+					starbase = {
+						remove_starbase_module = { module = trading_hub	}
+						remove_starbase_module = { module = solar_panel_network	}
+					}
+				}
+			}
 
 			if = {
 				limit = {

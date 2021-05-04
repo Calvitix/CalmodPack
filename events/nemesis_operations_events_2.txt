@@ -3,7 +3,7 @@
 # Calvitix Check 3.0.2  26/04/2021
 #
 # Merge with Skalla Ai's Overhaul
-#
+# Merge with JL Picard 04/05/2021
 #
 
 ###########################################
@@ -128,6 +128,7 @@ espionage_operation_event = {
 	show_sound = event_default
 	is_triggered_only = yes
 	espionage_operation = yes
+	location = event_target:target_country.capital_scope # Correction de bug
 
 	immediate = {
 		set_espionage_operation_progress_locked = yes
@@ -367,6 +368,7 @@ country_event = {
 	}
 	show_sound = event_default
 	is_triggered_only = yes
+	location = event_target:target_country.capital_scope # Correction de bug
 
 	immediate = {
 		add_imperial_authority = -20
@@ -979,7 +981,7 @@ country_event = {
 				country_event = { id = operation.6206 } #Conclusion (victim)
 				set_timed_country_flag = {
 					flag = target_of_operation_arm_privateers
-					days = 30 #If changed, update string 'operation_arm_privateers_existing_activity'
+					days = 1080 #If changed, update string 'operation_arm_privateers_existing_activity'
 				}
 			}
 		}
@@ -1071,12 +1073,17 @@ country_event = {
 
 	after = {
 		hidden_effect = {
-			owner = {
-				change_variable = {
-					which = tinker_tailor_soldier_blorg_achievement_count
-					value = 1
+			if = {
+				limit = {
+					owner = { NOT = { has_country_flag = operation_complete_arm_privateers } }
 				}
-				set_country_flag = operation_complete_arm_privateers
+				owner = {
+					change_variable = {
+						which = tinker_tailor_soldier_blorg_achievement_count
+						value = 1
+					}
+					set_country_flag = operation_complete_arm_privateers
+				}
 			}
 		}
 		destroy_espionage_operation = fromfrom
@@ -1136,7 +1143,6 @@ espionage_operation_event = {
 	picture = GFX_evt_pirates_attacking_cargo
 	show_sound = event_space_battle
 	location = event_target:privateer_system
-
 	is_triggered_only = yes
 
 	option = {
@@ -1301,6 +1307,7 @@ espionage_operation_event = {
 	picture = GFX_evt_spy_network
 	show_sound = event_spymaster
 	espionage_operation = yes
+	location = target.capital_scope # Correction de bug
 
 	is_triggered_only = yes
 
@@ -1317,6 +1324,7 @@ espionage_operation_event = {
 	picture = GFX_evt_alien_propaganda
 	show_sound = event_spymaster
 	espionage_operation = yes
+	location = target.capital_scope # Correction de bug
 
 	is_triggered_only = yes
 
@@ -1352,6 +1360,7 @@ espionage_operation_event = {
 	picture = GFX_evt_spymaster
 	show_sound = event_spymaster
 	espionage_operation = yes
+	location = target.capital_scope # Correction de bug
 
 	is_triggered_only = yes
 
@@ -1422,6 +1431,7 @@ country_event = {
 	picture = GFX_evt_cover_blown
 	show_sound = event_default
 	is_triggered_only = yes
+	location = target_country.capital_scope # Correction de bug
 
 	immediate = {
 		event_target:target_country = {
@@ -1494,6 +1504,7 @@ country_event = {
 	picture = GFX_evt_cover_blown
 	show_sound = event_default
 	is_triggered_only = yes
+	location = from.capital_scope # Correction de bug
 
 	immediate = {
 		add_modifier = {
@@ -1529,6 +1540,7 @@ country_event = {
 	picture = GFX_evt_cover_blown
 	show_sound = event_default
 	is_triggered_only = yes
+	location = target_country.capital_scope # Correction de bug
 
 	immediate = {
 		from.target = { 
