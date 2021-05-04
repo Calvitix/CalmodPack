@@ -2,7 +2,7 @@
 #
 # Calvitix Check 3.0.1  18/04/2021
 #
-# Merge with Starnet AI 03/05/2021
+# Merge with Starnet AI 04/05/2021
 #
 #
 # IMPORTANT:
@@ -12,7 +12,7 @@
 
 # If below this threshold and negative income all targets are disabled to try and buy the resource until above threshold.
 @critical_energy_value = 50
-@critical_minerals_value = 450
+@critical_minerals_value = 700
 @critical_food_value = 100
 @critical_consumer_goods_value = 50
 @critical_alloys_value = 50
@@ -22,9 +22,9 @@
 
 # Resources tend not to be sold unless above these thresholds (except if a resource is critical).
 @target_energy_value = 1300
-@target_minerals_value = 3000
+@target_minerals_value = 5000
 @target_food_value = 1000
-@target_consumer_goods_value = 200
+@target_consumer_goods_value = 350
 @target_alloys_value = 1500
 @target_mote_value = 150
 @target_exotic_gases_value = 150
@@ -44,17 +44,6 @@ time = {
 
 
 ### Basic Resources
-
-
-#No clue how is this supposed to work
-#From what I've asked it seems that noone really does
-
-#This file is made in "monkey with a typewriter" fashion,
-#I had bunch of incorrect assumptions of how ai_wants and ai_weight
-#mean, wrote a code assuming them and it worked okay-ish
-
-#later tests revealed that assumptions were wrong, but since it worked fine
-#I am not going to change a thing
 
 energy = {
 	tradable = yes
@@ -117,6 +106,14 @@ energy = {
 			}
 		}
 		modifier = {
+			factor = 6
+			or = {
+			has_ascension_perk = ap_world_shaper
+			has_ascension_perk = ap_hive_worlds
+			has_ascension_perk = ap_machine_worlds		
+			}
+		}
+		modifier = {
 			add = @critical_energy_value
 			resource_stockpile_compare = { resource = energy value < @critical_energy_value }
 			resource_income_compare = { resource = energy value < 0 }
@@ -135,9 +132,14 @@ minerals = {
 	ai_weight = {
 		weight = 1.5
 		modifier = {
+			factor = 3
+			resource_stockpile_compare = { resource = minerals value < @critical_minerals_value }
+			resource_income_compare = { resource = minerals value < 20 }
+		}
+		modifier = {
 			factor = 2
 			resource_stockpile_compare = { resource = minerals value < @critical_minerals_value }
-			resource_income_compare = { resource = minerals value < 0 }
+			resource_income_compare = { resource = minerals value < 40 }
 		}
 	}
 
@@ -150,6 +152,7 @@ minerals = {
 			resource_stockpile_compare = { resource = minerals value < 400 }
 			resource_stockpile_compare = { resource = energy value > 400 }
 		}
+		
 		modifier = {
 			add = @target_minerals_value
 			NOR = {
@@ -310,17 +313,25 @@ alloys = {
 	deficit_modifier = alloys_deficit
 	
 	ai_weight = {
-		weight = 4.5 # Higher weight so that alloys are bought with excess energy by default.
+		weight = 3.7 
 		modifier = {
 			factor = 2
 			resource_stockpile_compare = { resource = alloys value < @critical_alloys_value }
-			resource_income_compare = { resource = alloys value < 0 }
+			resource_income_compare = { resource = alloys value < 15 }
 		}
 	}
 
 	ai_wants = {
 ###STARNET AI
 		base = 1
+		modifier = {
+			factor = 2
+			resource_stockpile_compare = {
+				resource = alloys
+				value > 4000
+			}
+		}
+		
 		modifier = {
 			add = @target_alloys_value
 			NOR = {

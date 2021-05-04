@@ -7,7 +7,7 @@ str_enable_clerks = {
 				is_ai = no
 				or = {
 				years_passed < 2
-				and = { years_passed > 5 years_passed < 8 } 	
+				and = { years_passed > 5 years_passed < 9 } 	
 				}
 				and = { years_passed > 60 not = { has_country_flag = str_has_room_to_grow } prev = { 
 					free_building_slots = 0
@@ -22,6 +22,7 @@ str_enable_clerks = {
 
 str_bureaucratic_potential = {
 	exists = owner
+	hidden_trigger = {
 	owner = {
 		or = {
 			is_ai = no
@@ -48,14 +49,29 @@ str_bureaucratic_potential = {
 	}
 
 	nand = {
+		exists = owner
 		owner = {is_ai = yes }
 		owner = { str_bad_raw_economy_trigger = yes }
+	}
+	nand = {
+		exists = owner
+		owner = {
+			resource_stockpile_compare = {
+				resource = minerals
+				value < 400
+			}
+			resource_income_compare = {
+				resource = minerals
+				value < 50
+			}
+		}
 	}
 	nand = {
 		has_designation = col_research
 		owner = {
 			is_ai = yes
 		}
+	}
 	}
 }
 
@@ -64,13 +80,14 @@ str_bureaucratic_destroy = {
 		owner = { 
 		and = {
 			is_ai = yes
+			free_building_slots < 1 #calvitix added
 			resource_income_compare = {
 				resource = physics_research 
 				value < 90 }
 			}
 		} 
 	and = {
-		or = { free_building_slots < 2 free_jobs > 1 }
+		or = { free_building_slots < 1 free_jobs < 1 }  #calvitix free_building_slots< 2
 		owner = {
 			is_ai = yes
 			lategame = yes
@@ -191,8 +208,22 @@ str_research_destroy = {
 str_industrial_district_allow = {
 	nand = {
 		exists = owner
+		owner = {
+			is_ai = yes
+		}
 		nand = {
 			owner = { or = { str_bad_raw_economy_trigger = no is_ai = no } }
+			years_passed > 3
+			owner = { or = {
+				resource_stockpile_compare = {
+					resource = minerals 
+					value > 600
+				}
+				resource_income_compare = {
+					resource = alloys
+					value = 40
+				}
+			} }
 			owner = { or = { str_raw_ecocrisis_level_1 = no is_ai = no } }
 			or = {
 				owner = { is_ai = no }
@@ -259,7 +290,17 @@ str_energy_district_allow = {
 	nand = {
 		exists = owner
 		owner = { is_ai = yes }
-		free_jobs > 1
+		or = {
+		free_jobs > 2
+		and = {
+			free_jobs > 1
+			owner = { resource_income_compare = {
+				resource = energy
+				value > 20
+				} }
+			}
+		}
+		years_passed > 9	
 	}
 }
 
@@ -291,7 +332,17 @@ str_food_district_allow = {
 	nand = {
 		exists = owner
 		owner = { is_ai = yes }
-		free_jobs > 1
+		or = {
+		free_jobs > 2
+		and = {
+			free_jobs > 1
+			owner = { resource_income_compare = {
+				resource = food
+				value > 5
+				} }
+			}
+		}
+		years_passed > 9	
 	}
 }
 
@@ -322,7 +373,17 @@ str_mineral_district_allow = {
 	nand = {
 		exists = owner
 		owner = { is_ai = yes }
-		free_jobs > 1
+		or = {
+		free_jobs > 2
+		and = {
+			free_jobs > 1
+			owner = { resource_income_compare = {
+				resource = minerals
+				value > 40
+				} }
+			}
+		}
+		years_passed > 9	
 	}
 	
 }
@@ -361,8 +422,10 @@ str_city_district_allow = {
 	}
 }
 
-force_city_district = {
+str_force_city_district = {
 	
+	years_passed > 15
+
 	or = {
 		and = {
 		free_housing < 25
@@ -377,8 +440,8 @@ force_city_district = {
 		num_pops > 25
 		}
 	}
-	or = { free_building_slots = 0 and = { num_pops > 20 free_housing < 25 } }
-	or = { free_jobs > 2 and = { free_district_slots < 2 owner = { has_country_flag = str_has_room_to_grow } }}
+	or = { free_building_slots = 0 and = { num_pops > 15 free_housing < 25 } }
+	or = { free_jobs > 0 and = { free_district_slots < 2 owner = { has_country_flag = str_has_room_to_grow } } and = { free_building_slots = 0 free_amenities < -6 } }
 
 }
 

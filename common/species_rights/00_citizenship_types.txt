@@ -3,7 +3,7 @@
 # Calvitix Check 3.0.1  23/04/2021
 #
 # Merge with Arisphaos Unofficial patch
-#
+# Merge with Starnet AI  04/05/2021
 #
 
 # from = country
@@ -69,7 +69,7 @@ citizenship_full = {
 		}
 	}
 	ai_will_do = {
-		factor = 1
+		factor = 100 #1
 	}
 }
 
@@ -213,7 +213,10 @@ citizenship_assimilation = {
 				NOR = {
 					has_trait = trait_mechanical
 					has_trait = trait_machine_unit
-					has_trait = trait_cybernetic
+					AND = {
+						has_trait = trait_cybernetic
+						from = { NOT = { has_country_flag = synthetic_empire } }
+					}
 				}
 			}
 		}
@@ -369,7 +372,7 @@ citizenship_limited = {
 		}
 	}
 	ai_will_do = {
-		factor = 3
+		factor = 30 #3
 		modifier = {
 			factor = 0
 			from = {
@@ -494,6 +497,15 @@ citizenship_slavery = {
 	}
 	ai_will_do = {
 		factor = 15
+		#STARNET AI
+		modifier = {
+			factor = 10
+			from = {
+			not = { is_country_type = default }
+			has_ethic = ethic_fanatic_xenophobe
+			}
+		}
+		###
 		modifier = {
 			factor = 0
 			from = {
@@ -541,7 +553,7 @@ citizenship_robot_servitude = {
 		custom_tooltip = {
 			fail_text = ROBOTS_HAVE_RIGHTS
 			from = {
-				NOT = { has_policy_flag = ai_full_rights }
+				has_policy_flag = ai_full_rights
 			}
 		}
 		custom_tooltip = {
@@ -566,7 +578,7 @@ citizenship_purge = {
 		NOT = { from = { has_authority = auth_machine_intelligence } }
 		OR = {
 			NOT = { has_trait = trait_mechanical }
-			from = { NOT = { has_policy_flag = ai_full_rights } }
+			from = { has_policy_flag = robots_outlawed }
 			AND = {
 				from = { has_authority = auth_hive_mind }
 				is_robotic_species = yes

@@ -4,6 +4,7 @@
 #
 # Merge with Planetary Diversity 20/04/2021
 # Merge with GPM 24/04/2021
+# Merge with STARNET AI   04/05/2021
 #
 #root = planet
 
@@ -787,7 +788,7 @@ col_foundry = {
 
 	weight_modifier = {
 		modifier = {
-			add = 2
+			add = 3 # 2
 			OR = {
 				num_free_districts = { type = district_city value = @free_districts_high_threshold }
 				num_free_districts = { type = district_nexus value = @free_districts_high_threshold }
@@ -2577,10 +2578,12 @@ col_ring_research = {
 
 	weight_modifier = {
 		modifier = {
-			add = 50
-			owner = { has_monthly_income = { resource = physics_research value < 200 } }
-			owner = { has_monthly_income = { resource = society_research value < 200 } }
-			owner = { has_monthly_income = { resource = engineering_research value < 200 } }
+			add = 150
+			planet_resource_compare = {
+				resource = physics_research
+				value > 60
+				type = produces
+			}
 		}
 		modifier = {
 			add = 100
@@ -3273,6 +3276,10 @@ col_bureau = {
 			num_buildings = { type = building_bureaucratic_3 value = 0 }
 ###
 		}
+		modifier = {
+			factor = 1.5
+			has_planet_flag = str_acceptable_habitability
+		}		
 	}
 }
 
