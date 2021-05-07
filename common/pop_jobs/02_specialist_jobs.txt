@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.0.3b  30/04/2021
+# Calvitix Check 3.0.3b2  07/05/2021
 #
 # Merge with Starnet AI
 # Merge with RS Planetary Exploration 02/05/2021
@@ -1708,8 +1708,8 @@ healthcare = {
 	planet_modifier = {
 		planet_amenities_add = 5
 		pop_growth_speed = 0.05
-		planet_pop_assembly_organic_mult = 0.05 #3.0.3b
-		pop_environment_tolerance = 0.025 #3.0.3b
+		planet_pop_assembly_organic_mult = 0.05
+		pop_environment_tolerance = 0.025
 	}
 
 	resources = {
@@ -2128,6 +2128,18 @@ bluelotus_technician = {
 		produces = {
 			alloys = 4
 		}
+		produces = { #3.0.3b2
+			trigger = {
+				planet = { has_active_building = building_foundry_2 }
+			}
+			alloys = 1
+		}
+		produces = {
+			trigger = {
+				planet = { has_active_building = building_foundry_3 }
+			}
+			alloys = 2
+		}
 
 		upkeep = {
 			trigger = {
@@ -2406,8 +2418,32 @@ foundry = {
 		produces = {
 			alloys = 3
 		}
+		produces = {#3.0.3b2
+			trigger = {
+				planet = { has_active_building = building_foundry_2 }
+			}
+			alloys = 1
+		}
+		produces = {
+			trigger = {
+				planet = { has_active_building = building_foundry_3 }
+			}
+			alloys = 2
+		}
 		upkeep = {
 			minerals = 6
+		}
+		upkeep = {#3.0.3b2
+			trigger = {
+				planet = { has_active_building = building_foundry_2 }
+			}
+			minerals = 2
+		}
+		upkeep = {
+			trigger = {
+				planet = { has_active_building = building_foundry_3 }
+			}
+			minerals = 4
 		}
 	}
 
@@ -2467,8 +2503,32 @@ artisan = {
 		produces = {
 			consumer_goods = 6
 		}
+		produces = {#3.0.3b2
+			trigger = {
+				planet = { has_active_building = building_factory_2 }
+			}
+			consumer_goods = 1
+		}
+		produces = {
+			trigger = {
+				planet = { has_active_building = building_factory_3 }
+			}
+			consumer_goods = 2
+		}
 		upkeep = {
 			minerals = 6
+		}
+		upkeep = {#3.0.3b2
+			trigger = {
+				planet = { has_active_building = building_factory_2 }
+			}
+			minerals = 1
+		}
+		upkeep = {
+			trigger = {
+				planet = { has_active_building = building_factory_3 }
+			}
+			minerals = 2
 		}
 		upkeep = {
 			trigger = {
@@ -2503,6 +2563,24 @@ artisan = {
 		modifier = {
 			factor = 1.5
 			has_trait = trait_void_dweller_1
+		}
+		modifier = {#3.0.3b2
+			factor = 1.2
+
+			OR = {
+				is_unemployed = yes
+				has_job = "artisan"
+			}
+			exists = planet
+			planet = {
+				has_available_jobs = "artisan"
+			}
+			owner = {
+				has_monthly_income = {
+					resource = consumer_goods
+					value < 5
+				}
+			}
 		}
 	}
 }

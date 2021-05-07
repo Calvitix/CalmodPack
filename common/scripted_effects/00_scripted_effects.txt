@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.0.3b  30/04/2021
+# Calvitix Check 3.0.3b2  07/05/2021
 #
 # Merge with Arisphaos Unofficial patch
 # Merge with JL PICARD 04/05/2021
@@ -2864,6 +2864,8 @@ reset_planet = {
 reroll_planet = {
 	reroll_deposits = yes
 	reroll_planet_modifiers = yes
+	set_subclass = yes #from Newfrontiers
+
 }
 
 remove_shroud_flags = {
@@ -4244,7 +4246,7 @@ create_ai_constructors = {
 			event_target:AI_crisis = {
 				count_owned_ship = {
 					limit = { is_ship_size = construction_ship_ai }
-					count < 8
+					count < 5
 				}
 			}
 		}
@@ -8790,6 +8792,7 @@ pop_lcluster_event = {
 						lcluster_clue_mineral_processing = { remove_country_flag = lcluster_clue_mineral_processing }
 					}
 				}
+###				
 				3 = { country_event = { id = distar.9000 days = 10 } }
 			}
 		}
@@ -10656,7 +10659,7 @@ assimilation_effect = {
 								which = assimilation_counter
 								value > 0
 							}
-							any_owned_pop = { #3.0.3b
+							any_owned_pop = {
 								is_same_value = event_target:old_species
 							}
 						}
@@ -12291,10 +12294,10 @@ can_build_crisis_star_eater = {
 }
 
 destroy_star_system = {
-	set_star_flag = star_cracked #3.0.3b
+	set_star_flag = star_cracked
 	set_star_class = sc_black_hole
 	every_system_ambient_object = {
-		limit = { #3.0.3b
+		limit = {
 			# Preserve Unbidden crisis effects
 			NOR = {
 				has_ambient_object_flag = extradimensional_system_effect
@@ -12320,9 +12323,21 @@ destroy_star_system = {
 		change_pc = pc_black_hole
 	}
 	# Handle Contingency Machine Worlds
-	every_system_planet = { #3.0.3b
-		limit = { is_planet_class = pc_ai }
+	every_system_planet = { #3.0.3b2
+		limit = {
+			is_planet_class = pc_ai
+			NOT = { has_planet_flag = machine_lair } #3.0.3b2
+		}
 		destroy_machine_world = yes
+	}
+	random_system_planet = {#3.0.3b2
+		limit = {
+			is_planet_class = pc_ai
+			has_planet_flag = machine_lair
+		}
+		from.owner = { save_event_target_as = final_machine_world_destroyer }
+		stop_crisis_sound = yes
+		planet_event = { id = crisis.2046 }
 	}
     every_system_planet = {
         limit = { 
@@ -12405,7 +12420,7 @@ destroy_star_system = {
     }
     every_fleet_in_system = {
         limit = {
-			NOR = { #3.0.3b
+			NOR = {
 				is_same_value = from
 				# except Extradimensionals
 				AND = {
@@ -12590,7 +12605,7 @@ destroy_star_system = {
     		}
     		remove_megastructure = this
     	}
-		else_if = { #3.0.3b
+		else_if = {
 			limit = { is_crisis_sphere = yes }
 			solar_system = {
 				spawn_megastructure = {
@@ -12752,7 +12767,7 @@ give_tech_no_error_effect = {
 	}
 }
 
-destroy_machine_world = { #3.0.3b
+destroy_machine_world = {
 	log = "machine handling fired"
 	if = {
 		limit = { has_planet_flag = machine_world_1 }

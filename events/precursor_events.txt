@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.0.1  23/04/2021
+# Calvitix Check 3.0.3b2  07/05/2021
 #
 # Merge with Arisphaos Unofficial patch
 # Merge with GPM (!00_a_precursor_events_overwrite.txt)
@@ -7389,7 +7389,7 @@ ship_event = {
 			has_country_flag = cybrex_system
 			NOT = { has_country_flag = cybrex_world_found }
 		}
-		FROM = { has_star_flag = cybrex }
+		solar_system = { has_star_flag = cybrex }
 	}
 
 	immediate = {
@@ -7405,6 +7405,19 @@ ship_event = {
 			}
 		}
 		set_global_flag = cybrex_homeworld_found
+	}
+	
+	after = {
+		owner = {
+			if = {
+				limit = { has_event_chain = "cybrex_chain" }
+				end_event_chain = "cybrex_chain"
+			}
+			if = {
+				limit = { has_event_chain = "cybrex_homeworld_chain" }
+				end_event_chain = "cybrex_homeworld_chain"
+			}
+		}
 	}
 	
 	option = {
@@ -7438,7 +7451,6 @@ ship_event = {
 				min = @tier4materialmin
 				max = @tier4materialmax
 			}
-			end_event_chain = "cybrex_chain"
 			if = {
 				limit = { has_ancrel = yes }
 				custom_tooltip = cybrex_artifact_research_unlocked
@@ -7477,7 +7489,6 @@ ship_event = {
 				min = @tier4materialmin
 				max = @tier4materialmax
 			}
-			end_event_chain = "cybrex_homeworld_chain"
 			if = {
 				limit = { has_ancrel = yes }
 				custom_tooltip = cybrex_artifact_research_unlocked
@@ -7569,12 +7580,15 @@ ship_event = {
 				has_country_flag = cybrex_world_found
 			}
 		}
-		FROM = { has_star_flag = cybrex }
+		solar_system = { has_star_flag = cybrex }
 	}
 	
 	immediate = {
+		owner = { set_country_flag = cybrex_world_found }
+	}
+
+	after = {
 		owner = {
-			set_country_flag = cybrex_world_found
 			if = {
 				limit = { has_event_chain = cybrex_chain }
 				end_event_chain = "cybrex_chain"
