@@ -6,7 +6,7 @@
 #
 # Merge with Expanded Event  26/04/2021
 # Merge with JL PICARD 04/05/2021
-# 
+# Merge with CC-rebel 07/05/2021
 #
 
 #########################################
@@ -7573,6 +7573,77 @@ country_event = {
 
 	immediate = {
 		set_country_type = default
+		from.owner = { save_event_target_as = cc_former_owner }
+
+		while = {
+			count = 3
+			create_leader = {
+				class = scientist
+				species = owner_main_species
+				name = random
+				skill = 1
+				traits = {}
+			}
+			last_created_leader = {
+				add_random_leader_trait = yes
+			}
+		}
+		create_leader = {
+			class = governor
+			species = owner_main_species
+			name = random
+			skill = 1
+			traits = {}
+		}
+		last_created_leader = {
+			add_random_leader_trait = yes
+		}
+		create_leader = {
+			class = admiral
+			species = owner_main_species
+			name = random
+			skill = 1
+			traits = {}
+		}
+		last_created_leader = {
+			add_random_leader_trait = yes
+		}
+		create_leader = {
+			class = general
+			species = owner_main_species
+			name = random
+			skill = 1
+			traits = {}
+		}
+		last_created_leader = {
+			add_random_leader_trait = yes
+		}
+		
+		
+		if = {
+			limit = {
+				from.owner = {
+					NOT = {
+						any_owned_planet = { NOT = { is_same_value = from } }
+					}
+					NOR = {
+						is_country_type = awakened_marauders
+						is_country_type = dormant_marauders
+						is_country_type = ruined_marauders
+					}
+				}
+			}
+			from.owner = {
+				every_owned_starbase = { set_owner = root }
+			}
+		}
+		from.owner = {
+			set_timed_relation_flag = {
+				flag = ccrebel_declare_war_on
+				who = ROOT
+				days = 30
+			}
+		}
 		# rebels are already created with ethos, no need to add again.
 		# But somehow some rebel remain ethos-less...
 		if = {
@@ -7741,10 +7812,53 @@ country_event = {
 			}
 		}
 		add_resource = {
-			minerals = 200 # Should be atleast the required amount for a spaceport
-			alloys = 200 # Spaceports cost alloys, now.
-			energy = 200
-			influence = 250
+			minerals = 1000
+			energy = 1000
+			alloys = 500
+			consumer_goods = 500
+			food = 500
+			influence = 500
+		}
+		
+		#putting this here for the hell of it
+		
+		from.owner = {
+			every_relation = {
+				limit = { is_rival = prev }
+				add_opinion_modifier = {
+					who = root
+					modifier = opinion_rebelled_from_rival
+				}
+			}
+		}
+		country_event = { id = action.3099 }
+
+		if = {
+			limit = {
+				from.owner = {
+					OR = {
+						is_country_type = fallen_empire
+						is_country_type = awakened_fallen_empire
+
+						AND = {
+							is_subject = yes 
+							OR = {
+								is_subject_type = protectorate
+								overlord = {
+									OR = {
+										is_country_type = fallen_empire
+										is_country_type = awakened_fallen_empire
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			set_timed_country_flag = {
+				flag = ccrebel_cut_rebellion_fleet_spawn
+				days = 3600
+			}
 		}
 	}
 }
@@ -9862,7 +9976,13 @@ planet_event = {
 		remove_modifier = "atmospheric_hallucinogen"
 		remove_modifier = "lush_planet"
 		remove_modifier = "dangerous_wildlife"
+###GPM mod
+		gpm_purge_all_planetary_modifiers = yes 		# -guilli remove other modifiers
+		gpm_random_modifier_crisis_purge = yes 		# -guilli roll tombworld modifiers
+		gpm_remove_planetary_features = yes 		# -guilli roll tombworld modifiers
+		gpm_roll_planetary_features = yes 			# -guilli up to X times planetary feature 
 		set_planet_flag = armageddon_nuked
+###
 	}
 }
 
@@ -9884,30 +10004,31 @@ country_event = {
 }
 
 # Planet is turned into tomb world by Armageddon bombing stance (bombarder)
-country_event = {
-	id = action.83
-	title = "action.82.name"
-	picture = GFX_evt_nuclear_explosion
-	desc = action.83.desc
-	show_sound = event_super_explosion
-	location = from
+# Calvitix : disabled in 3.0.3 ?
+# country_event = {
+	# id = action.83
+	# title = "action.82.name"
+	# picture = GFX_evt_nuclear_explosion
+	# desc = action.83.desc
+	# show_sound = event_super_explosion
+	# location = from
 
-	is_triggered_only = yes
+	# is_triggered_only = yes
 
-	immediate = {
-		if = {
-			limit = {
-				has_ascension_perk = ap_become_the_crisis
-			}
-			country_event = { id = crisis.5016 }
-		}
-	}
+	# immediate = {
+		# if = {
+			# limit = {
+				# has_ascension_perk = ap_become_the_crisis
+			# }
+			# country_event = { id = crisis.5016 }
+		# }
+	# }
 
-	option = {
-		name = EXCELLENT
-		custom_tooltip = bombed_to_tomb_world
-	}
-}
+	# option = {
+		# name = EXCELLENT
+		# custom_tooltip = bombed_to_tomb_world
+	# }
+# }
 
 # Planet conquered
 planet_event = {

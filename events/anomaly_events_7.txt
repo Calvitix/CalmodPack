@@ -1,9 +1,9 @@
 # Original File
 #
-# Calvitix Check 3.0.1  23/04/2021
+# Calvitix Check 3.0.3b2  07/05/2021
 #
 # Merge with Arisphaos Unofficial patch
-#
+# Merge wit Expanded Mandates 07/05/2021
 #
 
 ############################
@@ -199,6 +199,7 @@ country_event = {
 				has_anomaly = no
 				is_capital = no
 				NOT = { has_modifier = holy_planet }
+				NOT = { has_modifier = phaseshifted } #exp.mod
 			}
 			save_event_target_as = new_colony
 		}		
@@ -233,6 +234,22 @@ country_event = {
 				set_owner = root
 				set_controller = root
 				prevent_anomaly = yes 
+#exp.mod
+				if = {
+					limit = { host_has_dlc = "Synthetic Dawn Story Pack" }
+					create_species = {
+						name = "NAME_Awoken_Robot"
+						plural = "NAME_Awoken_Robot"
+						class = ROBOT
+						namelist = FUN3
+						portrait = "sd_fun_robot"
+						traits = {
+							trait = "trait_mechanical"
+							trait = "trait_robot_awoken"
+						}
+					}
+				}
+				else = {
 				create_species = {
 					name = "NAME_Awoken_Robot"
 					plural = "NAME_Awoken_Robot"
@@ -240,7 +257,10 @@ country_event = {
 					namelist = FUN3
 					portrait = "default_robot"
 					traits = {
-						trait = "trait_mechanical"
+							trait = "trait_mechanical"
+							trait = "trait_robot_awoken"
+						}
+###
 					}
 				}
 				while = {
@@ -251,6 +271,19 @@ country_event = {
 				}
 			}
 		}
+###
+		hidden_effect = {
+			country_event = { id = anomaly.1197 }
+			if = {
+				limit = { has_event_chain = mandate_colonize_planet_chain }
+				country_event = { id = moremandate.62 }
+			}
+			if = {
+				limit = { has_event_chain = mandate_uplift_chain }
+				country_event = { id = moremandate.83 }
+			}
+		}
+###
 	}
 
 	# They're on their own (the droids colonize a planet outside the borders if available or "just disappear")
@@ -297,6 +330,15 @@ country_event = {
 		hidden_effect = {
 			country_event = { id = anomaly.1197 }
 		}
+#exp.mod
+		hidden_effect = {
+			country_event = { id = anomaly.1197 }
+			if = {
+				limit = { has_event_chain = mandate_uplift_chain }
+				country_event = { id = moremandate.83 }
+			}
+		}
+###		
 	}
 
 	#dismantle the robots for parts
@@ -364,9 +406,11 @@ country_event = {
 				random_system_planet = {
 					limit = {
 						habitable_planet = yes
-						has_owner = no
+						is_colony = no	
+						has_anomaly = no
 						is_capital = no
 						NOT = { has_modifier = holy_planet }
+						NOT = { has_modifier = phaseshifted }
 					}
 					save_event_target_as = colonized_planet
     				set_surveyed = {
@@ -374,6 +418,22 @@ country_event = {
     					surveyor = root
     				}
     				prevent_anomaly = yes
+#exp.mod    				
+    				if = {
+						limit = { host_has_dlc = "Synthetic Dawn Story Pack" }
+						create_species = {
+							name = "NAME_Awoken_Robot"
+							plural = "NAME_Awoken_Robot"
+							class = ROBOT
+							namelist = FUN3
+							portrait = "sd_fun_robot"
+							traits = {
+								trait = "trait_mechanical"
+								trait = "trait_robot_awoken"
+							}
+						}
+					}
+					else = {
     				create_species = {
 						name = "NAME_Awoken_Robot"
 						plural = "NAME_Awoken_Robot"
@@ -382,6 +442,8 @@ country_event = {
 						portrait = "default_robot"
 						traits = {
 							trait = "trait_mechanical"
+								trait = "trait_robot_awoken"
+							}
 						}
 					}
 					create_country = {
@@ -664,6 +726,7 @@ country_event = {
 					has_anomaly = no
 					is_capital = no
 					NOT = { has_modifier = holy_planet }
+					NOT = { has_modifier = phaseshifted }
 					NOR = {
 						exists = owner
 						exists = controller
@@ -740,6 +803,22 @@ country_event = {
 				set_owner = root
 				set_controller = root
 				prevent_anomaly = yes
+#exp.mod
+				if = {
+					limit = { host_has_dlc = "Synthetic Dawn Story Pack" }
+					create_species = {
+						name = "NAME_Awoken_Robot"
+						plural = "NAME_Awoken_Robot"
+						class = ROBOT
+						namelist = FUN3
+						portrait = "sd_fun_robot"
+						traits = {
+							trait = "trait_mechanical"
+							trait = "trait_robot_awoken"
+						}
+					}
+				}
+				else = {
 				create_species = {
 					name = "NAME_Awoken_Robot"
 					plural = "NAME_Awoken_Robot"
@@ -748,6 +827,8 @@ country_event = {
 					portrait = "default_robot"
 					traits = {
 						trait = "trait_mechanical"
+							trait = "trait_robot_awoken"
+						}
 					}
 				}
 				while = {
@@ -757,13 +838,31 @@ country_event = {
 					}					
 				}
 			}
+#exp.mod
+			if = {
+				limit = { has_event_chain = mandate_colonize_planet_chain }
+				country_event = { id = moremandate.62 }
+			}
+			
+			if = {
+				limit = { has_event_chain = mandate_uplift_chain }
+				country_event = { id = moremandate.83 }
+			}
+###
 		}
 	}
 
 	option = {
 		name = anomaly.1198.a
 		custom_tooltip = anomaly.189.b.tooltip
-		hidden_effect = { country_event = { id = anomaly.1195 days = 40 } }
+#exp.mod
+		hidden_effect = {
+			country_event = { id = anomaly.1195 days = 40 }
+			if = {
+				limit = { has_event_chain = mandate_uplift_chain }
+				country_event = { id = moremandate.83 }
+			}
+		}
 	}
 
 	# dismantle the robots for parts
@@ -885,6 +984,22 @@ country_event = {
     					surveyor = root
     				}
     				prevent_anomaly = yes
+#exp.mod
+    				if = {
+						limit = { host_has_dlc = "Synthetic Dawn Story Pack" }
+						create_species = {
+							name = "NAME_Awoken_Robot"
+							plural = "NAME_Awoken_Robot"
+							class = ROBOT
+							namelist = FUN3
+							portrait = "sd_fun_robot"
+							traits = {
+								trait = "trait_mechanical"
+								trait = "trait_robot_awoken"
+							}
+						}
+					}
+					else = {
     				create_species = {
 						name = "NAME_Awoken_Robot"
 						plural = "NAME_Awoken_Robot"
@@ -893,6 +1008,8 @@ country_event = {
 						portrait = "default_robot"
 						traits = {
 							trait = "trait_mechanical"
+								trait = "trait_robot_awoken"
+							}
 						}
 					}
 					create_country = {
@@ -906,7 +1023,7 @@ country_event = {
 						}
 						authority = random
 						civics = random
-						#auto_delete = no
+						auto_delete = no
 						flag = {
 							icon = {
 								category = "blocky"

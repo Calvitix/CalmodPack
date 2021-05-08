@@ -3,6 +3,7 @@
 # Calvitix Check 3.0.1  23/04/2021
 #
 # Merge with Arisphaos Unofficial patch
+# Merge with Expanded Events  07/05/2021
 #
 #
 
@@ -31,12 +32,12 @@ planet_event = { #Irradiated
 		has_owner = yes
 		is_homeworld = no
 		original_owner = yes
+		is_ai = no
 		has_ground_combat = no
 		is_capital = no
 	}
 	
 	trigger = {
-		owner = { is_ai = no }
 		has_modifier = "irradiated_planet"
 		NOT = { has_planet_flag = irradiated_colony_flag } 
 		num_pops > 0
@@ -163,12 +164,12 @@ planet_event = { #titanic life
 		has_owner = yes
 		is_homeworld = no
 		original_owner = yes
+		is_ai = no
 		has_ground_combat = no
 		is_capital = no
 	}
 	
 	trigger = {
-		owner = { is_ai = no }
 		has_modifier = "titanic_life"
 		NOT = { has_planet_flag = titanic_life_colony_flag }
 		num_pops > 0
@@ -259,6 +260,28 @@ planet_event = {
 		hidden_effect = {
 			owner = { set_country_flag = titanic_life_soldiers } #Owner flag not actually needed, but could have techs or other things tie into it
 			set_planet_flag = titanic_life_can_build
+###Exp Events
+			if = {
+				limit = { has_modifier = eat_the_titans }
+				create_species = {
+					name = "NAME_Titans"
+					class = random_non_machine
+					portrait = random
+					traits = random
+				}
+				create_army = {
+					name = "NAME_Titan_Army"
+					owner = ROOT.owner
+					species = last_created
+					type = "titanic_guardian_army"
+				}
+				create_army = {
+					name = "NAME_Titan_Army"
+					owner = ROOT.owner
+					species = last_created
+					type = "titanic_guardian_army"
+				}
+			}
 		}
 		custom_tooltip = titanic_recruit_tooltip
 	}
@@ -275,6 +298,35 @@ planet_event = {
 				limit = { is_deposit_type = d_titanic_life_blocker }
 				clear_blocker = yes
 			}
+###Exp events
+			if = {
+				limit = { has_modifier = eat_the_titans }
+				create_species = {
+					name = "NAME_Titans"
+					class = random_non_machine
+					portrait = random
+					traits = random
+				}
+				create_army = {
+					name = "NAME_Titan_Army"
+					owner = ROOT.owner
+					species = last_created
+					type = "titanic_guardian_army"
+				}
+				create_army = {
+					name = "NAME_Titan_Army"
+					owner = ROOT.owner
+					species = last_created
+					type = "titanic_guardian_army"
+				}
+				create_army = {
+					name = "NAME_Titan_Army"
+					owner = ROOT.owner
+					species = last_created
+					type = "titanic_guardian_army"
+				}
+			}
+###
 		}
 		custom_tooltip = titanic_recruit_phile_tooltip
 	}
@@ -553,146 +605,144 @@ planet_event = {
 
 }
 
-#planet_event = {
-#	id = colony_mod.12 #asteroid_impacts
-#	title = "colony_mod.12.name"
-#	desc = {
-#		text = "colony_mod.12.desc"
-#		trigger = { NOT = { owner = { has_ethic = ethic_gestalt_consciousness } } }
-#	}
-#	desc = {
-#		text = colony_mod.12.desc_gestalt
-#		trigger = { owner = { has_ethic = ethic_gestalt_consciousness } }
-#	}
-#	picture = GFX_evt_asteroid_approaching_planet
-#	show_sound = event_air_raid_siren
-#	location = ROOT
-#	trackable = yes
-#	
-#	pre_triggers = {
-#		has_owner = yes
-#		is_homeworld = no
-#		original_owner = yes
-#		is_ai = no
-#		has_ground_combat = no
-#		is_capital = no
-#	}
-#	
-#	trigger = {
-#		NOT = { has_planet_flag = asteroid_defences_colony_flag }
-#		has_modifier = "asteroid_impacts"
-#		NOT = { has_modifier = "recent_impact" }
-#		num_pops > 1
-#	}
-#	
-#	is_triggered_only = yes
-#	
-#	option = {
-#		name = colony_mod.12.a #eh
-#		if = {
-#			limit = { NOT = { owner = { has_ethic = ethic_gestalt_consciousness } } }
-#			add_modifier = {
-#				modifier = "recent_impact"
-#				days = 1800
-#			}
-#		}
-#		add_planet_devastation = 20
-#	}
-#	option = {
-#		name = colony_mod.12.b #help
-#		enable_special_project = {
-#			name = "impact_defence_system"
-#			location = this
-#			owner = root
-#		}
-#		if = {
-#			limit = { NOT = { owner = { has_ethic = ethic_gestalt_consciousness } } }
-#			add_modifier = {
-#				modifier = "recent_impact"
-#				days = 1800
-#			}
-#		}
-#		add_planet_devastation = 20
-#	}
-#}
+planet_event = {
+	id = colony_mod.12 #asteroid_impacts
+	title = "colony_mod.12.name"
+	desc = {
+		text = "colony_mod.12.desc"
+		trigger = { NOT = { owner = { has_ethic = ethic_gestalt_consciousness } } }
+	}
+	desc = {
+		text = colony_mod.12.desc_gestalt
+		trigger = { owner = { has_ethic = ethic_gestalt_consciousness } }
+	}
+	picture = GFX_evt_asteroid_approaching_planet
+	show_sound = event_air_raid_siren
+	location = ROOT
+	trackable = yes
+	
+	pre_triggers = {
+		has_owner = yes
+		is_homeworld = no
+		original_owner = yes
+		is_ai = no
+		has_ground_combat = no
+		is_capital = no
+	}
+	
+	trigger = {
+		NOT = { has_planet_flag = asteroid_defences_colony_flag }
+		has_modifier = "asteroid_impacts"
+		NOT = { has_modifier = "recent_impact" }
+		num_pops > 1
+	}
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = colony_mod.12.a #eh
+	}
+	option = {
+		name = colony_mod.12.b #help
+		if = {
+			limit = { NOT = { owner = { has_special_project = impact_defence_system } } }
+		enable_special_project = {
+			name = "impact_defence_system"
+			location = this
+			owner = root
+		}
+		}
+	}
+	
+	after = {
+		if = {
+			limit = { NOT = { owner = { has_ethic = ethic_gestalt_consciousness } } }
+			add_modifier = {
+				modifier = "recent_impact"
+				days = 1800
+			}
+		}
+		add_planet_devastation = 20
+	}
+}
 
-#planet_event = {
-#	id = colony_mod.13 #impact_defence_system
-#	title = "colony_mod.13.name"
-#	desc = "colony_mod.13.desc"
-#	picture = GFX_evt_atmospheric_entry
-#	show_sound = event_air_raid_siren
-#	location = ROOT
-#	
-#	is_triggered_only = yes
-#	
-#	option = {
-#		name = SPLENDID
-#		hidden_effect = {
-#			set_planet_flag = asteroid_defences_colony_flag
-#		}
-#	}
-#
-#}
+planet_event = {
+	id = colony_mod.13 #impact_defence_system
+	title = "colony_mod.13.name"
+	desc = "colony_mod.13.desc"
+	picture = GFX_evt_atmospheric_entry
+	show_sound = event_air_raid_siren
+	location = ROOT
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = SPLENDID
+		hidden_effect = {
+			set_planet_flag = asteroid_defences_colony_flag
+		}
+	}
 
-#planet_event = {
-#	id = colony_mod.14 #asteroid_impacts - good
-#	title = "colony_mod.14.name"
-#	desc = "colony_mod.14.desc"
-#	picture = GFX_evt_asteroid_approaching_planet
-#	show_sound = event_air_raid_siren
-#	location = ROOT
-#	trackable = yes
-#	
-#	pre_triggers = {
-#		has_owner = yes
-#		is_homeworld = no
-#		original_owner = yes
-#		is_ai = no
-#		has_ground_combat = no
-#		is_capital = no
-#	}
-#	
-#	trigger = {
-#		NOT = { has_planet_flag = asteroid_defences_colony_flag }
-#		has_modifier = "asteroid_impacts"
-#		num_pops > 1
-#		NOR = { 
-#			has_modifier = "recent_impact"
-#			has_deposit = d_impact_crater
-#		}
-#	}
-#	
-#	is_triggered_only = yes
-#	
-#	option = {
-#		name = colony_mod.14.b #help
-#		enable_special_project = {
-#			name = "impact_defence_system"
-#			location = this
-#			owner = root
-#		}
-#		add_modifier = {
-#			modifier = "recent_impact"
-#			days = 1800
-#		}
-#		custom_tooltip = good_impact_tooltip
-#		hidden_effect = {
-#			add_deposit = d_impact_crater
-#		}
-#	}
-#	option = {
-#		name = colony_mod.14.a
-#		add_modifier = {
-#			modifier = "recent_impact"
-#			days = 1800
-#		}
-#		custom_tooltip = good_impact_tooltip
-#		hidden_effect = {
-#			add_deposit = d_impact_crater
-#		}
-#	}
-#}
+}
+
+planet_event = {
+	id = colony_mod.14 #asteroid_impacts - good
+	title = "colony_mod.14.name"
+	desc = "colony_mod.14.desc"
+	picture = GFX_evt_asteroid_approaching_planet
+	show_sound = event_air_raid_siren
+	location = ROOT
+	trackable = yes
+	
+	pre_triggers = {
+		has_owner = yes
+		is_homeworld = no
+		original_owner = yes
+		is_ai = no
+		has_ground_combat = no
+		is_capital = no
+	}
+	
+	trigger = {
+		NOT = { has_planet_flag = asteroid_defences_colony_flag }
+		has_modifier = "asteroid_impacts"
+		num_pops > 1
+		NOR = { 
+			has_modifier = "recent_impact"
+			has_deposit = d_impact_crater
+		}
+	}
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = colony_mod.14.b #help
+		enable_special_project = {
+			name = "impact_defence_system"
+			location = this
+			owner = root
+		}
+		add_modifier = {
+			modifier = "recent_impact"
+			days = 1800
+		}
+		custom_tooltip = good_impact_tooltip
+		hidden_effect = {
+			add_deposit = d_impact_crater
+		}
+	}
+	option = {
+		name = colony_mod.14.a
+		add_modifier = {
+			modifier = "recent_impact"
+			days = 1800
+		}
+		custom_tooltip = good_impact_tooltip
+		hidden_effect = {
+			add_deposit = d_impact_crater
+		}
+	}
+}
 
 planet_event = { #strong magnetic field good
 	id = colony_mod.16
@@ -863,6 +913,7 @@ planet_event = {
 			}
 			has_modifier = asteroid_impacts
 			has_modifier = irradiated_planet
+			has_modifier = recovered_tomb_world #exp events
 			has_modifier = titanic_life
 			has_modifier = unstable_tectonics
 			has_modifier = asteroid_belt
@@ -886,23 +937,26 @@ planet_event = {
 			}
 			break = yes
 		}
-		#if = {
-		#	limit = { 
-		#		has_modifier = asteroid_impacts
-		#		NOT = { has_planet_flag = asteroid_defences_colony_flag }
-		#		num_pops > 1
-		#		NOT = { has_modifier = "recent_impact" }
-		#	}
-		#	random_list = {
-		#		50 = { planet_event = { id = colony_mod.12 days = 30 random = 90 } }
-		#		50 = { planet_event = { id = colony_mod.14 days = 30 random = 90 } }
-		#	}
-		#	break = yes
-		#}
+		if = {
+			limit = { 
+				has_modifier = asteroid_impacts
+				NOT = { has_planet_flag = asteroid_defences_colony_flag }
+				num_pops > 1
+				NOT = { has_modifier = "recent_impact" }
+			}
+			random_list = {
+				50 = { planet_event = { id = colony_mod.12 days = 30 random = 90 } }
+				50 = { planet_event = { id = colony_mod.14 days = 30 random = 90 } }
+			}
+			break = yes
+		}
 			
 		if = {
 			limit = { 
+				OR = {
 				has_modifier = irradiated_planet 
+					has_modifier = recovered_tomb_world 
+				}
 				NOT = { has_planet_flag = irradiated_colony_flag } 
 			}
 			planet_event = { id = colony_mod.1 days = 30 random = 90 }
@@ -964,20 +1018,17 @@ planet_event = { # Rogue moon
 	location = ROOT
 	trackable = yes
 	
-	pre_triggers = {
+	trigger = {
 		has_owner = yes
 		original_owner = yes
 		is_homeworld = no
-		is_capital = no
-		has_ground_combat = no
-		is_occupied_flag = no
-	}
-
-	trigger = {
 		owner = {
 			is_ai = no
 			NOT = { has_country_flag = roguemoon_country }
 		}
+		is_capital = no
+		has_ground_combat = no
+		is_occupied_flag = no
 		num_pops > 0
 		NOR = {
 			is_planet_class = pc_habitat
@@ -1102,21 +1153,17 @@ planet_event = { #Dimensional portal
 	location = ROOT
 	trackable = yes
 	
-	pre_triggers = {
+	trigger = {
 		has_owner = yes
 		original_owner = yes
 		is_homeworld = no
-		is_capital = no
-		has_ground_combat = no
-		is_occupied_flag = no
-	}
-
-	trigger = {
-
 		owner = {
 			is_ai = no
 			NOT = { has_country_flag = dportal_country }
 		}
+		is_capital = no
+		has_ground_combat = no
+		is_occupied_flag = no
 		num_pops > 0
 		NOR = {
 			is_planet_class = pc_habitat
@@ -1537,7 +1584,7 @@ planet_event = { #Probe the Void
 	location = ROOT
 	trackable = yes
 	
-	pre_triggers  = {
+	trigger = {
 		has_owner = yes
 		original_owner = yes
 	}
@@ -1562,7 +1609,7 @@ planet_event = { #increase production
 	location = ROOT
 	trackable = yes
 	
-	pre_triggers  = {
+	trigger = {
 		has_owner = yes
 		original_owner = yes
 	}
@@ -1904,11 +1951,10 @@ country_event = { #Mirror portal followup events
 	
 	trigger = {
 		has_country_flag = dportal_trader
-		NOR = {
-			has_country_flag = dportal_empire_crisis_flag
-			has_country_flag = dportal_empire_truce_flag
-			has_country_flag = dportal_empire_victory_flag
+		any_owned_planet = {
+			has_planet_flag = dportal_trader
 		}
+		NOT = { has_country_flag = dportal_empire_crisis_flag }
 	}
 	
 	immediate = {

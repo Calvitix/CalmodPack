@@ -2611,7 +2611,20 @@ ship_event = {
 	immediate = {
 		fromfrom = {
 			change_pc = pc_arid
-			reset_planet = yes
+			
+			if = {									# -guilli
+				limit = {
+					NOR = {
+						gpm_has_precursor_modifiers = yes
+						has_modifier = "gpm_planet_wonder_discovered"
+					}
+				}
+				reset_planet = yes
+				gpm_switch_nb_modifiers = yes
+				gpm_remove_precursor_modifiers = yes 	# -guilli
+				gpm_remove_planetary_features = yes 		# -guilli roll tombworld modifiers
+				gpm_roll_planetary_features = yes 			# -guilli up to X times planetary feature 
+			}
 		}
 	}
 
@@ -2684,6 +2697,8 @@ ship_event = {
 			change_pc = pc_barren
 			reset_planet = yes
 			change_planet_size = 25
+			reroll_planet_modifiers = yes		# -guilli
+			gpm_remove_precursor_modifiers = yes 	# -guilli
 		}
 	}
 
