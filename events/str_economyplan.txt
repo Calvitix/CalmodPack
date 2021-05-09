@@ -1,6 +1,6 @@
 # STARNET AI File
 #
-# Merge with STARNET AI OK  04/05/2021
+# Merge with STARNET AI OK  08/05/2021
 #
 namespace = str_economy_plan
 
@@ -40,6 +40,7 @@ country_event = {
 			remove_country_flag = str_has_misplaced_foundry
 			remove_country_flag = str_consumer_goods_margin
 			remove_country_flag = str_deleted_extra_shipyard
+			remove_country_flag = str_deleted_extra_anchorage
 
 			if = {
 				limit = {
@@ -71,6 +72,40 @@ country_event = {
 					remove_starbase_module = { module = shipyard }
 					remove_starbase_module = { module = shipyard }
 					remove_starbase_building = { building = fleet_academy }
+					}
+				}
+			}
+
+			if = {
+				limit = {
+					or = {
+					count_owned_starbase = {
+						count <= 1
+						limit = { has_starbase_module = shipyard }
+					}
+					and = {
+						max_naval_capacity > 200
+						count_owned_starbase = {
+							count <= 2
+							limit = { has_starbase_module = shipyard }
+						}
+					}
+					}
+				}
+				every_owned_starbase = {
+					if = {
+						limit = { 
+						has_starbase_module = anchorage 
+						owner = { not = { has_country_flag = str_deleted_extra_anchorage } }
+					}
+					owner = { set_country_flag = str_deleted_extra_anchorage }
+					remove_starbase_module = { module = anchorage }
+					remove_starbase_module = { module = anchorage }
+					remove_starbase_module = { module = anchorage }
+					remove_starbase_module = { module = anchorage }
+					remove_starbase_module = { module = anchorage }
+					remove_starbase_module = { module = anchorage }
+					remove_starbase_building = { building = naval_logistics_office }
 					}
 				}
 			}
@@ -123,19 +158,30 @@ country_event = {
 					if = {
 						limit = {
 							free_building_slots = 0
-							free_amenities < -15
+							free_amenities < -14
 						}
 						if = {
 							limit = {
 								num_buildings = { type = building_bureaucratic_1 value > 0 }
+								free_district_slots = 0
 							}
 							remove_building = building_bureaucratic_1
 						}
 						else_if = {
 							limit = {
 								num_buildings = { type = building_research_lab_1 value > 0 }
+								free_district_slots = 0
 							}
 							remove_building = building_research_lab_1
+						}
+						else_if = {
+							limit = { owner = { resource_stockpile_compare = {
+								resource = minerals
+								value > 800 } }
+							free_district_slots > 1
+							}
+							add_district = district_city
+							owner = { add_resource = { minerals = -350 } }
 						}
 					}
 
@@ -294,6 +340,13 @@ country_event = {
 								value < 1
 							} 
 							free_jobs > 1
+							and = {
+								owner = { resource_stockpile_compare = {
+									resource = minerals
+									value > 400
+									} }
+								free_jobs > 0
+								}
 							}
 						}
 						if = {
@@ -392,5 +445,38 @@ country_event = {
 				}
 					
 			}
+			if = {
+				limit = {
+					is_ai = yes
+					is_gestalt = yes
+				}
+				every_owned_planet = {
+					if = {
+						limit = {
+							or = { free_amenities > 7 free_amenities < -1 }
+						}
+						planet_event = {
+							id = str_planet_audit.1
+						}
+					}
+					if = {
+						limit = {
+							free_amenities > 13
+						}
+						planet_event = {
+							id = str_planet_audit.1
+						}
+						planet_event = {
+							id = str_planet_audit.1
+						}
+					}
+				}
+			}
+#		if = {
+			#limit = { years_passed > 70 }
+		#set_timed_country_flag = {
+			#flag = str_reconsider_plans
+			#days = 5 }
+		#}
 	}
 }

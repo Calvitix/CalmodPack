@@ -2,7 +2,7 @@
 #
 # Calvitix Check 3.0.3b  30/04/2021
 #
-# Merge with Plentiful traditions
+# Merge with Plentiful traditions 09/05/2021
 # Merge with Starnet OK 04/05/2021
 #############
 # Government buildings
@@ -65,19 +65,20 @@ building_bureaucratic_1 = {
 
 	potential = {
 		exists = owner
+		building_relaxed_basic_income_check = yes
 		owner = { is_regular_empire = yes }
 		or = {
-		owner = { is_ai = no }
-		str_bureaucratic_potential = yes
+			owner = { is_ai = no }
+			str_bureaucratic_potential = yes
 		} 
 	}
 
 	destroy_trigger = {
 		exists = owner
 		or = {
-		str_bureaucratic_destroy = yes
-		owner = {
-			is_regular_empire = no 
+			str_bureaucratic_destroy = yes
+			owner = {
+				is_regular_empire = no 
 			}
 		}
 	}
@@ -132,6 +133,7 @@ building_bureaucratic_1 = {
 			set_timed_planet_flag = { flag = recent_admin_building_built days = 720 }
 		}
 	}
+##STARNET AI
 	ai_resource_production = {
 		alloys = 5
 		trigger = { has_planet_flag = str_acceptable_habitability }
@@ -172,6 +174,7 @@ building_bureaucratic_1 = {
 			}
 		}
 	}
+###
 }
 
 building_bureaucratic_2 = {
@@ -880,16 +883,70 @@ building_clone_vats = {
 		planet_pop_assembly_organic_add = 3
 	}
 
+###Plentiful traditions 
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				has_ascension_perk = ap_total_assimilation
+			}
+		}
+		modifier = {
+			planet_pop_assembly_organic_add = 1
+		}
+	}
+##
 	resources = {
 		category = planet_buildings
-		cost = {
+		cost = { #vanilla
+			trigger = {
+				NOT = {
+					owner = { has_ascension_perk = ap_plentiful_traditions_vast_slave_procreation }
+					OR = {
+						has_building = building_plentiful_traditions_advanced_slave_processing
+						has_building = building_slave_processing
+					}
+				}
+			}
 			minerals = 500
 			food = 500
 		}
-		upkeep = {
+		cost = {
+			trigger = {
+				owner = { has_ascension_perk = ap_plentiful_traditions_vast_slave_procreation }
+				OR = {
+					has_building = building_plentiful_traditions_advanced_slave_processing
+					has_building = building_slave_processing
+				}
+			}
+			minerals = 100
+			food = 100
+		}
+		upkeep = { #Vanilla
+			trigger = {
+				NOT = {
+					owner = { has_ascension_perk = ap_plentiful_traditions_vast_slave_procreation }
+					OR = {
+						has_building = building_plentiful_traditions_advanced_slave_processing
+						has_building = building_slave_processing
+					}
+				}
+			}
 			energy = 2
 			food = 30
 		}
+		upkeep = {
+			trigger = {
+				owner = { has_ascension_perk = ap_plentiful_traditions_vast_slave_procreation }
+				OR = {
+					has_building = building_plentiful_traditions_advanced_slave_processing
+					has_building = building_slave_processing
+				}
+			}
+			energy = 2
+			food = 15
+		}
+###
 	}
 
 	triggered_desc = {
