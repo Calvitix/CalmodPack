@@ -143,7 +143,13 @@ ap_enigmatic_engineering = {
 	}
 
 	ai_weight = {
-		factor = 2 # 10
+		factor = 1
+		modifier = {
+			factor = 0
+			not = {
+				has_ascension_perk = ap_executive_vigor
+			}
+		}
 		modifier = {
 			factor = 2
 			has_ethic = ethic_materialist
@@ -177,7 +183,13 @@ ap_nihilistic_acquisition = {
 	}
 
 	ai_weight = {
-		factor = 2
+		factor = 1
+		modifier = {
+			factor = 0
+			not = {
+				has_ascension_perk = ap_executive_vigor
+			}
+		}
 		modifier = {
 			factor = 0
 			turtler2 = no
@@ -991,7 +1003,13 @@ ap_technological_ascendancy = {
 	}
 
 	ai_weight = {
-		factor = 20
+		factor = 2
+		modifier = {
+			factor = 0
+			not = {
+				has_ascension_perk = ap_executive_vigor
+			}
+		}
 		modifier = {
 			factor = 2
 			has_ethic = ethic_materialist
@@ -1141,10 +1159,10 @@ ap_executive_vigor = {
 	}
 
 	ai_weight = {
-		factor = 50
+		factor = 2
 		modifier = {
-			factor = 5
-			turtler = yes
+			factor = 20
+			turtler2 = yes
 		}
 		modifier = {
 			factor = 5
@@ -1152,12 +1170,21 @@ ap_executive_vigor = {
 			num_ascension_perks < 3
 		}
 		modifier = {
-			factor = 5
-			has_technology = tech_power_hub_1
-		}
-		modifier = {
-			factor = 5
+			factor = 0.001
+			NOR = { 
 			has_technology = tech_mineral_purification_1
+				has_technology = tech_food_processing_1
+				and = {
+					resource_income_compare = {
+						resource = influence
+						value > 350
+					}
+					resource_income_compare = {
+						resource = alloys
+						value < 500
+					}
+				}
+			}
 		}
 	}
 }
@@ -1175,10 +1202,12 @@ ap_transcendent_learning = {
 	}
 
 	ai_weight = {
-		factor = 20
+		factor = 5
 		modifier = {
 			factor = 0
-			is_machine_empire = no
+			not = {
+				has_ascension_perk = ap_executive_vigor
+			}
 		}
 	}
 }
@@ -1205,14 +1234,6 @@ ap_shared_destiny = {
 
 	ai_weight = {
 		factor = 0
-		modifier = {
-			factor = 0
-			NOT = {
-				any_subject = {
-					is_subject_type = vassal
-				}
-			}
-		}
 	}
 }
 
@@ -1273,6 +1294,17 @@ ap_voidborn = {
 	ai_weight = {
 		factor = 10
 		modifier = {
+			factor = 0
+			not = {
+				has_ascension_perk = ap_executive_vigor
+			}
+			OR = {
+				has_ethic = ethic_pacifist
+				has_ethic = ethic_fanatic_pacifist
+				has_origin = origin_void_dwellers
+			}
+		}
+		modifier = {
 			factor = 2
 			has_ethic = ethic_pacifist
 		}
@@ -1311,6 +1343,12 @@ ap_master_builders = {
 
 	ai_weight = {
 		factor = 10
+		modifier = {
+			factor = 0
+			not = {
+				has_ascension_perk = ap_executive_vigor
+			}
+		}
 		modifier = {
 			factor = 2
 			has_ethic = ethic_pacifist

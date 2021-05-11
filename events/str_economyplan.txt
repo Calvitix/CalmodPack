@@ -1,6 +1,6 @@
 # STARNET AI File
 #
-# Merge with STARNET AI OK  08/05/2021
+# Merge with STARNET AI OK  11/05/2021
 #
 namespace = str_economy_plan
 
@@ -18,7 +18,7 @@ event = {
 					is_country_type = awakened_fallen_empire
 				}
 		}
-				log = "str_economy_plan for [This.GetName]"
+				#log = "str_economy_plan for [This.GetName]"
 				country_event = { id = str_economy_plan.2 random = 100 days = 1 } 
 				#country_event = { id = str_planet_spec.2 random = 100 days = 1 } 
 		}
@@ -430,6 +430,66 @@ country_event = {
 
 						}
 					}
+					
+					if = {
+						limit = { num_districts = {type = district_farming value > 1 }
+							not = {
+								has_designation = col_farming
+							}
+							owner = {
+								resource_stockpile_compare = {
+									resource = food
+									value > 900
+								}
+								resource_income_compare = {
+									resource = food
+									value > 35
+								}	
+							not = {
+								has_country_flag = str_country_just_removed_food
+							} }
+						}
+						remove_district = district_farming
+						owner = {
+							set_timed_country_flag = {
+								flag = str_country_just_removed_food
+								days = 300
+							}
+						}
+						set_timed_planet_flag = {
+							flag = str_just_removed_food_district
+							days = 500
+						}
+					}
+					if = {
+						limit = { 
+								has_designation = col_farming
+							owner = {
+								resource_stockpile_compare = {
+									resource = food
+									value > 950
+								}
+								resource_income_compare = {
+									resource = food
+									value > 65
+								}	
+							not = {
+								has_country_flag = str_country_just_removed_food
+							} }
+						}
+						remove_district = district_farming
+						owner = {
+							set_timed_country_flag = {
+								flag = str_country_just_removed_food
+								days = 300
+							}
+						}
+						set_timed_planet_flag = {
+							flag = str_just_removed_food_district
+							days = 500
+						}
+					}
+
 				}
 				if = {
 					limit = { 
@@ -472,11 +532,5 @@ country_event = {
 					}
 				}
 			}
-#		if = {
-			#limit = { years_passed > 70 }
-		#set_timed_country_flag = {
-			#flag = str_reconsider_plans
-			#days = 5 }
-		#}
 	}
 }

@@ -3,7 +3,7 @@
 # Calvitix Check 3.0.2  25/04/2021
 #
 #
-# Merge with Expanded Events  03/05/2021
+# Merge with Expanded Events  10/05/2021
 # 
 #
 ############################
@@ -197,6 +197,55 @@ planet_event = {
 				}
 			}
 		}
+		random_list = {
+            1 = { #Saboteurs caught
+                modifier = {
+                    factor = 0
+                    OR = {
+                        owner = { #Calvitix debug
+							NOT = {
+								any_spynetwork = {
+									owner = { is_same_value = root }
+									target = { is_same_value = from }
+								}
+							}
+							has_country_flag = recently_received_espionage_asset
+						}
+                    }
+                }
+                modifier = {
+                    factor = 3
+                    owner = { relative_encryption_decryption = { target = from value > 0.8 } }
+                    owner = { relative_encryption_decryption = { target = from value < 1.6 } }
+                }
+                modifier = {
+                    factor = 10
+                    owner = { relative_encryption_decryption = { target = from value >= 1.6 } }
+                }
+                set_timed_country_flag = {
+                    flag = espionage_caught_saboteurs
+                    days = 20
+                }
+                if = {
+                    limit = {
+                        owner = { 
+							any_spynetwork = {
+								owner = { is_same_value = root }
+								target = { is_same_value = from }
+								is_spynetwork_level > 5
+							}
+							NOT = {  has_country_flag = recently_received_espionage_asset } 
+						}
+                    }
+                    country_event = { #A Surprise Catch (asset granted)
+                        id = espionage.1040
+                        days = 15
+                        scopes = { from = fromfrom }
+                    }
+                }
+            }
+            9 = { } #Nothing
+        }
 	}
 	
 	option = {
@@ -315,6 +364,25 @@ planet_event = {
 					location = root
 					value_for_planet_destruction = 0.75
 				}
+			}
+		}
+		set_timed_country_flag = {
+			flag = espionage_caught_saboteurs
+			days = 20
+		}
+		if = {
+			limit = {
+				any_spynetwork = {
+					owner = { is_same_value = root }
+					target = { is_same_value = from }
+					is_spynetwork_level > 5
+				}
+				NOT = { has_country_flag = recently_received_espionage_asset }
+			}
+			country_event = { #A Surprise Catch (asset granted)
+				id = espionage.1040
+				days = 15
+				scopes = { from = fromfrom }
 			}
 		}
 	}

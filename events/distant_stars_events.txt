@@ -5265,13 +5265,11 @@ ship_event = {
 				NOR = {
 					has_ethic = ethic_xenophobe
 					has_ethic = ethic_fanatic_xenophobe
+					is_homicidal = yes
 				}
 			}
 		}
 		name = "distar.172.a"
-		allow = {
-			owner = { is_homicidal = no }
-		}
 		owner = {
 			while = {
 				count = 3
@@ -5345,6 +5343,7 @@ ship_event = {
 		trigger = { # at least one sluggable pop in xenophobe empire
 			hidden_trigger = {
 				owner = {
+					is_homicidal = no
 					OR = {
 						has_ethic = ethic_xenophobe
 						has_ethic = ethic_fanatic_xenophobe
@@ -5359,9 +5358,6 @@ ship_event = {
 			}
 		}
 		name = "distar.172.a"
-		allow = {
-			owner = { is_homicidal = no }
-		}
 		owner = {
 			while = { # slug *up to* three non-phobe pops
 				count = 3
@@ -5694,8 +5690,10 @@ country_event = { #Cohabitants of Brainslugged pops generate initial Unrest
 				limit = {
 					OR = {
 						any_owned_pop = { has_trait = trait_brainslug }
-						leader = {
-							has_trait = leader_trait_governor_brainslug
+						AND = {
+							exists = sector
+							sector = { exists = leader }
+							sector.leader = { has_trait = leader_trait_governor_brainslug }
 						}
 					}
 				}
@@ -5705,8 +5703,10 @@ country_event = { #Cohabitants of Brainslugged pops generate initial Unrest
 				limit = {
 					NOR = {
 						any_owned_pop = { has_trait = trait_brainslug }
-						leader = {
-							has_trait = leader_trait_governor_brainslug
+						AND = {
+							exists = sector
+							sector = { exists = leader }
+							sector.leader = { has_trait = leader_trait_governor_brainslug }
 						}
 					}
 				}
@@ -5719,8 +5719,10 @@ country_event = { #Cohabitants of Brainslugged pops generate initial Unrest
 				limit = {
 					OR = {
 						any_owned_pop = { has_trait = trait_brainslug }
-						leader = {
-							has_trait = leader_trait_governor_brainslug
+						AND = {
+							exists = sector
+							sector = { exists = leader }
+							sector.leader = { has_trait = leader_trait_governor_brainslug }
 						}
 					}
 				}
@@ -5730,8 +5732,10 @@ country_event = { #Cohabitants of Brainslugged pops generate initial Unrest
 				limit = {
 					NOR = {
 						any_owned_pop = { has_trait = trait_brainslug }
-						leader = {
-							has_trait = leader_trait_governor_brainslug
+						AND = {
+							exists = sector
+							sector = { exists = leader }
+							sector.leader = { has_trait = leader_trait_governor_brainslug }
 						}
 					}
 				}
@@ -14606,7 +14610,7 @@ country_event = {
 				limit = {
 					root = { NOT = { species_portrait = rep16 } }
 				}
-				log = "limit passed"
+				#log = "limit passed"
 				create_species = {
 					name = "NAME_Prikki_singular" # Correction de bug
 					plural = "NAME_Prikki"
@@ -19600,6 +19604,7 @@ country_event = { # Alien Box opened
 
 	option = { # Use the red solution
 		name = distar.3055.a
+		allow = { is_robot_empire = no }
 		custom_tooltip = distar.3055.a.tooltip
 		hidden_effect = {
 			if = {
@@ -19737,6 +19742,7 @@ country_event = { # Alien Box opened
 
 	option = { # Use the blue solution
 		name = distar.3055.c
+		allow = { is_robot_empire = no }
 		custom_tooltip = distar.3055.c.tooltip
 		hidden_effect = {
 			if = {
