@@ -11,20 +11,27 @@ str_enable_clerks = {
         is_regular_empire = yes
         or = {
             is_ai = no
-            or = {
-                years_passed < 2
-                and = {
-                    years_passed > 5 years_passed < 9
-                }
+            prev = {
+                str_force_city_district = yes
+            }
+            years_passed < 1
+            and = {
+                years_passed < 9 
+                years_passed > 3
             }
             and = {
-                years_passed > 60
+                years_passed > 60 
                 not = {
                     has_country_flag = str_has_room_to_grow
                 }
                 prev = {
                     free_building_slots = 0
                     free_district_slots = 0
+                }
+            }
+            and = {
+                prev = {
+                    free_building_slots = 0 free_amenities < -4 num_pops > 1 free_district_slots > 0
                 }
             }
         }
@@ -118,13 +125,34 @@ str_bureaucratic_destroy = {
 
 str_foundry_allow = {
 	or = {
+	owner = { is_ai = no } 
+	and = {	
+		years_passed < 10
 		owner = {
-			is_ai = no
+		or = {
+			resource_income_compare = {
+				resource = minerals
+				value > 40
 		}
 		and = {
-			owner = {
-				str_bad_raw_economy_trigger = no
+			resource_stockpile_compare = {
+				resource = minerals
+				value > 1200
 			}
+			resource_income_compare = {
+				resource = minerals
+				value > 30
+			} 
+			}
+		} }
+		is_capital = yes
+		num_buildings = {
+			type = building_foundry_1
+			value = 0
+		}
+	}
+	and = { 
+		owner = { str_bad_raw_economy_trigger = no }
 			or = {
 				has_planet_flag = prescripted_ideal
 				is_capital = yes
@@ -135,10 +163,8 @@ str_foundry_allow = {
 				has_planet_flag = str_acceptable_habitability
 				has_planet_flag = str_good_habitability
 			}
-			or = {
-				has_designation = col_foundry
-				is_capital = yes
-			}
+			has_designation = col_foundry
+			str_foundry_to_factory_switcher = no
 			num_pops > 8
 		}
 	}
@@ -165,6 +191,7 @@ str_factory_allow = {
 				has_planet_flag = prescripted_ideal
 			}
 			has_designation = col_factory
+				str_factory_to_foundry_switcher = no
 			num_pops > 8
 		}
 	}
@@ -233,6 +260,7 @@ str_research_destroy = {
 	or = {
 		free_building_slots < 2 free_jobs > 1
 	}
+	exists = owner #calvitix debug
 	owner = {
 		is_ai = yes
 		lategame = yes
@@ -339,67 +367,72 @@ str_industrial_district_allow = {
 }
 
 str_energy_district_allow = {
-	nand = {
-		exists = owner
-		owner = {
-			is_ai = yes
-		}
-		has_planet_flag = str_just_removed_energy_district
-	}
-	nand = {
-		exists = owner
-		owner = {
-			is_ai = yes
-		}
-		free_amenities < -9 free_building_slots = 0
-	}
-	nand = {
-		exists = owner
-		owner = {
-			is_ai = yes
-			resource_income_compare = {
-				resource = energy
-				value > 20
+	or = {
+		str_force_district_generator = yes	
+		nand = {
+			exists = owner
+			owner = {
+				is_ai = yes
 			}
-			resource_stockpile_compare = {
-				resource = energy
-				value > 900
+			has_planet_flag = str_just_removed_energy_district
+		}
+	
+		nand = {
+			exists = owner
+			owner = {
+				is_ai = yes
+			}
+			free_amenities < -9 free_building_slots = 0
+		}
+		nand = {
+			exists = owner
+			owner = {
+				is_ai = yes
+				resource_income_compare = {
+					resource = energy
+					value > 20
+				}
+				resource_stockpile_compare = {
+					resource = energy
+					value > 900
+				}
+			}
+			or = {
+				has_designation = col_foundry has_designation = col_factory is_capital = yes
 			}
 		}
-		or = {
-			has_designation = col_foundry has_designation = col_factory is_capital = yes
+		nand = {
+			exists = owner
+			owner = {
+				is_ai = yes
+			}
+			resettlement_cheesy_disable = yes
 		}
-	}
-	nand = {
-		exists = owner
-		owner = {
-			is_ai = yes
-		}
-		resettlement_cheesy_disable = yes
-	}
-	nand = {
-		exists = owner
-		owner = {
-			is_ai = yes
-		}
-		or = {
-			free_jobs > 2
-			and = {
-				free_jobs > 1
-				owner = {
-					resource_income_compare = {
-						resource = energy
-						value > 20
+		nand = {
+			exists = owner
+			owner = {
+				is_ai = yes
+			}
+			or = {
+				free_jobs > 2
+				and = {
+					free_jobs > 1
+					owner = {
+						resource_income_compare = {
+							resource = energy
+							value > 20
+						}
 					}
 				}
 			}
+			years_passed > 9
 		}
-		years_passed > 9
 	}
 }
 
 str_food_district_allow = {
 	or = {
+		str_force_district_farming = yes	
 		#Calvitix added
 		and = {
 			exists = owner
@@ -489,6 +522,7 @@ str_food_district_allow = {
 
 str_mineral_district_allow = {
 	or = {
+		str_force_district_mining = yes
 		#Calvitix added
 		and = {
 			exists = owner
@@ -634,75 +668,6 @@ str_city_district_allow = {
 	}
 }
 
-str_force_city_district = {
-
-	years_passed > 10
-	free_district_slots > 0
-
-	owner = {
-		resource_stockpile_compare = {
-			resource = minerals
-			value > 600
-		}
-		resource_income_compare = {
-			resource = minerals
-			value > 30
-		}
-	}
-
-	or = {
-		owner = {
-			str_raw_ecocrisis_level_1 = no
-		}
-		free_amenities < -4 free_housing < 7
-	}
-
-	or = {
-		and = {
-			free_housing < 25
-			num_pops > 15
-		}
-		and = {
-			free_housing < 30
-			num_pops > 20
-		}
-		and = {
-			free_housing < 32
-			num_pops > 25
-		}
-	}
-	or = {
-		free_building_slots = 0 
-		and = {
-			num_pops > 15 free_housing < 25
-		}
-	}
-	or = {
-		free_jobs > 0
-		and = {
-			free_district_slots < 2 owner = {
-				has_country_flag = str_has_room_to_grow
-			}
-		}
-		and = {
-			free_building_slots = 0 free_amenities < -4
-		}
-		and = {
-			free_building_slots = 0 free_housing < 25 free_district_slots > 2 owner = {
-				str_raw_ecocrisis_level_0 = no
-			}
-		}
-		and = {
-			free_building_slots = 0 
-			or = {
-				has_designation = col_research has_designation = col_bureau
-			}
-			owner = {
-				str_raw_ecocrisis_level_0 = no
-			}
-		}
-	}
-}
 
 resettlement_cheesy_disable = {
 	has_planet_flag = str_bad_habitability

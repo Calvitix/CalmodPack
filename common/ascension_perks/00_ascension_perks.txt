@@ -4,7 +4,7 @@
 #
 # Merge with Arisphaos Unofficial patch
 #
-# Merge with STARNET AI 11/05/2021
+# Merge with STARNET AI 14/05/2021
 #
 
 # removed by plentiful perks (but restored)
@@ -71,12 +71,25 @@ ap_become_the_crisis = {
 			is_homicidal = yes
 		}
 		modifier = {
+			factor = 0
+			or = {
+			fleet_power < 100000
+			and = {
+				has_country_flag = str_has_bad_economy_score
+				has_country_flag = str_has_bad_fleet_score
+			}
+			has_country_flag = str_has_terrible_economy_score
+			has_country_flag = str_has_terrible_fleet_score
+			has_country_flag = str_has_terrible_tech_score
+			}
+		}
+		modifier = {
 			factor = 2
 			has_tradition = tr_supremacy_finish
 		}
 		modifier = {
 			factor = 10
-			num_ascension_perks > 3
+			num_ascension_perks > 2
 			resource_income_compare = {
 				resource = alloys
 				value > 200
@@ -627,9 +640,9 @@ ap_mind_over_matter = {
 	}
 
 	ai_weight = {
-		factor = 100
+		factor = 1000 #100
 		modifier = {
-			factor = 0.1
+			factor = 0.01
 			NOR = {
 				has_ethic = ethic_spiritualist
 				has_ethic = ethic_fanatic_spiritualist
@@ -728,6 +741,11 @@ ap_world_shaper = {
 
 	ai_weight = {
 		factor = 100
+		modifier = {
+			factor = 0
+			has_ascension_perk = ap_machine_worlds
+			has_ascension_perk = ap_hive_worlds
+		}
 	}
 }
 
@@ -1175,6 +1193,12 @@ ap_executive_vigor = {
 		}
 		modifier = {
 			factor = 0.001
+			NOR = {
+				has_civic = civic_fanatic_purifiers
+				has_civic = civic_hive_devouring_swarm
+				has_civic = civic_machine_terminator
+				has_civic = civic_machine_assimilator
+			} 
 			NOR = { 
 			has_technology = tech_mineral_purification_1
 				has_technology = tech_food_processing_1
@@ -1586,6 +1610,10 @@ ap_machine_worlds = {
 
 	ai_weight = {
 		factor = 100
+		modifier = {
+			factor = 0
+			has_valid_civic = civic_machine_assimilator
+		}
 	}
 }
 
@@ -1622,6 +1650,10 @@ ap_hive_worlds = {
 
 	ai_weight = {
 		factor = 100
+		modifier = {
+			factor = 0
+			has_ascension_perk = ap_world_shaper
+		}
 	}
 }
 

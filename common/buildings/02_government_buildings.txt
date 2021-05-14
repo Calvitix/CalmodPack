@@ -3,7 +3,7 @@
 # Calvitix Check 3.0.3b  30/04/2021
 #
 # Merge with Plentiful traditions 09/05/2021
-# Merge with Starnet OK 04/05/2021
+# Merge with Starnet OK 14/05/2021
 #############
 # Government buildings
 #############
@@ -28,7 +28,7 @@ building_noble_estates = {
 
 	allow = {
 		has_upgraded_capital = yes
-		buildings_simple_allow = yes
+		num_pops > 40
 	}
 
 	destroy_trigger = {
@@ -56,6 +56,14 @@ building_noble_estates = {
 	triggered_desc = {
 		text = job_noble_effect_desc
 	}
+#STARNET AI
+	ai_resource_production = {
+		trigger = { num_pops > 40 }
+		alloys = 15
+		energy = 10
+		minerals = 15
+	}
+###
 }
 
 building_bureaucratic_1 = {
@@ -65,12 +73,14 @@ building_bureaucratic_1 = {
 
 	potential = {
 		exists = owner
-		building_relaxed_basic_income_check = yes
+		#building_relaxed_basic_income_check = yes
 		owner = { is_regular_empire = yes }
+#STARNET AI		
 		or = {
 			owner = { is_ai = no }
 			str_bureaucratic_potential = yes
 		} 
+###
 	}
 
 	destroy_trigger = {
@@ -205,6 +215,16 @@ building_bureaucratic_2 = {
 
 	allow = {
 		has_upgraded_capital = yes
+		or = {
+			owner = {
+				is_ai = no
+			}
+			and = {
+				free_building_slots = 0
+				free_district_slots < 3
+				has_designation = col_bureau
+			}
+		}
 	}
 
 
@@ -279,6 +299,16 @@ building_bureaucratic_3 = {
 
 	allow = {
 		has_upgraded_capital = yes
+		or = {
+			owner = {
+				is_ai = no
+			}
+			and = {
+				free_building_slots = 0
+				free_district_slots < 3
+				has_designation = col_bureau
+			}
+		}
 	}
 
 	destroy_trigger = {
@@ -628,6 +658,8 @@ building_precinct_house = {
 				AND = {
 					planet_crime > 15
 					NOR = {
+						has_modifier = crime_lord_deal
+					owner = { has_civic = civic_merchant_guilds }
 						AND = {
 							has_building = building_precinct_house
 							owner = { has_technology = tech_colonial_centralization }
@@ -645,8 +677,9 @@ building_precinct_house = {
 		OR = {
 			NOT = {	owner = { is_regular_empire = yes }	}
 			AND = {
-				owner = { is_ai = yes } #Players dont like random buildings blowing up
-				planet = { has_building = building_hall_judgment }
+				owner = { is_ai = yes } 
+				or = { has_modifier = crime_lord_deal owner = { not = { has_civic = civic_merchant_guilds } } }
+			#Players dont like random buildings blowing up
 			}#This way the AI gets to reclaim its building slots that it sunk into this expense
 		}
 	}
@@ -847,6 +880,7 @@ building_clone_vats = {
 
 	potential = {
 		exists = owner
+#STARNET AI
 		OR = {
 			owner = { is_ai = no }
 			and = { 
@@ -854,6 +888,7 @@ building_clone_vats = {
 				owner = { num_pops < 400 }
 			}
 		}
+###
 		owner = { has_ascension_perk = ap_engineered_evolution }
 		NOT = { has_modifier = resort_colony }
 		OR = {
@@ -873,9 +908,11 @@ building_clone_vats = {
 				}
 			}
 			NOT = { owner = { has_ascension_perk = ap_engineered_evolution } }
+###STARNET AI
 			and = {
 				owner = { is_ai = yes num_pops > 450 }
 			}
+###
 		}
 	}
 
@@ -900,7 +937,7 @@ building_clone_vats = {
 		category = planet_buildings
 		cost = { #vanilla
 			trigger = {
-				NOT = {
+				NOR = {
 					owner = { has_ascension_perk = ap_plentiful_traditions_vast_slave_procreation }
 					OR = {
 						has_building = building_plentiful_traditions_advanced_slave_processing
