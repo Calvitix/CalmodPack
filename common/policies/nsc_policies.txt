@@ -7,7 +7,6 @@
 tech_options_policy = {
 	potential = {
 		is_country_type = default
-		is_ai = no
 	}
 	option = {
 		name = "defaulttech_option"
@@ -22,7 +21,15 @@ tech_options_policy = {
 			country_society_research_produces_mult = -0.10
 			country_engineering_research_produces_mult = -0.10
 		}
-		ai_weight = { factor = 0 }
+		ai_weight = { factor = 0.5
+			modifier = {
+				factor = 10
+				or = {
+					and = { has_technology = tech_lasers_3 not = { has_technology = tech_energy_torpedoes_2 } }
+					reroll_society = yes
+				}
+			}	
+		}
 	}
 	option = {
 		name = "tech10_option"
@@ -64,7 +71,6 @@ tech_options_policy = {
 armament_doctrine = {
 	potential = {
 		is_country_type = default
-		is_ai = no
 	}
 
 	option = {
@@ -93,7 +99,13 @@ armament_doctrine = {
 			weapon_type_explosive_weapon_damage_mult = -0.2
 			weapon_type_strike_craft_weapon_damage_mult = -0.2
 		}
-		ai_weight = { factor = 0 }
+		ai_weight = { factor = 0.5 modifier = {
+			factor = 4 has_technology = tech_energy_torpedoes_2 
+			or = { 
+				has_technology = tech_battleships
+				not = { has_technology = tech_escortcarrier_1 }
+			 }
+		} }
 	}
 
 	option = {
@@ -105,7 +117,13 @@ armament_doctrine = {
 			weapon_type_explosive_weapon_damage_mult = 0.2
 			weapon_type_strike_craft_weapon_damage_mult = -0.2
 		}
-		ai_weight = { factor = 0 }		
+		ai_weight = { factor = 0.5
+			modifier = {
+				factor = 7
+				has_technology = tech_escortcarrier_1
+				not = { has_technology = tech_battleships }
+			}	
+		}		
 	}
 
 	option = {
@@ -125,7 +143,6 @@ armament_doctrine = {
 defense_doctrine = {
 	potential = {
 		is_country_type = default
-		is_ai = no
 	}
 
 	option = {
@@ -159,7 +176,6 @@ defense_doctrine = {
 composition_doctrine = {
 	potential = {
 		is_country_type = default
-		is_ai = no
 	}
 
 	option = {
@@ -183,7 +199,7 @@ composition_doctrine = {
 		policy_flags = { versatility_focus }
 		on_enabled = { add_modifier = { modifier = mod_versatility_focus days = -1 } }
 		on_disabled = { remove_modifier = mod_versatility_focus }
-		ai_weight = { factor = 0 }
+		ai_weight = { factor = 5 }
 	}
 
 	option = {
@@ -192,7 +208,7 @@ composition_doctrine = {
 		policy_flags = { capital_focus }
 		on_enabled = { add_modifier = { modifier = mod_capital_focus days = -1 } }
 		on_disabled = { remove_modifier = mod_capital_focus }
-		ai_weight = { factor = 0 }
+		ai_weight = { factor = 10 }
 	}
 
 	option = {
@@ -209,7 +225,6 @@ composition_doctrine = {
 operations_doctrine = {
 	potential = {
 		is_country_type = default
-		is_ai = no
 	}
 
 	option = {
@@ -248,7 +263,7 @@ operations_doctrine = {
 			ship_orbital_bombardment_mult = 0.15
 			ship_damage_against_starbases_mult = 0.1
 		}
-		ai_weight = { factor = 0 }
+		ai_weight = { factor = 10 }
 	}
 
 	option = {
@@ -274,14 +289,13 @@ operations_doctrine = {
 crew_doctrine = {
 	potential = {
 		is_country_type = default
-		is_ai = no
 		is_gestalt = no
 	}
 
 	option = {
 		name = "standard_crew"
 		policy_flags = { standard_crew }
-		ai_weight = { factor = 0 }
+		ai_weight = { factor = 1 }
 	}
 
 	option = {
@@ -294,7 +308,9 @@ crew_doctrine = {
 			ship_accuracy_mult = 0.2
 			starbase_shipyard_build_cost_mult = 0.2
 		}
-		ai_weight = { factor = 0 }
+		ai_weight = { factor = 0.5 modifier = {
+			factor = 3 used_naval_capacity_percent > 0.96
+		} }
 	}
 
 	option = {
@@ -335,7 +351,7 @@ crew_doctrine_gestalt = {
 		name = "standard_drones"
 		valid = { has_technology = tech_interstellar_fleet_traditions }
 		policy_flags = { standard_drones }
-		ai_weight = { factor = 0 }
+		ai_weight = { factor = 1 }
 	}
 
 	option = {
@@ -348,7 +364,9 @@ crew_doctrine_gestalt = {
 			ship_accuracy_mult = 0.2
 			starbase_shipyard_build_cost_mult = 0.2
 		}
-		ai_weight = { factor = 0 }
+		ai_weight = { factor = 0.5 modifier = {
+			factor = 3 used_naval_capacity_percent > 0.96
+		} }
 	}
 
 	option = {
@@ -360,7 +378,9 @@ crew_doctrine_gestalt = {
 			country_command_limit_mult = -0.15
 			country_naval_cap_mult = 0.15
 		}
-		ai_weight = { factor = 0 }
+		ai_weight = { factor = 0.5 modifier = {
+			factor = 10 years_passed > 100 used_naval_capacity_percent > 0.95
+		} }
 	}
 
 	option = {
