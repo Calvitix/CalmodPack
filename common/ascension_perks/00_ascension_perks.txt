@@ -4,7 +4,7 @@
 #
 # Merge with Arisphaos Unofficial patch
 #
-# Merge with STARNET AI 14/05/2021
+# Merge with STARNET AI 15/05/2021
 #
 
 # removed by plentiful perks (but restored)
@@ -816,6 +816,14 @@ ap_defender_of_the_galaxy = {
 		damage_vs_country_type_extradimensional_3_mult = 0.5
 		damage_vs_country_type_ai_empire_mult = 0.5
 		damage_vs_country_type_gray_goo_mult = 0.5
+#Giga
+		damage_vs_country_type_compound_empire_mult = 0.5
+		damage_vs_country_type_katzenartig_imperium_mult = 0.5
+		damage_vs_country_type_dormant_aeternum_mult = 0.5
+###
+#Mem_Vazurans mod
+		damage_vs_country_type_mem_vazurans_mult = 0.5
+###
 		damage_vs_player_crisis_mult = 0.5
 	}
 
@@ -841,6 +849,41 @@ ap_defender_of_the_galaxy = {
 			NOR = {
 				has_global_flag = galactic_crisis_happened
 				has_global_flag = gray_goo_crisis_active
+				any_country = {
+					relative_power = {
+						who = prev
+						value > equivalent
+					}
+					has_ascension_perk = ap_become_the_crisis
+				}
+			}
+		}
+		modifier = {
+			factor = 100
+			has_global_flag = galactic_crisis_happened
+			fleet_power < 200000
+		}
+		modifier = {
+			factor = 100
+			any_country = {
+				has_ascension_perk = ap_become_the_crisis
+				or = {
+					relative_power = {
+						who = prev
+						category = technology
+						value > equivalent 
+						}
+					relative_power = {
+						who = prev
+						category = economy
+						value > equivalent 
+						}
+					relative_power = {
+						who = prev
+						category = fleet
+						value > equivalent
+					}
+				}
 			}
 		}
 	}
@@ -857,12 +900,13 @@ ap_interstellar_dominion = {
 		NOT = {
 			has_ascension_perk = ap_interstellar_dominion
 		}
+		
 	}
 
 	ai_weight = {
-		factor = 10
+		factor = 200
 		modifier = {
-			factor = 100
+		factor = 10
 			rusher = yes
 			num_ascension_perks < 3
 		}
@@ -1609,7 +1653,7 @@ ap_machine_worlds = {
 	}
 
 	ai_weight = {
-		factor = 100
+		factor = 1000 #100
 		modifier = {
 			factor = 0
 			has_valid_civic = civic_machine_assimilator
@@ -1649,7 +1693,7 @@ ap_hive_worlds = {
 	}
 
 	ai_weight = {
-		factor = 100
+		factor = 1000 #100
 		modifier = {
 			factor = 0
 			has_ascension_perk = ap_world_shaper

@@ -4,7 +4,7 @@
 # Calvitix Check 3.0.1  FAILED 18/04/2021
 # 
 # Merge with NSC
-# Merge With Starnet AI for NSC 02/05/2021
+# Merge With Starnet AI for NSC 16/05/2021
 #
 ##########################
 ### FORMATION PRIORITY ###
@@ -159,6 +159,7 @@ destroyer = {
 	section_slots = { "bow" = { locator = "part1" } "stern" = { locator = "part2" } }
 	num_target_locators = 4
 	icon_frame = 3
+	text_icon = military_size_2
 	base_buildtime = 120
 	combat_disengage_chance = 1.50
 	
@@ -1183,6 +1184,60 @@ military_station_small = {
 	required_component_set = "power_core"
 	required_component_set = "sensor_components"
 	required_component_set = "combat_computers"
+
+	build_block_radius = @build_block_radius_military
+
+	potential_construction = {
+		is_scope_type = starbase
+		has_starbase_size >= starbase_outpost
+		exists = owner
+		or = {
+			owner = { is_ai = no }
+			has_starbase_size > starbase_starport
+			and = {
+				owner = { used_naval_capacity_percent > 0.95 }
+				owner = { has_technology = tech_energy_torpedoes_1	}
+				owner = { resource_stockpile_compare = { resource = alloys value > 3000 } }
+				owner = { resource_income_compare = { resource = alloys value > 20 } }
+				owner = { resource_income_compare = { resource = energy value > 10 } }
+				solar_system = { 
+					is_bottleneck_system = yes 
+					any_neighbor_system = {
+						exists = owner
+						owner = {
+								is_country_type = default
+								not = { has_defensive_pact = prevprev.owner } 
+								not = { has_non_aggression_pact = prevprev.owner }
+								not = { is_in_federation_with = prevprev.owner }
+								or = { 
+									nor = { has_ethic = ethic_pacifist has_ethic = ethic_fanatic_pacifist }
+									prev.owner = { nor = { has_ethic = ethic_pacifist has_ethic = ethic_fanatic_pacifist } }
+								}
+								or = {
+									and = { is_ai = no  }
+									opinion = { who = prevprev.owner value < -10 }
+									their_opinion = { who = prevprev.owner value < -10 }
+								}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	potential_country = {
+		or = {
+			is_ai = no
+			and = {
+				used_naval_capacity_percent > 0.95
+				has_technology = tech_energy_torpedoes_1
+				resource_stockpile_compare = { resource = alloys value > 3000 } 
+				resource_income_compare = { resource = alloys value > 20 } 
+				resource_income_compare = { resource = energy value > 10 } 
+			}
+		}
+	}
+
 }
 
 military_station_medium = {
@@ -1229,6 +1284,61 @@ military_station_medium = {
 	required_component_set = "nsc_sec_power_core"
 	required_component_set = "sensor_components"
 	required_component_set = "combat_computers"	
+
+
+
+
+	potential_country = {
+		or = {
+			is_ai = no
+			and = {
+				used_naval_capacity_percent > 0.95
+				has_technology = tech_energy_torpedoes_1
+				resource_stockpile_compare = { resource = alloys value > 3000 } 
+				resource_income_compare = { resource = alloys value > 20 } 
+				resource_income_compare = { resource = energy value > 10 } 
+			}
+		}
+	}
+
+	potential_construction = {
+		is_scope_type = starbase
+		has_starbase_size >= starbase_outpost
+		exists = owner
+		or = {
+			owner = { is_ai = no }
+			has_starbase_size > starbase_starport
+			and = {
+				owner = { used_naval_capacity_percent > 0.95 }
+				owner = { has_technology = tech_energy_torpedoes_1	}
+				owner = { resource_stockpile_compare = { resource = alloys value > 3000 } }
+				owner = { resource_income_compare = { resource = alloys value > 20 } }
+				owner = { resource_income_compare = { resource = energy value > 10 } }
+				solar_system = { 
+					is_bottleneck_system = yes 
+					any_neighbor_system = {
+						exists = owner
+						owner = {
+								is_country_type = default
+								not = { has_defensive_pact = prevprev.owner } 
+								not = { has_non_aggression_pact = prevprev.owner }
+								not = { is_in_federation_with = prevprev.owner }
+								or = { 
+									nor = { has_ethic = ethic_pacifist has_ethic = ethic_fanatic_pacifist }
+									prev.owner = { nor = { has_ethic = ethic_pacifist has_ethic = ethic_fanatic_pacifist } }
+								}
+								or = {
+									and = { is_ai = no  }
+									opinion = { who = prevprev.owner value < -10 }
+									their_opinion = { who = prevprev.owner value < -10 }
+								}
+						}
+					}
+				}
+			}
+		}
+	}
+	
 }
 
 military_station_large = {
@@ -1275,6 +1385,61 @@ military_station_large = {
 	required_component_set = "nsc_sec_power_core"
 	required_component_set = "sensor_components"
 	required_component_set = "combat_computers"
+
+
+
+
+	potential_country = {
+		or = {
+			is_ai = no
+			and = {
+				used_naval_capacity_percent > 0.95
+				has_technology = tech_energy_torpedoes_1
+				resource_stockpile_compare = { resource = alloys value > 3000 } 
+				resource_income_compare = { resource = alloys value > 20 } 
+				resource_income_compare = { resource = energy value > 10 } 
+			}
+		}
+	}
+
+
+	potential_construction = {
+		is_scope_type = starbase
+		has_starbase_size >= starbase_outpost
+		exists = owner
+		or = {
+			owner = { is_ai = no }
+			has_starbase_size > starbase_starport
+			and = {
+				owner = { used_naval_capacity_percent > 0.95 }
+				owner = { has_technology = tech_energy_torpedoes_1	}
+				owner = { resource_stockpile_compare = { resource = alloys value > 3000 } }
+				owner = { resource_income_compare = { resource = alloys value > 20 } }
+				owner = { resource_income_compare = { resource = energy value > 10 } }
+				solar_system = { 
+					is_bottleneck_system = yes 
+					any_neighbor_system = {
+						exists = owner
+						owner = {
+								is_country_type = default
+								not = { has_defensive_pact = prevprev.owner } 
+								not = { has_non_aggression_pact = prevprev.owner }
+								not = { is_in_federation_with = prevprev.owner }
+								or = { 
+									nor = { has_ethic = ethic_pacifist has_ethic = ethic_fanatic_pacifist }
+									prev.owner = { nor = { has_ethic = ethic_pacifist has_ethic = ethic_fanatic_pacifist } }
+								}
+								or = {
+									and = { is_ai = no  }
+									opinion = { who = prevprev.owner value < -10 }
+									their_opinion = { who = prevprev.owner value < -10 }
+								}
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
 #########################

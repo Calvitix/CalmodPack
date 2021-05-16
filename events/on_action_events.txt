@@ -7,7 +7,7 @@
 # Merge with Expanded Event  26/04/2021
 # Merge with JL PICARD 13/05/2021
 # Merge with CC-rebel 07/05/2021
-#
+# Merge with primitive_conquest_enhancements 15/05/2021
 
 #########################################
 #
@@ -6876,6 +6876,7 @@ country_event = {
 	}
 
 	immediate = {
+		#log = "primitive conquest: [FromFrom.GetName] conquered by the [Root.GetName]"
 		if = {
 				limit = {
 					is_regular_empire = yes
@@ -6905,27 +6906,24 @@ country_event = {
 				modifier = opinion_primitive_violation
 			}
 		}
-
+		FROMFROM = { save_event_target_as = conquered_primitive_planet }
+		FROM = { owner_species = { save_event_target_as = conquered_primitive_species } }
 		if = {
-			limit = {
-				is_ai = no
-			}
-			fromfrom = {
-				save_event_target_as = conquered_primitive_country
-			}
-			from = {
-				owner_species = {
-					save_event_target_as = conquered_primitive_species
-				}
-			}
+			limit = { is_ai = no }
 			country_event = { id = action.140 }
 		}
-
+		else = {
+			# NB NOTE: the AI deserves free districts too - it just doesn't need the fancy window alert
+			FROMFROM = { planet_event = { id = action.141 } }
+		}
 		reset_years_of_peace = yes
 	}
 }
 
-# Primitive Civilization Conquered - Player info
+# chained from action.14, which is triggered for primitive planets by on_planet_attackers_win
+# ROOT = country that just conquered the planet
+# event_target:conquered_primitive_planet = the planet that was conquered
+# event_target:conquered_primitive_species = the species that was conquered
 country_event = {
 	id = action.140
 	title = action.14.name
@@ -6935,7 +6933,7 @@ country_event = {
 			NOR = {
 				has_ethic = ethic_gestalt_consciousness
 				event_target:conquered_primitive_species = {
-					has_citizenship_type = { country = root type = citizenship_purge }
+					has_citizenship_type = { country = ROOT type = citizenship_purge }
 				}
 			}
 		}
@@ -6945,7 +6943,7 @@ country_event = {
 		trigger = {
 			NOT = { has_ethic = ethic_gestalt_consciousness }
 			event_target:conquered_primitive_species = {
-				has_citizenship_type = { country = root type = citizenship_purge }
+				has_citizenship_type = { country = ROOT type = citizenship_purge }
 			}
 		}
 	}
@@ -6972,7 +6970,7 @@ country_event = {
 		trigger = {
 			has_authority = auth_machine_intelligence
 			event_target:conquered_primitive_species = {
-				has_citizenship_type = { country = root type = citizenship_purge }
+				has_citizenship_type = { country = ROOT type = citizenship_purge }
 			}
 			NOR = {
 				has_civic = civic_machine_servitor
@@ -6986,7 +6984,7 @@ country_event = {
 		trigger = {
 			has_authority = auth_machine_intelligence
 			event_target:conquered_primitive_species = {
-				has_citizenship_type = { country = root type = citizenship_slavery }
+				has_citizenship_type = { country = ROOT type = citizenship_slavery }
 			}
 			NOR = {
 				has_civic = civic_machine_servitor
@@ -7000,7 +6998,7 @@ country_event = {
 		trigger = {
 			has_authority = auth_hive_mind
 			event_target:conquered_primitive_species = {
-				has_citizenship_type = { country = root type = citizenship_purge }
+				has_citizenship_type = { country = ROOT type = citizenship_purge }
 			}
 		}
 	}
@@ -7009,113 +7007,20 @@ country_event = {
 		trigger = {
 			has_authority = auth_hive_mind
 			event_target:conquered_primitive_species = {
-				has_citizenship_type = { country = root type = citizenship_slavery }
+				has_citizenship_type = { country = ROOT type = citizenship_slavery }
 			}
 		}
 	}
 
 	picture = GFX_evt_ground_combat
 	show_sound = event_alien_signal
-	location = event_target:conquered_primitive_country
+	location = event_target:conquered_primitive_planet
 
 	is_triggered_only = yes
 
 	immediate = {
-		event_target:conquered_primitive_country = {
-			if = {
-				limit = { is_planet_class = pc_ringworld_habitable }
-				add_district = district_rw_city
-				break = yes
+		event_target:conquered_primitive_planet = { planet_event = { id = action.141 } }
 			}
-			if = {
-				limit = { num_pops <= 5 }
-				add_district = district_city
-				add_district = district_farming
-				break = yes
-			}
-			if = {
-				limit = {
-					num_pops >= 5
-					num_pops <= 10
-				}
-				add_district = district_city
-				add_district = district_farming
-				break = yes
-			}
-			if = {
-				limit = {
-					num_pops >= 10
-					num_pops <= 15
-				}
-				add_district = district_city
-				add_district = district_city
-				add_district = district_farming
-				add_district = district_mining
-				break = yes
-			}
-			if = {
-				limit = {
-					num_pops >= 15
-					num_pops <= 20
-				}
-				add_district = district_city
-				add_district = district_city
-				add_district = district_farming
-				add_district = district_farming
-				add_district = district_mining
-				add_district = district_mining
-				break = yes
-			}
-			if = {
-				limit = {
-					num_pops >= 20
-					num_pops <= 25
-				}
-				add_district = district_city
-				add_district = district_city
-				add_district = district_city
-				add_district = district_farming
-				add_district = district_farming
-				add_district = district_mining
-				add_district = district_mining
-				break = yes
-			}
-			if = {
-				limit = {
-					num_pops >= 25
-					num_pops <= 30
-				}
-				add_district = district_city
-				add_district = district_city
-				add_district = district_city
-				add_district = district_city
-				add_district = district_farming
-				add_district = district_farming
-				add_district = district_mining
-				add_district = district_mining
-				add_district = district_generator
-				break = yes
-			}
-			if = {
-				limit = {
-					num_pops >= 30
-					num_pops <= 35
-				}
-				add_district = district_city
-				add_district = district_city
-				add_district = district_city
-				add_district = district_city
-				add_district = district_city
-				add_district = district_farming
-				add_district = district_farming
-				add_district = district_mining
-				add_district = district_mining
-				add_district = district_generator
-				break = yes
-			}
-		}
-	}
-
 	option = {
 		name = action.14.a.phobe
 		custom_tooltip = action.14.a.tooltip
@@ -7226,6 +7131,7 @@ country_event = {
 		}
 	}
 }
+
 
 # New Contact opinion modifier added
 country_event = {

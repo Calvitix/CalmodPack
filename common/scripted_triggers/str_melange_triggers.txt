@@ -32,7 +32,8 @@ str_force_city_district = {
 		}
 	}
 	or = { free_building_slots = 0 and = { num_pops > 15 free_housing < 25 } }
-	or = { free_jobs > 1 
+	or = { 
+		free_jobs > 1 
 	and = { free_district_slots < 2 owner = { has_country_flag = str_has_room_to_grow } } 
 	and = { free_building_slots = 0 free_amenities < -4 } 
 	and = { free_building_slots = 0 free_housing < 25 free_district_slots > 2 owner = { str_raw_ecocrisis_level_0 = no } }
@@ -41,6 +42,24 @@ str_force_city_district = {
 }
 
 str_force_food_processing = {
+	or = {
+		and = {
+			num_districts = {
+				type = district_farming
+				value > 2
+			}
+			num_free_districts = {
+				type = district_farming
+				value > 2
+			}
+		}
+		and = {
+			num_districts = {
+				type = district_farming
+				value > 4
+			}
+		}
+	}
 	free_building_slots > 0
 	owner = { resource_stockpile_compare = {
 		resource = minerals
@@ -59,6 +78,24 @@ str_force_food_processing = {
 }
 
 str_force_energy_grid = { 
+	or = {
+		and = {
+			num_districts = {
+				type = district_generator
+				value > 2
+			}
+			num_free_districts = {
+				type = district_generator
+				value > 2
+			}
+		}
+		and = {
+			num_districts = {
+				type = district_generator
+				value > 3
+			}
+		}
+	}
 	free_building_slots > 0
 	owner = { resource_stockpile_compare = {
 		resource = minerals
@@ -78,6 +115,24 @@ str_force_energy_grid = {
 
 str_force_mineral_purification = {
 
+	or = {
+		and = {
+			num_districts = {
+				type = district_mining
+				value > 2
+			}
+			num_free_districts = {
+				type = district_mining
+				value > 2
+			}
+		}
+		and = {
+			num_districts = {
+				type = district_mining
+				value > 4
+			}
+		}
+	}
 	free_building_slots > 0
 	owner = { resource_stockpile_compare = {
 		resource = minerals
@@ -128,6 +183,10 @@ str_force_building_foundry = {
 		type = building_foundry_1
 		value = 0
 	}
+	num_buildings = {
+		type = building_factory_1
+		value = 0
+	}
 }
 
 str_force_building_factory_upgrade = {
@@ -144,13 +203,13 @@ str_force_building_factory_upgrade = {
 	has_designation = col_factory
 	num_districts = {
 		type = district_industrial
-		value > 4
+		value > 3
 	}
 	str_factory_to_foundry_switcher = no
 	owner = { str_raw_ecocrisis_level_0 = no }
 }
 
-str_force_building_forge_upgrade = {
+str_force_building_foundry_upgrade = {
 	owner = {
 		resource_stockpile_compare = {
 			resource = minerals
@@ -164,7 +223,7 @@ str_force_building_forge_upgrade = {
 	has_designation = col_foundry
 	num_districts = {
 		type = district_industrial
-		value > 4
+		value > 3
 	}
 	str_foundry_to_factory_switcher = no
 	owner = { str_raw_ecocrisis_level_0 = no }
@@ -198,6 +257,12 @@ str_force_district_farming = {
 }
 
 str_force_district_mining = {
+	num_free_districts = {
+		type = district_mining
+		value > 0
+	}
+	or = {
+	and = {	
 	years_passed < 7
 	is_capital = yes
 	owner = {
@@ -212,7 +277,40 @@ str_force_district_mining = {
 	resource_income_compare = {
 		resource = minerals
 		value < 50
-	} }
+		} } }
+	owner = {
+		prev = { nor = { has_designation = col_factory has_designation = col_foundry } }
+		resource_stockpile_compare = {
+			resource = minerals
+			value < 1500
+		}	
+		resource_income_compare = {
+			resource = minerals
+			value < 30
+			}
+		}
+	owner = {
+		prev = {  nor = { has_designation = col_factory has_designation = col_foundry } }
+		resource_stockpile_compare = {
+			resource = minerals
+			value < 1000
+		}	
+		resource_income_compare = {
+			resource = minerals
+			value < 40
+			}
+		}
+	owner = {
+		resource_stockpile_compare = {
+			resource = minerals
+			value < 400
+		}	
+		resource_income_compare = {
+			resource = minerals
+			value < 30
+			}
+		}
+	}
 }
 
 str_force_district_generator = {
@@ -254,5 +352,5 @@ str_force_holotheatre = {
 	} }
 	free_building_slots > 0
 	free_amenities < -11
-	num_pops > 15
+	num_pops > 11
 }

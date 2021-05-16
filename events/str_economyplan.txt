@@ -1,6 +1,6 @@
 # STARNET AI File
 #
-# Merge with STARNET AI OK  11/05/2021
+# Merge with STARNET AI OK  16/05/2021
 #
 namespace = str_economy_plan
 
@@ -41,6 +41,10 @@ country_event = {
 			remove_country_flag = str_consumer_goods_margin
 			remove_country_flag = str_deleted_extra_shipyard
 			remove_country_flag = str_deleted_extra_anchorage
+			set_timed_country_flag = {
+				flag = str_reconsider_plans
+				days = 70
+			}
 
 			if = {
 				limit = {
@@ -50,9 +54,16 @@ country_event = {
 						limit = { has_starbase_module = shipyard }
 					}
 					and = {
-						max_naval_capacity < 500
+						max_naval_capacity < 600
 						count_owned_starbase = {
 							count >= 5
+							limit = { has_starbase_module = shipyard }
+						}
+					}
+					and = {
+						max_naval_capacity < 200
+						count_owned_starbase = {
+							count >= 4
 							limit = { has_starbase_module = shipyard }
 						}
 					}
@@ -134,8 +145,8 @@ country_event = {
 			if = {
 				limit= {is_ai = yes  
 				or = { 
-					years_passed < 8 
-					and = { years_passed < 12 scared_of_neighbour = no 
+					years_passed < @str_years_of_guaranteed_truce
+					and = { years_passed < @str_years_of_extended_truce scared_of_neighbour = no 
 						resource_stockpile_compare = {
 						resource = alloys
 						value < 1000 } } 
@@ -173,15 +184,6 @@ country_event = {
 								free_district_slots = 0
 							}
 							remove_building = building_research_lab_1
-						}
-						else_if = {
-							limit = { owner = { resource_stockpile_compare = {
-								resource = minerals
-								value > 800 } }
-							free_district_slots > 1
-							}
-							add_district = district_city
-							owner = { add_resource = { minerals = -350 } }
 						}
 					}
 
@@ -488,6 +490,17 @@ country_event = {
 							flag = str_just_removed_food_district
 							days = 500
 						}
+					}
+					if = {
+						limit = {
+							free_jobs > 5
+							free_amenities < -9
+							planet_stability < 40
+							free_building_slots > 0 
+						}
+						remove_district = district_farming
+						remove_district = district_mining
+						remove_district = district_generator
 					}
 
 				}

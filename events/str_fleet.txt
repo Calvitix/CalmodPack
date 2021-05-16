@@ -95,19 +95,6 @@ country_event = {
                 days = 3
             }
             
-            random_fleet_in_system = {
-                
-            }
-                    random_fleet_in_system = {
-                        limit = {
-                            is_ship_class = shipclass_military
-                            NOT = { is_same_value = root }
-                            owner = { is_same_empire = root.owner }
-                            fleet_power > 0
-                            not = { has_fleet_flag = rallypoint_f }
-                        }
-                        save_event_target_as = str_EXAMPLE_merge_fleet
-                    }
         }
     }
 
@@ -141,7 +128,10 @@ country_event = {
         }
         closest_system = {
             limit = {
-                exists = starbase #calvitix debug
+                exists = owner
+                owner = {
+                    is_same_value = root.owner
+                }
 				starbase = {
                     has_starbase_module = shipyard
                 }
@@ -184,6 +174,10 @@ country_event = {
         }
         closest_system = {
             limit = {
+                exists = owner
+                owner = {
+                    is_same_value = root.owner
+                }
                 starbase = {
                     has_starbase_module = shipyard
                 }
@@ -271,6 +265,10 @@ country_event = {
                     add = 1000
                     fleet_power > 10000
                 }
+                modifier = {
+                    add = 100000
+                    fleet_power > 80000
+                }
                 
             }
             set_timed_fleet_flag = {
@@ -291,7 +289,7 @@ country_event = {
                         }
                         has_hp_percentage > 0.95
                         is_ship_class = shipclass_military
-                        fleet_power > 1
+                        fleet_power > 700
                         is_fleet_idle = yes
                     }
                 auto_follow_fleet = {
