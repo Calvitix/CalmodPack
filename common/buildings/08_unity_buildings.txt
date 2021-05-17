@@ -3,7 +3,7 @@
 # Calvitix Check 3.0.3b  30/04/2021
 #
 # Merge with Planet. Diversity
-# Merge with Starnet OK
+# Merge with Starnet OK    17/05/2021
 ##################
 # Unity buildings
 ##################
@@ -23,6 +23,7 @@ building_autochthon_monument = {
 				is_gestalt = yes
 				is_spiritualist = yes
 				is_megacorp = yes
+				#is_ai = yes #Starnet AI, Calv. disabled
 				has_valid_civic = civic_memorialist
 				has_valid_civic = civic_hive_memorialist
 				has_valid_civic = civic_machine_memorialist
@@ -39,6 +40,7 @@ building_autochthon_monument = {
 					is_gestalt = yes
 					is_spiritualist = yes
 					is_megacorp = yes
+					#is_ai = yes #Starnet AI, Calv. disabled
 					has_valid_civic = civic_memorialist
 					has_valid_civic = civic_hive_memorialist
 					has_valid_civic = civic_machine_memorialist
@@ -102,6 +104,7 @@ building_heritage_site = {
 				is_gestalt = yes
 				is_spiritualist = yes
 				is_megacorp = yes
+				#is_ai = yes #Starnet AI, Calv. disabled
 				has_valid_civic = civic_memorialist
 				has_valid_civic = civic_hive_memorialist
 				has_valid_civic = civic_machine_memorialist
@@ -123,6 +126,7 @@ building_heritage_site = {
 					is_gestalt = yes
 					is_spiritualist = yes
 					is_megacorp = yes
+					#is_ai = yes #Starnet AI, Calv. disabled
 					has_valid_civic = civic_memorialist
 					has_valid_civic = civic_hive_memorialist
 					has_valid_civic = civic_machine_memorialist
@@ -188,6 +192,7 @@ building_hypercomms_forum = {
 				is_gestalt = yes
 				is_spiritualist = yes
 				is_megacorp = yes
+				#is_ai = yes #Starnet AI, Calv. disabled
 				has_valid_civic = civic_memorialist
 				has_valid_civic = civic_hive_memorialist
 				has_valid_civic = civic_machine_memorialist
@@ -210,6 +215,7 @@ building_hypercomms_forum = {
 					is_gestalt = yes
 					is_spiritualist = yes
 					is_megacorp = yes
+					#is_ai = yes #Starnet AI, Calv. disabled
 					has_valid_civic = civic_memorialist
 					has_valid_civic = civic_hive_memorialist
 					has_valid_civic = civic_machine_memorialist
@@ -276,10 +282,7 @@ building_temple = {
 			}
 		}
 		NOT = { has_modifier = slave_colony }
-		OR = {
-			owner = { is_ai = no }
-			free_building_slots > 0
-		}
+		owner = { is_ai = no }
 	}
 
 	destroy_trigger = {
@@ -290,6 +293,7 @@ building_temple = {
 					has_valid_civic = civic_death_cult
 					has_valid_civic = civic_death_cult_corporate
 					is_spiritualist = no
+					#is_ai = yes #Starnet AI, Calv. disabled
 				}
 			}
 			has_modifier = slave_colony
@@ -352,6 +356,7 @@ building_holotemple = {
 		exists = owner
 		building_basic_income_check = yes
 		owner = {
+			is_ai = no
 			is_spiritualist = yes
 			NOR = {
 				has_valid_civic = civic_death_cult
@@ -374,6 +379,7 @@ building_holotemple = {
 					has_valid_civic = civic_death_cult
 					has_valid_civic = civic_death_cult_corporate
 					is_spiritualist = no
+					#is_ai = yes #Starnet AI, Calv. disabled
 				}
 			}
 			has_modifier = slave_colony
@@ -475,7 +481,7 @@ building_sacred_nexus = {
 	}
 
 	planet_modifier = {
-		job_priest_add = 8 # 7 Aripatch
+		job_priest_add = 7
 		pop_ethic_spiritualist_attraction_mult = 0.15
 	}
 
@@ -1205,6 +1211,7 @@ building_hive_node = {
 		building_relaxed_basic_income_check = yes
 		owner = {
 			is_hive_empire = yes
+			is_ai = no
 		}
 	}
 
@@ -1212,6 +1219,7 @@ building_hive_node = {
 		exists = owner
 		OR = {
 			owner = { is_hive_empire = no }
+			# owner = { is_ai = yes } #Starnet AI, calvitix disabled
 		}
 	}
 
@@ -1741,6 +1749,7 @@ building_corporate_monument = {
 		owner = {
 			is_megacorp = yes
 			is_spiritualist = no
+			is_ai = no
 		}
 	}
 
@@ -1750,6 +1759,7 @@ building_corporate_monument = {
 			has_modifier = slave_colony
 			owner = {
 				OR = {
+					#is_ai = yes #Starnet AI, Calv. disabled
 					is_megacorp = no
 					is_spiritualist = yes
 				}
@@ -1809,6 +1819,7 @@ building_corporate_site = {
 		owner = {
 			is_megacorp = yes
 			is_spiritualist = no
+			is_ai = no
 		}
 	}
 
@@ -1824,6 +1835,7 @@ building_corporate_site = {
 			buildings_no_crystals = yes
 			owner = {
 				OR = {
+					#is_ai = yes #Starnet AI, Calv. disabled
 					is_megacorp = no
 					is_spiritualist = yes
 				}
@@ -2250,12 +2262,12 @@ building_organic_sanctuary = {
 			AND = {
 				owner = { is_ai = yes }
 				count_owned_pop = { limit = { has_citizenship_type = { type = citizenship_organic_trophy } } count <= 20 }
-				num_buildings = { type = building_organic_sanctuary value > 2 } #3
+				num_buildings = { type = building_organic_sanctuary value > 3 }
 			}
 			AND = {
 				owner = { is_ai = yes }
 				count_owned_pop = { limit = { has_citizenship_type = { type = citizenship_organic_trophy } } count <= 40 }
-				num_buildings = { type = building_organic_paradise value > 3 }  #5
+				num_buildings = { type = building_organic_paradise value > 5 }
 			}
 		}
 	}
@@ -2271,6 +2283,23 @@ building_organic_sanctuary = {
 		planet_carry_cap_add = 10
 	}
 
+###Starnet AI
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_ai = yes
+			}
+			years_passed > 10
+			count_owned_pop = { limit = { has_citizenship_type = { type = citizenship_organic_trophy } is_unemployed = yes } count > 0 }
+			free_building_slots > 0
+		}
+		modifier = {
+			job_starnet_spice_melange_farmer_add = 1
+			job_starnet_spice_melange_antifarmer_add = -1
+		}
+	}
+###
 	resources = {
 		category = planet_buildings
 		cost = {
@@ -2287,7 +2316,7 @@ building_organic_sanctuary = {
 	ai_resource_production = {
 		alloys = 10
 		trigger = {
-			count_owned_pop = { limit = { has_citizenship_type = { type = citizenship_organic_trophy } } count > 0 }
+			count_owned_pop = { limit = { has_citizenship_type = { type = citizenship_organic_trophy } not = { has_job = bio_trophy } } count > 0 }
 			free_building_slots > 0
 		}
 	}
