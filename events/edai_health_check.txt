@@ -571,6 +571,7 @@ event = {
 				# Make researchers into artisans
 				if = {
 					limit = {
+						not = { uses_district_set = ring_world }
 						owner = { has_monthly_income = { resource = alloys value < 0 }}
 						owner = { has_monthly_income = { resource = minerals value > 50 }}
 						has_building = building_research_lab_1
@@ -578,6 +579,20 @@ event = {
 					}
 					remove_building = building_research_lab_1
 					log = "E : alloy Crisis < -20 : adding district_industrial, removing research_lab for [This.GetName]"	
+					add_district = district_industrial
+					add_modifier = { modifier = hc_industrial_added days = 360 }				
+					
+				}
+				if = {
+					limit = {
+						uses_district_set = ring_world
+						owner = { has_monthly_income = { resource = alloys value < 0 }}
+						owner = { has_monthly_income = { resource = minerals value > 50 }}
+						has_building = building_research_lab_1
+						num_free_districts = { type = district_rw_industrial value > 0 }		
+					}
+					remove_building = building_research_lab_1
+					log = "E : alloy Crisis < -20 : adding district_rw_industrial, removing research_lab for [This.GetName]"	
 					add_district = district_industrial
 					add_modifier = { modifier = hc_industrial_added days = 360 }				
 					
@@ -2076,7 +2091,7 @@ event = {
 						}
 					}
 					remove_building = building_maintenance_depot
-					log = "H: Enough Housing : removing building_maintenance_depot for [This.GetName]"							
+					log = "H: Enough Amenities : removing building_maintenance_depot for [This.GetName]"							
 					
 				}
 				

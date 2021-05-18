@@ -2,7 +2,7 @@
 #
 # Calvitix Check 3.0 .3 b2 08 / 05 / 2021
 #
-# Merge with Starnet AI 16 / 05 / 2021
+# Merge with Starnet AI 18 / 05 / 2021
 #
 #
 
@@ -11,9 +11,9 @@ str_enable_clerks = {
         is_regular_empire = yes
         or = {
             is_ai = no
-            prev = {
-                str_force_city_district = yes
-            }
+            #prev = { #removed by Starnet 18/05/2021
+            #    str_force_city_district = yes
+            #}
             years_passed < 1
             and = {
                 years_passed < 9 
@@ -55,7 +55,7 @@ str_bureaucratic_potential = {
                     is_ai = no
                     resource_income_compare = {
                         resource = physics_research
-                        value > 50 #100 calvitix
+                        value > 50 #100 calvitix, start earlier to build admin buildings
 				}
 			}
 		}
@@ -317,7 +317,8 @@ str_industrial_district_allow = {
 			}
 			owner = {
 				or = {
-					str_raw_ecocrisis_level_1 = no is_ai = no
+					str_raw_ecocrisis_level_1 = no
+					is_ai = no
 				}
 			}
 			or = {
@@ -348,12 +349,14 @@ str_industrial_district_allow = {
 				has_designation = col_foundry
 				is_capital = yes
 				and = {
-					num_pops < 16 owner = {
+					num_pops < 16
+					owner = {
 						str_raw_ecocrisis_level_0 = no
 					}
 				}
 				and = {
-					num_pops < 20 owner = {
+					num_pops < 20
+					owner = {
 						str_raw_ecocrisis_level_0 = no
 					}
 					num_districts = {
@@ -371,6 +374,11 @@ str_industrial_district_allow = {
 }
 
 str_energy_district_allow = {
+	nand = { 
+		exists = owner
+		owner = { is_ai = yes	}
+		free_jobs > 2 
+	}
 	or = {
 		str_force_district_generator = yes	
 		nand = {
@@ -386,7 +394,8 @@ str_energy_district_allow = {
 			owner = {
 				is_ai = yes
 			}
-			free_amenities < -9 free_building_slots = 0
+			free_amenities < -9 
+			free_building_slots = 0
 		}
 		nand = {
 			exists = owner
@@ -402,7 +411,9 @@ str_energy_district_allow = {
 				}
 			}
 			or = {
-				has_designation = col_foundry has_designation = col_factory is_capital = yes
+				has_designation = col_foundry 
+				has_designation = col_factory 
+				is_capital = yes
 			}
 		}
 		nand = {
@@ -435,6 +446,11 @@ str_energy_district_allow = {
 }
 
 str_food_district_allow = {
+	nand = { 
+		exists = owner
+		owner = { is_ai = yes	}
+		free_jobs > 2 
+	}
 	or = {
 		str_force_district_farming = yes	
 		#Calvitix added
@@ -463,7 +479,8 @@ str_food_district_allow = {
 				exists = owner owner = {
 					is_ai = yes
 				}
-				free_amenities < -9 free_building_slots = 0
+				free_amenities < -9 
+				free_building_slots = 0
 			}
 			nand = {
 				exists = owner
@@ -525,6 +542,11 @@ str_food_district_allow = {
 }
 
 str_mineral_district_allow = {
+	nand = { 
+		exists = owner
+		owner = { is_ai = yes	}
+		free_jobs > 2 
+	}
 	or = {
 		str_force_district_mining = yes
 		#Calvitix added
@@ -624,9 +646,43 @@ str_nexus_district_allow = {
 			}
 		}
 	}
+	or = { 
+		owner = { is_ai = no }
+		free_building_slots < 2 free_housing < 3 
+	}
+	or = { 
+		owner = { is_ai = no }
+		free_housing < 20
+	}
+	or = {
+		owner = { is_ai = no }
+		owner = { resource_income_compare = {
+			resource = alloys
+			value < 30
+		} }
+		free_housing < 3
+	}
+	or = {
+		owner = { is_ai = no }
+		has_designation = col_research
+		free_housing < 10
+	}
+	or = {
+		owner = { is_ai = no }
+		owner = { resource_stockpile_compare = {
+			resource = alloys
+			value > 900
+		} }
+		free_housing < 3
+	}	
 }
 
 str_city_district_allow = {
+	NAND = {
+		exists = owner
+		owner = { is_ai = yes }
+		free_housing > 26 
+	}
 	nand = {
 		exists = owner
 		owner = {
@@ -692,6 +748,7 @@ str_hydroponics_allow = {
 }
 
 str_hydroponics_destroy = {
+	exists = owner
 	owner = {
 		is_ai = yes
 		not = {
@@ -714,6 +771,7 @@ str_food_processing_allow = {
 }
 
 str_food_processing_destroy = {
+	exists = owner
 	owner = {
 		is_ai = yes
 	}
@@ -750,6 +808,7 @@ str_energy_grid_allow = {
 }
 
 str_energy_grid_destroy = {
+	exists = owner
 	owner = {
 		is_ai = yes
 	}
@@ -792,6 +851,7 @@ str_industrial_switcher = {
 		str_factory_to_foundry_switcher = yes
 	}
 }
+
 
 str_city_district_potential = {
 	str_city_district_allow = yes
