@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.0.3b  03/05/2021
+# Calvitix Check 3.0.3  20/05/2021
 #
 # Merge with STARNET AI  16/05/2021
 #
@@ -11,25 +11,121 @@
 #################
 ## Expenditure ##
 #################
+energy_expenditure_buffer = { # Buffer, will not be spent
+	resource = energy
+	type = expenditure
+	category = buffer
+
+	potential = {
+		always = yes
+	}
+
+	fraction = {
+		weight = 0.1
+	}
+}
+
+energy_expenditure_trade = {
+	resource = energy
+	type = expenditure
+	category = trade
+
+	potential = {
+		has_resource = {
+			type = energy
+			amount > 5000  #3.0.3 (500)
+		}
+	}
+
+	fraction = {
+		weight = 0.5
+	}
+}
+
+energy_expenditure_trade_deficit = {
+	resource = energy
+	type = expenditure
+	category = trade
+
+	potential = {
+		has_resource = {
+			type = energy
+			amount > 500
+		}
+		OR = {
+			AND = {
+				has_monthly_income = {
+					resource = minerals
+					value < -1
+				}
+				has_resource = {
+					type = minerals
+					amount < 1000
+				}
+			}
+			AND = {
+				has_monthly_income = {
+					resource = food
+					value < -1
+				}
+				has_resource = {
+					type = food
+					amount < 500
+				}
+			}
+			AND = {
+				has_monthly_income = {
+					resource = consumer_goods
+					value < -1
+				}
+				has_resource = {
+					type = consumer_goods
+					amount < 500
+				}
+			}
+			AND = {
+				has_monthly_income = {
+					resource = alloys
+					value < -1
+				}
+				has_resource = {
+					type = alloys
+					amount < 500
+				}
+			}
+		}
+	}
+
+	fraction = {
+		weight = 0.7
+	}
+}
 
 
+##Starnet AI
 energy_expenditure_campaigns = {
 	resource = energy
 	type = expenditure
 	category = campaigns
 
 	potential = {
-		resource_stockpile_compare = {
-			resource = energy
-			value > 1500
+		# only consider campaigns when we can actually afford them
+		has_resource = {
+			type = energy
+			amount > 3000
 		}
+	}
 
+	fraction = {
+		weight = 0.30
 	}
 
 	static_min = {
-		base = 20000
+		base = 1000
 	}
-
+	static_max = {
+		base = 3000
+	}
 }
 
 energy_expenditure_colonies = {
@@ -261,6 +357,116 @@ energy_expenditure_megastructures = {
 		base = 20000 # 
 	}
 }
+
+# energy_expenditure_decisions = {
+	# resource = energy
+	# type = expenditure
+	# category = decisions
+
+	# potential = {
+		# # only consider these kinds of decisions when "wealthy"
+		# has_resource = {
+			# type = energy
+			# amount > 5000
+		# }
+	# }
+
+	# fraction = {
+		# weight = 0.20
+	# }
+
+	# # based on mastery of nature decision
+	# static_max = {
+		# base = 2000
+	# }
+# }
+
+energy_expenditure_operations = {
+	resource = energy
+	type = expenditure
+	category = operations
+
+	potential = {
+		# only allocate energy for operations if we can afford them
+		has_resource = {
+			type = energy
+			amount > 2000
+		}
+
+		# and if we have a spy network to use them in!
+		any_spynetwork = {
+			owner = { is_same_value = root }
+			is_spynetwork_level >= 20
+		}
+	}
+
+	fraction = {
+		weight = 0.05
+
+		modifier = {
+			factor = 2
+			any_spynetwork = {
+				owner = { is_same_value = root }
+				is_spynetwork_level >= 40
+			}
+		}
+
+		modifier = {
+			factor = 1.5
+			any_spynetwork = {
+				owner = { is_same_value = root }
+				is_spynetwork_level >= 60
+			}
+		}
+
+		modifier = {
+			factor = 1.5
+			any_spynetwork = {
+				owner = { is_same_value = root }
+				is_spynetwork_level >= 80
+			}
+		}
+	}
+
+	# based on crisis beacon op
+	static_max = {
+		base = 6400
+	}
+}
+
+
+
+############
+## Upkeep ##
+############
+energy_upkeep_buffer = {	# Buffer, will not be spent
+	resource = energy
+	type = upkeep
+	category = buffer
+
+	potential = {
+		always = yes
+	}
+
+	fraction = {
+		weight = 0.01
+	}
+}
+
+# energy_upkeep_country = { # Covers most other things
+	# resource = energy
+	# type = upkeep
+	# category = country
+
+	# potential = {
+		# always = yes
+	# }
+
+	# fraction = {
+		# weight = 1
+	# }
+# }
+
 energy_expenditure_armies = {
 	resource = energy 
 	type = expenditure

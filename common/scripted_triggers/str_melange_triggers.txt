@@ -1,8 +1,8 @@
 # starnet AI File
 #
-# Calvitix Check 3.0.3b  30/04/2021
+# Calvitix Check 3.0.3  21/05/2021
 #
-# Merge with Starnet OK   17/05/2021
+# Merge with Starnet OK   21/05/2021
 
 str_force_city_district = {
 	
@@ -157,10 +157,35 @@ str_force_mineral_purification = {
 
 str_force_building_factory = {
 
-	always = no
+	and = {
+		free_building_slots > 0
+		owner = {
+			resource_stockpile_compare = {
+				resource = minerals
+				value > 1000
+			}
+		}
+		has_designation = col_factory
+		num_districts = {
+			type = district_industrial
+			value > 3
+		}
+		str_factory_to_foundry_switcher = no
+		owner = { str_raw_ecocrisis_level_0 = no }
+	}
+	num_buildings = {
+		type = building_factory_1
+		value = 0
+	}
+	num_buildings = {
+		type = building_foundry_1
+		value = 0
+	}
 }
 
 str_force_building_foundry = {
+	or = {
+	and = {	
 	years_passed < 10
 	owner = {
 	resource_stockpile_compare = {
@@ -184,6 +209,24 @@ str_force_building_foundry = {
 		}
 	} }
 	is_capital = yes
+	}
+	and = {
+		free_building_slots > 0
+		owner = {
+			resource_stockpile_compare = {
+				resource = minerals
+				value > 1000
+			}
+		}
+		has_designation = col_foundry
+		num_districts = {
+			type = district_industrial
+			value > 3
+		}
+		str_foundry_to_factory_switcher = no
+		owner = { str_raw_ecocrisis_level_0 = no }
+	}
+	}
 	num_buildings = {
 		type = building_foundry_1
 		value = 0

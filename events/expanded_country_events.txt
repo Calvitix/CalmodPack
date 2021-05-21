@@ -879,8 +879,8 @@ country_event = {
 		random_system = {
 			limit = {
 				OR = {
-					any_system_planet = { is_planet_class = g_star }
-					any_system_planet = { is_planet_class = k_star }
+					any_system_planet = { is_planet_class = pc_g_star }
+					any_system_planet = { is_planet_class = pc_k_star }
 				}
 				NOT = {
 					any_system_planet = { colonizeable_planet = yes }
@@ -907,6 +907,43 @@ country_event = {
 			}
 			save_event_target_as = colony_system_1
 			set_star_flag = colony_system_1
+		}
+		if = {
+			limit = {
+				NOT = { exists = event_target:colony_system_1 }
+			}
+			random_system = {
+				limit = {
+					OR = {
+						any_system_planet = { is_planet_class = pc_g_star }
+						any_system_planet = { is_planet_class = pc_k_star }
+					}
+					NOT = {
+						any_system_planet = { colonizeable_planet = yes }
+					}
+					root = {
+						intel_level = {
+							level = none
+							system = prev
+						}
+					}
+					any_system_planet = {
+						is_barren = yes
+					}
+					distance = {
+						source = event_target:capital
+						use_bypasses = no
+						min_jumps = 1
+						max_jumps = 20
+					}
+					NOR = {
+						exists = space_owner
+						has_star_flag = hostile_system
+					}
+				}
+				save_event_target_as = colony_system_1
+				set_star_flag = colony_system_1
+			}
 		}
 		# The Persea, crashed on habitable planet, no one survived / survivors eaten / survivors still live / upset titanic life / lives with primitives / bleak planet / exofungus / hallucinogenics
 		closest_system = {
@@ -960,6 +997,37 @@ country_event = {
 			save_event_target_as = colony_system_3
 			set_star_flag = colony_system_3
 		}
+		if = {
+			limit = {
+				NOT = { exists = event_target:colony_system_3 }
+			}
+			random_system = {
+				limit = {
+					NOT = { is_star_class = sc_black_hole }
+					distance = {
+						source = event_target:capital
+						use_bypasses = no
+						min_jumps = 2
+						max_jumps = 20
+					}
+					root = {
+						intel_level = {
+							level = none
+							system = prev
+						}
+					}
+					NOT = {
+						exists = space_owner
+						any_neighbor_system = { exists = space_owner }
+						has_star_flag = hostile_system
+						has_star_flag = colony_system_1
+						has_star_flag = colony_system_2
+					}
+				}
+				save_event_target_as = colony_system_3
+				set_star_flag = colony_system_3
+			}
+		}
 		# The Carpinus, jumped way off course. Disintegrated / landed in barren system / enslaved on primitive world / sucked into black hole / landed in shroud / flung out of the galaxy
 		random_system = {
 			limit = {
@@ -987,6 +1055,38 @@ country_event = {
 			}
 			save_event_target_as = colony_system_4
 			set_star_flag = colony_system_4
+		}
+		if = {
+			limit = {
+				NOT = { exists = event_target:colony_system_4 }
+			}
+			random_system = {
+				limit = {
+					NOT = { is_star_class = sc_black_hole }
+					distance = {
+						source = event_target:capital
+						use_bypasses = no
+						min_jumps = 4
+						max_jumps = 25
+					}
+					root = {
+						intel_level = {
+							level = none
+							system = prev
+						}
+					}
+					NOT = {
+						exists = space_owner
+						any_neighbor_system = { exists = space_owner }
+						has_star_flag = hostile_system
+						has_star_flag = colony_system_1
+						has_star_flag = colony_system_2
+						has_star_flag = colony_system_3
+					}
+				}
+				save_event_target_as = colony_system_4
+				set_star_flag = colony_system_4
+			}
 		}
 		create_point_of_interest = {
 			id = com_search_poi.1

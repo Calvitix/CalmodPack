@@ -1,9 +1,9 @@
 # Original File
 #
-# Calvitix Check 3.0.3b  30/04/2021
+# Calvitix Check 3.0.3  21/05/2021
 #
 # Merge with Plentiful traditions 09/05/2021
-# Merge with Starnet OK 16/05/2021
+# Merge with Starnet OK 21/05/2021
 #############
 # Government buildings
 #############
@@ -94,7 +94,6 @@ building_bureaucratic_1 = {
 
 	potential = {
 		exists = owner
-		#building_relaxed_basic_income_check = yes
 		owner = { is_regular_empire = yes }
 #STARNET AI		
 		or = {
@@ -676,18 +675,14 @@ building_precinct_house = {
 		hidden_trigger = {
 			OR = {
 				owner = { is_ai = no }
-				AND = {
-					planet_crime > 15
-					NOR = {
-						has_modifier = crime_lord_deal
-					owner = { has_civic = civic_merchant_guilds }
-						AND = {
-							has_building = building_precinct_house
-							owner = { has_technology = tech_colonial_centralization }
-						}
-						has_building = building_hall_judgment
-						num_buildings = { type = building_precinct_house value = 3 }
-					}
+				and = {
+					planet_crime > 20
+
+					not = { has_modifier = crime_lord_deal }
+					num_buildings = {
+						type = building_precinct_house
+						value = 0
+					} 
 				}
 			}
 		}
@@ -699,7 +694,7 @@ building_precinct_house = {
 			NOT = {	owner = { is_regular_empire = yes }	}
 			AND = {
 				owner = { is_ai = yes } 
-				or = { has_modifier = crime_lord_deal owner = { not = { has_civic = civic_merchant_guilds } } }
+				has_modifier = crime_lord_deal  
 			#Players dont like random buildings blowing up
 			}#This way the AI gets to reclaim its building slots that it sunk into this expense
 		}

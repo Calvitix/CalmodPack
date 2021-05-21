@@ -3,8 +3,8 @@
 # Calvitix Check 3.0.2  25/04/2021
 #
 #
-# Merge with Expanded Events  25/04/2021
-# 
+# Merge with Expanded Events  21/05/2021
+# merged in E:\Documents\Paradox Interactive\Stellaris\mod\Calmodpack\events\country_events.txt 
 #
 ############################
 #
@@ -17,488 +17,488 @@
 namespace = country
 
 # Probe Ion Trail
-ship_event = {
-	id = country.5
-	title = "country.5.name"
-	desc = "country.5.desc"
-	picture = GFX_evt_satellite_in_orbit
-	show_sound = event_scanner
-	location = ROOT
+# ship_event = {
+	# id = country.5
+	# title = "country.5.name"
+	# desc = "country.5.desc"
+	# picture = GFX_evt_satellite_in_orbit
+	# show_sound = event_scanner
+	# location = ROOT
 	
-	is_triggered_only = yes
+	# is_triggered_only = yes
 
-	option = {
-		name = "country.5.a"
-		FROM = { save_event_target_as = ion_trail_system }
-		hidden_effect = {
-			owner = {
-				set_country_flag = chasing_ion_trail
-				set_country_flag = probe_salvage_flag
-			}
-			closest_system = {
-				limit = {
-					NOR = {
-						exists = space_owner
-						has_star_flag = probe_system_1
-						has_star_flag = probe_system_2
-						has_star_flag = probe_system_3
-						has_star_flag = probe_system_4
-						has_star_flag = hostile_system
-						is_same_value = event_target:ion_trail_system
-					}
-				}
-				save_event_target_as = ion_trail_target
-				set_star_flag = ion_trail_target
-			}
-			create_point_of_interest = {
-				id = probe_ion_trail_poi.1
-				name = "probe_ion_trail_poi"
-				desc = "probe_ion_trail_poi_desc"
-				event_chain = "sublight_probes_chain"
-				location = event_target:ion_trail_target
-			}
-		}
-	}
-}
+	# option = {
+		# name = "country.5.a"
+		# FROM = { save_event_target_as = ion_trail_system }
+		# hidden_effect = {
+			# owner = {
+				# set_country_flag = chasing_ion_trail
+				# set_country_flag = probe_salvage_flag
+			# }
+			# closest_system = {
+				# limit = {
+					# NOR = {
+						# exists = space_owner
+						# has_star_flag = probe_system_1
+						# has_star_flag = probe_system_2
+						# has_star_flag = probe_system_3
+						# has_star_flag = probe_system_4
+						# has_star_flag = hostile_system
+						# is_same_value = event_target:ion_trail_system
+					# }
+				# }
+				# save_event_target_as = ion_trail_target
+				# set_star_flag = ion_trail_target
+			# }
+			# create_point_of_interest = {
+				# id = probe_ion_trail_poi.1
+				# name = "probe_ion_trail_poi"
+				# desc = "probe_ion_trail_poi_desc"
+				# event_chain = "sublight_probes_chain"
+				# location = event_target:ion_trail_target
+			# }
+		# }
+	# }
+# }
 
 ### Habitable Worlds Survey
 # Survey Complete
-country_event = {
-	id = country.51
-	title = "country.51.name"
-	desc = "country.51.desc"
-	picture = GFX_evt_society_research
-	show_sound = event_laboratory_sound
+# country_event = {
+	# id = country.51
+	# title = "country.51.name"
+	# desc = "country.51.desc"
+	# picture = GFX_evt_society_research
+	# show_sound = event_laboratory_sound
 	
-	trigger = {
-		has_completed_event_chain_counter = {
-			event_chain = "survey_habitable_worlds_chain" 
-			counter = "habitable_worlds_surveyed" 
-		}
-		NOT = { has_country_flag = completed_habitable_worlds_survey }
-	}
+	# trigger = {
+		# has_completed_event_chain_counter = {
+			# event_chain = "survey_habitable_worlds_chain" 
+			# counter = "habitable_worlds_surveyed" 
+		# }
+		# NOT = { has_country_flag = completed_habitable_worlds_survey }
+	# }
 	
-	# Risa fix: no point to use mtth, when the event's trigger counter is altered by only one source (country.52)
-	# let this event be called there directly instead
-	#mean_time_to_happen = {
-	#	days = 1
-	#}	
-	is_triggered_only = yes
+	# # Risa fix: no point to use mtth, when the event's trigger counter is altered by only one source (country.52)
+	# # let this event be called there directly instead
+	# #mean_time_to_happen = {
+	# #	days = 1
+	# #}	
+	# is_triggered_only = yes
 	
-	immediate = {
-		set_country_flag = completed_habitable_worlds_survey
-	}
+	# immediate = {
+		# set_country_flag = completed_habitable_worlds_survey
+	# }
 
-	option = {
-		name = "EXCELLENT"
-		end_event_chain = "survey_habitable_worlds_chain"
-		add_monthly_resource_mult = {
-			resource = society_research
-			value = @tier4researchreward
-			min = @tier4researchmin
-			max = @tier4researchmax
-		}
-		add_monthly_resource_mult = {
-			resource = energy
-			value = @tier1materialreward
-			min = @tier1materialmin
-			max = @tier1materialmax
-		}
-		hidden_effect = { set_country_flag = museum_of_exobiology }
-	}
-}
+	# option = {
+		# name = "EXCELLENT"
+		# end_event_chain = "survey_habitable_worlds_chain"
+		# add_monthly_resource_mult = {
+			# resource = society_research
+			# value = @tier4researchreward
+			# min = @tier4researchmin
+			# max = @tier4researchmax
+		# }
+		# add_monthly_resource_mult = {
+			# resource = energy
+			# value = @tier1materialreward
+			# min = @tier1materialmin
+			# max = @tier1materialmax
+		# }
+		# hidden_effect = { set_country_flag = museum_of_exobiology }
+	# }
+# }
 
-# Specimen Procurement
-country_event = {
-	id = country.53
-	title = "country.53.name"
-	desc = "country.53.desc"
-	picture = GFX_evt_society_research
-	show_sound = event_laboratory_sound
-	trackable = yes
+# # Specimen Procurement
+# country_event = {
+	# id = country.53
+	# title = "country.53.name"
+	# desc = "country.53.desc"
+	# picture = GFX_evt_society_research
+	# show_sound = event_laboratory_sound
+	# trackable = yes
 	
-	trigger = {
-		has_country_flag = museum_of_exobiology
-		any_system = {
-			any_system_planet = {
-				is_surveyed = {
-					who = ROOT
-					status = yes
-				}
-				is_capital = no
-				is_ocean = yes
-				solar_system = {
-					OR = {
-						NOT = { exists = space_owner }
-						AND = {
-							exists = space_owner 
-							space_owner = {
-								NOT = { is_country_type = fallen_empire }
-								NOT = { is_country_type = awakened_fallen_empire }
-								NOT = { has_closed_borders = ROOT }
-							}
-						}
-					}
-				}
-			}
-		}
-		any_system = {
-			any_system_planet = {
-				is_surveyed = {
-					who = ROOT
-					status = yes
-				}
-				is_capital = no
-				is_desert = yes
-				solar_system = {
-					OR = {
-						NOT = { exists = space_owner }
-						AND = {
-							exists = space_owner 
-							space_owner = {
-								NOT = { is_country_type = fallen_empire }
-								NOT = { is_country_type = awakened_fallen_empire }
-								NOT = { has_closed_borders = ROOT }
-							}
-						}
-					}
-				}
-			}
-		}
-		any_system = {
-			any_system_planet = {
-				is_surveyed = {
-					who = ROOT
-					status = yes
-				}
-				is_capital = no
-				is_tropical = yes
-				solar_system = {
-					OR = {
-						NOT = { exists = space_owner }
-						AND = {
-							exists = space_owner 
-							space_owner = {
-								NOT = { is_country_type = fallen_empire }
-								NOT = { is_country_type = awakened_fallen_empire }
-								NOT = { has_closed_borders = ROOT }
-							}
-						}
-					}
-				}
-			}
-		}
-		any_system = {
-			any_system_planet = {
-				is_surveyed = {
-					who = ROOT
-					status = yes
-				}
-				is_capital = no
-				is_arid = yes
-				solar_system = {
-					OR = {
-						NOT = { exists = space_owner }
-						AND = {
-							exists = space_owner 
-							space_owner = {
-								NOT = { is_country_type = fallen_empire }
-								NOT = { is_country_type = awakened_fallen_empire }
-								NOT = { has_closed_borders = ROOT }
-							}
-						}
-					}
-				}
-			}
-		}
-		any_system = {
-			any_system_planet = {
-				is_surveyed = {
-					who = ROOT
-					status = yes
-				}
-				is_capital = no
-				is_continental = yes
-				solar_system = {
-					OR = {
-						NOT = { exists = space_owner }
-						AND = {
-							exists = space_owner 
-							space_owner = {
-								NOT = { is_country_type = fallen_empire }
-								NOT = { is_country_type = awakened_fallen_empire }
-								NOT = { has_closed_borders = ROOT }
-							}
-						}
-					}
-				}
-			}
-		}
-		any_system = {
-			any_system_planet = {
-				is_surveyed = {
-					who = ROOT
-					status = yes
-				}
-				is_capital = no
-				is_arctic = yes
-				solar_system = {
-					OR = {
-						NOT = { exists = space_owner }
-						AND = {
-							exists = space_owner 
-							space_owner = {
-								NOT = { is_country_type = fallen_empire }
-								NOT = { is_country_type = awakened_fallen_empire }
-								NOT = { has_closed_borders = ROOT }
-							}
-						}
-					}
-				}
-			}
-		}
-		any_system = {
-			any_system_planet = {
-				is_surveyed = {
-					who = ROOT
-					status = yes
-				}
-				is_capital = no
-				is_tundra = yes
-				solar_system = {
-					OR = {
-						NOT = { exists = space_owner }
-						AND = {
-							exists = space_owner 
-							space_owner = {
-								NOT = { is_country_type = fallen_empire }
-								NOT = { is_country_type = awakened_fallen_empire }
-								NOT = { has_closed_borders = ROOT }
-							}
-						}
-					}
-				}
-			}
-		}
-	}
+	# trigger = {
+		# has_country_flag = museum_of_exobiology
+		# any_system = {
+			# any_system_planet = {
+				# is_surveyed = {
+					# who = ROOT
+					# status = yes
+				# }
+				# is_capital = no
+				# is_ocean = yes
+				# solar_system = {
+					# OR = {
+						# NOT = { exists = space_owner }
+						# AND = {
+							# exists = space_owner 
+							# space_owner = {
+								# NOT = { is_country_type = fallen_empire }
+								# NOT = { is_country_type = awakened_fallen_empire }
+								# NOT = { has_closed_borders = ROOT }
+							# }
+						# }
+					# }
+				# }
+			# }
+		# }
+		# any_system = {
+			# any_system_planet = {
+				# is_surveyed = {
+					# who = ROOT
+					# status = yes
+				# }
+				# is_capital = no
+				# is_desert = yes
+				# solar_system = {
+					# OR = {
+						# NOT = { exists = space_owner }
+						# AND = {
+							# exists = space_owner 
+							# space_owner = {
+								# NOT = { is_country_type = fallen_empire }
+								# NOT = { is_country_type = awakened_fallen_empire }
+								# NOT = { has_closed_borders = ROOT }
+							# }
+						# }
+					# }
+				# }
+			# }
+		# }
+		# any_system = {
+			# any_system_planet = {
+				# is_surveyed = {
+					# who = ROOT
+					# status = yes
+				# }
+				# is_capital = no
+				# is_tropical = yes
+				# solar_system = {
+					# OR = {
+						# NOT = { exists = space_owner }
+						# AND = {
+							# exists = space_owner 
+							# space_owner = {
+								# NOT = { is_country_type = fallen_empire }
+								# NOT = { is_country_type = awakened_fallen_empire }
+								# NOT = { has_closed_borders = ROOT }
+							# }
+						# }
+					# }
+				# }
+			# }
+		# }
+		# any_system = {
+			# any_system_planet = {
+				# is_surveyed = {
+					# who = ROOT
+					# status = yes
+				# }
+				# is_capital = no
+				# is_arid = yes
+				# solar_system = {
+					# OR = {
+						# NOT = { exists = space_owner }
+						# AND = {
+							# exists = space_owner 
+							# space_owner = {
+								# NOT = { is_country_type = fallen_empire }
+								# NOT = { is_country_type = awakened_fallen_empire }
+								# NOT = { has_closed_borders = ROOT }
+							# }
+						# }
+					# }
+				# }
+			# }
+		# }
+		# any_system = {
+			# any_system_planet = {
+				# is_surveyed = {
+					# who = ROOT
+					# status = yes
+				# }
+				# is_capital = no
+				# is_continental = yes
+				# solar_system = {
+					# OR = {
+						# NOT = { exists = space_owner }
+						# AND = {
+							# exists = space_owner 
+							# space_owner = {
+								# NOT = { is_country_type = fallen_empire }
+								# NOT = { is_country_type = awakened_fallen_empire }
+								# NOT = { has_closed_borders = ROOT }
+							# }
+						# }
+					# }
+				# }
+			# }
+		# }
+		# any_system = {
+			# any_system_planet = {
+				# is_surveyed = {
+					# who = ROOT
+					# status = yes
+				# }
+				# is_capital = no
+				# is_arctic = yes
+				# solar_system = {
+					# OR = {
+						# NOT = { exists = space_owner }
+						# AND = {
+							# exists = space_owner 
+							# space_owner = {
+								# NOT = { is_country_type = fallen_empire }
+								# NOT = { is_country_type = awakened_fallen_empire }
+								# NOT = { has_closed_borders = ROOT }
+							# }
+						# }
+					# }
+				# }
+			# }
+		# }
+		# any_system = {
+			# any_system_planet = {
+				# is_surveyed = {
+					# who = ROOT
+					# status = yes
+				# }
+				# is_capital = no
+				# is_tundra = yes
+				# solar_system = {
+					# OR = {
+						# NOT = { exists = space_owner }
+						# AND = {
+							# exists = space_owner 
+							# space_owner = {
+								# NOT = { is_country_type = fallen_empire }
+								# NOT = { is_country_type = awakened_fallen_empire }
+								# NOT = { has_closed_borders = ROOT }
+							# }
+						# }
+					# }
+				# }
+			# }
+		# }
+	# }
 	
-	mean_time_to_happen = {
-		months = 120
-	}
+	# mean_time_to_happen = {
+		# months = 120
+	# }
 	
-	immediate = {
-		remove_country_flag = museum_of_exobiology
-	}
+	# immediate = {
+		# remove_country_flag = museum_of_exobiology
+	# }
 
-	option = {
-		name = "country.53.a"
-		begin_event_chain = {
-			event_chain = "specimen_procurement_chain"
-			target = ROOT
-		}
-		hidden_effect = {
-			random_galaxy_planet = { # TARBLAC
-				limit = {
-					is_surveyed = {
-						who = ROOT
-						status = yes
-					}
-					is_ocean = yes
-					is_capital = no
-					solar_system = {
-						OR = {
-							NOT = { exists = space_owner }
-							AND = {
-								exists = space_owner 
-								space_owner = {
-									NOT = { is_country_type = fallen_empire }
-									NOT = { is_country_type = awakened_fallen_empire }
-									NOT = { has_closed_borders = ROOT }
-								}
-							}
-						}
-					}
-				}
-				enable_special_project = {
-					name = "TARBLAC_PROCUREMENT"
-					location = this
-					owner = root
-				}
-			}
-			random_galaxy_planet = { # TASSARGOID
-				limit = { 
-					is_surveyed = {
-						who = ROOT
-						status = yes
-					}
-					is_tropical = yes
-					is_capital = no
-					solar_system = {
-						OR = {
-							NOT = { exists = space_owner }
-							AND = {
-								exists = space_owner 
-								space_owner = {
-									NOT = { is_country_type = fallen_empire }
-									NOT = { is_country_type = awakened_fallen_empire }
-									NOT = { has_closed_borders = ROOT }
-								}
-							}
-						}
-					}
-				}
-				enable_special_project = {
-					name = "TASSARGOID_PROCUREMENT"
-					location = this
-					owner = root
-				}
-			}
-			random_galaxy_planet = { # ORINTHI
-				limit = {
-					is_surveyed = {
-						who = ROOT
-						status = yes
-					}
-					is_continental = yes
-					is_capital = no
-					solar_system = {
-						OR = {
-							NOT = { exists = space_owner }
-							AND = {
-								exists = space_owner 
-								space_owner = {
-									NOT = { is_country_type = fallen_empire }
-									NOT = { is_country_type = awakened_fallen_empire }
-									NOT = { has_closed_borders = ROOT }
-								}
-							}
-						}
-					}
-				}
-				enable_special_project = {
-					name = "ORINTHI_PROCUREMENT"
-					location = this
-					owner = root
-				}
-			}
-			random_galaxy_planet = { # SNIRAN
-				limit = {
-					is_surveyed = {
-						who = ROOT
-						status = yes
-					}
-					is_desert = yes
-					is_capital = no
-					solar_system = {
-						OR = {
-							NOT = { exists = space_owner }
-							AND = {
-								exists = space_owner 
-								space_owner = {
-									NOT = { is_country_type = fallen_empire }
-									NOT = { is_country_type = awakened_fallen_empire }
-									NOT = { has_closed_borders = ROOT }								
-								}
-							}
-						}
-					}
-				}
-				enable_special_project = {
-					name = "SNIRAN_PROCUREMENT"
-					location = this
-					owner = root
-				}
-			}
-			random_galaxy_planet = { # GOOLANTHA
-				limit = {
-					is_surveyed = {
-						who = ROOT
-						status = yes
-					}
-					is_tundra = yes
-					is_capital = no
-					solar_system = {
-						OR = {
-							NOT = { exists = space_owner }
-							AND = {
-								exists = space_owner 
-								space_owner = {
-									NOT = { is_country_type = fallen_empire }
-									NOT = { is_country_type = awakened_fallen_empire }
-									NOT = { has_closed_borders = ROOT }	
-								}
-							}
-						}
-					}
-				}
-				enable_special_project = {
-					name = "GOOLANTHA_PROCUREMENT"
-					location = this
-					owner = root
-				}
-			}
-			random_galaxy_planet = { # UDDLORAN
-				limit = {
-					is_surveyed = {
-						who = ROOT
-						status = yes
-					}
-					is_arctic = yes
-					is_capital = no
-					solar_system = {
-						OR = {
-							NOT = { exists = space_owner }
-							AND = {
-								exists = space_owner 
-								space_owner = {
-									NOT = { is_country_type = fallen_empire }
-									NOT = { is_country_type = awakened_fallen_empire }
-									NOT = { has_closed_borders = ROOT }	
-								}
-							}
-						}
-					}
-				}
-				enable_special_project = {
-					name = "UDDLORAN_PROCUREMENT"
-					location = this
-					owner = root
-				}
-			}
-			random_galaxy_planet = { # ZULCOR
-				limit = {
-					is_surveyed = {
-						who = ROOT
-						status = yes
-					}
-					is_arid = yes
-					is_capital = no
-					solar_system = {
-						OR = {
-							NOT = { exists = space_owner }
-							AND = {
-								exists = space_owner 
-								space_owner = {
-									NOT = { is_country_type = fallen_empire }
-									NOT = { is_country_type = awakened_fallen_empire }
-									NOT = { has_closed_borders = ROOT }	
-								}
-							}
-						}
-					}
-				}
-				enable_special_project = {
-					name = "ZULCOR_PROCUREMENT"
-					location = this
-					owner = root
-				}
-			}
-		}
-	}
-	option = {
-		name = "country.53.b"
-	}
-}
+	# option = {
+		# name = "country.53.a"
+		# begin_event_chain = {
+			# event_chain = "specimen_procurement_chain"
+			# target = ROOT
+		# }
+		# hidden_effect = {
+			# random_galaxy_planet = { # TARBLAC
+				# limit = {
+					# is_surveyed = {
+						# who = ROOT
+						# status = yes
+					# }
+					# is_ocean = yes
+					# is_capital = no
+					# solar_system = {
+						# OR = {
+							# NOT = { exists = space_owner }
+							# AND = {
+								# exists = space_owner 
+								# space_owner = {
+									# NOT = { is_country_type = fallen_empire }
+									# NOT = { is_country_type = awakened_fallen_empire }
+									# NOT = { has_closed_borders = ROOT }
+								# }
+							# }
+						# }
+					# }
+				# }
+				# enable_special_project = {
+					# name = "TARBLAC_PROCUREMENT"
+					# location = this
+					# owner = root
+				# }
+			# }
+			# random_galaxy_planet = { # TASSARGOID
+				# limit = { 
+					# is_surveyed = {
+						# who = ROOT
+						# status = yes
+					# }
+					# is_tropical = yes
+					# is_capital = no
+					# solar_system = {
+						# OR = {
+							# NOT = { exists = space_owner }
+							# AND = {
+								# exists = space_owner 
+								# space_owner = {
+									# NOT = { is_country_type = fallen_empire }
+									# NOT = { is_country_type = awakened_fallen_empire }
+									# NOT = { has_closed_borders = ROOT }
+								# }
+							# }
+						# }
+					# }
+				# }
+				# enable_special_project = {
+					# name = "TASSARGOID_PROCUREMENT"
+					# location = this
+					# owner = root
+				# }
+			# }
+			# random_galaxy_planet = { # ORINTHI
+				# limit = {
+					# is_surveyed = {
+						# who = ROOT
+						# status = yes
+					# }
+					# is_continental = yes
+					# is_capital = no
+					# solar_system = {
+						# OR = {
+							# NOT = { exists = space_owner }
+							# AND = {
+								# exists = space_owner 
+								# space_owner = {
+									# NOT = { is_country_type = fallen_empire }
+									# NOT = { is_country_type = awakened_fallen_empire }
+									# NOT = { has_closed_borders = ROOT }
+								# }
+							# }
+						# }
+					# }
+				# }
+				# enable_special_project = {
+					# name = "ORINTHI_PROCUREMENT"
+					# location = this
+					# owner = root
+				# }
+			# }
+			# random_galaxy_planet = { # SNIRAN
+				# limit = {
+					# is_surveyed = {
+						# who = ROOT
+						# status = yes
+					# }
+					# is_desert = yes
+					# is_capital = no
+					# solar_system = {
+						# OR = {
+							# NOT = { exists = space_owner }
+							# AND = {
+								# exists = space_owner 
+								# space_owner = {
+									# NOT = { is_country_type = fallen_empire }
+									# NOT = { is_country_type = awakened_fallen_empire }
+									# NOT = { has_closed_borders = ROOT }								
+								# }
+							# }
+						# }
+					# }
+				# }
+				# enable_special_project = {
+					# name = "SNIRAN_PROCUREMENT"
+					# location = this
+					# owner = root
+				# }
+			# }
+			# random_galaxy_planet = { # GOOLANTHA
+				# limit = {
+					# is_surveyed = {
+						# who = ROOT
+						# status = yes
+					# }
+					# is_tundra = yes
+					# is_capital = no
+					# solar_system = {
+						# OR = {
+							# NOT = { exists = space_owner }
+							# AND = {
+								# exists = space_owner 
+								# space_owner = {
+									# NOT = { is_country_type = fallen_empire }
+									# NOT = { is_country_type = awakened_fallen_empire }
+									# NOT = { has_closed_borders = ROOT }	
+								# }
+							# }
+						# }
+					# }
+				# }
+				# enable_special_project = {
+					# name = "GOOLANTHA_PROCUREMENT"
+					# location = this
+					# owner = root
+				# }
+			# }
+			# random_galaxy_planet = { # UDDLORAN
+				# limit = {
+					# is_surveyed = {
+						# who = ROOT
+						# status = yes
+					# }
+					# is_arctic = yes
+					# is_capital = no
+					# solar_system = {
+						# OR = {
+							# NOT = { exists = space_owner }
+							# AND = {
+								# exists = space_owner 
+								# space_owner = {
+									# NOT = { is_country_type = fallen_empire }
+									# NOT = { is_country_type = awakened_fallen_empire }
+									# NOT = { has_closed_borders = ROOT }	
+								# }
+							# }
+						# }
+					# }
+				# }
+				# enable_special_project = {
+					# name = "UDDLORAN_PROCUREMENT"
+					# location = this
+					# owner = root
+				# }
+			# }
+			# random_galaxy_planet = { # ZULCOR
+				# limit = {
+					# is_surveyed = {
+						# who = ROOT
+						# status = yes
+					# }
+					# is_arid = yes
+					# is_capital = no
+					# solar_system = {
+						# OR = {
+							# NOT = { exists = space_owner }
+							# AND = {
+								# exists = space_owner 
+								# space_owner = {
+									# NOT = { is_country_type = fallen_empire }
+									# NOT = { is_country_type = awakened_fallen_empire }
+									# NOT = { has_closed_borders = ROOT }	
+								# }
+							# }
+						# }
+					# }
+				# }
+				# enable_special_project = {
+					# name = "ZULCOR_PROCUREMENT"
+					# location = this
+					# owner = root
+				# }
+			# }
+		# }
+	# }
+	# option = {
+		# name = "country.53.b"
+	# }
+# }
 
 ### Country Events 2 ###  #merged 
 # barren - enables project something blasted

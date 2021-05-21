@@ -1,8 +1,8 @@
 # Original File
 #
-# Calvitix Check 3.0.3b  03/05/2021
+# Calvitix Check 3.0.3  20/05/2021
 #
-# Merge with JL PICARD 04/05/2021
+# Merge with JL PICARD 21/05/2021
 #
 ###############################œ
 # Pop Faction Events
@@ -661,7 +661,7 @@ planet_event = {
 
     after = {
         owner = {
-            set_country_flag = manifesti_faction
+            set_timed_country_flag = { flag = manifesti_faction days = 955 } #Matches faction on_create, plus some of the evaluation event delay above 3.0.3
         }
     }
 }
@@ -676,7 +676,7 @@ country_event = {
     }
 }
 
-# Manifesti faction in decline (if suppressed | from = pop_faction )
+# Manifesti faction in decline (via faction on_destroy OR faction on_create + time delay | from = pop_faction ) 3.0.3
 country_event = {
     id = manifesti.30
 	title = manifesti.30.name
@@ -698,7 +698,7 @@ country_event = {
     }
 
     immediate = {
-        set_country_flag = manifesti_decline
+        set_country_flag = manifesti_decline #Can force removal of the faction even if the timed "manifesti_faction" flag remains active 3.0.3
         every_owned_pop = {
             limit = {
                 OR = { #Those eligible to join the faction (in lieu of a has_faction trigger for pops)
@@ -711,7 +711,6 @@ country_event = {
                 }
             }
             set_pop_flag = manifesti_bored
-            # force_faction_evaluation = yes
         }
     }
 

@@ -20,7 +20,7 @@ colonizeable_planet = {
 		is_planet_class = pc_nuked
 		is_planet_class = pc_hive
 		is_planet_class = pc_machine
-		habitable_structure = yes
+		is_artificial = yes
 		habitable_planet = yes
 		is_planet_class = pc_irradiated
 	}
@@ -47,11 +47,13 @@ habitable_planet = {
 		is_planet_class = pc_mangrove
 		is_planet_class = pc_wetswamp
 		is_planet_class = pc_hajungle
+		is_planet_class = pc_cenote
 		is_planet_class = pc_biolumen
 		is_planet_class = pc_steppe
 		is_planet_class = pc_sandsea
 		is_planet_class = pc_oasis
 		is_planet_class = pc_mesa
+		is_planet_class = pc_badlands
 		is_planet_class = pc_outback
 		is_planet_class = pc_swamp
 		is_planet_class = pc_mud
@@ -131,11 +133,13 @@ can_have_habitable_deposits = {
 		is_planet_class = pc_mangrove
 		is_planet_class = pc_wetswamp
 		is_planet_class = pc_hajungle
+		is_planet_class = pc_cenote
 		is_planet_class = pc_biolumen
 		is_planet_class = pc_steppe
 		is_planet_class = pc_sandsea
 		is_planet_class = pc_oasis
 		is_planet_class = pc_mesa
+		is_planet_class = pc_badlands
 		is_planet_class = pc_outback
 		is_planet_class = pc_swamp
 		is_planet_class = pc_mud
@@ -193,23 +197,6 @@ can_have_habitable_deposits = {
 	}
 }
 
-habitable_structure = {
-	OR = {
-		is_artificial = yes
-		is_planet_class = pc_ringworld_habitable
-		is_planet_class = pc_habitat
-		is_planet_class = pc_archive
-		is_planet_class = pc_pd_gas_giant_hab
-		is_planet_class = pc_pd_barren_hab
-		is_planet_class = pc_pd_barren_cold_hab
-		is_planet_class = pc_pd_frozen_hab
-		is_planet_class = pc_pd_molten_hab
-		is_planet_class = pc_pd_toxic_hab
-		is_planet_class = pc_pd_hothouse_hab
-		is_planet_class = pc_pd_asteroid_hab
-	}
-}
-
 is_wet = {
 	OR = {
 		is_planet_class = pc_ocean
@@ -220,8 +207,9 @@ is_wet = {
 		is_planet_class = pc_subarctic
 		is_planet_class = pc_mangrove
 		is_planet_class = pc_wetswamp
-		is_planet_class = pc_swamp
+		is_planet_class = pc_swamp #Calvitix
 		is_planet_class = pc_hajungle
+		is_planet_class = pc_cenote
 		is_planet_class = pc_biolumen
 		is_planet_class = pc_retinal
 		is_planet_class = pc_forest
@@ -235,7 +223,6 @@ is_wet = {
 		is_planet_class = pc_megafloratol
 		is_planet_class = pc_aquatic
 		is_planet_class = pc_biolumen
-		
 	}
 }
 
@@ -248,6 +235,7 @@ is_dry = {
 		is_planet_class = pc_sandsea
 		is_planet_class = pc_oasis
 		is_planet_class = pc_mesa
+		is_planet_class = pc_badlands
 		is_planet_class = pc_outback
 		is_planet_class = pc_hadesert
 		is_planet_class = pc_prairie
@@ -343,95 +331,98 @@ is_pd_exotic = {
 		is_planet_class = pc_ash
 	}
 }
-can_destroy_planet_with_PLANET_KILLER_CRACKER = {
-	custom_tooltip = {
-		fail_text = is_not_a_standard_planet_or_megastructure
-		is_a_planet_megastructure = yes
-	}
-	custom_tooltip = {
-		fail_text = is_shielded
-		NOR = {
-			is_planet_class = pc_shielded
-			is_planet_class = pc_ringworld_shielded
-			is_planet_class = pc_habitat_shielded
-		}
-	}
-	#custom_tooltip = {
-		#fail_text = is_not_hostile
-		OR = {
-			custom_tooltip = {
-				text = is_not_hostile_cracker
-				OR = {
-					AND = {
-						exists = space_owner
-						space_owner = {
-							OR = {
-								is_at_war_with = from.owner
-								is_country_type = swarm
-								is_country_type = extradimensional
-								is_country_type = extradimensional_2
-								is_country_type = extradimensional_3
-								is_country_type = ai_empire
-							}
-						}
-					}
-					AND = { # colony
-						exists = owner
-						owner = {
-							OR = {
-								is_at_war_with = from.owner
-								is_country_type = swarm
-								is_country_type = extradimensional
-								is_country_type = extradimensional_2
-								is_country_type = extradimensional_3
-								is_country_type = ai_empire
-							}
-						}
-					}
-					AND = { # primitive
-						exists = space_owner
-						exists = owner
-						owner = {
-							is_primitive = yes
-						}
-						space_owner = {
-							OR = {
-								is_at_war_with = from.owner
-								is_country_type = swarm
-								is_country_type = extradimensional
-								is_country_type = extradimensional_2
-								is_country_type = extradimensional_3
-								is_country_type = ai_empire
-							}
-						}
-					}
-				}
-			}
-			custom_tooltip = {
-				text = not_barren_molten_frozen_toxic_test_fire
-				NOT = { exists = owner }
-				OR = {
-					NOT = { exists = space_owner }
-					AND = {
-						exists = space_owner
-						space_owner = { is_same_value = from.owner }
-					}
-				}
-				OR = {
-					habitable_planet = yes
-					uninhabitable_regular_planet = yes
-					habitable_structure = yes
-					is_pd_exotic = yes
-					is_pd_unique = yes
-					is_planet_class = pc_diamond
-					is_planet_class = pc_volcanic
-					is_planet_class = pc_chthonian
-					is_planet_class = pc_ethane_ocean
-					is_planet_class = pc_hydrocarbon
-					is_planet_class = pc_subglacial
-					is_planet_class = pc_iron
-				}
-			}
-		}
-	#}
-}
+
+
+###merged in ZZZ_overwrites.txt
+# can_destroy_planet_with_PLANET_KILLER_CRACKER = {
+	# custom_tooltip = {
+		# fail_text = is_not_a_standard_planet_or_megastructure
+		# is_a_planet_megastructure = yes
+	# }
+	# custom_tooltip = {
+		# fail_text = is_shielded
+		# NOR = {
+			# is_planet_class = pc_shielded
+			# is_planet_class = pc_ringworld_shielded
+			# is_planet_class = pc_habitat_shielded
+		# }
+	# }
+	# #custom_tooltip = {
+		# #fail_text = is_not_hostile
+		# OR = {
+			# custom_tooltip = {
+				# text = is_not_hostile_cracker
+				# OR = {
+					# AND = {
+						# exists = space_owner
+						# space_owner = {
+							# OR = {
+								# is_at_war_with = from.owner
+								# is_country_type = swarm
+								# is_country_type = extradimensional
+								# is_country_type = extradimensional_2
+								# is_country_type = extradimensional_3
+								# is_country_type = ai_empire
+							# }
+						# }
+					# }
+					# AND = { # colony
+						# exists = owner
+						# owner = {
+							# OR = {
+								# is_at_war_with = from.owner
+								# is_country_type = swarm
+								# is_country_type = extradimensional
+								# is_country_type = extradimensional_2
+								# is_country_type = extradimensional_3
+								# is_country_type = ai_empire
+							# }
+						# }
+					# }
+					# AND = { # primitive
+						# exists = space_owner
+						# exists = owner
+						# owner = {
+							# is_primitive = yes
+						# }
+						# space_owner = {
+							# OR = {
+								# is_at_war_with = from.owner
+								# is_country_type = swarm
+								# is_country_type = extradimensional
+								# is_country_type = extradimensional_2
+								# is_country_type = extradimensional_3
+								# is_country_type = ai_empire
+							# }
+						# }
+					# }
+				# }
+			# }
+			# custom_tooltip = {
+				# text = not_barren_molten_frozen_toxic_test_fire
+				# NOT = { exists = owner }
+				# OR = {
+					# NOT = { exists = space_owner }
+					# AND = {
+						# exists = space_owner
+						# space_owner = { is_same_value = from.owner }
+					# }
+				# }
+				# OR = {
+					# habitable_planet = yes
+					# uninhabitable_regular_planet = yes
+					# is_artificial = yes
+					# is_pd_exotic = yes
+					# is_pd_unique = yes
+					# is_planet_class = pc_diamond
+					# is_planet_class = pc_volcanic
+					# is_planet_class = pc_chthonian
+					# is_planet_class = pc_ethane_ocean
+					# is_planet_class = pc_hydrocarbon
+					# is_planet_class = pc_subglacial
+					# is_planet_class = pc_iron
+				# }
+			# }
+		# }
+	# #}
+# }

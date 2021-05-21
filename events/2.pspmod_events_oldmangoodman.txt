@@ -549,9 +549,16 @@ country_event = {
 					cooldown = no
 				}
 				give_technology = { tech = tech_hive_node message = no }
+				species = {
+					modify_species = {
+						base = none
+						add_trait = trait_hive_mind
+					}
+				}
+				change_dominant_species = { species = last_created_species }
 				every_owned_pop = {
-					limit = { NOT = { has_trait = trait_hive_mind } }
-					modify_species = { add_trait = trait_hive_mind }
+					limit = { NOT = { is_same_species = last_created_species } }
+					change_species = last_created_species
 				}
 				every_owned_ship = {
 					limit = {
@@ -634,14 +641,30 @@ country_event = {
 						limit = { NOT = { has_technology = tech_bio_reactor } }
 						give_technology = { tech = tech_bio_reactor message = no }
 					}
-					every_owned_pop = {
-						limit = { NOT = { has_trait = trait_machine_unit } }
-						if = {
-							limit = { has_trait = trait_mechanical }
-							modify_species = { remove_trait = trait_mechanical }
+					species = {
+						create_species = {
+							adjective = this
+							name = this
+							namelist = prev
+							plural = this
+							class = "MACHINE"
+							portrait = this
+							traits = { trait = trait_machine_unit }
+							traits = this
+							homeworld = prev.capital_scope
+							effect = {
+								modify_species = {
+									remove_trait = trait_mechanical
+									change_scoped_species = no
+								}
+							}
 						}
-						modify_species = { add_trait = trait_machine_unit }
 					}
+					every_owned_pop = {
+						limit = { NOT = { is_same_species = last_created_species } }
+						change_species = last_created_species
+						}
+					change_dominant_species = { species = last_created_species }
 					every_owned_ship = {
 						limit = {
 							is_ship_class = shipclass_colonizer

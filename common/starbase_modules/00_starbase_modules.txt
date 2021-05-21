@@ -1,7 +1,7 @@
 
 # Original File
 #
-# Calvitix Check 3.0.1  18/04/2021
+# Calvitix Check 3.0.3  21/05/2021
 #
 # Merge with NSC  09/05/2021
 # Modified by Calvitix 15/05/2021
@@ -141,6 +141,11 @@ shipyard = {
 			has_starbase_module = anchorage
 			not = { has_starbase_module = shipyard }
 		}
+		modifier = {
+			factor = 0
+			has_starbase_module = orbital_lab
+			not = { has_starbase_module = shipyard }
+		}
 	}
 }
 
@@ -177,11 +182,11 @@ anchorage = {
 	}
 
 	country_modifier = {
-		country_naval_cap_add = 10 # 15 # 4
+		country_naval_cap_add = 10 # 15 # 4  #NSC
 	}
 	triggered_country_modifier = {
 		potential = { has_starbase_building = naval_logistics_office }
-		country_naval_cap_add = 10 #2
+		country_naval_cap_add = 10 #2   #NSC
 	}
 
 	ai_build_at_chokepoint = yes
@@ -229,6 +234,19 @@ anchorage = {
 				count < 2
 			}
 		}
+		modifier = {
+			factor = 0
+			owner = { used_naval_capacity_percent < 0.7 }
+		}
+		modifier = {
+			factor = 0
+			has_starbase_module = asteroid_mining
+			years_passed < 70
+			owner = { resource_stockpile_compare = {
+				resource = minerals
+				value < 1000
+			} }
+		}
 ###		
 	}
 }
@@ -264,10 +282,10 @@ gun_battery = {
 		}
 	}
 
-	station_modifier = {
-#		ship_hull_mult = 0.10
-#		ship_armor_mult = 0.10
-#		starbase_trade_protection_range_add = 1
+	station_modifier = {  #disabled by NSC (or Calvitix)
+		#ship_hull_mult = 0.10
+		#ship_armor_mult = 0.10
+		#starbase_trade_protection_range_add = 1
 		starbase_trade_protection_add = 3
 	}
 
@@ -554,10 +572,11 @@ hangar_bay = {
 	station_modifier = {
 #		ship_hull_mult = 0.10
 #		ship_armor_mult = 0.10
-		starbase_trade_protection_range_add = 1
+#		starbase_trade_protection_range_add = 1
 		starbase_trade_protection_add = 5
 	}
 
+	ai_build_at_chokepoint = no
 	ai_build_outside_chokepoint = yes
 	ai_weight = {
 		weight = 40 #10
@@ -1177,13 +1196,30 @@ orbital_lab = {
 	ai_build_at_chokepoint = no
 	ai_build_outside_chokepoint = yes
 	ai_weight = {
-		weight = 50
-		modifier = { factor = 5 has_starbase_size < starbase_starport }
-		modifier = { factor = 4 count_starbase_modules = { type = orbital_lab count > 1 } }
-		modifier = { factor = 3 count_starbase_modules = { type = orbital_lab count > 2 } }
-		modifier = { factor = 2 count_starbase_modules = { type = orbital_lab count > 3 } }
-		modifier = { factor = 1 count_starbase_modules = { type = orbital_lab count > 4 } }
-		modifier = { factor = 0 count_starbase_modules = { type = orbital_lab count > 5 } }
+		weight = 300
+		modifier = {
+			factor = 0
+			not = { has_starbase_module = orbital_lab }
+			owner = { needs_shipyard = yes }
+		}	
+		modifier = {
+			factor = 0
+			has_starbase_module = shipyard
+			count_starbase_modules = {
+				type = shipyard
+				count < 2
+			}
+		}
+		modifier = {
+			factor = 0
+			owner = { used_naval_capacity_percent > 0.65 }
+			not = { has_starbase_module = orbital_lab }
+		}
+		modifier = {
+			factor = 0
+			has_starbase_module = asteroid_mining
+			years_passed < 70
+		}
 	}
 }
 
@@ -1216,11 +1252,11 @@ space_foundry = {
 		produces = { trigger = { has_starbase_building = chain_manufacturing } alloys = 1 }
 		upkeep = { minerals = 14 energy = 2 }
 	}	
-	ai_build_at_chokepoint = no
+	ai_build_at_chokepoint = yes
 	ai_build_outside_chokepoint = yes
 	potential = { exists = owner owner = { has_technology = tech_alloys_1 } }
 	ai_weight = {
-		weight = 50
+		weight = 250
 		modifier = { factor = 5 has_starbase_size < starbase_starport }
 		modifier = { factor = 4 count_starbase_modules = { type = space_foundry count > 1 } }
 		modifier = { factor = 3 count_starbase_modules = { type = space_foundry count > 2 } }

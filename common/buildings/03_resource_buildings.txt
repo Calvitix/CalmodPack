@@ -1,8 +1,8 @@
 # Original File
 #
-# Calvitix Check 3.0.3b2  07/05/2021
+# Calvitix Check 3.0.3  21/05/2021
 #
-# Merge with Starnet AI 14/05/2021
+# Merge with Starnet AI 21/05/2021
 # Merge with Planetary Div.
 #
 #############
@@ -28,13 +28,13 @@ building_hydroponics_farm = {
 
 	allow = {
 		buildings_simple_allow = yes
-		str_hydroponics_allow = yes
+		str_hydroponics_allow = yes  #Starnet AI
 	}
 
 	destroy_trigger = {
 		exists = owner
 		OR = {
-			str_hydroponics_destroy = yes 
+			str_hydroponics_destroy = yes  #Starnet AI
 			owner = {
 				is_ai = yes
 				country_uses_food = no
@@ -495,7 +495,7 @@ building_mineral_purification_plant = {
 	}
 
 	allow = {
-		str_mineral_purification_allow = yes
+		str_mineral_purification_allow = yes #Starnet AI
 	}
 
 	planet_modifier = {
@@ -679,7 +679,10 @@ building_mineral_purification_hub = {
 		}
 	}
 
-#3.0.3b2
+	planet_modifier = {
+		planet_miners_minerals_produces_mult = 0.25
+	}
+
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
@@ -712,7 +715,17 @@ building_mineral_purification_hub = {
 		}
 	}
 
-#3.0.3b2
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_robot_empire = yes
+			}
+		}
+		modifier = {
+			planet_miners_minerals_produces_mult = 0.05
+		}
+	}
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
@@ -832,7 +845,7 @@ building_energy_grid = {
 	destroy_trigger = {
 		or = {
 			has_modifier = resort_colony
-			str_energy_grid_destroy = yes
+			str_energy_grid_destroy = yes #Starnet AI
 		}
 	}
 
@@ -849,9 +862,10 @@ building_energy_grid = {
 	}
 
 	allow = {
-		str_energy_grid_allow = yes
+		str_energy_grid_allow = yes #Starnet AI
 	}
 
+#Starnet AI
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
@@ -865,7 +879,7 @@ building_energy_grid = {
 			job_starnet_spice_melange_antifarmer_add = -1
 		}
 	}
-	
+###	
 	triggered_desc = { #3.0.3b2
 		text = building_energy_grid_effect_desc
 	}
@@ -911,9 +925,18 @@ building_energy_grid = {
 				is_robot_empire = yes
 			}
 			NOR  = {
+#PD
 				is_planet_class = pc_habitat
+				is_planet_class = pc_pd_barren_cold_hab
+				is_planet_class = pc_pd_barren_hab
+				is_planet_class = pc_pd_frozen_hab
+				is_planet_class = pc_pd_gas_giant_hab
+				is_planet_class = pc_pd_hothouse_hab
+				is_planet_class = pc_pd_toxic_hab
+				is_planet_class = pc_pd_molten_hab
 				is_planet_class = pc_machine
 				is_planet_class = pc_hive
+#PD end
 				is_planet_class = pc_city
 			}
 		}
