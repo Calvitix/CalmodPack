@@ -1,6 +1,6 @@
 # STARNET AI File
 #
-# Merge with STARNET AI OK  21/05/2021
+# Merge with STARNET AI OK  22/05/2021
 #
 namespace = str_economy_plan
 
@@ -36,11 +36,14 @@ country_event = {
 			remove_country_flag = str_has_designated_foundry_switch
 			remove_country_flag = str_has_designated_good_factory_switch
 			remove_country_flag = str_has_designated_good_foundry_switch
+			remove_country_flag = str_has_designated_good_extra_switch
+			remove_country_flag = str_has_designated_extra_switch
 			remove_country_flag = str_has_misplaced_factory
 			remove_country_flag = str_has_misplaced_foundry
 			remove_country_flag = str_consumer_goods_margin
 			remove_country_flag = str_deleted_extra_shipyard
 			remove_country_flag = str_deleted_extra_anchorage
+
 			set_timed_country_flag = {
 				flag = str_reconsider_plans
 				days = 70
@@ -187,6 +190,13 @@ country_event = {
 						}
 					}
 
+					remove_planet_flag = str_good_factory_switching_candidate
+					remove_planet_flag = str_good_foundry_switching_candidate
+					remove_planet_flag = str_foundry_switching_candidate
+					remove_planet_flag = str_factory_switching_candidate
+					remove_planet_flag = str_good_extra_switching_candidate
+					remove_planet_flag = str_extra_switching_candidate
+
 					if = {
 						limit = {
 							has_designation = col_factory
@@ -197,19 +207,13 @@ country_event = {
 								num_buildings = { type = building_factory_1 value = 0 }
 								num_buildings = { type = building_factory_2 value = 0 }
 							}
-							set_timed_planet_flag = {
-								flag = str_good_factory_switching_candidate
-								days = 200
-							}
+							set_planet_flag = str_good_factory_switching_candidate
 							owner = { set_country_flag = str_has_designated_good_factory_switch } 
 							owner = { set_country_flag = str_has_designated_factory_switch } 
 						}
 						if = {
 							limit = { owner = { not = { has_country_flag = str_has_designated_factory_switch } } }
-							set_timed_planet_flag = {
-								flag = str_factory_switching_candidate
-								days = 200
-							} 
+							set_planet_flag = str_factory_switching_candidate
 							owner = { set_country_flag = str_has_designated_factory_switch } 
 
 						}
@@ -230,23 +234,78 @@ country_event = {
 								num_buildings = { type = building_foundry_1 value = 0 }
 								num_buildings = { type = building_foundry_2 value = 0 }
 							}
-							set_timed_planet_flag = {
-								flag = str_good_foundry_switching_candidate
-								days = 200
-							}
+							set_planet_flag = str_good_foundry_switching_candidate
 							owner = { set_country_flag = str_has_designated_good_foundry_switch } 
 							owner = { set_country_flag = str_has_designated_foundry_switch } 
 						}
 						if = {
 							limit = { owner = { not = { has_country_flag = str_has_designated_foundry_switch } } }
-							set_timed_planet_flag = {
-								flag = str_foundry_switching_candidate
-								days = 200
-							} 
+							set_planet_flag = str_foundry_switching_candidate
 							owner = { set_country_flag = str_has_designated_foundry_switch } 
-
 						}
 					}
+
+					if = {
+						limit = {
+							has_designation = col_foundry
+							owner = { resource_income_compare = {
+								resource = consumer_goods
+								value < 5 }
+							not = { has_country_flag = str_has_designated_good_extra_switch } 
+							}
+							nor = {
+								has_planet_flag = str_foundry_switching_candidate
+								has_planet_flag = str_good_foundry_switching_candidate
+							}
+						}
+
+						if = {
+							limit = {
+								num_buildings = { type = building_foundry_1 value = 0 }
+								num_buildings = { type = building_foundry_2 value = 0 }
+						}
+							set_planet_flag = str_good_extra_switching_candidate
+							owner = { set_country_flag = str_has_designated_good_extra_switch } 
+							owner = { set_country_flag = str_has_designated_extra_switch } 
+					}
+						if = {
+							limit = { owner = { not = { has_country_flag = str_has_designated_extra_switch } } }
+							set_planet_flag = str_extra_switching_candidate
+							owner = { set_country_flag = str_has_designated_extra_switch } 
+						}
+					}
+
+
+					if = {
+						limit = {
+							has_designation = col_factory
+							owner = { resource_income_compare = {
+								resource = consumer_goods
+								value > 5 }
+							not = { has_country_flag = str_has_designated_good_extra_switch } 
+							}
+							nor = {
+								has_planet_flag = str_factory_switching_candidate
+								has_planet_flag = str_good_factory_switching_candidate
+							}
+						}
+
+						if = {
+							limit = {
+								num_buildings = { type = building_factory_1 value = 0 }
+								num_buildings = { type = building_factory_2 value = 0 }
+							}
+							set_planet_flag = str_good_extra_switching_candidate
+							owner = { set_country_flag = str_has_designated_good_extra_switch } 
+							owner = { set_country_flag = str_has_designated_extra_switch } 
+						}
+						if = {
+							limit = { owner = { not = { has_country_flag = str_has_designated_extra_switch } } }
+							set_planet_flag = str_extra_switching_candidate
+							owner = { set_country_flag = str_has_designated_extra_switch } 
+						}
+					}
+
 
 					if = {
 						limit = {

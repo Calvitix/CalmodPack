@@ -6906,10 +6906,19 @@ country_event = {
 				modifier = opinion_primitive_violation
 			}
 		}
-		FROMFROM = { save_event_target_as = conquered_primitive_planet }
-		FROM = { owner_species = { save_event_target_as = conquered_primitive_species } }
+
 		if = {
-			limit = { is_ai = no }
+			limit = {
+				is_ai = no
+			}
+			fromfrom = {
+				save_event_target_as = conquered_primitive_country
+			}
+			from = {
+				owner_species = {
+					save_event_target_as = conquered_primitive_species
+				}
+			}
 			country_event = { id = action.140 }
 		}
 		else = {
@@ -6933,7 +6942,7 @@ country_event = {
 			NOR = {
 				has_ethic = ethic_gestalt_consciousness
 				event_target:conquered_primitive_species = {
-					has_citizenship_type = { country = ROOT type = citizenship_purge }
+					has_citizenship_type = { country = root type = citizenship_purge }
 				}
 			}
 		}
@@ -6943,7 +6952,7 @@ country_event = {
 		trigger = {
 			NOT = { has_ethic = ethic_gestalt_consciousness }
 			event_target:conquered_primitive_species = {
-				has_citizenship_type = { country = ROOT type = citizenship_purge }
+				has_citizenship_type = { country = root type = citizenship_purge }
 			}
 		}
 	}
@@ -6970,7 +6979,7 @@ country_event = {
 		trigger = {
 			has_authority = auth_machine_intelligence
 			event_target:conquered_primitive_species = {
-				has_citizenship_type = { country = ROOT type = citizenship_purge }
+				has_citizenship_type = { country = root type = citizenship_purge }
 			}
 			NOR = {
 				has_civic = civic_machine_servitor
@@ -6984,7 +6993,7 @@ country_event = {
 		trigger = {
 			has_authority = auth_machine_intelligence
 			event_target:conquered_primitive_species = {
-				has_citizenship_type = { country = ROOT type = citizenship_slavery }
+				has_citizenship_type = { country = root type = citizenship_slavery }
 			}
 			NOR = {
 				has_civic = civic_machine_servitor
@@ -6998,7 +7007,7 @@ country_event = {
 		trigger = {
 			has_authority = auth_hive_mind
 			event_target:conquered_primitive_species = {
-				has_citizenship_type = { country = ROOT type = citizenship_purge }
+				has_citizenship_type = { country = root type = citizenship_purge }
 			}
 		}
 	}
@@ -7007,14 +7016,14 @@ country_event = {
 		trigger = {
 			has_authority = auth_hive_mind
 			event_target:conquered_primitive_species = {
-				has_citizenship_type = { country = ROOT type = citizenship_slavery }
+				has_citizenship_type = { country = root type = citizenship_slavery }
 			}
 		}
 	}
 
 	picture = GFX_evt_ground_combat
 	show_sound = event_alien_signal
-	location = event_target:conquered_primitive_planet
+	location = event_target:conquered_primitive_country
 
 	is_triggered_only = yes
 
@@ -9147,7 +9156,7 @@ event = {
 	}
 
 	immediate = {
-		#log = "action.64"
+		log = "action.64"
 		set_update_modifiers_batch = begin
         every_playable_country = {
             limit = {
@@ -9159,7 +9168,7 @@ event = {
                     }
                 }
             }
-			#log = "action.64.epc"
+			log = "action.64.epc"
 
 			if = { # ascended synths
 				limit = {
@@ -9446,7 +9455,7 @@ planet_event = {
 				while = {
 					count = 3
 					limit = {
-						any_owned_species = {
+						any_owned_pop = {
 							has_citizenship_type = {
 								type = citizenship_assimilation
 								country = root.owner
@@ -9469,7 +9478,7 @@ planet_event = {
 				while = {
 					count = 6
 					limit = {
-						any_owned_species = {
+						any_owned_pop = {
 							has_citizenship_type = {
 								type = citizenship_assimilation
 								country = root.owner
@@ -9492,7 +9501,7 @@ planet_event = {
 				while = {
 					count = 12
 					limit = {
-						any_owned_species = {
+						any_owned_pop = {
 							has_citizenship_type = {
 								type = citizenship_assimilation
 								country = root.owner
@@ -9876,6 +9885,7 @@ planet_event = {
 		change_pc = pc_nuked
 		set_planet_flag = nuked_planet_anomalies_disabled
 		remove_all_buildings = yes
+		remove_all_districts = yes
 		reroll_deposits = yes
 		remove_modifier = "natural_beauty"
 		remove_modifier = "atmospheric_aphrodisiac"
@@ -9910,16 +9920,15 @@ country_event = {
 }
 
 # Planet is turned into tomb world by Armageddon bombing stance (bombarder)
-# Calvitix : disabled in 3.0.3 ?
-# country_event = {
-	# id = action.83
-	# title = "action.82.name"
-	# picture = GFX_evt_nuclear_explosion
-	# desc = action.83.desc
-	# show_sound = event_super_explosion
-	# location = from
+country_event = {
+	id = action.83
+	title = "action.82.name"
+	picture = GFX_evt_nuclear_explosion
+	desc = action.83.desc
+	show_sound = event_super_explosion
+	location = from
 
-	# is_triggered_only = yes
+	is_triggered_only = yes
 
 	# immediate = {
 		# if = {
@@ -9930,11 +9939,11 @@ country_event = {
 		# }
 	# }
 
-	# option = {
-		# name = EXCELLENT
-		# custom_tooltip = bombed_to_tomb_world
-	# }
-# }
+	option = {
+		name = EXCELLENT
+		custom_tooltip = bombed_to_tomb_world
+	}
+}
 
 # Planet conquered
 planet_event = {

@@ -4,7 +4,7 @@
 #
 # Merge with Arisphaos Unofficial patch
 # MERGE WITH Planet Diversity  21/05/2021
-#
+# Merge with Expanded events 22/05/2021
 
 ############################
 #
@@ -196,7 +196,14 @@ planet_event = {
 planet_event = {
 	id = colony.3
 	title = "PROJECT_COMPLETE"
-	desc = "colony.3.desc"
+	desc = {
+		text = "colony.3.desc"
+		trigger = { is_xenophile = no }
+	}
+	desc = {
+		text = "colony.3.desc.phile"
+		trigger = { is_xenophile = yes }
+	}
 	picture = GFX_evt_alien_planet
 	show_sound = event_alien_nature
 	location = ROOT
@@ -705,7 +712,22 @@ planet_event = {
 planet_event = {
 	id = colony.52
 	title = "PROJECT_COMPLETE"
-	desc = "colony.52.desc"
+	desc = {
+		text = "colony.52.desc"
+	}
+	desc = {
+		text = "colony.52.desc.phile"
+		exclusive_trigger = {
+			OR = {
+				is_xenophile = yes
+				is_pacifist = yes
+			}
+			NOR = {
+				is_xenophobe = yes
+				is_militarist = yes
+			}
+		}
+	}
 	picture = GFX_evt_underground_civilization
 	show_sound = event_structural_collapse
 	location = ROOT
@@ -730,7 +752,27 @@ planet_event = {
 	option = {
 		name = colony.52.a
 		custom_tooltip = underground_expansion_tooltip
-	}
+		owner = {
+			if = {
+				limit = {
+					OR = {
+						is_xenophobe = yes
+						is_militarist = yes
+					}
+				}
+				gain_possitive_media_coverage = yes
+			}
+			else_if = {
+				limit = {
+					OR = {
+						is_xenophile = yes
+						is_pacifist = yes
+					}
+				}
+				gain_negative_media_coverage = yes
+			}
+		}
+	}	
 }
 
 # Subterranean Aliens
@@ -820,6 +862,23 @@ planet_event = {
 					leader = last_created_leader
 				}
 			}
+			if = {
+				limit = {
+					event_target:subterranean_nation = { has_country_flag = robot_request_approved }
+				}
+				owner = { create_built_robot_species = yes }
+				while = {
+					count = 2
+						create_army = {
+						name = random
+						owner = event_target:subterranean_nation
+						species = last_created_species
+						type = "robotic_army"
+						leader = last_created_leader
+					}
+				}
+			}
+			break = yes
 		}
 		if = {
 			limit = {
@@ -835,6 +894,23 @@ planet_event = {
 					leader = last_created_leader
 				}
 			}
+			if = {
+				limit = {
+					event_target:subterranean_nation = { has_country_flag = robot_request_approved }
+				}
+				owner = { create_built_robot_species = yes }
+				while = {
+					count = 2
+						create_army = {
+						name = random
+						owner = event_target:subterranean_nation
+						species = last_created_species
+						type = "robotic_army"
+						leader = last_created_leader
+					}
+				}
+			}
+			break = yes
 		}
 	}
 
@@ -890,7 +966,7 @@ country_event = {
 	id = colony.57
 	title = "colony.57.name"
 	desc = "colony.57.desc"
-	picture = GFX_evt_surrender
+	picture = GFX_evt_burning_settlement
 	show_sound = event_alien_signal
 	location = FROMFROM
 
@@ -910,6 +986,8 @@ country_event = {
 			owner_species = { save_event_target_as = subterranean_species }
 		}
 		fromfrom = {
+			if = {
+				limit = { has_global_flag = expanded_pops_active }
 			create_country = {
 				name = "NAME_Subterranean_Empire"
 				species = event_target:subterranean_species
@@ -921,6 +999,7 @@ country_event = {
 				}
 				authority = random
 				civics = random
+					origin = origin_subterranean_evolution
 				flag = {
 					icon = {
 						category = "zoological"
@@ -938,6 +1017,38 @@ country_event = {
 					}
 				}
 			}
+			}
+			else = {
+				create_country = {
+					name = "NAME_Subterranean_Empire"
+					species = event_target:subterranean_species
+					type = default
+					auto_delete = yes
+					ethos = {
+						ethic = ethic_fanatic_militarist
+						ethic = ethic_authoritarian
+					}
+					authority = random
+					civics = random
+					origin = origin_enlightened
+					flag = {
+						icon = {
+							category = "zoological"
+							file = "flag_zoological_10.dds"
+						}
+						background= {
+							category = "backgrounds"
+							file = "new_dawn.dds"
+						}
+						colors={
+							"red"
+							"black"
+							"null"
+							"null"
+						}
+					}
+				}
+			}
 			last_created_country = {
 				set_relation_flag = {
 					who = event_target:subterranean_former_planet_owner
@@ -947,6 +1058,95 @@ country_event = {
 				establish_communications_no_message = event_target:subterranean_former_planet_owner
 				save_event_target_as = subterranean_empire
 				owner_species = { save_event_target_as = subterranean_species }
+				add_resource = {
+					energy = 500
+					minerals = 2000 # enough for a spaceport and then some
+					food = 500
+					alloys = 2000
+					consumer_goods = 500
+					influence = 400
+				}
+				create_fleet = {
+					effect = {
+						set_owner = prev
+
+						create_ship = {
+							name = random
+							random_existing_design = science
+						}
+
+						set_fleet_stance = evasive				
+						#set_location = prev.capital_star
+						set_location = prev.capital_scope.star
+						
+						owner = {
+							create_leader = {
+								class = scientist
+								species = owner_main_species
+								name = random
+								skill = 2
+							}
+						}
+						set_leader = last_created_leader
+					}			
+				}
+					
+				#constructor
+				create_fleet = {
+					effect = {
+						set_owner = prev
+						
+						create_ship = {
+							name = random
+							random_existing_design = constructor
+						}
+						
+						set_fleet_stance = evasive
+						set_location = prev.capital_star
+					}
+				}
+				
+				#military
+				create_fleet = {
+					set_take_point = yes
+					effect = {
+						set_owner = prev
+						
+						while = {
+							count = 6
+							create_ship = {
+								name = random
+								random_existing_design = corvette
+							}
+						}
+						
+						set_location = prev.capital_star
+					}
+				}
+				create_leader = {
+					class = scientist
+					species = owner_main_species
+					name = random
+					skill = 2
+				}
+				create_leader = {
+					class = scientist
+					species = owner_main_species
+					name = random
+					skill = 2
+				}
+				create_leader = {
+					class = scientist
+					species = owner_main_species
+					name = random
+					skill = 2
+				}
+				create_leader = {
+					class = governor
+					species = owner_main_species
+					name = random
+					skill = 2
+				}
 			}
 		}
 		from = { destroy_country = yes }
@@ -958,6 +1158,8 @@ country_event = {
 			random_owned_pop = { kill_pop = yes }
 			create_pop = { species = owner_main_species }
 			create_pop = { species = owner_main_species }
+			create_pop = { species = owner_main_species }
+			create_pop = { species = owner_main_species }
 			create_army = {
 				name = "NAME_Loot-Equipped_Army"
 				owner = event_target:subterranean_empire
@@ -969,21 +1171,33 @@ country_event = {
 				owner = event_target:subterranean_empire
 				species = event_target:subterranean_species
 				type = "defense_army"
+			}
+			if = {
+				limit = { has_global_flag = expanded_pops_active }
+				remove_deposit = d_underground_farm_blocked
+				remove_deposit = d_underground_mine_blocked
+				remove_deposit = d_underground_generator_blocked
+				add_deposit = d_underground_farm
+				add_deposit = d_underground_mine
+				add_deposit = d_underground_generator
 			}
 			# flip starbase
 			solar_system = {
 				if = {
 					limit = { exists = starbase }
-					starbase = { set_owner = event_target:subterranean_empire }
+					starbase = {
+						set_owner = event_target:subterranean_empire
 				}
 			}
 		}
+	}
 	}
 
 	option = {
 		name = "ONSCREEN"
 		end_event_chain = "subterranean_civilization_chain"
 		country_event = { id = colony.58 }
+		gain_negative_media_coverage = yes
 	}
 }
 
@@ -1076,61 +1290,31 @@ planet_event = {
 					NOT = { has_country_flag = tech_request_approved }
 				}
 			}
+			while = {
+				count = 6
 			create_army = {
 				name = "NAME_Invading_Horde"
 				owner = event_target:subterranean_nation
 				species = event_target:subterranean_species
-				type = "industrial_army"
+					type = "subterranean_industrial_army"
 				leader = last_created_leader
 			}
+			}
+			if = {
+				limit = {
+					event_target:subterranean_nation = { has_country_flag = robot_request_approved }
+			}
+				owner = { create_built_robot_species = yes }
+				while = {
+					count = 2
 			create_army = {
-				name = "NAME_Invading_Horde"
+						name = random
 				owner = event_target:subterranean_nation
-				species = event_target:subterranean_species
-				type = "industrial_army"
+						species = last_created_species
+						type = "robotic_army"
 				leader = last_created_leader
 			}
-			create_army = {
-				name = "NAME_Invading_Horde"
-				owner = event_target:subterranean_nation
-				species = event_target:subterranean_species
-				type = "industrial_army"
-				leader = last_created_leader
 			}
-			create_army = {
-				name = "NAME_Invading_Horde"
-				owner = event_target:subterranean_nation
-				species = event_target:subterranean_species
-				type = "industrial_army"
-				leader = last_created_leader
-			}
-			create_army = {
-				name = "NAME_Invading_Horde"
-				owner = event_target:subterranean_nation
-				species = event_target:subterranean_species
-				type = "industrial_army"
-				leader = last_created_leader
-			}
-			create_army = {
-				name = "NAME_Invading_Horde"
-				owner = event_target:subterranean_nation
-				species = event_target:subterranean_species
-				type = "industrial_army"
-				leader = last_created_leader
-			}
-			create_army = {
-				name = "NAME_Invading_Horde"
-				owner = event_target:subterranean_nation
-				species = event_target:subterranean_species
-				type = "industrial_army"
-				leader = last_created_leader
-			}
-			create_army = {
-				name = "NAME_Invading_Horde"
-				owner = event_target:subterranean_nation
-				species = event_target:subterranean_species
-				type = "industrial_army"
-				leader = last_created_leader
 			}
 			break = yes
 		}
@@ -1138,61 +1322,31 @@ planet_event = {
 			limit = {
 				event_target:subterranean_nation = { has_country_flag = tech_request_approved }
 			}
+			while = {
+				count = 8
 			create_army = {
 				name = "NAME_Invading_Horde"
 				owner = event_target:subterranean_nation
 				species = event_target:subterranean_species
-				type = "postatomic_army"
+					type = "subterranean_postatomic_army"
 				leader = last_created_leader
 			}
+			}
+			if = {
+				limit = {
+					event_target:subterranean_nation = { has_country_flag = robot_request_approved }
+			}
+				owner = { create_built_robot_species = yes }
+				while = {
+					count = 2
 			create_army = {
-				name = "NAME_Invading_Horde"
+						name = random
 				owner = event_target:subterranean_nation
-				species = event_target:subterranean_species
-				type = "postatomic_army"
+						species = last_created_species
+						type = "robotic_army"
 				leader = last_created_leader
 			}
-			create_army = {
-				name = "NAME_Invading_Horde"
-				owner = event_target:subterranean_nation
-				species = event_target:subterranean_species
-				type = "postatomic_army"
-				leader = last_created_leader
 			}
-			create_army = {
-				name = "NAME_Invading_Horde"
-				owner = event_target:subterranean_nation
-				species = event_target:subterranean_species
-				type = "postatomic_army"
-				leader = last_created_leader
-			}
-			create_army = {
-				name = "NAME_Invading_Horde"
-				owner = event_target:subterranean_nation
-				species = event_target:subterranean_species
-				type = "postatomic_army"
-				leader = last_created_leader
-			}
-			create_army = {
-				name = "NAME_Invading_Horde"
-				owner = event_target:subterranean_nation
-				species = event_target:subterranean_species
-				type = "postatomic_army"
-				leader = last_created_leader
-			}
-			create_army = {
-				name = "NAME_Invading_Horde"
-				owner = event_target:subterranean_nation
-				species = event_target:subterranean_species
-				type = "postatomic_army"
-				leader = last_created_leader
-			}
-			create_army = {
-				name = "NAME_Invading_Horde"
-				owner = event_target:subterranean_nation
-				species = event_target:subterranean_species
-				type = "postatomic_army"
-				leader = last_created_leader
 			}
 			break = yes
 		}
@@ -1232,7 +1386,10 @@ planet_event = {
 	}
 
 	immediate = {
-		set_planet_flag = seismic_disturbance_collapse
+		set_timed_planet_flag = {
+			flag = seismic_disturbance_collapse
+			days = 7200
+		}
 	}
 
 	option = {
@@ -1269,7 +1426,10 @@ planet_event = {
 	}
 
 	immediate = {
-		set_planet_flag = seismic_disturbance_raid
+		set_timed_planet_flag = {
+			flag = seismic_disturbance_raid
+			days = 7200
+		}
 		add_planet_devastation = 10
 	}
 
@@ -1308,7 +1468,10 @@ planet_event = {
 	}
 
 	immediate = {
-		set_planet_flag = seismic_disturbance_attack
+		set_timed_planet_flag = {
+			flag = seismic_disturbance_attack
+			days = 7200
+		}
 	}
 
 	option = {
@@ -1580,10 +1743,17 @@ planet_event = {
 
 	mean_time_to_happen = {
 		months = 240
+		modifier = {
+			factor = 2
+			owner = { has_country_flag = tech_request_approved }
+		}
 	}
 
 	immediate = {
-		set_planet_flag = seismic_disturbance_famine
+		set_timed_planet_flag = {
+			flag = seismic_disturbance_famine
+			days = 32400
+		}
 	}
 
 	option = {
@@ -1647,7 +1817,10 @@ planet_event = {
 	}
 
 	immediate = {
-		set_planet_flag = seismic_disturbance_gift
+		set_timed_planet_flag = {
+			flag = seismic_disturbance_gift
+			days = 18000
+		}
 	}
 
 	option = {
@@ -1763,7 +1936,10 @@ planet_event = {
 	}
 
 	immediate = {
-		set_planet_flag = seismic_disturbance_anthropologists
+		set_timed_planet_flag = {
+			flag = seismic_disturbance_anthropologists
+			days = 18000
+		}
 	}
 
 	option = {
@@ -1806,7 +1982,10 @@ planet_event = {
 	}
 
 	immediate = {
-		set_planet_flag = seismic_disturbance_quake2
+		set_timed_planet_flag = {
+			flag = seismic_disturbance_quake2
+			days = 21600
+		}
 		add_planet_devastation = 10
 	}
 
@@ -2309,8 +2488,8 @@ planet_event = {
 	id = colony.102
 	title = "colony.102.name"
 	desc = "colony.102.desc"
-	picture = GFX_evt_burning_city
-	show_sound = event_burning_city
+	picture = GFX_evt_burning_settlement
+	show_sound = event_air_raid_siren
 	location = ROOT
 
 	pre_triggers = {
@@ -2331,7 +2510,10 @@ planet_event = {
 	}
 
 	immediate = {
-		set_planet_flag = terraforming_unstable_weather
+		set_timed_planet_flag = {
+			flag = terraforming_unstable_weather
+			days = 19800
+		}
 		add_planet_devastation = 10
 	}
 
@@ -2370,7 +2552,10 @@ planet_event = {
 	}
 
 	immediate = {
-		set_planet_flag = terraforming_drought
+		set_timed_planet_flag = {
+			flag = terraforming_drought
+			days = 19800
+		}
 	}
 
 	option = {
@@ -3014,8 +3199,11 @@ planet_event = {
 		owner = { is_ai = no } 
 		NOT = { has_global_flag = underground_vault_global }
 		NOT = { has_planet_flag = armageddon_nuked }
-		is_planet_class = pc_nuked
-		NOT = { has_planet_flag = nuked_planet_anomalies_disabled }
+		OR = {
+			is_nuked = yes
+			has_planet_flag = colonized_tomb_world
+			has_modifier = recovered_tomb_world
+		}
 		NOR = {
 			has_planet_flag = primitives_nuked_themselves
 			solar_system = {
@@ -3024,9 +3212,9 @@ planet_event = {
 				}
 			}
 		}
-		owner = {
-			NOT = { has_ethic = ethic_gestalt_consciousness }
-		}
+		#owner = {
+		#	NOT = { has_ethic = ethic_gestalt_consciousness }
+		#}
 		num_pops > 0
 	}
 
@@ -3078,9 +3266,7 @@ planet_event = {
 
 	is_triggered_only = yes
 
-	option = {
-		name = colony.152.a
-		add_deposit = d_underground_vault_2
+	immediate = {
 		create_species = {
 			name = random
 			class = random_non_machine
@@ -3095,15 +3281,41 @@ planet_event = {
 
 	option = {
 		name = colony.152.a
+		trigger = {
+			owner = { is_homicidal = no }
+		}
 		add_deposit = d_underground_vault_2
-		create_pop = {
-			species = event_target:vault_survivor_species
+
+		create_pop = { species = event_target:vault_survivor_species }
+		create_pop = { species = event_target:vault_survivor_species }
+		create_pop = { species = event_target:vault_survivor_species }
+	}
+	option = {
+		name = colony.152.refugee
+		trigger = {
+			owner = {
+				is_homicidal = no
+				is_xenophile = no
+			}
 		}
-		create_pop = {
-			species = event_target:vault_survivor_species
-		}
-		create_pop = {
-			species = event_target:vault_survivor_species
+		add_deposit = d_underground_vault_2
+		custom_tooltip = colony.152.refugee.tooltip
+		hidden_effect = {
+			create_pop = { species = event_target:vault_survivor_species }
+			last_created_pop = {
+				save_event_target_as = refugee_pop
+				refugee_pop_effect = yes
+			}
+			create_pop = { species = event_target:vault_survivor_species }
+			last_created_pop = {
+				save_event_target_as = refugee_pop
+				refugee_pop_effect = yes
+			}
+			create_pop = { species = event_target:vault_survivor_species }
+			last_created_pop = {
+				save_event_target_as = refugee_pop
+				refugee_pop_effect = yes
+			}
 		}
 	}
 	option = {
@@ -3111,22 +3323,15 @@ planet_event = {
 		trigger = {
 			owner = {
 				OR = { is_xenophobe = yes is_authoritarian = yes }
+				is_homicidal = no
 			}
 		}
 		add_deposit = d_underground_vault_2
-		create_pop = {
-			species = event_target:vault_survivor_species
-		}
-		create_pop = {
-			species = event_target:vault_survivor_species
-		}
-		create_pop = {
-			species = event_target:vault_survivor_species
-		}
-		custom_tooltip = colony.152.b.tooltip
-		hidden_effect = {
-			last_created_pop = { set_citizenship_type = { type = citizenship_slavery cooldown = yes } }
-		}
+
+		create_pop = { species = event_target:vault_survivor_species }
+		create_pop = { species = event_target:vault_survivor_species }
+		create_pop = { species = event_target:vault_survivor_species }
+		last_created_pop = { set_citizenship_type = { type = citizenship_slavery cooldown = yes } }
 	}
 	option = {
 		name = colony.152.c
@@ -3135,7 +3340,31 @@ planet_event = {
 				OR = {
 					has_ethic = "ethic_xenophobe"
 					has_ethic = "ethic_fanatic_xenophobe"
+					has_civic = civic_machine_terminator
 				}
+			}
+		}
+		owner = {
+			if = {
+				limit = { is_homicidal = yes }
+				add_resource = {
+					unity = 1000
+				}
+			}
+		}
+	}
+	option = {
+		name = TASTY
+		trigger = {
+			owner = {
+				has_valid_civic = civic_hive_devouring_swarm
+			}
+		}
+		owner = {
+			add_resource = {
+				food = 500
+				unity = 500
+				society_research = 500
 			}
 		}
 	}
@@ -3355,7 +3584,9 @@ planet_event = {
 	option = {
 		name = colony.157.a
 		random_owned_pop = { kill_pop = yes }
-		add_planet_devastation = 20
+		random_owned_pop = { kill_pop = yes }
+		random_owned_pop = { kill_pop = yes }
+		add_planet_devastation = 30
 	}
 }
 
@@ -3760,11 +3991,22 @@ planet_event = {
 		custom_tooltip = colony.164.a.tooltip
 		trigger = {
 			owner = {
-				OR = {
+				is_pacifist = yes
+			}
+		}
+		owner = { gain_possitive_media_coverage = yes }
+	}
+	after = {
+		add_modifier = { modifier = pacifist_movement days = -1 }
+		hidden_effect = {
+			random_owned_pop = {
+				limit = {
+					NOR = {
 					has_ethic = "ethic_pacifist"
-					has_ethic = "ethic_fanatic_pacifist"
+						pop_has_trait = trait_mechanical
 				}
 			}
+				pop_change_ethic = ethic_pacifist
 		}
 		random_owned_pop = {
 			limit = {
@@ -3793,6 +4035,7 @@ planet_event = {
 			}
 			pop_change_ethic = ethic_pacifist
 		}
+	}
 	}
 }
 
@@ -3889,7 +4132,10 @@ planet_event = {
 	}
 
 	immediate = {
-		set_planet_flag = wasteland_freighter_crash
+		set_timed_planet_flag = {
+			flag = wasteland_freighter_crash
+			days = 19800
+		}
 	}
 
 	option = {
@@ -3919,7 +4165,10 @@ planet_event = {
 
 	immediate = {
 		hidden_effect = {
-			set_planet_flag = wasteland_debris_impact
+			set_timed_planet_flag = {
+				flag = wasteland_debris_impact
+				days = 27000
+			}
 		}
 	}
 
@@ -4037,6 +4286,7 @@ planet_event = {
 					"null"
 				}
 			}
+			day_zero_contact = no
 			effect = {
 				establish_communications_no_message = root.owner
 			}
@@ -4058,7 +4308,7 @@ planet_event = {
 					}
 					set_location = {
 						target = ROOT
-						distance = 75
+						distance = 150
 						angle = random
 					}
 					queue_actions = {
@@ -4188,6 +4438,7 @@ planet_event = {
 	option = {
 		name = EXCELLENT
 		owner = {
+			gain_possitive_media_coverage = yes
 			end_event_chain = "asteroid_sighted_chain"
 			add_monthly_resource_mult = {
 				resource = minerals
@@ -4234,23 +4485,25 @@ planet_event = {
 
 	option = {
 		name = colony.183.a
+		owner = { gain_negative_media_coverage = yes }
+		add_planet_devastation = 50
 		if = {
 			limit = {
-				num_pops < 2
+				num_pops < 3
 			}
 			random_owned_pop = { kill_pop = yes }
 		}
 		else_if = {
 			limit = {
-				num_pops >= 2
-				num_pops <= 6
+				num_pops > 2
+				num_pops < 6
 			}
 			random_owned_pop = { kill_pop = yes }
 			random_owned_pop = { kill_pop = yes }
 		}
 		else_if = {
 			limit = {
-				num_pops > 6
+				num_pops > 5
 			}
 			random_owned_pop = { kill_pop = yes }
 			random_owned_pop = { kill_pop = yes }

@@ -1441,7 +1441,7 @@ can_species_be_assembled = {
 			}
 		}
 	}
-	has_population_control = { #3.0.3b
+	has_population_control = {
 		value = no
 		country = root.owner
 	}
@@ -2401,16 +2401,7 @@ has_enough_pops_for_necrophage_on_planet = {
 # Root = current planet
 # This = pop
 # Purge, Sapience, Migration Controls policy (ignored by Gestalts and Synths), and target habitability are checked in code.
-can_pop_auto_migrate = {
-	planet = {
-		NOT = { has_modifier = planet_culture_shock }
-		OR = { #3.0.3b
-			colony_age > 60
-			is_capital = yes # Don't break Doomsday!
-			has_planet_flag = pd_habitat_start_luna
-			has_planet_flag = pd_habitat_start_mars
-		}
-	}
+can_pop_auto_migrate = { #3.0.3
 	is_unemployed = yes
 	is_being_assimilated = no
 	OR = {
@@ -2418,9 +2409,21 @@ can_pop_auto_migrate = {
 			is_shackled_robot = no
 			is_enslaved = no
 		}
-		planet = {
+	planet = {
 			has_building = building_slave_processing
 		}
+	}
+}
+
+# This = planet
+# Checked before can_pop_auto_migrate to save performance
+can_planet_auto_migrate = { #3.0.3
+		NOT = { has_modifier = planet_culture_shock }
+		OR = { #3.0.3b
+			colony_age > 60
+			is_capital = yes # Don't break Doomsday!
+			has_planet_flag = pd_habitat_start_luna
+			has_planet_flag = pd_habitat_start_mars
 	}
 }
 

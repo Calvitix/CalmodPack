@@ -1,11 +1,11 @@
 # Original File
 #
-# Calvitix Check 3.0.3b  30/04/2021
+# Calvitix Check 3.0.3  22/05/2021
 #
 # Merge with Arisphaos Unofficial patch
 #
 #
-# Merge with Expanded Events  07/05/2021
+# Merge with Expanded Events  22/05/2021
 
 
 ##############################
@@ -1888,8 +1888,11 @@ planet_event = { #uprising
 	is_triggered_only = yes
 	
 	trigger = {
-		host_has_dlc = "Synthetic Dawn Story Pack"
 		has_owner = yes
+	}
+	
+	trigger = {
+		host_has_dlc = "Synthetic Dawn Story Pack"
 	}
 	
 	immediate = {
@@ -2171,6 +2174,13 @@ country_event = {
 			influence = 500
 			alloys = 5000
 		}
+		if = {
+			limit = { has_country_flag = synthetic_empire }
+			add_resource = {
+				food = 2000
+				consumer_goods = 5000
+			}
+		}
 		add_100_unity_per_year_passed = yes # scripted effect
 
 		# Machine Uprising opinion modifier
@@ -2274,13 +2284,53 @@ country_event = {
 
 			# create armies
 			if = {
-				limit = { root = { has_civic = civic_machine_terminator } }
+				limit = {
+					root = {
+						has_civic = civic_machine_terminator
+						NOT = { has_country_flag = synthetic_empire }
+					}
+				}
 				# more armies if exterminator
 				while = {
 					count = 6
 					create_army = {
 						owner = root
 						type = machine_assault_1
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					root = {
+						has_civic = civic_machine_terminator
+						has_country_flag = synthetic_empire
+					}
+				}
+				# more armies if exterminator
+				give_technology = { tech = tech_robotic_workers }
+				give_technology = { tech = tech_droid_workers }
+				while = {
+					count = 6
+					create_army = {
+						owner = root
+						type = robotic_army
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					root = {
+						has_country_flag = synthetic_empire
+					}
+				}
+				# regular armies
+				give_technology = { tech = tech_robotic_workers }
+				give_technology = { tech = tech_droid_workers }
+				while = {
+					count = 3
+					create_army = {
+						owner = root
+						type = robotic_army
 					}
 				}
 			}
@@ -2385,13 +2435,49 @@ country_event = {
 
 					# create armies on planets
 					if = {
-						limit = { root = { has_civic = civic_machine_terminator } }
+						limit = {
+							root = {
+								has_civic = civic_machine_terminator
+								NOT = { has_country_flag = synthetic_empire }
+							}
+						}
 						# more armies if exterminator
 						while = {
 							count = 6
 							create_army = {
 								owner = root
 								type = machine_assault_1
+							}
+						}
+					}
+					else_if = {
+						limit = {
+							root = {
+								has_civic = civic_machine_terminator
+								has_country_flag = synthetic_empire
+							}
+						}
+						# more armies if exterminator
+						while = {
+							count = 6
+							create_army = {
+								owner = root
+								type = robotic_army
+							}
+						}
+					}
+					else_if = {
+						limit = {
+							root = {
+								has_country_flag = synthetic_empire
+							}
+						}
+						# regular armies
+						while = {
+							count = 3
+							create_army = {
+								owner = root
+								type = robotic_army
 							}
 						}
 					}
@@ -2420,6 +2506,29 @@ country_event = {
 		}
 
 		# get host's technologies
+		if = {
+			limit = { has_country_flag = synthetic_empire }
+			copy_techs_from = {
+				target = event_target:current_uprising_originator
+				except = {
+					# Misc
+					tech_frontier_health
+					tech_frontier_hospital
+					tech_telepathy
+					tech_precognition_interface
+					tech_psi_jump_drive_1
+					tech_psionic_theory
+					# Genetics
+					tech_selected_lineages
+					tech_capacity_boosters
+					# Horizon Signal
+					tech_akx_worm_1
+					tech_akx_worm_2
+					tech_akx_worm_3
+				}
+			}
+		}
+		else = {
 		copy_techs_from = {
 			target = event_target:current_uprising_originator
 			except = {
@@ -2465,6 +2574,7 @@ country_event = {
 				tech_akx_worm_2
 				tech_akx_worm_3
 			}
+		}
 		}
 
 		# survey host's surveyed planets
@@ -2599,6 +2709,14 @@ country_event = {
 				set_fleet_stance = evasive
 				set_location = root.capital_scope
 			}
+		}
+
+		if = {
+			limit = {
+				has_country_flag = synthetic_empire
+				has_global_flag = expanded_pops_active
+			}
+			country_event = { id = popexpanded.20 }
 		}
 
 		every_owned_fleet = {
