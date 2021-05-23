@@ -4,7 +4,7 @@
 #
 # Merge with Arisphaos Unofficial patch
 #
-# Merge with STARNET AI 21/05/2021
+# Merge with STARNET AI 23/05/2021
 #
 
 # removed by plentiful perks (but restored)
@@ -740,7 +740,7 @@ ap_world_shaper = {
 	}
 
 	ai_weight = {
-		factor = 100
+		factor = 1000 # 100  #Starnet AI 10000
 		modifier = {
 			factor = 0
 			has_ascension_perk = ap_machine_worlds
@@ -798,6 +798,16 @@ ap_galactic_force_projection = {
 				value > 2000
 			}
 		}
+#Starnet AI
+		modifier = {
+			factor = 0
+			resource_stockpile_compare = {
+				resource = alloys
+				value < 2500
+			}
+			used_naval_capacity_percent < 0.6
+		}
+###
 	}
 }
 
@@ -940,14 +950,33 @@ ap_interstellar_dominion = {
 
 ap_grasp_the_void = {
 	possible = {
+		OR = {
 		custom_tooltip = {
 			fail_text = "requires_ascension_perks_1"
 			num_ascension_perks > 0
 		}
+			custom_tooltip = {
+				fail_text = "requires_technology_exploration_cruiser"
+				has_technology = tech_explorationship_1
+			}
+			custom_tooltip = {
+				fail_text = "requires_technology_automated_exploration"
+				has_technology = tech_automated_exploration
+			}
+			custom_tooltip = {
+				fail_text = "requires_discovery_tree"
+				has_tradition = tr_discovery_faith_in_science
+			}
+		}
 	}
 
 	modifier = {
-		country_starbase_capacity_add = 5
+		country_starbase_capacity_add = 10
+		ship_interstellar_speed_mult = 0.30
+		science_ship_survey_speed = 0.30
+		ship_anomaly_research_speed_mult = 0.30
+		ship_archaeological_site_excavation_speed_mult = 0.30
+		planet_sensor_range_add = 2
 	}
 
 	potential = {
@@ -959,13 +988,30 @@ ap_grasp_the_void = {
 	ai_weight = {
 		factor = 10
 		modifier = {
-			factor = 2
+			factor = 1.2
 			has_civic = civic_inwards_perfection
 		}
 		modifier = {
 			factor = 1.5
 			is_xenophobe = yes
 		}
+#Starnet AI
+		modifier = {
+			factor = 0
+			resource_stockpile_compare = {
+				resource = alloys
+				value < 2500
+			}
+			used_naval_capacity_percent < 0.6
+		}
+		modifier = {
+			factor = 5
+			resource_stockpile_compare = {
+				resource = alloys
+				value > 4000
+			}
+		}
+###		
 		modifier = {
 			factor = 5
 			rusher = yes
@@ -991,6 +1037,7 @@ ap_eternal_vigilance = {
 		shipclass_starbase_hull_mult = 0.25
 		shipclass_military_station_damage_mult = 0.25
 		starbase_defense_platform_capacity_add = 5
+		country_starbase_capacity_add = 25
 	}
 
 	potential = {
@@ -1000,7 +1047,15 @@ ap_eternal_vigilance = {
 	}
 
 	ai_weight = {
-		factor = 0
+		factor = 10
+		modifier = {
+			factor = 2
+			has_civic = civic_inwards_perfection
+		}
+		modifier = {
+			factor = 1.5
+			is_xenophobe = yes
+		}
 	}
 }
 
