@@ -39,3 +39,41 @@ event = {
 		}
 	}
 }
+
+event = {
+	id = sparsityevents.2
+	is_triggered_only = yes
+	hide_window = yes
+	
+	immediate = {
+		every_country = {
+			limit = {
+				not = { is_country_type = primitive }
+				not = { is_country_type = fallen_empire }
+				not = { is_country_type = awakened_fallen_empire }
+				not = { is_country_type = enclave }
+				not = { is_country_type = nomad }
+				not = { is_country_type = dormant_marauders }
+				not = { is_country_type = awakened_marauders }
+				#not = { is_country_type = neutral_zone }				
+			}
+			if = {
+				limit = { 
+					has_global_flag = hemo_Dydiff_disabled
+					has_modifier = sparsity_worker_nerf				
+				}				
+				remove_modifier = sparsity_worker_nerf
+			}
+			else_if = {
+				limit = { 
+					not = { has_global_flag = hemo_Dydiff_disabled }
+					not = { has_modifier = sparsity_worker_nerf	}
+				}				
+				add_modifier = {
+					modifier = sparsity_worker_nerf
+					days = -1
+				}						
+			}
+		}
+	}
+}

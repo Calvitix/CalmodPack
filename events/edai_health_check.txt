@@ -81,19 +81,32 @@ event = {
 				# Calvitix Zone Commerc Vs Foundry
 				if = {
 					limit = {
-						free_jobs > 1
-						free_amenities > 20
-						owner = { has_monthly_income = { resource = alloys value < 20 }}						
-						owner = { has_monthly_income = { resource = minerals value > 50 }}						
-						num_free_districts = { type = district_industrial value > 0 }
+						free_jobs > 3
+						#free_amenities > 20
+						owner = { has_monthly_income = { resource = alloys value < 5 }}						
+						owner = { has_monthly_income = { resource = minerals value > 40 }}						
 					}
 					#remove_building = building_commercial_zone
-					add_district = district_industrial
-					add_modifier = { modifier = hc_industrial_added days = 360 }										
-					log = "ME: Adding District_industrial (vs Commerc. Zone) for [This.GetName]"					
-										
+					if = {
+						limit = {
+							uses_district_set = ring_world
+							num_free_districts = { type = district_rw_industrial value > 0 }
+						}
+						add_district = district_rw_industrial
+						log = "ME: Alloys needed : Adding district_rw_industrial for [This.GetName]"					
+						add_modifier = { modifier = hc_industrial_added days = 360 }									
+					}
+					else = {
+						if = { 
+							limit = {
+								num_free_districts = { type = district_industrial value > 0 }
+							}						
+							add_district = district_industrial
+							add_modifier = { modifier = hc_industrial_added days = 360 }										
+							log = "ME: Alloys needed : Adding District_industrial for [This.GetName]"					
+						}
+					}										
 				}
-
 
 				
 				# Early energy crisis

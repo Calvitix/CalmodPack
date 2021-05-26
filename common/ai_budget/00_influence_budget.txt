@@ -111,6 +111,10 @@ influence_expenditure_important_edicts = {
 		nand = {
 			has_edict = capacity_subsidies
 			has_edict = mining_subsidies
+			or = {
+				is_authoritarian = no
+				has_edict = information_quarantine
+			}
 		}
 	}
 	
@@ -211,7 +215,7 @@ influence_expenditure_stations = {
 	}
 	
 	fraction = {
-		weight = 0.40 #0.5
+		weight = 0.2 #0.5
 	}	
 	static_min = {
 		base = 0 #75
@@ -223,9 +227,54 @@ influence_expenditure_stations = {
 				value > 250
 			}
 		}
+		modifier = {
+			add = 100
+			years_passed < 20
+		}
 ###Starnet AI end
 	}
 }
+influence_expenditure_stations_save_for_edicts = {
+	resource = influence 
+	type = expenditure
+	category = stations
+	
+	potential = {
+		not = { has_country_flag = saving_influence_arcology }
+		nand = {
+			is_allowed_to_make_claims = yes
+			has_country_flag = ferocious_rusher
+			any_neighbor_country = {
+				is_country_type = default
+				is_subject = no
+				not = { has_truce = prev }
+				prev = { opinion = {
+					who = prev 
+					value < -100
+				} }
+			}
+			resource_stockpile_compare = {
+				resource = influence
+				value < 300
+			}
+		}
+		or = {
+		and = {
+			or = { has_edict = capacity_subsidies not = { has_technology = tech_power_hub_1 } }
+			or = { is_authoritarian = no has_edict = information_quarantine }
+			}
+			resource_stockpile_compare = {
+				resource = influence
+				value > 200	
+				}
+		}
+	}
+	
+	fraction = {
+		weight = 0.2
+	}	
+}
+
 
 ###Starnet AI
 influence_expenditure_stations_wartime = {
