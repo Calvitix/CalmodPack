@@ -2,7 +2,7 @@
 #
 # Calvitix Check 3.0.3  21/05/2021
 #
-# Merge with Starnet AI 24/05/2021
+# Merge with Starnet AI 30/05/2021
 # This file is written mostly by Equalizer, huge thanks for the help
 #
 #
@@ -20,6 +20,16 @@
 @critical_mote_value = 25
 @critical_exotic_gases_value = 25
 @critical_rare_crystals_value = 25
+
+#These are the targets AI will try to hit if below the critical threshold. AI wilingness to buy depends on how far the goal is, so these have to be very large
+@critical_energy_target_value = 500
+@critical_minerals_target_value = 7000
+@critical_food_target_value = 5000
+@critical_consumer_goods_target_value = 1000
+@critical_alloys_target_value = 1000
+@critical_mote_target_value = 400
+@critical_exotic_gases_target_value = 400
+@critical_rare_crystals_target_value = 400
 
 # Resources tend not to be sold unless above these thresholds (except if a resource is critical).
 @target_energy_value = 1300
@@ -107,7 +117,7 @@ energy = {
 			}
 		}
 		modifier = {
-			factor = 7.5
+			factor = 8.5
 			or = {
 			has_ascension_perk = ap_world_shaper
 			has_ascension_perk = ap_hive_worlds
@@ -115,7 +125,7 @@ energy = {
 			}
 		}
 		modifier = {
-			add = @critical_energy_value
+			add = @critical_energy_target_value
 			resource_stockpile_compare = { resource = energy value < @critical_energy_value }
 			resource_income_compare = { resource = energy value < 0 }
 		}
@@ -148,8 +158,15 @@ minerals = {
 ###STARNET AI
 		base = 1
 		modifier = {
-			add = 15000
-			resource_income_compare = { resource = minerals value < 60 }
+			add = 25000
+			resource_income_compare = { resource = minerals value < 100 }
+			resource_stockpile_compare = { resource = minerals value < 400 }
+			resource_stockpile_compare = { resource = energy value > 400 }
+		}
+		modifier = {
+			add = 25000
+			years_passed > 40
+			resource_income_compare = { resource = minerals value < 150 }
 			resource_stockpile_compare = { resource = minerals value < 400 }
 			resource_stockpile_compare = { resource = energy value > 400 }
 		}
@@ -199,9 +216,9 @@ minerals = {
 			}
 		}
 		modifier = {
-			add = @critical_minerals_value
+			add = @critical_minerals_target_value
 			resource_stockpile_compare = { resource = minerals value < @critical_minerals_value }
-			resource_income_compare = { resource = minerals value < 0 }
+			resource_income_compare = { resource = minerals value < 40 }
 		}
 	}
 }
@@ -227,20 +244,23 @@ food = {
 ###STARNET AI
 		base = 1
 		modifier = {
-			add = 5000
+			add = 10000
+			resource_stockpile_compare = {
+				resource = minerals
+				value > 300
+			}
 			resource_income_compare = {
 				resource = food
 				value < 5
 			}
 			resource_stockpile_compare = {
 				resource = food
-				value < 150
+				value < 180
 			}
 			resource_stockpile_compare = {
 				resource = energy
 				value > 1000
 			}
-			years_passed < 35
 			is_at_war = no
 			ai_colonize_plans > 0
 		}
@@ -283,7 +303,7 @@ food = {
 			}
 		}
 		modifier = {
-			add = @critical_food_value
+			add = @critical_food_target_value
 			resource_stockpile_compare = { resource = food value < @critical_food_value }
 			resource_income_compare = { resource = food value < 0 }
 		}
@@ -359,6 +379,52 @@ alloys = {
 			}
 		}
 		modifier = {
+			add = 10000
+			resource_stockpile_compare = {
+				resource = alloys
+				value < 500
+			}
+			resource_stockpile_compare = {
+				Resource = energy 
+				value > 800
+			}
+			resource_income_compare = {
+				Resource = energy
+				value > 20
+			}
+			years_passed > @str_years_of_guaranteed_truce
+			years_passed < @str_years_of_twilight
+			or = {
+				used_naval_capacity_percent < 0.5
+				and = { is_at_war = yes used_naval_capacity_percent < 1 }
+			}
+		}
+		modifier = {
+			add = 10000
+			resource_stockpile_compare = {
+				resource = alloys
+				value < 300
+			}
+			str_make_fleet_against_rush = yes
+		}
+		modifier = {
+			add = 10000
+			resource_stockpile_compare = {
+				resource = alloys
+				value < 300
+			}
+			resource_stockpile_compare = {
+				Resource = energy 
+				value > 800
+			}
+			resource_income_compare = {
+				Resource = energy
+				value > 20
+			}
+			is_at_war = yes
+			used_naval_capacity_percent < 1 
+		}
+		modifier = {
 			factor = 3
 			resource_stockpile_compare = {
 				resource = alloys
@@ -405,7 +471,7 @@ alloys = {
 			}
 		}
 		modifier = {
-			add = @critical_alloys_value
+			add = @critical_alloys_target_value
 			resource_stockpile_compare = { resource = alloys value < @critical_alloys_value }
 			resource_income_compare = { resource = alloys value < 0 }
 		}
@@ -436,19 +502,22 @@ consumer_goods = {
 		base = 1
 		modifier = {
 			add = 5000
+			resource_stockpile_compare = {
+				resource = minerals
+				value > 300
+			}
 			resource_income_compare = {
 				resource = consumer_goods
 				value < 10
 			}
 			resource_stockpile_compare = {
 				resource = consumer_goods
-				value < 150
+				value < 180
 			}
 			resource_stockpile_compare = {
 				resource = energy
 				value > 1000
 			}
-			years_passed < 35
 			is_at_war = no
 			ai_colonize_plans > 0
 		}
@@ -490,7 +559,7 @@ consumer_goods = {
 			}
 		}
 		modifier = {
-			add = @critical_consumer_goods_value
+			add = @critical_consumer_goods_target_value
 			resource_stockpile_compare = { resource = consumer_goods value < @critical_consumer_goods_value }
 			resource_income_compare = { resource = consumer_goods value < 0 }
 		}
@@ -565,7 +634,7 @@ volatile_motes = {
 			}
 		}
 		modifier = {
-			add = @critical_mote_value
+			add = @critical_mote_target_value
 			resource_stockpile_compare = { resource = volatile_motes value < @critical_mote_value }
 			resource_income_compare = { resource = volatile_motes value < 0 }
 		}
@@ -637,7 +706,7 @@ exotic_gases = {
 			}
 		}
 		modifier = {
-			add = @critical_exotic_gases_value
+			add = @critical_exotic_gases_target_value
 			resource_stockpile_compare = { resource = exotic_gases value < @critical_exotic_gases_value }
 			resource_income_compare = { resource = exotic_gases value < 0 }
 		}
@@ -707,7 +776,7 @@ rare_crystals = {
 			}
 		}
 		modifier = {
-			add = @critical_rare_crystals_value
+			add = @critical_rare_crystals_target_value
 			resource_stockpile_compare = { resource = rare_crystals value < @critical_rare_crystals_value }
 			resource_income_compare = { resource = rare_crystals value < 0 }
 		}

@@ -1145,11 +1145,23 @@ event = {
 					limit = {
 						free_housing > 30
 						num_districts = { type = district_city value > 0 }
-						free_jobs > 2
+						#free_jobs > 2
 					}
+					if  = {
+						limit = {
+							free_amenities > 5
+							has_building = ebh_slums_1
+						}
+						log = "E: Too much Housing (> 30) : removing slum building for [This.GetName]"							
+						remove_building = ebh_slums_1					
+					}
+					else_if = {
+						limit = {
+							num_districts = { type = district_city value > 1 }
+						}					
 					remove_district = district_city
 					log = "E: Too much Housing (> 30) : removing district_city for [This.GetName]"							
-					
+					}
 				}
 				if = {
 					limit = {

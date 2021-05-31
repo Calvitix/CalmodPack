@@ -3,7 +3,7 @@
 # Calvitix Check 3.0.3  21/05/2021
 #
 # Merge with Skalla Ai's Overhaul
-# Merge with Starnet AI 24/05/2021
+# Merge with Starnet AI 28/05/2021
 #
 
 ## Categories used in this file must have use_for_ai_budget = yes defined in economic_categories ##
@@ -441,6 +441,13 @@ alloys_expenditure_starbases = {
 	category = starbases
 
 	potential = {
+		nand = {
+			has_country_flag = str_emergency_fleetbuilding_rush
+			resource_stockpile_compare = {
+				resource = alloys
+				value < 500
+			}
+		}
 		NOT = {
 			is_country_type = fallen_empire
 		}
@@ -525,6 +532,9 @@ alloys_expenditure_starbases_expand = {
 	category = starbases
 
 	potential = {
+		not = {
+			has_country_flag = str_emergency_fleetbuilding_rush
+		}
 		has_ai_expansion_plan = yes
 		highest_threat < 50
 		NOR = {
@@ -602,6 +612,13 @@ alloys_expenditure_colonies = {
 	category = colonies
 	
 	potential = {
+		nand = {
+			has_country_flag = str_emergency_fleetbuilding_rush
+			resource_stockpile_compare = {
+				resource = alloys
+				value < 500
+			}
+		}
 		not = {
 			has_country_flag = ferocious_rusher
 		}
@@ -804,7 +821,11 @@ alloys_upkeep_ships = {
 	category = ships
 
 	potential = {
-		years_passed > @str_years_of_guaranteed_truce
+		or = {
+			years_passed > @str_years_of_guaranteed_truce
+			has_country_flag = str_need_to_defend_against_rush 
+		is_at_war = yes
+		} 
 	}
 
 	fraction = {

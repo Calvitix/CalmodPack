@@ -3,7 +3,7 @@
 # Calvitix Check 3.0.3  21/05/2021
 #
 # Merge with Plentiful traditions 09/05/2021
-# Merge with Starnet OK 24/05/2021
+# Merge with Starnet OK 28/05/2021
 #############
 # Government buildings
 #############
@@ -95,10 +95,13 @@ building_bureaucratic_1 = {
 	potential = {
 		exists = owner
 		owner = { is_regular_empire = yes }
+	}
+
 #STARNET AI		
+	allow = {
 		or = {
 			owner = { is_ai = no }
-			str_bureaucratic_potential = yes
+		str_bureaucratic_allow = yes
 		} 
 ###
 	}
@@ -171,7 +174,7 @@ building_bureaucratic_1 = {
 	ai_resource_production = {
 		physics_research = 10
 		trigger = { 
-			str_bureaucratic_potential = yes 
+			str_bureaucratic_allow = yes 
 			owner = {
 				empire_sprawl_over_cap > 20
 			}
@@ -180,7 +183,7 @@ building_bureaucratic_1 = {
 	ai_resource_production = {
 		society_research = 10
 		trigger = { 
-			str_bureaucratic_potential = yes 
+			str_bureaucratic_allow = yes 
 			owner = {
 				empire_sprawl_over_cap > 20
 			}
@@ -189,7 +192,7 @@ building_bureaucratic_1 = {
 	ai_resource_production = {
 		engineering_research = 10
 		trigger = { 
-			str_bureaucratic_potential = yes 
+			str_bureaucratic_allow = yes 
 			owner = {
 				empire_sprawl_over_cap > 20
 			}
@@ -198,7 +201,7 @@ building_bureaucratic_1 = {
 	ai_resource_production = {
 		alloys = 3
 		trigger = { 
-			str_bureaucratic_potential = yes 
+			str_bureaucratic_allow = yes 
 			owner = {
 				empire_sprawl_over_cap > 20
 			}
@@ -215,10 +218,6 @@ building_bureaucratic_2 = {
 
 	potential = {
 		exists = owner
-		or = {
-		owner = { is_ai = no }
-		str_bureaucratic_potential = yes
-		} 
 		owner = { is_regular_empire = yes 
 		}
 	}
@@ -235,6 +234,10 @@ building_bureaucratic_2 = {
 
 	allow = {
 		has_upgraded_capital = yes
+		or = {
+			owner = { is_ai = no }
+			str_bureaucratic_allow = yes
+		} 
 		or = {
 			owner = {
 				is_ai = no
@@ -401,9 +404,34 @@ building_uplink_node = {
 		owner = { is_machine_empire = yes }
 	}
 
+	allow = {
+		exists = owner
+		or = {
+			owner = {
+				is_ai = no
+			}
+			nor = {
+				is_capital = yes
+				has_designation = col_research
+			}
+		}
+	}
+
 	destroy_trigger = {
 		exists = owner
+		or = {
 		owner = { is_machine_empire = no }
+		and = {
+			owner = {
+				is_ai = yes
+			}
+			years_passed > 5
+			or = {
+				is_capital = yes
+				has_designation = col_research
+			}
+		}
+		}
 	}
 
 	resources = {
@@ -956,8 +984,8 @@ building_clone_vats = {
 				NOR = {
 					owner = { has_ascension_perk = ap_plentiful_traditions_vast_slave_procreation }
 					OR = {
-						has_building = building_plentiful_traditions_advanced_slave_processing
-						has_building = building_slave_processing
+						planet = { has_building = building_plentiful_traditions_advanced_slave_processing }  #calvitix debug
+						planet = { has_building = building_slave_processing }
 					}
 				}
 			}
@@ -968,8 +996,8 @@ building_clone_vats = {
 			trigger = {
 				owner = { has_ascension_perk = ap_plentiful_traditions_vast_slave_procreation }
 				OR = {
-					has_building = building_plentiful_traditions_advanced_slave_processing
-					has_building = building_slave_processing
+					planet = { has_building = building_plentiful_traditions_advanced_slave_processing }
+					planet = { has_building = building_slave_processing }
 				}
 			}
 			minerals = 100
@@ -980,8 +1008,8 @@ building_clone_vats = {
 				NOT = {
 					owner = { has_ascension_perk = ap_plentiful_traditions_vast_slave_procreation }
 					OR = {
-						has_building = building_plentiful_traditions_advanced_slave_processing
-						has_building = building_slave_processing
+						planet = { has_building = building_plentiful_traditions_advanced_slave_processing }
+						planet = { has_building = building_slave_processing }
 					}
 				}
 			}
@@ -992,8 +1020,8 @@ building_clone_vats = {
 			trigger = {
 				owner = { has_ascension_perk = ap_plentiful_traditions_vast_slave_procreation }
 				OR = {
-					has_building = building_plentiful_traditions_advanced_slave_processing
-					has_building = building_slave_processing
+					planet = { has_building = building_plentiful_traditions_advanced_slave_processing }
+					planet = { has_building = building_slave_processing }
 				}
 			}
 			energy = 2
