@@ -324,6 +324,7 @@ event = {
 						not = { has_building = building_maintenance_depot }
 					}
 					add_building = building_maintenance_depot
+					owner = { add_resource = { minerals = -500 } }
 					log = "ME: Unemployement + Low services : Adding maintenance_depot for [This.GetName]"					
 					add_modifier = { modifier = hc_building_added days = 360 }		
 				}
@@ -350,6 +351,7 @@ event = {
 						free_building_slots > 1
 					}
 					add_building = building_research_lab_1
+					owner = { add_resource = { minerals = -500 } }
 					log = "ME: Unemployement + Research : Adding building_research_lab_1 for [This.GetName]"	
 					add_modifier = { modifier = hc_building_added days = 360 }		
 				}
@@ -399,12 +401,24 @@ event = {
 			if = {
 				limit = {
 					owner = {
-					has_resource = { type = energy amount < 500 }
-					has_resource = { type = minerals amount < 200 }
-					has_resource = { type = food amount < 200 }
-					has_monthly_income = { resource = minerals value < 2 }
-					has_monthly_income = { resource = energy value < 2 }
-					has_monthly_income = { resource = food value < 2 }
+					or = {
+						and = {
+						has_resource = { type = energy amount < 500 }
+						has_resource = { type = minerals amount < 200 }
+						has_resource = { type = food amount < 200 }
+						has_monthly_income = { resource = minerals value < 2 }
+						has_monthly_income = { resource = energy value < 2 }
+						has_monthly_income = { resource = food value < 2 }
+						}
+						and = {
+						has_resource = { type = energy amount < 50 }
+						has_resource = { type = alloys amount < 20 }
+						has_resource = { type = food amount < 20 }
+						has_monthly_income = { resource = alloys value < 0 }
+						has_monthly_income = { resource = food value < 0 }
+						has_monthly_income = { resource = energy value < 0 }
+						}
+					}
 					}
 				}
 				owner = {
@@ -953,6 +967,7 @@ event = {
 						if = {
 							limit = { num_buildings = { type = building_research_lab_1 value < 4 } }
 							add_building = building_research_lab_1	
+							owner = { add_resource = { minerals = -500 } }
 							log = "E: Unemployment & Research : Adding building_research_lab_1 for [This.GetName]"							
 							add_modifier = { modifier = hc_building_added days = 360 }		
 						}
@@ -962,11 +977,13 @@ event = {
 								free_amenities < 10
 							}
 							add_building = building_holo_theatres				
+							owner = { add_resource = { minerals = -500 } }
 							log = "E: Unemployment & low services : Adding building_holo_theatres for [This.GetName]"							
 							add_modifier = { modifier = hc_building_added days = 360 }		
 						}
 						else = { 
 							add_building = building_commercial_zone
+							owner = { add_resource = { minerals = -500 } }
 							log = "E: Unemployment : Adding building_commercial_zone for [This.GetName]"							
 							add_modifier = { modifier = hc_building_added days = 360 }		
 						}
@@ -1159,8 +1176,8 @@ event = {
 						limit = {
 							num_districts = { type = district_city value > 1 }
 						}					
-					remove_district = district_city
-					log = "E: Too much Housing (> 30) : removing district_city for [This.GetName]"							
+						remove_district = district_city
+						log = "E: Too much Housing (> 30) : removing district_city for [This.GetName]"												
 					}
 				}
 				if = {
@@ -1428,12 +1445,24 @@ event = {
 			if = {
 				limit = {
 					owner = {
-					has_resource = { type = energy amount < 500 }
-					has_resource = { type = minerals amount < 200 }
-					has_resource = { type = food amount < 200 }
-					has_monthly_income = { resource = minerals value < 2 }
-					has_monthly_income = { resource = energy value < 2 }
-					has_monthly_income = { resource = food value < 2 }
+						or = {
+							and = {
+							has_resource = { type = energy amount < 500 }
+							has_resource = { type = minerals amount < 200 }
+							has_resource = { type = food amount < 200 }
+							has_monthly_income = { resource = minerals value < 2 }
+							has_monthly_income = { resource = energy value < 2 }
+							has_monthly_income = { resource = food value < 2 }
+							}
+							and = {
+							has_resource = { type = energy amount < 50 }
+							has_resource = { type = alloys amount < 20 }
+							has_resource = { type = food amount < 20 }
+							has_monthly_income = { resource = alloys value < 0 }
+							has_monthly_income = { resource = food value < 0 }
+							has_monthly_income = { resource = energy value < 0 }
+							}
+						}
 					}
 				}
 				owner = {
@@ -1904,6 +1933,7 @@ event = {
 								num_buildings = { type = building_research_lab_1 value < 4 }
 							}
 							add_building = building_research_lab_1					
+							owner = { add_resource = { minerals = -500 } }
 							log = "H: Unemployment  : adding research_lab for [This.GetName]"	
 							add_modifier = { modifier = hc_building_added days = 360 }				
 						}
@@ -1913,6 +1943,7 @@ event = {
 								free_amenities < 10
 							}
 							add_building = building_maintenance_depot				
+							owner = { add_resource = { minerals = -500 } }
 							log = "H: Unemployment  : adding building_maintenance_depot for [This.GetName]"	
 							add_modifier = { modifier = hc_building_added days = 360 }				
 						}
@@ -2362,12 +2393,24 @@ event = {
 			if = {
 				limit = {
 					owner = {
-					has_resource = { type = energy amount < 500 }
-					has_resource = { type = minerals amount < 200 }
-					has_resource = { type = food amount < 200 }
-					has_monthly_income = { resource = minerals value < 2 }
-					has_monthly_income = { resource = energy value < 2 }
-					has_monthly_income = { resource = food value < 2 }
+					or = {
+						and = {
+						has_resource = { type = energy amount < 500 }
+						has_resource = { type = minerals amount < 200 }
+						has_resource = { type = food amount < 200 }
+						has_monthly_income = { resource = minerals value < 2 }
+						has_monthly_income = { resource = energy value < 2 }
+						has_monthly_income = { resource = food value < 2 }
+						}
+						and = {
+						has_resource = { type = energy amount < 50 }
+						has_resource = { type = alloys amount < 20 }
+						has_resource = { type = food amount < 20 }
+						has_monthly_income = { resource = alloys value < 0 }
+						has_monthly_income = { resource = food value < 0 }
+						has_monthly_income = { resource = energy value < 0 }
+						}
+					}
 					}
 				}
 				owner = {
