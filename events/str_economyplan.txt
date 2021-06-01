@@ -1,6 +1,6 @@
 # STARNET AI File
 #
-# Merge with STARNET AI OK  30/05/2021
+# Merge with STARNET AI OK  01/06/2021
 #
 namespace = str_economy_plan
 
@@ -108,7 +108,7 @@ country_event = {
     fire_only_once = no
     hide_window = yes
         immediate = {
-			remove_country_flag = str_has_room_to_grow
+			remove_country_flag = str_has_room_to_grow_new
 			remove_country_flag = str_has_designated_factory_switch
 			remove_country_flag = str_has_designated_foundry_switch
 			remove_country_flag = str_has_designated_good_factory_switch
@@ -122,10 +122,15 @@ country_event = {
 			remove_country_flag = str_deleted_extra_anchorage
 			remove_country_flag = str_need_to_defend_against_rush
 			remove_country_flag = str_there_exists_pop_sink_new
+			remove_country_flag = str_has_terraformables
 
 			set_timed_country_flag = {
 				flag = str_reconsider_plans
 				days = 70
+			}
+			set_timed_country_flag = {
+				flag = str_planet_buildings_unstuck
+				days = 40
 			}
 
 			if = {
@@ -254,7 +259,7 @@ country_event = {
 				limit = {
 					years_passed < 40
 				}
-				set_country_flag = str_has_room_to_grow
+				set_country_flag = str_has_room_to_grow_new
 			}
 
 			if = {
@@ -265,7 +270,7 @@ country_event = {
 						resource_stockpile_compare = {
 						resource = alloys
 						value < 2000 } } 
-					and = { has_global_flag = str_friendship_flag years_passed < 14 } } } 
+					and = { has_global_flag = str_friendship_flag years_passed < 25 } } } 
 				set_timed_country_flag = {
 					flag = str_disable_corvettes
 					days = 450
@@ -290,6 +295,33 @@ country_event = {
 						}
 						owner = { set_country_flag = str_there_exists_pop_sink_new }
 						owner = { set_country_flag = str_there_exists_pop_sink }
+					}
+
+					if = {
+						limit = {
+							owner = {
+								str_raw_ecocrisis_level_1 = yes
+							}
+							or = {
+								and = {
+								any_owned_pop = {
+									has_job = clerk
+								} free_jobs < 3 }
+								num_unemployed > 0
+							}
+						}
+						set_planet_flag = str_need_clerks
+					}
+					else = {
+						remove_planet_flag = str_need_clerks
+					}
+
+
+					if = {
+						limit = {
+							not = { is_planet_class = pc_gaia }
+						}
+						owner = { set_country_flag = str_has_terraformables }
 					}
 
 					if = {
@@ -484,7 +516,7 @@ country_event = {
 						remove_planet_flag = str_should_use_clerks
 						if = {
 							limit = { or ={ free_jobs > 2 free_district_slots > 0 } }
-							owner = { set_country_flag = str_has_room_to_grow }
+							owner = { set_country_flag = str_has_room_to_grow_new }
 						}
 					}
 					else_if = {
@@ -498,7 +530,7 @@ country_event = {
 							remove_planet_flag = str_should_use_clerks
 							if = {
 								limit = { or ={ free_jobs > 2 free_district_slots > 0 } }
-								owner = { set_country_flag = str_has_room_to_grow }
+								owner = { set_country_flag = str_has_room_to_grow_new }
 							}
 					}
 					else = {
@@ -720,6 +752,7 @@ country_event = {
 								owner = { has_country_flag = str_has_room_to_grow }
 								num_unemployed < 1
 								not = { has_building = building_robot_assembly_plant }
+								owner = { str_raw_ecocrisis_level_1 = no }
 				}
 							if = {
 								limit = {
@@ -727,7 +760,7 @@ country_event = {
 									owner = {
 									resource_income_compare = {
 										resource = energy
-										value > 10
+										value > 0
 									}
 									resource_stockpile_compare = {
 										resource = energy
@@ -736,7 +769,7 @@ country_event = {
 									owner = {
 									resource_income_compare = {
 										resource = energy
-										value > 40
+										value > 10
 									}
 									resource_stockpile_compare = {
 										resource = energy
@@ -752,12 +785,18 @@ country_event = {
 									owner = {	
 										resource_income_compare = {
 											resource = minerals
-											value > 60
+											value > 50
 										}
 										resource_stockpile_compare = {
 											resource = minerals
-											value > 700
+											value > 400
 										} }
+									owner = {
+										resource_income_compare = {
+											resource = minerals
+											value > 70
+										}
+									}
 									owner = {	
 										resource_income_compare = {
 											resource = minerals
@@ -805,6 +844,13 @@ country_event = {
 						has_country_flag = str_there_exists_pop_sink_new
 					}
 					set_country_flag = str_there_exists_pop_sink
+				}
+				remove_country_flag = str_has_room_to_grow
+				if = {
+					limit = {
+						has_country_flag = str_has_room_to_grow_new
+					}
+					set_country_flag = str_has_room_to_grow
 				}
 
 				if = {

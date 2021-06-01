@@ -2,7 +2,7 @@
 #
 # Calvitix Check 3.0.3  20/05/2021
 #
-# Merge with STARNET AI  28/05/2021
+# Merge with STARNET AI  01/06/2021
 #
 #
 ## Categories used in this file must have use_for_ai_budget = yes defined in economic_categories ##
@@ -109,23 +109,19 @@ energy_expenditure_campaigns = {
 	category = campaigns
 
 	potential = {
-		# only consider campaigns when we can actually afford them
-		has_resource = {
-			type = energy
-			amount > 3000
+		resource_stockpile_compare = {
+			resource = energy
+			value > 1500
 		}
-	}
 
-	fraction = {
-		weight = 0.30
 	}
 
 	static_min = {
-		base = 1000
+		base = 20000
 	}
-	static_max = {
-		base = 3000
-	}
+#	static_max = {
+#		base = 3000
+#	}
 }
 
 energy_expenditure_colonies = {
@@ -520,11 +516,61 @@ energy_upkeep_country = { # Covers most other things
 	}
 	
 	fraction = {
-		weight = 0.9
+		weight = 0.75 #0.9
 	}	
 }
 
+#Starnet AI
+energy_upkeep_building_unstucker = { # Covers most other things
+	resource = energy 
+	type = upkeep
+	category = planets
 
+	potential = {
+		has_country_flag = str_planet_buildings_unstuck
+	}
+	
+	fraction = {
+		weight = 2
+	}	
+}
+
+energy_upkeep_starbase_unstucker = { # Covers most other things
+	resource = energy 
+	type = upkeep
+	category = starbases
+	
+	potential = {
+		has_country_flag = str_planet_buildings_unstuck
+	}
+	
+	fraction = {
+		weight = 2
+	}	
+}
+
+energy_upkeep_country_not_terraforming = { # Covers most other things
+	resource = energy 
+	type = upkeep
+	category = country
+	
+	potential = {
+		nand = {
+			has_ascension_perk = ap_world_shaper
+			has_country_flag = str_has_terraformables
+			used_naval_capacity_percent > 0.9
+			resource_stockpile_compare = {
+				resource = energy
+				value < 8000
+			}
+		}
+	}
+	
+	fraction = {
+		weight = 0.15
+	}	
+}
+###
 energy_upkeep_country_early = { # Covers most other things
 	resource = energy 
 	type = upkeep
@@ -565,6 +611,15 @@ energy_upkeep_country_can_spend = { # Covers most other things
 			resource = energy 
 			value > 10
 		}
+		nand = {
+			has_ascension_perk = ap_world_shaper
+			has_country_flag = str_has_terraformables
+			used_naval_capacity_percent > 0.9
+			resource_stockpile_compare = {
+				resource = energy
+				value < 8000
+			}
+		}
 	}
 	
 	fraction = {
@@ -593,6 +648,15 @@ energy_upkeep_warprep = { # Covers most other things
 	
 	potential = {
 		prepare_for_war = yes
+		nand = {
+			has_ascension_perk = ap_world_shaper
+			has_country_flag = str_has_terraformables
+			used_naval_capacity_percent > 0.9
+			resource_stockpile_compare = {
+				resource = energy
+				value < 8000
+			}
+		}
 	}
 	
 	fraction = {
@@ -607,6 +671,15 @@ energy_upkeep_country_a = { # Covers most other things
 	
 	potential = {
 		has_country_flag = acceptable_raw_economy
+		nand = {
+			has_ascension_perk = ap_world_shaper
+			has_country_flag = str_has_terraformables
+			used_naval_capacity_percent > 0.9
+			resource_stockpile_compare = {
+				resource = energy
+				value < 8000
+			}
+		}
 	}
 	
 	fraction = {
@@ -620,6 +693,15 @@ energy_upkeep_country_f = { # Covers most other things
 	
 	potential = {
 		has_country_flag = fine_raw_economy
+		nand = {
+			has_ascension_perk = ap_world_shaper
+			has_country_flag = str_has_terraformables
+			used_naval_capacity_percent > 0.9
+			resource_stockpile_compare = {
+				resource = energy
+				value < 8000
+			}
+		}
 	}
 	
 	fraction = {
@@ -634,6 +716,15 @@ energy_upkeep_country_g = { # Covers most other things
 	
 	potential = {
 		has_country_flag = good_raw_economy
+		nand = {
+			has_ascension_perk = ap_world_shaper
+			has_country_flag = str_has_terraformables
+			used_naval_capacity_percent > 0.9
+			resource_stockpile_compare = {
+				resource = energy
+				value < 8000
+			}
+		}
 	}
 	
 	fraction = {
@@ -652,7 +743,7 @@ energy_upkeep_country_insane = { # Covers most other things
 		}
 		resource_stockpile_compare = {
 			resource = energy
-			value > 8000
+			value > 10000
 			
 		}
 	}
@@ -668,6 +759,15 @@ energy_expenditure_ultralate = {
 	type = upkeep
 	category = country
 	potential = {
+		nand = {
+			has_ascension_perk = ap_world_shaper
+			has_country_flag = str_has_terraformables
+			used_naval_capacity_percent > 0.9
+			resource_stockpile_compare = {
+				resource = energy
+				value < 8000
+			}
+		}
 		years_passed > 150
 		resource_stockpile_compare = {
 			resource = energy
@@ -732,6 +832,15 @@ energy_upkeep_lategame = {
 		resource_income_compare = {
 			resource = energy
 			value > -40
+		}
+		nand = {
+			has_ascension_perk = ap_world_shaper
+			has_country_flag = str_has_terraformables
+			used_naval_capacity_percent > 0.9
+			resource_stockpile_compare = {
+				resource = energy
+				value < 8000
+			}
 		}
 	}
 

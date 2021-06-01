@@ -3,7 +3,7 @@
 # Calvitix Check 3.0.3  21/05/2021
 #
 # Merge with Plentiful traditions 09/05/2021
-# Merge with Starnet OK 28/05/2021
+# Merge with Starnet OK 01/06/2021
 #############
 # Government buildings
 #############
@@ -243,9 +243,14 @@ building_bureaucratic_2 = {
 				is_ai = no
 			}
 			and = {
-				free_building_slots = 0
-				free_district_slots < 3
-				or = { has_designation = col_bureau num_unemployed > 2 }
+				exists = planet #calvitix debug
+				planet = { #debug
+					free_building_slots = 0
+					free_district_slots < 3
+					free_jobs < 3
+					or = { has_designation = col_bureau num_unemployed > 2 }
+					free_housing > 5
+				}
 			}
 		}
 	}
@@ -705,6 +710,7 @@ building_precinct_house = {
 				owner = { is_ai = no }
 				and = {
 					planet_crime > 25
+					owner = { str_raw_ecocrisis_level_1 = no }
 					num_pops > 11
 					not = { has_modifier = crime_lord_deal }
 					num_buildings = {

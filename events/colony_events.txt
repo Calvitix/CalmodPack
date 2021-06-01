@@ -4,7 +4,7 @@
 #
 # Merge with Arisphaos Unofficial patch
 # MERGE WITH Planet Diversity  21/05/2021
-# Merge with Expanded events 22/05/2021
+# Merge with Expanded events 01/06/2021
 
 ############################
 #
@@ -92,6 +92,7 @@ planet_event = {
 		has_owner = yes
 		is_homeworld = no
 		original_owner = yes
+		#is_ai = no #Aripatch
 		has_ground_combat = no
 		is_capital = no
 		is_occupied_flag = no
@@ -100,7 +101,7 @@ planet_event = {
 	trigger = {
 		owner = {
 			# is_ai = no does not work in planet scope pre_triggers 
-			is_ai = no
+			is_ai = no #Aripatch
 			NOT = { has_authority = auth_machine_intelligence }
 		}
 		num_pops > 0
@@ -196,6 +197,7 @@ planet_event = {
 planet_event = {
 	id = colony.3
 	title = "PROJECT_COMPLETE"
+#exp. events
 	desc = {
 		text = "colony.3.desc"
 		trigger = { is_xenophile = no }
@@ -204,6 +206,7 @@ planet_event = {
 		text = "colony.3.desc.phile"
 		trigger = { is_xenophile = yes }
 	}
+###
 	picture = GFX_evt_alien_planet
 	show_sound = event_alien_nature
 	location = ROOT
@@ -613,6 +616,7 @@ planet_event = {
 	trackable = yes
 
 	pre_triggers = {
+		# is_ai = no #debug
 		has_owner = yes
 		is_homeworld = no
 		original_owner = yes
@@ -624,7 +628,7 @@ planet_event = {
 	trigger = {
 		#owner = { NOT = { has_ethic = ethic_gestalt_consciousness } }
 		num_pops > 0
-		owner = { is_ai = no }
+		owner = { is_ai = no } #debug Aripatch
 		NOR = {
 			has_global_flag = seismic_disturbance_global
 			has_planet_flag = colony_event
@@ -712,6 +716,7 @@ planet_event = {
 planet_event = {
 	id = colony.52
 	title = "PROJECT_COMPLETE"
+#exp. events
 	desc = {
 		text = "colony.52.desc"
 	}
@@ -728,6 +733,7 @@ planet_event = {
 			}
 		}
 	}
+###
 	picture = GFX_evt_underground_civilization
 	show_sound = event_structural_collapse
 	location = ROOT
@@ -752,6 +758,7 @@ planet_event = {
 	option = {
 		name = colony.52.a
 		custom_tooltip = underground_expansion_tooltip
+#exp. events
 		owner = {
 			if = {
 				limit = {
@@ -760,7 +767,7 @@ planet_event = {
 						is_militarist = yes
 					}
 				}
-				gain_possitive_media_coverage = yes
+				gain_positive_media_coverage = yes
 			}
 			else_if = {
 				limit = {
@@ -772,6 +779,7 @@ planet_event = {
 				gain_negative_media_coverage = yes
 			}
 		}
+###
 	}	
 }
 
@@ -862,6 +870,7 @@ planet_event = {
 					leader = last_created_leader
 				}
 			}
+#exp. events
 			if = {
 				limit = {
 					event_target:subterranean_nation = { has_country_flag = robot_request_approved }
@@ -879,6 +888,7 @@ planet_event = {
 				}
 			}
 			break = yes
+###
 		}
 		if = {
 			limit = {
@@ -894,6 +904,7 @@ planet_event = {
 					leader = last_created_leader
 				}
 			}
+#exp. events
 			if = {
 				limit = {
 					event_target:subterranean_nation = { has_country_flag = robot_request_approved }
@@ -911,6 +922,7 @@ planet_event = {
 				}
 			}
 			break = yes
+###
 		}
 	}
 
@@ -966,7 +978,7 @@ country_event = {
 	id = colony.57
 	title = "colony.57.name"
 	desc = "colony.57.desc"
-	picture = GFX_evt_burning_settlement
+	picture = GFX_evt_burning_settlement #evt_surrender
 	show_sound = event_alien_signal
 	location = FROMFROM
 
@@ -986,8 +998,8 @@ country_event = {
 			owner_species = { save_event_target_as = subterranean_species }
 		}
 		fromfrom = {
-			if = {
-				limit = { has_global_flag = expanded_pops_active }
+#			if = {
+#				limit = { has_global_flag = expanded_pops_active }
 			create_country = {
 				name = "NAME_Subterranean_Empire"
 				species = event_target:subterranean_species
@@ -999,7 +1011,7 @@ country_event = {
 				}
 				authority = random
 				civics = random
-					origin = origin_subterranean_evolution
+#					origin = origin_subterranean_evolution
 				flag = {
 					icon = {
 						category = "zoological"
@@ -1017,38 +1029,7 @@ country_event = {
 					}
 				}
 			}
-			}
-			else = {
-				create_country = {
-					name = "NAME_Subterranean_Empire"
-					species = event_target:subterranean_species
-					type = default
-					auto_delete = yes
-					ethos = {
-						ethic = ethic_fanatic_militarist
-						ethic = ethic_authoritarian
-					}
-					authority = random
-					civics = random
-					origin = origin_enlightened
-					flag = {
-						icon = {
-							category = "zoological"
-							file = "flag_zoological_10.dds"
-						}
-						background= {
-							category = "backgrounds"
-							file = "new_dawn.dds"
-						}
-						colors={
-							"red"
-							"black"
-							"null"
-							"null"
-						}
-					}
-				}
-			}
+#			}
 			last_created_country = {
 				set_relation_flag = {
 					who = event_target:subterranean_former_planet_owner
@@ -1058,6 +1039,7 @@ country_event = {
 				establish_communications_no_message = event_target:subterranean_former_planet_owner
 				save_event_target_as = subterranean_empire
 				owner_species = { save_event_target_as = subterranean_species }
+#exp. events
 				add_resource = {
 					energy = 500
 					minerals = 2000 # enough for a spaceport and then some
@@ -1147,6 +1129,7 @@ country_event = {
 					name = random
 					skill = 2
 				}
+###
 			}
 		}
 		from = { destroy_country = yes }
@@ -1158,8 +1141,8 @@ country_event = {
 			random_owned_pop = { kill_pop = yes }
 			create_pop = { species = owner_main_species }
 			create_pop = { species = owner_main_species }
-			create_pop = { species = owner_main_species }
-			create_pop = { species = owner_main_species }
+			create_pop = { species = owner_main_species } #exp. events
+			create_pop = { species = owner_main_species } #exp. events
 			create_army = {
 				name = "NAME_Loot-Equipped_Army"
 				owner = event_target:subterranean_empire
@@ -1172,15 +1155,17 @@ country_event = {
 				species = event_target:subterranean_species
 				type = "defense_army"
 			}
-			if = {
-				limit = { has_global_flag = expanded_pops_active }
-				remove_deposit = d_underground_farm_blocked
-				remove_deposit = d_underground_mine_blocked
-				remove_deposit = d_underground_generator_blocked
-				add_deposit = d_underground_farm
-				add_deposit = d_underground_mine
-				add_deposit = d_underground_generator
-			}
+#exp. events
+#			if = {
+#				limit = { has_global_flag = expanded_pops_active }
+#				remove_deposit = d_underground_farm_blocked
+#				remove_deposit = d_underground_mine_blocked
+#				remove_deposit = d_underground_generator_blocked
+#				add_deposit = d_underground_farm
+#				add_deposit = d_underground_mine
+#				add_deposit = d_underground_generator
+#			}
+###
 			# flip starbase
 			solar_system = {
 				if = {
@@ -1197,7 +1182,7 @@ country_event = {
 		name = "ONSCREEN"
 		end_event_chain = "subterranean_civilization_chain"
 		country_event = { id = colony.58 }
-		gain_negative_media_coverage = yes
+		gain_negative_media_coverage = yes #exp. events
 	}
 }
 
@@ -1390,6 +1375,8 @@ planet_event = {
 			flag = seismic_disturbance_collapse
 			days = 7200
 		}
+		#set_planet_flag = seismic_disturbance_collapse
+
 	}
 
 	option = {
@@ -1430,6 +1417,7 @@ planet_event = {
 			flag = seismic_disturbance_raid
 			days = 7200
 		}
+		#set_planet_flag = seismic_disturbance_raid		
 		add_planet_devastation = 10
 	}
 
@@ -1472,6 +1460,7 @@ planet_event = {
 			flag = seismic_disturbance_attack
 			days = 7200
 		}
+		#set_planet_flag = seismic_disturbance_attack
 	}
 
 	option = {
@@ -1495,12 +1484,12 @@ planet_event = {
 		has_owner = yes
 		is_homeworld = no
 		original_owner = yes
-		has_ground_combat = no
 	}
 
 	trigger = {
 		has_planet_flag = seismic_disturbance_destroyed
 		NOT = { has_planet_flag = seismic_disturbance_pocket }
+		has_ground_combat = no
 		num_pops > 0
 	}
 
@@ -2173,6 +2162,7 @@ planet_event = {
 		has_owner = yes
 		is_homeworld = no
 		original_owner = yes
+		#is_ai = no  #debug
 		has_ground_combat = no
 		is_capital = no
 		is_occupied_flag = no
@@ -2180,7 +2170,7 @@ planet_event = {
 
 	trigger = {
 		num_pops > 0
-		owner = { is_ai = no }
+		owner = { is_ai = no }  #debug
 		habitable_planet = yes
 		uses_district_set = standard
 		NOR = {
@@ -2488,8 +2478,8 @@ planet_event = {
 	id = colony.102
 	title = "colony.102.name"
 	desc = "colony.102.desc"
-	picture = GFX_evt_burning_settlement
-	show_sound = event_air_raid_siren
+	picture = GFX_evt_burning_settlement  #burning_city
+	show_sound = event_air_raid_siren  #burning_city
 	location = ROOT
 
 	pre_triggers = {
@@ -3190,20 +3180,22 @@ planet_event = {
 		has_owner = yes
 		is_homeworld = no
 		original_owner = yes
+		#is_ai = no #debug
 		has_ground_combat = no
 		is_capital = no
 		is_occupied_flag = no
 	}
 
 	trigger = {
-		owner = { is_ai = no } 
+		owner = { is_ai = no }   #debug
 		NOT = { has_global_flag = underground_vault_global }
 		NOT = { has_planet_flag = armageddon_nuked }
-		OR = {
+	  	  OR = {
 			is_nuked = yes
 			has_planet_flag = colonized_tomb_world
 			has_modifier = recovered_tomb_world
 		}
+		NOT = { has_planet_flag = nuked_planet_anomalies_disabled }
 		NOR = {
 			has_planet_flag = primitives_nuked_themselves
 			solar_system = {
@@ -3504,16 +3496,19 @@ planet_event = {
 		has_owner = yes
 		is_homeworld = no
 		original_owner = yes
+		#is_ai = no   #debug
 		has_ground_combat = no
 		is_capital = no
 		is_occupied_flag = no
 	}
 
 	trigger = {
-		owner = { is_ai = no }
+		owner = { is_ai = no }  #debug
 		NOT = { has_planet_flag = armageddon_nuked }
-		is_planet_class = pc_nuked
+#		is_planet_class = pc_nuked
 		OR = {
+			is_nuked = yes
+			has_planet_flag = colonized_tomb_world
 			has_planet_flag = primitives_nuked_themselves
 			NOT = { has_planet_flag = nuked_planet_anomalies_disabled }
 		}
@@ -3603,13 +3598,14 @@ planet_event = {
 		has_owner = yes
 		is_homeworld = no
 		original_owner = yes
+		#is_ai = no
 		has_ground_combat = no
 		is_capital = no
 		is_occupied_flag = no
 	}
 
 	trigger = {
-		owner = { is_ai = no }
+		owner = { is_ai = no }  #debug
 		NOT = { has_planet_flag = armageddon_nuked }
 		is_planet_class = pc_nuked
 		OR = {
@@ -3660,13 +3656,14 @@ planet_event = {
 		has_owner = yes
 		is_homeworld = no
 		original_owner = yes
+		#is_ai = no
 		has_ground_combat = no
 		is_capital = no
 		is_occupied_flag = no
 	}
 
 	trigger = {
-		owner = { is_ai = no }
+		owner = { is_ai = no }  #debug
 		NOT = { has_planet_flag = armageddon_nuked }
 		is_planet_class = pc_nuked
 		OR = {
@@ -3722,13 +3719,14 @@ planet_event = {
 		has_owner = yes
 		is_homeworld = no
 		original_owner = yes
+		is_ai = no  #debug
 		has_ground_combat = no
 		is_capital = no
 		is_occupied_flag = no
 	}
 
 	trigger = {
-		owner = { is_ai = no }
+		owner = { is_ai = no }  #debug
 		NOT = { has_planet_flag = armageddon_nuked }
 		is_planet_class = pc_nuked
 		NOR = {
@@ -3786,13 +3784,14 @@ planet_event = {
 		has_owner = yes
 		is_homeworld = no
 		original_owner = yes
+		is_ai = no #debug
 		has_ground_combat = no
 		is_capital = no
 		is_occupied_flag = no
 	}
 
 	trigger = {
-		owner = { is_ai = no }
+		owner = { is_ai = no }  #debug
 		NOT = { has_planet_flag = armageddon_nuked }
 		is_planet_class = pc_nuked
 		OR = {
@@ -3850,13 +3849,14 @@ planet_event = {
 		has_owner = yes
 		is_homeworld = no
 		original_owner = yes
+		is_ai = no  #debug
 		has_ground_combat = no
 		is_capital = no
 		is_occupied_flag = no
 	}
 
 	trigger = {
-		owner = { is_ai = no }
+		owner = { is_ai = no }  #debug
 		NOT = { has_planet_flag = armageddon_nuked }
 		is_planet_class = pc_nuked
 		OR = {
@@ -3991,10 +3991,11 @@ planet_event = {
 		custom_tooltip = colony.164.a.tooltip
 		trigger = {
 			owner = {
+#exp. events
 				is_pacifist = yes
 			}
 		}
-		owner = { gain_possitive_media_coverage = yes }
+		owner = { gain_positive_media_coverage = yes }
 	}
 	after = {
 		add_modifier = { modifier = pacifist_movement days = -1 }
@@ -4007,6 +4008,7 @@ planet_event = {
 				}
 			}
 				pop_change_ethic = ethic_pacifist
+###
 		}
 		random_owned_pop = {
 			limit = {
@@ -4053,13 +4055,14 @@ planet_event = {
 		has_owner = yes
 		is_homeworld = no
 		original_owner = yes
+		#is_ai = no   #debug
 		has_ground_combat = no
 		is_capital = no
 		is_occupied_flag = no
 	}
 
 	trigger = {
-		owner = { is_ai = no }
+		owner = { is_ai = no }  #debug
 		NOT = { has_planet_flag = armageddon_nuked }
 		is_planet_class = pc_nuked
 		NOR = {
@@ -4239,13 +4242,14 @@ planet_event = {
 		has_owner = yes
 		is_homeworld = no
 		original_owner = yes
+		# is_ai = no  #debug
 		has_ground_combat = no
 		is_capital = no
 		is_occupied_flag = no
 	}
 
 	trigger = {
-		owner = { is_ai = no }
+		owner = { is_ai = no }   #debug
 		num_pops > 0
 		years_passed < 50
 		NOR = {
@@ -4286,7 +4290,7 @@ planet_event = {
 					"null"
 				}
 			}
-			day_zero_contact = no
+			day_zero_contact = no   #exp. events
 			effect = {
 				establish_communications_no_message = root.owner
 			}
@@ -4308,7 +4312,7 @@ planet_event = {
 					}
 					set_location = {
 						target = ROOT
-						distance = 150
+						distance = 150  #75
 						angle = random
 					}
 					queue_actions = {
@@ -4438,7 +4442,7 @@ planet_event = {
 	option = {
 		name = EXCELLENT
 		owner = {
-			gain_possitive_media_coverage = yes
+			gain_positive_media_coverage = yes  #exp. events
 			end_event_chain = "asteroid_sighted_chain"
 			add_monthly_resource_mult = {
 				resource = minerals

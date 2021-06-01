@@ -154,6 +154,7 @@ planet_event = {
 	immediate = {
 		if = {
 			limit = { 
+				exists = owner
 				NOT = { is_planet_class = pc_habitat }
 				NOT = { is_planet_class = pc_gas_giant }
 				NOT = { is_planet_class = pc_asteroid }
@@ -173,6 +174,7 @@ planet_event = {
 			# Environmental Ethics Trigger
 			if = {
 				limit = {
+					exists = owner
 					owner = { has_ethic = ethic_authoritarian }
 					NOT = { owner = { has_country_flag = eco_environmentalism_event } }
 					end_game_years_passed > 0
@@ -183,6 +185,7 @@ planet_event = {
 				}
 			} else_if = {
 				limit = {
+					exists = owner
 					owner = { has_ethic = ethic_fanatic_authoritarian }
 					NOT = { owner = { has_country_flag = eco_environmentalism_event } }
 					end_game_years_passed > 0
@@ -193,6 +196,7 @@ planet_event = {
 				}
 			} else_if = {
 				limit = {
+					exists = owner
 					owner = { has_ethic = ethic_egalitarian }
 					NOT = { owner = { has_country_flag = eco_environmentalism_event } }
 					end_game_years_passed > 0
@@ -203,6 +207,7 @@ planet_event = {
 				}
 			} else_if = {
 				limit = {
+					exists = owner
 					owner = { has_ethic = ethic_fanatic_egalitarian }
 					NOT = { owner = { has_country_flag = eco_environmentalism_event } }
 					end_game_years_passed > 0
@@ -213,6 +218,7 @@ planet_event = {
 				}
 			} else_if = {
 				limit = {
+					exists = owner
 					owner = { has_ethic = ethic_xenophobe }
 					NOT = { owner = { has_country_flag = eco_environmentalism_event } }
 					end_game_years_passed > 0
@@ -223,6 +229,7 @@ planet_event = {
 				}
 			} else_if = {
 				limit = {
+					exists = owner
 					owner = { has_ethic = ethic_fanatic_xenophobe }
 					NOT = { owner = { has_country_flag = eco_environmentalism_event } }
 					end_game_years_passed > 0
@@ -233,6 +240,7 @@ planet_event = {
 				}
 			} else_if = {
 				limit = {
+					exists = owner
 					owner = { has_ethic = ethic_xenophile }
 					NOT = { owner = { has_country_flag = eco_environmentalism_event } }
 					end_game_years_passed > 0
@@ -779,7 +787,10 @@ planet_event = {
 		} else_if = {
 			# Waste Generation
 			if = { # High Waste
-				limit = { has_modifier = "eco_waste_high" }
+				limit = { 
+					exists = owner
+					has_modifier = "eco_waste_high" 
+				}
 				random_list = {
 					# Nothing Happens
 					185 = { }
@@ -797,7 +808,10 @@ planet_event = {
 					2 = { planet_event = { id = waste.600 days = 60 random = 300} }
 				}
 			} else_if = { # Mod Waste
-				limit = { has_modifier = "eco_waste_mod" }
+				limit = { 
+					exists = owner
+					has_modifier = "eco_waste_mod" 
+				}
 				random_list = {
 					# Nothing Happens
 					192 = { }
@@ -813,7 +827,10 @@ planet_event = {
 					1 = { planet_event = { id = waste.600 days = 60 random = 300} }
 				}
 			} else_if = { # Low Waste
-				limit = { has_modifier = "eco_waste_low" }
+				limit = { 
+					exists = owner
+					has_modifier = "eco_waste_low" 
+				}
 				random_list = {
 					# Nothing Happens
 					197 = { }
@@ -840,6 +857,10 @@ event = {
 	immediate = {
 		every_playable_country = {
 			every_owned_planet = {
+			
+			if = { 
+				limit = { 					exists = owner }
+
 				# Remove Last Year's Modifier
 				if = {
 					limit = { has_modifier = eco_overpopulated }
@@ -849,6 +870,7 @@ event = {
 				# Apply This Year's Modifier
 				if = {
 					limit = { 
+						exists = owner
 						free_housing < 0
 						owner = { is_machine_empire = no }
 					}
@@ -857,7 +879,8 @@ event = {
 		
 				# Generate Slums
 				if = {
-					limit = { free_housing < -10 }
+					limit = { exists = owner
+free_housing < -10 }
 					if = { 
 						limit = { owner = { is_regular_empire = yes } }
 						random_list = {
@@ -902,6 +925,7 @@ event = {
 						}
 					}
 				}
+			}
 			}	
 		}
 	}
@@ -917,6 +941,7 @@ planet_event = {
 		# Power Depletion
 		if = {
 			limit = {
+				exists = owner
 				NOT = { owner = { has_ascension_perk = eco_ap_land_ethic } }
 				NOT = { owner = { has_ascension_perk = eco_ap_land_ethic_gestalt } }
 				num_districts = { type = district_generator value > 0 }
@@ -928,6 +953,7 @@ planet_event = {
 			}
 		} else_if = {
 			limit = {
+				exists = owner
 				NOT = { owner = { has_ascension_perk = eco_ap_land_ethic } }
 				NOT = { owner = { has_ascension_perk = eco_ap_land_ethic_gestalt } }
 				num_districts = { type = district_generator value > 0 }
@@ -939,6 +965,7 @@ planet_event = {
 			}
 		} else_if = {
 			limit = {
+				exists = owner
 				NOT = { owner = { has_ascension_perk = eco_ap_land_ethic } }
 				NOT = { owner = { has_ascension_perk = eco_ap_land_ethic_gestalt } }
 				num_districts = { type = district_generator value > 0 }
@@ -950,6 +977,7 @@ planet_event = {
 			}
 		} else_if = {
 			limit = {
+				exists = owner
 				NOT = { owner = { has_ascension_perk = eco_ap_land_ethic } }
 				NOT = { owner = { has_ascension_perk = eco_ap_land_ethic_gestalt } }
 				num_districts = { type = district_generator value > 0 }
@@ -963,6 +991,7 @@ planet_event = {
 		# Mineral Depletion
 		if = {
 			limit = {
+				exists = owner
 				NOT = { owner = { has_ascension_perk = eco_ap_land_ethic } }
 				NOT = { owner = { has_ascension_perk = eco_ap_land_ethic_gestalt } }
 				num_districts = { type = district_mining value > 0 }
@@ -974,6 +1003,7 @@ planet_event = {
 			}
 		} else_if = {
 			limit = {
+				exists = owner
 				NOT = { owner = { has_ascension_perk = eco_ap_land_ethic } }
 				NOT = { owner = { has_ascension_perk = eco_ap_land_ethic_gestalt } }
 				num_districts = { type = district_mining value > 0 }
@@ -985,6 +1015,7 @@ planet_event = {
 			}
 		} else_if = {
 			limit = {
+				exists = owner
 				NOT = { owner = { has_ascension_perk = eco_ap_land_ethic } }
 				NOT = { owner = { has_ascension_perk = eco_ap_land_ethic_gestalt } }
 				num_districts = { type = district_mining value > 0 }
@@ -996,6 +1027,7 @@ planet_event = {
 			}
 		} else_if = {
 			limit = {
+				exists = owner
 				NOT = { owner = { has_ascension_perk = eco_ap_land_ethic } }
 				NOT = { owner = { has_ascension_perk = eco_ap_land_ethic_gestalt } }
 				num_districts = { type = district_mining value > 0 }
@@ -1009,6 +1041,7 @@ planet_event = {
 		# Food Depletion
 		if = {
 			limit = {
+				exists = owner #calvitix debug
 				NOT = { owner = { has_ascension_perk = eco_ap_land_ethic } }
 				NOT = { owner = { has_ascension_perk = eco_ap_land_ethic_gestalt } }
 				num_districts = { type = district_farming value > 0 }
@@ -1020,6 +1053,7 @@ planet_event = {
 			}
 		} else_if = {
 			limit = {
+				exists = owner
 				NOT = { owner = { has_ascension_perk = eco_ap_land_ethic } }
 				NOT = { owner = { has_ascension_perk = eco_ap_land_ethic_gestalt } }
 				num_districts = { type = district_farming value > 0 }
@@ -1031,6 +1065,7 @@ planet_event = {
 			}
 		} else_if = {
 			limit = {
+				exists = owner
 				NOT = { owner = { has_ascension_perk = eco_ap_land_ethic } }
 				NOT = { owner = { has_ascension_perk = eco_ap_land_ethic_gestalt } }
 				num_districts = { type = district_farming value > 0 }
@@ -1042,6 +1077,7 @@ planet_event = {
 			}
 		} else_if = {
 			limit = {
+				exists = owner
 				NOT = { owner = { has_ascension_perk = eco_ap_land_ethic } }
 				NOT = { owner = { has_ascension_perk = eco_ap_land_ethic_gestalt } }
 				num_districts = { type = district_farming value > 0 }

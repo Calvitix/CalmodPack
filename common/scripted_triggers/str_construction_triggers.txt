@@ -2,7 +2,7 @@
 #
 # Calvitix Check 3.0.3  21/05/2021
 #
-# Merge with Starnet AI 27/05/2021
+# Merge with Starnet AI 01/06/2021
 #
 #
 
@@ -54,7 +54,7 @@ str_bureaucratic_allow = {
 	
         or = {
             is_capital = no
-            exists = owner
+            exists = owner #calvitix debug
             owner = {
                 is_ai = no
             }
@@ -104,15 +104,15 @@ str_bureaucratic_allow = {
 str_bureaucratic_destroy = {
     exists = owner
     or = {
-        owner = {
-        and = {
-                is_ai = yes
-                resource_income_compare = {
-                    resource = physics_research
-                    value < 90
-                }
-                free_building_slots < 1 #Calvitix 
-            }
+        and = { #calvitix debug
+			owner = {
+				is_ai = yes
+				resource_income_compare = {
+					resource = physics_research
+					value < 90
+				}
+			}
+			free_building_slots < 1 #Calvitix 
         }
         and = {
             or = {
@@ -552,6 +552,9 @@ str_energy_district_allow = {
 		            owner = {
 		                is_ai = yes
 		            }
+					not = {
+						owner = { has_ascension_perk = ap_world_shaper }		            
+				}
 		            or = {
 		                free_jobs > 2
 		                and = {
