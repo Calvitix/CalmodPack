@@ -3,7 +3,7 @@
 # Calvitix Check 3.0.3  22/05/2021
 #
 #
-# Merge with Expanded Events  31/05/2021
+# Merge with Expanded Events  02/06/2021
 # 
 #
 ############################
@@ -3977,7 +3977,7 @@ ship_event = {
 	}
 }
 
-# Broken Nanites
+# Nanites eat asteroids
 country_event = {
 	id = anomalymod.107
 	title = "distar.311.name"
@@ -3987,38 +3987,29 @@ country_event = {
 	
 	is_triggered_only = yes
 	
+	immediate = {
+		event_target:atomic_clock_planet = {
+			clear_deposits = yes
+			add_deposit = d_nanites_deposit
+			solar_system = {
+				every_system_planet = {
+					limit = {
+						is_asteroid = yes
+						has_any_strategic_resource = no
+						NOT = { has_deposit = d_nanites_deposit }
+					}
+					clear_deposits = yes
+					add_deposit = d_nanites_deposit
+				}
+			}
+		}
+	}
+	
 	option = {
-		name = anomalymod.107.a
+		name = distar.311.a
+		custom_tooltip = anomalymod.107.tooltip
 		small_artifact_reward = yes
-		if = {
-			limit = { NOT = { has_technology = tech_assembly_pattern } }
-			give_technology = { tech = tech_assembly_pattern }
-		}
-		else_if = {
-			limit = { has_tech_option = tech_construction_templates }
-			add_tech_progress = {
-				tech = tech_construction_templates
-				progress = 0.5
-			}
-		}
-		else_if = {
-			limit = { NOT = { has_technology = tech_construction_templates } }
-			add_research_option = tech_construction_templates
-			add_tech_progress = {
-				tech = tech_construction_templates
-				progress = 0.2
-			}
-		}
-		else = {
-			add_monthly_resource_mult = {
-				resource = engineering_research
-				value = @tier3researchreward
-				min = @tier3researchmin
-				max = @tier3researchmax
-			}
-		}
 		generate_lcluster_clue = yes
-		add_resource = { nanites = 300 }
 	}
 }
 

@@ -1064,6 +1064,7 @@ country_event = {
 	is_triggered_only = yes
 
 	immediate = {
+	    log = send_fleets_through_wormhole
 		random_system_within_border = {
 			limit = { has_an_active_ehof = yes }
 			every_fleet_in_system = {
@@ -1089,6 +1090,23 @@ country_event = {
 					target = event_target:ehof_move_to_destination
 					clear_auto_move_on_arrival = yes
 				}
+				set_event_locked = no
+			}
+		}
+	}
+}
+
+country_event = {
+    id = ehof_megastructure.3051
+    hide_window = yes
+    is_triggered_only = yes
+
+    immediate = {
+    	random_system_within_border = {
+    		limit = { has_an_active_ehof = yes }
+    		every_fleet_in_system = {
+    			limit = { has_fleet_flag = ehof_ready_for_travel@root }
+    			set_event_locked = no
 			}
 		}
 	}
@@ -1114,7 +1132,7 @@ fleet_event = {
 	}
 
 	immediate = {
-		#log = "Travel report triggered for [from.GetName]"
+		log = "Travel report triggered for [from.GetName]"
 		remove_fleet_flag = ehof_ready_for_travel@root.owner
 
 		if = {
@@ -1127,7 +1145,7 @@ fleet_event = {
 			}
 			owner = {
 				set_timed_country_flag = { flag = ehof_already_shown_success days = @ehof_short_cooldown }	# Stop double reporting.
-				#log = "Travel report pass to ui"
+				log = "Travel report pass to ui"
 				country_event = { id = ehof_megastructure.309 days = 2 }									# Travel report
 				if = {
 					limit = {
@@ -1164,6 +1182,32 @@ country_event = {
 	}
 }
 
+country_event = {
+	id = ehof_megastructure.3071
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+	    if = {
+	        limit = {
+                has_megastructure = ehof_megastructure_wormhole_destination
+                or = {
+                has_megastructure = ehof_megastructure_phase1_idle
+                has_megastructure = ehof_megastructure_phase2_idle
+                has_megastructure = ehof_megastructure_phase3_idle
+                has_megastructure = ehof_megastructure_phase4_idle
+                }
+	        }
+	        log = remove_wormholes_and_resetting_ehof_to_cooldown
+	        remove_country_flag = ehof_can_activate
+            remove_country_flag = ehof_activated
+            remove_country_flag = ehof_on_cooldown
+            remove_country_flag = ehof_can_deactivate
+	        country_event = { id = ehof_megastructure.307 }
+	    }
+	}
+}
+
 ########################################################################################################
 ############################################ Travel Report #############################################
 ########################################################################################################
@@ -1173,7 +1217,7 @@ country_event = {
 	is_triggered_only = yes
 
 	immediate = {
-		#log = "Travel report fired"
+		log = "Travel report fired"
 		ehof_mega_system = yes
 		ehof_dest_system = yes
 
@@ -1682,5 +1726,5 @@ country_event = {
 	}
 
 	option = { custom_gui = "ehof_mainui_option_big" name = "ehof_goback"		ehof_go_back = yes }
-	option = { custom_gui = "ehof_mainui_option_big" name = "ehof_leavestation" ehof_leave_station = yes default_hide_option = yes }
+	option = { custom_gui = "ehof_mainui_option_big" name = "ehof_leavestation" ehof_leave_station = yes default_hide_option = yes hidden_effect = { country_event = { id = ehof_megastructure.3051 }}}
 }

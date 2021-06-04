@@ -1180,6 +1180,13 @@ ship_event = {
 
 	is_triggered_only = yes
 
+	after = {
+		from = {
+			hidden_effect = { clear_deposits = yes }
+			add_deposit = d_nanites_deposit
+		}
+	}
+
 	option = {
 		name = EXCELLENT
 		owner = {
@@ -9889,6 +9896,13 @@ ship_event = {
 		owner = { country_event = { id = story.5 days = 30 } }
 	}
 
+	after = {
+		from = {
+			hidden_effect = { clear_deposits = yes }
+			add_deposit = d_nanites_deposit
+		}
+	}
+
 	option = {
 		name = INCREDIBLE
 		owner = {
@@ -9975,15 +9989,16 @@ ship_event = {
 		owner = { country_event = { id = story.5 days = 30 } }
 	}
 
-	option = {
-		name = ASTOUNDING
+	after = {
 		from = {
-			if = {
-				limit = { is_planet_class = pc_barren }
-				set_deposit = d_minerals_4
+			IF = {
+				limit = { habitable_planet = yes }
+				add_deposit = d_nanosands
+			}
+			ELSE = {
+				add_deposit = d_minerals_4
 				add_deposit = d_volatile_motes_1
 			}
-			else = { add_deposit = d_nanosands }
 		}
 		owner = {
 			add_monthly_resource_mult = {
@@ -9992,9 +10007,13 @@ ship_event = {
 				min = @tier2researchmin
 				max = @tier2researchmax
 			}
-			add_resource = { nanites = 200 }
 			generate_lcluster_clue = yes
 		}
+	}
+
+	option = {
+		name = ASTOUNDING
+			owner = { add_resource = { nanites = 200 } }
 	}
 
 	option = {
@@ -10007,23 +10026,7 @@ ship_event = {
 			}
 		}
 		name = DISCONCERTING
-		from = {
-			if = {
-				limit = { is_planet_class = pc_barren }
-				set_deposit = d_minerals_4
-				add_deposit = d_volatile_motes_1
-			}
-			else = { add_deposit = d_nanosands }
-		}
-		owner = {
-			add_monthly_resource_mult = {
-				resource = engineering_research
-				value = @tier2researchreward
-				min = @tier2researchmin
-				max = @tier2researchmax
-			}
-			generate_lcluster_clue = yes
-		}
+		owner = { add_resource = { nanites = 100 } }
 	}
 }
 
@@ -10523,7 +10526,7 @@ country_event = { #Atomic Clock follow-up: Selection
 		random_list = {
 			0 = {
 				modifier = {
-					add = 1
+					add = 40
 					FROMFROM.solar_system = {
 						any_system_planet = {
 							habitable_planet = no
@@ -10539,7 +10542,7 @@ country_event = { #Atomic Clock follow-up: Selection
 			}
 			0 = {
 				modifier = {
-					add = 1
+					add = 40
 					FROMFROM.solar_system = {
 						has_access_fleet = root
 					}
@@ -10548,7 +10551,7 @@ country_event = { #Atomic Clock follow-up: Selection
 			}
 			0 = {
 				modifier = {
-					add = 1
+					add = 40
 					FROMFROM.solar_system = {
 						any_system_planet = {
 							habitable_planet = no
@@ -10561,7 +10564,7 @@ country_event = { #Atomic Clock follow-up: Selection
 			}
 			0 = {
 				modifier = {
-					add = 1
+					add = 40
 					FROMFROM.solar_system = {
 						any_system_planet = {
 							has_anomaly = no
@@ -10577,7 +10580,7 @@ country_event = { #Atomic Clock follow-up: Selection
 			}
 			0 = {
 				modifier = {
-					add = 1
+					add = 40
 					FROMFROM.solar_system = {
 						any_system_planet = {
 							habitable_planet = yes
@@ -10588,6 +10591,21 @@ country_event = { #Atomic Clock follow-up: Selection
 					}
 				}
 				country_event = { id = distar.335 } #Habitable planet is nuked
+			}
+			20 = {
+				country_event = { id = anomalymod.100 }
+			}
+			20 = {
+				country_event = { id = anomalymod.103 }
+			}
+			15 = {
+				country_event = { id = anomalymod.107 }
+			}
+			5 = {
+				country_event = { id = anomalymod.108 }
+			}
+			1 = {
+				country_event = { id = anomalymod.109 }
 			}
 		}
 	}
@@ -12598,87 +12616,6 @@ ship_event = {
 	}
 }
 
-country_event = { #Atomic Clock follow-up: Selection
-	id = distar.310
-	hide_window = yes
-
-	is_triggered_only = yes
-
-	immediate = {
-		random_list = {
-			0 = {
-				modifier = {
-					add = 40
-					FROMFROM.solar_system = {
-						any_system_planet = {
-							habitable_planet = no
-							has_anomaly = no
-							planet_size > 8
-							planet_size < 25
-							NOT = { is_planet_class = "pc_broken" }
-							is_star = no
-						}
-					}
-				}
-				country_event = { id = distar.311 } #System planet is terraformed
-			}
-			0 = {
-				modifier = {
-					add = 40
-					FROMFROM.solar_system = {
-						has_access_fleet = root
-					}
-				}
-				country_event = { id = distar.315 } #Useable Gray Goo ship is built
-			}
-			40 = { country_event = { id = distar.320 } } #Unmanned research facilities built (Phys + Eng)
-			0 = {
-				modifier = {
-					add = 40
-					FROMFROM.solar_system = {
-						any_system_planet = {
-							has_anomaly = no
-							exists = owner
-							owner = {
-								is_primitive = yes
-							}
-							NOT = { is_planet_class = pc_ringworld_habitable }
-						}
-					}
-				}
-				country_event = { id = distar.330 } #Primitive planet is nuked
-			}
-			0 = {
-				modifier = {
-					add = 40
-					FROMFROM.solar_system = {
-						any_system_planet = {
-							habitable_planet = yes
-							is_under_colonization = no
-							has_anomaly = no
-						}
-					}
-				}
-				country_event = { id = distar.335 } #Habitable planet is nuked
-			}
-			20 = {
-				country_event = { id = anomalymod.100 }
-			}
-			20 = {
-				country_event = { id = anomalymod.103 }
-			}
-			20 = {
-				country_event = { id = anomalymod.107 }
-			}
-			5 = {
-				country_event = { id = anomalymod.108 }
-			}
-			1 = {
-				country_event = { id = anomalymod.109 }
-			}
-		}
-	}
-}
 
 country_event = { #A habitable planet is nuked
 	id = distar.335
