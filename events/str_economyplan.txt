@@ -1,6 +1,6 @@
 # STARNET AI File
 #
-# Merge with STARNET AI OK  01/06/2021
+# Merge with STARNET AI OK  10/06/2021
 #
 namespace = str_economy_plan
 
@@ -22,7 +22,7 @@ event = {
 			every_country = {
 				limit = {
 					is_ai = yes
-					is_country_type = default
+					has_country_flag = str_normal_empire
 					capital_scope = {
 						distance = {
 							source = prevprev.capital_scope
@@ -93,6 +93,7 @@ event = {
 				or = {
 					is_country_type = default
 					is_country_type = awakened_fallen_empire
+					has_country_flag = str_normal_empire
 				}
 		}
 				#log = "str_economy_plan for [This.GetName]"
@@ -123,6 +124,7 @@ country_event = {
 			remove_country_flag = str_need_to_defend_against_rush
 			remove_country_flag = str_there_exists_pop_sink_new
 			remove_country_flag = str_has_terraformables
+			set_country_flag = str_normal_empire
 
 			set_timed_country_flag = {
 				flag = str_reconsider_plans
@@ -505,11 +507,24 @@ country_event = {
 
 
 					if = {
-						limit = { any_owned_pop = {
+						limit = { 
+							any_owned_pop = {
 							is_sapient = yes
+							is_being_purged = no
 							planet = { habitability = { who = prev value > 0.65 } }
 							is_robot_pop = no
-							} }
+							} 
+							or = {
+								num_pops < 6
+								any_owned_pop = {
+									count > 3
+									is_sapient = yes
+									is_being_purged = no
+									planet = { habitability = { who = prev value > 0.65 } }
+									is_robot_pop = no
+									}
+								}
+							}
 						set_planet_flag = str_good_habitability
 						remove_planet_flag = str_acceptable_habitability
 						remove_planet_flag = str_bad_habitability
@@ -521,7 +536,7 @@ country_event = {
 					}
 					else_if = {
 						limit = { any_owned_pop = {
-							or = { is_sapient = yes is_robot_pop = yes }
+							or = { is_sapient = yes is_robot_pop = yes is_being_purged = no }
 							planet = { habitability = { who = prev value > 0.35 } }
 							} }
 							remove_planet_flag = str_good_habitability
@@ -734,12 +749,17 @@ country_event = {
 
 					if = {
 						limit = {
-							planet_crime < 5
+							planet_crime < 1
 							has_active_building = building_precinct_house
 							nand = { has_branch_office = yes branch_office_owner = { is_criminal_syndicate = yes	} }
 							not = { has_modifier = criminal_underworld }
+							num_unemployed < 1
 						}
 						remove_building = building_precinct_house
+						set_timed_planet_flag = {
+							flag = str_just_removed_precinct
+							days = 300
+						}
 					}
 
 						if = {
@@ -893,5 +913,183 @@ country_event = {
 					}
 				}
 			}
+	}
+}
+
+
+
+
+country_event = {
+    id = str_economy_plan.3
+    is_triggered_only = yes
+    fire_only_once = no
+    hide_window = yes
+    immediate = {
+		remove_country_flag = str_lets_terraform
+		every_owned_planet = {
+			limit = {
+				not = { has_planet_flag = str_good_habitability } 
+				nand = { 
+					has_planet_flag = str_did_terraforming 
+					not = { is_planet_class = pc_machine }	
+					not = { is_planet_class = pc_hive }
+					}
+				num_pops > 5
+			}
+			remove_planet_flag = str_terraform_alpine
+			remove_planet_flag = str_terraform_tundra
+			remove_planet_flag = str_terraform_arctic
+			remove_planet_flag = str_terraform_continental
+			remove_planet_flag = str_terraform_tropical
+			remove_planet_flag = str_terraform_ocean
+			remove_planet_flag = str_terraform_savannah
+			remove_planet_flag = str_terraform_desert
+			remove_planet_flag = str_terraform_arid
+			if = {
+				limit = {
+					any_owned_pop = {
+						count >= 5
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_trait = trait_pc_alpine_preference
+					}
+				}
+				set_planet_flag = str_terraform_alpine
+				owner = { set_country_flag = str_lets_terraform }
+				break = yes
+			}
+			else_if = {
+				limit = {
+					any_owned_pop = {
+						count >= 5
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_trait = trait_pc_tundra_preference
+					}
+				}
+				set_planet_flag = str_terraform_tundra
+				owner = { set_country_flag = str_lets_terraform }
+				break = yes
+			}
+			else_if = {
+				limit = {
+					any_owned_pop = {
+						count >= 5
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_trait = trait_pc_arctic_preference
+					}
+				}
+				set_planet_flag = str_terraform_arctic
+				owner = { set_country_flag = str_lets_terraform }
+				break = yes
+			}
+			else_if = {
+				limit = {
+					any_owned_pop = {
+						count >= 5
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_trait = trait_pc_ocean_preference
+					}
+				}
+				set_planet_flag = str_terraform_ocean
+				owner = { set_country_flag = str_lets_terraform }
+				break = yes
+			}
+			else_if = {
+				limit = {
+					any_owned_pop = {
+						count >= 5
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_trait = trait_pc_continental_preference
+					}
+				}
+				set_planet_flag = str_terraform_continental
+				owner = { set_country_flag = str_lets_terraform }
+				break = yes
+			}
+			else_if = {
+				limit = {
+					any_owned_pop = {
+						count >= 5
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_trait = trait_pc_tropical_preference
+					}
+				}
+				set_planet_flag = str_terraform_tropical
+				owner = { set_country_flag = str_lets_terraform }
+				break = yes
+			}
+			else_if = {
+				limit = {
+					any_owned_pop = {
+						count >= 5
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_trait = trait_pc_arid_preference
+					}
+				}
+				set_planet_flag = str_terraform_arid
+				owner = { set_country_flag = str_lets_terraform }
+				break = yes
+			}
+			else_if = {
+				limit = {
+					any_owned_pop = {
+						count >= 5
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_trait = trait_pc_desert_preference
+					}
+				}
+				set_planet_flag = str_terraform_desert
+				owner = { set_country_flag = str_lets_terraform }
+				break = yes
+			}
+			else_if = {
+				limit = {
+					any_owned_pop = {
+						count >= 5
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_trait = trait_pc_savannah_preference
+					}
+				}
+				set_planet_flag = str_terraform_savannah
+				owner = { set_country_flag = str_lets_terraform }
+				break = yes
+			}
+		}
+	}
+}
+
+planet_event = {
+    id = str_economy_plan.4
+    is_triggered_only = yes
+    fire_only_once = no
+    hide_window = yes
+    immediate = {
+		remove_planet_flag = str_terraform_alpine
+		remove_planet_flag = str_terraform_tundra
+		remove_planet_flag = str_terraform_arctic
+		remove_planet_flag = str_terraform_continental
+		remove_planet_flag = str_terraform_tropical
+		remove_planet_flag = str_terraform_ocean
+		remove_planet_flag = str_terraform_savannah
+		remove_planet_flag = str_terraform_desert
+		remove_planet_flag = str_terraform_arid
+		set_planet_flag = str_did_terraforming
 	}
 }

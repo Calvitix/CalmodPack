@@ -1,7 +1,7 @@
 # Starnet AI File
 #
 #
-# Merge with Starnet AI 14/05/2021
+# Merge with Starnet AI 10/06/2021
 # Merge with Starnet AI for NSC 21/05/2021
 #
 namespace = starnet
@@ -19,11 +19,33 @@ event = {
 			}
 		every_country = {
 			limit = {
-				is_country_type = default
+				has_country_flag = str_normal_empire
 			}
 			country_event = {
 				id = starnet.2 days = 1 random = 180
 			}
+			if = {
+				limit = {
+					has_technology = tech_ecological_adaptation
+					years_passed > 20
+					not = {
+						has_authority = auth_machine_intelligence
+					}
+					#If empire can take world shaper soon they should wait with terraforming
+					nand = { 
+						has_technology = tech_climate_restoration 
+						NOT = { has_authority = auth_hive_mind }
+						OR = {
+							NOT = { has_authority = auth_machine_intelligence }
+							has_valid_civic = civic_machine_servitor
+							has_valid_civic = civic_machine_assimilator
+						}
+					}
+				}
+			country_event = {
+					id = str_economy_plan.3 days = 1 random = 500
+					}
+				}
 			}
 		}
 	}
@@ -110,6 +132,7 @@ event = {
 				is_ai = yes
 				or = {
 					is_country_type = default
+					has_country_flag = str_normal_empire
 					is_country_type = awakened_fallen_empire
 				}
 		}

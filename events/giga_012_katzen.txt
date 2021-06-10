@@ -2,7 +2,7 @@
 #
 # Calvitix Check 3.0.2  28/04/2021
 #
-# Last Update : 04/06/2021
+# Last Update : 07/06/2021
 #
 #Calvitix Trad Names
 namespace = giga_katzen
@@ -573,7 +573,7 @@ country_event = {
 						count = 24 #4 escort ships
 						create_ship = {
 							name = random
-							design = "Nouv-Leopard"
+							design = "Nouv-Clermiaou"
 							prefix = no
 						}
 					}
@@ -630,7 +630,7 @@ country_event = {
 						count = 6 #4 escort ships
 						create_ship = {
 							name = random
-							design = "Nouv-Leopard"
+							design = "Nouv-Clermiaou"
 							prefix = no
 						}
 					}
@@ -686,7 +686,7 @@ country_event = {
 						count = 4 #4 escort ships
 						create_ship = {
 							name = random
-							design = "Nouv-Leopard"
+							design = "Nouv-Clermiaou"
 							prefix = no
 						}
 					}
@@ -745,7 +745,7 @@ country_event = {
 						count = 4 #4 escort ships
 						create_ship = {
 							name = random
-							design = "Nouv-Leopard"
+							design = "Nouv-Clermiaou"
 							prefix = no
 						}
 					}
@@ -832,7 +832,7 @@ country_event = {
 					count = 2
 					create_ship = {
 						name = random
-						design = "Nouv-Leopard"
+						design = "Nouv-Clermiaou"
 						prefix = no
 					}
 				}
@@ -884,7 +884,7 @@ country_event = {
 					count = 2
 					create_ship = {
 						name = random
-						design = "Nouv-Leopard"
+						design = "Nouv-Clermiaou"
 						prefix = no
 					}
 				}
@@ -3809,7 +3809,7 @@ country_event = { #Trading with Kaiser
 					set_owner = ROOT
 					create_ship = {
 						name = random
-						design = "Nouv-Leopard"
+						design = "Nouv-Clermiaou"
 						prefix = no
 					}
 					set_location = {
@@ -5031,12 +5031,6 @@ country_event = { #every 10 years, Kaiser randomly declares war on an AI
 								is_country_type = fallen_empire
 								is_country_type = awakened_fallen_empire
 							}
-							OR = {
-								relative_power = {
-									who = event_target:flusion_primitives_country
-									category = fleet
-									value = inferior
-								}
 								relative_power = {
 									who = event_target:flusion_primitives_country
 									category = fleet
@@ -5045,7 +5039,6 @@ country_event = { #every 10 years, Kaiser randomly declares war on an AI
 							}
 						}
 					}
-				}
 				save_global_event_target_as = kaiser_attack_target
 				event_target:flusion_primitives_country = {
 					declare_war = {
@@ -5731,6 +5724,10 @@ country_event = {
 									overlord = {
 										has_country_flag = allied_to_kaiser
 									}
+								}
+								AND = {
+									is_subject = yes
+									is_at_war = yes
 								}
 							}
 						}
@@ -6637,7 +6634,7 @@ planet_event = { #Every 6 months, warforges will randomly create a fleet
 		change_planet_size = -1
 		save_event_target_as = katzen_war_forge
 		if = {
-			limit = { planet_size = 1 }
+			limit = { planet_size < 2 }
 			solar_system = {
 				random_system_megastructure = {
 					limit = { is_megastructure_type = katzen_forge_1 }
@@ -9708,6 +9705,18 @@ country_event = { #- opinion
 #Change Flusion's texture
 namespace = giga_flusion_terraform
 
+planet_event = {
+	id = giga_flusion_terraform.999
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		set_planet_entity = {
+			entity = doughland_planet_entity
+		}
+	}
+}
+
 event = {
 	id = giga_flusion_terraform.1000
 	hide_window = yes
@@ -9743,6 +9752,7 @@ event = {
 						has_planet_flag = flusion_voidsphere_texture_applied
 						has_planet_flag = flusion_shrouded_texture_applied
 						has_planet_flag = flusion_fluffy_texture_applied
+						has_planet_flag = flusion_computer_texture_applied
 					}
 				}
 				AND = {
@@ -9812,6 +9822,10 @@ event = {
 				AND = {
 					is_planet_class = pc_fluffy
 					NOT = { has_planet_flag = flusion_fluffy_texture_applied }
+				}
+				AND = {
+					is_planet_class = pc_giga_planetary_computer
+					NOT = { has_planet_flag = flusion_computer_texture_applied }
 				}
 			}
 		}
@@ -9998,6 +10012,15 @@ event = {
 				set_planet_entity = { entity = flusion_planet_fluffy_entity }
 				set_planet_flag = flusion_fluffy_texture_applied
 			}
+			else_if = { # Computer
+				limit = {
+					is_planet_class = pc_giga_planetary_computer
+					NOT = { has_planet_flag = flusion_computer_texture_applied }
+				}
+				clear_flusion_texture_flags = yes
+				set_planet_entity = { entity = flusion_planet_computer_entity }
+				set_planet_flag = flusion_computer_texture_applied
+			}
 			else_if = { # Continental/Wet (Restored)
 				limit = {
 					OR = {
@@ -10025,6 +10048,7 @@ event = {
 						has_planet_flag = flusion_voidsphere_texture_applied
 						has_planet_flag = flusion_shrouded_texture_applied
 						has_planet_flag = flusion_fluffy_texture_applied
+						has_planet_flag = flusion_computer_texture_applied
 					}
 				}
 				clear_flusion_texture_flags = yes

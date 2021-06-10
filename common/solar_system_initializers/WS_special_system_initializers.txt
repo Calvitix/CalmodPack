@@ -52,7 +52,7 @@ ws_special_init_2 = {
 	usage_odds = {
     base = 0
     modifier = {						##CWTools Errors this. Ignore. 
-		distance_to_core_percent < 0.22 ##0.3 ##### was 0.35, changed to .3 to match core size, if adopted need to amend no core mod to edit this back. 
+		distance_to_core_percent < 0.22 ##0.3 ##### WS default core size = 0.15 
 		distance_to_core_percent > 0.05
 		add = 9999
 	}
@@ -77,40 +77,6 @@ ws_special_init_2 = {
 	
 }
 
-#### Wild Space fills Galactic Rim - IN SUBMOD #####
-
-#ws_special_init_3 = {
-#	class = "sc_dn" 
-#		flags = { wild_space_system }
-
-#	usage = misc_system_init
-#	usage_odds = {
-#   base = 0
-#    modifier = {
-#		distance_to_core_percent > 0.9
-#		add = 9999
-#	}
-#			add = 9999
-#	modifier = {
-#		factor = 0
-#		has_star_flag = empire_cluster
-#		}	
-#	}
-#	
-#	planet = {
-#		class = "pc_dn_star"
-#		orbit_distance = 0
-#		size = { min = @standard_min max = @standard_max }	
-#		init_effect = {
-#				create_wild_space_effect_1 = yes 
-#				create_wild_space_effect_3 = yes 
-#				prevent_anomaly = yes 
-#				}	
-#	}
-#	
-#	change_orbit = 30
-#	
-#}
 
 ### Ameoba wild space ####
 ws_special_init_4 = {
@@ -464,13 +430,12 @@ ws_special_init_7 = {
 	init_effect = {
 		spawn_megastructure = { 
 			type = "think_tank_ruined" 
-			coords_from = event_target:nexus_planet
+			planet = event_target:nexus_planet
 
 			init_effect = {
 				#log = "create think_tank_ruined"
 				create_ambient_object = {
 					type = "large_debris_object"
-					entity_offset_height = { min = -0 max = -25 }
 					location = this
 				}
 				last_created_ambient_object = { 
@@ -521,7 +486,7 @@ ws_special_init_7 = {
 		generate_home_system_resources = yes
 		spawn_megastructure = { 
 			type = "interstellar_assembly_ruined" 
-			coords_from = star
+			planet = star
 
 			init_effect = {
 				create_ambient_object = {
