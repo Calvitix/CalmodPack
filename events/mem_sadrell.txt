@@ -580,6 +580,13 @@ country_event = {
                 factor = 2
                 is_xenophile = yes
             }
+            modifier = {
+                factor = 0
+                exists = capital_scope
+                capital_scope.solar_system = {
+                    has_star_flag = mem_sadrell_home_cluster
+                }
+            }
         }
     }
 
@@ -661,6 +668,13 @@ country_event = {
                 factor = 1.75
                 is_authoritarian = yes
             }
+            modifier = {
+                factor = 0
+                exists = capital_scope
+                capital_scope.solar_system = {
+                    has_star_flag = mem_sadrell_home_cluster
+                }
+            }
         }
     }
 
@@ -721,6 +735,13 @@ country_event = {
                 factor = 0.5
                 is_spiritualist = yes
             }
+            modifier = {
+                factor = 0
+                exists = capital_scope
+                capital_scope.solar_system = {
+                    has_star_flag = mem_sadrell_home_cluster
+                }
+            }
         }
     }
 
@@ -749,6 +770,13 @@ country_event = {
             modifier = {
                 factor = 0.75
                 is_spiritualist = yes
+            }
+            modifier = {
+                factor = 0
+                exists = capital_scope
+                capital_scope.solar_system = {
+                    has_star_flag = mem_sadrell_home_cluster
+                }
             }
         }
     }
@@ -1338,7 +1366,7 @@ country_event = {
             set_name = "Sadrell Exiles"
             join_alliance = {
                 who = root
-                name = "[gate_system.GetName] Accord"
+                name = "Accord"
                 override_requirements = yes
             }
         }
@@ -1415,6 +1443,9 @@ country_event = {
                     }
                 }
             }
+        }
+        alliance = {
+            set_name = "Accord [gate_system.GetName]"
         }
     }
 
@@ -1648,18 +1679,15 @@ country_event = {
     }
 }
 
-# Vote tallying
+# Vote tallying gatekeeper
 country_event = {
     id = mem_sadrell.122
-    title = mem_sadrell.122.name
-    desc = mem_sadrell.122.desc
-
+    hide_window = yes
     is_triggered_only = yes
 
-    picture = GFX_evt_arguing_senate
-    show_sound = event_factions
-
-    trigger = {
+    immediate = {
+        IF = {
+            limit = {
         NOR = {
             any_country = {
                 has_country_flag = mem_sadrell_vote_pending
@@ -1671,6 +1699,26 @@ country_event = {
             }
             has_country_flag = mem_sadrell_votes_tallied
         }
+    }
+            set_country_flag = mem_sadrell_votes_tallied
+            country_event = { id = mem_sadrell.1221 }
+        }
+    }
+}
+
+# Vote tallying
+country_event = {
+    id = mem_sadrell.1221
+    title = mem_sadrell.122.name
+    desc = mem_sadrell.122.desc
+
+    is_triggered_only = yes
+
+    picture = GFX_evt_arguing_senate
+    show_sound = event_factions
+
+    trigger = {
+        # NOT = { has_country_flag = mem_sadrell_votes_tallied }
     }
 
     immediate = {

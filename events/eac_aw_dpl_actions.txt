@@ -141,6 +141,38 @@ ship_event = {
     }
 }
 
+##ship disabled - military station - Wipe Them Out War Goal - Destroying Ships
+ship_event = {
+    id = eac_aw_dpl_actions.15
+    hide_window = yes
+    is_triggered_only = yes
+
+    trigger = {
+        is_ship_class = shipclass_military_station
+        is_disabled = yes
+        any_country = {
+            any_war = {
+                using_war_goal = {
+                    type = wg_wipe_them_out
+                    owner = attacker
+                }
+            }
+        }
+    }
+
+    immediate = {     
+        solar_system = {
+           every_ship_in_system = {
+               limit = {
+                    is_ship_class = shipclass_military_station
+                    is_disabled = yes      
+               }
+               destroy_ship = this
+           }
+       }
+    }
+}
+
 # fix in progress games
 event = {
     id = eac_aw_dpl_actions.1000

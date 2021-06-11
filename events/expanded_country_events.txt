@@ -678,6 +678,10 @@ country_event = {
 		NOT = {
 			has_country_flag = damaged_ecosystem_event
 		}
+		OR = {
+			has_country_flag = countryexpanded_20_set
+			has_origin = origin_exploited_homeworld
+		}
 	}
 	
 	option = {
@@ -3183,6 +3187,29 @@ country_event = {
 				set_location = root.capital_scope
 			}
 		}
+	}
+}
+
+# End Event Chain Back-Up
+country_event = {
+	id = countryexpanded.44
+	hide_window = yes
+	is_triggered_only = yes
+	
+	trigger = {
+		has_country_flag = human_1
+		NOT = { has_country_flag = found_com }
+		any_playable_country = {
+			has_origin = origin_lost_colony
+			has_country_flag = human_2
+			has_communications = ROOT
+		}
+	}
+	
+	immediate = {
+		set_country_flag = found_com
+		remove_point_of_interest = com_search_poi.6
+		country_event = { id = countryexpanded.42 days = 4 }
 	}
 }
 
