@@ -3,7 +3,7 @@
 # Calvitix Check 3.0.3  21/05/2021
 #
 # Merge with Giga 21/04/2021
-# Merge wit Starnet AI 07/06/2021
+# Merge wit Starnet AI 15/06/2021
 #
 #############
 # Resource buildings
@@ -22,7 +22,6 @@ building_foundry_1 = {
 		str_foundry_allow = yes
 	}
 
-#3.0.3b2
 	destroy_trigger = {
 		OR = {
 			has_modifier = resort_colony
@@ -31,6 +30,7 @@ building_foundry_1 = {
 				is_capital = yes
 				owner = { is_ai = yes resource_income_compare = { resource = alloys	value > 45 } or = { resource_stockpile_compare = { resource = alloys value > 3500	} used_naval_capacity_percent > 0.95 } owner = { num_owned_planets > 3 } }
 				years_passed > 20
+				not = { has_origin = origin_void_dwellers }
 			}
 		}
 	}
@@ -262,11 +262,9 @@ building_foundry_2 = {
 	}
 
 	triggered_desc = {
-#3.0.3b2
 		text = building_foundry_2_effect_desc
 	}
 
-#3.0.3b2
 	triggered_desc = {
 		trigger = {
 			exists = owner
@@ -418,11 +416,9 @@ building_foundry_3 = {
 	}
 
 	triggered_desc = {
-#3.0.3b2
 		text = building_foundry_3_effect_desc
 	}
 
-#3.0.3b2
 	triggered_desc = {
 		trigger = {
 			exists = owner
@@ -500,7 +496,6 @@ building_factory_1 = {
 		NOT = { has_modifier = slave_colony }
 	}
 
-#3.0.3b2
 	destroy_trigger = {
 		OR = {
 			has_modifier = resort_colony
@@ -736,11 +731,9 @@ building_factory_2 = {
 	}
 
 	triggered_desc = {
-#3.0.3b2
 		text = building_factory_2_effect_desc
 	}
 
-#3.0.3b2
 	triggered_desc = {
 		trigger = {
 			exists = owner
@@ -889,11 +882,9 @@ building_factory_3 = {
 	}
 
 	triggered_desc = {
-#3.0.3b2
 		text = building_factory_3_effect_desc
 	}
 
-#3.0.3b2
 	ai_resource_production = {
 		consumer_goods = 24
 		trigger = {
@@ -1367,6 +1358,24 @@ building_ministry_production = {
 		upkeep = {
 			energy = @b2_upkeep
 			volatile_motes = @b2_rare_upkeep
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_ai = yes
+			}
+			num_buildings = {
+				type = building_ministry_production
+				value = 0
+			}
+			or = { has_designation = col_factory has_designation = col_foundry has_designation = col_habitat_factory has_designation = col_habitat_foundry } 
+		}
+		modifier = {
+			job_starnet_spice_melange_farmer_add = 1
+			job_starnet_spice_melange_antifarmer_add = -1
 		}
 	}
 

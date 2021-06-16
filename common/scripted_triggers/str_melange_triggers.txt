@@ -2,7 +2,7 @@
 #
 # Calvitix Check 3.0.3  21/05/2021
 #
-# Merge with Starnet OK   07/06/2021
+# Merge with Starnet OK   15/06/2021
 
 str_force_city_district = {
 	str_force_city_district_compatibility = yes
@@ -46,11 +46,13 @@ str_force_city_district = {
 		num_pops > 25
 		}
 		and = { free_amenities < -8 free_building_slots = 0 }
+		and = { has_modifier = planet_luxuries_boost free_amenities < 5 free_building_slots = 0 }
 	}
 	or = { free_building_slots = 0 and = { num_pops > 15 free_housing < 25 } }
 	or = { 
 		free_jobs > 1 
 	and = { free_district_slots < 2 owner = { has_country_flag = str_has_room_to_grow } } 
+	and = { has_modifier = planet_luxuries_boost free_amenities < 5 free_building_slots = 0 }
 	and = { free_building_slots = 0 free_amenities < -4 } 
 	and = { free_building_slots = 0 free_housing < 25 free_district_slots > 2 owner = { str_raw_ecocrisis_level_0 = no } }
 	and = { free_building_slots = 0 or = { has_designation = col_research has_designation = col_bureau } owner = { str_raw_ecocrisis_level_0 = no } }
@@ -196,6 +198,26 @@ str_force_building_factory = {
 
 str_force_building_foundry = {
 	or = {
+	and = {
+		or = {
+			is_capital = yes
+			is_planet_class = pc_habitat
+		}
+		owner = {
+			or = {
+			has_origin = origin_void_dwellers
+			has_origin = origin_shattered_ring	
+			}
+			resource_stockpile_compare = {
+				resource = minerals
+				value > 600
+			}
+			resource_income_compare = {
+				resource = minerals
+				value > 30
+			} 
+		}
+	}
 	and = {	
 	years_passed < 10
 	owner = {
@@ -345,10 +367,13 @@ str_force_district_generator = {
 
 str_force_stronghold = {
 
+	or = { 
 	nor = { has_designation = col_bureau has_designation = col_research } 
+		owner = { lategame = yes }
+	}
 	years_passed > 80
 	owner = {
-		used_naval_capacity_percent > 0.97
+		used_naval_capacity_percent > 0.9
 		resource_stockpile_compare = {
 			resource = alloys
 			value > 1500
@@ -376,6 +401,9 @@ str_force_holotheatre = {
 		value > 300
 	} }
 	free_building_slots > 0
+	or = {
 	free_amenities < -10
+	and = { has_modifier = planet_luxuries_boost free_amenities < 5 }
+	}
 	num_pops > 11
 }

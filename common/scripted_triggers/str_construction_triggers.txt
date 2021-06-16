@@ -2,7 +2,7 @@
 #
 # Calvitix Check 3.0.3  21/05/2021
 #
-# Merge with Starnet AI 07/06/2021
+# Merge with Starnet AI 16/06/2021
 #
 #
 
@@ -15,7 +15,16 @@ str_enable_clerks = {
                 has_planet_flag = str_should_use_clerks
             }
             years_passed < 1
-            and = {
+			and = {
+					str_raw_ecocrisis_level_1 = yes 
+					prev = { solar_system = {
+						starbase = {
+							has_starbase_size > starbase_outpost
+						}
+					} 
+					has_planet_flag = str_need_clerks }
+				}
+			and = {
                 years_passed < 9
                 years_passed > 3
             }
@@ -287,8 +296,9 @@ str_research_allow = {
         has_better_world = no
     }
     or = {
-        has_planet_flag = str_acceptable_habitability
-        has_planet_flag = str_good_habitability
+		has_planet_flag = str_good_habitability
+		and = { free_building_slots > 1 
+		has_planet_flag = str_acceptable_habitability } 
         owner = {
             is_ai = no
         }
@@ -310,6 +320,10 @@ str_research_destroy = {
     }
     exists = owner
     owner = {
+			nor = {
+				has_ethic = ethic_pacifist
+				has_ethic = ethic_fanatic_pacifist
+			}
         is_ai = yes
         lategame = yes
         or = {
@@ -319,7 +333,7 @@ str_research_destroy = {
             has_crisis_level = crisis_level_5
             resource_income_compare = {
                 resource = engineering_research
-                value > 1000
+					value > 1200
             }
         }
     }
@@ -609,7 +623,7 @@ str_food_district_allow = {
         owner = {
             is_ai = yes
         }
-        free_jobs > 10 # 2 Calvitix (2 is too restrictiv)
+        free_jobs > 8 # 3 Calvitix (2 is too restrictiv)
     }
     or = {
         str_force_district_farming = yes
@@ -1137,6 +1151,7 @@ str_food_processing_destroy = {
     }
 }
 
+
 str_mineral_purification_allow = {
 	str_vanilla_buildings_allow_compatibility = yes
     or = {
@@ -1156,6 +1171,7 @@ str_mineral_purification_destroy = {
         has_designation = col_foundry has_designation = col_factory has_designation = col_generator has_designation = col_farming
     }
 }
+
 
 str_energy_grid_allow = {
 	str_vanilla_buildings_allow_compatibility = yes
@@ -1177,6 +1193,7 @@ str_energy_grid_destroy = {
     }
 }
 
+
 str_factory_to_foundry_switcher = {
     or = {
         has_planet_flag = str_good_factory_switching_candidate
@@ -1190,6 +1207,7 @@ str_factory_to_foundry_switcher = {
         }
     }
 }
+
 
 str_foundry_to_factory_switcher = {
     or = {
@@ -1226,6 +1244,7 @@ str_industrial_switcher = {
         str_extra_switcher = yes
     }
 }
+
 
 str_city_district_potential = {
     str_city_district_allow = yes
@@ -1286,7 +1305,7 @@ str_stronghold_potential = {
                 }
             }
             owner = {
-                used_naval_capacity_percent > 0.95
+					used_naval_capacity_percent > 0.85
                 resource_stockpile_compare = {
                     resource = alloys
                     value > 2000
@@ -1295,12 +1314,13 @@ str_stronghold_potential = {
                 has_technology = tech_destroyers
                 resource_income_compare = {
                     resource = energy
-                    value > -10
+						value > -30
                 }
             }
         }
     }
 }
+
 
 str_stronghold_destroy = {
     exists = owner

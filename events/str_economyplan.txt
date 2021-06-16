@@ -1,6 +1,6 @@
 # STARNET AI File
 #
-# Merge with STARNET AI OK  10/06/2021
+# Last update OK  15/06/2021
 #
 namespace = str_economy_plan
 
@@ -17,7 +17,13 @@ event = {
 		every_country = {
 				limit = {
 					is_ai = no
+					or = { 
 					used_naval_capacity_integer > 5
+						resource_stockpile_compare = {
+							resource = alloys
+							value > 1500
+						}	
+					}
 				}
 			every_country = {
 				limit = {
@@ -33,6 +39,67 @@ event = {
 						}
 					}
 				}
+				remove_country_flag = str_need_1000_alloys
+				remove_country_flag = str_need_1500_alloys
+				remove_country_flag = str_need_2000_alloys
+				remove_country_flag = str_need_3000_alloys
+				remove_country_flag = str_need_4000_alloys
+				if = {
+					limit = {
+						prev = { resource_stockpile_compare = {	resource = alloys value > 3500	} }
+					}
+					set_country_flag = str_need_4000_alloys
+
+				}
+				else_if = {
+					limit = {
+						prev = { resource_stockpile_compare = {	resource = alloys value > 3000	} }
+					}
+					set_country_flag = str_need_3000_alloys
+					if = {
+						limit = {
+							is_difficulty > 2
+						}
+						set_country_flag = str_need_4000_alloys
+					}
+				}
+				else_if = {
+					limit = {
+						prev = { resource_stockpile_compare = {	resource = alloys value > 2500	} }
+					}
+					set_country_flag = str_need_2000_alloys
+					if = {
+						limit = {
+							is_difficulty > 2
+						}
+						set_country_flag = str_need_3000_alloys
+					}
+				}
+				else_if = {
+					limit = {
+						prev = { resource_stockpile_compare = {	resource = alloys value > 2000	} }
+					}
+					set_country_flag = str_need_1500_alloys
+					if = {
+						limit = {
+							is_difficulty > 2
+						}
+						set_country_flag = str_need_2000_alloys
+					}
+				}
+				else_if = {
+					limit = {
+						prev = { resource_stockpile_compare = {	resource = alloys value > 1500	} }
+					}
+					set_country_flag = str_need_1000_alloys
+					if = {
+						limit = {
+							is_difficulty > 2
+						}
+						set_country_flag = str_need_1500_alloys
+					}
+				}
+
 				if = {
 					limit = {
 						prev = { used_naval_capacity_integer > 35 }
@@ -46,10 +113,8 @@ event = {
 					set_country_flag = str_need_30_corvettes
 					if = {
 						limit = {
-							or = {
 							is_difficulty > 2
 						}
-					}
 						set_country_flag = str_need_40_corvettes
 					}
 				}
@@ -58,26 +123,31 @@ event = {
 						prev = { used_naval_capacity_integer > 15 }
 					}
 					set_country_flag = str_need_20_corvettes
+					if = {
 					limit = {
 						is_difficulty > 2
 					}
 					set_country_flag = str_need_30_corvettes
+				}
 				}
 				else_if = {
 					limit = {
 						prev = { used_naval_capacity_integer > 10 }
 					}
 					set_country_flag = str_need_15_corvettes
+					if = {
 					limit = {
 						is_difficulty > 2
 					}
 					set_country_flag = str_need_20_corvettes
+				}
 				}
 				else_if = {
 					limit = {
 						prev = { used_naval_capacity_integer > 5 }
 					}
 					set_country_flag = str_need_10_corvettes
+					if = {
 					limit = {
 						is_difficulty > 2
 					}
@@ -85,6 +155,7 @@ event = {
 				}
 			}
 		}
+	}
 	}
 
 		every_country = {
@@ -124,7 +195,34 @@ country_event = {
 			remove_country_flag = str_need_to_defend_against_rush
 			remove_country_flag = str_there_exists_pop_sink_new
 			remove_country_flag = str_has_terraformables
+
+			if = {
+				limit = {
+					is_country_type = default
+				}
 			set_country_flag = str_normal_empire
+			}
+
+			if = {
+				limit = {
+					years_passed > 70 
+					is_ai = yes
+					has_technology = tech_robotic_workers
+					has_country_flag = str_normal_empire
+					resource_stockpile_compare = {
+						resource = influence
+						value > 250
+					}
+					resource_stockpile_compare = {
+						resource = energy
+						value > 250
+					}
+				}
+				country_event = {
+					id = str_manage_pops.100 days = 135
+					#resettlement
+				}
+			} 
 
 			set_timed_country_flag = {
 				flag = str_reconsider_plans
@@ -855,6 +953,12 @@ country_event = {
 								} }
 								remove_district = district_farming
 							}
+						}
+						if = {
+							limit = {
+								free_building_slots < 0
+							}
+							remove_last_built_building = yes
 						}
 					}
 				}
