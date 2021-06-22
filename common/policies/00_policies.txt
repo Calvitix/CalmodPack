@@ -3,7 +3,7 @@
 # Calvitix Check 3.0.3  21/05/2021
 #
 # Merge with Arisphaos Unofficial patch
-# Merge with STARNET AI 10/06/2021
+# Merge with STARNET AI 21/06/2021
 # Merge with Megacorp 04/05/2021
 ##########################################################################
 # Empire Policies
@@ -304,10 +304,16 @@ diplomatic_stance = {
 
 			modifier = {
 				factor = 0
+				is_ai = no
 				OR = {
 					has_ai_personality = federation_builders
 					has_ai_personality = fanatic_befrienders
 				}
+			}
+			modifier = {
+				factor = 1000
+				num_ascension_perks < 1
+				is_ai = yes
 			}
 
 			modifier = {
@@ -385,12 +391,10 @@ diplomatic_stance = {
 				is_country_type = default
 				is_country_type = awakened_fallen_empire
 			}
-			is_gestalt = no #3.0.3b
 		}
 
 		valid = {
 			NOT = { has_valid_civic = civic_inwards_perfection }
-			is_homicidal = no #3.0.3b
 			# some ugliness to preserve the
 			# auth/civic - potential/valid divide for tooltip
 			if = {
@@ -418,7 +422,7 @@ diplomatic_stance = {
 		}
 
 		ai_weight = {
-			weight = 10
+			weight = 1
 
 			modifier = {
 				factor = 0.01
@@ -910,7 +914,7 @@ war_doctrine = {
 		}
 
 		AI_weight = {
-			factor = 10
+			factor = 5 #10 #starnet AI
 			modifier = {
 				factor = 0
 				is_ai = no
@@ -921,6 +925,10 @@ war_doctrine = {
 			}
 			modifier = {
 				factor = 1000
+				or = {
+					not = { has_technology = tech_energy_torpedoes_1 }
+					has_country_flag = str_just_got_launchers
+				}
 				is_ai = yes
 			}
 		}
@@ -938,8 +946,21 @@ war_doctrine = {
 		AI_weight = {
 			factor = 10
 			modifier = {
-				factor = 0
+				factor = 0.1
+				is_ai = no
 				NOT = { is_preferred_weapons = weapon_type_explosive }
+			}
+			modifier = {
+				factor = 1000
+				nor = {
+					not = { has_technology = tech_energy_torpedoes_1 }
+					has_country_flag = str_just_got_launchers
+				}
+				or = {
+				has_country_flag = str_has_bad_fleet_score
+				used_naval_capacity_percent < 0.5
+				}
+				is_ai = yes
 			}
 		}
 	}
@@ -967,10 +988,21 @@ war_doctrine = {
 			factor = 100
 			modifier = {
 				factor = 0
+				is_ai = no
 				NOR = {
 					has_ai_personality = honorbound_warriors
 					has_ai_personality = devouring_swarm
 				}
+			}
+			modifier = {
+				factor = 100
+				nor = {
+					not = { has_technology = tech_energy_torpedoes_1 }
+					has_country_flag = str_just_got_launchers
+				}
+				not = { has_country_flag = str_has_bad_fleet_score }
+				used_naval_capacity_percent > 0.5
+				is_ai = yes
 			}
 		}
 	}
@@ -1977,7 +2009,7 @@ trade_policy = {
 			}
 			modifier = {
 				factor = 0
-					num_ascension_perks > 0
+				num_ascension_perks > 1
 				or = { 
 					has_tradition = tr_supremacy_adopt
 					has_tradition = tr_prosperity_administrative_operations
@@ -2044,7 +2076,7 @@ drone_policy = {
 		modifier = {}
 
 		AI_weight = {
-			factor = 1
+			factor = 0
 		}
 	}
 
@@ -2430,7 +2462,7 @@ pre_sapients = {
 		modifier = {}
 
 		AI_weight = {
-			factor = 5
+			factor = 0.5 # 5 starnet AI
 			modifier = {
 				factor = 0
 				is_country_type = default

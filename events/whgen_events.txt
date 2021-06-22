@@ -1,0 +1,87 @@
+namespace = whgenevents
+
+event = {
+	id = whgenevents.5
+	is_triggered_only = yes
+	hide_window = yes
+	
+	immediate = {
+		every_country = {
+			limit = {
+				is_ai = no
+				has_technology = tech_wormhole_stabilization
+				any_owned_starbase = { has_starbase_building = wormhole_generator }
+			}
+			save_event_target_as = country_with_whgen
+			random_owned_starbase = {
+				limit = { 
+					has_starbase_building = wormhole_generator
+					solar_system = {
+						has_natural_wormhole = no
+					}
+				}
+				save_event_target_as = sb_nav_starbase1
+			}
+			if = {
+				limit = { exists = event_target:sb_nav_starbase1 }
+				random_owned_starbase = {
+					limit = { 
+						has_starbase_building = wormhole_generator
+						solar_system = {
+							has_natural_wormhole = no
+						}
+						not = { is_same_value = event_target:sb_nav_starbase1 }
+					}
+					save_event_target_as = sb_nav_starbase2
+				}				
+			}
+			if = {
+				limit = { exists = event_target:sb_nav_starbase1 exists = event_target:sb_nav_starbase2 }
+				event_target:sb_nav_starbase1 = {
+					solar_system = {
+						spawn_natural_wormhole = {
+							bypass_type = wormhole
+							random_pos = yes
+							orbit_angle = 360
+						}
+						save_event_target_as = psi_nav_origin_system
+					}
+				}
+				event_target:sb_nav_starbase2 = {
+					solar_system = {
+						save_event_target_as = psi_nav_destination_system
+						spawn_natural_wormhole = {
+							bypass_type = wormhole
+							random_pos = yes
+							orbit_angle = 360
+						}
+						link_wormholes = event_target:psi_nav_origin_system
+					}
+				}
+				event_target:country_with_whgen = {
+					country_event = { id = whgenevents.6 }
+				}				
+			}
+		}
+	}
+}
+
+country_event = {
+	id = whgenevents.6
+	is_triggered_only = yes
+	location = event_target:psi_nav_origin_system
+	
+	title = whgenevents.6.name
+	desc = whgenevents.6.desc
+	picture = GFX_evt_wormhole
+	show_sound = event_scanner
+	
+	immediate = {
+		set_country_flag = encountered_first_wormhole
+		add_seen_bypass_type = wormhole	
+	}
+	
+	option = {
+		name = OK
+	}
+}

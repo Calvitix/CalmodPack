@@ -2,7 +2,7 @@
 #
 # Calvitix Check 3.0.3  21/05/2021
 #
-# Last update OK   15/06/2021
+# Last update OK   20/06/2021
 
 str_make_fleet_against_rush = {
 	is_ai = yes
@@ -35,6 +35,14 @@ str_save_alloys_against_rush = {
 	is_ai = yes
 	years_passed < @str_years_of_guaranteed_truce
 	or = {
+		and = {
+			resource_stockpile_compare = {
+				resource = alloys
+				value < 2000
+			}
+			years_passed > @str_ai_prioritise_energy_for_fleet_after
+			years_passed < @str_years_of_extended_truce
+		}
 		and = {
 			resource_stockpile_compare = {
 				resource = alloys

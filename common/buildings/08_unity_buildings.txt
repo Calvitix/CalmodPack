@@ -3,7 +3,7 @@
 # Calvitix Check 3.0.3  21/05/2021
 #
 # Merge with Planet. Diversity
-# Merge with Starnet OK    21/05/2021
+# Merge with Starnet OK    21/06/2021
 ##################
 # Unity buildings
 ##################
@@ -293,7 +293,16 @@ building_temple = {
 					has_valid_civic = civic_death_cult
 					has_valid_civic = civic_death_cult_corporate
 					is_spiritualist = no
-					#is_ai = yes #Starnet AI, Calv. disabled
+					and = {
+						is_ai = yes 
+						num_ascension_perks > 2 
+						prev = { free_amenities > 5
+						not = { has_modifier = planet_luxuries_boost } }
+					}
+					and = {
+						is_ai = yes 
+						prev = { has_active_building = building_holo_theatres }
+					}
 				}
 			}
 			has_modifier = slave_colony
@@ -1542,6 +1551,17 @@ building_simulation_1 = {
 		owner = {
 			is_machine_empire = yes
 			NOT = { has_valid_civic = civic_machine_servitor }
+		}
+	}
+
+	allow = {
+		or = {
+			owner = { is_ai = no }
+			nor = {
+				has_building = building_simulation_1
+				has_building = building_simulation_2
+				has_building = building_simulation_2
+			}
 		}
 	}
 

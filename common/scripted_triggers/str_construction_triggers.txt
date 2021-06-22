@@ -2,7 +2,7 @@
 #
 # Calvitix Check 3.0.3  21/05/2021
 #
-# Merge with Starnet AI 16/06/2021
+# Merge with Starnet AI 20/06/2021
 #
 #
 
@@ -17,12 +17,14 @@ str_enable_clerks = {
             years_passed < 1
 			and = {
 					str_raw_ecocrisis_level_1 = yes 
-					prev = { solar_system = {
-						starbase = {
-							has_starbase_size > starbase_outpost
-						}
-					} 
-					has_planet_flag = str_need_clerks }
+					prev = { 
+						solar_system = {
+							starbase = {
+								has_starbase_size > starbase_outpost
+							}
+						} 
+						has_planet_flag = str_need_clerks 
+					}
 				}
 			and = {
                 years_passed < 9
@@ -297,8 +299,10 @@ str_research_allow = {
     }
     or = {
 		has_planet_flag = str_good_habitability
-		and = { free_building_slots > 1 
-		has_planet_flag = str_acceptable_habitability } 
+        and = {
+            free_building_slots > 1
+            has_planet_flag = str_acceptable_habitability
+        }
         owner = {
             is_ai = no
         }
@@ -1047,7 +1051,7 @@ str_city_district_allow = {
 		            is_ai = yes
 		        }
 		        free_housing > 26
-                free_amenities > -5
+                free_amenities > -2
 		    }
 		    nand = {
 		        exists = owner
@@ -1066,6 +1070,7 @@ str_city_district_allow = {
 		            free_housing > 15
 		            num_pops < 13
 		        }
+                free_housing > 0
 		    }
 		    nand = {
 		        exists = owner
@@ -1092,6 +1097,7 @@ str_city_district_allow = {
 		        }
 		        free_district_slots > 0
 		        free_amenities > -3
+                free_housing > 0
 		    }
 	    }
 	}
@@ -1275,8 +1281,13 @@ str_stronghold_potential = {
                     has_ethic = ethic_fanatic_pacifist
                 }
             }
-            nor = {
-                has_designation = col_research has_designation = col_bureau
+            or = {
+	            nor = {
+	                has_designation = col_research has_designation = col_bureau
+	            }
+                owner = {
+                    lategame = yes
+                }
             }
             or = {
                 owner = {
