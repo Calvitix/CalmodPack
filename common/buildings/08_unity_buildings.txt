@@ -851,6 +851,28 @@ building_galactic_memorial_1 = {
 		planet_stability_add = 5
 	}
 
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_ai = yes }
+			num_pops > 40
+			num_buildings = {
+				type = building_galactic_memorial_1
+				value < 2
+			}
+			num_buildings = {
+				type = building_galactic_memorial_2
+				value < 1
+			}
+			num_buildings = {
+				type = building_galactic_memorial_3
+				value < 1
+			}
+		}
+		job_starnet_spice_melange_farmer_add = 1
+		job_starnet_spice_melange_antifarmer_add = -1
+	}
+
 	#Jobs
 	triggered_planet_modifier = {
 		potential = {
@@ -1224,6 +1246,21 @@ building_hive_node = {
 		}
 	}
 
+	allow = {
+		
+		owner = { or = { 
+			is_ai = no
+			and = {
+				resource_income_compare = {
+					resource = physics_research
+					value > 100
+		}
+				empire_sprawl_over_cap > 5
+			}
+		} }
+	}
+
+
 	destroy_trigger = {
 		exists = owner
 		OR = {
@@ -1561,6 +1598,11 @@ building_simulation_1 = {
 				has_building = building_simulation_1
 				has_building = building_simulation_2
 				has_building = building_simulation_2
+				owner = { num_ascension_perks > 2 }
+				owner = { resource_income_compare = {
+					resource = unity
+					value > 50
+				} }
 			}
 		}
 	}

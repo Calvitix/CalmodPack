@@ -396,8 +396,12 @@ country_event = {
 						limit = {
 							is_capital = yes
 							free_building_slots > 0
-						free_amenities > -5
-							or = { has_building = building_foundry_1 owner = { is_gestalt = yes } }
+							free_amenities > -2
+							or = { 
+								has_building = building_foundry_1
+								owner = { is_gestalt = yes }
+								years_passed > 11 
+							}
 							owner = {
 								or = {
 								resource_income_compare = {
@@ -406,19 +410,18 @@ country_event = {
 								}
 								resource_stockpile_compare = {
 									resource = minerals
-									value > 1200
+								value > 800
 								}
 								}
 								resource_income_compare = {
 									resource = energy 
-									value > -5
+								value > -10
 								}
 								resource_income_compare = {
 									resource = food
 									value > -5
 								}
 							}
-							free_amenities > 0
 						}
 						owner = { set_country_flag = str_fill_homeworld_with_science_pls }
 					}
@@ -432,6 +435,23 @@ country_event = {
 
 
 				every_owned_planet = {
+					if = {
+						limit = {
+							#Not proud of it, but until stellaris stops being ugged there is no other choice I guess.
+							#This will spawn organic sanctuary and subtract the cost simulating the construction
+							owner = {
+								has_civic = civic_machine_servitor
+								resource_stockpile_compare = {
+									resource = minerals
+									value > 500
+								}
+							}
+							count_owned_pop = { limit = { has_citizenship_type = { type = citizenship_organic_trophy } is_unemployed = yes } count > 0 }
+							has_building_construction = no
+						}
+							owner = { add_resource = { minerals = -400 } }
+							add_building = building_organic_sanctuary
+					}
 					if = {
 						limit = {
 							or = { free_housing > 0 free_district_slots > 0 }
