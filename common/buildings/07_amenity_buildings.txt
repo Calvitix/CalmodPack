@@ -67,6 +67,12 @@ building_luxury_residence = {
 		#buildings_simple_allow = yes
 ### Starnet AI
 		or = {
+			owner = {
+				is_ai = no
+			}
+			not = { has_building = building_luxury_residence }
+		}
+		or = {
 			owner = { is_ai = no }
 			and = {
 			free_jobs > 0
@@ -79,6 +85,14 @@ building_luxury_residence = {
 				free_building_slots > 1
 				free_amenities < -10
 				num_pops > 11
+			}
+			and = {
+				free_building_slots > 1
+				free_jobs > 1
+				free_amenities < -2
+				free_amenities > -6
+				free_district_slots = 0
+				has_building = building_holo_theatres
 			}
 				}
 			}
@@ -368,12 +382,32 @@ building_communal_housing = {
 		#buildings_simple_allow = yes
 ### Growth  Conquest merge Starnet AI
 		or = {
+			owner = {
+				is_ai = no
+			}
+			not = { has_building = building_communal_housing }
+		}
+		or = {
 			owner = { is_ai = no }
 			and = {
 			free_jobs > 0
-			free_amenities < -5
+			free_amenities < -4
 			or = { free_district_slots < 3 num_pops < 16 num_pops > 11 }
-			free_amenities > -10
+			free_amenities > -9
+			}
+			and = {
+				free_jobs > 4
+				free_building_slots > 1
+				free_amenities < -10
+				num_pops > 11
+			}
+			and = {
+				free_building_slots > 1
+				free_jobs > 1
+				free_amenities < -2
+				free_amenities > -6
+				free_district_slots = 0
+				has_building = building_holo_theatres
 			}
 		}
 	}
@@ -982,6 +1016,10 @@ building_holo_theatres = {
 		num_pops > 11
 		}
 		and = {
+			free_amenities < -4
+			or = { has_building = building_luxury_residence has_building = building_communal_housing }
+		}
+		and = {
 		free_amenities < 2
 		or = { years_passed > 15 free_amenities < -2 }
 		owner = { has_origin = origin_default }
@@ -1336,6 +1374,23 @@ building_spawning_pool = {
 		or = {
 			num_buildings = { type = any value < 15 }
 			owner = { is_ai = no }
+		}
+	}
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_ai = yes
+			str_raw_ecocrisis_level_0 = no
+			}
+			num_buildings = {
+				type = building_spawning_pool
+				value = 0
+			}
+		}
+		modifier = {
+			job_starnet_spice_melange_farmer_add = 3
+			job_starnet_spice_melange_antifarmer_add = -3
 		}
 	}
 

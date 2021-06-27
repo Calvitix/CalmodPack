@@ -1,0 +1,127 @@
+namespace = hyperlane
+# Help
+country_event = {
+	id = hyperlane.0
+	hide_window = no
+	is_triggered_only = yes
+
+	title = "help_menu_title"
+	desc = "help_menu_desc"
+}
+# Mark system as origin
+planet_event = {
+	id = hyperlane.1
+	hide_window = yes
+	is_triggered_only = yes
+	
+	immediate = {		
+		# Used to retrieve system name
+		solar_system = { save_global_event_target_as = hyperlaneorigin }
+		
+		# Show message - Requires country_event because of scope on non-player planet
+		from = { country_event = { id = hyperlane.11 } }
+	}
+}
+# Mark system as destination
+planet_event = {
+	id = hyperlane.2
+	hide_window = yes
+	is_triggered_only = yes
+	
+	immediate = { 
+		# Used to retrieve system name
+		solar_system = { save_global_event_target_as = hyperlanedestination }
+		
+		# Show message - Requires country_event because of scope on non-player planet
+		from = { country_event = { id = hyperlane.12 } }
+	}
+}
+# Display mark message
+country_event = {
+	id = hyperlane.11
+	hide_window = no
+	is_triggered_only = yes
+
+	title = "mark_as_origin_title"
+	desc = "mark_as_origin_desc"
+}
+country_event = {
+	id = hyperlane.12
+	hide_window = no
+	is_triggered_only = yes
+
+	title = "mark_as_destination_title"
+	desc = "mark_as_destination_desc"
+}
+
+# Confirm hyperlane generation
+country_event = {
+	id = hyperlane.3
+	hide_window = no
+	is_triggered_only = yes
+
+	title = "hyperlane_generate_title"
+	desc = "hyperlane_generate_desc"	
+	
+	option = {
+		name = "hyperlane_generate_option_yes.text"
+		custom_tooltip = "hyperlane_generate_option_yes.tooltip"
+		
+		hidden_effect = {
+			country_event = { id = hyperlane.13 }
+		}
+	}
+	option = {
+		name = "hyperlane_generate_option_no.text"
+		custom_tooltip = "hyperlane_generate_option_no.tooltip"
+	}
+}
+# Generate a hyperlane
+country_event = {
+	id = hyperlane.13
+	hide_window = yes
+	is_triggered_only = yes
+	
+	immediate = { 		
+		add_hyperlane = {
+			from = event_target:hyperlaneorigin
+			to = event_target:hyperlanedestination
+		}
+	}
+}
+
+# Confirm hyperlane removal
+country_event = {
+	id = hyperlane.4
+	hide_window = no
+	is_triggered_only = yes
+
+	title = "hyperlane_removal_title"
+	desc = "hyperlane_removal_desc"
+	
+	option = {
+		name = "hyperlane_removal_option_yes.text"
+		custom_tooltip = "hyperlane_removal_option_yes.tooltip"
+		
+		hidden_effect = {
+			country_event = { id = hyperlane.14 }
+		}
+	}	
+	option = {
+		name = "hyperlane_removal_option_no.text"
+		custom_tooltip = "hyperlane_trmobsl_option_no.tooltip"
+	}	
+}
+# Remove a hyperlane
+country_event = {
+	id = hyperlane.14
+	hide_window = yes
+	is_triggered_only = yes
+	
+	immediate = { 	
+		remove_hyperlane = {
+			from = event_target:hyperlaneorigin
+			to = event_target:hyperlanedestination
+		}
+	}
+}

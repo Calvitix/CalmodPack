@@ -227,6 +227,30 @@ action_declare_war = {
 	should_open_auto_accept_message_recipient = yes
 	should_notify_all_communications = yes
 	action_type = aggressive
+#Startech    
+    potential = {
+		hidden_trigger = {
+			or = {
+				is_ai = no
+				and = {
+					years_passed > @str_ai_will_not_declare_war_until
+					or = {
+						rusher3 = yes
+						years_passed > @str_ai_will_not_declare_war_until_aggressive
+					}
+					or = {
+						turtler  = no
+						years_passed > @str_ai_will_not_declare_war_until_normal
+					}
+					or = {
+						turtler2  = no
+						years_passed > @str_ai_will_not_declare_war_until_turtles
+					}
+				}
+			}
+		}
+    }
+###    
 }
 
 # Make peace, usable by regular, fallen & awakened empires - accessed from war view
@@ -237,7 +261,7 @@ action_offer_peace = {
 	requires_recipient_independence = no
 	should_notify_all_communications = yes
 	should_show_accept_message = no
-	should_remove_response_message_when_not_possible = yes #3.0.3b
+	should_remove_response_message_when_not_possible = yes
 	action_type = positive
 }
 
@@ -501,7 +525,7 @@ action_form_defensive_pact = {
 				}
 			}
 		}
-		if = { #3.0.3b
+		if = {
 			limit = { from = { has_valid_civic = civic_inwards_perfection } }
 			if = {
 				limit = {
@@ -709,7 +733,7 @@ action_form_commercial_pact = {
 				from = { NOT = { has_valid_civic = civic_fanatic_purifiers } }
 			}
 		}
-		if = { #3.0.3b
+		if = {
 			limit = { from = { has_valid_civic = civic_inwards_perfection } }
 			if = {
 				limit = {
@@ -746,7 +770,7 @@ action_form_commercial_pact = {
 			fail_text = "requires_actor_not_criminal_heritage"
 			is_criminal_syndicate = no
 		}
-		if = { #3.0.3b
+		if = {
 			limit = { from = { is_criminal_syndicate = yes } }
 			if = {
 				limit = {
@@ -855,7 +879,7 @@ action_form_research_agreement = {
 			fail_text = "requires_recipient_not_devouring_swarm"
 			from = { NOT = { has_valid_civic = civic_hive_devouring_swarm } }
 		}
-		if = { #3.0.3b
+		if = {
 			limit = { from = { has_valid_civic = civic_inwards_perfection } }
 			if = {
 				limit = {
@@ -1276,7 +1300,7 @@ action_form_migration_pact = {
 			fail_text = "requires_recipient_not_gestalt_consciousness"
 			from = { NOT = { has_ethic = ethic_gestalt_consciousness } }
 		}
-		if = { #3.0.3b
+		if = {
 			limit = { from = { has_valid_civic = civic_inwards_perfection } }
 			if = {
 				limit = {
@@ -1301,7 +1325,7 @@ action_form_migration_pact = {
 			fail_text = "requires_actor_not_inward_perfection"
 			NOT = { has_valid_civic = civic_inwards_perfection }
 		}
-		if = { #3.0.3b
+		if = {
 			limit = { from = { has_valid_civic = civic_barbaric_despoilers } }
 			if = {
 				limit = {
@@ -1549,7 +1573,7 @@ action_ask_for_federation_association_status = {
 		}
 		# Members of the Galactic Empire can't associate with federations
 		custom_tooltip = {
-			fail_text = "requires_actor_recipient_not_in_galactic_empire_2" #3.0.3b
+			fail_text = "requires_actor_recipient_not_in_galactic_empire_2"
 			NAND = {
 				has_galactic_emperor = yes
 				OR = {
@@ -1597,7 +1621,7 @@ action_invite_to_federation = {
 	}
 
 	possible = {
-		if = { #3.0.3b
+		if = {
 			limit = {
 				has_federation = no
 				is_country_type = default
@@ -2270,7 +2294,7 @@ action_ask_to_join_federation = {
 				}
 			}
 		}
-		if = { #3.0.3b
+		if = {
 			limit = { from = { has_valid_civic = civic_inwards_perfection } }
 			if = {
 				limit = {
@@ -2497,6 +2521,13 @@ action_demand_vassalization = {
 
 	potential = {
 		NOT = { has_authority = auth_corporate }
+#Startech
+		years_passed > @str_ai_will_not_declare_war_until
+		or = {
+			is_ai = no
+			years_passed > @str_years_of_twilight
+		}
+###
 	}
 
 	possible = {
@@ -2657,6 +2688,12 @@ action_demand_protectorate = {
 
 	potential = {
 		NOT = { has_authority = auth_corporate }
+#Startech
+		or = {
+			is_ai = no
+			years_passed > @str_years_of_twilight
+		}
+###
 	}
 
 	possible = {
@@ -3174,6 +3211,10 @@ action_ask_to_become_vassalized = {
 
 	potential = {
 		NOT = { from = { has_authority = auth_corporate } }
+		or = { 
+			is_ai = no
+			years_passed > @str_years_of_twilight
+		}
 	}
 
 	possible = {
@@ -3223,7 +3264,7 @@ action_ask_to_become_vassalized = {
 				}
 			}
 		}
-		if = { #3.0.3b
+		if = {
 			limit = { from = { has_valid_civic = civic_inwards_perfection } }
 			if = {
 				limit = {
@@ -3352,6 +3393,10 @@ action_ask_to_become_protectorate = {
 
 	potential = {
 		NOT = { from = { has_authority = auth_corporate } }
+		or = { 
+			is_ai = no
+			years_passed > @str_years_of_twilight
+		}
 	}
 
 	possible = {
@@ -3407,7 +3452,7 @@ action_ask_to_become_protectorate = {
 				}
 			}
 		}
-		if = { #3.0.3b
+		if = {
 			limit = { from = { has_valid_civic = civic_inwards_perfection } }
 			if = {
 				limit = {
@@ -3536,6 +3581,10 @@ action_ask_to_become_tributary = {
 
 	potential = {
 		NOT = { from = { has_authority = auth_corporate } }
+		or = { 
+			is_ai = no
+			years_passed > @str_years_of_twilight
+		}
 	}
 
 	possible = {
@@ -3699,6 +3748,10 @@ action_ask_to_become_subsidiary = {
 
 	potential = {
 		from = { has_authority = auth_corporate }
+		or = { 
+			is_ai = no
+			years_passed > @str_years_of_twilight
+		}
 	}
 
 	possible = {
@@ -3748,7 +3801,7 @@ action_ask_to_become_subsidiary = {
 				}
 			}
 		}
-		if = { #3.0.3b
+		if = {
 			limit = { from = { has_valid_civic = civic_inwards_perfection } }
 			if = {
 				limit = {
