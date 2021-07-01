@@ -1,0 +1,552 @@
+namespace = gai_survey_pops
+#This even is designed to find out what pops the AI has and find out what they want to inhabit
+#This information is then used by the terraforming files
+#All event descriptions are now in the common\on actions\ folder
+
+country_event = {
+	id = gai_survey_pops.1
+	hide_window = yes
+    is_triggered_only = yes
+	
+	trigger = { is_machine_empire = no }
+	
+	immediate = {
+		set_country_flag = gai_pop_survey
+		remove_country_flag = gai_likes_desert
+		remove_country_flag = gai_likes_arid
+		remove_country_flag = gai_likes_savannah
+		remove_country_flag = gai_likes_alpine
+		remove_country_flag = gai_likes_tundra
+		remove_country_flag = gai_likes_tropical
+		remove_country_flag = gai_likes_continental
+		remove_country_flag = gai_likes_ocean
+		remove_country_flag = gai_likes_arctic
+		if = {
+			limit = {
+				OR = {
+					is_country_type = default
+					is_country_type = fallen_empire
+				}
+			}
+			IF = {
+				limit = {
+					any_owned_pop = { 
+						count >= 1
+						is_organic_species = yes
+						is_sapient = yes
+						is_same_species = owner_species
+						#is_majority_species = yes
+						has_trait = trait_pc_desert_preference
+					}
+				}
+				set_country_flag = gai_likes_desert
+				set_country_flag = m_has_desert_species
+				break = yes
+			}
+			ELSE_IF = {
+				limit = {
+					any_owned_pop = { 
+						count >= 1
+						is_organic_species = yes
+						is_sapient = yes
+						is_same_species = owner_species
+						#is_majority_species = yes
+						has_trait = trait_pc_arid_preference
+					}
+				}
+				set_country_flag = gai_likes_arid
+				set_country_flag = m_has_arid_species
+				break = yes
+			}
+			ELSE_IF = {
+				limit = {
+					any_owned_pop = { 
+						count >= 1
+						is_organic_species = yes
+						is_sapient = yes
+						is_same_species = owner_species
+						#is_majority_species = yes
+						has_trait = trait_pc_savannah_preference
+					}
+				}
+				set_country_flag = gai_likes_savannah
+				set_country_flag = m_has_savannah_species
+				break = yes
+			}
+			ELSE_IF = {
+				limit = {
+					any_owned_pop = { 
+						count >= 1
+						is_organic_species = yes
+						is_sapient = yes
+						is_same_species = owner_species
+						#is_majority_species = yes
+						has_trait = trait_pc_alpine_preference
+					}
+				}
+				set_country_flag = gai_likes_alpine
+				set_country_flag = m_has_alpine_species
+				break = yes
+			}
+			ELSE_IF = {
+				limit = {
+					any_owned_pop = { 
+						count >= 1
+						is_organic_species = yes
+						is_sapient = yes
+						is_same_species = owner_species
+						#is_majority_species = yes
+						has_trait = trait_pc_tundra_preference
+					}
+				}
+				set_country_flag = gai_likes_tundra
+				set_country_flag = m_has_tundra_species
+				break = yes
+			}
+			ELSE_IF = {
+				limit = {
+					any_owned_pop = { 
+						count >= 1
+						is_organic_species = yes
+						is_sapient = yes
+						is_same_species = owner_species
+						#is_majority_species = yes
+						has_trait = trait_pc_arctic_preference
+					}
+				}
+				set_country_flag = gai_likes_arctic
+				set_country_flag = m_has_arctic_species
+				break = yes
+			}
+			ELSE_IF = {
+				limit = {
+					any_owned_pop = { 
+						count >= 1
+						is_organic_species = yes
+						is_sapient = yes
+						is_same_species = owner_species
+						#is_majority_species = yes
+						has_trait = trait_pc_ocean_preference
+					}
+				}
+				set_country_flag = gai_likes_ocean
+				set_country_flag = m_has_ocean_species
+				break = yes
+			}
+			ELSE_IF = {
+				limit = {
+					any_owned_pop = { 
+						count >= 1
+						is_organic_species = yes
+						is_sapient = yes
+						is_same_species = owner_species
+						#is_majority_species = yes
+						has_trait = trait_pc_continental_preference
+					}
+				}
+				set_country_flag = gai_likes_continental
+				set_country_flag = m_has_continental_species
+				break = yes
+			}
+			ELSE_IF = {
+				limit = {
+					any_owned_pop = { 
+						count >= 1
+						is_organic_species = yes
+						is_sapient = yes
+						is_same_species = owner_species
+						#is_majority_species = yes
+						has_trait = trait_pc_tropical_preference
+					}
+				}
+				set_country_flag = gai_likes_tropical
+				set_country_flag = m_has_tropical_species
+				break = yes
+			}
+		}
+	}
+}
+
+
+country_event = {
+	id = gai_survey_pops.2
+	hide_window = yes
+    is_triggered_only = yes
+	
+	trigger = {
+		is_machine_empire = yes
+		OR = {
+			has_valid_civic = civic_machine_servitor
+			has_valid_civic = civic_machine_assimilator
+		}
+		#NOT = { has_country_flag = gai_machines_have_organics }
+		OR = {
+			is_country_type = default
+			is_country_type = fallen_empire
+		}
+	}
+	
+	immediate = {
+		remove_country_flag = gai_likes_desert
+		remove_country_flag = gai_likes_arid
+		remove_country_flag = gai_likes_savannah
+		remove_country_flag = gai_likes_alpine
+		remove_country_flag = gai_likes_tundra
+		remove_country_flag = gai_likes_tropical
+		remove_country_flag = gai_likes_continental
+		remove_country_flag = gai_likes_ocean
+		remove_country_flag = gai_likes_arctic
+		IF = {
+			limit = {
+				any_owned_pop = { 
+					count >= 1
+					is_organic_species = yes
+					is_sapient = yes
+					is_being_purged = no
+					has_trait = trait_pc_desert_preference
+					NOR = { 
+						has_trait = trait_lithoid
+						is_lonely_hive_mind_pop = yes
+					}
+				}
+			}
+			set_country_flag = gai_likes_desert
+			set_country_flag = gai_machines_have_organics
+			set_country_flag = m_has_desert_species
+			#break = yes
+		}
+		if = {
+			limit = {
+				any_owned_pop = { 
+					count >= 1
+					is_organic_species = yes
+					is_sapient = yes
+					is_being_purged = no
+					has_trait = trait_pc_arid_preference
+					NOR = { 
+						has_trait = trait_lithoid
+						is_lonely_hive_mind_pop = yes
+					}
+				}
+			}
+			set_country_flag = gai_likes_arid
+			set_country_flag = gai_machines_have_organics
+			set_country_flag = m_has_arid_species
+			#break = yes
+		}
+		if = {
+			limit = {
+				any_owned_pop = { 
+					count >= 1
+					is_organic_species = yes
+					is_sapient = yes
+					is_being_purged = no
+					has_trait = trait_pc_savannah_preference
+					NOR = { 
+						has_trait = trait_lithoid
+						is_lonely_hive_mind_pop = yes
+					}
+				}
+			}
+			set_country_flag = gai_likes_savannah
+			set_country_flag = gai_machines_have_organics
+			set_country_flag = m_has_savannah_species
+			#break = yes
+		}
+		if = {
+			limit = {
+				any_owned_pop = { 
+					count >= 1
+					is_organic_species = yes
+					is_sapient = yes
+					is_being_purged = no
+					has_trait = trait_pc_alpine_preference
+					NOR = { 
+						has_trait = trait_lithoid
+						is_lonely_hive_mind_pop = yes
+					}
+				}
+			}
+			set_country_flag = gai_likes_alpine
+			set_country_flag = gai_machines_have_organics
+			set_country_flag = m_has_alpine_species
+			#break = yes
+		}
+		if = {
+			limit = {
+				any_owned_pop = { 
+					count >= 1
+					is_organic_species = yes
+					is_sapient = yes
+					is_being_purged = no
+					has_trait = trait_pc_tundra_preference
+					NOR = { 
+						has_trait = trait_lithoid
+						is_lonely_hive_mind_pop = yes
+					}
+				}
+			}
+			set_country_flag = gai_likes_tundra
+			set_country_flag = gai_machines_have_organics
+			set_country_flag = m_has_tundra_species
+			#break = yes
+		}
+		if = {
+			limit = {
+				any_owned_pop = { 
+					count >= 1
+					is_organic_species = yes
+					is_sapient = yes
+					is_being_purged = no
+					has_trait = trait_pc_arctic_preference
+					NOR = { 
+						has_trait = trait_lithoid
+						is_lonely_hive_mind_pop = yes
+					}
+				}
+			}
+			set_country_flag = gai_likes_arctic
+			set_country_flag = gai_machines_have_organics
+			set_country_flag = m_has_arctic_species
+			#break = yes
+		}
+		if = {
+			limit = {
+				any_owned_pop = { 
+					count >= 1
+					is_organic_species = yes
+					is_sapient = yes
+					is_being_purged = no
+					has_trait = trait_pc_ocean_preference
+					NOR = { 
+						has_trait = trait_lithoid
+						is_lonely_hive_mind_pop = yes
+					}
+				}
+			}
+			set_country_flag = gai_likes_ocean
+			set_country_flag = gai_machines_have_organics
+			set_country_flag = m_has_ocean_species
+			#break = yes
+		}
+		if = {
+			limit = {
+				any_owned_pop = { 
+					count >= 1
+					is_organic_species = yes
+					is_sapient = yes
+					is_being_purged = no
+					has_trait = trait_pc_continental_preference
+					NOR = { 
+						has_trait = trait_lithoid
+						is_lonely_hive_mind_pop = yes
+					}
+				}
+			}
+			set_country_flag = gai_likes_continental
+			set_country_flag = gai_machines_have_organics
+			set_country_flag = m_has_continental_species
+			#break = yes
+		}
+		if = {
+			limit = {
+				any_owned_pop = { 
+					count >= 1
+					is_organic_species = yes
+					is_sapient = yes
+					is_being_purged = no
+					has_trait = trait_pc_tropical_preference
+					NOR = { 
+						has_trait = trait_lithoid
+						is_lonely_hive_mind_pop = yes
+					}
+				}
+			}
+			set_country_flag = gai_likes_tropical
+			set_country_flag = gai_machines_have_organics
+			set_country_flag = m_has_tropical_species
+			#break = yes
+		}
+	}
+}
+
+country_event = {
+	id = gai_survey_pops.3
+	hide_window = yes
+    is_triggered_only = yes
+	
+	immediate = {
+		remove_country_flag = gai_pop_survey
+		remove_country_flag = gai_likes_desert
+		remove_country_flag = gai_likes_arid
+		remove_country_flag = gai_likes_savannah
+		remove_country_flag = gai_likes_alpine
+		remove_country_flag = gai_likes_tundra
+		remove_country_flag = gai_likes_tropical
+		remove_country_flag = gai_likes_continental
+		remove_country_flag = gai_likes_ocean
+		remove_country_flag = gai_likes_arctic
+	}
+}
+
+#Maniac
+country_event = {
+	id = gai_survey_pops.4
+	hide_window = yes
+    is_triggered_only = yes
+	
+	immediate = {
+		set_country_flag = gai_pop_survey
+		remove_country_flag = m_has_desert_species
+		remove_country_flag = m_has_arid_species
+		remove_country_flag = m_has_savannah_species
+		remove_country_flag = m_has_alpine_species
+		remove_country_flag = m_has_tundra_species
+		remove_country_flag = m_has_tropical_species
+		remove_country_flag = m_has_continental_species
+		remove_country_flag = m_has_ocean_species
+		remove_country_flag = m_has_arctic_species
+		if = {
+			limit = {
+				OR = {
+					is_country_type = default
+					is_country_type = fallen_empire
+				}
+			}
+			IF = {
+				limit = {
+					any_owned_pop = { 
+						count >= 1
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_colonization_control = { value = no  country = root }
+						has_trait = trait_pc_desert_preference
+					}
+				}
+				set_country_flag = m_has_desert_species
+			}
+			IF = {
+				limit = {
+					any_owned_pop = { 
+						count >= 1
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_colonization_control = { value = no  country = root }
+						has_trait = trait_pc_arid_preference
+					}
+				}
+				set_country_flag = m_has_arid_species
+			}
+			IF = {
+				limit = {
+					any_owned_pop = { 
+						count >= 1
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_colonization_control = { value = no  country = root }
+						has_trait = trait_pc_savannah_preference
+					}
+				}
+				set_country_flag = m_has_savannah_species
+			}
+			IF = {
+				limit = {
+					any_owned_pop = { 
+						count >= 1
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_colonization_control = { value = no  country = root }
+						has_trait = trait_pc_alpine_preference
+					}
+				}
+				set_country_flag = m_has_alpine_species
+			}
+			IF = {
+				limit = {
+					any_owned_pop = { 
+						count >= 1
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_colonization_control = { value = no  country = root }
+						has_trait = trait_pc_tundra_preference
+					}
+				}
+				set_country_flag = m_has_tundra_species
+			}
+			IF = {
+				limit = {
+					any_owned_pop = { 
+						count >= 1
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_colonization_control = { value = no  country = root }
+						has_trait = trait_pc_arctic_preference
+					}
+				}
+				set_country_flag = m_has_arctic_species
+			}
+			IF = {
+				limit = {
+					any_owned_pop = { 
+						count >= 1
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_colonization_control = { value = no  country = root }
+						has_trait = trait_pc_ocean_preference
+					}
+				}
+				set_country_flag = m_has_ocean_species
+			}
+			IF = {
+				limit = {
+					any_owned_pop = { 
+						count >= 1
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_colonization_control = { value = no  country = root }
+						has_trait = trait_pc_continental_preference
+					}
+				}
+				set_country_flag = m_has_continental_species
+			}
+			IF = {
+				limit = {
+					any_owned_pop = { 
+						count >= 1
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_colonization_control = { value = no  country = root }
+						has_trait = trait_pc_tropical_preference
+					}
+				}
+				set_country_flag = m_has_tropical_species
+			}
+			if = {
+				limit = {
+					any_owned_pop = { 
+						count >= 1
+						is_organic_species = yes
+						is_sapient = yes
+						is_being_purged = no
+						has_colonization_control = { value = no  country = root }
+						OR = 
+						{
+							has_trait = trait_pc_nuked_preference
+							has_trait = trait_survivor
+						}
+					}
+				}
+				set_country_flag = m_has_nuked_species
+			}
+		}
+	}
+}
