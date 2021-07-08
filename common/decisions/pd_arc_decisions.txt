@@ -2848,12 +2848,46 @@ decision_rebuildarccapital_project = {
 	potential = {
 		is_planet_class = pc_capitalarc
 		exists = owner
+		owner = { is_megacorp = no }
 		planet = { is_capital = yes }
-		planet = { 
-			OR = {
-				NOT = { has_building = building_senate_building }
-				NOT = { has_building = building_grand_boardroom }
+		planet = { 	NOT = { has_building = building_senate_building }
 			}
+		}
+
+	allow = {
+		free_district_slots >= 5
+		free_building_slots >= 1
+	}
+
+	effect = { 
+		add_building = building_grand_boardroom 
+	}
+
+	ai_weight = {
+		weight = 1000
+	}
+}
+
+# Replace Capital Arc Building (Megacorp
+decision_rebuildarccapital_project_mega = {
+	owned_planets_only = yes
+	icon = decision_capitalarcology_project
+
+	enactment_time = 360
+	resources = {
+		category = decisions
+		cost = {
+			influence = 20
+			minerals = 500
+		}
+	}
+
+	potential = {
+		is_planet_class = pc_capitalarc
+		exists = owner
+		owner = { is_megacorp = yes }
+		planet = { is_capital = yes }
+		planet = { 	NOT = { has_building = building_grand_boardroom }
 		}
 	}	
 
@@ -2863,14 +2897,7 @@ decision_rebuildarccapital_project = {
 	}
 
 	effect = { 
-		IF = {
-			limit = { owner = { is_megacorp = no } }
-			add_building = building_senate_building 
-		}
-		ELSE_IF = {
-			limit = { owner = { is_megacorp = yes } }
 			add_building = building_grand_boardroom 
-		}
 	}
 
 	ai_weight = {

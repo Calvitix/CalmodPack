@@ -1,6 +1,6 @@
 # STARNET AI File
 #
-# Last update OK  22/06/2021
+# Last update OK  08/07/2021
 #
 namespace = str_economy_plan
 
@@ -44,11 +44,53 @@ event = {
 				remove_country_flag = str_need_2000_alloys
 				remove_country_flag = str_need_3000_alloys
 				remove_country_flag = str_need_4000_alloys
+				remove_country_flag = str_need_5000_alloys
+				remove_country_flag = str_need_6000_alloys
+				remove_country_flag = str_need_7000_alloys
 				if = {
+					limit = {
+						prev = { resource_stockpile_compare = {	resource = alloys value > 7500	} }
+					}
+					set_country_flag = str_need_7000_alloys
+
+				}
+				else_if = {
+					limit = {
+						prev = { resource_stockpile_compare = {	resource = alloys value > 6500	} }
+					}
+					set_country_flag = str_need_6000_alloys
+					if = {
+						limit = {
+							is_difficulty > 2
+						}
+						set_country_flag = str_need_7000_alloys
+					}
+
+				}
+				else_if = {
+					limit = {
+						prev = { resource_stockpile_compare = {	resource = alloys value > 4500	} }
+					}
+					set_country_flag = str_need_5000_alloys
+					if = {
+						limit = {
+							is_difficulty > 2
+						}
+						set_country_flag = str_need_6000_alloys
+					}
+
+				}
+				else_if = {
 					limit = {
 						prev = { resource_stockpile_compare = {	resource = alloys value > 3500	} }
 					}
 					set_country_flag = str_need_4000_alloys
+					if = {
+						limit = {
+							is_difficulty > 2
+						}
+						set_country_flag = str_need_5000_alloys
+					}
 
 				}
 				else_if = {
@@ -167,7 +209,6 @@ event = {
 					has_country_flag = str_normal_empire
 				}
 		}
-				#log = "str_economy_plan for [This.GetName]"
 				country_event = { id = str_economy_plan.2 random = 100 days = 1 } 
 				#country_event = { id = str_planet_spec.2 random = 100 days = 1 } 
 		}
@@ -322,13 +363,23 @@ country_event = {
 
 			if = {
 				limit = {
+					needs_shipyard = yes
 					or = {
+						count_owned_starbase = {
+							count <= 0
+							limit = { has_starbase_module = shipyard }
+						}
+						and = {
+							max_naval_capacity > 120
 					count_owned_starbase = {
 						count <= 1
 						limit = { has_starbase_module = shipyard }
 					}
+							used_naval_capacity_integer > 20
+						}
 					and = {
 						max_naval_capacity > 200
+							used_naval_capacity_integer > 20
 						count_owned_starbase = {
 							count <= 2
 							limit = { has_starbase_module = shipyard }
@@ -391,6 +442,7 @@ country_event = {
 			}
 
 
+		
 			capital_scope = {
 					if = {
 						limit = {
@@ -770,6 +822,7 @@ country_event = {
 						if = {
 							limit = { 
 							solar_system = {
+								exists = starbase
 								starbase = {
 									has_starbase_size > starbase_outpost
 								}
