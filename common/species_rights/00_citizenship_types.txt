@@ -3,7 +3,7 @@
 # Calvitix Check 3.0.1  23/04/2021
 #
 # Merge with Arisphaos Unofficial patch
-# Merge with Starnet AI  04/05/2021
+# Merge with Starnet AI  22/08/2021
 #
 
 # from = country
@@ -69,7 +69,17 @@ citizenship_full = {
 		}
 	}
 	ai_will_do = {
-		factor = 100 #1
+		factor = 2000
+		modifier = {
+			factor = 0.001
+			is_multiplayer = yes
+			from = { has_country_flag = str_recently_human }
+			not = {
+				has_citizenship_type = {
+					type = citizenship_full
+				}
+			}
+		}
 	}
 }
 
@@ -256,6 +266,16 @@ citizenship_assimilation = {
 	ai_will_do = {
 		factor = 100
 		modifier = {
+			factor = 0.001
+			is_multiplayer = yes
+			from = { has_country_flag = str_recently_human }
+			not = {
+				has_citizenship_type = {
+					type = citizenship_assimilation
+				}
+			}
+		}
+		modifier = {
 			factor = 0
 			from = {
 				OR = {
@@ -373,11 +393,36 @@ citizenship_limited = {
 	}
 	ai_will_do = {
 		factor = 30 #3
+		#Slaves don't resettle so there should be no slaves or problems with unemployed slaves on forge worlds will be massive
+#		modifier = {
+			#factor = 0
+			#from = { or = { has_ethic = ethic_authoritarian has_ethic = ethic_xenophobe has_ethic = ethic_fanatic_authoritarian has_ethic = ethic_fanatic_xenophobe }  }
+			#has_trait = trait_syncretic_proles
+		#}
 		modifier = {
 			factor = 0
 			from = {
 				has_valid_ai_personality = yes
 				has_ai_personality_behaviour = multispecies
+				NOT = { has_country_flag = str_recently_human } 
+			}
+		}
+		modifier = {
+			factor = 0.001
+			is_multiplayer = yes
+			from = { has_country_flag = str_recently_human }
+			not = {
+				has_citizenship_type = {
+					type = citizenship_limited
+				}
+			}
+		}
+		modifier = {
+			factor = 10000
+			is_multiplayer = yes
+			from = { has_country_flag = str_recently_human }
+			has_citizenship_type = {
+				type = citizenship_limited
 			}
 		}
 		modifier = {
@@ -499,13 +544,38 @@ citizenship_slavery = {
 		factor = 15
 		#STARNET AI
 		modifier = {
+			factor = 0.001
+			is_multiplayer = yes
+			from = { has_country_flag = str_recently_human }
+			not = {
+				has_citizenship_type = {
+					type = citizenship_slavery
+				}
+			}
+		}
+		modifier = {
 			factor = 10
 			from = {
 			not = { is_country_type = default }
 			has_ethic = ethic_fanatic_xenophobe
 			}
 		}
-		###
+		modifier = {
+			factor = 50
+			from = { 
+				or = { has_origin = origin_necrophage has_origin = origin_syncretic_evolution }
+				years_passed < 30 
+			}
+		}
+		modifier = {
+			factor = 10000
+			is_multiplayer = yes
+			from = { has_country_flag = str_recently_human }
+			has_citizenship_type = {
+				type = citizenship_slavery
+			}
+		}
+###
 		modifier = {
 			factor = 0
 			from = {
@@ -629,6 +699,24 @@ citizenship_purge = {
 	}
 	ai_will_do = {
 		factor = 20
+###STARNET AI
+		modifier = {
+			factor = 0
+			from = { has_origin = origin_necrophage }
+			or = { 
+				has_species_flag = str_integrated_conquest
+				from = { num_owned_planets = 1 }
+			}
+		}
+		modifier = {
+			factor = 10000
+			is_multiplayer = yes
+			from = { has_country_flag = str_recently_human }
+			has_citizenship_type = {
+				type = citizenship_purge
+			}
+		}
+###
 		modifier = {
 			factor = 0
 			ariphaos_patch_slaves_expel = no

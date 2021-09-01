@@ -19,6 +19,7 @@ str_enable_clerks = {
 					str_raw_ecocrisis_level_1 = yes 
 					prev = { 
 						solar_system = {
+							exists = starbase
 							starbase = {
 								has_starbase_size > starbase_outpost
 							}
@@ -121,7 +122,7 @@ str_bureaucratic_destroy = {
 				is_ai = yes
 				resource_income_compare = {
 					resource = physics_research
-					value < 90
+					value < 70
 				}
 			}
 			free_building_slots < 1 #Calvitix 
@@ -350,9 +351,26 @@ str_industrial_district_allow = {
 	str_industry_allow_compatibility = yes
     nand = {
         exists = owner
+		owner = { is_ai = yes }
+		has_planet_flag = str_designated_energy_guaranteed
+		num_unemployed < 2
+		years_passed < 20
+	}
+
+	nand = {
+		exists = owner
+		owner = { is_ai = yes }
+		years_passed < 8
+		owner = { num_owned_planets > 2 }
+		has_planet_flag = prescripted_ideal
         owner = {
-            is_ai = yes
+			not = { has_country_flag = str_has_tried_to_designate_energy_alloy  } 
         }
+	}
+
+	nand = {
+		exists = owner
+		owner = { is_ai = yes }
         has_planet_flag = str_bad_habitability
     }
 
@@ -566,6 +584,13 @@ str_industrial_district_allow = {
 
 str_energy_district_allow = {
 	str_energy_allow_compatibility = yes
+	nand = {
+		exists = owner
+		owner = { is_ai = yes }
+		has_planet_flag = str_designated_alloy_guaranteed
+		num_unemployed < 1
+		years_passed < 20
+	}
     NAND = {
         exists = owner
         owner = {
@@ -681,6 +706,35 @@ str_energy_district_allow = {
 
 str_food_district_allow = {
 	str_food_allow_compatibility = yes
+	nand = {
+		exists = owner
+		owner = { is_ai = yes }
+		or = {
+			has_planet_flag = str_designated_energy_guaranteed
+			has_planet_flag = str_designated_alloy_guaranteed
+		}
+		years_passed < 20
+		num_unemployed < 1
+		owner = {
+		resource_income_compare = {
+			resource = food
+			value > -5
+		}
+		resource_stockpile_compare = {
+			resource = food
+			value > 200
+		} }
+	}
+	nand = {
+		exists = owner
+		owner = { is_ai = yes }
+		years_passed < 8
+		owner = { num_owned_planets > 2 }
+		has_planet_flag = prescripted_ideal
+		owner = { 
+			not = { has_country_flag = str_has_tried_to_designate_energy_alloy  } 
+		}
+	}
     NAND = {
         exists = owner
         owner = {
@@ -815,9 +869,22 @@ str_mineral_district_allow = {
 	str_minerals_allow_compatibility = yes
     nand = {
         exists = owner
+		owner = { is_ai = yes }
+		or = {
+			has_planet_flag = str_designated_energy_guaranteed
+			has_planet_flag = str_designated_alloy_guaranteed
+		}
+		num_unemployed < 1
+		years_passed < 20
         owner = {
-            is_ai = yes
+		resource_income_compare = {
+			resource = minerals
+			value > 30
+		} }
         }
+	nand = {
+		exists = owner
+		owner = { is_ai = yes }
         years_passed < 30
         owner = {
             resource_stockpile_compare = {
@@ -827,7 +894,16 @@ str_mineral_district_allow = {
             resource_income_compare = {
                 resource = minerals
                 value > 80
+		} }
             }
+	nand = {
+		exists = owner
+		owner = { is_ai = yes }
+		years_passed < 8
+		owner = { num_owned_planets > 2 }
+		has_planet_flag = prescripted_ideal
+		owner = { 
+			not = { has_country_flag = str_has_tried_to_designate_energy_alloy  } 
         }
     }
     NAND = {
@@ -1437,3 +1513,102 @@ str_stronghold_destroy = {
         }
     }
 }
+
+
+
+
+str_habitat_housing_allow = {
+    
+	nand = {
+	    exists = owner
+	    owner = { is_ai = yes }
+	    has_planet_flag = energy_habitat
+	    num_districts = {
+		type = district_hab_energy
+		value < 2
+	    }
+	}
+	nand = {
+	    exists = owner
+	    owner = { is_ai = yes }
+	    has_planet_flag = research_habitat
+	    num_districts = {
+		type = district_hab_science
+		value < 2
+	    }
+	}
+	nand = {
+	    exists = owner
+	    owner = { is_ai = yes }
+	    has_planet_flag = mining_habitat
+	    num_districts = {
+		type = district_hab_mining
+		value < 2
+	    }
+	}
+	nand = {
+	    exists = owner
+	    owner = { is_ai = yes }
+	    num_pops < 7
+	}
+}
+    
+    str_habitat_housing_destroy = {
+	always = no
+    }
+    
+    
+    str_habitat_industry_allow = {
+	nand = {
+	    exists = owner
+	    owner = { is_ai = yes }
+	    has_planet_flag = energy_habitat
+	}
+	nand = {
+	    exists = owner
+	    owner = { is_ai = yes }
+	    is_capital = yes
+	}
+	nand = {
+	    exists = owner
+	    owner = { is_ai = yes }
+	    has_planet_flag = research_habitat
+	}
+	nand = {
+	    exists = owner
+	    owner = { is_ai = yes }
+	    has_planet_flag = mining_habitat
+	    years_passed > 20
+	}
+    }
+    
+    str_habitat_industry_destroy = {
+	always = no
+    }
+    
+    str_habitat_trade_allow = {
+	nand = { 
+	    exists = owner 
+	    owner = { is_ai = yes }
+	 }
+    }
+    
+    str_habitat_trade_destroy = {
+	exists = owner
+	owner = { is_ai = yes }
+	years_passed > 50
+    }
+    
+    
+    str_habitat_culture_allow = {
+	nand = { 
+	    exists = owner 
+	    owner = { is_ai = yes }
+	 }
+    }
+    
+    str_habitat_culture_destroy = {
+	exists = owner
+	owner = { is_ai = yes }
+	years_passed > 50
+    }

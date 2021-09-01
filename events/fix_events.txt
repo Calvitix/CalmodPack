@@ -12,57 +12,13 @@ country_event = {
 
 	immediate = {
 		country_event = {
-			#id = fix_ai_actions.3 #disable menu Calvitix
+			id = fix_ai_actions.2
 		}
 	}
 }
-country_event = {
+
+event = {
 	id = fix_ai_actions.1
-	hide_window = yes
-	is_triggered_only = yes
-
-	trigger = {
-		if = {
-			limit = {
-				NOT = {
-					has_global_flag = ai_and_player_flag
-				}
-			}
-			is_ai = yes
-		}
-		has_global_flag = ai_unemployment_flag
-	}
-
-	immediate = {
-		random_owned_planet = {
-			limit = {
-				num_unemployed > 0
-			}
-			random_owned_pop = {
-				limit = {
-					is_unemployed = yes
-					NOT = {
-						has_job = bio_trophy
-					}
-				}
-				prevprev = {
-					random_owned_planet = {
-						limit = {
-							is_colony = yes
-							free_jobs > 0
-						}
-						resettle_pop = {
-							pop = prevprev
-							planet = this
-						}
-					}
-				}
-			}
-		}
-	}
-}
-country_event = {
-	id = fix_ai_actions.2
 	hide_window = yes
 	is_triggered_only = yes
 
@@ -72,13 +28,14 @@ country_event = {
 		set_global_flag = ai_habitat_construction_flag
 		set_global_flag = ai_unemployment_flag
 		set_global_flag = ai_corvette_destroyer_spam_flag
-		#set_global_flag = ai_population_time_control_flag
 		set_global_flag = ai_population_count_control_flag
+		set_global_flag = modifier_optimisation_flag
 		remove_global_flag = ai_and_player_flag
 	}
 }
+
 country_event = {
-	id = fix_ai_actions.3
+	id = fix_ai_actions.2
 	title = "fix_ai_actions.1.name"
 	desc = "fix_ai_actions.1.desc"
 	picture = GFX_evt_ai_planet
@@ -101,7 +58,7 @@ country_event = {
 		remove_global_flag = ai_gateway_construction_flag
 		hidden_effect = {
 			country_event = {
-				id = fix_ai_actions.3
+				id = fix_ai_actions.2
 			}
 		}
 	}
@@ -115,7 +72,7 @@ country_event = {
 		remove_global_flag = ai_xeno_compatibility_flag
 		hidden_effect = {
 			country_event = {
-				id = fix_ai_actions.3
+				id = fix_ai_actions.2
 			}
 		}
 	}
@@ -129,7 +86,7 @@ country_event = {
 		remove_global_flag = ai_habitat_construction_flag
 		hidden_effect = {
 			country_event = {
-				id = fix_ai_actions.3
+				id = fix_ai_actions.2
 			}
 		}
 	}
@@ -143,7 +100,7 @@ country_event = {
 		remove_global_flag = ai_unemployment_flag
 		hidden_effect = {
 			country_event = {
-				id = fix_ai_actions.3
+				id = fix_ai_actions.2
 			}
 		}
 	}
@@ -157,26 +114,12 @@ country_event = {
 		remove_global_flag = ai_corvette_destroyer_spam_flag
 		hidden_effect = {
 			country_event = {
-				id = fix_ai_actions.3
+				id = fix_ai_actions.2
 			}
 		}
 	}
-	# option = { 
-	# 	name = "fix_ai_actions.1.f" custom_tooltip = "fix_ai_actions_event.3.custom_tooltip.f"
-	# 	allow = {
-	# 		hidden_trigger = {
-	# 			has_global_flag = ai_population_time_control_flag
-	# 		}
-	# 	}
-	# 	remove_global_flag = ai_population_time_control_flag
-	# 	hidden_effect = {
-	# 		country_event = {
-	# 			id = fix_ai_actions.3
-	# 		}
-	# 	}
-	# }
 	option = { 
-		name = "fix_ai_actions.1.g" custom_tooltip = "fix_ai_actions_event.3.custom_tooltip.g"
+		name = "fix_ai_actions.1.f" custom_tooltip = "fix_ai_actions_event.3.custom_tooltip.g"
 		allow = {
 			hidden_trigger = {
 				has_global_flag = ai_population_count_control_flag
@@ -185,7 +128,21 @@ country_event = {
 		remove_global_flag = ai_population_count_control_flag
 		hidden_effect = {
 			country_event = {
-				id = fix_ai_actions.3
+				id = fix_ai_actions.2
+			}
+		}
+	}
+	option = { 
+		name = "fix_ai_actions.1.g" custom_tooltip = "fix_ai_actions_event.3.custom_tooltip.f"
+		allow = {
+			hidden_trigger = {
+				has_global_flag = modifier_optimisation_flag
+			}
+		}
+		remove_global_flag = modifier_optimisation_flag
+		hidden_effect = {
+			country_event = {
+				id = fix_ai_actions.2
 			}
 		}
 	}
@@ -201,7 +158,7 @@ country_event = {
 		set_global_flag = ai_and_player_flag
 		hidden_effect = {
 			country_event = {
-				id = fix_ai_actions.3
+				id = fix_ai_actions.2
 			}
 		}
 	}
@@ -209,6 +166,57 @@ country_event = {
 		name = "fix_ai_actions.1.i" #custom_tooltip = "fix_ai_actions_event.3.custom_tooltip.h"
 	}
 }
+
+country_event = {
+	id = fix_ai_actions.3
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		if = {
+			limit = {
+				NOT = {
+					has_global_flag = ai_and_player_flag
+				}
+			}
+			is_ai = yes
+		}
+		has_global_flag = ai_unemployment_flag
+	}
+
+	immediate = {
+		random_owned_planet = {
+			limit = {
+				colony_age > 44
+				num_assigned_jobs = {
+					job = unemployed
+					value >= 1
+				}
+			}
+			random_owned_pop = {
+				limit = {
+					is_unemployed = yes
+					NOT = {
+						has_job = bio_trophy
+					}
+				}
+				prevprev = {
+					random_owned_planet = {
+						limit = {
+							is_colony = yes
+							free_jobs >= 1
+						}
+						resettle_pop = {
+							pop = prevprev
+							planet = this
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
 country_event = {
 	id = fix_ai_actions.4
 	hide_window = yes
@@ -328,133 +336,187 @@ country_event = {
 	}
 
 	immediate = {
+		every_owned_planet = {
+			limit = {
+				is_colony = yes
+				num_pops > 9
+			}
+			remove_modifier = planet_pop_conversion_count_1
+			remove_modifier = planet_pop_conversion_count_2
+			remove_modifier = planet_pop_conversion_count_3
+			remove_modifier = planet_pop_conversion_count_4
+			remove_modifier = planet_pop_conversion_count_5
 		if = {
 			limit = {
-				num_pops > 99
-				num_pops < 199
+					num_pops > 9
+					num_pops < 20
 			}
 			add_modifier = {
-				modifier = pop_conversion_count_1
+					modifier = planet_pop_conversion_count_1
 			}
-			remove_modifier = pop_conversion_count_2
-			remove_modifier = pop_conversion_count_3
-			remove_modifier = pop_conversion_count_4
-			remove_modifier = pop_conversion_count_5
-			remove_modifier = pop_conversion_count_6
-			remove_modifier = pop_conversion_count_7
-			remove_modifier = pop_conversion_count_8
+				remove_modifier = planet_pop_conversion_count_2
+				remove_modifier = planet_pop_conversion_count_3
+				remove_modifier = planet_pop_conversion_count_4
+				remove_modifier = planet_pop_conversion_count_5
 		}
+			else_if = {
+				limit = {
+					num_pops > 19
+					num_pops < 30
+				}
+				add_modifier = {
+					modifier = planet_pop_conversion_count_2
+				}
+				remove_modifier = planet_pop_conversion_count_1
+				remove_modifier = planet_pop_conversion_count_3
+				remove_modifier = planet_pop_conversion_count_4
+				remove_modifier = planet_pop_conversion_count_5
+			}
+			else_if = {
+				limit = {
+					num_pops > 29
+					num_pops < 40
+				}
+				add_modifier = {
+					modifier = planet_pop_conversion_count_3
+				}
+				remove_modifier = planet_pop_conversion_count_1
+				remove_modifier = planet_pop_conversion_count_2
+				remove_modifier = planet_pop_conversion_count_4
+				remove_modifier = planet_pop_conversion_count_5
+			}
+			else_if = {
+				limit = {
+					num_pops > 39
+					num_pops < 50
+				}
+				add_modifier = {
+					modifier = planet_pop_conversion_count_4
+				}
+				remove_modifier = planet_pop_conversion_count_1
+				remove_modifier = planet_pop_conversion_count_2
+				remove_modifier = planet_pop_conversion_count_3
+				remove_modifier = planet_pop_conversion_count_5
+			}
+			else_if = {
+				limit = {
+					num_pops > 49
+				}
+				add_modifier = {
+					modifier = planet_pop_conversion_count_5
+				}
+			}
+			else = {
+				remove_modifier = planet_pop_conversion_count_1
+				remove_modifier = planet_pop_conversion_count_2
+				remove_modifier = planet_pop_conversion_count_3
+				remove_modifier = planet_pop_conversion_count_4
+				remove_modifier = planet_pop_conversion_count_5
+			}
+		}
+		remove_modifier = country_pop_conversion_count_1
+		remove_modifier = country_pop_conversion_count_2
+		remove_modifier = country_pop_conversion_count_3
+		remove_modifier = country_pop_conversion_count_4
+		remove_modifier = country_pop_conversion_count_5
 		if = {
 			limit = {
 				num_pops > 199
-				num_pops < 299
+				num_pops < 400
 			}
 			add_modifier = {
-				modifier = pop_conversion_count_2
+				modifier = country_pop_conversion_count_1
 			}
-			remove_modifier = pop_conversion_count_1
-			remove_modifier = pop_conversion_count_3
-			remove_modifier = pop_conversion_count_4
-			remove_modifier = pop_conversion_count_5
-			remove_modifier = pop_conversion_count_6
-			remove_modifier = pop_conversion_count_7
-			remove_modifier = pop_conversion_count_8
+			remove_modifier = country_pop_conversion_count_2
+			remove_modifier = country_pop_conversion_count_3
+			remove_modifier = country_pop_conversion_count_4
+			remove_modifier = country_pop_conversion_count_5
 		}
-		if = {
-			limit = {
-				num_pops > 299
-				num_pops < 399
-			}
-			add_modifier = {
-				modifier = pop_conversion_count_3
-			}
-			remove_modifier = pop_conversion_count_1
-			remove_modifier = pop_conversion_count_2
-			remove_modifier = pop_conversion_count_4
-			remove_modifier = pop_conversion_count_5
-			remove_modifier = pop_conversion_count_6
-			remove_modifier = pop_conversion_count_7
-			remove_modifier = pop_conversion_count_8
-		}
-		if = {
+		else_if = {
 			limit = {
 				num_pops > 399
-				num_pops < 499
+				num_pops < 600
 			}
 			add_modifier = {
-				modifier = pop_conversion_count_4
+				modifier = country_pop_conversion_count_2
 			}
-			remove_modifier = pop_conversion_count_1
-			remove_modifier = pop_conversion_count_2
-			remove_modifier = pop_conversion_count_3
-			remove_modifier = pop_conversion_count_5
-			remove_modifier = pop_conversion_count_6
-			remove_modifier = pop_conversion_count_7
-			remove_modifier = pop_conversion_count_8
+			remove_modifier = country_pop_conversion_count_1
+			remove_modifier = country_pop_conversion_count_3
+			remove_modifier = country_pop_conversion_count_4
+			remove_modifier = country_pop_conversion_count_5
 		}
-		if = {
-			limit = {
-				num_pops > 499
-				num_pops < 599
-			}
-			add_modifier = {
-				modifier = pop_conversion_count_5
-			}
-			remove_modifier = pop_conversion_count_1
-			remove_modifier = pop_conversion_count_2
-			remove_modifier = pop_conversion_count_3
-			remove_modifier = pop_conversion_count_4
-			remove_modifier = pop_conversion_count_6
-			remove_modifier = pop_conversion_count_7
-			remove_modifier = pop_conversion_count_8
-		}
-		if = {
+		else_if = {
 			limit = {
 				num_pops > 599
-				num_pops < 699
+				num_pops < 800
 			}
 			add_modifier = {
-				modifier = pop_conversion_count_6
+				modifier = country_pop_conversion_count_3
 			}
-			remove_modifier = pop_conversion_count_1
-			remove_modifier = pop_conversion_count_2
-			remove_modifier = pop_conversion_count_3
-			remove_modifier = pop_conversion_count_4
-			remove_modifier = pop_conversion_count_5
-			remove_modifier = pop_conversion_count_7
-			remove_modifier = pop_conversion_count_8
+			remove_modifier = country_pop_conversion_count_1
+			remove_modifier = country_pop_conversion_count_2
+			remove_modifier = country_pop_conversion_count_4
+			remove_modifier = country_pop_conversion_count_5
 		}
-		if = {
-			limit = {
-				num_pops > 699
-				num_pops < 799
-			}
-			add_modifier = {
-				modifier = pop_conversion_count_7
-			}
-			remove_modifier = pop_conversion_count_1
-			remove_modifier = pop_conversion_count_2
-			remove_modifier = pop_conversion_count_3
-			remove_modifier = pop_conversion_count_4
-			remove_modifier = pop_conversion_count_5
-			remove_modifier = pop_conversion_count_6
-			remove_modifier = pop_conversion_count_8
-		}
-		if = {
+		else_if = {
 			limit = {
 				num_pops > 799
-				#num_pops < 899
+				num_pops < 1000
 			}
 			add_modifier = {
-				modifier = pop_conversion_count_8
+				modifier = country_pop_conversion_count_4
 			}
-			remove_modifier = pop_conversion_count_1
-			remove_modifier = pop_conversion_count_2
-			remove_modifier = pop_conversion_count_3
-			remove_modifier = pop_conversion_count_4
-			remove_modifier = pop_conversion_count_5
-			remove_modifier = pop_conversion_count_6
-			remove_modifier = pop_conversion_count_7
+			remove_modifier = country_pop_conversion_count_1
+			remove_modifier = country_pop_conversion_count_2
+			remove_modifier = country_pop_conversion_count_3
+			remove_modifier = country_pop_conversion_count_5
 		}
+		else_if = {
+			limit = {
+				num_pops > 999
+			}
+			add_modifier = {
+				modifier = country_pop_conversion_count_5
+			}
+			remove_modifier = country_pop_conversion_count_1
+			remove_modifier = country_pop_conversion_count_2
+			remove_modifier = country_pop_conversion_count_3
+			remove_modifier = country_pop_conversion_count_4
+		}
+		else = {
+			remove_modifier = country_pop_conversion_count_1
+			remove_modifier = country_pop_conversion_count_2
+			remove_modifier = country_pop_conversion_count_3
+			remove_modifier = country_pop_conversion_count_4
+			remove_modifier = country_pop_conversion_count_5
+		}
+	}
+}
+
+country_event = {
+	id = fix_ai_actions.7
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_global_flag = modifier_optimisation_flag
+	}
+
+	immediate = {
+		set_update_modifiers_batch = begin
+		country_event = {
+			id = fix_ai_actions.8
+			days = 28
+		}
+	}
+}
+
+country_event = {
+	id = fix_ai_actions.8
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		set_update_modifiers_batch = end
 	}
 }

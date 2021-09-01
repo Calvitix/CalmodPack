@@ -14,21 +14,39 @@ edict_mod_options = {
 
 	effect = {
 		hidden_effect = {
-			every_country = {
-				remove_modifier = pop_conversion_count_1
-				remove_modifier = pop_conversion_count_2
-				remove_modifier = pop_conversion_count_3
-				remove_modifier = pop_conversion_count_4
-				remove_modifier = pop_conversion_count_5
-				remove_modifier = pop_conversion_count_6
-				remove_modifier = pop_conversion_count_7
-				remove_modifier = pop_conversion_count_8
+			if = {
+				limit = {
+					has_global_flag = modifier_optimisation_flag
+				}
+				set_update_modifiers_batch = end
 			}
+			every_country = {
+				remove_modifier = country_pop_conversion_count_1
+				remove_modifier = country_pop_conversion_count_2
+				remove_modifier = country_pop_conversion_count_3
+				remove_modifier = country_pop_conversion_count_4
+				remove_modifier = country_pop_conversion_count_5
+				every_owned_planet = {
+					limit = {
+						is_colony = yes
+			}
+					remove_modifier = planet_pop_conversion_count_1
+					remove_modifier = planet_pop_conversion_count_2
+					remove_modifier = planet_pop_conversion_count_3
+					remove_modifier = planet_pop_conversion_count_4
+					remove_modifier = planet_pop_conversion_count_5
+				}
+			}
+			set_global_flag = ai_gateway_construction_flag
+			set_global_flag = ai_xeno_compatibility_flag
+			set_global_flag = ai_habitat_construction_flag
+			set_global_flag = ai_unemployment_flag
+			set_global_flag = ai_corvette_destroyer_spam_flag
+			set_global_flag = ai_population_count_control_flag
+			set_global_flag = modifier_optimisation_flag
+			remove_global_flag = ai_and_player_flag
 			country_event = {
 				id = fix_ai_actions.2
-			}
-			country_event = {
-				id = fix_ai_actions.3
 			}
 		}
 	}

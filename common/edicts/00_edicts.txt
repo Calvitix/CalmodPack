@@ -2,7 +2,7 @@
 #
 # Calvitix Check 3.0.3  21/05/2021
 #
-# Merge with Starnet AI 01/06/2021
+# Merge with Starnet AI 22/08/2021
 # #Calvitix, re-enable all edicts for more diversity
 #
 ##########################################################################
@@ -101,6 +101,7 @@ fortify_the_border = {
 	potential = {
 		or = {
 			is_ai = no
+			has_edict = capacity_subsidies
 			and = {
 			years_passed < 60
 			years_passed >= @str_years_of_guaranteed_truce
@@ -134,25 +135,14 @@ fortify_the_border = {
 		modifier = {
 			factor = 0
 			or = {
-			num_starbases > 6
-			not = { has_edict = fortify_the_border }
+				not = {
+					has_edict = capacity_subsidies
 			}
-			years_passed > 50
-		}
-		modifier = {
-			factor = 0
-			or = {
-				and = { years_passed > 20 not = { has_edict = fortify_the_border } }
-				years_passed < 7
 				and = {
-					has_tradition = tr_supremacy_adopt
-					has_technology = tech_galactic_ambitions
+					not = {
+						has_edict = mining_subsidies
 				}
-				has_ascension_perk = ap_grasp_the_void
-				and = {
-					years_passed > 50
-					nor = { has_edict = capacity_subsidies not = { has_technology = tech_power_hub_1 } }
-					not = { has_edict = mining_subsidies not = { has_technology = tech_mineral_purification_1 } }
+					has_technology = tech_mineral_purification_1
 				}
 			}
 		}
@@ -929,11 +919,19 @@ farming_subsidies = {
 
 	ai_weight = {
 		weight = @EdictMedPrio
-
 		modifier = {
-			factor = 2
-			has_monthly_income = { resource = food value < 0 }
-			has_monthly_income = { resource = energy value > 50 }
+			factor = 0
+			or = {
+				not = {
+					has_edict = capacity_subsidies
+				}
+				not = {
+					has_edict = mining_subsidies
+		}
+				not = {
+					has_edict = fortify_the_border
+				}
+			}
 		}
 	}
 }
@@ -1021,7 +1019,21 @@ forge_subsidies = {
 	}
 
 	ai_weight = {
-		weight = @EdictHighPrio
+		weight = @EdictLowPrio
+		modifier = {
+			factor = 0
+			or = {
+				not = {
+					has_edict = capacity_subsidies
+				}
+				not = {
+					has_edict = mining_subsidies
+				}
+				not = {
+					has_edict = fortify_the_border
+				}
+			}
+		}
 	}
 }
 
@@ -1117,6 +1129,13 @@ peace_festivals = {
 
 	potential = {
 		is_pacifist = yes
+		or = {
+			is_ai = no
+			and = {
+			has_ascension_perk = ap_executive_vigor
+			is_difficulty < 3
+			} 
+		}
 	}
 
 	ai_weight = {
@@ -1152,10 +1171,23 @@ information_quarantine = {
 
 	potential = {
 		is_authoritarian = yes
+		or = {
+			is_ai = no
+			and = {
+			has_ascension_perk = ap_executive_vigor
+			is_difficulty < 3
+			} 
+		}
 	}
 
 	ai_weight = {
 		weight = @EdictLowPrio
+		modifier = {
+			factor = 0
+			not = {
+				has_edict = capacity_subsidies
+			}
+		}
 	}
 }
 

@@ -3,7 +3,7 @@
 # Calvitix Check 3.0.1  23/04/2021
 #
 # Merge with Arisphaos Unofficial patch
-# Merge with STARNET AI 04/05/2021
+# Merge with STARNET AI 22/08/2021
 #
 
 # from = country
@@ -31,7 +31,17 @@ slavery_normal = {
 		hidden_trigger = { always = yes } #triggers covered in citizenship_slavery and potential trigger
 	}
 	ai_will_do = {
-		factor = 2 # 1
+		factor = 2
+		modifier = {
+			factor = 0.0001
+			is_multiplayer = yes
+			from = {
+				has_country_flag = str_recently_human
+			}
+			NOT = { has_slavery_type = {
+				type = slavery_normal
+			} }
+		}
 		modifier = {
 			factor = 0.5
 			from = {
@@ -75,6 +85,16 @@ slavery_domestic = {
 	}
 	ai_will_do = {
 		factor = 3
+		modifier = {
+			factor = 0.0001
+			is_multiplayer = yes
+			from = {
+				has_country_flag = str_recently_human
+			}
+			NOT = { has_slavery_type = {
+				type = slavery_domestic
+			} }
+		}
 		modifier = {
 			factor = 100
 			has_trait = trait_nerve_stapled
@@ -125,6 +145,15 @@ slavery_military = {
 	ai_will_do = {
 		factor = 5
 		modifier = {
+			factor = 0.0001
+			from = {
+				has_country_flag = str_recently_human
+			}
+			NOT = { has_slavery_type = {
+				type = slavery_military
+			} }
+		}
+		modifier = {
 			factor = 0
 			NOT = { has_trait = trait_very_strong }
 		}
@@ -149,6 +178,16 @@ slavery_indentured = {
 	}
 	ai_will_do = {
 		factor = 50
+		modifier = {
+			factor = 0.0001
+			is_multiplayer = yes
+			from = {
+				has_country_flag = str_recently_human
+			}
+			NOT = { has_slavery_type = {
+				type = slavery_indentured
+			} }
+		}
 		modifier = {
 			factor = 0
 			has_trait = trait_syncretic_proles
@@ -203,7 +242,7 @@ slavery_matrix = {
 	}
 
 	ai_will_do = {
-		factor = 50
+		factor = 5000 # 50
 	}
 }
 

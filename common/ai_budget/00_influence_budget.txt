@@ -2,7 +2,7 @@
 #
 # Calvitix Check 3.0.3  21/05/2021
 #
-# Merge with STARNET AI 28/05/2021
+# Merge with STARNET AI 22/08/2021
 #
 #
 ## Categories used in this file must have use_for_ai_budget = yes defined in economic_categories ##
@@ -62,10 +62,14 @@ influence_expenditure_resolutions = {
 	potential = {
 		is_galactic_community_member = yes
 		NOT = { is_proposing_resolution = "any" }
+		resource_stockpile_compare = {
+			resource = influence
+			value > 260
+		}
 	}
 	
 	fraction = {
-		weight = 0.30
+		weight = 0.15
 	}
 
 	# min/max resolution proposal costs defined in resolutions.txt
@@ -88,7 +92,7 @@ influence_expenditure_edicts_initial = {
 	potential = {
 		years_passed > 8
 		not = {
-			has_edict = fortify_the_border
+			has_edict = capacity_subsidies
 		}
 	}
 	
@@ -107,14 +111,11 @@ influence_expenditure_important_edicts = {
 	category = edicts
 	
 	potential = {
-		years_passed > 20
+		years_passed > 10
 		nand = {
 			has_edict = capacity_subsidies
 			has_edict = mining_subsidies
-			or = {
-				is_authoritarian = no
-				has_edict = information_quarantine
-			}
+			has_edict = fortify_the_border
 		}
 	}
 	
@@ -135,21 +136,12 @@ influence_expenditure_edicts = {
 	
 	potential = {
 ###Starnet AI
-		or = {
 			resource_stockpile_compare = {
 				resource = influence
-				value > 600
-			}
-			and = {
-				not = { has_country_flag = acceptable_raw_economy }
-				resource_stockpile_compare = {
-					resource = influence
-					value > 400
-				}
+		value > 250
 			}
 ###Starnet AI end
 		}
-	}
 	
 	fraction = {
 		weight = 0.9 #0.5
@@ -163,23 +155,6 @@ influence_expenditure_edicts = {
 	#}	
 }
 
-#Starnet AI
-influence_expenditure_claims_rusher = {
-	resource = influence
-	type = expenditure
-	category = claims
-	potential = {
-		has_country_flag = ferocious_rusher
-		is_allowed_to_make_claims = yes
-	}
-	fraction = {
-		weight = 1
-	}
-	static_min = {
-		base = 400
-	}
-}
-###
 
 influence_expenditure_stations = {
 	resource = influence 
@@ -188,12 +163,8 @@ influence_expenditure_stations = {
 	
 	potential = {
 ###Starnet AI
+		str_is_allowed_to_build_outposts = yes
 		not = { has_country_flag = saving_influence_arcology }
-		or = {
-		prepare_for_war = no
-		years_passed > 30
-		used_naval_capacity_percent < 0.6
-		}
 		nand = {
 			is_allowed_to_make_claims = yes
 			has_country_flag = ferocious_rusher
@@ -210,6 +181,9 @@ influence_expenditure_stations = {
 				resource = influence
 				value < 300
 			}
+		}
+		nand = {
+			not = { has_edict = capacity_subsidies } has_technology = tech_power_hub_1 
 		}
 ###Starnet AI end
 	}
@@ -261,8 +235,10 @@ influence_expenditure_stations_save_for_edicts = {
 		or = {
 		and = {
 			or = { has_edict = capacity_subsidies not = { has_technology = tech_power_hub_1 } }
-			or = { is_authoritarian = no has_edict = information_quarantine }
-			or = { is_xenophile = no has_edict = land_of_opportunity }
+			or = {
+				has_edict = mining_subsidies not = { has_technology = tech_mineral_purification_1 } 
+				not = { has_ascension_perk = ap_executive_vigor }
+			}
 			}
 			resource_stockpile_compare = {
 				resource = influence
