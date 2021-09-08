@@ -4,7 +4,7 @@
 #
 # Merge with Arisphaos Unofficial patch
 # Merge with JL Picard 04/05/2021
-# Merge with Expanded Events  04/05/2021
+# Merge with Expanded Events  01/09/2021
 #
 #
 #
@@ -155,6 +155,11 @@ country_event = {
 	
 	immediate = {
 		event_target:primitive_impact_planet = {
+			owner = {
+				every_owned_pop = {
+					kill_pop = yes
+				}
+			}
 			destroy_colony = yes
 			change_pc = pc_barren
 			reset_planet = yes
@@ -2460,9 +2465,9 @@ planet_event = {
 			}
 		}
 		NOT = {
-			observation_outpost_owner = {
-				reverse_has_relation_flag = {
-					who = root.owner
+			owner = {
+				has_relation_flag = {
+					who = root.observation_outpost_owner # TODO [MO] THIS DOES NOT WORK. WOW.
 					flag = xenophobe_enlightenment
 				}
 			}
@@ -2546,9 +2551,9 @@ planet_event = {
 			}
 		}
 		NOT = {
-			observation_outpost_owner = {
-				reverse_has_relation_flag = {
-					who = root.owner
+			owner = {
+				has_relation_flag = {
+					who = root.observation_outpost_owner
 					flag = xenophile_enlightenment
 				}
 			}
@@ -2627,9 +2632,9 @@ planet_event = {
 		}
 		owner = { has_trait = trait_quick_learners }
 		NOT = {
-			observation_outpost_owner = {
-				reverse_has_relation_flag = {
-					who = root.owner
+			owner = {
+				has_relation_flag = {
+					who = root.observation_outpost_owner
 					flag = quick_learners_enlightenment
 				}
 			}
@@ -2703,9 +2708,9 @@ planet_event = {
 		}
 		owner = { has_trait = trait_slow_learners }
 		NOT = {
-			observation_outpost_owner = {
-				reverse_has_relation_flag = {
-					who = root.owner
+			owner = {
+				has_relation_flag = {
+					who = root.observation_outpost_owner
 					flag = slow_learners_enlightenment
 				}
 			}
@@ -2784,9 +2789,9 @@ planet_event = {
 			}
 		}
 		NOT = {
-			observation_outpost_owner = {
-				reverse_has_relation_flag = {
-					who = root.owner
+			owner = {
+				has_relation_flag = {
+					who = root.observation_outpost_owner
 					flag = repugnant_enlightenment
 				}
 			}
@@ -2866,9 +2871,9 @@ planet_event = {
 			}
 		}
 		NOT = {
-			observation_outpost_owner = {
-				reverse_has_relation_flag = {
-					who = root.owner
+			owner = {
+				has_relation_flag = {
+					who = root.observation_outpost_owner
 					flag = natural_scientist_enlightenment
 				}
 			}
@@ -2944,9 +2949,9 @@ planet_event = {
 			OR = { has_trait = trait_intelligent }
 		}
 		NOT = {
-			observation_outpost_owner = {
-				reverse_has_relation_flag = {
-					who = root.owner
+			owner = {
+				has_relation_flag = {
+					who = root.observation_outpost_owner
 					flag = intelligent_enlightenment
 				}
 			}
@@ -3871,9 +3876,9 @@ planet_event = {
 			}
 		}
 		NOT = {
-			observation_outpost_owner = {
-				reverse_has_relation_flag = {
-					who = root.owner
+			owner = {
+				has_relation_flag = {
+					who = root.observation_outpost_owner
 					flag = pac_vs_mil_enlightenment
 				}
 			}
@@ -3970,9 +3975,9 @@ planet_event = {
 			}
 		}
 		NOT = {
-			observation_outpost_owner = {
-				reverse_has_relation_flag = {
-					who = root.owner
+			owner = {
+				has_relation_flag = {
+					who = root.observation_outpost_owner
 					flag = mil_vs_pac_enlightenment
 				}
 			}
@@ -4069,9 +4074,9 @@ planet_event = {
 			}
 		}
 		NOT = {
-			observation_outpost_owner = {
-				reverse_has_relation_flag = {
-					who = root.owner
+			owner = {
+				has_relation_flag = {
+					who = root.observation_outpost_owner
 					flag = mat_vs_spi_enlightenment
 				}
 			}
@@ -4168,9 +4173,9 @@ planet_event = {
 			}
 		}
 		NOT = {
-			observation_outpost_owner = {
-				reverse_has_relation_flag = {
-					who = root.owner
+			owner = {
+				has_relation_flag = {
+					who = root.observation_outpost_owner
 					flag = spi_vs_mat_enlightenment
 				}
 			}
@@ -4267,9 +4272,9 @@ planet_event = {
 			}
 		}
 		NOT = {
-			observation_outpost_owner = {
-				reverse_has_relation_flag = {
-					who = root.owner
+			owner = {
+				has_relation_flag = {
+					who = root.observation_outpost_owner
 					flag = ind_vs_col_enlightenment
 				}
 			}
@@ -4366,9 +4371,9 @@ planet_event = {
 			}
 		}
 		NOT = {
-			observation_outpost_owner = {
-				reverse_has_relation_flag = {
-					who = root.owner
+			owner = {
+				has_relation_flag = {
+					who = root.observation_outpost_owner
 					flag = col_vs_ind_enlightenment
 				}
 			}
@@ -5424,6 +5429,10 @@ planet_event = {
 	id = observation.3134
 	hide_window = yes
 	
+	pre_triggers = {
+		has_owner = yes
+	}
+	
 	trigger = {
 		has_observation_outpost = yes
 		exists = observation_outpost_owner
@@ -5437,7 +5446,7 @@ planet_event = {
 				has_ethic = ethic_gestalt_consciousness
 			}
 		}
-		has_owner = yes
+		exists = owner
 		owner = {
 			is_country_type = primitive
 			OR = {
@@ -5465,6 +5474,23 @@ planet_event = {
 	
 	immediate = {
 		add_building = building_great_pyramid
+		random_owned_pop = {
+			owner = {
+				random_list = {
+					40 = { }
+					30 = {
+						shift_ethic = ethic_spiritualist
+						random_owned_pop = { pop_change_ethic = ethic_spiritualist }
+						random_owned_pop = { pop_change_ethic = ethic_spiritualist }
+					}
+					30 = {
+						shift_ethic = ethic_xenophile
+						random_owned_pop = { pop_change_ethic = ethic_xenophile }
+						random_owned_pop = { pop_change_ethic = ethic_xenophile }
+					}
+				}
+			}
+		}
 		observation_outpost_owner = {
 			set_country_flag = observation_pyramid
 			country_event = { id = observation.3135 }
@@ -5840,8 +5866,8 @@ country_event = {
 	
 	trigger = {
 		is_country_type = primitive
-		NOT = { has_ethic = ethic_fanatic_authoritarian }
 		NOT = { has_country_flag = indoctrination_cooldown }
+		NOT = { has_ethic = ethic_fanatic_authoritarian }
 		capital_scope = {
 			has_observation_outpost = yes
 			observation_outpost = { has_mission = native_indoctrination }

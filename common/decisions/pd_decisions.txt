@@ -21,6 +21,7 @@ decision_engineered_environment = {
 	
 	potential = {
 		is_artificial = no
+		is_pd_unique = no
 		NOT = { is_planet_class = pc_pdshroud }
 		NOT = { is_planet_class = pc_gaia }
 		NOT = { is_planet_class = pc_city }
@@ -322,6 +323,7 @@ decision_removeocean = {
 			IF = { limit = { is_planet_class = pc_subarctic } set_planet_entity = { picture = pc_subarctic } }
 			IF = { limit = { is_planet_class = pc_mangrove } set_planet_entity = { picture = pc_mangrove } }
 			IF = { limit = { is_planet_class = pc_wetswamp } set_planet_entity = { picture = pc_wetswamp } }
+			IF = { limit = { is_planet_class = pc_fog } set_planet_entity = { picture = pc_fog } }
 			IF = { limit = { is_planet_class = pc_hajungle } set_planet_entity = { picture = pc_hajungle } }
 			IF = { limit = { is_planet_class = pc_cenote } set_planet_entity = { picture = pc_cenote } }
 			IF = { limit = { is_planet_class = pc_gaia } set_planet_entity = { picture = pc_gaia } }
@@ -451,6 +453,7 @@ decision_oceancapital = {
 			IF = { limit = { is_planet_class = pc_tropical } set_planet_entity = { picture = pc_aquatichot } set_planet_flag = pdaquapicture }
 			IF = { limit = { is_planet_class = pc_mangrove } set_planet_entity = { picture = pc_aquatichot } set_planet_flag = pdaquapicture }
 			IF = { limit = { is_planet_class = pc_wetswamp } set_planet_entity = { picture = pc_aquatichot } set_planet_flag = pdaquapicture }
+			IF = { limit = { is_planet_class = pc_fog } set_planet_entity = { picture = pc_aquatichot } set_planet_flag = pdaquapicture }
 			IF = { limit = { is_planet_class = pc_hajungle } set_planet_entity = { picture = pc_aquatichot } set_planet_flag = pdaquapicture }
 			IF = { limit = { is_planet_class = pc_cenote } set_planet_entity = { picture = pc_aquatichot } set_planet_flag = pdaquapicture }
 			IF = { limit = { is_planet_class = pc_oasis } set_planet_entity = { picture = pc_aquatichot } set_planet_flag = pdaquapicture }
@@ -498,6 +501,7 @@ decision_pdcrystalpatch = {
 	}
 	
 	potential = {
+		is_pd_unique = no
 		NOT = { is_planet_class = pc_floating }
 		NOT = { is_planet_class = pc_crystal }
 		NOT = { is_planet_class = pc_technoorganic }
@@ -626,6 +630,7 @@ decision_techno_canal = {
 		NOT = { has_modifier = penal_colony }
 		NOT = { has_modifier = slave_colony }
 		is_artificial = no
+		is_pd_unique = no
 	}
 
 	effect = {
@@ -696,6 +701,7 @@ decision_pd_transplant_tree = {
 		remove_deposit = d_pd_tree_of_life_dead
 		IF = {
 			limit = { 
+				is_pd_unique = no
 				NOT = { has_planet_flag = pd_tol1 }
 				NOT = { has_planet_flag = pd_tol2 }
 				NOT = { has_planet_flag = pd_tol3 }
@@ -770,6 +776,7 @@ decision_pd_transplant_tree = {
 				is_planet_class = pc_crystal
 				is_planet_class = pc_technoorganic
 				is_planet_class = pc_graveyard
+				is_planet_class = pc_crucible
 				}
 			 }
 		add_deposit = d_pd_tree_of_life_special
@@ -2189,6 +2196,70 @@ decision_change_tiyanki_choice = {
 			remove_planet_flag = tiyankibutchertown
 			remove_planet_flag = tiyankicolonyprotect
 			remove_planet_flag = tiyankinofalling
+		}
+	}   
+	
+	ai_weight = {
+        weight = 0
+ 	}
+}
+
+# Crucible Upgrade to Clean
+decision_clean_crucible = {
+	owned_planets_only = yes
+
+	enactment_time = 1800
+	resources = {
+		category = decisions
+		cost = {
+			influence = 100
+			energy = 5000
+		}
+	}
+	
+	potential = {
+		is_planet_class = pc_crucible
+		owner = { has_technology = tech_crucible_upgrade }
+	}
+
+	effect = {
+		custom_tooltip = decision_clean_crucible_tooltip
+		hidden_effect = {
+			change_pc = pc_clean_crucible
+			remove_modifier = crucible
+			add_modifier = { modifier = clean_crucible days = -1 }
+		}
+	}   
+	
+	ai_weight = {
+        weight = 0
+ 	}
+}
+
+# Crucible Upgrade to Shroud
+decision_shroud_crucible = {
+	owned_planets_only = yes
+
+	enactment_time = 1800
+	resources = {
+		category = decisions
+		cost = {
+			influence = 100
+			sr_zro = 2500
+		}
+	}
+	
+	potential = {
+		is_planet_class = pc_crucible
+		owner = { has_technology = tech_crucible_upgrade }
+	}
+
+	effect = {
+		custom_tooltip = decision_shroud_crucible_tooltip
+		hidden_effect = {
+			change_pc = pc_shroud_crucible
+			remove_modifier = crucible
+			add_modifier = { modifier = shroud_crucible days = -1 }
 		}
 	}   
 	

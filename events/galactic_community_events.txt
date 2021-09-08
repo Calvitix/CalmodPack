@@ -4,7 +4,7 @@
 #
 # Merge with Arisphaos Unofficial patch
 # Merge with JL PICARD 04/05/2021
-#
+# Merge with Expanded Events 01/09/2021
 #
 
 ################################
@@ -157,7 +157,16 @@ country_event = {
 				}
 				add_to_galactic_community_no_message = yes
 				country_event = { id = galcom.5 }
+#exp. events
+				if = {
+					limit = {
+						has_country_flag = human_1
+						NOT = { has_country_flag = found_com }
+					}
+					country_event = { id = countryexpanded.44 days = 1 }
+				}
 			}
+###
 			every_playable_country = {
 				limit = {
 					has_country_flag = galcom_form_nay
@@ -339,6 +348,20 @@ country_event = {
 		}
 	}
 
+#exp. events
+	after = {
+		hidden_effect = {
+			if = {
+				limit = {
+					has_country_flag = human_1
+					NOT = { has_country_flag = found_com }
+				}
+				country_event = { id = countryexpanded.44 days = 1 }
+			}
+		}
+	}
+###
+
 	option = {
 		name = galcom.16.a
 		allow = {
@@ -357,12 +380,13 @@ country_event = {
 			}
 			modifier = {
 				factor = 10
-				OR = {
-					has_civic = civic_diplomatic_corps
-					has_civic = civic_public_relations_specialists
-					has_civic = civic_hive_empath
-					has_civic = civic_machine_servitor
-				}
+				is_civic_diplomatic_corps = yes
+#				OR = {
+#					has_civic = civic_diplomatic_corps
+#					has_civic = civic_public_relations_specialists
+#					has_civic = civic_hive_empath
+#					has_civic = civic_machine_servitor
+#				}
 			}
 		}
 	}

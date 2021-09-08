@@ -3,7 +3,7 @@
 # Calvitix Check 3.0.3  22/05/2021
 #
 #
-# Merge with Expanded Events  28/05/2021
+# Merge with Expanded Events  01/09/2021
 # 
 #
 ############################
@@ -1172,6 +1172,8 @@ planet_event = {
 			4 = { planet_event = { id = colonyexpanded.222 days = 60 random = 1620 } }
 			# Miners Discover Mineral Cave
 			15 = { planet_event = { id = colonyexpanded.223 days = 60 random = 1620 } }
+			# Volcanic Energy
+			20 = { planet_event = { id = colonyexpanded.224 days = 60 random = 1620 } }
 		}
 	}
 }
@@ -1480,6 +1482,11 @@ planet_event = {
 				has_deposit = d_toxic_kelp
 				owner = { NOT = { has_technology = tech_toxic_kelp } }
 			}
+			AND = {
+				has_global_flag = has_new_frontiers_mod
+				has_deposit = d_thick_forest
+				owner = { NOT = { has_technology = tech_thick_forest } }
+			}
 		}
 	}
 	
@@ -1568,6 +1575,23 @@ planet_event = {
 					}
 				}
 			}
+			25 = {
+				modifier = {
+					factor = 0
+					OR = {
+						NOT = { has_global_flag = has_new_frontiers_mod }
+						NOT = { has_deposit = d_thick_forest }
+						owner = { has_technology = tech_thick_forest }
+					}
+				}
+				owner = {
+					add_research_option = tech_thick_forest
+					add_tech_progress = {
+						tech = tech_thick_forest
+						progress = 0.20
+					}
+				}
+			}
 		}
 	}
 }
@@ -1597,6 +1621,7 @@ planet_event = {
 	trigger = {
 		num_pops > 3
 		NOT = { has_planet_flag = volcanic_fertile }
+		NOT = { has_planet_flag = volcanic_energy }
 		OR = {
 			has_deposit = d_active_volcano
 			has_deposit = d_igneous_traps
@@ -1754,6 +1779,7 @@ planet_event = {
 		num_pops > 3
 		OR = {
 			has_deposit = d_dense_jungle
+			has_deposit = d_thick_forest
 			has_deposit = d_impenetrable_taiga
 		}
 		NOT = { has_deposit = d_betharian_deposit }
@@ -2071,6 +2097,7 @@ planet_event = {
 				portrait = random
 				traits = {
 					trait = "trait_hive_mind"
+					trait = "trait_lithoid"
 					trait = random_traits
 				}
 				homeworld = ROOT
@@ -2165,6 +2192,49 @@ planet_event = {
 	option = {
 		name = EXCELLENT
 		add_deposit = d_ore_rich_caverns
+	}
+}
+
+# Fertile Volcanic Lands
+planet_event = {
+	id = colonyexpanded.224
+	title = "colonyexpanded.224.name"
+	desc = "colonyexpanded.224.desc"
+	show_sound = event_drilling
+	picture = {
+		trigger = { 
+			NOT = { has_global_flag = "has_new_frontiers_mod" }
+		}
+		picture = GFX_evt_warm_barren
+	}
+	picture = {
+		trigger = { 
+			has_global_flag = "has_new_frontiers_mod"
+		}
+		picture = GFX_evt_volcano
+	}
+	location = ROOT
+	
+	is_triggered_only = yes
+	
+	trigger = {
+		num_pops > 3
+		NOT = { has_planet_flag = volcanic_fertile }
+		NOT = { has_planet_flag = volcanic_energy }
+		OR = {
+			has_deposit = d_active_volcano
+			has_deposit = d_igneous_traps
+		}
+	}
+	
+	immediate = {
+		set_planet_flag = volcanic_energy
+	}
+	
+	option = {
+		name = EXCELLENT
+		add_deposit = d_geothermal_vent
+		add_modifier = { modifier = volcano_geothermal_vents days = -1 }
 	}
 }
 

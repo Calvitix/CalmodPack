@@ -3,7 +3,7 @@
 # Calvitix Check 3.0.2  25/04/2021
 #
 #
-# Merge with Expanded Events  10/05/2021
+# Merge with Expanded Events  01/09/2021
 # 
 #
 ############################
@@ -1425,37 +1425,19 @@ country_event = {
 		any_planet_within_border = { is_same_value = event_target:warmer_climates_planet }
 	}
 	
-	option = {
-		name = expandedrelics.42.a
-		custom_tooltip = expandedrelics.42.a.tooltip
-		hidden_effect = {
+	immediate = {
 			if = {
 				limit = { event_target:warmer_climates_planet = { habitable_planet = yes } }
-				create_species = {
-					name = random
-					class = MOL
-					portrait = random
-					namelist = "FUN2"
-					traits = {
-						trait = "trait_cold_survivor"
-						trait = "trait_natural_engineers"
-						trait = "trait_industrious"
-						trait = "trait_solitary"
-					}
-					homeworld = event_target:warmer_climates_planet
-				}
-				event_target:warmer_climates_planet = {
-					save_event_target_as = cold_survivor_join_planet
-					while = {
-						count = 2
-						create_pop = { species = last_created_species }					
-					}
-				}
+			event_target:warmer_climates_planet = { save_event_target_as = cold_survivor_join_planet }
 			}
 			else = {
 				random_owned_planet = {
 					weights = {
 						base = 1
+					modifier = { 
+						mult = 0.25
+						NOT = { free_housing > 0 }
+					}
 						modifier = { 
 							add = 2
 							free_housing > 0
@@ -1483,6 +1465,31 @@ country_event = {
 					}
 					save_event_target_as = cold_survivor_join_planet
 				}
+		}
+	}
+	
+	option = {
+		name = expandedrelics.42.a
+		custom_tooltip = expandedrelics.42.a.tooltip
+		hidden_effect = {
+			if = {
+				limit = { has_global_flag = expanded_pops_active }
+				create_species = {
+					name = random
+					class = MOL
+					portrait = random
+					namelist = "FUN2"
+					traits = {
+						trait = "trait_moluscoid"
+						trait = "trait_cold_survivor"
+						trait = "trait_natural_engineers"
+						trait = "trait_industrious"
+						trait = "trait_solitary"
+					}
+					homeworld = event_target:cold_survivor_join_planet
+				}
+			}
+			else = {
 				create_species = {
 					name = random
 					class = MOL
@@ -1496,6 +1503,7 @@ country_event = {
 					}
 					homeworld = event_target:cold_survivor_join_planet
 				}
+			}
 				event_target:cold_survivor_join_planet = {
 					while = {
 						count = 2
@@ -1504,7 +1512,6 @@ country_event = {
 				}
 			}
 		}
-	}
 	option = {
 		name = expandedrelics.42.b
 		allow = { is_xenophile = no }

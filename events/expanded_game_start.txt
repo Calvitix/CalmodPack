@@ -79,6 +79,16 @@ country_event = {
 			}
 			planet_event = { id = gamestartexpanded.8 days =  1 }
 		}
+		every_galaxy_planet = {
+			limit = {
+				has_planet_flag = mars
+				NOT = { has_modifier = terraforming_candidate }
+			}
+			add_modifier = {
+				modifier = "terraforming_candidate"
+				days = -1
+			}
+		}
 	}
 }
 
@@ -259,6 +269,8 @@ country_event = {
 		# Galactic Cradle gets isolated systems
 		if = {
 			limit = { has_origin = origin_cradle }
+			set_country_flag = encountered_first_wormhole
+			add_seen_bypass_type = wormhole
 			set_spawn_system_batch = begin
 			capital_scope = {
 				solar_system = {
@@ -745,23 +757,91 @@ planet_event = {
 							is_star_class = sc_lbv_blue
 							is_star_class = sc_lbv_green
 							is_star_class = sc_lbv_red
-							is_star_class = "sc_o"
-							is_star_class = "sc_l"
-							is_star_class = "sc_d"
-							is_star_class = "sc_c_giant"
-							is_star_class = "sc_s_giant"
-							is_star_class = "sc_w_azure"
-							is_star_class = "sc_w_red"
-							is_star_class = "sc_w_green"
-							is_star_class = "sc_w_purple"
-							is_star_class = "sc_tt_red"
-							is_star_class = "sc_tt_orange"
-							is_star_class = "sc_tt_white"
-							is_star_class = "sc_ae"
-							is_star_class = "sc_p_purple"
-							is_star_class = "sc_p_green"
-							is_star_class = "sc_p_red"
-							is_star_class = "sc_magnetar"
+							is_star_class = sc_o
+							is_star_class = sc_b
+							is_star_class = sc_a
+							is_star_class = sc_l
+							is_star_class = sc_d
+							is_star_class = sc_c_giant
+							is_star_class = sc_s_giant
+							is_star_class = sc_w_azure
+							is_star_class = sc_w_red
+							is_star_class = sc_w_green
+							is_star_class = sc_w_purple
+							is_star_class = sc_tt_red
+							is_star_class = sc_tt_orange
+							is_star_class = sc_tt_white
+							is_star_class = sc_ae
+							is_star_class = sc_p_purple
+							is_star_class = sc_p_green
+							is_star_class = sc_p_red
+							is_star_class = sc_magnetar
+						}
+					}
+					AND = {
+						NOT = { exists = orbit }
+						solar_system = {
+							star = {
+								NOR = {
+									is_planet_class = pc_f_star
+									is_planet_class = pc_g_star
+									is_planet_class = pc_k_star
+									is_planet_class = pc_m_star
+								}
+								NOT = {
+									distance = {
+										source = PREVPREV
+										min_distance > 55
+										max_distance < 105
+										type=euclidean
+										same_solar_system = yes
+									}
+								}
+							}
+						}
+					}
+					AND = {
+						is_moon = no
+						exists = orbit
+						orbit = {
+							NOR = {
+								is_planet_class = pc_f_star
+								is_planet_class = pc_g_star
+								is_planet_class = pc_k_star
+								is_planet_class = pc_m_star
+							}
+							NOT = {
+								distance = {
+									source = PREV
+									min_distance > 55
+									max_distance < 105
+									type=euclidean
+									same_solar_system = yes
+								}
+							}
+						}
+					}
+					AND = {
+						is_moon = yes
+						orbit = {
+							exists = orbit
+							orbit = {
+								NOR = {
+									is_planet_class = pc_f_star
+									is_planet_class = pc_g_star
+									is_planet_class = pc_k_star
+									is_planet_class = pc_m_star
+								}
+								NOT = {
+									distance = {
+										source = PREV
+										min_distance > 55
+										max_distance < 105
+										type=euclidean
+										same_solar_system = yes
+									}
+								}
+							}
 						}
 					}
 				}
@@ -1092,6 +1172,10 @@ country_event = {
 			}
 			20 = {
 				modifier = {
+					factor = 0.5
+					is_anti_corp = yes
+				}
+				modifier = {
 					factor = 0.75
 					has_ethic = ethic_fanatic_spiritualist
 				}
@@ -1110,6 +1194,10 @@ country_event = {
 				modifier = {
 					factor = 1.2
 					has_country_flag = human_1
+				}
+				modifier = {
+					factor = 1.2
+					is_auth_corporate = yes
 				}
 				modifier = {
 					factor = 1.2

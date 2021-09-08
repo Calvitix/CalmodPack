@@ -151,6 +151,11 @@ ship_event = {
 
 	option = {
 		name = anomaly.10.a
+#Exp. events
+		trigger = {
+			leader = { NOT = { has_trait = leader_trait_expertise_biology } }
+		}
+###
 		hidden_effect = {
 			FROM = {
 				add_modifier = {
@@ -163,6 +168,26 @@ ship_event = {
 			set_deposit = d_society_3
 		}
 	}
+	option = { #Exp. events
+		name = anomaly.10.b
+		trigger = {
+			leader = { has_trait = leader_trait_expertise_biology }
+		}
+		allow = { leader = { has_trait = leader_trait_expertise_biology } }
+		hidden_effect = {
+			FROM = {
+				add_modifier = {
+					modifier = "asteroid_life"
+					days = -1
+				}
+			}
+		}
+		owner = { add_modifier = { modifier = asteroid_life_country days = -1 } }
+		FROM = {
+			set_deposit = d_society_3
+		}
+	}
+	###
 }
 
 ### Asteroid Fossils
@@ -193,7 +218,16 @@ ship_event = {
 ship_event = {
 	id = anomaly.25
 	title = "anomaly.25.name"
-	desc = "anomaly.25.desc"
+#exp. events
+	desc = {
+		text = "anomaly.25.desc"
+		trigger = { leader = { NOT = { has_trait = leader_trait_expertise_voidcraft } } }
+	}
+	desc = {
+		text = "anomaly.25.desc_b"
+		trigger = { leader = { has_trait = leader_trait_expertise_voidcraft } }
+	}
+###
 	picture = GFX_evt_mining_station
 	show_sound = event_ship_bridge
 	location = FROM
@@ -207,6 +241,11 @@ ship_event = {
 
 	option = {
 		name = anomaly.25.a
+###exp. events
+		trigger = {
+			leader = { NOT = { has_trait = leader_trait_expertise_voidcraft } }
+		}
+###
 		hidden_effect = {
 			FROM = {
 				add_modifier = {
@@ -219,6 +258,29 @@ ship_event = {
 			set_deposit = d_engineering_3
 		}
 	}
+###exp. events
+	option = {
+		name = EXCELLENT
+		trigger = {
+			leader = { has_trait = leader_trait_expertise_voidcraft }
+		}
+		allow = { leader = { has_trait = leader_trait_expertise_voidcraft } }
+		hidden_effect = {
+			FROM = {
+				add_modifier = {
+					modifier = "derelict_shipyard"
+					days = -1
+				}
+			}
+		}
+		FROM = {
+			set_deposit = d_engineering_3
+		}
+		owner = {
+			add_modifier = { modifier = derelict_shipyard_void days = -1 }
+		}
+	}
+	###
 }
 
 ### Junkyard
@@ -328,7 +390,32 @@ ship_event = {
 ship_event = {
 	id = anomaly.35
 	title = "anomaly.35.name"
-	desc = "anomaly.35.desc"
+###exp. events
+	desc = {
+		text = "anomaly.35.desc"
+		trigger = {
+			leader = {
+				NOR = {
+					has_trait = leader_trait_expertise_computing
+					has_trait = leader_trait_custom_AI_assistant
+					has_trait = leader_trait_sapient_AI_assistant
+				}
+			}
+		}
+	}
+	desc = {
+		text = "anomaly.35.desc_b"
+		trigger = {
+			leader = {
+				OR = {
+					has_trait = leader_trait_expertise_computing
+					has_trait = leader_trait_custom_AI_assistant
+					has_trait = leader_trait_sapient_AI_assistant
+				}
+			}
+		}
+	}
+###
 	picture = GFX_evt_crashed_station
 	show_sound = event_ship_bridge
 	location = FROM
@@ -339,6 +426,17 @@ ship_event = {
 
 	option = {
 		name = anomaly.35.a
+###exp. events
+		trigger = {
+			leader = {
+				NOR = {
+					has_trait = leader_trait_expertise_computing
+					has_trait = leader_trait_custom_AI_assistant
+					has_trait = leader_trait_sapient_AI_assistant
+				}
+			}
+		}
+###
 		owner = {
 			add_monthly_resource_mult = {
 				resource = engineering_research
@@ -349,6 +447,44 @@ ship_event = {
 			small_artifact_chance = yes #Exp. events
 		}
 	}
+###exp. events
+	option = {
+		name = REMARKABLE
+		trigger = {
+			leader = {
+				OR = {
+					has_trait = leader_trait_expertise_computing
+					has_trait = leader_trait_custom_AI_assistant
+					has_trait = leader_trait_sapient_AI_assistant
+				}
+			}
+		}
+		allow = {
+			leader = {
+				OR = {
+					has_trait = leader_trait_expertise_computing
+					has_trait = leader_trait_custom_AI_assistant
+					has_trait = leader_trait_sapient_AI_assistant
+				}
+			}
+		}
+		owner = {
+			add_monthly_resource_mult = {
+				resource = engineering_research
+				value = @tier1researchreward
+				min = @tier1researchmin
+				max = @tier1researchmax
+			}
+			add_monthly_resource_mult = {
+				resource = physics_research
+				value = @tier1researchreward
+				min = @tier1researchmin
+				max = @tier1researchmax
+			}
+			small_artifact_chance = yes
+		}
+	}
+###
 }
 
 ### Automated Mining Base
@@ -495,6 +631,15 @@ ship_event = {
 				}
 			}
 		}
+		allow = {
+			leader = {
+				OR = {
+					has_trait = leader_trait_expertise_propulsion
+					has_trait = leader_trait_expertise_field_manipulation
+					has_trait = leader_trait_expertise_military_theory
+				}
+			}
+		}
 ###
 		hidden_effect = {
 			FROM = {
@@ -530,7 +675,32 @@ ship_event = {
 ship_event = {
 	id = anomaly.55
 	title = "anomaly.55.name"
-	desc = "anomaly.55.desc"
+###exp. events
+	desc = {
+		text = "anomaly.55.desc"
+		trigger = {
+			leader = {
+				NOR = {
+					has_trait = leader_trait_expertise_materials
+					has_trait = leader_trait_meticulous
+					has_trait = leader_trait_cataloger
+				}
+			}
+		}
+	}
+	desc = {
+		text = "anomaly.55.desc_b"
+		trigger = {
+			leader = {
+				OR = {
+					has_trait = leader_trait_expertise_materials
+					has_trait = leader_trait_meticulous
+					has_trait = leader_trait_cataloger
+				}
+			}
+		}
+	}
+###
 	picture = GFX_evt_landing_ship_2
 	show_sound = event_ship_bridge
 	location = FROM
@@ -544,17 +714,78 @@ ship_event = {
 
 	option = {
 		name = anomaly.55.a
+###exp. events
+		trigger = {
+			leader = {
+				NOR = {
+					has_trait = leader_trait_expertise_materials
+					has_trait = leader_trait_meticulous
+					has_trait = leader_trait_cataloger
+				}
+			}
+		}
+###
 		FROM = {
 			set_deposit = d_minerals_3
 		}
 	}
+###exp. events
+	option = {
+		name = anomaly.55.b
+		trigger = {
+			leader = {
+				OR = {
+					has_trait = leader_trait_expertise_materials
+					has_trait = leader_trait_meticulous
+					has_trait = leader_trait_cataloger
+				}
+			}
+		}
+		allow = {
+			leader = {
+				OR = {
+					has_trait = leader_trait_expertise_materials
+					has_trait = leader_trait_meticulous
+					has_trait = leader_trait_cataloger
+				}
+			}
+		}
+		FROM = {
+			set_deposit = d_minerals_3
+			add_deposit = d_alloys_1
+		}
+	}
+###	
 }
 
 ### Exotic Radiation
 ship_event = {
 	id = anomaly.60
 	title = "anomaly.60.name"
-	desc = "anomaly.60.desc"
+###exp. events
+	desc = {
+		text = "anomaly.60.desc"
+		trigger = {
+			leader = {
+				NOR = {
+					has_trait = leader_trait_expertise_particles
+					has_trait = leader_trait_expertise_field_manipulation
+				}
+			}
+		}
+	}
+	desc = {
+		text = "anomaly.60.desc_b"
+		trigger = {
+			leader = {
+				OR = {
+					has_trait = leader_trait_expertise_particles
+					has_trait = leader_trait_expertise_field_manipulation
+				}
+			}
+		}
+	}
+###
 	picture = GFX_evt_mining_station
 	show_sound = event_ship_bridge
 	location = FROM
@@ -563,6 +794,16 @@ ship_event = {
 
 	option = {
 		name = REMARKABLE
+###exp. events
+		trigger = {
+			leader = {
+				NOR = {
+					has_trait = leader_trait_expertise_particles
+					has_trait = leader_trait_expertise_field_manipulation
+				}
+			}
+		}
+###
 		owner = {
 			add_monthly_resource_mult = {
 				resource = physics_research
@@ -572,6 +813,35 @@ ship_event = {
 			}
 		}
 	}
+###exp. events
+	option = {
+		name = REMARKABLE
+		trigger = {
+			leader = {
+				OR = {
+					has_trait = leader_trait_expertise_particles
+					has_trait = leader_trait_expertise_field_manipulation
+				}
+			}
+		}
+		allow = {
+			leader = {
+				OR = {
+					has_trait = leader_trait_expertise_particles
+					has_trait = leader_trait_expertise_field_manipulation
+				}
+			}
+		}
+		owner = {
+			add_monthly_resource_mult = {
+				resource = physics_research
+				value = @tier2researchreward
+				min = @tier2researchmin
+				max = @tier2researchmax
+			}
+		}
+	}
+###	
 }
 
 ### Crashed Ore Freighter
@@ -627,6 +897,9 @@ ship_event = {
 		name = EXCELLENT
 		custom_tooltip = anomaly.65.b.tooltip
 		trigger = {
+			leader = { has_trait = leader_trait_expertise_voidcraft }
+		}
+		allow = {
 			leader = { has_trait = leader_trait_expertise_voidcraft }
 		}
 		hidden_effect = {
@@ -812,6 +1085,15 @@ ship_event = {
 				}
 			}
 		}
+		allow = {
+			leader = {
+				OR = {
+					has_trait = leader_trait_expertise_computing
+					has_trait = leader_trait_custom_AI_assistant
+					has_trait = leader_trait_sapient_AI_assistant
+				}
+			}
+		}
 		owner = {
 			add_monthly_resource_mult = {
 				resource = society_research
@@ -934,6 +1216,15 @@ ship_event = {
 				}
 			}
 		}
+		allow = {
+			leader = {
+				OR = {
+					has_trait = leader_trait_expertise_voidcraft
+					has_trait = leader_trait_meticulous
+					has_trait = leader_trait_roamer
+				}
+			}
+		}
 ###
 		hidden_effect = {
 			FROM = {
@@ -1021,7 +1312,30 @@ ship_event = {
 ship_event = {
 	id = anomaly.335
 	title = "anomaly.335.name"
-	desc = "anomaly.335.desc"
+###exp. events
+	desc = {
+		text = "anomaly.335.desc"
+		trigger = {
+			leader = {
+				NOR = {
+					has_trait = leader_trait_expertise_computing
+					has_trait = leader_trait_expertise_voidcraft
+				}
+			}
+		}
+	}
+	desc = {
+		text = "anomaly.335.desc_b"
+		trigger = {
+			leader = {
+				OR = {
+					has_trait = leader_trait_expertise_computing
+					has_trait = leader_trait_expertise_voidcraft
+				}
+			}
+		}
+	}
+###
 	picture = GFX_evt_gas_giant_station
 	show_sound = event_ship_bridge
 	location = FROM
@@ -1030,6 +1344,16 @@ ship_event = {
 
 	option = {
 		name = FASCINATING
+###exp. events
+		trigger = {
+			leader = {
+				NOR = {
+					has_trait = leader_trait_expertise_computing
+					has_trait = leader_trait_expertise_voidcraft
+				}
+			}
+		}
+###
 		owner = {
 			add_monthly_resource_mult = {
 				resource = physics_research
@@ -1039,6 +1363,41 @@ ship_event = {
 			}
 		}
 	}
+###exp. events
+	option = {
+		name = FASCINATING
+		trigger = {
+			leader = {
+				OR = {
+					has_trait = leader_trait_expertise_computing
+					has_trait = leader_trait_expertise_voidcraft
+				}
+			}
+		}
+		allow = {
+			leader = {
+				OR = {
+					has_trait = leader_trait_expertise_computing
+					has_trait = leader_trait_expertise_voidcraft
+				}
+			}
+		}
+		owner = {
+			add_monthly_resource_mult = {
+				resource = physics_research
+				value = @tier1researchreward
+				min = @tier1researchmin
+				max = @tier1researchmax
+			}
+			add_monthly_resource_mult = {
+				resource = engineering_research
+				value = @tier1researchreward
+				min = @tier1researchmin
+				max = @tier1researchmax
+			}
+		}
+	}
+###	
 }
 
 ### Precious Moon
@@ -1186,7 +1545,63 @@ ship_event = {
 ship_event = {
 	id = anomaly.625
 	title = "anomaly.625.name"
-	desc = "anomaly.625.desc"
+###exp. events
+	desc = {
+		text = "anomaly.625.desc"
+		trigger = {
+			leader = {
+				NOR = {
+					has_trait = leader_trait_expertise_statecraft
+					has_trait = leader_trait_expertise_military_theory
+				}
+			}
+		}
+	}
+	desc = {
+		text = anomaly.625.desc.mil
+		trigger = {
+			owner = {
+				OR = {
+					is_gestalt = no
+					has_valid_civic = civic_machine_servitor
+					has_ai_personality = open_hive_mind
+					has_ai_personality = open_machine_intelligence
+				}
+				is_xenophobe = no
+			}
+			leader = {
+				OR = {
+					has_trait = leader_trait_expertise_statecraft
+					has_trait = leader_trait_expertise_military_theory
+				}
+			}
+		}
+	}
+	desc = {
+		text = anomaly.625.desc.mil.gest
+		trigger = {
+			owner = {
+				OR = {
+					AND = {
+						is_gestalt = yes
+						NOR = {
+							has_valid_civic = civic_machine_servitor
+							has_ai_personality = open_hive_mind
+							has_ai_personality = open_machine_intelligence
+						}
+					}
+					is_xenophobe = yes
+				}
+			}
+			leader = {
+				OR = {
+					has_trait = leader_trait_expertise_statecraft
+					has_trait = leader_trait_expertise_military_theory
+				}
+			}
+		}
+	}
+###
 	picture = GFX_evt_ship_in_orbit
 	show_sound = event_ship_bridge
 	location = FROM
@@ -1197,6 +1612,16 @@ ship_event = {
 
 	option = {
 		name = anomaly.625.a
+###exp. events
+		trigger = {
+			leader = {
+				NOR = {
+					has_trait = leader_trait_expertise_statecraft
+					has_trait = leader_trait_expertise_military_theory
+				}
+			}
+		}
+###
 		owner = {
 			add_monthly_resource_mult = {
 				resource = society_research
@@ -1205,14 +1630,97 @@ ship_event = {
 				max = @tier1researchmax
 			}
 		}
+		if = {
+			limit = { has_ancrel = yes }
+			owner = { add_resource = { minor_artifacts = 1 } }
+		}
 	}
+	option = {
+		name = EXCELLENT
+		trigger = {
+			leader = {
+				OR = {
+					has_trait = leader_trait_expertise_statecraft
+					has_trait = leader_trait_expertise_military_theory
+				}
+			}
+		}
+		allow = {
+			leader = {
+				OR = {
+					has_trait = leader_trait_expertise_statecraft
+					has_trait = leader_trait_expertise_military_theory
+				}
+			}
+		}
+		if = {
+			limit = {
+				owner = {
+					OR = {
+						is_gestalt = no
+						has_valid_civic = civic_machine_servitor
+						has_ai_personality = open_hive_mind
+						has_ai_personality = open_machine_intelligence
+					}
+					is_xenophobe = no
+				}
+			}
+			owner = {
+				add_modifier = { modifier = extraction_protocols days = -1 }
+				add_monthly_resource_mult = {
+					resource = society_research
+					value = @tier1researchreward
+					min = @tier1researchmin
+					max = @tier1researchmax
+				}
+			}
+		}
+		else = {
+			owner = {
+				add_monthly_resource_mult = {
+					resource = society_research
+					value = @tier3researchreward
+					min = @tier3researchmin
+					max = @tier3researchmax
+				}
+			}
+		}
+		if = {
+			limit = { has_ancrel = yes }
+			owner = { add_resource = { minor_artifacts = 2 } }
+		}
+	}
+###	
 }
 
 ### Ancient Life Pod
 ship_event = {
 	id = anomaly.630
 	title = "anomaly.630.name"
-	desc = "anomaly.630.desc"
+###exp. events
+	desc = {
+		text = "anomaly.630.desc"
+		trigger = {
+			leader = {
+				NOR = {
+					has_trait = leader_trait_expertise_statecraft
+					has_trait = leader_trait_expertise_military_theory
+				}
+			}
+		}
+	}
+	desc = {
+		text = "anomaly.630.desc.mil"
+		trigger = {
+			leader = {
+				OR = {
+					has_trait = leader_trait_expertise_statecraft
+					has_trait = leader_trait_expertise_military_theory
+				}
+			}
+		}
+	}
+###	
 	picture = GFX_evt_scanning_remains
 	show_sound = event_ship_bridge
 	location = FROM
@@ -1225,13 +1733,29 @@ ship_event = {
 		name = {
 			text = INTERESTING
 			trigger = {
-				owner = { is_homicidal = no }
+				owner = {
+					is_homicidal = no
+					is_xenophobe = no
+				}
 			}
 		}
 		name = {
 			text = DISGUSTING
 			trigger = {
-				owner = { is_homicidal = yes }
+				owner = {
+					OR = {
+						is_homicidal = yes
+						is_xenophobe = yes
+					}
+				}
+			}
+		}
+		trigger = {
+			leader = {
+				NOR = {
+					has_trait = leader_trait_expertise_statecraft
+					has_trait = leader_trait_expertise_military_theory
+				}
 			}
 		}
 		owner = {
@@ -1242,14 +1766,93 @@ ship_event = {
 				max = @tier1researchmax
 			}
 		}
+###exp. events
+		if = {
+			limit = { has_ancrel = yes }
+			owner = { add_resource = { minor_artifacts = 1 } }
+		}
 	}
+	option = {
+		name = {
+			text = EXCELLENT
+			trigger = {
+				owner = {
+					is_homicidal = no
+					is_xenophobe = no
+				}
+			}
+		}
+		name = {
+			text = DISGUSTING
+			trigger = {
+				owner = {
+					OR = {
+						is_homicidal = yes
+						is_xenophobe = yes
+					}
+				}
+			}
+		}
+		trigger = {
+			leader = {
+				OR = {
+					has_trait = leader_trait_expertise_statecraft
+					has_trait = leader_trait_expertise_military_theory
+				}
+			}
+		}
+		allow = {
+			leader = {
+				OR = {
+					has_trait = leader_trait_expertise_statecraft
+					has_trait = leader_trait_expertise_military_theory
+				}
+			}
+		}
+		owner = {
+			add_monthly_resource_mult = {
+				resource = society_research
+				value = @tier3researchreward
+				min = @tier3researchmin
+				max = @tier3researchmax
+			}
+		}
+		if = {
+			limit = { has_ancrel = yes }
+			owner = { add_resource = { minor_artifacts = 2 } }
+		}
+	}
+###	
 }
 
 ### Alien Writing
 ship_event = {
 	id = anomaly.635
 	title = "anomaly.635.name"
-	desc = "anomaly.635.desc"
+###exp. events
+	desc = {
+		text = "anomaly.635.desc"
+		trigger = {
+			leader = {
+				NOR = {
+					has_trait = leader_trait_expertise_statecraft
+					has_trait = leader_trait_expertise_military_theory
+				}
+			}
+		}
+	}
+	desc = {
+		text = "anomaly.635.name.mil"
+		trigger = {
+			leader = {
+				OR = {
+					has_trait = leader_trait_expertise_statecraft
+					has_trait = leader_trait_expertise_military_theory
+				}
+			}
+		}
+	}
+###
 	picture = GFX_evt_ship_in_orbit_3
 	show_sound = event_ship_bridge
 	location = FROM
@@ -1263,6 +1866,15 @@ ship_event = {
 
 	option = {
 		name = FASCINATING
+###exp. events
+		trigger = {
+			leader = {
+				NOR = {
+					has_trait = leader_trait_expertise_statecraft
+					has_trait = leader_trait_expertise_military_theory
+				}
+			}
+		}
 		hidden_effect = {
 			FROM = {
 				add_modifier = {
@@ -1275,13 +1887,86 @@ ship_event = {
 			set_deposit = d_society_3
 		}
 	}
+	option = {
+		name = FASCINATING
+		trigger = {
+			leader = {
+				OR = {
+					has_trait = leader_trait_expertise_statecraft
+					has_trait = leader_trait_expertise_military_theory
+				}
+			}
+		}
+		allow = {
+			leader = {
+				OR = {
+					has_trait = leader_trait_expertise_statecraft
+					has_trait = leader_trait_expertise_military_theory
+				}
+			}
+		}
+###
+		hidden_effect = {
+			FROM = {
+				add_modifier = {
+					modifier = "alien_writing"
+					days = -1
+				}
+			}
+		}
+		FROM = {
+			set_deposit = d_society_3
+		}
+###exp. events
+		if = {
+			limit = { leader = { has_trait = leader_trait_expertise_military_theory } }
+			owner = {
+				add_monthly_resource_mult = {
+					resource = society_research
+					value = @tier1researchreward
+					min = @tier1researchmin
+					max = @tier1researchmax
+				}
+				add_monthly_resource_mult = {
+					resource = engineering_research
+					value = @tier1researchreward
+					min = @tier1researchmin
+					max = @tier1researchmax
+				}
+			}
+		}
+		else = {
+			owner = {
+				add_monthly_resource_mult = {
+					resource = society_research
+					value = @tier2researchreward
+					min = @tier2researchmin
+					max = @tier2researchmax
+				}
+			}
+		}
+	}
+###	
 }
 
 ### Solar Sailer
 ship_event = {
 	id = anomaly.650
 	title = "anomaly.650.name"
-	desc = "anomaly.650.desc"
+###exp. events
+	desc = {
+		text = "anomaly.650.desc"
+		trigger = {
+			leader = { NOT = { has_trait = leader_trait_expertise_propulsion } }
+		}
+	}
+	desc = {
+		text = "anomaly.650.desc_void"
+		trigger = {
+			leader = { has_trait = leader_trait_expertise_propulsion }
+		}
+	}
+###	
 	picture = GFX_evt_ship_travel
 	show_sound = event_ship_bridge
 	location = FROM
@@ -1292,6 +1977,10 @@ ship_event = {
 
 	option = {
 		name = anomaly.650.a
+###exp. events
+		trigger = {
+			leader = { NOT = { has_trait = leader_trait_expertise_propulsion } }
+		}
 		owner = {
 			add_monthly_resource_mult = {
 				resource = engineering_research
@@ -1299,6 +1988,60 @@ ship_event = {
 				min = @tier1researchmin
 				max = @tier1researchmax
 			}
+			small_artifact_chance = yes
+		}
+	}
+	option = {
+		name = anomaly.650.b
+		trigger = {
+			leader = { has_trait = leader_trait_expertise_propulsion }
+		}
+		allow = {
+			leader = { has_trait = leader_trait_expertise_propulsion }
+		}
+		owner = {
+			add_modifier = { modifier = solar_sailer_void days = -1 }
+			small_artifact_chance = yes
+		}
+	}
+	option = {
+		name = anomaly.650.c
+		trigger = {
+			leader = { has_trait = leader_trait_expertise_propulsion }
+			owner = { is_xenophobe = no }
+		}
+		allow = {
+			leader = { has_trait = leader_trait_expertise_propulsion }
+		}
+		owner = {
+			add_monthly_resource_mult = {
+				resource = engineering_research
+				value = @tier1researchreward
+				min = @tier1researchmin
+				max = @tier1researchmax
+			}
+			add_resource = { influence = 50 }
+			small_artifact_chance = yes
+		}
+	}
+	option = {
+		name = anomaly.650.d
+		trigger = {
+			leader = { has_trait = leader_trait_expertise_propulsion }
+		}
+		allow = {
+			leader = { has_trait = leader_trait_expertise_propulsion }
+			owner = { is_xenophobe = yes }
+		}
+###		
+		owner = {
+			add_monthly_resource_mult = {
+				resource = engineering_research
+				value = @tier1researchreward
+				min = @tier1researchmin
+				max = @tier1researchmax
+			}
+			add_resource = { influence = 50 } #Exp. events
 			small_artifact_chance = yes #Exp. events
 		}
 	}
@@ -1308,7 +2051,30 @@ ship_event = {
 ship_event = {
 	id = anomaly.655
 	title = "anomaly.655.name"
-	desc = "anomaly.655.desc"
+###exp. events
+	desc = {
+		text = "anomaly.655.desc"
+		trigger = {
+			leader = {
+				NOR = {
+					has_trait = leader_trait_expertise_materials
+					has_trait = leader_trait_expertise_industry
+				}
+			}
+		}
+	}
+	desc = {
+		text = "anomaly.655.desc.mat"
+		trigger = {
+			leader = {
+				OR = {
+					has_trait = leader_trait_expertise_materials
+					has_trait = leader_trait_expertise_industry
+				}
+			}
+		}
+	}
+###
 	picture = GFX_evt_ship_travel
 	show_sound = event_ship_bridge
 	location = FROM
@@ -1319,6 +2085,16 @@ ship_event = {
 
 	option = {
 		name = INCREDIBLE
+###exp. events
+		trigger = {
+			leader = {
+				NOR = {
+					has_trait = leader_trait_expertise_materials
+					has_trait = leader_trait_expertise_industry
+				}
+			}
+		}
+###
 		owner = {
 			add_monthly_resource_mult = {
 				resource = engineering_research
@@ -1328,6 +2104,69 @@ ship_event = {
 			}
 		}
 	}
+### Exp. events
+	option = {
+		name = ASTOUNDING
+		trigger = {
+			leader = {
+				OR = {
+					has_trait = leader_trait_expertise_materials
+					has_trait = leader_trait_expertise_industry
+				}
+			}
+		}
+		allow = {
+			leader = {
+				OR = {
+					has_trait = leader_trait_expertise_materials
+					has_trait = leader_trait_expertise_industry
+				}
+			}
+		}
+		owner = {
+			if = {
+				limit = { NOT = { has_technology = tech_ship_armor_2 } }
+				add_research_option = tech_ship_armor_2
+				add_tech_progress = {
+					tech = tech_ship_armor_2
+					progress = 0.2
+				}
+			}
+			else_if = {
+				limit = { NOT = { has_technology = tech_ship_armor_3 } }
+				add_research_option = tech_ship_armor_3
+				add_tech_progress = {
+					tech = tech_ship_armor_3
+					progress = 0.15
+				}
+			}
+			else_if = {
+				limit = { NOT = { has_technology = tech_ship_armor_4 } }
+				add_research_option = tech_ship_armor_4
+				add_tech_progress = {
+					tech = tech_ship_armor_4
+					progress = 0.1
+				}
+			}
+			else_if = {
+				limit = { NOT = { has_technology = tech_ship_armor_5 } }
+				add_research_option = tech_ship_armor_5
+				add_tech_progress = {
+					tech = tech_ship_armor_5
+					progress = 0.05
+				}
+			}
+			else = {
+				add_monthly_resource_mult = {
+					resource = engineering_research
+					value = @tier3researchreward
+					min = @tier3researchmin
+					max = @tier3researchmax
+				}
+			}
+		}
+	}
+###		
 }
 
 ### Towed Asteroid
@@ -1438,6 +2277,14 @@ ship_event = {
 	option = { #expand. events mod
 		name = anomaly.280.a
 		trigger = {
+			leader = {
+				OR = {
+					has_trait = leader_trait_expertise_biology
+					has_trait = leader_trait_expertise_new_worlds
+				}
+			}
+		}
+		allow = {
 			leader = {
 				OR = {
 					has_trait = leader_trait_expertise_biology
