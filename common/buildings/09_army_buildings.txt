@@ -1,8 +1,8 @@
 # Original File
 #
-# Calvitix Check 3.0.3  21/05/2021
+# Calvitix Check 3.1.1  14/09/2021
 #
-# Merge with Starnet AI 22/08/2021
+# Merge with Starnet AI 16/09/2021
 # Merge with Mem_planetary
 #
 #############
@@ -116,11 +116,11 @@ building_dread_encampment = {
 	}
 	
 	army_modifier = {
-		army_starting_experience_add = 110
+		army_starting_experience_add = 100 #3.1.1
 	}
 	
 	planet_modifier = {
-		job_necromancer_add = 1
+		job_necromancer_add = 2 #3.1.1
 	}
 
 	resources = {
@@ -131,14 +131,6 @@ building_dread_encampment = {
 		upkeep = {
 			energy = @b1_upkeep
 		}
-	}
-	
-	prerequisites = {
-		"tech_centralized_command"
-	}
-
-	show_tech_unlock_if = {
-		has_valid_civic = civic_reanimated_armies
 	}
 	
 	triggered_desc = {
@@ -156,6 +148,7 @@ building_stronghold = {
 	category = army
 	
 	potential = {
+		#buildings_simple_allow = yes
 		str_stronghold_potential = yes
 	}
 
@@ -184,6 +177,15 @@ building_stronghold = {
 
 	resources = {
 		category = planet_buildings_strongholds
+		produces = {
+			trigger = {
+				exists = owner
+				owner = {
+					has_active_tradition = tr_unyielding_resistance_is_frugal
+				}
+			}
+			unity = 3
+		}
 #Calvitix Ressources balance
 		cost = { 
 			trigger = {
@@ -207,26 +209,6 @@ building_stronghold = {
 		}
 	}
 	
-#STARNET AI
-#	triggered_planet_modifier = {
-		#potential = {
-			#exists = owner
-			#owner = {
-				#is_ai = yes
-			#}
-			#str_force_stronghold = yes
-		#}
-		#modifier = {
-			#job_starnet_spice_melange_farmer_add = 1
-			#job_starnet_spice_melange_antifarmer_add = -1
-		#}
-	#}
-
-
-
-#STARNET AI END
-
-
 	prerequisites = {
 		"tech_planetary_defenses"
 	}
@@ -258,7 +240,10 @@ building_stronghold = {
 		alloys = 10
 		physics_research = 15
 		trigger = {
-		nor = { has_designation = col_bureau has_designation = col_research } 
+			nor = {
+				has_designation = col_bureau
+				has_designation = col_research
+			}
 			years_passed > 80
 			owner = {
 			used_naval_capacity_percent > 0.97
@@ -278,12 +263,16 @@ building_stronghold = {
 				resource = energy
 				value > -5
 			}
-		} }
+			}
+		}
 	}
 	ai_resource_production = {
 		alloys = 6
 		trigger = {
-		nor = { has_designation = col_bureau has_designation = col_research } 
+			nor = {
+				has_designation = col_bureau
+				has_designation = col_research
+			}
 			years_passed > 80
 			owner = {
 			used_naval_capacity_percent > 0.97
@@ -295,31 +284,45 @@ building_stronghold = {
 				resource = energy
 				value > 5
 			}
-		} }
+			}
+		}
 	}
 	ai_resource_production = {
 		alloys = 8
 		trigger = {
-		or = { has_planet_flag = str_acceptable_habitability has_planet_flag = str_bad_habitability }
-		nor = { has_designation = col_bureau has_designation = col_research } 
+			or = {
+				has_planet_flag = str_acceptable_habitability
+				has_planet_flag = str_bad_habitability
+			}
+			nor = {
+				has_designation = col_bureau
+				has_designation = col_research
+			}
 			years_passed > 80
 			owner = {
-			used_naval_capacity_percent > 0.97
-			resource_stockpile_compare = {
-				resource = alloys
-				value > 3500
+				used_naval_capacity_percent > 0.97
+				resource_stockpile_compare = {
+					resource = alloys
+					value > 3500
+				}
+				resource_income_compare = {
+					resource = energy
+					value > 5
+				}
 			}
-			resource_income_compare = {
-				resource = energy
-				value > 5
-			}
-		} }
+		}
 	}
 	ai_resource_production = {
 		energy = 10
 		trigger = {
-			or = { has_planet_flag = str_acceptable_habitability has_planet_flag = str_bad_habitability }
-		nor = { has_designation = col_bureau has_designation = col_research } 
+			or = {
+				has_planet_flag = str_acceptable_habitability
+				has_planet_flag = str_bad_habitability
+			}
+			nor = {
+				has_designation = col_bureau
+				has_designation = col_research
+			}
 			years_passed > 80
 			owner = {
 			used_naval_capacity_percent > 0.97
@@ -331,22 +334,24 @@ building_stronghold = {
 				resource = energy
 				value > 5
 			}
-		} }
+			}
+		}
 	}
 
 	ai_resource_production = {
 		energy = 6
 		trigger = {
-			owner = { lategame = yes 
-			used_naval_capacity_percent > 0.8 
-			resource_stockpile_compare = {
-				resource = alloys
-				value > 1000
-			}	
-			resource_income_compare = {
-				resource = energy
-				value > 5
-			}
+			owner = {
+				lategame = yes
+				used_naval_capacity_percent > 0.8 
+				resource_stockpile_compare = {
+					resource = alloys
+					value > 1000
+				}	
+				resource_income_compare = {
+					resource = energy
+					value > 5
+				}
 			} 
 			free_amenities > -6
 		 }
@@ -354,16 +359,17 @@ building_stronghold = {
 	ai_resource_production = {
 		alloys = 6
 		trigger = {
-			owner = { lategame = yes 
-			used_naval_capacity_percent > 0.8 
-			resource_stockpile_compare = {
-				resource = alloys
-				value > 2000
-			}	
-			resource_income_compare = {
-				resource = energy
-				value > 5
-			}
+			owner = {
+				lategame = yes
+				used_naval_capacity_percent > 0.8 
+				resource_stockpile_compare = {
+					resource = alloys
+					value > 2000
+				}	
+				resource_income_compare = {
+					resource = energy
+					value > 5
+				}
 			} 
 			free_amenities > -6
 		 }
@@ -381,12 +387,14 @@ building_fortress = {
 	allow = {
 		exists = owner
 		has_upgraded_capital = yes
+#Starnet AI
 		buildings_upgrade_allow = yes
 		buildings_has_motes = yes
 		or = {
 			owner = { is_ai = no }
 			has_planet_flag = str_supervisor
 		}
+#
 	}
 	
 	destroy_trigger = {
@@ -412,12 +420,15 @@ building_fortress = {
 				free_building_slots = 0
 				owner = { used_naval_capacity_percent < 0.4	}
 			}
-			buildings_no_motes = yes
+			and = {
+				buildings_no_motes = yes
+				has_planet_flag = str_supervisor
+			}
 		}
 	}
 	###plentiful ?
 	planet_modifier = {
-		planet_housing_add = 3
+		planet_housing_add = 2
 	}
 	###
 	
@@ -442,6 +453,15 @@ building_fortress = {
 
 	resources = {
 		category = planet_buildings_strongholds
+		produces = {
+			trigger = {
+				exists = owner
+				owner = {
+					has_active_tradition = tr_unyielding_resistance_is_frugal
+				}
+			}
+			unity = 3
+		}
 #Calvitix ressources balance
 		cost = { 
 			trigger = {

@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.0.1  23/04/2021
+# Calvitix Check 3.1.1  15/09/2021
 #
 # Merge with Arisphaos Unofficial patch
 # Merge with Carry cap.
@@ -1785,6 +1785,9 @@ fleet_event = {
 		owner = { is_country_type = sentinels }
 		owner = { num_ships < 200 }
 		is_same_value = event_target:sentinel_alpha
+		any_country = {
+			is_country_type = default
+		}
 	}
 
 	mean_time_to_happen = {
@@ -2935,6 +2938,7 @@ planet_event = {
 
 	trigger = {
 		num_pops = 1 # Last Pop is still alive when this event is fired
+		exists = controller
 		controller = { is_country_type = "swarm" }
 	}
 
@@ -3632,6 +3636,38 @@ country_event = {
 		FROMFROM = {
 			set_controller = root
 			# should revert purge weights
+		}
+	}
+}
+
+#Star Eater destroying Infested world
+system_event = {
+	id = crisis.220
+	hide_window = yes
+
+	is_triggered_only = yes
+	trigger = {
+		any_system_planet = {
+			is_planet_class = pc_infested
+		}
+	}
+
+	immediate = {
+		every_system_planet = {
+		limit = { is_planet_class = pc_infested }
+			every_country = {
+				limit = { has_event_chain = "prethoryn_scourge_chain" }
+				add_event_chain_counter = {
+					event_chain = "prethoryn_scourge_chain"
+					counter = "infested_worlds"
+					amount = -1
+				}
+				add_event_chain_counter = {
+					event_chain = "prethoryn_scourge_chain"
+					counter = "infested_worlds_cleansed"
+					amount = 1
+				}
+			}
 		}
 	}
 }

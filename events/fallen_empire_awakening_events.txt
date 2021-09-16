@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.0.2  26/04/2021
+# Calvitix Check 3.1.1  15/09/2021
 #
 # Merge with Skalla Ai's Overhaul
 #
@@ -93,7 +93,7 @@ country_event = {
 	immediate = {
 		set_global_flag = sleepers_awake_happened
 
-		#country_event = { id = fallen_empires_awakening.3 } #calvitix debug : don't exists
+		country_event = { id = fallen_empires_awakening.3 }
 
 		# Notify players
 		every_country = {
@@ -176,5 +176,131 @@ country_event = {
 			}
 		}
 		else = { set_global_flag = no_war_in_heaven }
+	}
+}
+
+country_event = {
+	id = fallen_empires_awakening.2
+	title = fallen_empires_awakening.2.name
+	desc = fallen_empires_awakening.2.desc
+	picture = GFX_evt_fallen_empire
+	show_sound = event_alien_signal
+	location = from
+
+	is_triggered_only = yes
+
+	option = {
+		name = fallen_empires_awakening.2.a
+	}
+	option = {
+		name = fallen_empires_awakening.2.b
+	}
+}
+
+country_event = {
+	id = fallen_empires_awakening.3
+	title = OK
+	desc = OK
+
+	hide_window = yes
+
+	is_triggered_only = yes
+
+	immediate = {
+		set_country_flag = sleepers_awake_first_sleeper
+		set_country_type = awakened_fallen_empire
+		change_government = {
+			civics = {
+				civic = civic_revanchist_fervor
+				civic = civic_ancient_caches_of_technology
+			}
+		}
+
+		add_awakened_fallen_empire_resources = yes
+		add_awakened_fallen_empire_fleet = yes
+
+		# Establish communications
+		every_country = {
+			limit = {
+				OR = {
+					is_country_type = default
+					is_country_type = fallen_empire
+					is_country_type = awakened_fallen_empire
+				}
+				NOT = { has_communications = root }
+			}
+
+			establish_communications_no_message = root
+			root = { save_event_target_as = contact_empire }
+			country_event = { id = action.1 }
+		}
+	}
+}
+
+# Guardians of the Galaxy
+country_event = {
+	id = fallen_empires_awakening.4
+	title = OK
+	desc = OK
+
+	hide_window = yes
+
+	trigger = {
+		has_global_flag = galactic_crisis_happened
+		NOT = { has_global_flag = sleepers_awake_rival_waking } # Not if WiH happened
+		has_country_flag = guardians_of_the_galaxy
+		NOT = { has_global_flag = guardians_of_the_galaxy_happened }
+		NOT = { has_country_flag = timed_guardians_of_the_galaxy }
+	}
+
+	mean_time_to_happen = {
+		years = 5
+		modifier = {
+			factor = 0.01
+			NOT = { has_country_flag = timed_guardians_of_the_galaxy_2 }
+		}
+	}
+
+	immediate = {
+		set_global_flag = guardians_of_the_galaxy_happened
+		country_event = { id = fallen_empires_awakening.3 }
+
+		every_country = {
+			limit = {
+				is_country_type = default
+			}
+			random_list = {
+				33 = { add_opinion_modifier = { who = root modifier = opinion_crisis_fighter } }
+				33 = { add_opinion_modifier = { who = root modifier = opinion_crisis_fighter_small } }
+				33 = { }
+			}
+		}
+
+		# Notify
+		every_country = {
+			limit = {
+				is_ai = no
+			}
+			country_event = { id = fallen_empires_awakening.5 }
+		}
+		observer_event = { id = observer.74 }
+	}
+}
+
+country_event = {
+	id = fallen_empires_awakening.5
+	title = fallen_empires_awakening.5.name
+	desc = fallen_empires_awakening.5.desc
+	picture = GFX_evt_fallen_empire
+	show_sound = event_alien_signal
+	location = from
+
+	is_triggered_only = yes
+
+	option = {
+		name = fallen_empires_awakening.5.a
+	}
+	option = {
+		name = fallen_empires_awakening.5.b
 	}
 }

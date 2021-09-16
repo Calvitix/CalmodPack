@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.0.3  21/05/2021
+# Calvitix Check 3.1.1  14/09/2021
 #
 # Merge with Planet. Diversity
 # Merge with Starnet OK    22/08/2021
@@ -282,7 +282,10 @@ building_temple = {
 			}
 		}
 		NOT = { has_modifier = slave_colony }
+		OR = {
 		owner = { is_ai = no }
+			free_building_slots > 0
+		}
 	}
 
 	destroy_trigger = {
@@ -293,7 +296,7 @@ building_temple = {
 					has_valid_civic = civic_death_cult
 					has_valid_civic = civic_death_cult_corporate
 					is_spiritualist = no
-					and = {
+#mod ? 					and = {
 						is_ai = yes 
 						num_ascension_perks > 2 
 						prev = { free_amenities > 5
@@ -303,6 +306,7 @@ building_temple = {
 						is_ai = yes 
 						prev = { has_active_building = building_holo_theatres }
 					}
+###
 				}
 			}
 			has_modifier = slave_colony
@@ -365,7 +369,7 @@ building_holotemple = {
 		exists = owner
 		building_basic_income_check = yes
 		owner = {
-			is_ai = no
+			#is_ai = no #Starnet AI, Calv. disabled
 			is_spiritualist = yes
 			NOR = {
 				has_valid_civic = civic_death_cult
@@ -530,6 +534,8 @@ building_sacrificial_temple_1 = {
 	base_buildtime = @b1_time
 	position_priority = 100
 
+	base_cap_amount = 5
+
 	category = unity
 
 	potential = {
@@ -545,11 +551,13 @@ building_sacrificial_temple_1 = {
 		NOT = { has_modifier = slave_colony }
 		OR = {
 			owner = { is_ai = no }
+#Starnet AI
 			and = { free_building_slots > 0 
 				nor = { has_building = building_sacrificial_temple_1 
 				has_building = building_sacrificial_temple_2 has_building = building_sacrificial_temple_3  } 
 				free_district_slots = 0 
 			}
+###
 		}
 	}
 
@@ -568,6 +576,7 @@ building_sacrificial_temple_1 = {
 				}
 			}
 			has_modifier = slave_colony
+# mod ?
 			and = {
 				owner = { is_ai = yes }
 				num_buildings = {
@@ -575,6 +584,7 @@ building_sacrificial_temple_1 = {
 					value > 1
 				}
 			}
+#
 		}
 	}
 
@@ -665,7 +675,7 @@ building_sacrificial_temple_2 = {
 
 	planet_modifier = {
 		job_death_priest_add = 3
-		job_mortal_initiate_add = 3
+		job_mortal_initiate_add = 2 #3.1.1
 		pop_ethic_spiritualist_attraction_mult = 0.1
 	}
 
@@ -749,7 +759,7 @@ building_sacrificial_temple_3 = {
 
 	planet_modifier = {
 		job_death_priest_add = 5
-		job_mortal_initiate_add = 5
+		job_mortal_initiate_add = 3 # 3.1.1
 		pop_ethic_spiritualist_attraction_mult = 0.15
 	}
 
@@ -785,6 +795,7 @@ building_galactic_memorial_1 = {
 
 	potential = {
 		exists = owner
+		#building_basic_income_check = yes #disabled ?
 		NOT = { has_modifier = slave_colony }
 		owner = {
 			OR = {
@@ -846,10 +857,11 @@ building_galactic_memorial_1 = {
 		}
 	}
 
-	planet_modifier = {
-		planet_stability_add = 5
-	}
+	#planet_modifier = { #3.1.1 removed
+	#	planet_stability_add = 5
+	#}
 
+#Starnet AI
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
@@ -871,19 +883,20 @@ building_galactic_memorial_1 = {
 		job_starnet_spice_melange_farmer_add = 1
 		job_starnet_spice_melange_antifarmer_add = -1
 	}
+###
 
 	#Jobs
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
-			owner = { is_gestalt = no is_ai = no }
+			owner = { is_gestalt = no }
 		}
 		job_death_chronicler_add = @b1_jobs
 	}
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
-			owner = { is_gestalt = yes is_ai = no }
+			owner = { is_gestalt = yes }
 		}
 		job_chronicle_drone_add = @b1_jobs
 	}
@@ -932,6 +945,8 @@ building_galactic_memorial_1 = {
 		}
 		text = "job_chronicle_drone_effect_desc"
 	}
+
+#mod ?
 	ai_resource_production = {
 		alloys = 10
 		trigger = { num_pops > 30 owner = {
@@ -941,6 +956,7 @@ building_galactic_memorial_1 = {
 				has_valid_civic = civic_machine_memorialist
 			} } }
 	}
+###
 }
 
 #Pillar of Quietus
@@ -1027,9 +1043,9 @@ building_galactic_memorial_2 = {
 		}
 	}
 
-	planet_modifier = {
-		planet_stability_add = 10
-	}
+	#planet_modifier = { #3.1.1 removed
+	#	planet_stability_add = 10
+	#}
 
 	#Jobs
 	triggered_planet_modifier = {
@@ -1168,9 +1184,9 @@ building_galactic_memorial_3 = {
 		}
 	}
 
-	planet_modifier = {
-		planet_stability_add = 15
-	}
+	#planet_modifier = { #3.1.1 Removed
+	#	planet_stability_add = 15
+	#}
 
 	#Jobs
 	triggered_planet_modifier = {
@@ -1238,12 +1254,14 @@ building_hive_node = {
 
 	potential = {
 		exists = owner
+		#building_relaxed_basic_income_check = yes #disabled ?
 		owner = {
 			is_hive_empire = yes
 		}
 	}
 
-	allow = {
+#mod ? 
+ 	allow = {
 	    or = {
 	        owner = {
 	            is_ai = no
@@ -1269,11 +1287,13 @@ building_hive_node = {
 	    }
 	}
 
+#
 
 	destroy_trigger = {
 		exists = owner
 		OR = {
 			owner = { is_hive_empire = no }
+#mod ?
 			and = {
 				owner = { is_ai = yes }
 				is_capital = yes
@@ -1282,6 +1302,7 @@ building_hive_node = {
 					num_ascension_perks > 0
 				}
 			}
+#
 		}
 	}
 
@@ -1319,7 +1340,7 @@ building_hive_node = {
 		potential = {
 			exists = owner
 			owner = {
-				has_swapped_tradition = tr_domination_synaptic_extensions
+				has_active_tradition = tr_domination_synaptic_extensions
 			}
 		}
 		modifier = {
@@ -1359,11 +1380,11 @@ building_hive_node = {
 		text = job_maintenance_drone_effect_desc
 	}
 
-	on_queued = {
-		planet = {
-			set_timed_planet_flag = { flag = recent_admin_building_built days = 720 }
-		}
-	}
+	#on_queued = { #3.1.1 disabled
+	#	planet = {
+	#		set_timed_planet_flag = { flag = recent_admin_building_built days = 720 }
+	#	}
+	#}
 }
 
 building_hive_cluster = {
@@ -1425,7 +1446,7 @@ building_hive_cluster = {
 		potential = {
 			exists = owner
 			owner = {
-				has_swapped_tradition = tr_domination_synaptic_extensions
+				has_active_tradition = tr_domination_synaptic_extensions
 			}
 		}
 		modifier = {
@@ -1465,11 +1486,11 @@ building_hive_cluster = {
 		text = job_maintenance_drone_effect_desc
 	}
 
-	on_queued = {
-		planet = {
-			set_timed_planet_flag = { flag = recent_admin_building_built days = 720 }
-		}
-	}
+	#on_queued = {
+	#	planet = {
+	#		set_timed_planet_flag = { flag = recent_admin_building_built days = 720 }
+	#	}
+	#}
 }
 
 building_hive_confluence = {
@@ -1532,7 +1553,7 @@ building_hive_confluence = {
 		potential = {
 			exists = owner
 			owner = {
-				has_swapped_tradition = tr_domination_synaptic_extensions
+				has_active_tradition = tr_domination_synaptic_extensions
 			}
 		}
 		modifier = {
@@ -1582,11 +1603,11 @@ building_hive_confluence = {
 		text = job_maintenance_drone_effect_desc
 	}
 
-	on_queued = {
-		planet = {
-			set_timed_planet_flag = { flag = recent_admin_building_built days = 720 }
-		}
-	}
+	#on_queued = {
+	#	planet = {
+	#		set_timed_planet_flag = { flag = recent_admin_building_built days = 720 }
+	#	}
+	#}
 }
 
 ##################
@@ -1600,12 +1621,14 @@ building_simulation_1 = {
 
 	potential = {
 		exists = owner
+		#building_basic_income_check = yes #disabled ?
 		owner = {
 			is_machine_empire = yes
 			NOT = { has_valid_civic = civic_machine_servitor }
 		}
 	}
 
+#mod ?
 	allow = {
 		or = {
 			owner = { is_ai = no }
@@ -1623,6 +1646,7 @@ building_simulation_1 = {
 			}
 		}
 	}
+###
 
 	destroy_trigger = {
 		exists = owner
@@ -1630,6 +1654,7 @@ building_simulation_1 = {
 			OR = {
 				is_machine_empire = no
 				has_valid_civic = civic_machine_servitor
+#mod ?
 				and = {
 					is_ai = yes
 					num_ascension_perks > 2
@@ -1641,6 +1666,7 @@ building_simulation_1 = {
 						}
 					}
 				}
+###
 			}
 		}
 	}
@@ -1839,7 +1865,7 @@ building_corporate_monument = {
 		owner = {
 			is_megacorp = yes
 			is_spiritualist = no
-			is_ai = no
+			#is_ai = no #starnet AI ?
 		}
 	}
 
@@ -1909,7 +1935,7 @@ building_corporate_site = {
 		owner = {
 			is_megacorp = yes
 			is_spiritualist = no
-			is_ai = no
+			#is_ai = no  #Starnet AI, Calv. disabled
 		}
 	}
 
@@ -2370,7 +2396,7 @@ building_organic_sanctuary = {
 	planet_modifier = {
 		job_bio_trophy_add = 10
 		job_artisan_drone_add = 1
-		planet_carry_cap_add = 10
+		#planet_carry_cap_add = 10 #3.1.1 removed
 	}
 
 ###Starnet AI
@@ -2399,9 +2425,18 @@ building_organic_sanctuary = {
 		}
 	}
 
+	triggered_desc = {
+		text = job_bio_trophy_effect_desc
+	}
+
+	triggered_desc = {
+		text = job_artisan_drone_effect_desc
+	}
+
 	upgrades = {
 		"building_organic_paradise"
 	}
+#mod ?
 	ai_resource_production = {
 		alloys = 10
 		trigger = {
@@ -2409,6 +2444,8 @@ building_organic_sanctuary = {
 			free_building_slots > 0
 		}
 	}
+###
+
 }
 
 building_organic_paradise = {
@@ -2435,7 +2472,7 @@ building_organic_paradise = {
 		job_bio_trophy_add = 20
 		job_artisan_drone_add = 2
 		job_maintenance_drone_add = 1
-		planet_carry_cap_add = 20
+		# planet_carry_cap_add = 20 #3.1.1 disabled
 	}
 
 	resources = {
@@ -2448,6 +2485,18 @@ building_organic_paradise = {
 			energy = @b2_upkeep
 			exotic_gases = @b2_rare_upkeep
 		}
+	}
+
+	triggered_desc = {
+		text = job_bio_trophy_effect_desc
+	}
+
+	triggered_desc = {
+		text = job_artisan_drone_effect_desc
+	}
+
+	triggered_desc = {
+		text = job_maintenance_drone_effect_desc
 	}
 
 	prerequisites = { "tech_paradise_dome" }

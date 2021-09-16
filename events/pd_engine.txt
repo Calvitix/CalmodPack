@@ -1,8 +1,8 @@
 # Planetary Diversity
 #
-# Calvitix Check 3.0.3  21/05/2021
+# Calvitix Check 3.1.1  16/09/2021
 #
-# Merge with Planetary Diversity update 04/09/2021
+# Merge with Planetary Diversity update 16/09/2021
 #
 #Calvitix Warning : Have to Change _z_pd_engine_overwrite too
 #
@@ -39,6 +39,7 @@ country_event = {
 					solar_system = { has_star_flag = sol }
 				} 
 			}
+			#Calvitix Change 5,5,5 / 75
 			random_list = {
 				5 = { change_pc = pc_retinal reroll_planet = yes }			
 				5 = { change_pc = pc_forest reroll_planet = yes }				
@@ -2199,39 +2200,6 @@ country_event = {
 	}
 }
 
-#Techno-Organc Starting Events
-country_event = {
-	id = pdengine.22
-	hide_window = yes
-	is_triggered_only = yes
-
-	trigger = {
-		owner = { has_origin = origin_techno_world }
-	}
-
-   	immediate = {
-		every_galaxy_planet = {
-			limit = { is_planet_class = pc_technoorganic }
-			add_deposit = d_home04
-		}
-	}
-}
-
-#Archive Starting Event
-country_event = {
-	id = pdengine.23
-	hide_window = yes
-	is_triggered_only = yes
-
-	trigger = {
-		owner = { has_origin = origin_archive_world }
-	}
-
-   	immediate = {
-		add_relic = r_pdarchive
-	}
-}
-
 # Mini-galaxy ativate
 country_event = {
 	id = pdengine.24
@@ -2347,7 +2315,6 @@ country_event = {
 	}
 	
 	immediate = {
-		give_technology = { tech = "tech_psionic_theory" message = no }
 		every_galaxy_planet = {
 			IF = {
 				limit = {
@@ -4957,7 +4924,7 @@ country_event = {
 							20 = { change_pc = pc_wetswamp }
 							20 = { change_pc = pc_cascadian }	
 							20 = { change_pc = pc_ocean }		
-							10 = { change_pc = pc_subarctic }		
+							20 = { change_pc = pc_subarctic }		
 						}
 						reroll_deposits = yes
 					}
@@ -4996,7 +4963,7 @@ country_event = {
 							20 = { change_pc = pc_wetswamp }
 							20 = { change_pc = pc_cascadian }	
 							20 = { change_pc = pc_ocean }		
-							10 = { change_pc = pc_subarctic }	
+							20 = { change_pc = pc_subarctic }		
 						}
 						reroll_deposits = yes
 					}
@@ -6468,7 +6435,7 @@ country_event = {
 			}	
 			random_list = {
 				25 = { 
-					add_modifier = { modifier = terraforming_ash days = -1	} 
+					add_modifier = { modifier = terraforming_methane days = -1	} 
 				}
 				75 = { }	
 			}
@@ -6481,7 +6448,7 @@ country_event = {
 	hide_window = yes
 	is_triggered_only = yes
 	fire_only_once = yes
-	#Terraforming Candidate Methane
+	#Terraforming Candidate Sulfur
 
 	trigger = {	owner = { has_trait = trait_pc_sulfur_preference }}
 
@@ -6505,7 +6472,7 @@ country_event = {
 			}	
 			random_list = {
 				25 = { 
-					add_modifier = { modifier = terraforming_ash days = -1	} 
+					add_modifier = { modifier = terraforming_sulfur days = -1	} 
 				}
 				75 = { }	
 			}
@@ -6518,7 +6485,7 @@ country_event = {
 	hide_window = yes
 	is_triggered_only = yes
 	fire_only_once = yes
-	#Terraforming Candidate Methane
+	#Terraforming Candidate Ammonia
 
 	trigger = {	owner = { has_trait = trait_pc_ammonia_preference }}
 
@@ -6542,7 +6509,7 @@ country_event = {
 			}	
 			random_list = {
 				25 = { 
-					add_modifier = { modifier = terraforming_ash days = -1	} 
+					add_modifier = { modifier = terraforming_ammonia days = -1	} 
 				}
 				75 = { }	
 			}
@@ -6878,12 +6845,32 @@ country_event = {
 			}
 			every_galaxy_planet = { 
 				limit = { 
-					has_planet_flag = pd_crucible_planet 
+					has_planet_flag = pd_crucible_planet_origin 
 					is_planet_class = pc_shielded
 					FROM = { space_owner = { has_origin = origin_crucible_world } }
 				}
 				enable_special_project = { name = pd_crucible_shieldbreaker }
 			}
+		}
+	}
+}
+
+country_event = {
+	id = pdengine.66
+	hide_window = yes
+	is_triggered_only = yes
+	fire_only_once = yes
+	#Crucible Start
+
+	trigger = {	NOT = { owner = { has_origin = origin_crucible_world } } }
+
+	immediate = {
+		every_galaxy_planet = { 
+			limit = { 
+				has_planet_flag = pd_crucible_planet 
+				is_planet_class = pc_shielded
+				}
+			create_archaeological_site = pdcrucible_site
 		}
 	}
 }

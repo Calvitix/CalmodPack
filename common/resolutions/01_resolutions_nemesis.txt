@@ -1,11 +1,10 @@
 # Original File
 #
-# Calvitix Check 3.0.1  17/04/2021
+# Calvitix Check 3.1.1  14/09/2021
 #
 # Merge with Starnet AI 22/08/2021
 #
 #
-
 @resolution_weight_hated = 3
 @resolution_weight_disliked = 4
 @resolution_weight_unpopular = 5
@@ -33,8 +32,12 @@
 #	fail_effects = {} # effect to be applied if failed, scope is proposer unless there is a target country - then scope is target country, with proposer in from scope
 #	potential = {} # potential trigger, scope is country
 #	allow = {} # allow trigger, scope is country
-#	active = {} # Enacted sesolutions are cancelled if this trigger fails
+#	active = {} # Enacted resolutions are cancelled if this trigger fails
+#
 #	ai_weight = {} # ai weight modifiers, scope is country. from scope is the target country for targeted resolutions
+#	NOTE: all ai_weight modifiers are multiplicative. The end result is also multiplied with a factor based on the opinion towards the proposer and/or target,
+#	see RESOLUTION_TARGET_OPINION_MIN_FACTOR etc. in 00_defines.txt. Also see RESOLUTION_VOTE_SUPPORT_THRESHOLD etc. for balancing the values.
+#
 #	valid_target = {} # valid targets trigger, scope is country
 #}
 
@@ -75,7 +78,30 @@ resolution_declare_crisis = {
 	effect = {
 		custom_tooltip = resolution_declare_crisis_tooltip
 		hidden_effect = {
+			if = {
+				limit = { is_galactic_community_member = yes }
 			remove_from_galactic_community = yes
+			}
+			if = {
+				limit = {
+					is_galactic_council_established = yes
+					is_part_of_galactic_council = yes
+				}
+				remove_from_galactic_council = yes
+			}
+			every_subject = {
+				if = {
+					limit = { is_galactic_community_member = yes }
+					remove_from_galactic_community = yes
+				}
+				if = {
+					limit = {
+						is_galactic_council_established = yes
+						is_part_of_galactic_council = yes
+					}
+					remove_from_galactic_council = yes
+				}
+			}
 			set_country_flag = declared_crisis
 			save_event_target_as = new_crisis
 			country_event = { id = crisis.4105 }
@@ -86,101 +112,62 @@ resolution_declare_crisis = {
 				}
 				country_event = { id = crisis.4100 }
 			}
-			# community opens internal borders
-			every_playable_country = {
-				limit = {
-					is_galactic_community_member = yes
-					NOT = { has_country_flag = declared_crisis }
-				}
-				every_playable_country = {
-					limit = {
-						is_galactic_community_member = yes
-						NOR = {
-							is_same_value = prev
-							has_country_flag = declared_crisis
-						}
-					}
-					set_closed_borders = {
-						who = prev
-						status = no
-					}
-				}
-			}
 			if = {
 				limit = { has_galactic_custodian = yes }
-				random_playable_country = {
-					limit = { is_galactic_custodian = yes }
+				galactic_custodian = {
 					save_event_target_as = community_war_leader
-					declare_war = {
-						target = event_target:new_crisis
-						name = "NAME_Declared_Crisis_War"
-						attacker_war_goal = "wg_declared_crisis"
+					if = {
+						limit = { is_in_federation_with = event_target:new_crisis }
+						event_target:new_crisis = {
+							leave_alliance = { override_requirements = yes }
 					}
 				}
-				random_war = {
-					limit = {
-						using_war_goal = {
-							type = wg_declared_crisis
-							owner = event_target:community_war_leader
 						}
 					}
-					save_event_target_as = crisis_war
-				}
-				every_playable_country = {
-					limit = { 
-						is_galactic_custodian = no
-						is_galactic_community_member = yes
-					}
-
-					join_war_on_side = {
-						war = event_target:crisis_war
-						side = event_target:community_war_leader
-					}
+			else_if = {
+				limit = { has_galactic_emperor = yes }
+				galactic_emperor = {
+					save_event_target_as = community_war_leader
 				}
 			}
 			else = {
 				random_playable_country = {
 					limit = {
 						is_galactic_community_member = yes
+						NOT = { is_in_federation_with = event_target:new_crisis }
+					}
+					weights = {
+						base = 1
+						modifier = {
+							add = 10000
 						galactic_community_rank = 1
 					}
+						modifier = {
+							add = 1000
+							galactic_community_rank = 2
+						}
+						modifier = {
+							add = 100
+							galactic_community_rank = 3
+						}
+						modifier = {
+							add = 10
+							is_galactic_council_established = yes
+							is_part_of_galactic_council = yes
+						}
+					}
 					save_event_target_as = community_war_leader
-					declare_war = {
-						target = event_target:new_crisis
-						name = "NAME_Declared_Crisis_War"
-						attacker_war_goal = "wg_declared_crisis"
-					}
-					random_war = {
-						limit = {
-							using_war_goal = {
-								type = wg_declared_crisis
-								owner = event_target:community_war_leader
-							}
-						}
-						save_event_target_as = crisis_war
-					}
-					every_playable_country = {
-						limit = { 
-							is_galactic_community_member = yes
-							NOT = { is_same_value = event_target:community_war_leader }
-						}
-						join_war_on_side = {
-							war = event_target:crisis_war
-							side = event_target:community_war_leader
-						}
-					}
 				}
 			}
+
+			declare_crisis_war_effect = yes
 		}
 	}
 
 	potential = {
 		has_nemesis = yes
 		has_galactic_emperor = no
-		OR = {
 			is_part_of_galactic_council = yes
-			is_galactic_custodian = yes
-		}
 	}
 
 	ai_weight = {
@@ -218,38 +205,10 @@ resolution_declare_crisis = {
 				}
 			}
 		}
-		modifier = {
-			factor = 5
-			from = {
-				relative_power = {
-					who = prev
-					category = fleet
-					value = overwhelming
-				}
-				or = {
-				is_hostile_to = prev
-				is_unfriendly_to = prev
-				}
-			}
-		}
-		modifier = {
-			factor = 2
-			from = {
-				relative_power = {
-					who = prev
-					category = fleet
-					value = superior
-				}
-				or = {
-				is_hostile_to = prev
-				is_unfriendly_to = prev
-				}
-			}
-		}
 
 		# More likely to declare on rivals
 		modifier = {
-			factor = 4
+			factor = 2
 			is_rival = from
 		}
 
@@ -259,7 +218,7 @@ resolution_declare_crisis = {
 			is_same_value = from
 		}
 
-		# More likely to declare on rivals
+		# More likely to declare on a crisis country that has started cracking stars
 		modifier = {
 			factor = 6
 			from = { has_country_flag = cracked_first_star }
@@ -281,7 +240,7 @@ resolution_declare_crisis = {
 
 		# Very unlikely to use on Custodian
 		modifier = {
-			factor = 0.6
+			factor = 0.2
 			from = { is_galactic_custodian = yes }
 		}
 
@@ -299,7 +258,7 @@ resolution_declare_crisis = {
 		}
 
 		modifier = {
-			factor = 0.8
+			factor = 0.5
 			from = {
 				NOT = { has_ascension_perk = ap_become_the_crisis }
 			}
@@ -397,6 +356,7 @@ resolution_repeal_crisis = {
 				NOR = {
 					has_country_flag = crisis_sphere_revealed
 					has_country_flag = cracked_first_star
+					has_crisis_level = crisis_level_5
 				}
 			}
 		}
@@ -461,6 +421,31 @@ resolution_declare_crisis_empire = {
 	effect = {
 		custom_tooltip = resolution_declare_crisis_empire_tooltip
 		hidden_effect = {
+			if = {
+				limit = { is_galactic_community_member = yes }
+				remove_from_galactic_community = yes
+			}
+			if = {
+				limit = {
+					is_galactic_council_established = yes
+					is_part_of_galactic_council = yes
+				}
+				remove_from_galactic_council = yes
+			}
+			every_subject = {
+				if = {
+					limit = { is_galactic_community_member = yes }
+					remove_from_galactic_community = yes
+				}
+				if = {
+					limit = {
+						is_galactic_council_established = yes
+						is_part_of_galactic_council = yes
+					}
+					remove_from_galactic_council = yes
+				}
+			}
+
 			set_country_flag = declared_crisis
 			save_event_target_as = new_crisis
 			country_event = { id = crisis.4106 }
@@ -471,44 +456,17 @@ resolution_declare_crisis_empire = {
 				}
 				country_event = { id = crisis.4101 }
 			}
-			random_playable_country = {
-				limit = { is_galactic_emperor = yes }
-				save_event_target_as = gal_emperor
-				declare_war = {
-					target = event_target:new_crisis
-					name = "NAME_Declared_Crisis_War"
-					attacker_war_goal = "wg_declared_crisis"
-				}
-				random_war = {
-					limit = {
-						using_war_goal = {
-							type = wg_declared_crisis
-							owner = event_target:gal_emperor
-						}
-					}
-					save_event_target_as = crisis_war
-				}
+			galactic_emperor = {
+				save_event_target_as = community_war_leader
 			}
-			every_playable_country = {
-				limit = { 
-					is_galactic_emperor = no
-					is_galactic_community_member = yes
-				}
-				join_war_on_side = {
-					war = event_target:crisis_war
-					side = event_target:gal_emperor
-				}
-			}
+			declare_crisis_war_effect = yes
 		}
 	}
 
 	potential = {
 		has_galactic_emperor = yes
 		has_nemesis = yes
-		OR = {
 			is_part_of_galactic_council = yes
-			is_galactic_emperor = yes
-		}
 	}
 
 	ai_weight = {
@@ -1110,6 +1068,13 @@ resolution_custodian_united_front = {
 	fail_effects = {
 	}
 
+	allow = {
+		custom_tooltip = {
+			fail_text = "resolution_already_active"
+			NOT = { is_active_resolution = resolution_custodian_united_front }
+		}
+	}
+
 	potential = {
 		has_nemesis = yes
 		is_galactic_custodian = yes
@@ -1238,6 +1203,13 @@ resolution_custodian_galactic_mobilization = {
 	fail_effects = {
 	}
 
+	allow = {
+		custom_tooltip = {
+			fail_text = "resolution_already_active"
+			NOT = { is_active_resolution = resolution_custodian_galactic_mobilization }
+		}
+	}
+
 	potential = {
 		has_nemesis = yes
 		is_galactic_custodian = yes
@@ -1348,6 +1320,13 @@ resolution_custodian_galactic_standard = {
 	fail_effects = {
 	}
 
+	allow = {
+		custom_tooltip = {
+			fail_text = "resolution_already_active"
+			NOT = { is_active_resolution = resolution_custodian_galactic_standard }
+		}
+	}
+
 	potential = {
 		has_nemesis = yes
 		is_galactic_custodian = yes
@@ -1407,6 +1386,13 @@ resolution_custodian_anti_piracy = {
 	}
 
 	fail_effects = {
+	}
+
+	allow = {
+		custom_tooltip = {
+			fail_text = "resolution_already_active"
+			NOT = { is_active_resolution = resolution_custodian_anti_piracy }
+		}
 	}
 
 	potential = {
@@ -1575,6 +1561,13 @@ resolution_custodian_perpetual_custodianship = {
 	fail_effects = {
 	}
 
+	allow = {
+		custom_tooltip = {
+			fail_text = "resolution_already_active"
+			NOT = { is_active_resolution = resolution_custodian_perpetual_custodianship }
+		}
+	}
+
 	potential = {
 		has_nemesis = yes
 		is_galactic_custodian = yes
@@ -1723,6 +1716,13 @@ resolution_custodian_gdf = {
 	}
 	target = no
 
+	allow = {
+		custom_tooltip = {
+			fail_text = "resolution_already_active"
+			NOT = { is_active_resolution = resolution_custodian_gdf }
+		}
+	}
+
 	modifier = {
 		resolution_custodian_gdf = 1
 	}
@@ -1855,6 +1855,13 @@ resolution_custodian_expand_gdf = {
 		}
 	}
 	target = no
+
+	allow = {
+		custom_tooltip = {
+			fail_text = "resolution_already_active"
+			NOT = { is_active_resolution = resolution_custodian_expand_gdf }
+		}
+	}
 
 	modifier = {
 		resolution_custodian_gdf_2 = 1
@@ -2137,6 +2144,13 @@ resolution_custodian_ina = {
 	fail_effects = {
 	}
 
+	allow = {
+		custom_tooltip = {
+			fail_text = "resolution_already_active"
+			NOT = { is_active_resolution = resolution_custodian_ina }
+		}
+	}
+
 	potential = {
 		has_nemesis = yes
 		is_galactic_custodian = yes
@@ -2394,6 +2408,13 @@ resolution_custodian_galpol = {
 		is_galactic_custodian = yes
 	}
 
+	allow = {
+		custom_tooltip = {
+			fail_text = "resolution_already_active"
+			NOT = { is_active_resolution = "resolution_custodian_galpol" }
+		}
+	}
+
 	ai_weight = {
 		weight = @resolution_weight_normal
 
@@ -2518,16 +2539,14 @@ resolution_galactic_empire_imperial_crusade = {
 	target = yes
 	harmful = yes
 	valid_target = {
-		OR = {
 			is_country_type = default
-			is_country_type = fallen_empire
-			is_country_type = awakened_fallen_empire
-		}
 		is_galactic_community_member = no
 		NOR = { 
 			has_country_flag = imperial_crusade_target
 			has_country_flag = empire_rebel
 		}
+		is_homicidal = no
+		NOT = { is_at_war_with = galactic_emperor }
 	}
 
 	allow = {
@@ -2536,14 +2555,14 @@ resolution_galactic_empire_imperial_crusade = {
 
 	active = {
 		has_galactic_emperor = yes
+		from = { is_at_war_with = galactic_emperor }
 	}
 
 	effect = {
 		custom_tooltip = resolution_imperial_crusade_tooltip
 		hidden_effect = {
 			save_event_target_as = crusade_target
-			random_playable_country = {
-				limit = { is_galactic_emperor = yes }
+			galactic_emperor = {
 				save_event_target_as = gal_emperor
 				declare_war = {
 					target = event_target:crusade_target
@@ -2564,6 +2583,30 @@ resolution_galactic_empire_imperial_crusade = {
 				limit = { 
 					is_galactic_emperor = no
 					is_galactic_community_member = yes
+					NOR = {
+						is_in_federation_with = event_target:crusade_target
+						AND = {
+							exists = overlord
+							overlord = { is_same_value = event_target:crusade_target }
+						}
+					}
+				}
+				if = {
+					limit = {
+						any_war = {
+							any_war_participant = {
+								is_same_value = event_target:crusade_target
+							}
+						}
+					}
+					every_war = {
+						limit = {
+							any_war_participant = {
+								is_same_value = event_target:crusade_target
+							}
+						}
+						remove_war_participant = event_target:crusade_target
+					}
 				}
 				join_war_on_side = {
 					war = event_target:imperial_crusade_war
@@ -2633,6 +2676,13 @@ resolution_emperor_united_front = {
     	damage_vs_country_type_gray_goo_mult = 0.2
 		damage_vs_player_crisis_mult = 0.2
     	country_energy_produces_mult = -0.03
+	}
+
+	allow = {
+		custom_tooltip = {
+			fail_text = "resolution_already_active"
+			NOT = { is_active_resolution = "resolution_emperor_united_front" }
+		}
 	}
 
 	effect = {
@@ -2748,6 +2798,13 @@ resolution_emperor_imperial_armada = {
 
 	modifier = {
 		resolution_custodian_gdf = 1
+	}
+
+	allow = {
+		custom_tooltip = {
+			fail_text = "resolution_already_active"
+			NOT = { is_active_resolution = "resolution_emperor_imperial_armada" }
+		}
 	}
 
 	effect = {
@@ -2876,6 +2933,13 @@ resolution_emperor_expand_ia = {
 	}
 	target = no
 
+	allow = {
+		custom_tooltip = {
+			fail_text = "resolution_already_active"
+			NOT = { is_active_resolution = "resolution_emperor_expand_ia" }
+		}
+	}
+
 	modifier = {
 		resolution_custodian_gdf_2 = 1
 		country_community_gdf_naval_capacity = 400
@@ -2987,6 +3051,13 @@ resolution_emperor_imperial_legions = {
 		}
 	}
 	target = no
+
+	allow = {
+		custom_tooltip = {
+			fail_text = "resolution_already_active"
+			NOT = { is_active_resolution = "resolution_emperor_imperial_legions" }
+		}
+	}
 
 	modifier = {
 	}
@@ -3115,6 +3186,13 @@ resolution_emperor_ina = {
 	}
 
 	fail_effects = {
+	}
+
+	allow = {
+		custom_tooltip = {
+			fail_text = "resolution_already_active"
+			NOT = { is_active_resolution = "resolution_emperor_ina" }
+		}
 	}
 
 	potential = {
@@ -3371,6 +3449,13 @@ resolution_emperor_isd = {
 	}
 	target = no
 
+	allow = {
+		custom_tooltip = {
+			fail_text = "resolution_already_active"
+			NOT = { is_active_resolution = "resolution_emperor_isd" }
+		}
+	}
+
 	modifier = {
 		resolution_emperor_isd = 1
 	}
@@ -3451,6 +3536,13 @@ resolution_emperor_imperial_charter = {
 
 	target = yes
 	harmful = no
+
+	allow = {
+		custom_tooltip = {
+			fail_text = "resolution_already_active"
+			NOT = { is_active_resolution = "resolution_emperor_imperial_charter" }
+		}
+	}
 
 	valid_target = {
 		is_country_type = default
@@ -3655,6 +3747,7 @@ resolution_emperor_abolish_council = {
 		modifier = {
 			factor = 0
 			is_part_of_galactic_council = yes
+			is_galactic_emperor = no
 		}
 
 		modifier = {
@@ -3663,6 +3756,7 @@ resolution_emperor_abolish_council = {
 			overlord = {
 				opinion_level = { who = prev level >= neutral }
 				is_part_of_galactic_council = yes
+				is_galactic_emperor = no
 			}
 		}
 	}
@@ -4431,6 +4525,13 @@ resolution_emperor_permanent_seat = {
 		has_galactic_emperor = yes
 	}
 
+	allow = {
+		custom_tooltip = {
+			fail_text = "resolution_already_active"
+			NOT = { is_active_resolution = "resolution_emperor_permanent_seat" }
+		}
+	}
+
 	ai_weight = {
 		weight = @resolution_weight_disliked
 	}
@@ -4530,6 +4631,13 @@ resolution_emperor_trial_of_advancement = {
 		has_galactic_emperor = yes
 	}
 
+	allow = {
+		custom_tooltip = {
+			fail_text = "resolution_already_active"
+			NOT = { is_active_resolution = "resolution_emperor_trial_of_advancement" }
+		}
+	}
+
 	ai_weight = {
 		weight = @resolution_weight_disliked
 
@@ -4538,6 +4646,7 @@ resolution_emperor_trial_of_advancement = {
 			is_part_of_galactic_council = no
 			any_playable_country = {
 				is_part_of_galactic_council = yes
+				is_galactic_emperor = no
 				relative_power = {
 					who = prev
 					category = fleet
@@ -4569,6 +4678,7 @@ resolution_emperor_trial_of_advancement = {
 		modifier = {
 			weight = 0
 			is_part_of_galactic_council = yes
+			is_galactic_emperor = no
 			any_playable_country = {
 				is_part_of_galactic_council = no
 				relative_power = {
@@ -4631,6 +4741,13 @@ resolution_emperor_by_appointment = {
 		has_galactic_emperor = yes
 	}
 
+	allow = {
+		custom_tooltip = {
+			fail_text = "resolution_already_active"
+			NOT = { is_active_resolution = "resolution_emperor_by_appointment" }
+		}
+	}
+
 	ai_weight = {
 		weight = @resolution_weight_hated
 	}
@@ -4685,6 +4802,13 @@ resolution_emperor_by_election = {
 
 	active = {
 		has_galactic_emperor = yes
+	}
+
+	allow = {
+		custom_tooltip = {
+			fail_text = "resolution_already_active"
+			NOT = { is_active_resolution = "resolution_emperor_by_election" }
+		}
 	}
 
 	ai_weight = {
@@ -4757,6 +4881,10 @@ resolution_emperor_pax_galactica = {
 							type = wg_seize_council_seat
 							owner = defender
 						}
+						using_war_goal = {
+							type = wg_declared_crisis
+							owner = attacker
+						}
 					}
 					any_attacker = { is_galactic_community_member = yes }
 					any_defender = { is_galactic_community_member = yes }
@@ -4780,6 +4908,10 @@ resolution_emperor_pax_galactica = {
 
 	allow = {
 		imperial_authority >= 180
+		custom_tooltip = {
+			fail_text = "resolution_already_active"
+			NOT = { is_active_resolution = "resolution_emperor_pax_galactica" }
+		}
 	}
 
 	active = {

@@ -1,8 +1,8 @@
 # Original File
 #
-# Calvitix Check 3.0.1  17/04/2021
+# Calvitix Check 3.1.1  14/09/2021
 #
-# Merge with Starnet AI 22/06/2021
+# Merge with Starnet AI 16/09/2021
 # 
 #
 ##########################################################################
@@ -181,7 +181,16 @@ decision_enact_population_control = {
 		}
 		NOT = { has_modifier = planet_population_control }
 ###Starnet AI
-		owner = { or = { is_ai = no and = { prev = { free_jobs < -3 } years_passed > 150 not = { has_country_flag = str_has_room_to_grow } } } }
+		owner = {
+			or = {
+				is_ai = no
+				and = {
+					prev = { free_jobs < -3 }
+					years_passed > 150
+					not = { has_country_flag = str_has_room_to_grow }
+				}
+			}
+		}
 ###
 	} 
 	
@@ -427,13 +436,7 @@ decision_expel_population = {
 				0 < { set_variable = { which = expel_pop_var value = 1 } } # 1
 			}
 			while = {
-				count = 10
-				limit = {
-					check_variable = {
-						which = expel_pop_var
-						value > 0
-					}
-				}
+				count = expel_pop_var
 				
 				random_owned_pop = {
 					limit = {
@@ -452,11 +455,11 @@ decision_expel_population = {
 							is_pop_category = purge
 						}
 						modifier = {
-							mult = 5
+							factor = 5
 							is_unemployed = yes
 						}
 						modifier = {
-							mult = 10
+							factor = 10
 							has_citizenship_rights = no
 						}					
 						modifier = {
@@ -476,11 +479,8 @@ decision_expel_population = {
 						kill_pop = yes
 					}
 				}
-				change_variable = {
-					which = expel_pop_var
-					value = -1
-				}
 			}		
+			clear_variable = expel_pop_var
 		}
 	}
 

@@ -1,9 +1,9 @@
 # Original File
 #
-# Calvitix Check 3.0.3  21/05/2021
+# Calvitix Check 3.1.1  14/09/2021
 #
 # Merge with Giga 21/04/2021
-# Merge wit Starnet AI 22/06/2021
+# Merge wit Starnet AI 16/09/2021
 #
 #############
 # Resource buildings
@@ -16,6 +16,9 @@ building_foundry_1 = {
 	potential = {
 		NOT = { has_modifier = resort_colony }
 		NOT = { has_modifier = slave_colony }
+		OR = {
+			building_relaxed_basic_income_check = yes
+		}
 	}
 
 	allow = {
@@ -26,6 +29,7 @@ building_foundry_1 = {
 		OR = {
 			has_modifier = resort_colony
 			has_modifier = slave_colony
+#mod ?
 			and = {
 				is_capital = yes
 				owner = { 
@@ -41,13 +45,17 @@ building_foundry_1 = {
 				years_passed > 20
 				not = { owner = { has_origin = origin_void_dwellers } }
 			}
+###
 		}
 	}
 
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
-			owner = { is_hive_empire = yes }
+			owner = {
+				is_hive_empire = yes
+				is_catalytic_empire = no
+			}
 		}
 		modifier = {
 			job_alloy_drone_add = @b1_jobs
@@ -57,7 +65,10 @@ building_foundry_1 = {
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
-			owner = { is_machine_empire = yes }
+			owner = {
+				is_machine_empire = yes
+				is_catalytic_empire = no
+			}
 		}
 		modifier = {
 			job_fabricator_add = @b1_jobs
@@ -67,10 +78,39 @@ building_foundry_1 = {
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
-			owner = { is_regular_empire = yes }
+			owner = {
+				is_gestalt = yes
+				is_catalytic_empire = yes
+			}
+		}
+		modifier = {
+			job_catalytic_drone_add = @b1_jobs
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_regular_empire = yes
+				is_catalytic_empire = no
+			}
 		}
 		modifier = {
 			job_foundry_add = @b1_jobs
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_regular_empire = yes
+				is_catalytic_empire = yes
+			}
+		}
+		modifier = {
+			job_catalytic_technician_add = @b1_jobs
 		}
 	}
 
@@ -84,6 +124,7 @@ building_foundry_1 = {
 		}
 	}
 
+#STARNET AI
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
@@ -97,6 +138,7 @@ building_foundry_1 = {
 			job_starnet_spice_melange_antifarmer_add = -1
 		}
 	}
+###
 
 	upgrades = {
 		building_foundry_2
@@ -109,7 +151,10 @@ building_foundry_1 = {
 	triggered_desc = {
 		trigger = {
 			exists = owner
-			owner = { is_regular_empire = yes }
+			owner = {
+				is_regular_empire = yes
+				is_catalytic_empire = no
+			}
 		}
 		text = job_foundry_effect_desc
 	}
@@ -117,7 +162,21 @@ building_foundry_1 = {
 	triggered_desc = {
 		trigger = {
 			exists = owner
-			owner = { is_hive_empire = yes }
+			owner = {
+				is_regular_empire = yes
+				is_catalytic_empire = yes
+			}
+		}
+		text = job_catalytic_technician_effect_desc
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = {
+				is_hive_empire = yes
+				is_catalytic_empire = no
+			}
 		}
 		text = job_alloy_drone_effect_desc
 	}
@@ -125,24 +184,39 @@ building_foundry_1 = {
 	triggered_desc = {
 		trigger = {
 			exists = owner
-			owner = { is_machine_empire = yes }
+			owner = {
+				is_machine_empire = yes
+				is_catalytic_empire = no
+			}
 		}
 		text = job_fabricator_effect_desc
 	}
 
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = {
+				is_gestalt = yes
+				is_catalytic_empire = yes
+			}
+		}
+		text = job_catalytic_drone_effect_desc
+	}
+	
 	ai_resource_production = {
-		alloys = 3 # This is an important building for future upgrades
+		alloys = 4 # This is an important building for future upgrades
 		trigger = {
 			always = yes
 		}
 	}
+#mod ?	
 	ai_resource_production = {
 		alloys = 10 
 		trigger = {
 			is_capital = yes
 		}
 	}
-
+###
 	ai_resource_production = { # Overvalue this building if this planet is a major source of alloys.
 		alloys = 3
 		trigger = {
@@ -220,6 +294,27 @@ building_foundry_2 = {
 		tech_alloys_1
 	}
 
+#3.1.1
+	planet_modifier = {
+		planet_metallurgists_alloys_produces_add = 1
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_catalytic_empire = no
+			}
+		}
+		modifier = {
+			planet_metallurgists_minerals_upkeep_add = 2
+		}
+	}
+
+###
+
+
+
 #Starnet AI
 	triggered_planet_modifier = {
 		potential = {
@@ -243,7 +338,10 @@ building_foundry_2 = {
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
-			owner = { is_regular_empire = yes }
+			owner = {
+				is_regular_empire = yes
+				is_catalytic_empire = no
+			}
 		}
 		modifier = {
 			job_foundry_add = @b1_jobs
@@ -253,7 +351,24 @@ building_foundry_2 = {
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
-			owner = { is_hive_empire = yes }
+			owner = {
+				is_regular_empire = yes
+				is_catalytic_empire = yes
+			}
+		}
+		modifier = {
+			planet_metallurgists_food_upkeep_add = 3
+			job_catalytic_technician_add = @b1_jobs
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_hive_empire = yes
+				is_catalytic_empire = no
+			}
 		}
 		modifier = {
 			job_alloy_drone_add = @b1_jobs
@@ -263,21 +378,37 @@ building_foundry_2 = {
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
-			owner = { is_machine_empire = yes }
+			owner = {
+				is_machine_empire = yes
+				is_catalytic_empire = no
+			}
 		}
 		modifier = {
 			job_fabricator_add = @b1_jobs
 		}
 	}
 
-	triggered_desc = {
-		text = building_foundry_2_effect_desc
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_gestalt = yes
+				is_catalytic_empire = yes
+			}
+		}
+		modifier = {
+			planet_metallurgists_food_upkeep_add = 3
+			job_catalytic_drone_add = @b1_jobs
+		}
 	}
 
 	triggered_desc = {
 		trigger = {
 			exists = owner
-			owner = { is_regular_empire = yes }
+			owner = {
+				is_regular_empire = yes
+				is_catalytic_empire = no
+			}
 		}
 		text = job_foundry_effect_desc
 	}
@@ -285,7 +416,21 @@ building_foundry_2 = {
 	triggered_desc = {
 		trigger = {
 			exists = owner
-			owner = { is_hive_empire = yes }
+			owner = {
+				is_regular_empire = yes
+				is_catalytic_empire = yes
+			}
+		}
+		text = job_catalytic_technician_effect_desc
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = {
+				is_hive_empire = yes
+				is_catalytic_empire = no
+			}
 		}
 		text = job_alloy_drone_effect_desc
 	}
@@ -293,9 +438,23 @@ building_foundry_2 = {
 	triggered_desc = {
 		trigger = {
 			exists = owner
-			owner = { is_machine_empire = yes }
+			owner = {
+				is_machine_empire = yes
+				is_catalytic_empire = no
+			}
 		}
 		text = job_fabricator_effect_desc
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = {
+				is_gestalt = yes
+				is_catalytic_empire = yes
+			}
+		}
+		text = job_catalytic_drone_effect_desc
 	}
 
 	ai_resource_production = {
@@ -374,6 +533,10 @@ building_foundry_3 = {
 		tech_alloys_2
 	}
 
+	planet_modifier = {
+		planet_metallurgists_alloys_produces_add = 2
+	}
+	
 ##Starnet AI
 	triggered_planet_modifier = {
 		potential = {
@@ -397,7 +560,22 @@ building_foundry_3 = {
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
-			owner = { is_regular_empire = yes }
+			owner = {
+				is_catalytic_empire = no
+			}
+		}
+		modifier = {
+			planet_metallurgists_minerals_upkeep_add = 4
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_regular_empire = yes
+				is_catalytic_empire = no
+			}
 		}
 		modifier = {
 			job_foundry_add = @b1_jobs
@@ -407,7 +585,24 @@ building_foundry_3 = {
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
-			owner = { is_hive_empire = yes }
+			owner = {
+				is_regular_empire = yes
+				is_catalytic_empire = yes
+			}
+		}
+		modifier = {
+			planet_metallurgists_food_upkeep_add = 6
+			job_catalytic_technician_add = @b1_jobs
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_hive_empire = yes
+				is_catalytic_empire = no
+			}
 		}
 		modifier = {
 			job_alloy_drone_add = @b1_jobs
@@ -417,21 +612,37 @@ building_foundry_3 = {
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
-			owner = { is_machine_empire = yes }
+			owner = {
+				is_machine_empire = yes
+				is_catalytic_empire = no
+			}
 		}
 		modifier = {
 			job_fabricator_add = @b1_jobs
 		}
 	}
 
-	triggered_desc = {
-		text = building_foundry_3_effect_desc
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_gestalt = yes
+				is_catalytic_empire = yes
+			}
+		}
+		modifier = {
+			planet_metallurgists_food_upkeep_add = 6
+			job_catalytic_drone_add = @b1_jobs
+		}
 	}
 
 	triggered_desc = {
 		trigger = {
 			exists = owner
-			owner = { is_regular_empire = yes }
+			owner = {
+				is_regular_empire = yes
+				is_catalytic_empire = no
+			}
 		}
 		text = job_foundry_effect_desc
 	}
@@ -439,7 +650,31 @@ building_foundry_3 = {
 	triggered_desc = {
 		trigger = {
 			exists = owner
-			owner = { is_machine_empire = yes }
+			owner = {
+				is_regular_empire = yes
+				is_catalytic_empire = yes
+		}
+	}
+		text = job_catalytic_technician_effect_desc
+	}
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = {
+				is_hive_empire = yes
+				is_catalytic_empire = no
+			}
+		}
+		text = job_alloy_drone_effect_desc
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = {
+				is_machine_empire = yes
+				is_catalytic_empire = no
+			}
 		}
 		text = job_fabricator_effect_desc
 	}
@@ -447,9 +682,12 @@ building_foundry_3 = {
 	triggered_desc = {
 		trigger = {
 			exists = owner
-			owner = { is_hive_empire = yes }
+			owner = {
+				is_gestalt = yes
+				is_catalytic_empire = yes
+			}
 		}
-		text = job_alloy_drone_effect_desc
+		text = job_catalytic_drone_effect_desc
 	}
 
 	ai_resource_production = {
@@ -503,6 +741,7 @@ building_factory_1 = {
 		str_factory_allow = yes #Starnet AI
 		NOT = { has_modifier = resort_colony }
 		NOT = { has_modifier = slave_colony }
+		building_relaxed_basic_income_check = yes
 	}
 
 	destroy_trigger = {
@@ -510,6 +749,7 @@ building_factory_1 = {
 			has_modifier = resort_colony
 			has_modifier = slave_colony
 
+#mod ?
 			AND = {
 				num_unemployed < 1
 				is_capital = yes
@@ -527,6 +767,7 @@ building_factory_1 = {
 					}
 				}
 			}
+###
 			AND = {
 				exists = owner
 				owner = {
@@ -540,10 +781,26 @@ building_factory_1 = {
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
-			owner = { is_regular_empire = yes }
+			owner = {
+				is_regular_empire = yes
+				is_crafter_empire = no
+			}
 		}
 		modifier = {
 			job_artisan_add = @b1_jobs
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_regular_empire = yes
+				is_crafter_empire = yes
+			}
+		}
+		modifier = {
+			job_artificer_add = @b1_jobs
 		}
 	}
 
@@ -567,6 +824,7 @@ building_factory_1 = {
 		}
 	}
 
+#Starnet AI
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
@@ -580,6 +838,7 @@ building_factory_1 = {
 			job_starnet_spice_melange_antifarmer_add = -1
 		}
 	}
+###
 
 	prerequisites = {
 		tech_basic_industry
@@ -592,9 +851,23 @@ building_factory_1 = {
 	triggered_desc = {
 		trigger = {
 			exists = owner
-			owner = { is_regular_empire = yes }
+			owner = {
+				is_regular_empire = yes
+				is_crafter_empire = no
+			}
 		}
 		text = job_artisan_effect_desc
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = {
+				is_regular_empire = yes
+				is_crafter_empire = yes
+			}
+		}
+		text = job_artificer_effect_desc
 	}
 
 	triggered_desc = {
@@ -650,8 +923,8 @@ building_factory_2 = {
 
 	allow = {
 		has_upgraded_capital = yes
-		buildings_upgrade_allow = yes
-		buildings_has_crystals = yes
+		buildings_upgrade_allow = yes #mod ?
+		buildings_has_crystals = yes #mod ?
 	}
 
 	potential = {
@@ -679,6 +952,11 @@ building_factory_2 = {
 		}
 	}
 
+	planet_modifier = {
+		planet_artisans_consumer_goods_produces_add = 1
+		planet_artisans_minerals_upkeep_add = 1
+	}
+
 ##Starnet AI
 	triggered_planet_modifier = {
 		potential = {
@@ -702,10 +980,26 @@ building_factory_2 = {
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
-			owner = { is_regular_empire = yes }
+			owner = {
+				is_regular_empire = yes
+				is_crafter_empire = no
+			}
 		}
 		modifier = {
 			job_artisan_add = @b1_jobs
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_regular_empire = yes
+				is_crafter_empire = yes
+			}
+		}
+		modifier = {
+			job_artificer_add = @b1_jobs
 		}
 	}
 
@@ -740,15 +1034,25 @@ building_factory_2 = {
 	}
 
 	triggered_desc = {
-		text = building_factory_2_effect_desc
+		trigger = {
+			exists = owner
+			owner = {
+				is_regular_empire = yes
+				is_crafter_empire = no
+			}
+		}
+		text = job_artisan_effect_desc
 	}
 
 	triggered_desc = {
 		trigger = {
 			exists = owner
-			owner = { is_regular_empire = yes }
+			owner = {
+				is_regular_empire = yes
+				is_crafter_empire = yes
+			}
 		}
-		text = job_artisan_effect_desc
+		text = job_artificer_effect_desc
 	}
 
 	triggered_desc = {
@@ -806,7 +1110,7 @@ building_factory_3 = {
 	allow = {
 		has_major_upgraded_capital = yes
 		buildings_upgrade_allow = yes
-		buildings_has_crystals = yes
+		buildings_has_crystals = yes #mod ?
 	}
 
 	potential = {
@@ -834,6 +1138,13 @@ building_factory_3 = {
 		}
 	}
 
+
+	planet_modifier = {
+		planet_artisans_consumer_goods_produces_add = 2
+		planet_artisans_minerals_upkeep_add = 2
+	}
+
+
 ###Starnet AI
 	triggered_planet_modifier = {
 		potential = {
@@ -857,10 +1168,26 @@ building_factory_3 = {
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
-			owner = { is_regular_empire = yes }
+			owner = {
+				is_regular_empire = yes
+				is_crafter_empire = no
+			}
 		}
 		modifier = {
 			job_artisan_add = @b1_jobs
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_regular_empire = yes
+				is_crafter_empire = yes
+			}
+		}
+		modifier = {
+			job_artificer_add = @b1_jobs
 		}
 	}
 
@@ -891,7 +1218,33 @@ building_factory_3 = {
 	}
 
 	triggered_desc = {
-		text = building_factory_3_effect_desc
+		trigger = {
+			exists = owner
+			owner = {
+				is_regular_empire = yes
+				is_crafter_empire = no
+			}
+		}
+		text = job_artisan_effect_desc
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = {
+				is_regular_empire = yes
+				is_crafter_empire = yes
+			}
+		}
+		text = job_artificer_effect_desc
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_machine_empire = yes }
+		}
+		text = job_artisan_drone_effect_desc
 	}
 
 	ai_resource_production = {
@@ -959,6 +1312,7 @@ building_refinery = {
 		}
 	}
 
+#Starnet AI
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
@@ -978,11 +1332,14 @@ building_refinery = {
 	}
 
 	on_queued = {
-		owner = { set_timed_country_flag = {
-			flag = str_is_bulding_gases
-			days = 720
-		} }
+		owner = { 
+			set_timed_country_flag = {
+				flag = str_is_bulding_gases
+				days = 720
+			} 
+		}
 	}
+###
 
 	triggered_planet_modifier = {
 		potential = {
@@ -1084,6 +1441,7 @@ building_chemical_plant = {
 		}
 	}
 
+#Starnet AI
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
@@ -1108,6 +1466,7 @@ building_chemical_plant = {
 			days = 720
 		} }
 	}
+###
 
 	triggered_planet_modifier = {
 		potential = {
@@ -1210,6 +1569,7 @@ building_crystal_plant = {
 		}
 	}
 
+###Starnet AI
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
@@ -1234,6 +1594,7 @@ building_crystal_plant = {
 			days = 720
 		} }
 	}
+###
 
 	triggered_planet_modifier = {
 		potential = {
@@ -1424,6 +1785,7 @@ building_ministry_production = {
 
 	allow = {
 		has_major_upgraded_capital = yes
+### mod ?
 		or = {
 			owner = { is_ai = no }
 			planet_resource_compare = {
@@ -1441,7 +1803,7 @@ building_ministry_production = {
 			has_designation = col_habitat_factory
 			has_designation = col_habitat_foundry
 		}
-
+###
 	}
 
 	planet_modifier = {
@@ -1463,6 +1825,7 @@ building_ministry_production = {
 		}
 	}
 
+###starnet AI
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
@@ -1480,6 +1843,7 @@ building_ministry_production = {
 			job_starnet_spice_melange_antifarmer_add = -1
 		}
 	}
+###
 
 	prerequisites = {
 		"tech_global_production_strategy"
@@ -1561,6 +1925,7 @@ building_production_center = {
 
 	allow = {
 		has_major_upgraded_capital = yes
+#mod ?
 		or = {
 			owner = { is_ai = no }
 			planet_resource_compare = {
@@ -1578,6 +1943,7 @@ building_production_center = {
 			has_designation = col_habitat_factory
 			has_designation = col_habitat_foundry
 		}
+###
 	}
 
 	planet_modifier = {
@@ -1601,7 +1967,10 @@ building_production_center = {
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
-			owner = { is_hive_empire = yes }
+			owner = {
+				is_hive_empire = yes
+				is_catalytic_empire = no
+			}
 		}
 		job_alloy_drone_add = 2
 	}
@@ -1609,9 +1978,34 @@ building_production_center = {
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
-			owner = { is_machine_empire = yes }
+			owner = {
+				is_hive_empire = yes
+				is_catalytic_empire = yes
+			}
+		}
+		job_catalytic_drone_add = 2
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_machine_empire = yes
+				is_catalytic_empire = no
+			}
 		}
 		job_fabricator_add = 1
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_machine_empire = yes
+				is_catalytic_empire = yes
+			}
+		}
+		job_catalytic_drone_add = 1
 	}
 
 	prerequisites = {
@@ -1621,7 +2015,10 @@ building_production_center = {
 	triggered_desc = {
 		trigger = {
 			exists = owner
-			owner = { is_hive_empire = yes }
+			owner = {
+				is_hive_empire = yes
+				is_catalytic_empire = no
+			}
 		}
 		text = job_alloy_drone_effect_desc
 	}
@@ -1629,15 +2026,41 @@ building_production_center = {
 	triggered_desc = {
 		trigger = {
 			exists = owner
-			owner = { is_machine_empire = yes }
+			owner = {
+				is_machine_empire = yes
+				is_catalytic_empire = no
+			}
 		}
 		text = job_fabricator_effect_desc
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = {
+				is_gestalt = yes
+				is_catalytic_empire = yes
+			}
+		}
+		text = job_catalytic_drone_effect_desc
 	}
 
 	show_tech_unlock_if = {
 		is_gestalt = yes
 	}
 
+	ai_resource_production = {
+		trigger = { always = yes }
+		alloys = 3
+	}
+	ai_resource_production = {
+		trigger = {
+			owner = {
+				country_uses_consumer_goods = yes
+			}
+		}
+		consumer_goods = 6
+	}
 	ai_resource_production = {
 		trigger = { always = yes }
 		alloys = 3

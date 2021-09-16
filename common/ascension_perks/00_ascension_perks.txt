@@ -1,10 +1,10 @@
 # Original File
 #
-# Calvitix Check 3.0.3  21/05/2021
+# Calvitix Check 3.1.1  14/09/2021
 #
 # Merge with Arisphaos Unofficial patch
 #
-# Merge with STARNET AI 22/08/2021
+# Merge with STARNET AI 16/09/2021
 #
 
 # removed by plentiful perks (but restored)
@@ -62,7 +62,10 @@ ap_become_the_crisis = {
 				is_militarist = yes
 				is_xenophobe = yes
 				is_gestalt = yes
-				and = { is_authoritarian = yes is_spiritualist = yes  }
+				and = {
+					is_authoritarian = yes
+					is_spiritualist = yes
+				}
 		}
 		}
 
@@ -274,10 +277,7 @@ ap_colossus = {
 		}
 		modifier = {
 			factor = 0.25
-			is_pacifist = yes
-### Plentiful perks			
 			is_ethics_aligned = { ARG1 = pacifist }
-###
 		}
 		modifier = {
 			factor = 2
@@ -299,6 +299,18 @@ ap_colossus = {
 ap_engineered_evolution = {
 	on_enabled = {
 		add_research_option = tech_gene_seed_purification
+#3.1.1
+		if = {
+			limit = {
+				has_origin = origin_clone_army
+				OR = {
+					has_trait = trait_clone_soldier_infertile
+					has_trait = trait_clone_soldier_infertile_full_potential
+				}
+			}
+			custom_tooltip = clone_soldier_locked_genes
+		}
+###
 		hidden_effect = {
 			country_event = { id = utopia.2700 }
 		}
@@ -341,11 +353,10 @@ ap_engineered_evolution = {
 		host_has_dlc = "Utopia"
 		NOT = {
 			has_ascension_perk = ap_engineered_evolution
-			#has_authority = "auth_machine_intelligence"
-			has_civic = civic_machine_terminator
+			has_authority = "auth_machine_intelligence"
 		}
-#		is_mechanical_empire = no
-#		is_cyborg_empire = no
+		is_mechanical_empire = no
+		is_cyborg_empire = no
 	}
 
 	ai_weight = {
@@ -367,6 +378,18 @@ ap_evolutionary_mastery = {
 	on_enabled = {
 		add_research_option = giga_tech_the_vat
 		add_research_option = tech_genetic_resequencing
+#3.1.1
+		if = {
+			limit = {
+				has_origin = origin_clone_army
+				OR = {
+					has_trait = trait_clone_soldier_infertile
+					has_trait = trait_clone_soldier_infertile_full_potential
+				}
+			}
+			custom_tooltip = clone_soldier_locked_genes
+		}
+###
 		hidden_effect = {
 			country_event = { id = utopia.2703 }
 		}
@@ -405,11 +428,10 @@ ap_evolutionary_mastery = {
 		host_has_dlc = "Utopia"
 		NOT = {
 			has_ascension_perk = ap_evolutionary_mastery
-			#has_authority = "auth_machine_intelligence" #plentiful perk
-			has_civic = civic_machine_terminator
+			has_authority = "auth_machine_intelligence"
 		}
-#		is_mechanical_empire = no  #plentiful perk
-#		is_cyborg_empire = no   #plentiful perk
+		is_mechanical_empire = no
+		is_cyborg_empire = no
 	}
 
 	ai_weight = {
@@ -493,7 +515,10 @@ ap_the_flesh_is_weak = {
 		factor = 500
 		modifier = {
 			factor = 0.001
-			or = { has_ethic = ethic_spiritualist has_ethic = ethic_fanatic_spiritualist }
+			or = {
+				has_ethic = ethic_spiritualist
+				has_ethic = ethic_fanatic_spiritualist
+			}
 		}
 		modifier = {
 			factor = 0
@@ -512,6 +537,28 @@ ap_synthetic_evolution = {
 			}
 			custom_tooltip = disables_necrophage_features
 		}
+#3.1.1
+		if = {
+			limit = {
+				has_origin = origin_clone_army
+				OR = {
+					has_trait = trait_clone_soldier_infertile
+					has_trait = trait_clone_soldier_infertile_full_potential
+					has_trait = trait_clone_soldier_fertile
+				}
+			}
+			custom_tooltip = disables_clone_army_origin_features
+		}
+		if = {
+			limit = {
+				OR = {
+					has_valid_civic = civic_idyllic_bloom
+					has_valid_civic = civic_hive_idyllic_bloom
+				}
+			}
+			custom_tooltip = disables_idyllic_bloom
+		}
+###
 		hidden_effect = {
 			country_event = { id = utopia.2550 }
 		}
@@ -951,7 +998,8 @@ ap_interstellar_dominion = {
 			has_civic = civic_hive_devouring_swarm
 			has_civic = civic_machine_terminator
 			has_civic = civic_machine_assimilator
-		} }
+			}
+		}
 
 		modifier = {
 			factor = 2
@@ -967,10 +1015,10 @@ ap_interstellar_dominion = {
 ap_grasp_the_void = {
 	possible = {
 		OR = {
-		custom_tooltip = {
-			fail_text = "requires_ascension_perks_1"
-			num_ascension_perks > 0
-		}
+			custom_tooltip = {
+				fail_text = "requires_ascension_perks_1"
+				num_ascension_perks > 0
+			}
 			custom_tooltip = {
 				fail_text = "requires_technology_exploration_cruiser"
 				has_technology = tech_explorationship_1
@@ -1824,7 +1872,10 @@ ap_hive_worlds = {
 ap_arcology_project = {
 	potential = {
 		host_has_dlc = "Megacorp"
+		OR = { #3.1.1
 		is_regular_empire = yes
+			has_valid_civic = civic_machine_servitor
+		}
 		NOT = { has_valid_civic = civic_agrarian_idyll }
 		NOT = {
 			has_ascension_perk = ap_arcology_project

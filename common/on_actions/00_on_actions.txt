@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.0.3b3  13/05/2021
+# Calvitix Check 3.1.1  15/09/2021
 #
 # Merge with Arisphaos Unofficial patch
 #
@@ -21,6 +21,12 @@ on_game_start = {
 		colony_mod.100 #titanic life blocker setup
 		game_start.50 # Set up Nebula system art
 		galactic_features.420 # Spawn VLUUR
+		clones.1 # Clone Army Origin, fix species before Leaders are generated
+		central.1 # Central Crystal event
+	}
+	random_events = {
+		19 = 0
+		1 = akx.8000
 	}
 }
 
@@ -29,6 +35,8 @@ on_game_start_country = {
 		game_start.33 # populate system with stations
 		game_start.10
 		necroids.4 # flip guaranteed planets to guaranteed primitives for Necrophage
+		clones.2 # Clone Army Origin
+		clones.3 # Clone Army Origin pop creation
 	}
 }
 
@@ -146,6 +154,7 @@ on_mid_game_pulse = {
 		leviathans.2011 # spawn wraith
 		leviathans.20101 # remove too-late wraith discovery
 		distar.2050
+		central.2
 	}
 }
 
@@ -160,6 +169,8 @@ on_monthly_pulse_country = {
 	events = {
 		tutorial.1337 #Artifact tutorial
 		cara.333 # ai checks if it can/wants to play with the caravaneers
+		clones.3 #Clone Army Origin pop creation
+		action.325 #Eminent Diplomats tradition
 	}
 }
 
@@ -309,6 +320,7 @@ on_custom_diplomacy = {
 		graygoo.502
 		graygoo.503
 		graygoo.504
+		central.19 # Crystalline Empire
 	}
 }
 
@@ -363,7 +375,6 @@ on_ground_combat_started = {
 # to retake the planet, the player is the attacker
 on_planet_attackers_win = {
 	events = {
-		#3.0.3b  5030 removed
 		colony.114
 		crisis.201
 		crisis.219
@@ -550,10 +561,8 @@ on_entering_system_fleet = {
 		drones.105 #Mining Drone Expansion Fleet
 		drones.125 #Mining Drone Expansion Fleet (Aggressive)
 		drones.205 #Crystal Splitters
-	}
-	random_events = {
-		99 = 0
-		1 = akx.9000
+		akx.9000
+		anomaly.6775
 	}
 }
 
@@ -697,6 +706,7 @@ on_colonized = {
 		tutorial.9000
 		origin.3001 #ToL Tree add
 		origin.84
+		clones.5 	#Clone Army (make sure pops don't migrate to die)
 	}
 }
 
@@ -753,7 +763,7 @@ on_ship_destroyed_victim = {
 		marauder.509
 		crisis.80
 		marauder.525
-		distar.57
+		#distar.57
 		graygoo.6
 		cara.900 # Tradestation Destroyed
 		graygoo.180
@@ -761,6 +771,7 @@ on_ship_destroyed_victim = {
 		crisis.261 # Remove Swarm System Effect
 		crisis.1311 # Remove Extradimensional System Effect
 		crisis.2601 # Remove Contingency System Effect
+		ancrel.11040
 	}
 }
 
@@ -907,6 +918,7 @@ on_fleet_destroyed_perp = {
 		galcom.101 # Killed Tiyanki Inside Borders
 		galactic_features.381 #  Tiyanki Counter
 		federations2.112 # Destroyed training targets in militarist federation challenge
+		ancrel.13000 #Destroyed Polaris fleet
 	}
 	random_events = {
 		300 = 0
@@ -1090,6 +1102,7 @@ on_ship_disabled = {
 		country.212
 		country.217
 		country.222
+		distar.58
 		leviathans.2100
 		distar.5053
 		pirate.70
@@ -1168,6 +1181,7 @@ on_planet_bombarded = {
 		crisis.2476
 		marauder.103
 		graygoo.2
+		graygoo.555
 		origin.3003 #ToL Tree death
 	}
 }
@@ -1414,7 +1428,7 @@ on_war_ended = {
 # From = country forcing the release
 # FromFrom = country they are released from
 # FromFromFrom = war
-on_country_released_in_war = { #3.0.3b3
+on_country_released_in_war = {
 	events = {
 		action.320
 	}
@@ -1502,6 +1516,7 @@ on_army_recruited = {
 on_army_killed_in_combat = {
 	events = {
 		emperor.450
+		necroids.15
 	}
 }
 
@@ -1544,6 +1559,7 @@ on_building_unqueued = {
 # This = Planet
 on_building_upgraded = {
 	events = {
+		plant.100
 	}
 }
 
@@ -1571,6 +1587,13 @@ on_building_replaced = {
 		leviathans.305
 		akx.10000
 		emperor.62
+	}
+}
+
+# A building construction has been downgraded and replaced.
+# This = Planet
+on_building_downgraded = {
+	events = {
 	}
 }
 
@@ -1718,7 +1741,8 @@ on_pop_purged = {
 		crisis.2044
 		# mandate.131
 		action.21 # Opinion effect on other empires
-		action.22 # #3.0.3b Resources from Forced Labor/Processing/Chemical Processing
+		action.22 # Resources from Forced Labor/Processing/Chemical Processing
+		action.95 # Purging the last Primitive Pop removes Culture Shock from the planet
 		utopia.180 # Gain resources for fanatic purifiers civic
 		utopia.181 # Gain resources for devouring swarm
 		syndaw.1330 # Gain resources for exterminators
@@ -1745,7 +1769,7 @@ on_pop_declined = {
 on_pop_displaced = {
 	events = {
 		refugees.3
-		crisis.4030 # Menace Objective - Purge Pops #3.0.3b
+		crisis.4030 # Menace Objective - Purge Pops
 	}
 }
 
@@ -1806,7 +1830,7 @@ on_planet_conquer = {
 	}
 }
 
-#From = Planet scope
+#From = Planet/Starbase/Megastructure scope
 #This = Fleet scope
 on_fleet_enter_orbit = {
 	events = {
@@ -1884,7 +1908,7 @@ on_country_destroyed = {
 		crisis.2404
 		war_in_heaven.17 #WiH - both AFEs dead - do not flip the order here!
 		war_in_heaven.10 #WiH - first AFE dead by NAL - do not flip the order here
-		crisis.4020	# Menace Objective: Destroy Empire. #3.0.3b
+		crisis.4020	# Menace Objective: Destroy Empire.
 		emperor.63
 	}
 }
@@ -2001,6 +2025,7 @@ on_colony_1_year_old = {
 
 on_colony_2_years_old = {
 	events = {
+		colony.5000 # The Lonely Bot (randomisation set in deposit placement)
 	}
 	random_events = {
 		150 = 0
@@ -2023,6 +2048,11 @@ on_colony_2_years_old = {
 		#15 = colony.2050 # Clerical Errors
 		10 = colony.3001 # Rogue Moon
 		8 = colony.3005 # Dimensional Portal
+
+		8 = colony.9000 #Turtle World
+
+
+		15 = colony.2060 # Strange Mushrooms
 
 		### Archaeology Colony Sites
 		3 = ancrel.6049 # Blade of the Huntress
@@ -2182,6 +2212,7 @@ on_leader_spawned = {
 		utopia.6000 # hive mind ruler gets hive mind trait to make them immortal
 		syndaw.1050 # Machine Intelligence ruler gets trait
 		distar.173 # New Leaders Get Brainslug Trait
+		clones.24 # New Leaders gain Clone Army Admiral traits
 	}
 	random_events = {
 		80 = 0
@@ -2416,6 +2447,7 @@ on_subject_integrated = {
 on_released_as_vassal = {
 	events = {
 		action.229 # Sort out their origin
+		action.230 # Convert released megacorps into oligarchies
 	}
 }
 
@@ -2505,6 +2537,13 @@ on_operation_chapter_finished = {
 on_operation_finished = {
 }
 
+# THIS = Espionage operation
+on_operation_cancelled = {
+	events = {
+		action.330
+	}
+}
+
 # Executed just as country is changing its government, before the new one is applied
 # THIS = country
 on_pre_government_changed = {
@@ -2527,7 +2566,14 @@ on_custodian_term_ends = {
 	}
 }
 
-#3.0.3b
+# Executed when a country picks any tradition (including starters and finishers)
+# THIS = country
+on_tradition_picked = {}
+
+# Executed when a country picks an ascension perk
+# THIS = country
+on_ascension_perk_picked = {}
+
 # Executed when a megastructure has a new owner
 # this = new owner
 # from = megastructure
@@ -2543,4 +2589,21 @@ on_megastructure_change_owner = {
 # from = megastructure
 # fromfrom = old owner (if existing)
 on_megastructure_ownerless = {
+}
+
+on_crystalline_empire_task = {
+	random_events = {
+		10 = central.50 # Refugees from the Empire
+		10 = central.60 # Secret Techniques
+		10 = central.70 # Curious Scientist
+	}
+}
+
+#Fired from destroy_star_system scripted effect
+#This = system
+#From = destroyer (if using a star cracker)
+on_destroy_star_system = {
+	events = {
+		crisis.220
+	}
 }

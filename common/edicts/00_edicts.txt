@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.0.3  21/05/2021
+# Calvitix Check 3.1.1  14/09/2021
 #
 # Merge with Starnet AI 22/08/2021
 # #Calvitix, re-enable all edicts for more diversity
@@ -77,7 +77,7 @@ fortify_the_border = {
 
 	resources = {
 		category = edicts
-		cost = { #Activation Cost #3.0.3b2
+		cost = { #Activation Cost 
 			trigger = {
 				NOT = { has_edict = fortify_the_border }
 			}
@@ -338,7 +338,7 @@ diplomatic_grants = {
 	}
 
 	potential = {
-		has_non_swapped_tradition = tr_diplomacy_adopt
+		has_tradition = tr_diplomacy_adopt
 		has_comms_with_alien_empire = yes
 		# is_ai = no
 	}
@@ -368,9 +368,12 @@ enhanced_surveillance = {
 	}
 
 	potential = {
-		has_tradition = tr_domination_judgment_corps
-		has_comms_with_alien_empire = yes
+		has_active_tradition = tr_domination_judgment_corps
 		is_gestalt = no
+	}
+
+	allow = {
+		has_comms_with_alien_empire = yes
 	}
 
 	ai_weight = {
@@ -667,7 +670,7 @@ extended_shifts = {
 	}
 
 	potential = {
-		has_non_swapped_tradition = tr_domination_workplace_motivators
+		has_active_tradition = tr_domination_workplace_motivators
 	}
 
 	ai_weight = {
@@ -751,7 +754,7 @@ industrial_maintenance = {
 
 	potential = {
 		is_machine_empire = yes
-		has_swapped_tradition = tr_synchronicity_finish
+		has_tradition = tr_synchronicity_finish
 	}
 
 	ai_weight = {
@@ -787,7 +790,7 @@ drone_overdrive = {
 
 	potential = {
 		is_gestalt = yes
-		has_swapped_tradition = tr_domination_drone_network
+		has_active_tradition = tr_domination_drone_network
 	}
 
 	ai_weight = {
@@ -826,8 +829,7 @@ capacity_subsidies = {
 
 	modifier = {
 		planet_technician_produces_mult = 0.50
-		custom_tooltip = edict_capacity_subsidies_tooltip
-		show_only_custom_tooltip = no
+		planet_technician_energy_upkeep_add = 0.5 #3.1.1
 	}
 
 	prerequisites = {
@@ -867,8 +869,8 @@ mining_subsidies = {
 
 	modifier = {
 		planet_miners_produces_mult = 0.50 # Note: Also affects organic special resource miners!
-		custom_tooltip = edict_mining_subsidies_tooltip
-		show_only_custom_tooltip = no
+		planet_miners_energy_upkeep_add = 0.5
+		planet_sr_miners_energy_upkeep_add = 0.5 #Note: _add modifiers don't apply to children, but _mult ones do, so this is necessary here
 	}
 
 	prerequisites = {
@@ -909,8 +911,7 @@ farming_subsidies = {
 
 	modifier = {
 		planet_farmers_produces_mult = 0.50
-		custom_tooltip = edict_farming_subsidies_tooltip
-		show_only_custom_tooltip = no
+		planet_farmers_energy_upkeep_add = 0.5
 	}
 
 	prerequisites = {
@@ -919,19 +920,11 @@ farming_subsidies = {
 
 	ai_weight = {
 		weight = @EdictMedPrio
+
 		modifier = {
-			factor = 0
-			or = {
-				not = {
-					has_edict = capacity_subsidies
-				}
-				not = {
-					has_edict = mining_subsidies
-		}
-				not = {
-					has_edict = fortify_the_border
-				}
-			}
+			factor = 2
+			has_monthly_income = { resource = food value < 0 }
+			has_monthly_income = { resource = energy value > 50 }
 		}
 	}
 }
@@ -959,8 +952,7 @@ industrial_subsidies = {
 
 	modifier = {
 		planet_artisans_produces_mult = 0.10
-		custom_tooltip = edict_industrial_subsidies_tooltip
-		show_only_custom_tooltip = no
+		planet_artisans_energy_upkeep_add = 1
 	}
 
 	potential = {
@@ -1010,8 +1002,7 @@ forge_subsidies = {
 
 	modifier = {
 		planet_metallurgists_produces_mult = 0.10
-		custom_tooltip = edict_forge_subsidies_tooltip
-		show_only_custom_tooltip = no
+		planet_metallurgists_energy_upkeep_add = 1
 	}
 
 	prerequisites = {
@@ -1019,21 +1010,7 @@ forge_subsidies = {
 	}
 
 	ai_weight = {
-		weight = @EdictLowPrio
-		modifier = {
-			factor = 0
-			or = {
-				not = {
-					has_edict = capacity_subsidies
-				}
-				not = {
-					has_edict = mining_subsidies
-				}
-				not = {
-					has_edict = fortify_the_border
-				}
-			}
-		}
+		weight = @EdictHighPrio
 	}
 }
 
@@ -1060,8 +1037,7 @@ research_subsidies = {
 
 	modifier = {
 		planet_researchers_produces_mult = 0.10
-		custom_tooltip = edict_research_subsidies_tooltip
-		show_only_custom_tooltip = no
+		planet_researchers_energy_upkeep_add = 1
 	}
 
 	potential = {
@@ -1118,7 +1094,7 @@ peace_festivals = {
 			trigger = {
 				has_edict = peace_festivals
 			}
-			influence = 50 #3.0.3b2
+			influence = 50
 		}
 	}
 
@@ -1129,6 +1105,7 @@ peace_festivals = {
 
 	potential = {
 		is_pacifist = yes
+#mod ?
 		or = {
 			is_ai = no
 			and = {
@@ -1136,6 +1113,7 @@ peace_festivals = {
 			is_difficulty < 3
 			} 
 		}
+###
 	}
 
 	ai_weight = {
@@ -1171,6 +1149,7 @@ information_quarantine = {
 
 	potential = {
 		is_authoritarian = yes
+#mod ?
 		or = {
 			is_ai = no
 			and = {
@@ -1178,16 +1157,19 @@ information_quarantine = {
 			is_difficulty < 3
 			} 
 		}
+###
 	}
 
 	ai_weight = {
 		weight = @EdictLowPrio
+#mod ?
 		modifier = {
 			factor = 0
 			not = {
 				has_edict = capacity_subsidies
 			}
 		}
+###
 	}
 }
 

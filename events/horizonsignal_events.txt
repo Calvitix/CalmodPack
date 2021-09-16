@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.0.1  23/04/2021
+# Calvitix Check 3.1.1  15/09/2021
 #
 # Merge with Arisphaos Unofficial patch
 # Merge with PD patch
@@ -15,6 +15,29 @@
 
 namespace = akx
 
+# Designate Horizon Signal system
+event = {
+	id = akx.8000
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		random_system = {
+			limit = {
+				is_star_class = sc_black_hole
+				is_fe_cluster = no
+				NOR = {
+					exists = starbase
+					has_star_flag = guardian
+					has_star_flag = empire_cluster
+				}
+			}
+			set_star_flag = horizonsignal_spawn
+		}
+	}
+}
+
+# debug
 fleet_event = {
 	id = akx.8888
 	title = akx.9000.name
@@ -86,6 +109,7 @@ fleet_event = {
 		from = { # solar system scope
 			is_star_class = sc_black_hole
 			NOT = { has_star_flag = guardian }
+			has_star_flag = horizonsignal_spawn
 		}
 		exists = leader
 		leader = {

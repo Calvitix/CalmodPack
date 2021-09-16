@@ -1,7 +1,7 @@
 
 # Original File
 #
-# Calvitix Check 3.0.1  17/04/2021
+# Calvitix Check 3.1.1  17/04/2021
 #
 # Merge with JLPicard
 #
@@ -552,6 +552,10 @@ fleet_event = {
 
 # perp port
 # on_fleet_destroyed_perp
+# This = owner of fleet 1 (combatant)
+# From = owner of fleet 2 (destroyed)
+# FromFrom = fleet 1
+# FromFromFrom = fleet 2
 country_event = {
 	id = pirate.13
 	hide_window = yes
@@ -560,6 +564,7 @@ country_event = {
 
 	trigger = {
 		NOT = { has_global_flag = privateers_destroyed }
+		is_country_type = default
 		from = {
 			is_country_type = pirate
 			has_communications = root
@@ -576,10 +581,10 @@ country_event = {
 				}
 			}
 		}
-		is_country_type = default
 	}
 
 	immediate = {
+		fromfrom = { save_event_target_as = killer_fleet }
 		country_event = { id = pirate.15 }
 	}
 }
@@ -1217,19 +1222,19 @@ country_event = {
 					weights = {
 						base = 1
 						modifier = {
-							mult = 1600
+							factor = 1600
 							trade_intercepted_percentage >= 80
 						}
 						modifier = {
-							mult = 800
+							factor = 800
 							trade_intercepted_percentage >= 60
 						}
 						modifier = {
-							mult = 400
+							factor = 400
 							trade_intercepted_percentage >= 40
 						}
 						modifier = {
-							mult = 100
+							factor = 100
 							trade_intercepted_percentage >= 20
 						}
 					}

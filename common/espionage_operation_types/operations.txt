@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.0.3b  30/04/2021
+# Calvitix Check 3.1.1  15/09/2021
 #
 # Merge with Skalla Ai's Overhaul
 #
@@ -56,7 +56,7 @@ operation_gather_information = {
     resources = {
         category = operations
         cost = {
-            energy = 200 #3.0.3b
+            energy = 200
         }
         upkeep = {
             energy = 4
@@ -64,7 +64,6 @@ operation_gather_information = {
     }
 
     spy_power_cost = 10
-    spy_network_lvl_requirement = 10
     potential = {}
     allow = {
         custom_tooltip = {
@@ -103,7 +102,7 @@ operation_diplomatic_incident = {
     resources = {
         category = operations
         cost = {
-            energy = 300 #3.0.3b
+            energy = 300
         }
         upkeep = {
             energy = 5
@@ -111,19 +110,16 @@ operation_diplomatic_incident = {
     }
 
     spy_power_cost = 25
-    spy_network_lvl_requirement = 25
     potential = {
         has_nemesis = yes
         owner = { num_communications > 3 }
         target = { is_homicidal = no }
     }
     allow = {
-        owner = {
             custom_tooltip = {
                 fail_text = saturated_with_scandals
-                NOT = { has_country_flag = operation_diplomatic_incident@root.target }
+			NOT = { has_spynetwork_flag = operation_diplomatic_incident_timer }
             }
-        }
         target = {
             num_communications > 3
             custom_tooltip = {
@@ -166,12 +162,11 @@ operation_sleeper_cells = {
     stages = 2
 
     spy_power_cost = 30
-    spy_network_lvl_requirement = 30
 
     resources = {
         category = operations
         cost = {
-            energy = 450 #3.0.3b
+            energy = 450
         }
         upkeep = {
             energy = 6
@@ -215,7 +210,7 @@ operation_acquire_asset = {
     resources = {
         category = operations
         cost = {
-            energy = 450 #3.0.3b
+            energy = 450
         }
         upkeep = {
             energy = 6
@@ -223,7 +218,6 @@ operation_acquire_asset = {
     }
 
     spy_power_cost = 30
-    spy_network_lvl_requirement = 30
     potential = { has_nemesis = yes }
     allow = {
         custom_tooltip = {
@@ -266,11 +260,10 @@ operation_extort_favors = {
     desc = operation_extort_favors_desc
     stages = 3
     spy_power_cost = 35
-    spy_network_lvl_requirement = 35
     resources = {
         category = operations
         cost = {
-            energy = 600 #3.0.3b
+            energy = 600
         }
         upkeep = {
             energy = 7
@@ -319,7 +312,7 @@ operation_smear_campaign = {
     resources = {
         category = operations
         cost = {
-            energy = 600 #3.0.3b
+            energy = 600
         }
         upkeep = {
             energy = 7
@@ -327,7 +320,6 @@ operation_smear_campaign = {
     }
 
     spy_power_cost = 35
-    spy_network_lvl_requirement = 35
     potential = {
         has_nemesis = yes
         owner = {
@@ -382,7 +374,7 @@ operation_steal_technology = {
     resources = {
         category = operations
         cost = {
-            energy = 800 #3.0.3b
+            energy = 800
         }
         upkeep = {
             energy = 8
@@ -390,7 +382,6 @@ operation_steal_technology = {
     }
 
     spy_power_cost = 40
-    spy_network_lvl_requirement = 40
     potential = { has_nemesis = yes }
     allow = {
         custom_tooltip = {
@@ -401,10 +392,8 @@ operation_steal_technology = {
         }
         custom_tooltip = {
             fail_text = operation_steal_technology_too_recent
-            owner = {
-                NOT = { has_country_flag = recently_stole_technology@root.target }
+			NOT = { has_spynetwork_flag = recently_stole_technology }
             }
-        }
         custom_tooltip = {
             is_running_espionage_operation = no
             fail_text = operation_one_at_a_time
@@ -449,7 +438,7 @@ operation_sabotage_starbase = {
     resources = {
         category = operations
         cost = {
-            energy = 1000 #3.0.3b
+            energy = 1000
         }
         upkeep = {
             energy = 9
@@ -457,7 +446,6 @@ operation_sabotage_starbase = {
     }
 
     spy_power_cost = 45
-    spy_network_lvl_requirement = 45
     target = starbase
 
     potential = { has_nemesis = yes }
@@ -524,12 +512,11 @@ operation_arm_privateers = {
     desc = operation_arm_privateers_desc
     stages = 3
     spy_power_cost = 60
-    spy_network_lvl_requirement = 60
 
     resources = {
         category = operations
         cost = {
-            energy = 1800 #3.0.3b
+            energy = 1800
         }
         upkeep = {
             energy = 12
@@ -578,7 +565,7 @@ operation_crisis_beacon = {
    resources = {
         category = operations
         cost = {
-            energy = 3200 #3.0.3b
+            energy = 3200
         }
         upkeep = {
             energy = 16
@@ -586,7 +573,6 @@ operation_crisis_beacon = {
     }
 
     spy_power_cost = 80
-    spy_network_lvl_requirement = 80
     potential = {
         has_nemesis = yes
         OR = {
@@ -607,12 +593,25 @@ operation_crisis_beacon = {
         }
     }
     allow = {
+		if = {
+			limit = {
+				owner = { has_country_flag = crisis_beacon_timer }
+			}
+			custom_tooltip = {
+				NOT = {
+					any_country = { has_country_flag = crisis_beacon_from@root.owner }
+				}
+				fail_text = operation_crisis_beacon_too_recent_timer
+			}
+		}
+		else = {
         custom_tooltip = {
             NOT = {
                 any_country = { has_country_flag = crisis_beacon_from@root.owner }
             }
             fail_text = operation_crisis_beacon_too_recent
         }
+		}
         custom_tooltip = {
             is_running_espionage_operation = no
             fail_text = operation_one_at_a_time
@@ -650,7 +649,7 @@ operation_weaken_galactic_empire = {
     resources = {
         category = operations
         cost = {
-            energy = 600 #3.0.3b
+            energy = 600
         }
         upkeep = {
             energy = 7
@@ -658,7 +657,6 @@ operation_weaken_galactic_empire = {
     }
 
     spy_power_cost = 35
-    spy_network_lvl_requirement = 35
     potential = {
         has_nemesis = yes
         has_galactic_emperor = yes
@@ -707,7 +705,7 @@ operation_target_seditionists = {
     resources = {
         category = operations
         cost = {
-            energy = 600 #3.0.3b
+            energy = 600
         }
         upkeep = {
             energy = 7
@@ -715,7 +713,6 @@ operation_target_seditionists = {
     }
 
     spy_power_cost = 35
-    spy_network_lvl_requirement = 35
     potential = {
         has_nemesis = yes
         has_galactic_emperor = yes
@@ -775,7 +772,7 @@ operation_spark_rebellion = {
     resources = {
         category = operations
         cost = {
-            energy = 2500 #3.0.3b
+            energy = 2500
         }
         upkeep = {
             energy = 14
@@ -783,7 +780,6 @@ operation_spark_rebellion = {
     }
 
     spy_power_cost = 70
-    spy_network_lvl_requirement = 70
     potential = {
         has_nemesis = yes
         has_galactic_emperor = yes

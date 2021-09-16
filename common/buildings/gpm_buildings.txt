@@ -1,3 +1,9 @@
+### GPM File
+#
+# Calvitix Check 3.1.1  16/09/2021
+#
+# Last GPM Update   16/09/2021
+
 ###############################
 ###       Fortresses	    ###
 ###############################
@@ -117,32 +123,15 @@ gpm_building_mining_nanite_nexus = {
 
 gpm_precursor_research_center = {
 	base_buildtime = 480
-	base_cap_amount = 1
+
+	empire_limit = {
+		base = 1
+	}
 
 	category = research
 
 	potential = {
-		custom_tooltip = {
-			text = EMPIRE_UNIQUE_BUILDING
-			exists = owner
-			owner = {
-				check_variable = { which = gpm_precursor_research_center_build_count value >= 1 }
-			}
-			# owner = {
-				# NOR = {
-					# has_country_flag = gpm_built_one_precursor_research_center
-					# has_country_flag gpm_precursor_research_center_building
-				# }
-				# has_country_flag = gpm_artifact_research_centre_unlocked
-			# }
-		}
-		# planet = { 
-			# OR = { 
-				# gpm_has_precursor_modifiers = yes
-				# has_planet_flag = gpm_is_precursor_orbiting_habitat
-			# }
-		# }
-		# owner = { is_regular_empire = yes }
+		owner = { has_country_flag = gpm_artifact_research_centre_unlocked }
 		has_ancrel = yes
 	}
 
@@ -153,19 +142,7 @@ gpm_precursor_research_center = {
 
 	resources = {
 		category = planet_buildings
-		cost = { #Calvitix Variety Costs
-			trigger = {
-				from = {
-					is_ai = no
-				}
-			}
-		alloys = 20 minerals = 700}
 		cost = {
-			trigger = {
-				from = {
-					is_ai = yes
-				}
-			}
 			minerals = 700
 		}
 		upkeep = {
@@ -205,36 +182,6 @@ gpm_precursor_research_center = {
 		text = job_gpm_precursor_archaeologist_drone_effect_desc
 	}
 	
-	on_queued = {
-		owner = {
-			subtract_variable = { which = gpm_precursor_research_center_build_count value = 1 }
-		}
-	}
-
-	on_unqueued = {
-		owner = {
-			change_variable = { which = gpm_precursor_research_center_build_count value = 1 }
-		}
-	}
-	
-	# on_queued = {
-		# owner = { set_country_flag = gpm_precursor_research_center_building }
-	# }
-
-	# on_unqueued = {
-		# owner = { remove_country_flag = gpm_precursor_research_center_building }
-	# }
-
-	# on_built = {
-		# owner = { set_country_flag = gpm_built_one_precursor_research_center }
-	# }
-
-	on_destroy = {
-		owner = {
-			change_variable = { which = gpm_precursor_research_center_build_count value = 1 }
-		}
-	}
-
 	
 	ai_weight = {
 		weight = 10000
@@ -266,7 +213,7 @@ gpm_building_ascension_tower = {
 		potential = {
 			exists = owner
 			owner = {
-				has_non_swapped_tradition = tr_domination_imperious_architecture
+				has_active_tradition = tr_domination_imperious_architecture
 			}
 		}
 		modifier = {

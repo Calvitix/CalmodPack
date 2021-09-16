@@ -1,9 +1,10 @@
 # Original File
 #
-# Calvitix Check 3.0.3b  30/04/2021
+# Calvitix Check 3.1.1  14/09/2021
 #
 # Merge with Shut up, we don't care
 # Merge with Shared Borders 17/05/2021
+# Merge with Starnet AI  16/09/2021
 #
 # Variables:
 #  is_listed, boolean, decides if this diplomactic action type is listed in diplomatic view.
@@ -16,6 +17,7 @@
 #  requires_recipient_federation_leader, boolean, true by default, if the recipient is in a federation, he has to be the leader of it.
 #  show_decline_to_alliance_members, boolean, false by default, will show your alliance members when you decline a proposal of this type.
 #  should_show_accept_message, decides whether actor gets a response on acceptance (otherwise just on decline)
+# should_remove_response_message_when_not_possible, boolean, decides if diplomatic response messages should be removed when the 'possible' check fails.
 #  should_show_auto_accept_message_recipient, boolean, decides if the recipient gets a message showing the diplomatic action.
 #  should_open_auto_accept_message_recipient, boolean, decides if the recipient automatically opens this message.
 #  should_notify_auto_recipient_on_vote_fail, boolean, decides if recipient is notified of vote failure if action was auto accepted.
@@ -105,6 +107,7 @@ action_improve_relation = {
 			}
 		}
 	}
+
 	proposable = {
 		custom_tooltip = {
 			fail_text = "requires_envoy_not_harming_relations"
@@ -206,6 +209,7 @@ action_harm_relation = {
 			}
 		}
 	}
+
 	proposable = {
 		custom_tooltip = {
 			fail_text = "requires_envoy_not_improving_relations"
@@ -1481,7 +1485,7 @@ action_offer_federation_association_status = {
 			}
 		}
 		# Members of the Galactic Empire can't associate with federations
-		custom_tooltip = { #3.0.3b
+		custom_tooltip = {
 			fail_text = "requires_actor_recipient_not_in_galactic_empire_2"
 			NAND = {
 				has_galactic_emperor = yes
@@ -1626,20 +1630,9 @@ action_invite_to_federation = {
 				has_federation = no
 				is_country_type = default
 			}
-			if = {
-				limit = {
-					has_authority = auth_machine_intelligence
-				}
-				custom_tooltip = {
-					fail_text = requires_tradition_universal_compatibility
-					has_swapped_tradition = tr_versatility_universal_compatibility
-				}
-			}
-			else = {
-				custom_tooltip = {
-					fail_text = requires_tradition_the_federation
-					has_non_swapped_tradition = tr_diplomacy_the_federation
-				}
+			custom_tooltip = {
+				fail_text = requires_tradition_the_federation
+				has_active_tradition = tr_diplomacy_the_federation
 			}
 		}
 		custom_tooltip = {
@@ -1669,11 +1662,17 @@ action_invite_to_federation = {
 		}
 		custom_tooltip = {
 			fail_text = "requires_actor_not_devouring_swarm"
+			OR = {
+				from = { has_valid_civic = civic_hive_devouring_swarm }
 			NOT = { has_valid_civic = civic_hive_devouring_swarm	}
+		}
 		}
 		custom_tooltip = {
 			fail_text = "requires_recipient_not_devouring_swarm"
+			OR = {
 			from = { NOT = { has_valid_civic = civic_hive_devouring_swarm } }
+				has_valid_civic = civic_hive_devouring_swarm
+			}
 		}
 
 		# When actor is terminator, requires target machine empire/synth
@@ -1709,7 +1708,7 @@ action_invite_to_federation = {
 			}
 		}
 
-		if = { #3.0.3b
+		if = {
 			limit = { from = { has_valid_civic = civic_inwards_perfection } }
 			if = {
 				limit = {
@@ -1745,7 +1744,7 @@ action_invite_to_federation = {
 		}
 		# Members of the Galactic Empire can't be in federations
 		custom_tooltip = {
-			fail_text = "requires_actor_recipient_not_in_galactic_empire" #3.0.3b
+			fail_text = "requires_actor_recipient_not_in_galactic_empire"
 			NAND = {
 				has_galactic_emperor = yes
 				OR = {
@@ -2258,11 +2257,17 @@ action_ask_to_join_federation = {
 		}
 		custom_tooltip = {
 			fail_text = "requires_actor_not_devouring_swarm"
+			OR = {
+				from = { has_valid_civic = civic_hive_devouring_swarm }
 			NOT = { has_valid_civic = civic_hive_devouring_swarm	}
+		}
 		}
 		custom_tooltip = {
 			fail_text = "requires_recipient_not_devouring_swarm"
+			OR = {
+				has_valid_civic = civic_hive_devouring_swarm
 			from = { NOT = { has_valid_civic = civic_hive_devouring_swarm } }
+		}
 		}
 		custom_tooltip = {
 			fail_text = "requires_actor_not_machine_terminator"

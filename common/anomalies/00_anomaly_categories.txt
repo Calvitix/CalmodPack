@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.0.1  23/04/2021
+# Calvitix Check 3.1.1  14/09/2021
 #
 # Merge with Arisphaos Unofficial patch
 # Merge with Expanded Events  25/04/2021
@@ -1424,7 +1424,10 @@ terraforming_candidate_category = {
 	spawn_chance = {		
 		modifier = {
 			add = 0.5
-			NOT = { has_modifier = terraforming_candidate }
+			NOR = { 
+				has_modifier = terraforming_candidate
+				has_deposit = d_nanites_deposit 
+			}
 			OR = {
 				is_planet_class = pc_barren
 				is_planet_class = pc_barren_cold
@@ -1478,4 +1481,90 @@ living_metal_category = {
 	}
 	
 	on_success = anomaly.2576
+}
+
+the_lonely_bot_category = {
+	desc = "the_lonely_bot_category_desc"
+	picture = "GFX_evt_alien_ruins"
+
+	max_once_global = yes
+
+	level = 3
+
+	spawn_chance = {
+		modifier = {
+			add = 0.1
+			colonizable_planet = yes
+			years_passed > 10
+		}
+		modifier = {
+			factor = 3
+			is_planet_class = pc_relic
+		}
+		modifier = {
+			factor = 0
+			OR = {
+				from.owner = { is_gestalt = yes }
+				is_artificial = yes
+			}
+		}
+	}
+
+	on_success = anomaly.2580
+}
+
+# Fungal Emitters
+fungal_emitters_category = {
+	desc = "fungal_emitters_category_desc"
+	picture = GFX_evt_cold_barren
+	level = 4
+
+	spawn_chance = {
+		modifier = {
+			add = 30
+			is_planet_class = pc_barren
+			has_global_flag = fumongus_spawned
+			closest_system = {
+				limit = {
+					has_star_flag = fumongus_system	
+				}
+				min_steps = 1
+				max_steps = 12
+			}
+		}
+	}
+
+	on_success = {
+		1 = {
+			modifier = {
+				factor = 0 
+				owner = { has_global_flag = fumongus_resolved }
+			}
+			anomaly_event = anomaly.6755
+		}
+		1 = {
+			modifier = {
+				factor = 0  
+				owner = { 
+					NAND = {
+						has_global_flag = fumongus_resolved
+						has_global_flag = fumongus_active
+					}
+				}
+			}
+			anomaly_event = anomaly.6760
+		}
+		1 = {
+			modifier = {
+				factor = 0  
+				owner = { 
+					NAND = {	
+						has_global_flag = fumongus_dismantled
+						has_global_flag = fumongus_resolved
+					} 
+				}
+			}
+			anomaly_event = anomaly.6765
+		}
+	}
 }

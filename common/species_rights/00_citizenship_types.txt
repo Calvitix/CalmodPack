@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.0.1  23/04/2021
+# Calvitix Check 3.1.1  15/09/2021
 #
 # Merge with Arisphaos Unofficial patch
 # Merge with Starnet AI  22/08/2021
@@ -594,6 +594,7 @@ citizenship_slavery = {
 			from = {
 				is_authoritarian = no
 				is_xenophobe = no
+				is_hive_empire = no
 			}
 		}
 		modifier = {
@@ -605,6 +606,10 @@ citizenship_slavery = {
 				is_active_resolution = "resolution_greatergood_balance_in_the_middle"
 				is_active_resolution = "resolution_greatergood_universal_prosperity_mandate"
 			}
+		}
+		modifier = {
+			factor = 2
+			has_species_flag = syncretic_species@from
 		}
 	}
 }
@@ -751,7 +756,12 @@ citizenship_purge = {
 					has_ai_personality_behaviour = purger
 					AND = {
 						has_ai_personality_behaviour = displacer
-						NOT = { has_origin = origin_necrophage }
+						if = {
+							limit = {
+								has_origin = origin_necrophage
+					}
+							is_hive_empire = yes
+						}
 					}
 				}
 			}
@@ -768,9 +778,11 @@ citizenship_purge = {
 			from = {
 				has_authority = auth_hive_mind
 				NOT = { has_valid_civic = civic_hive_devouring_swarm }
+				NOT = { has_origin = origin_necrophage }
 				OR = {
 					has_valid_civic = civic_hive_one_mind
 					has_valid_civic = civic_hive_subsumed_will
+					root = { has_trait = trait_hive_mind }
 				}
 			}
 		}

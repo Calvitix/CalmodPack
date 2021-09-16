@@ -1,7 +1,7 @@
 
 # Original File
 #
-# Calvitix Check 3.0.1  18/04/2021
+# Calvitix Check 3.1.1  15/09/2021
 #
 # Merge with NSC
 # Merge with Starnet AI 01/06/2021
@@ -67,10 +67,6 @@ hydroponics_bay = {
 	construction_days = 180
 
 	potential = {
-		exists = owner
-		owner = { has_technology = "tech_hydroponics" }
-	}
-	possible = {
 		exists = owner
 		owner = { has_technology = "tech_hydroponics" }
 	}
@@ -160,9 +156,11 @@ resource_silo = {
 		weight = 10
 		modifier = {
 			factor = 0
-			owner = { not = {
+			owner = {
+				not = {
 				has_technology = tech_interstellar_fleet_traditions
-			} }
+				}
+			}
 		}
 		modifier = {
 			factor = 0
@@ -374,7 +372,13 @@ offworld_trading_company = {
 			fail_text = "requires_starport"
 			has_starbase_size >= starbase_starport
 		}
+		OR = {
 		has_starbase_module = trading_hub
+			starbase_buildable_is_in_queue_before = {
+				first = trading_hub
+				second = offworld_trading_company
+			}
+		}
 	}
 
 	resources = {
@@ -583,7 +587,13 @@ naval_logistics_office = {
 	}
 
 	possible = {
+		OR = {
 		has_starbase_module = anchorage
+			starbase_buildable_is_in_queue_before = {
+				first = anchorage
+				second = naval_logistics_office
+			}
+		}
 	}
 
 	resources = {
@@ -652,7 +662,13 @@ titan_yards = {
 			fail_text = "requires_citadel"
 			has_starbase_size >= starbase_citadel
 		}
+		OR = {
 		has_starbase_module = shipyard
+			starbase_buildable_is_in_queue_before = {
+				first = shipyard
+				second = titan_yards
+			}
+		}
 	}
 
 	resources = {
@@ -727,13 +743,19 @@ colossus_yards = {
 			fail_text = "requires_citadel"
 			has_starbase_size >= starbase_citadel
 		}
-		owner = {
-			OR = {
-				has_technology = tech_colossus
-				has_technology = tech_juggernaut		
+		OR = {
+			owner = {
+				OR = {
+					has_technology = tech_colossus
+					has_technology = tech_juggernaut		
+				}
+			}
+			has_starbase_module = shipyard
+			starbase_buildable_is_in_queue_before = {
+				first = shipyard
+				second = colossus_yards
 			}
 		}
-		has_starbase_module = shipyard
 	}
 
 	resources = {
@@ -918,6 +940,10 @@ target_uplink_computer = {
 	}
 
 	station_modifier = {
+		ship_weapon_range_mult = 0.50
+	}
+
+	defense_platform_modifier = {
 		ship_weapon_range_mult = 0.50
 	}
 
@@ -1412,7 +1438,7 @@ warp_fluctuator = {
 	potential = {
 		exists = owner
 		owner = {
-			has_technology = tech_hyper_drive_2
+			has_technology = tech_interstellar_economics
 			is_gestalt = no
 		}
 	}

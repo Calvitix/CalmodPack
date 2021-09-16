@@ -1,8 +1,8 @@
 # Original File
 #
-# Calvitix Check 3.0.3  21/05/2021
+# Calvitix Check 3.1.1  14/09/2021
 #
-# Merge with Starnet AI 27/05/2021
+# Merge with Starnet AI 16/09/2021
 
 
 #############
@@ -15,7 +15,13 @@ building_commercial_zone = {
 
 	potential = {
 		exists = owner
-		owner = { is_regular_empire = yes or = { is_ai = no years_passed < 3 } }
+		owner = {
+			is_regular_empire = yes
+			or = {
+				is_ai = no
+				years_passed < 3
+			}
+		}
 		NOT = { has_modifier = slave_colony }
 	}
 	destroy_trigger = {
@@ -33,10 +39,6 @@ building_commercial_zone = {
 	}
 
 
-	planet_modifier = {
-		job_clerk_add = 3
-	}
-
 	resources = {
 		category = planet_buildings
 		cost = {
@@ -47,16 +49,42 @@ building_commercial_zone = {
 		}
 	}
 
+	planet_modifier = {
+		job_clerk_add = 3
+	}
+
+	triggered_desc = {
+		text = job_clerk_effect_desc
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				has_active_tradition = tr_mercantile_commercial_enterprise
+			}
+		}
+		modifier = {
+			job_merchant_add = 1
+		}
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = {
+				has_active_tradition = tr_mercantile_commercial_enterprise
+			}
+		}
+		text = job_merchant_effect_desc
+	}
+
 	prerequisites = {
 		"tech_interplanetary_commerce"
 	}
 
 	show_tech_unlock_if = {
 		is_regular_empire = yes
-	}
-
-	triggered_desc = {
-		text = job_clerk_effect_desc
 	}
 
 	upgrades = {
@@ -70,7 +98,7 @@ building_commercial_zone = {
 		}
 	}
 	ai_resource_production = {
-		energy = 0
+		energy = 0 #3
 		trigger = {
 			OR = {
 				num_unemployed >= 10
@@ -113,13 +141,6 @@ building_commercial_megaplex = {
 		}
 	}
 
-
-
-	planet_modifier = {
-		job_merchant_add = 1
-		job_clerk_add = 6
-	}
-
 	resources = {
 		category = planet_buildings
 		cost = {
@@ -132,6 +153,31 @@ building_commercial_megaplex = {
 		}
 	}
 
+	planet_modifier = {
+		job_clerk_add = 6
+		job_merchant_add = 1
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				has_active_tradition = tr_mercantile_commercial_enterprise
+			}
+		}
+		modifier = {
+			job_merchant_add = 1
+		}
+	}
+
+	triggered_desc = {
+		text = job_clerk_effect_desc
+	}
+
+	triggered_desc = {
+		text = job_merchant_effect_desc
+	}
+
 	prerequisites = {
 		"tech_interstellar_economics"
 	}
@@ -140,19 +186,13 @@ building_commercial_megaplex = {
 		is_regular_empire = yes
 	}
 
-	triggered_desc = {
-		text = job_clerk_effect_desc
-	}
-	triggered_desc = {
-		text = job_merchant_effect_desc
-	}
-
 	ai_resource_production = {
 		energy = 4
 		trigger = {
 			always = yes
 		}
 	}
+	
 	ai_resource_production = {
 		energy = 6
 		trigger = {

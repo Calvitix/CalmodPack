@@ -1,9 +1,9 @@
 # Original File
 #
-# Calvitix Check 3.0.3  21/05/2021
+# Calvitix Check 3.1.1  15/09/2021
 #
 # Merge with Arisphaos Unofficial patch
-# Merge with STARNET AI 22/08/2021
+# Merge with STARNET AI 16/09/2021
 # Merge with Megacorp 04/05/2021
 ##########################################################################
 # Empire Policies
@@ -391,10 +391,12 @@ diplomatic_stance = {
 				is_country_type = default
 				is_country_type = awakened_fallen_empire
 			}
+			is_gestalt = no
 		}
 
 		valid = {
 			NOT = { has_valid_civic = civic_inwards_perfection }
+			is_homicidal = no
 			# some ugliness to preserve the
 			# auth/civic - potential/valid divide for tooltip
 			if = {
@@ -458,7 +460,7 @@ diplomatic_stance = {
 			}
 		}
 		valid = {
-			NOR = { #3.0.3b
+			NOR = {
 				has_valid_civic = civic_inwards_perfection
 				has_modifier = humiliated
 			}
@@ -494,7 +496,10 @@ diplomatic_stance = {
 				years_passed > 60
 				or = { 
 				used_naval_capacity_percent > 0.95
-				and = { used_naval_capacity_percent > 0.5 has_policy_flag = diplo_stance_supremacist }
+					and = {
+						used_naval_capacity_percent > 0.5
+						has_policy_flag = diplo_stance_supremacist
+					}
 				}
 				nor = {
 					has_country_flag = str_has_bad_economy_score
@@ -706,7 +711,6 @@ diplomatic_stance = {
 			weight = 1
 		}
 	}
-
 }
 
 war_philosophy = {
@@ -1389,7 +1393,10 @@ appropriation = {
 			modifier = { #Starnet AI
 				factor = 15
 				is_pacifist = no
-				or = { has_civic = civic_slaver_guilds has_civic = civic_indentured_assets }
+				or = {
+					has_civic = civic_slaver_guilds
+					has_civic = civic_indentured_assets
+				}
 			}
 		}
 	}
@@ -1442,7 +1449,6 @@ leader_enhancement = {
 		}
 
 		modifier = {}
-
 	}
 
 	option = {
@@ -1612,11 +1618,7 @@ first_contact_protocol = {
 		AI_weight = {
 			modifier = {
 				factor = 2
-				is_militarist = yes
-			}
-			modifier = {
-				factor = 2
-				is_xenophobe = yes
+				is_homicidal = yes
 			}
 			modifier = {
 				factor = 2
@@ -1670,7 +1672,7 @@ border_policy = {
 			modifier = {
 				factor = 20 # 0
 				has_valid_ai_personality = yes
-				OR = { #NOR
+				OR = {
 					has_ai_personality_behaviour = isolationist
 					has_ai_personality_behaviour = attack_neutrals
 				}
@@ -1678,7 +1680,7 @@ border_policy = {
 			modifier = {
 				factor = 5 #0
 				has_valid_ai_personality = no
-				OR = { #NOR
+				OR = {
 					has_ethic = ethic_xenophobe
 					has_ethic = ethic_fanatic_xenophobe
 				}
@@ -1953,6 +1955,7 @@ trade_policy = {
 					federation = { NOT = { has_federation_perk = trade_federation_passive } }
 				}
 			}
+			has_tradition = tr_mercantile_adaptive_economic_policies
 		}
 
 		policy_flags = {
@@ -1993,6 +1996,7 @@ trade_policy = {
 					federation = { NOT = { has_federation_perk = trade_federation_passive } }
 				}
 			}
+			has_tradition = tr_mercantile_adaptive_economic_policies
 		}
 
 		policy_flags = {
@@ -2097,12 +2101,12 @@ drone_policy = {
 				is_ai = yes
 				years_passed > 5
 				or = {
-				resource_income_compare = {
-					resource = minerals
-					value > 40
+					resource_income_compare = {
+						resource = minerals
+						value > 40
+					}
+					has_policy_flag = gestalt_economic_thinker
 				}
-			}
-			has_policy_flag = gestalt_economic_thinker
 			}
 ###
 		}
@@ -2130,7 +2134,10 @@ artificial_intelligence_policy = {
 
 	potential = {
 		NOT = { has_ethic = ethic_gestalt_consciousness }
+		OR = { 
 		can_set_ai_policy = yes
+			has_country_flag = synthetic_empire
+		}
 	}
 
 	option = {
@@ -2140,8 +2147,11 @@ artificial_intelligence_policy = {
 			NOR = {
 				has_ethic = "ethic_materialist"
 				has_ethic = "ethic_fanatic_materialist"
+				custom_tooltip = {
+					success_text = is_a_synthetic_empire
 				has_country_flag = synthetic_empire
 			}
+		}
 		}
 
 		policy_flags = {
@@ -2187,7 +2197,10 @@ artificial_intelligence_policy = {
 		name = "ai_servitude"
 
 		valid = {
+			custom_tooltip = {
+				fail_text = is_a_synthetic_empire_fail
 			NOT = { has_country_flag = synthetic_empire }
+		}
 		}
 
 		policy_flags = {
@@ -2229,9 +2242,15 @@ artificial_intelligence_policy = {
 		name = "ai_full_rights"
 
 		valid = {
-			NOR = {
-				has_ethic = "ethic_spiritualist"
-				has_ethic = "ethic_fanatic_spiritualist"
+			OR = {
+				custom_tooltip = {
+					fail_text = is_a_synthetic_empire
+					has_country_flag = synthetic_empire
+				}
+				NOR = {
+					has_ethic = "ethic_spiritualist"
+					has_ethic = "ethic_fanatic_spiritualist"
+				}
 			}
 			NOT = { has_policy_flag = robots_outlawed }
 		}

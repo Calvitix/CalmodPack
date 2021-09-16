@@ -1,9 +1,9 @@
 # Original File
 #
-# Calvitix Check 3.0.1  23/04/2021
+# Calvitix Check 3.1.1  15/09/2021
 #
 # Merge with Arisphaos Unofficial patch
-# Merge with Starnet AI 22/08/2021
+# Merge with Starnet AI 16/09/2021
 #
 
 # from = country
@@ -409,9 +409,11 @@ living_standard_utopian = {
 			from = {
 				has_country_flag = str_recently_human
 			}
-			NOT = { has_living_standard = {
+			NOT = {
+				has_living_standard = {
 				type = living_standard_utopian
-			} }
+				}
+			}
 		}
 		modifier = {
 			factor = 0
@@ -548,9 +550,11 @@ living_standard_academic_privilege = {
 			from = {
 				has_country_flag = str_recently_human
 			}
-			NOT = { has_living_standard = {
+			NOT = {
+				has_living_standard = {
 				type = living_standard_academic_privilege
-			} }
+				}
+			}
 		}
 		modifier = {
 			factor = 0
@@ -1014,9 +1018,11 @@ living_standard_subsistence = {
 			from = {
 				has_country_flag = str_recently_human
 			}
-			NOT = { has_living_standard = {
+			NOT = {
+				has_living_standard = {
 				type = living_standard_subsistence
-			} }
+				}
+			}
 		}
 		modifier = {
 			factor = 0
@@ -1108,6 +1114,65 @@ living_standard_hive_mind = {
 
 	ai_will_do = {
 		factor = 1
+	}
+}
+
+living_standard_decadent = {
+	token = living_standard_decadent
+	name = living_standard_decadent
+
+	potential = {
+		host_has_dlc = "Humanoids Species Pack"		
+		exists = from
+		from = { is_pleasure_seeker = yes }
+		NOT = { from = { has_valid_civic = civic_shared_burden } }
+		OR = {
+			from = { is_gestalt = no }
+			has_citizenship_type = { type = citizenship_slavery country = from }
+		}
+		NOR = {
+			has_trait = trait_hive_mind
+			has_trait = trait_machine_unit
+			is_shackled_robot_species_rights = yes
+		}
+	}
+
+	allow = {
+		hidden_trigger = { exists = from }
+		custom_tooltip = {
+			fail_text = is_slaves_tooltip
+			NOT = { has_citizenship_type = { country = from type = citizenship_slavery } }
+		}
+		custom_tooltip = {
+			fail_text = is_purged_not_neutered
+			if = {
+				limit = {
+					OR = {
+						has_citizenship_type = { country = from type = citizenship_purge_machine }
+						has_citizenship_type = { country = from type = citizenship_purge }
+					}
+				}
+				has_purge_type = { country = from type = purge_neutering }
+			}
+		}
+		custom_tooltip = {
+			fail_text = SPECIES_MUST_NOT_BE_ASSIMILATING
+			NOT = {
+				has_citizenship_type = {
+					type = citizenship_assimilation
+					country = from
+				}
+			}
+		}
+	}
+
+	pop_modifier = {
+		pop_happiness = 0.20
+		planet_pops_consumer_goods_upkeep_mult = 0.10
+	}
+
+	ai_will_do = {
+		factor = 10
 	}
 }
 

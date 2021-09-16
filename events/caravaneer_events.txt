@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.0.1  23/04/2021
+# Calvitix Check 3.1.1  15/09/2021
 #
 # Merge with Arisphaos Unofficial patch
 #
@@ -1523,6 +1523,11 @@ country_event = {
 	}
 
 	immediate = {
+		fromfrom = {
+			solar_system = {
+				save_event_target_as = destroyed_fleet_location
+			}
+		}
 		every_playable_country = {
 			limit = {
 				has_communications = root.from
@@ -1551,7 +1556,7 @@ country_event = {
 	desc = cara.1003.desc
 	picture = GFX_evt_caravaneers
 	show_sound = event_ship_thrusters
-	location = fromfrom
+	location = event_target:destroyed_fleet_location
 
 	is_triggered_only = yes
 
@@ -1609,7 +1614,7 @@ fleet_event = {
 		if = {
 			limit = {
 				fromfrom.space_owner = {
-					has_country_flag = caravaneer_fleet1_contact
+					has_communications = root.owner
 					is_homicidal = no
 					caravaneer_fleet1_active_diplo = no
 				}
@@ -1667,7 +1672,6 @@ country_event = {
 	}
 
 	immediate = {
-		set_country_flag = caravaneer_fleet1_contact
 		if = {
 			limit = { NOT = { has_communications = event_target:caravaneer_fleet1_country } }
 			establish_communications_no_message = event_target:caravaneer_fleet1_country
@@ -2292,7 +2296,7 @@ fleet_event = {
 		if = {
 			limit = {
 				fromfrom.space_owner = {
-					has_country_flag = caravaneer_fleet2_contact
+					has_communications = root.owner
 					is_homicidal = no
 					caravaneer_fleet2_active_diplo = no
 				}
@@ -2356,7 +2360,6 @@ country_event = {
 	}
 
 	immediate = {
-		set_country_flag = caravaneer_fleet2_contact
 		if = {
 			limit = { NOT = { has_communications = event_target:caravaneer_fleet2_country } }
 			establish_communications_no_message = event_target:caravaneer_fleet2_country
@@ -3120,7 +3123,7 @@ fleet_event = {
 		if = {
 			limit = {
 				fromfrom.space_owner = {
-					has_country_flag = caravaneer_fleet3_contact
+					has_communications = root.owner
 					is_homicidal = no
 					caravaneer_fleet3_active_diplo = no
 				}
@@ -3177,7 +3180,6 @@ country_event = {
 	}
 
 	immediate = {
-		set_country_flag = caravaneer_fleet3_contact
 		if = {
 			limit = { NOT = { has_communications = event_target:caravaneer_fleet3_country } }
 			establish_communications_no_message = event_target:caravaneer_fleet3_country
@@ -4314,10 +4316,12 @@ country_event = {
 	mean_time_to_happen = { years = 2 }
 
 	trigger = {
-		NOT = { has_ethic = ethic_gestalt_consciousness }
 		caravaneer_fleet_events_valid = yes
-		NOT = { has_country_flag = caravan_pops_join_recent }
-		NOT = { has_country_flag = caravan_recent_event }
+		NOR = {
+			has_ethic = ethic_gestalt_consciousness
+			has_country_flag = caravan_pops_join_recent
+			has_country_flag = caravan_recent_event
+		}
 		any_owned_planet = {
 			solar_system = { caravaneer_fleet_in_system = yes}
 			is_colony = yes
@@ -4364,10 +4368,11 @@ country_event = {
 	option = {
 		name = cara.4010.a
 		custom_tooltip = cara.4010.a.tooltip
+		allow = { has_policy_flag = refugees_allowed }
 		hidden_effect = {
 			event_target:caravan_pops_join_planet = {
 				while = {
-					count = 5
+					count = 3
 					create_pop = { species = event_target:caravan_pops_join_country.species }
 				}
 			}
@@ -4758,7 +4763,7 @@ country_event = {
 		event_target:pleased_planet = {
 			create_half_species = { species_one = event_target:party_host species_two = event_target:party_goer.species }
 			while = {
-				count = 3
+				count = 2
 				create_pop = {
 					species = last_created_species
 				}			
@@ -5415,7 +5420,10 @@ planet_event = { #Megacorpse
 			}
 		}
 		else = {
-			add_deposit = d_crater
+			add_blocker = {
+				type = d_crater
+				blocked_deposit = random
+			}
 			add_modifier = {
 				modifier = heavy_metal
 				days = -1

@@ -1,9 +1,9 @@
 # Original File
 #
-# Calvitix Check 3.0.1 (not modified) 18/04/2021
+# Calvitix Check 3.1.1 15/09/2021
 #
 # Merge with RealSpace 02/05/2021
-#
+# Merge with GPM   16/09/2021
 #
 
 # Relic World
@@ -195,7 +195,10 @@ Zrocursor_system = {
 		orbit_distance = 0
 #GPM
 		init_effect = {
-			gpm_precursor_star_shipyards = yes
+			if = { 
+				limit = { NOT = { host_has_dlc = Federations } }
+				gpm_precursor_star_shipyards = yes
+			}
 		}
 ###
 	}
@@ -772,7 +775,10 @@ last_baol_system = {
 		init_effect = {
 			prevent_anomaly = yes
 #GPM Mod
-			gpm_precursor_star_shipyards = yes
+			if = { 
+				limit = { NOT = { host_has_dlc = Federations } }
+				gpm_precursor_star_shipyards = yes
+			}
 ###
 		}
 	}
@@ -937,10 +943,35 @@ last_baol_system = {
 					10 = { add_modifier = { modifier = gpm_precursor_manufactorium } }
 					10 = { add_modifier = { modifier = gpm_precursor_vaults } }
 				}
-###
 			}
 		}
 	}
+
+	init_effect = {
+		if = { 
+			limit = { host_has_dlc = Federations }
+			spawn_megastructure = {
+				type = "gpm_mega_shipyard_ruined_precursor"
+				planet = star
+
+				init_effect = {
+					create_ambient_object = {
+						type = "large_debris_object"
+						location = this
+					}
+					last_created_ambient_object = {
+						set_location = {
+							target = prev
+							distance = 20
+							angle = 20
+						}
+					}
+				}
+			}
+		}
+	}				
+###
+
 }
 
 ####### The Planetary Mechanocalibrator #######

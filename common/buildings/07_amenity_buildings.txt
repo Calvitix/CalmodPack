@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.0.3  21/05/2021
+# Calvitix Check 3.1.1  14/09/2021
 #
 # Merge with Planetary Div
 # Merge with Venture Megacorp
@@ -156,7 +156,7 @@ building_luxury_residence = {
 		potential = {
 			exists = owner
 			owner = {
-				has_non_swapped_tradition = tr_domination_imperious_architecture
+				has_active_tradition = tr_domination_imperious_architecture
 			}
 		}
 		modifier = {
@@ -304,7 +304,7 @@ building_paradise_dome = {
 		potential = {
 			exists = owner
 			owner = {
-				has_non_swapped_tradition = tr_domination_imperious_architecture
+				has_active_tradition = tr_domination_imperious_architecture
 			}
 		}
 		modifier = {
@@ -472,7 +472,7 @@ building_communal_housing = {
 		potential = {
 			exists = owner
 			owner = {
-				has_non_swapped_tradition = tr_domination_imperious_architecture
+				has_active_tradition = tr_domination_imperious_architecture
 			}
 		}
 		modifier = {
@@ -623,7 +623,7 @@ building_communal_housing_large = {
 		potential = {
 			exists = owner
 			owner = {
-				has_non_swapped_tradition = tr_domination_imperious_architecture
+				has_active_tradition = tr_domination_imperious_architecture
 			}
 		}
 		modifier = {
@@ -791,7 +791,7 @@ building_drone_megastorage = {
 		potential = {
 			exists = owner
 			owner = {
-				has_non_swapped_tradition = tr_domination_imperious_architecture
+				has_active_tradition = tr_domination_imperious_architecture
 			}
 		}
 		modifier = {
@@ -867,6 +867,10 @@ building_hive_warren = {
 	destroy_trigger = {
 		exists = owner
 		OR = {
+			AND = { #3.1.1
+				owner = { is_ai = yes }
+				years_passed < 3
+			}#Blow up the one on the homeworld.
 			AND = {
 				planet = {
 					free_building_slots = 0
@@ -985,7 +989,7 @@ building_expanded_warren = {
 		potential = {
 			exists = owner
 			owner = {
-				has_non_swapped_tradition = tr_domination_imperious_architecture
+				has_active_tradition = tr_domination_imperious_architecture
 			}
 		}
 		modifier = {
@@ -1057,10 +1061,28 @@ building_holo_theatres = {
 			owner = { is_regular_empire = no }
 			has_modifier = slave_colony
 			AND = {
-#Starnet AI
+				free_building_slots = 0
 				owner = { is_ai = yes }
+				OR = {
 				free_amenities > 30
-				years_passed > 25
+					AND = {
+						count_owned_pop = { limit = { is_sapient = yes } count < 75 }
+						owner = {
+							has_technology = tech_frontier_health
+						}
+						NOR = {
+							has_building = building_clinic
+							has_building = building_hospital
+						}
+					}
+					AND = {
+						owner = {
+							NOT = { has_policy_flag = robots_outlawed }
+							has_technology = tech_robotic_workers
+						}
+						NOT = { has_building = building_robot_assembly_plant }
+					}
+				}
 			}
 		}
 	}
@@ -1089,6 +1111,7 @@ building_holo_theatres = {
 		}
 	}
 
+#Starnet AI
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
@@ -1102,6 +1125,7 @@ building_holo_theatres = {
 			job_starnet_spice_melange_antifarmer_add = -3
 		}
 	}
+###
 
 	resources = {
 		category = planet_buildings
@@ -1140,7 +1164,8 @@ building_holo_theatres = {
 		}
 		text = job_duelist_effect_desc
 	}
-	
+
+#Starnet AI	
 	#Fake production FTW
 
 	ai_resource_production = {
@@ -1152,6 +1177,7 @@ building_holo_theatres = {
 		physics_research = 15
 		trigger = { free_amenities < -11 }
 	}
+###
 }
 
 building_hyper_entertainment_forum = {
@@ -1257,8 +1283,10 @@ building_clinic = {
 		OR = {
 			owner = { is_regular_empire = no }
 			has_modifier = slave_colony
+			AND = { #3.1.1
+				buildings_stop_pop = yes
 				owner = { is_ai = yes }
-			
+			}
 		}
 	}
 
@@ -1310,7 +1338,10 @@ building_hospital = {
 			owner = { is_regular_empire = no }
 			has_modifier = slave_colony
 			buildings_no_exotic_gases = yes
-			owner = { is_ai = yes }
+			AND = { #3.1.1
+				buildings_stop_pop = yes
+				owner = { is_ai = yes }
+			}
 		}
 	}
 
@@ -1397,6 +1428,8 @@ building_spawning_pool = {
 			owner = { is_ai = no }
 		}
 	}
+
+#starnet AI
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
@@ -1414,6 +1447,7 @@ building_spawning_pool = {
 			job_starnet_spice_melange_antifarmer_add = -3
 		}
 	}
+###
 
 	destroy_trigger = {
 		exists = owner
@@ -1435,7 +1469,31 @@ building_spawning_pool = {
 	}
 
 	triggered_desc = {
+		trigger = {
+			NAND = {
+				exists = owner
+				owner = { has_origin = origin_necrophage }
+				exists = growing_species
+				growing_species = {
+					NOT = { has_trait = trait_hive_mind }
+				}
+			}
+		}
 		text = job_spawning_drone_effect_desc
+	}
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { has_origin = origin_necrophage }
+			exists = growing_species
+			growing_species = {
+				NOT = { has_trait = trait_hive_mind }
+			}
+		}
+		text = job_spawning_drone_necrophage_effect_desc
+	}
+	triggered_desc = {
+		text = spawning_pool_tooltip
 	}
 }
 
