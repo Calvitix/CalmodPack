@@ -1,8 +1,11 @@
-# starnet AI File
+
+# Starnet File
 #
-# Calvitix Check 3.0.3  21/05/2021
+# Calvitix Check 3.1.1  14/09/2021
 #
-# Merge with Starnet OK   28/08/2021
+# Merge with Starnet AI 16/09/2021
+#
+#
 
 str_force_city_district = {
 	str_force_city_district_compatibility = yes
@@ -28,9 +31,14 @@ str_force_city_district = {
 	resource_income_compare = {
 		resource = minerals
 		value > 30
-	} }
+		}
+	}
 
-	or = { owner = { str_raw_ecocrisis_level_1 = no } free_amenities < -4 free_housing < 7 }
+	or = {
+		owner = { str_raw_ecocrisis_level_1 = no }
+		free_amenities < -4
+		free_housing < 7
+	}
 
 	or = {
 		and = {
@@ -46,18 +54,52 @@ str_force_city_district = {
 		num_pops > 25
 		}
 		and = { free_amenities < -8 free_building_slots = 0 }
-		and = { has_modifier = planet_luxuries_boost free_amenities < 5 free_building_slots = 0 }
 		and = {
-			free_building_slots = 0 not = { has_building = building_robot_assembly_plant } owner = { has_technology = tech_robotic_workers }
+			has_modifier = planet_luxuries_boost
+			free_amenities < 5
+			free_building_slots = 0
+		}
+		and = {
+			free_building_slots = 0
+			not = { has_building = building_robot_assembly_plant }
+			owner = { has_technology = tech_robotic_workers }
 		}
 	}
-	or = { free_building_slots = 0 and = { num_pops > 15 free_housing < 25 } }
+	or = {
+		free_building_slots = 0
+		and = {
+			num_pops > 15
+			free_housing < 25
+		}
+	}
+	or = {
+		and = {
+			free_district_slots < 2
+			free_building_slots = 0
+	}
+		and = {
+			has_modifier = planet_luxuries_boost
+			free_amenities < 5
+			free_building_slots = 0
+		}
+		and = {
+			free_building_slots = 0
+			free_amenities < -4
+		}
+		and = {
+			free_building_slots = 0
+			free_housing < 25
+			free_district_slots > 2
+			owner = { str_raw_ecocrisis_level_0 = no }
+		}
+		and = {
+			free_building_slots = 0
 	or = { 
-	and = { free_district_slots < 2 free_building_slots = 0 } 
-	and = { has_modifier = planet_luxuries_boost free_amenities < 5 free_building_slots = 0 }
-	and = { free_building_slots = 0 free_amenities < -4 } 
-	and = { free_building_slots = 0 free_housing < 25 free_district_slots > 2 owner = { str_raw_ecocrisis_level_0 = no } }
-	and = { free_building_slots = 0 or = { has_designation = col_research has_designation = col_bureau } owner = { str_raw_ecocrisis_level_0 = no } }
+				has_designation = col_research
+				has_designation = col_bureau
+			}
+			owner = { str_raw_ecocrisis_level_0 = no }
+		}
 	}
 }
 
@@ -81,10 +123,12 @@ str_force_food_processing = {
 		}
 	}
 	free_building_slots > 0
-	owner = { resource_stockpile_compare = {
+	owner = {
+		resource_stockpile_compare = {
 		resource = minerals
 		value > 400
-	} }
+		}
+	}
 	has_designation = col_farming
 	num_pops > 12
 	num_buildings = {
@@ -118,10 +162,12 @@ str_force_energy_grid = {
 		has_planet_flag = str_designated_energy_guaranteed
 	}
 	free_building_slots > 0
-	owner = { resource_stockpile_compare = {
+	owner = {
+		resource_stockpile_compare = {
 		resource = minerals
 		value > 400
-	} }
+		}
+	}
 	has_designation = col_generator
 	or = {
 	num_pops > 12
@@ -158,10 +204,12 @@ str_force_mineral_purification = {
 		}
 	}
 	free_building_slots > 0
-	owner = { resource_stockpile_compare = {
+	owner = {
+		resource_stockpile_compare = {
 		resource = minerals
 		value > 400
-	} }
+		}
+	}
 	has_designation = col_mining
 	num_pops > 12
 	num_buildings = {
@@ -256,7 +304,8 @@ str_force_building_foundry = {
 			value > 30
 		} 
 		}
-	} }
+				}
+			}
 	is_capital = yes
 	}
 	and = {
@@ -342,7 +391,8 @@ str_force_district_industrial = {
 	resource_income_compare = {
 		resource = energy
 		value > 0
-	} }
+		}
+	}
 	num_buildings = {
 		type = building_foundry_1
 		value > 0
@@ -374,7 +424,8 @@ str_force_district_mining = {
 	resource_income_compare = {
 		resource = minerals
 		value < 50
-		} } 
+		}
+	}
 }
 
 str_force_district_generator = {
@@ -390,12 +441,16 @@ str_force_holotheatre = {
 	owner = {
 	resource_stockpile_compare = {
 		resource = minerals
-		value > 300
-	} }
+			value > 700
+		}
+	}
 	free_building_slots > 0
 	or = {
 	free_amenities < -10
-	and = { has_modifier = planet_luxuries_boost free_amenities < 5 }
+		and = {
+			has_modifier = planet_luxuries_boost
+			free_amenities < 5
+		}
 	}
 	num_pops > 11
 }

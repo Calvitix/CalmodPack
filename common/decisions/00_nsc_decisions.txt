@@ -1,0 +1,46 @@
+#mothball feature
+decision_nsc_mothball_menu = {
+	owned_planets_only = yes
+
+	potential = {
+		always = no #this decision has been disabled temporary for a moment until I complete making it
+
+		exists = owner
+		owner = { is_ai = no }
+	}
+
+	allow = {
+		custom_tooltip_fail = {
+			text = decision_nsc_mothball_menu_trigger.fail
+			any_fleet_in_orbit = {
+				OR = {
+					is_ship_class = shipclass_military
+					is_ship_class = shipclass_military_special
+					is_ship_size = juggernaut
+				}
+			}
+		}
+		custom_tooltip_fail = {
+			text = decision_nsc_mothball_menu_trigger_2.fail
+			#the mothball feature menu should be closed to open it again #so that those variable's values will not be overwritten to wrong ones
+			owner = {
+				NOR = {
+					is_variable_set = nsc_mothball_target_fleet_1_total_cost_var
+					is_variable_set = nsc_mothball_target_fleet_2_total_cost_var
+					is_variable_set = nsc_mothball_target_fleet_3_total_cost_var
+					is_variable_set = nsc_mothball_target_fleet_4_total_cost_var
+					is_variable_set = nsc_mothball_target_fleet_5_total_cost_var
+				}
+			}
+		}
+	}
+
+	effect = {
+		custom_tooltip = decision_nsc_mothball_menu_tooltip
+		hidden_effect = { planet_event = { id = nsc_events.32 } }
+	}
+
+	ai_weight = {
+		weight = 0
+	}
+}

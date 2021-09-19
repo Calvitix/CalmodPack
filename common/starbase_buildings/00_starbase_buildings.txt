@@ -3,7 +3,7 @@
 #
 # Calvitix Check 3.1.1  15/09/2021
 #
-# Merge with NSC
+# Merge with NSC   19/09/2021
 # Merge with Starnet AI 01/06/2021
 # Modified by Calvitix balance
 #
@@ -520,11 +520,14 @@ fleet_academy = {
 	}
 
 	possible = {
-		has_starbase_module = shipyard
+		OR = {
+			has_starbase_module = shipyard
+			has_starbase_building = drydock
+		}
 	}
 
 	ship_modifier = {
-		ship_starting_experience_add = 100
+		ship_starting_experience_add = 300
 	}
 
 	resources = {
@@ -557,11 +560,11 @@ fleet_academy = {
 
 	show_in_tech = "tech_interstellar_fleet_traditions"
 
-	ai_build_at_chokepoint = yes
+	ai_build_at_chokepoint = no
 	ai_build_outside_chokepoint = yes
 	ai_weight = {
 		weight = 200
-		modifier = {
+		modifier = {  #MOD?
 			factor = 0
 			not = {
 				owner = { has_technology = tech_interstellar_fleet_traditions }
@@ -657,15 +660,21 @@ titan_yards = {
 	}
 
 	possible = {
-		owner = { has_technology = tech_titans }   
 		custom_tooltip = {
 			fail_text = "requires_citadel"
 			has_starbase_size >= starbase_citadel
 		}
 		OR = {
-		has_starbase_module = shipyard
+			OR = {
+				has_starbase_module = shipyard
+				has_starbase_building = drydock
+			}
 			starbase_buildable_is_in_queue_before = {
 				first = shipyard
+				second = titan_yards
+			}
+			starbase_buildable_is_in_queue_before = {
+				first = drydock
 				second = titan_yards
 			}
 		}
@@ -702,6 +711,7 @@ titan_yards = {
 
 	ai_build_at_chokepoint = no
 	ai_build_outside_chokepoint = yes
+	
 	ai_weight = {
 		weight = 200
 		modifier = {
@@ -744,16 +754,17 @@ colossus_yards = {
 			has_starbase_size >= starbase_citadel
 		}
 		OR = {
-			owner = {
 				OR = {
-					has_technology = tech_colossus
-					has_technology = tech_juggernaut		
-				}
+				has_starbase_module = shipyard
+				has_starbase_building = drydock
 			}
-			has_starbase_module = shipyard
 			starbase_buildable_is_in_queue_before = {
 				first = shipyard
-				second = colossus_yards
+				second = titan_yards
+			}
+			starbase_buildable_is_in_queue_before = {
+				first = drydock
+				second = titan_yards
 			}
 		}
 	}
@@ -999,7 +1010,7 @@ defense_grid = {
 	}
 
 	station_modifier = {
-		starbase_defense_platform_capacity_add = 8
+		starbase_defense_platform_capacity_add = 100 #8
 	}
 
 	show_in_tech = "tech_synchronized_defences"

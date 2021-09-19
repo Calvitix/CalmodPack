@@ -1,0 +1,1723 @@
+# ## Engineering - Weapon Technologies
+
+# ##################
+# Mass Drivers
+# ##################
+
+# Mass Drivers
+tech_mass_drivers_1 = {
+	area = engineering
+	tier = 0
+	category = { propulsion }
+	ai_update_type = military
+	start_tech = yes
+}
+
+# Coilguns
+tech_mass_drivers_2 = {
+	area = engineering
+	cost = @tier1cost2
+	tier = 1
+	category = { propulsion }
+	ai_update_type = military
+	prerequisites = { "tech_mass_drivers_1" }
+	weight = @tier1weight2
+	
+	gateway = kinetic_weapons
+	
+	weight_modifier = {
+		modifier = {	# Weapon selection bonus.
+			factor = 10
+            OR = {
+	    		is_preferred_weapons = weapon_type_kinetic
+	    	    is_preferred_weapons = weapon_type_strike_craft
+                AND = { # Get it right after missiles.
+                    is_preferred_weapons = weapon_type_explosive
+                    has_technology = "tech_missiles_2"
+                }
+            }
+		}
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			research_leader = {
+				area = engineering
+				has_trait = "leader_trait_expertise_propulsion"
+			}
+		}
+	}
+	
+	ai_weight = {
+		modifier = {	# Weapon selection bonus.
+			factor = 100
+            OR = {
+	    		is_preferred_weapons = weapon_type_kinetic
+                AND = { # Get it after missiles.
+                    is_preferred_weapons = weapon_type_explosive
+                    has_technology = "tech_missiles_2"
+                }
+            }
+		}
+		modifier = { 
+			factor = 200 # Basic weapons are needed to unlock options.
+		}
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			research_leader = {
+				area = engineering
+				has_trait = "leader_trait_expertise_propulsion"
+			}
+		}
+	}
+}
+
+# Railguns
+tech_mass_drivers_3 = {
+	area = engineering
+	cost = @tier2cost2
+	tier = 2
+	category = { propulsion }
+	ai_update_type = military	
+	prerequisites = { "tech_mass_drivers_2" }
+	weight = @tier2weight2
+	
+	gateway = kinetic_weapons
+	
+	weight_modifier = {
+		modifier = {	# Weapon selection bonus.
+			factor = 10
+            is_ai = yes
+			OR = {
+                is_preferred_weapons = weapon_type_kinetic
+            }
+			has_two_weapons_1 = no
+		}
+		modifier = { # Two different weapons should be plenty, but occasionally we might want another.
+			factor = 0.1
+			has_two_weapons_1 = yes
+            NOR = { # Railguns are required for kinetic repeatables. Disable restriction if you have big guns that could use them.
+                has_technology = "tech_kinetic_artillery_1"
+                has_technology = "tech_kinetic_artillery_2"
+                has_technology = "tech_mass_accelerator_1"
+                has_technology = "tech_mass_accelerator_2"
+            }
+		}
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			research_leader = {
+				area = engineering
+				has_trait = "leader_trait_expertise_propulsion"
+			}
+		}
+	}
+	
+	ai_weight = {
+		modifier = {	# First weapon selection bonus.
+			factor = 20000
+	    	NOT = { is_preferred_weapons = weapon_type_energy } # should favor lasers
+			has_basic_weapon_1 = no
+		}
+		modifier = {	# Second weapon selection bonus.
+			factor = 20000
+			has_basic_weapon_1 = yes
+			has_two_weapons_1 = no
+	    	NOT = { is_preferred_weapons = weapon_type_energy } # should favor plasma or autocannons
+			OR = {
+                is_preferred_weapons = weapon_type_kinetic
+                has_technology = tech_plasma_1 # good synergy
+            }
+		}
+		modifier = { 
+			factor = 0.01
+			OR = {
+                AND = { # Should pick an energy weapon first.
+		        	is_preferred_weapons = weapon_type_energy
+        			has_basic_weapon_1 = no
+                }
+                AND = { # bad synergy
+		        	NOT = { is_preferred_weapons = weapon_type_kinetic }
+                    has_technology = tech_disruptors_1
+                }
+                has_two_weapons_1 = yes # Already got two weapons, no need for more.
+            }
+            NOR = { # Railguns are required for kinetic repeatables.
+				has_technology = tech_kinetic_artillery_1
+				has_technology = tech_kinetic_artillery_2
+                has_technology = "tech_mass_accelerator_1"
+                has_technology = "tech_mass_accelerator_2"
+            }
+		}
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			research_leader = {
+				area = engineering
+				has_trait = "leader_trait_expertise_propulsion"
+			}
+		}
+	}
+}
+
+# Advanced Railguns
+tech_mass_drivers_4 = {
+	area = engineering
+	cost = @tier3cost2
+	tier = 3
+	category = { propulsion }
+	ai_update_type = military
+	prerequisites = { "tech_mass_drivers_3" }
+	weight = @tier3weight2
+	
+	gateway = kinetic_weapons
+	
+	weight_modifier = {
+		modifier = {	# Weapon selection bonus.
+			factor = 10
+            is_ai = yes
+			OR = {
+                is_preferred_weapons = weapon_type_kinetic
+                is_preferred_weapons = weapon_type_explosive
+            }
+			has_two_weapons_2 = no
+		}
+		modifier = { # Two different weapons should be plenty, but occasionally we might want another.
+			factor = 0.1
+			has_two_weapons_2 = yes
+		}
+		modifier = { # This weapon requires volatile motes.
+			factor = 0.1
+			d_has_motes = no
+		}
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			research_leader = {
+				area = engineering
+				has_trait = "leader_trait_expertise_propulsion"
+			}
+		}
+	}
+	
+	ai_weight = {
+		modifier = {	# First weapon selection bonus.
+			factor = 20000
+	    	NOT = { is_preferred_weapons = weapon_type_energy } # should favor lasers
+			has_basic_weapon_2 = no
+		}
+		modifier = {	# Second weapon selection bonus.
+			factor = 20000
+			has_basic_weapon_2 = yes
+			has_two_weapons_2 = no
+	    	NOT = { is_preferred_weapons = weapon_type_energy } # should favor plasma or autocannons
+			OR = {
+                is_preferred_weapons = weapon_type_kinetic
+                has_technology = tech_plasma_2 # good synergy
+            }
+		}
+		modifier = { 
+			factor = 0.01
+			OR = {
+                AND = { # Should pick an energy weapon first.
+		        	is_preferred_weapons = weapon_type_energy
+        			has_basic_weapon_2 = no
+                }
+                AND = { # bad synergy
+		        	NOT = { is_preferred_weapons = weapon_type_kinetic }
+                    has_technology = tech_disruptors_2
+                }
+                has_two_weapons_2 = yes # Already got two weapons, no need for more.
+            }
+		}
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			research_leader = {
+				area = engineering
+				has_trait = "leader_trait_expertise_propulsion"
+			}
+		}
+	}
+}
+
+# Gauss Cannons
+tech_mass_drivers_5 = {
+	area = engineering
+	cost = @tier4cost2
+	tier = 4
+	category = { propulsion }
+	ai_update_type = military
+	prerequisites = { "tech_mass_drivers_4" }
+	weight = @tier4weight2
+	
+	gateway = kinetic_weapons
+	
+	weight_modifier = {
+		modifier = {	# Weapon selection bonus.
+			factor = 10
+            is_ai = yes
+			OR = {
+                is_preferred_weapons = weapon_type_kinetic
+                is_preferred_weapons = weapon_type_explosive
+            }
+			has_two_weapons_3 = no
+		}
+		modifier = { # Two different weapons should be plenty, but occasionally we might want another.
+			factor = 0.1
+			has_two_weapons_3 = yes
+		}
+		modifier = { # This weapon requires volatile motes.
+			factor = 0.1
+			d_has_motes = no
+		}
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			research_leader = {
+				area = engineering
+				has_trait = "leader_trait_expertise_propulsion"
+			}
+		}
+	}
+	
+	ai_weight = {
+		modifier = {	# First weapon selection bonus.
+			factor = 20000
+	    	NOT = { is_preferred_weapons = weapon_type_energy } # should favor lasers
+			has_basic_weapon_3 = no
+		}
+		modifier = {	# Second weapon selection bonus.
+			factor = 20000
+			has_basic_weapon_3 = yes
+			has_two_weapons_3 = no
+	    	NOT = { is_preferred_weapons = weapon_type_energy } # should favor plasma or autocannons
+			OR = {
+                is_preferred_weapons = weapon_type_kinetic
+                has_technology = tech_plasma_3 # good synergy
+            }
+		}
+		modifier = { 
+			factor = 0.01
+			OR = {
+                AND = { # Should pick an energy weapon first.
+		        	is_preferred_weapons = weapon_type_energy
+        			has_basic_weapon_3 = no
+                }
+                AND = { # bad synergy
+		        	NOT = { is_preferred_weapons = weapon_type_kinetic }
+                    has_technology = tech_disruptors_3
+                }
+                has_two_weapons_3 = yes # Already got two weapons, no need for more.
+            }
+		}
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			research_leader = {
+				area = engineering
+				has_trait = "leader_trait_expertise_propulsion"
+			}
+		}
+	}
+}
+
+tech_kinetic_artillery_1 = {
+	area = engineering
+	cost = @tier3cost3
+	tier = 3
+	category = { propulsion }
+	ai_update_type = military	
+	prerequisites = { "tech_autocannons_2" }
+	weight = @tier3weight3
+	
+	weight_modifier = {
+		modifier = { # This weapon requires volatile motes.
+			factor = 0.1
+			d_has_motes = no
+		}
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			research_leader = {
+				area = engineering
+				has_trait = "leader_trait_expertise_propulsion"
+			}
+		}
+	}
+	
+	ai_weight = {
+		modifier = {	# Weapon selection bonus.
+			factor = 10
+			has_heavy_weapon_1 = no
+		}
+		modifier = {	# Weapon selection bonus.
+			factor = 1000
+			has_L_weapon_1 = no
+		}
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			research_leader = {
+				area = engineering
+				has_trait = "leader_trait_expertise_propulsion"
+			}
+		}
+	}
+}
+
+tech_kinetic_artillery_2 = {
+	area = engineering
+	cost = @tier4cost3
+	tier = 4
+	category = { propulsion }
+	ai_update_type = military	
+	prerequisites = { "tech_autocannons_3" "tech_kinetic_artillery_1" }
+	weight = @tier4weight3
+	
+	weight_modifier = {
+		modifier = { # This weapon requires volatile motes.
+			factor = 0.1
+			d_has_motes = no
+		}
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			research_leader = {
+				area = engineering
+				has_trait = "leader_trait_expertise_propulsion"
+			}
+		}
+	}
+	
+	ai_weight = {
+		modifier = {	# Weapon selection bonus.
+			factor = 10
+			has_heavy_weapon_2 = no
+		}
+		modifier = {	# Weapon selection bonus.
+			factor = 1000
+			has_L_weapon_2 = no
+		}
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			research_leader = {
+				area = engineering
+				has_trait = "leader_trait_expertise_propulsion"
+			}
+		}
+	}
+}
+
+tech_mass_accelerator_1 = {
+	area = engineering
+	cost = @tier4cost3
+	tier = 4
+	category = { propulsion }
+	ai_update_type = military
+	prerequisites = { "tech_mass_drivers_4" "tech_battleships" }
+	weight = @tier4weight3
+	
+	weight_modifier = {
+		modifier = { # This weapon requires volatile motes.
+			factor = 0.1
+			d_has_motes = no
+		}
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			research_leader = {
+				area = engineering
+				has_trait = "leader_trait_expertise_propulsion"
+			}
+		}
+	}
+	
+	ai_weight = {
+		modifier = {	# Weapon selection bonus.
+			factor = 10
+			has_heavy_weapon_1 = no
+		}
+		modifier = {	# Weapon selection bonus.
+			factor = 1000
+			has_X_weapon_1 = no
+		}
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			research_leader = {
+				area = engineering
+				has_trait = "leader_trait_expertise_propulsion"
+			}
+		}
+	}
+}
+
+tech_mass_accelerator_2 = {
+	area = engineering
+	cost = @tier5cost3
+	tier = 5
+	category = { propulsion }
+	ai_update_type = military
+	prerequisites = { "tech_mass_drivers_5" "tech_mass_accelerator_1" }
+	weight = @tier4weight3
+	
+	weight_modifier = {
+		modifier = { # This weapon requires volatile motes.
+			factor = 0.1
+			d_has_motes = no
+		}
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			research_leader = {
+				area = engineering
+				has_trait = "leader_trait_expertise_propulsion"
+			}
+		}
+	}
+	
+	ai_weight = {
+		modifier = {	# Weapon selection bonus.
+			factor = 10
+			has_heavy_weapon_2 = no
+		}
+		modifier = {	# Weapon selection bonus.
+			factor = 1000
+			has_X_weapon_2 = no
+		}
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			research_leader = {
+				area = engineering
+				has_trait = "leader_trait_expertise_propulsion"
+			}
+		}
+	}
+}
+
+
+# ##################
+# Auto-Cannons
+# ##################
+
+tech_autocannons_1 = {
+	area = engineering
+	cost = @tier2cost2
+	tier = 2
+	category = { propulsion }	
+	ai_update_type = military
+	prerequisites = { tech_mass_drivers_2 }
+	weight = @tier2weight2
+	
+	weight_modifier = {
+		modifier = {	# Weapon selection bonus.
+			factor = 10
+            is_ai = yes
+			has_technology = tech_lasers_3 # strong synergy
+			has_two_weapons_1 = no
+		}
+		modifier = { # Two different weapons should be plenty, but occasionally we might want another.
+			factor = 0.1
+			has_two_weapons_1 = yes
+		}
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 0.5
+			NOT = {
+				has_technology = "tech_mass_drivers_1"
+			}
+		}	
+		modifier = {
+			factor = 1.25
+			research_leader = {
+				area = engineering
+				has_trait = "leader_trait_expertise_propulsion"
+			}
+		}
+	}
+	
+	ai_weight = {
+		modifier = {	# Weapon selection bonus.
+			factor = 20000
+			OR = {
+                AND = { # first weapon
+                    is_preferred_weapons = weapon_type_kinetic
+                    NOT = { has_tech_option = tech_mass_drivers_3 } # railguns have priority
+        			has_basic_weapon_1 = no
+                }
+                AND = { # kinetic preference
+                    is_preferred_weapons = weapon_type_kinetic
+                    has_technology = tech_mass_drivers_3
+                    has_two_weapons_1 = no
+                }
+    			AND = {
+	    		    is_preferred_weapons = weapon_type_explosive # strong synergy, can take as first weapon
+        			has_basic_weapon_1 = no
+                }
+    			AND = {
+                    has_technology = tech_lasers_3 # strong synergy
+        			has_two_weapons_1 = no
+                }
+            }
+		}
+		modifier = { 
+			factor = 0.01
+			OR = {
+                has_technology = tech_disruptors_1 # terrible synergy & AI loves disruptors
+                has_two_weapons_1 = yes # Already got two weapons, no need for more.
+            }
+		}
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			research_leader = {
+				area = engineering
+				has_trait = "leader_trait_expertise_propulsion"
+			}
+		}
+	}
+}
+
+tech_autocannons_2 = {
+	area = engineering
+	cost = @tier3cost2
+	tier = 3
+	category = { propulsion }
+	ai_update_type = military	
+	prerequisites = { "tech_autocannons_1" }
+	weight = @tier3weight2
+	
+	weight_modifier = {
+		modifier = {	# Weapon selection bonus.
+			factor = 10
+            is_ai = yes
+			has_technology = tech_lasers_4 # strong synergy
+			has_two_weapons_2 = no
+		}
+		modifier = { # Two different weapons should be plenty, but occasionally we might want another.
+			factor = 0.1
+			has_two_weapons_2 = yes
+		}
+		modifier = { # This weapon requires volatile motes.
+			factor = 0.1
+			d_has_motes = no
+		}
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			research_leader = {
+				area = engineering
+				has_trait = "leader_trait_expertise_propulsion"
+			}
+		}	
+	}
+	
+	ai_weight = {
+		modifier = {	# Weapon selection bonus.
+			factor = 20000
+			OR = {
+                AND = { # first weapon
+                    is_preferred_weapons = weapon_type_kinetic
+                    NOT = { has_tech_option = tech_mass_drivers_4 } # railguns have priority
+        			has_basic_weapon_2 = no
+                }
+                AND = { # kinetic preference
+                    is_preferred_weapons = weapon_type_kinetic
+                    has_technology = tech_mass_drivers_4
+                    has_two_weapons_2 = no
+                }
+    			AND = {
+	    		    is_preferred_weapons = weapon_type_explosive # strong synergy, can take as first weapon
+        			has_basic_weapon_2 = no
+                }
+    			AND = {
+                    has_technology = tech_lasers_4 # strong synergy
+        			has_two_weapons_2 = no
+                }
+            }
+		}
+		modifier = { 
+			factor = 0.01
+			OR = {
+                has_technology = tech_disruptors_2 # terrible synergy & AI loves disruptors
+                has_two_weapons_2 = yes # Already got two weapons, no need for more.
+            }
+		}
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			research_leader = {
+				area = engineering
+				has_trait = "leader_trait_expertise_propulsion"
+			}
+		}
+	}
+}
+
+tech_autocannons_3 = {
+	area = engineering
+	cost = @tier4cost2
+	tier = 4
+	category = { propulsion }
+	ai_update_type = military
+	prerequisites = { "tech_autocannons_2" }
+	weight = @tier4weight2
+	
+	weight_modifier = {
+		modifier = {	# Weapon selection bonus.
+			factor = 10
+            is_ai = yes
+			has_technology = tech_lasers_5 # strong synergy
+			has_two_weapons_3 = no
+		}
+		modifier = { # Two different weapons should be plenty, but occasionally we might want another.
+			factor = 0.1
+			has_two_weapons_3 = yes
+		}
+		modifier = { # This weapon requires volatile motes.
+			factor = 0.1
+			d_has_motes = no
+		}
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			research_leader = {
+				area = engineering
+				has_trait = "leader_trait_expertise_propulsion"
+			}
+		}	
+	}
+	
+	ai_weight = {
+		modifier = {	# Weapon selection bonus.
+			factor = 20000
+			OR = {
+                AND = { # first weapon
+                    is_preferred_weapons = weapon_type_kinetic
+                    NOT = { has_tech_option = tech_mass_drivers_5 } # railguns have priority
+        			has_basic_weapon_3 = no
+                }
+                AND = { # kinetic preference
+                    is_preferred_weapons = weapon_type_kinetic
+                    has_technology = tech_mass_drivers_5
+                    has_two_weapons_3 = no
+                }
+    			AND = {
+	    		    is_preferred_weapons = weapon_type_explosive # strong synergy, can take as first weapon
+        			has_basic_weapon_3 = no
+                }
+    			AND = {
+                    has_technology = tech_lasers_5 # strong synergy
+        			has_two_weapons_3 = no
+                }
+            }
+		}
+		modifier = { 
+			factor = 0.01
+			OR = {
+                has_technology = tech_disruptors_3 # terrible synergy & AI loves disruptors
+                has_two_weapons_3 = yes # Already got two weapons, no need for more.
+            }
+		}
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			research_leader = {
+				area = engineering
+				has_trait = "leader_trait_expertise_propulsion"
+			}
+		}
+	}
+}
+
+tech_flak_batteries_1 = {
+	area = engineering
+	tier = 0
+	category = { propulsion }
+	ai_update_type = military	
+	start_tech = yes
+}
+
+tech_flak_batteries_2 = {
+	area = engineering
+	cost = @tier2cost1
+	tier = 3
+	category = { propulsion }
+	ai_update_type = military	
+	prerequisites = { "tech_flak_batteries_1" }
+	weight = @tier2weight1
+	
+	weight_modifier = {
+		modifier = {
+			factor = 10
+			is_preferred_weapons = weapon_type_kinetic
+			has_two_weapons_1 = yes
+		}
+		modifier = {	# Already have a PD weapon.
+			factor = 0.1
+			has_PD_weapon_1 = yes
+		}
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			research_leader = {
+				area = engineering
+				has_trait = "leader_trait_expertise_propulsion"
+			}
+		}	
+	}
+	
+	ai_weight = {
+		modifier = {	# Once you have your basic and extra weapon, invest into PD.
+			factor = 20000
+			has_two_weapons_1 = yes
+            has_PD_weapon_1 = no
+			NOT = { is_preferred_weapons = weapon_type_energy }
+		}
+		modifier = {	# Already have a PD weapon.
+			factor = 0.01
+			OR = {
+                has_PD_weapon_1 = yes
+                is_preferred_weapons = weapon_type_energy
+            }
+		}
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			research_leader = {
+				area = engineering
+				has_trait = "leader_trait_expertise_propulsion"
+			}
+		}
+	}
+}
+
+tech_flak_batteries_3 = {
+	area = engineering
+	cost = @tier4cost1
+	tier = 4
+	category = { propulsion }
+	ai_update_type = military	
+	prerequisites = { "tech_flak_batteries_2" }
+	weight = @tier4weight1
+	
+	weight_modifier = {
+		modifier = {
+			factor = 10
+			is_preferred_weapons = weapon_type_kinetic
+			has_two_weapons_3 = yes
+		}
+		modifier = {	# Already have a PD weapon.
+			factor = 0.1
+			has_PD_weapon_3 = yes
+		}
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			research_leader = {
+				area = engineering
+				has_trait = "leader_trait_expertise_propulsion"
+			}
+		}	
+	}
+	
+	ai_weight = {
+		modifier = {	# Once you have your basic and extra weapon, invest into PD.
+			factor = 20000
+			has_two_weapons_3 = yes
+            has_PD_weapon_3 = no
+			NOT = { is_preferred_weapons = weapon_type_energy }
+		}
+		modifier = {	# Already have a PD weapon.
+			factor = 0.01
+			OR = {
+                has_PD_weapon_3 = yes
+                is_preferred_weapons = weapon_type_energy
+            }
+		}
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			research_leader = {
+				area = engineering
+				has_trait = "leader_trait_expertise_propulsion"
+			}
+		}
+	}
+}
+
+# ##################
+# Missiles
+# ##################
+
+# Nuclear Missiles
+tech_missiles_1 = {
+	area = engineering
+	tier = 0
+	category = { propulsion }
+	ai_update_type = military
+	start_tech = yes
+}
+
+# Fusion Missiles
+tech_missiles_2 = {
+	area = engineering
+	cost = @tier1cost2
+	tier = 1
+	category = { propulsion }
+	ai_update_type = military
+	prerequisites = { "tech_missiles_1" }
+	weight = @tier1weight2
+	
+	weight_modifier = {
+		modifier = {	# Weapon selection bonus.
+			factor = 10
+            is_ai = yes
+			OR = {
+                is_preferred_weapons = weapon_type_explosive
+                is_preferred_weapons = weapon_type_strike_craft
+            }
+		}
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			research_leader = {
+				area = engineering
+				has_trait = "leader_trait_expertise_propulsion"
+			}
+		}
+	}
+	
+	ai_weight = {
+		modifier = {	# Weapon selection bonus.
+			factor = 100
+			OR = {
+                is_preferred_weapons = weapon_type_explosive
+                is_preferred_weapons = weapon_type_strike_craft
+            }
+		}
+		modifier = { 
+			factor = 200 # Basic weapons are needed to unlock options.
+		}
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			research_leader = {
+				area = engineering
+				has_trait = "leader_trait_expertise_propulsion"
+			}
+		}
+	}
+}
+
+# Antimatter Missiles
+tech_missiles_3 = {
+	area = engineering
+	cost = @tier2cost2
+	tier = 2
+	category = { propulsion }
+	ai_update_type = military
+	prerequisites = { "tech_missiles_2" }
+	weight = @tier2weight2
+	
+	weight_modifier = {
+		modifier = {	# Weapon selection bonus.
+			factor = 10
+			is_preferred_weapons = weapon_type_explosive
+			has_missile_1 = no
+		}
+		modifier = { # You only need one missile type.
+			factor = 0.1
+            has_missile_1 = yes
+            has_missile_3 = no # Antimatter Missiles are required for missile repeatables.
+		}
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			research_leader = {
+				area = engineering
+				has_trait = "leader_trait_expertise_propulsion"
+			}
+		}	
+	}
+	
+	ai_weight = {
+		modifier = {	# Weapon selection bonus.
+			factor = 20000
+			OR = {
+                is_preferred_weapons = weapon_type_explosive
+                has_two_weapons_1 = yes
+            }
+			has_missile_1 = no
+		}
+		modifier = { 
+			factor = 0.01
+			has_missile_1 = yes # Already got a missile, no need for more.
+            has_missile_3 = no # Once we finished regular weapon research disable this restriction, so that we can research this to unlock repeatables.
+		}
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			research_leader = {
+				area = engineering
+				has_trait = "leader_trait_expertise_propulsion"
+			}
+		}
+	}
+}
+
+# Heavy Missiles
+tech_missiles_4 = {
+	area = engineering
+	cost = @tier3cost2
+	tier = 3
+	category = { propulsion }
+	ai_update_type = military
+	prerequisites = { "tech_missiles_3" }
+	weight = @tier3weight2
+	
+	weight_modifier = {
+		modifier = {	# Weapon selection bonus.
+			factor = 10
+			is_preferred_weapons = weapon_type_explosive
+			has_missile_2 = no
+		}
+		modifier = { # You only need one missile type.
+			factor = 0.1
+            has_missile_2 = yes
+		}
+		modifier = { # This weapon requires volatile motes.
+			factor = 0.1
+			d_has_motes = no
+		}
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			research_leader = {
+				area = engineering
+				has_trait = "leader_trait_expertise_propulsion"
+			}
+		}	
+	}
+	
+	ai_weight = {
+		modifier = {	# Weapon selection bonus.
+			factor = 20000
+			OR = {
+                is_preferred_weapons = weapon_type_explosive
+                has_two_weapons_2 = yes
+            }
+			has_missile_2 = no
+		}
+		modifier = { 
+			factor = 0.01
+			has_missile_2 = yes # Already got a missile, no need for more.
+		}
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			research_leader = {
+				area = engineering
+				has_trait = "leader_trait_expertise_propulsion"
+			}
+		}
+	}
+}
+
+# Marauder Missiles
+tech_missiles_5 = {
+	area = engineering
+	cost = @tier4cost2
+	tier = 4
+	category = { propulsion }
+	ai_update_type = military
+	prerequisites = { "tech_missiles_4" }
+	weight = @tier4weight2
+	
+	weight_modifier = {
+		modifier = {	# Weapon selection bonus.
+			factor = 10
+			is_preferred_weapons = weapon_type_explosive
+			has_missile_3 = no
+		}
+		modifier = { # You only need one missile type.
+			factor = 0.1
+            has_missile_3 = yes
+		}
+		modifier = { # This weapon requires volatile motes.
+			factor = 0.1
+			d_has_motes = no
+		}
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			research_leader = {
+				area = engineering
+				has_trait = "leader_trait_expertise_propulsion"
+			}
+		}	
+	}
+	
+	ai_weight = {
+		modifier = {	# Weapon selection bonus.
+			factor = 20000
+			OR = {
+                is_preferred_weapons = weapon_type_explosive
+                has_two_weapons_3 = yes
+            }
+			has_missile_3 = no
+		}
+		modifier = { 
+			factor = 0.01
+			has_missile_3 = yes # Already got a missile, no need for more.
+		}
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			research_leader = {
+				area = engineering
+				has_trait = "leader_trait_expertise_propulsion"
+			}
+		}
+	}
+}
+
+#Swarmer Missiles
+tech_swarmer_missiles_1 = {
+	area = engineering
+	cost = @tier2cost2
+	tier = 2
+	category = { propulsion }
+	ai_update_type = military
+	prerequisites = { "tech_missiles_2" }
+	weight = @tier2weight2
+	
+	weight_modifier = {
+		modifier = {	# Weapon selection bonus.
+			factor = 10
+			is_preferred_weapons = weapon_type_explosive
+			has_missile_1 = no
+		}
+		modifier = { # Strike craft already draw enemy PD, so the anti-PD missile is bad.
+			factor = 0
+            is_ai = yes
+			is_preferred_weapons = weapon_type_strike_craft            
+		}
+		modifier = { # You only need one missile type.
+			factor = 0.1
+            has_missile_1 = yes
+		}
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			research_leader = {
+				area = engineering
+				has_trait = "leader_trait_expertise_propulsion"
+			}
+		}
+	}
+	
+	ai_weight = {
+		modifier = {	# Weapon selection bonus.
+			factor = 20000
+			OR = {
+                is_preferred_weapons = weapon_type_explosive
+                has_two_weapons_1 = yes
+            }
+			has_missile_1 = no
+		}
+		modifier = { 
+			factor = 0.01
+			has_missile_1 = yes # Already got a missile, no need for more.
+		}
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			research_leader = {
+				area = engineering
+				has_trait = "leader_trait_expertise_propulsion"
+			}
+		}
+	}
+}
+
+#Whirlwind Missiles
+tech_swarmer_missiles_2 = {
+	area = engineering
+	cost = @tier3cost2
+	tier = 3
+	category = { propulsion }
+	ai_update_type = military
+	prerequisites = { "tech_swarmer_missiles_1" }
+	weight = @tier3weight2
+	
+	weight_modifier = {
+		modifier = {	# Weapon selection bonus.
+			factor = 10
+			is_preferred_weapons = weapon_type_explosive
+			has_missile_3 = no
+		}
+		modifier = { # Strike craft already draw enemy PD, so the anti-PD missile is bad.
+			factor = 0
+            is_ai = yes
+			is_preferred_weapons = weapon_type_strike_craft            
+		}
+		modifier = { # You only need one missile type.
+			factor = 0.1
+            has_missile_3 = yes
+		}
+		modifier = { # This weapon requires volatile motes.
+			factor = 0.1
+			d_has_motes = no
+		}
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			research_leader = {
+				area = engineering
+				has_trait = "leader_trait_expertise_propulsion"
+			}
+		}	
+	}
+	
+	ai_weight = {
+		modifier = {	# Weapon selection bonus.
+			factor = 20000
+			OR = {
+                is_preferred_weapons = weapon_type_explosive
+                has_two_weapons_2 = yes
+            }
+			has_missile_3 = no
+		}
+		modifier = { 
+			factor = 0.01
+			has_missile_3 = yes # Already got a missile, no need for more.
+		}
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			research_leader = {
+				area = engineering
+				has_trait = "leader_trait_expertise_propulsion"
+			}
+		}
+	}
+}
+
+# ##################
+# Torpedo Weapons
+# ##################
+
+#Space Torpedoes
+tech_torpedoes_1 = {
+	area = engineering
+	cost = @tier2cost2
+	tier = 2
+	category = { propulsion }
+	ai_update_type = military
+	prerequisites = { "tech_missiles_2" }
+	weight = @tier2weight2
+	
+	weight_modifier = {
+		modifier = {	# Weapon selection bonus.
+			factor = 10
+			is_preferred_weapons = weapon_type_explosive
+			has_missile_1 = no
+		}
+		modifier = { # Strike craft draw enemy PD, so torpedoes can easily get through and hit.
+			factor = 10
+            is_ai = yes
+			is_preferred_weapons = weapon_type_strike_craft            
+		}
+		modifier = { # You only need one missile type, but we make an exception for AI SC users who really ought to get torpedoes.
+			factor = 0.1
+            has_missile_1 = yes
+            NAND = {
+                is_ai = yes
+    			is_preferred_weapons = weapon_type_strike_craft     
+            }
+		}
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			research_leader = {
+				area = engineering
+				has_trait = "leader_trait_expertise_propulsion"
+			}
+		}
+	}
+	
+	ai_weight = {
+		modifier = {	# Weapon selection bonus.
+			factor = 20000
+			OR = {
+                is_preferred_weapons = weapon_type_explosive
+	    	    is_preferred_weapons = weapon_type_strike_craft
+                has_two_weapons_1 = yes
+            }
+			has_missile_1 = no
+		}
+		modifier = { 
+			factor = 0.01
+			has_missile_1 = yes # Already got a missile, no need for more.
+    		NOT = { is_preferred_weapons = weapon_type_strike_craft }
+		}
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			research_leader = {
+				area = engineering
+				has_trait = "leader_trait_expertise_propulsion"
+			}
+		}
+	}
+}
+
+#Armored Torpedoes
+tech_torpedoes_2 = {
+	area = engineering
+	cost = @tier3cost2
+	tier = 3
+	category = { propulsion }
+	ai_update_type = military
+	prerequisites = { "tech_torpedoes_1" }
+	weight = @tier3weight2
+	
+	weight_modifier = {
+		modifier = {	# Weapon selection bonus.
+			factor = 10
+			is_preferred_weapons = weapon_type_explosive
+			has_missile_2 = no
+		}
+		modifier = { # Strike craft draw enemy PD, so torpedoes can easily get through and hit.
+			factor = 10
+            is_ai = yes
+			is_preferred_weapons = weapon_type_strike_craft            
+		}
+		modifier = { # You only need one missile type, but we make an exception for AI SC users who really ought to get torpedoes.
+			factor = 0.1
+            has_missile_2 = yes
+            NAND = {
+                is_ai = yes
+    			is_preferred_weapons = weapon_type_strike_craft     
+            }
+		}
+		modifier = { # This weapon requires volatile motes.
+			factor = 0.1
+			d_has_motes = no
+		}
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			research_leader = {
+				area = engineering
+				has_trait = "leader_trait_expertise_propulsion"
+			}
+		}	
+	}
+	
+	ai_weight = {
+		modifier = {	# Weapon selection bonus.
+			factor = 20000
+			OR = {
+                is_preferred_weapons = weapon_type_explosive
+	    	    is_preferred_weapons = weapon_type_strike_craft
+                has_two_weapons_2 = yes
+            }
+			has_missile_2 = no
+		}
+		modifier = { 
+			factor = 0.01
+			has_missile_2 = yes # Already got a missile, no need for more.
+    		NOT = { is_preferred_weapons = weapon_type_strike_craft }
+		}
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			research_leader = {
+				area = engineering
+				has_trait = "leader_trait_expertise_propulsion"
+			}
+		}
+	}
+}
+
+#Devastator Torpedoes
+tech_torpedoes_3 = {
+	area = engineering
+	cost = @tier4cost2
+	tier = 4
+	category = { propulsion }
+	ai_update_type = military
+	prerequisites = { "tech_torpedoes_2" }
+	weight = @tier4weight2
+	
+	weight_modifier = {
+		modifier = {	# Weapon selection bonus.
+			factor = 10
+			is_preferred_weapons = weapon_type_explosive
+			has_missile_3 = no
+		}
+		modifier = { # Strike craft draw enemy PD, so torpedoes can easily get through and hit.
+			factor = 10
+            is_ai = yes
+			is_preferred_weapons = weapon_type_strike_craft            
+		}
+		modifier = { # You only need one missile type, but we make an exception for AI SC users who really ought to get torpedoes.
+			factor = 0.1
+            has_missile_3 = yes
+            NAND = {
+                is_ai = yes
+    			is_preferred_weapons = weapon_type_strike_craft
+            }
+		}
+		modifier = { # This weapon requires volatile motes.
+			factor = 0.1
+			d_has_motes = no
+		}
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			research_leader = {
+				area = engineering
+				has_trait = "leader_trait_expertise_propulsion"
+			}
+		}	
+	}
+	
+	ai_weight = {
+		modifier = {	# Weapon selection bonus.
+			factor = 20000
+			OR = {
+                is_preferred_weapons = weapon_type_explosive
+	    	    is_preferred_weapons = weapon_type_strike_craft
+                has_two_weapons_3 = yes
+            }
+			has_missile_3 = no
+		}
+		modifier = { 
+			factor = 0.01
+			has_missile_3 = yes # Already got a missile, no need for more.
+    		NOT = { is_preferred_weapons = weapon_type_strike_craft }
+		}
+		modifier = {
+			factor = 1.25
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 1.25
+			research_leader = {
+				area = engineering
+				has_trait = "leader_trait_expertise_propulsion"
+			}
+		}
+	}
+}

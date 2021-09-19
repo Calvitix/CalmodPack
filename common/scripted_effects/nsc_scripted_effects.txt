@@ -162,3 +162,306 @@ nsc_modmenu_clear_ai_bonuses_effect = {
 		nsc_ai_bonus_5 = { remove_modifier = nsc_ai_bonus_5 }
 	}
 }
+nsc_mothball_target_fleet_selecting_effect = {
+	if = { #lock temporally selected targets so they can keep appear in event options until the player choose to close the window
+		limit = { NOT = { has_planet_flag = nsc_mothball_target_fleets_counting_stopped } }
+		while = {
+			change_variable = { which = nsc_mothball_target_fleet_count_var value = 1 }
+			random_fleet_in_orbit = {
+				limit = {
+					OR = {
+						is_ship_class = shipclass_military
+						is_ship_class = shipclass_military_special
+						is_ship_size = juggernaut
+					}
+					#exclude already selected targets
+					NOR = {
+						has_fleet_flag = nsc_mothball_temporal_target_1
+						has_fleet_flag = nsc_mothballed_fleet_1_owner_id_@this.owner
+						has_fleet_flag = nsc_mothball_temporal_target_2
+						has_fleet_flag = nsc_mothballed_fleet_2_owner_id_@this.owner
+						has_fleet_flag = nsc_mothball_temporal_target_3
+						has_fleet_flag = nsc_mothballed_fleet_3_owner_id_@this.owner
+						has_fleet_flag = nsc_mothball_temporal_target_4
+						has_fleet_flag = nsc_mothballed_fleet_4_owner_id_@this.owner
+						has_fleet_flag = nsc_mothball_temporal_target_5
+						has_fleet_flag = nsc_mothballed_fleet_5_owner_id_@this.owner
+					}
+				}
+				if = {
+					limit = {
+						prev = {
+							check_variable = { which = nsc_mothball_target_fleet_count_var value = 1 }
+							NOT = {
+								any_fleet_in_orbit = {
+									OR = {
+										has_fleet_flag = nsc_mothball_temporal_target_1
+										has_fleet_flag = nsc_mothballed_fleet_1_owner_id_@this.owner
+									}
+								}
+							}
+						}
+					}
+					set_fleet_flag = nsc_mothball_temporal_target_1
+				}
+				else_if = {
+					limit = {
+						prev = {
+							check_variable = { which = nsc_mothball_target_fleet_count_var value = 2 }
+							NOT = {
+								any_fleet_in_orbit = {
+									OR = {
+										has_fleet_flag = nsc_mothball_temporal_target_2
+										has_fleet_flag = nsc_fleet_in_mothball_2_owner_id_@this.owner
+									}
+								}
+							}
+						}
+					}
+					set_fleet_flag = nsc_mothball_temporal_target_2
+				}
+				else_if = {
+					limit = {
+						prev = {
+							check_variable = { which = nsc_mothball_target_fleet_count_var value = 3 }
+							NOT = {
+								any_fleet_in_orbit = {
+									OR = {
+										has_fleet_flag = nsc_mothball_temporal_target_3
+										has_fleet_flag = nsc_fleet_in_mothball_3_owner_id_@this.owner
+									}
+								}
+							}
+						}
+					}
+					set_fleet_flag = nsc_mothball_temporal_target_3
+				}
+				else_if = {
+					limit = {
+						prev = {
+							check_variable = { which = nsc_mothball_target_fleet_count_var value = 4 }
+							NOT = {
+								any_fleet_in_orbit = {
+									OR = {
+										has_fleet_flag = nsc_mothball_temporal_target_4
+										has_fleet_flag = nsc_fleet_in_mothball_4_owner_id_@this.owner
+									}
+								}
+							}
+						}
+					}
+					set_fleet_flag = nsc_mothball_temporal_target_4
+				}
+				else_if = {
+					limit = {
+						prev = {
+							check_variable = { which = nsc_mothball_target_fleet_count_var value = 5 }
+							NOT = {
+								any_fleet_in_orbit = {
+									OR = {
+										has_fleet_flag = nsc_mothball_temporal_target_5
+										has_fleet_flag = nsc_fleet_in_mothball_5_owner_id_@this.owner
+									}
+								}
+							}
+						}
+					}
+					set_fleet_flag = nsc_mothball_temporal_target_5
+				}
+			}
+			count = 5
+		}
+		clear_variable = nsc_mothball_target_fleet_count_var
+		set_planet_flag = nsc_mothball_target_fleets_counting_stopped
+	}
+	random_fleet_in_orbit = {
+		limit = {
+			OR = {
+				has_fleet_flag = nsc_mothball_temporal_target_1
+				has_fleet_flag = nsc_mothballed_fleet_1_owner_id_@this.owner
+			}
+		}
+		save_event_target_as = nsc_mothball_target_fleet_1
+		every_owned_ship = {
+			limit = {
+				OR = {
+					is_ship_class = shipclass_military
+					is_ship_class = shipclass_military_special
+					is_ship_size = juggernaut
+				}
+			}
+
+			#this effect is NOT fully implemented yet #stellaris v3.0.3
+			#export_trigger_value_to_variable = { trigger = has_hp variable = nsc_mothball_target_ship_cost_var }
+
+			#this one is for testing and should be replaced to the above code
+			set_variable = { which = nsc_mothball_target_ship_cost_var value = 500 }
+			#so don't forget to change this, me!
+
+			divide_variable = { which = nsc_mothball_target_ship_cost_var value = 5 } #100 / 5 = 20
+			if = {
+				limit = { check_variable = { which = nsc_mothball_target_ship_cost_var value > 5000 } }
+				set_variable = { which = nsc_mothball_target_ship_cost_var value = 5000 }
+			}
+			prev.owner = {
+				change_variable = {
+					which = nsc_mothball_target_fleet_1_total_cost_var
+					value = { scope = prev variable = nsc_mothball_target_ship_cost_var }
+				}
+			}
+			clear_variable = nsc_mothball_target_ship_cost_var
+		}
+	}
+	random_fleet_in_orbit = {
+		limit = {
+			OR = {
+				has_fleet_flag = nsc_mothball_temporal_target_2
+				has_fleet_flag = nsc_fleet_in_mothball_2_owner_id_@this.owner
+			}
+		}
+		save_event_target_as = nsc_mothball_target_fleet_2
+		every_owned_ship = {
+			limit = {
+				OR = {
+					is_ship_class = shipclass_military
+					is_ship_class = shipclass_military_special
+					is_ship_size = juggernaut
+				}
+			}
+
+			#this effect is NOT fully implemented yet #stellaris v3.0.3
+			#export_trigger_value_to_variable = { trigger = has_hp variable = nsc_mothball_target_ship_cost_var }
+
+			#this one is for testing and should be replaced to the above code
+			set_variable = { which = nsc_mothball_target_ship_cost_var value = 500 }
+			#so don't forget to change this, me!
+
+			divide_variable = { which = nsc_mothball_target_ship_cost_var value = 5 } #100 / 5 = 20
+			if = {
+				limit = { check_variable = { which = nsc_mothball_target_ship_cost_var value > 5000 } }
+				set_variable = { which = nsc_mothball_target_ship_cost_var value = 5000 }
+			}
+			prev.owner = {
+				change_variable = {
+					which = nsc_mothball_target_fleet_2_total_cost_var
+					value = { scope = prev variable = nsc_mothball_target_ship_cost_var }
+				}
+			}
+			clear_variable = nsc_mothball_target_ship_cost_var
+		}
+	}
+	random_fleet_in_orbit = {
+		limit = {
+			OR = {
+				has_fleet_flag = nsc_mothball_temporal_target_3
+				has_fleet_flag = nsc_fleet_in_mothball_3_owner_id_@this.owner
+			}
+		}
+		save_event_target_as = nsc_mothball_target_fleet_3
+		every_owned_ship = {
+			limit = {
+				OR = {
+					is_ship_class = shipclass_military
+					is_ship_class = shipclass_military_special
+					is_ship_size = juggernaut
+				}
+			}
+
+			#this effect is NOT fully implemented yet #stellaris v3.0.3
+			#export_trigger_value_to_variable = { trigger = has_hp variable = nsc_mothball_target_ship_cost_var }
+
+			#this one is for testing and should be replaced to the above code
+			set_variable = { which = nsc_mothball_target_ship_cost_var value = 500 }
+			#so don't forget to change this, me!
+
+			divide_variable = { which = nsc_mothball_target_ship_cost_var value = 5 } #100 / 5 = 20
+			if = {
+				limit = { check_variable = { which = nsc_mothball_target_ship_cost_var value > 5000 } }
+				set_variable = { which = nsc_mothball_target_ship_cost_var value = 5000 }
+			}
+			prev.owner = {
+				change_variable = {
+					which = nsc_mothball_target_fleet_3_total_cost_var
+					value = { scope = prev variable = nsc_mothball_target_ship_cost_var }
+				}
+			}
+			clear_variable = nsc_mothball_target_ship_cost_var
+		}
+	}
+	random_fleet_in_orbit = {
+		limit = {
+			OR = {
+				has_fleet_flag = nsc_mothball_temporal_target_4
+				has_fleet_flag = nsc_fleet_in_mothball_4_owner_id_@this.owner
+			}
+		}
+		save_event_target_as = nsc_mothball_target_fleet_4
+		every_owned_ship = {
+			limit = {
+				OR = {
+					is_ship_class = shipclass_military
+					is_ship_class = shipclass_military_special
+					is_ship_size = juggernaut
+				}
+			}
+
+			#this effect is NOT fully implemented yet #stellaris v3.0.3
+			#export_trigger_value_to_variable = { trigger = has_hp variable = nsc_mothball_target_ship_cost_var }
+
+			#this one is for testing and should be replaced to the above code
+			set_variable = { which = nsc_mothball_target_ship_cost_var value = 500 }
+			#so don't forget to change this, me!
+
+			divide_variable = { which = nsc_mothball_target_ship_cost_var value = 5 } #100 / 5 = 20
+			if = {
+				limit = { check_variable = { which = nsc_mothball_target_ship_cost_var value > 5000 } }
+				set_variable = { which = nsc_mothball_target_ship_cost_var value = 5000 }
+			}
+			prev.owner = {
+				change_variable = {
+					which = nsc_mothball_target_fleet_4_total_cost_var
+					value = { scope = prev variable = nsc_mothball_target_ship_cost_var }
+				}
+			}
+			clear_variable = nsc_mothball_target_ship_cost_var
+		}
+	}
+	random_fleet_in_orbit = {
+		limit = {
+			OR = {
+				has_fleet_flag = nsc_mothball_temporal_target_5
+				has_fleet_flag = nsc_fleet_in_mothball_5_owner_id_@this.owner
+			}
+		}
+		save_event_target_as = nsc_mothball_target_fleet_5
+		every_owned_ship = {
+			limit = {
+				OR = {
+					is_ship_class = shipclass_military
+					is_ship_class = shipclass_military_special
+					is_ship_size = juggernaut
+				}
+			}
+
+			#this effect is NOT fully implemented yet #stellaris v3.0.3
+			#export_trigger_value_to_variable = { trigger = has_hp variable = nsc_mothball_target_ship_cost_var }
+
+			#this one is for testing and should be replaced to the above code
+			set_variable = { which = nsc_mothball_target_ship_cost_var value = 500 }
+			#so don't forget to change this, me!
+
+			divide_variable = { which = nsc_mothball_target_ship_cost_var value = 5 } #100 / 5 = 20
+			if = {
+				limit = { check_variable = { which = nsc_mothball_target_ship_cost_var value > 5000 } }
+				set_variable = { which = nsc_mothball_target_ship_cost_var value = 5000 }
+			}
+			prev.owner = {
+				change_variable = {
+					which = nsc_mothball_target_fleet_5_total_cost_var
+					value = { scope = prev variable = nsc_mothball_target_ship_cost_var }
+				}
+			}
+			clear_variable = nsc_mothball_target_ship_cost_var
+		}
+	}
+}

@@ -169,6 +169,21 @@ megastructures = {
 # ###End of Research Rubberbanding mod###
 }
 
+megastructures_habitat = {
+	use_for_ai_budget = yes
+	parent = megastructures
+	generate_mult_modifiers = {
+		cost
+        produces
+        upkeep
+	}
+    generate_add_modifiers = {
+		cost
+        produces
+        upkeep
+	}
+}
+
 colonies = {
 	use_for_ai_budget = yes
 	ai_use_parent_for_resources_upkeep = {
@@ -288,6 +303,34 @@ ships = {
 		trigger = {
 			is_scope_valid = yes #When called from ship designer the design is not valid yet.
 			is_ship_size = colonizer
+		}
+	}
+
+	triggered_cost_modifier = {
+		key = gdf_ship
+		use_parent_icon = yes
+		modifier_types = {
+			mult
+            add
+		}
+
+		trigger = {
+			is_scope_valid = yes #When called from ship designer the design is not valid yet.
+			has_ship_owner_type = galactic_community
+		}
+	}
+	
+	triggered_upkeep_modifier = {
+		key = gdf_ship
+		use_parent_icon = yes
+		modifier_types = {
+			mult
+            add
+		}
+
+		trigger = {
+			is_scope_valid = yes #When called from ship designer the design is not valid yet.
+			has_ship_owner_type = galactic_community
 		}
 	}
 
@@ -632,7 +675,7 @@ ships = {
 
 		trigger = {
 			is_scope_valid = yes #When called from ship designer the design is not valid yet.
-			is_ship_class = shipclass_science_ship
+			is_ship_size = shipclass_science_ship
 		}
 	}
     
@@ -660,7 +703,7 @@ ships = {
 
 		trigger = {
 			is_scope_valid = yes #When called from ship designer the design is not valid yet.
-			is_ship_class = shipclass_constructor
+			is_ship_size = shipclass_constructor
 		}
 	}
     
@@ -2002,7 +2045,7 @@ starbase_constructions = {
 
 starbase_buildings = {
 
-	parent = starbases
+	parent = starbase_constructions
 
 
 
@@ -2021,7 +2064,7 @@ starbase_buildings = {
 
 starbase_modules = {
 
-	parent = starbases
+	parent = starbase_constructions
 
 
 
@@ -2119,11 +2162,13 @@ planet_branch_office_buildings = {
 	generate_mult_modifiers = {
 		cost
 		upkeep
+		produces
 	}
 
 	generate_add_modifiers = {
 		cost
 		upkeep
+		produces
 	}
 }
 
@@ -2369,6 +2414,78 @@ planet_jobs = {
 		trigger = {
 			is_pop_category = slave
 			has_job_category = worker
+		}
+	}
+
+	triggered_produces_modifier = {
+		key = habitat_jobs
+		modifier_types = {
+			add
+			mult
+		}
+		trigger = {
+			exists = planet
+			planet = { is_planet_class = pc_habitat }					   
+		}
+	}
+	
+	triggered_upkeep_modifier = {
+		key = habitat_jobs
+		modifier_types = {
+			add
+			mult
+		}
+		trigger = {
+			exists = planet
+			planet = { is_planet_class = pc_habitat }					   
+		}
+	}
+	
+	triggered_produces_modifier = {
+		key = artificial_planet_jobs
+		modifier_types = {
+			add
+			mult
+		}
+		trigger = {
+			exists = planet
+			planet = { is_artificial = yes }
+		}
+	}
+	
+	triggered_upkeep_modifier = {
+		key = artificial_planet_jobs
+		modifier_types = {
+			add
+			mult
+		}
+		trigger = {
+			exists = planet
+			planet = { is_artificial = yes }
+		}
+	}
+
+	triggered_produces_modifier = {
+		key = non_artificial_planet_jobs
+		modifier_types = {
+			add
+			mult
+		}
+		trigger = {
+			exists = planet
+			planet = { is_artificial = no }
+		}
+	}
+	
+	triggered_upkeep_modifier = {
+		key = non_artificial_planet_jobs
+		modifier_types = {
+			add
+			mult
+		}
+		trigger = {
+			exists = planet
+			planet = { is_artificial = no }
 		}
 	}
 
@@ -3012,6 +3129,18 @@ planet_miners = {
 	}
 }
 
+planet_sr_miners = { #added because we don't want miners_minerals_produces_add to apply to these
+	parent = planet_miners
+	generate_add_modifiers = {
+		produces
+		upkeep
+	}
+	generate_mult_modifiers = {
+		produces
+		upkeep
+	}
+}
+
 planet_livestock = {
 	parent = planet_jobs
 	generate_add_modifiers = {
@@ -3347,28 +3476,28 @@ planet_organic_battery = {
 ###From Gigastructure mod###
 planet_infrastructure = {
     icon = "job_structure_manager" #calvitix merge
-	parent = planet_jobs
-	generate_add_modifiers = {
-		produces
+    parent = planet_jobs
+    generate_add_modifiers = {
+        produces
         upkeep
-	}
-	generate_mult_modifiers = {
-		produces
-		upkeep
-	}
+    }
+    generate_mult_modifiers = {
+        produces
+        upkeep
+    }
 }
 
 planet_bore = {
     icon = "job_bore_manager" #calvitix merge
-	parent = planet_jobs
-	generate_add_modifiers = {
-		produces
+    parent = planet_jobs
+    generate_add_modifiers = {
+        produces
         upkeep
-	}
-	generate_mult_modifiers = {
-		produces
-		upkeep
-	}
+    }
+    generate_mult_modifiers = {
+        produces
+        upkeep
+    }
 }
 
 planet_penrose = {
@@ -4169,27 +4298,27 @@ diplomacy = {
 	}
 }
 
-pop_factions = {
-	parent = country
-	generate_mult_modifiers = {
-		produces
-	}
-
-	generate_add_modifiers = {
-		produces
-	}
-}
+#pop_factions = {
+#	parent = country
+#	generate_mult_modifiers = {
+#		produces
+#	}
+#
+#	generate_add_modifiers = {
+#		produces
+#	}
+#}
 
 #subjects = {
 #	parent = diplomacy
 #}
 
-federation = {
-	parent = diplomacy
-	generate_add_modifiers = {
-		produces
-	}					   
-}
+#federation = {
+#	parent = diplomacy
+#	generate_add_modifiers = {
+#		produces
+#	}					   
+#}
 
 rivalries = {
 	parent = diplomacy
@@ -4294,6 +4423,10 @@ monthly_trades = {
 #	parent = diplomacy
 #}
 
+#diplomatic_networking = {
+#	parent = diplomacy
+#}
+
 #subject_integration = {
 #}
 
@@ -4329,14 +4462,14 @@ artifact_actions = {
 #	    
 #}
 
-# operations = {
-	# use_for_ai_budget = yes
-	# ai_use_parent_for_resources_upkeep = {
-		# energy
-	# }
-	# generate_mult_modifiers = {
-		# cost
-		# upkeep
-	# }
-	# parent = country 
-# }
+#operations = {
+#	use_for_ai_budget = yes
+#	ai_use_parent_for_resources_upkeep = {
+#		energy
+#	}
+#	generate_mult_modifiers = {
+#		cost
+#		upkeep
+#	}
+#	parent = country 
+#}

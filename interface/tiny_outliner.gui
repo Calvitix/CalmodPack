@@ -1,10 +1,10 @@
-#UI OverHAul + Tiny Outliner v2, Check 16.09.2021
+#UI OverHAul + Tiny Outliner v2, Check 19.09.2021
 # direct Tiny Outliner v2 not  used 
-#Calvitix Trad.
+#Calvitix Trad. (transformé en yml)
 guiTypes = {
-	@outliner_w = 302
+	@outliner_w = 300
+	@outliner_w_3440 = 400
 	@outliner_h = 22
-	@overlay_w = 290
 	containerWindowType = {
 		name = "outliner_toggle_window"
 		size = { width = 49 height = 67 }
@@ -74,6 +74,11 @@ guiTypes = {
 			animation_time = 200
 			animation_type = decelerated
 			orientation = upper_right
+			if_resolution = {
+				min_width = 3440
+				size = { width = 400 height = 5 }
+				show_position = { x = -360 y = -76 }
+			}
 			background = {
 				name = "background"
 				quadTextureSprite = "GFX_plain_bg_tile"
@@ -119,6 +124,10 @@ guiTypes = {
 				position = { x = 0 y = 40 }
 				priority = 100
 				size = { x = 286 y = 0 }
+				if_resolution = {
+					min_width = 3440
+					size = { x = 386 y = 0 }
+				}
 				borderSize = { x = 0 y = 0 }
 				scrollbarType = "standardlistbox_slider_thick"
 				spacing = -1
@@ -169,15 +178,31 @@ guiTypes = {
 	}
 	containerWindowType = {
 		name = "outliner_title_entry_window"
-		size = { width = 300 height = 28 }
-		position = { x = 0 y = 0 }
+		size = { width = 290 height = 28 }
+		position = { x = 5 y = 0 }
+		if_resolution = {
+			min_width = 3440
+			size = { width = 390 height = 28 }
+		}
+		containerWindowType = {
+			name = "fake_background"
+			size = { width = 100% height = 28 }
+			position = { x = 1 y = 2 }
+			background = {
+				name = "background"
+				spriteType = "GFX_glow_tile_line"
+				alwaysTransparent = yes
+			}
+		}
 		buttonType = {
 			name = "background"
-			id = "background"
-			quadTextureSprite = "GFX_glow_tile_line"
-			clicksound = outliner_click_tab
-			size = { x = @overlay_w y = 24 }
-			position = { x = 3 y = 6 }
+			quadTextureSprite = "GFX_outliner_member_small_bg"
+			if_resolution = {
+				min_width = 3440
+				quadTextureSprite = "GFX_outliner_member_small_3440_bg"
+			}
+			clicksound = "outliner_click_tab"
+			position = { x = -2 y = -1 }
 		}
 		instantTextBoxType = {
 			name = "title"
@@ -185,6 +210,10 @@ guiTypes = {
 			text = ""
 			position = { x = 0 y = 6 }
 			maxWidth = @outliner_w
+			if_resolution {
+				min_width = 3440
+				maxWidth = @outliner_w_3440
+			}
 			maxHeight = 20
 			fixedSize = yes
 			format = center
@@ -195,7 +224,7 @@ guiTypes = {
 			name = "amount"
 			font = "cg_16b"
 			text = "0"
-			position = { x = -50 y = 6 }
+			position = { x = -40 y = 6 }
 			maxWidth = 32
 			maxHeight = 20
 			fixedSize = yes
@@ -204,7 +233,6 @@ guiTypes = {
 		}
 		smoothListBoxType = {
 			name = "list"
-			id = "list"
 			position = { x = 0 y = 28 }
 			priority = 100
 			size = { x = 300 y = 0 }
@@ -218,24 +246,19 @@ guiTypes = {
 	containerWindowType = {
 		name = "outliner_sector_title_entry_window"
 		size = { width = @outliner_w height = @outliner_h }
-		position = { x = 0 y = 0 }
+		if_resolution = {
+			min_width = 3440
+			size = { width = @outliner_w_3440 height = @outliner_h }
+		}
 		buttonType = {
 			name = "background"
-			id = "background"
 			quadTextureSprite = "GFX_outliner_member_small_bg"
-			clicksound = outliner_click_tab
-			size = { x = -3 y = -5 }
-			oversound = no_sound
-		}
-		containerWindowType = {
-			name = "selected_overlay"
-			position = { x = 2 y = 0 }
-			size = { width = @overlay_w height = 30 }
-			background = {
-				name = "selected_bg"
-				spriteType = "GFX_glow_tile_orange_no_padding"
-				alwaysTransparent = yes
+			if_resolution = {
+				min_width = 3440
+				quadTextureSprite = "GFX_outliner_member_small_3440_bg"
 			}
+			clicksound = "outliner_click_tab"
+			position = { x = -2 y = -1 }
 		}
 		buttonType = {
 			name = "sectors"
@@ -269,8 +292,7 @@ guiTypes = {
 		}
 		smoothListBoxType = {
 			name = "list"
-			id = "list"
-			position = { x = 2 y= 24 }
+			position = { x = 2 y = 24 }
 			priority = 100
 			size = { x = 320 y = 0 }
 			borderSize = { x = 0 y = 0 }
@@ -281,21 +303,19 @@ guiTypes = {
 	containerWindowType = {
 		name = "outliner_member_observation_post_entry_window"
 		size = { width = @outliner_w height = @outliner_h }
-		position = { x = 0 y = 0 }
+		if_resolution = {
+			min_width = 3440
+			size = { width = @outliner_w_3440 height = @outliner_h }
+		}
 		buttonType = {
 			name = "background"
 			quadTextureSprite = "GFX_outliner_member_small_bg"
-			position = { x = -3 y = -5 }
+			if_resolution = {
+				min_width = 3440
+				quadTextureSprite = "GFX_outliner_member_small_3440_bg"
 		}
-		containerWindowType = {
-			name = "selected_overlay"
-			position = { x = 0 y = 0 }
-			size = { width = @overlay_w height = 100% }
-			background = {
-				name = "selected_bg"
-				spriteType = "GFX_glow_tile_orange_no_padding"
-				alwaysTransparent = yes
-			}
+			position = { x = -4 y = -5 }
+			clicksound = "click_outliner"
 		}
 		iconType = {
 			name = "observation_post_icon"
@@ -355,22 +375,19 @@ guiTypes = {
 	containerWindowType = {
 		name = "outliner_member_army_entry_window"
 		size = { width = @outliner_w height = @outliner_h }
-		position = { x = 0 y = 0 }
+		if_resolution = {
+			min_width = 3440
+			size = { width = @outliner_w_3440 height = @outliner_h }
+		}
 		buttonType = {
 			name = "background"
 			quadTextureSprite = "GFX_outliner_member_small_bg"
-			position = { x = -3 y = -5 }
-			clicksound = click_outliner
+			if_resolution = {
+				min_width = 3440
+				quadTextureSprite = "GFX_outliner_member_small_3440_bg"
 		}
-		containerWindowType = {
-			name = "selected_overlay"
-			position = { x = 0 y = 0 }
-			size = { width = @overlay_w height = 100% }
-			background = {
-				name = "selected_bg"
-				spriteType = "GFX_glow_tile_orange_no_padding"
-				alwaysTransparent = yes
-			}
+			position = { x = -4 y = -5 }
+			clicksound = "click_outliner"
 		}
 		iconType = {
 			name = "planet_type"
@@ -466,57 +483,58 @@ guiTypes = {
 	### Fleets ###
 	containerWindowType = {
 		name = "outliner_member_fleet_entry_window"
-		size = { width = 295 height = 41 }
-		position = { x = 0 y = 0 }
+		size = { width = @outliner_w height = @outliner_h }
+		if_resolution = {
+			min_width = 3440
+			size = { width = @outliner_w_3440 height = @outliner_h }
+		}
 		buttonType = {
 			name = "background"
-			quadTextureSprite = "GFX_ui_outliner_member_bg"
-			position = { x = -3 y = -5 }
-			clicksound = click_outliner
-			oversound = no_sound
-		}
-		containerWindowType = {
-			name = "selected_overlay"
-			position = { x = 0 y = 0 }
-			size = { width = 248 height = 100% }
-			background = {
-				name = "selected_bg"
-				spriteType = "GFX_glow_tile_orange_no_padding"
-				alwaysTransparent = yes
+			quadTextureSprite = "GFX_outliner_member_small_bg"
+			if_resolution = {
+				min_width = 3440
+				quadTextureSprite = "GFX_outliner_member_small_3440_bg"
 			}
+			position = { x = -4 y = -5 }
+			clicksound = "click_outliner"
 		}
 		iconType = {
 			name = "alliance_icon"
-			position = { x = 4 y = 1 }
+			position = { x = 18 y = 4 }
 			spriteType = "GFX_ship_class_small"
 			frame = 16
-			scale = 0.66
+			scale = 0.5
 		}
 		iconType = {
 			name = "fleet_status"
-			position = { x = 8 y = 5 }
+			position = { x = 4 y = 0 }
 			spriteType = "GFX_fleet_status_icon"
 			frame = 20
+			alwaysTransparent = yes
+			scale = 0.7
 		}
 		instantTextBoxType = {
 			name = "name"
 			font = "cg_16b"
 			text = "0"
-			position = { x = 40 y = 3 }
-			maxWidth = 130
+			position = { x = 32 y = 1 }
+			maxWidth = 75
+			if_resolution = {
+				min_width = 3440
+				maxWidth = 175
+			}
 			maxHeight = 20
 			fixedSize = yes
 			format = left
-			#text_color_code = "E"
-			alwaysTransparent = yes
+			#alwaysTransparent = yes
 		}
 		instantTextBoxType = {
 			name = "location"
 			font = "cg_16b"
 			text = ""
-			position = { x = -99 y = 3 }
-			maxWidth = 80
-			maxHeight = 20
+			position = { x = 0 y = 0 }
+			maxWidth = 1 # 100
+			maxHeight = 1 # 20
 			fixedSize = yes
 			orientation = upper_right
 			format = right
@@ -526,25 +544,25 @@ guiTypes = {
 			name = "size_limit"
 			font = "cg_16b"
 			text = ""
-			position = { x = 40 y = 20 }
-			maxWidth = 112
+			position = { x = -175 y = 1 }
+			orientation = upper_right
+			maxWidth = 100
 			maxHeight = 20
 			fixedSize = yes
-			format = left
+			format = right
 			text_color_code = "H"
-			alwaysTransparent = yes
 		}
 		instantTextBoxType = {
 			name = "offensive_power"
-			position = { x = -92 y = 20 }
+			position = { x = -80 y = 1 }
+			orientation = upper_right
 			font = "cg_16b"
-			maxWidth = 75
+			maxWidth = 65
 			maxHeight = 20
 			text = "?"
 			fixedSize = yes
 			text_color_code = "Y"
 			format = right
-			orientation = upper_right
 		}
 		iconType = {
 			name = "progress"
@@ -554,13 +572,13 @@ guiTypes = {
 		}
 		gridBoxType = {
 			name = "fleet_status_grid"
-			position = { x = -156 y = -21 }
+			position = { x = -216 y = 2 }
 			size = { width = 45 height = 15 }
 			slotSize = { width = 15 height = 15 }
 			max_slots_horizontal = 3
 			max_slots_vertical = 1
 			format = "UPPER_RIGHT"
-			orientation = "LOWER_RIGHT"
+			orientation = upper_right
 		}
 	}
 	containerWindowType = {
@@ -571,26 +589,31 @@ guiTypes = {
 			spriteType = "GFX_outliner_fleet_status"
 		}
 	}
+	containerWindowType = {
+		name = "ai_fleet_status_entry"
+		size = { width = 15 height = 15 }
+		iconType = {
+			name = "status"
+			spriteType = "GFX_debug_ai_strategy"
+		}
+	}
 	### PLANETS ###
 	containerWindowType = {
 		name = "outliner_member_planet_entry_window"
 		size = { width = @outliner_w height = @outliner_h }
-		position = { x = 0 y = 0 }
+		if_resolution = {
+			min_width = 3440
+			size = { width = @outliner_w_3440 height = @outliner_h }
+		}
 		buttonType = {
 			name = "background"
 			quadTextureSprite = "GFX_outliner_member_small_bg"
-			position = { x = -3 y = -5 }
-			clicksound = "click_outliner"
-		}
-		containerWindowType = {
-			name = "selected_overlay"
-			position = { x = 0 y = 0 }
-			size = { width = @overlay_w height = 100% }
-			background = {
-				name = "selected_bg"
-				spriteType = "GFX_glow_tile_orange_no_padding"
-				alwaysTransparent = yes
+			if_resolution = {
+				min_width = 3440
+				quadTextureSprite = "GFX_outliner_member_small_3440_bg"
 			}
+			position = { x = -4 y = -5 }
+			clicksound = "click_outliner"
 		}
 		iconType = {
 			name = "type"
@@ -647,6 +670,10 @@ guiTypes = {
 			text = "0"
 			position = { x = 140 y = 1 }
 			maxWidth = 103
+			if_resolution {
+				min_width = 3440
+				maxWidth = 203
+			}
 			maxHeight = 20
 			fixedSize = yes
 			format = left
@@ -752,22 +779,19 @@ guiTypes = {
 	containerWindowType = {
 		name = "outliner_member_fleet_civilian_entry_window"
 		size = { width = @outliner_w height = @outliner_h }
-		position = { x = 0 y = 0 }
+		if_resolution = {
+			min_width = 3440
+			size = { width = @outliner_w_3440 height = @outliner_h }
+		}
 		buttonType = {
 			name = "background"
 			quadTextureSprite = "GFX_outliner_member_small_bg"
-			position = { x = -3 y = -5 }
-			clicksound = click_outliner
-		}
-		containerWindowType = {
-			name = "selected_overlay"
-			position = { x = 0 y = 0 }
-			size = { width = @outliner_w height = 100% }
-			background = {
-				name = "selected_bg"
-				spriteType = "GFX_glow_tile_orange_no_padding"
-				alwaysTransparent = yes
+			if_resolution = {
+				min_width = 3440
+				quadTextureSprite = "GFX_outliner_member_small_3440_bg"
 			}
+			position = { x = -4 y = -5 }
+			clicksound = "click_outliner"
 		}
 		iconType = {
 			name = "fleet_status"
@@ -835,11 +859,19 @@ guiTypes = {
 	containerWindowType = {
 		name = "outliner_member_disabled_alert_entry_window"
 		size = { width = @outliner_w height = @outliner_h }
-		position = { x = 0 y = 0 }
+		if_resolution = {
+			min_width = 3440
+			size = { width = @outliner_w_3440 height = @outliner_h }
+		}
 		buttonType = {
 			name = "background"
 			quadTextureSprite = "GFX_outliner_member_small_bg"
-			position = { x = -3 y = -5 }
+			if_resolution = {
+				min_width = 3440
+				quadTextureSprite = "GFX_outliner_member_small_3440_bg"
+			}
+			position = { x = -4 y = -5 }
+			clicksound = "click_outliner"
 		}
 		iconType = {
 			name = "alerticon"
@@ -865,11 +897,19 @@ guiTypes = {
 	containerWindowType = {
 		name = "outliner_member_pop_faction_entry_window"
 		size = { width = @outliner_w height = @outliner_h }
-		position = { x = 0 y = 0 }
+		if_resolution = {
+			min_width = 3440
+			size = { width = @outliner_w_3440 height = @outliner_h }
+		}
 		buttonType = {
 			name = "background"
 			quadTextureSprite = "GFX_outliner_member_small_bg"
-			position = { x = -3 y = -5 }
+			if_resolution = {
+				min_width = 3440
+				quadTextureSprite = "GFX_outliner_member_small_3440_bg"
+			}
+			position = { x = -4 y = -5 }
+			clicksound = "click_outliner"
 		}
 		iconType = {
 			name = "faction_icon"
@@ -885,6 +925,10 @@ guiTypes = {
 			text = "0"
 			position = { x = 26 y = 1 }
 			maxWidth = 108
+			if_resolution {
+				min_width = 3440
+				maxWidth = 208
+			}
 			maxHeight = 20
 			format = left
 			text_color_code = "E"
@@ -894,7 +938,8 @@ guiTypes = {
 		iconType = {
 			name = "pops_icon"
 			spriteType = "GFX_planet_view_pop"
-			position = { x = 150 y = 1 }
+			position = { x = -151 y = 1 }
+			orientation = upper_right
 			scale = 0.62
 			alwaysTransparent = yes
 		}
@@ -902,7 +947,8 @@ guiTypes = {
 			name = "num_pops"
 			font = "cg_16b"
 			text = "13"
-			position = { x = 120 y = 1 }
+			position = { x = -181 y = 1 }
+			orientation = upper_right
 			maxWidth = 30
 			maxHeight = 19
 			fixedSize = yes
@@ -917,7 +963,8 @@ guiTypes = {
 #		}
 		instantTextBoxType = {
 			name = "attraction_label"
-			position = { x = 168 y = 1 }
+			position = { x = -133 y = 1 }
+			orientation = upper_right
 			font = "cg_16b"
 			text = "7"
 			text_color_code = "Y"
@@ -927,15 +974,18 @@ guiTypes = {
 		}
 		instantTextBoxType = {
 			name = "approval_label"
-			position = { x = 198 y = 1 }
+			position = { x = -110 y = 1 }
+			orientation = upper_right
 			font = "cg_16b"
 			text = "APPROVAL_OF_FACTION"
-			maxWidth = 100
+			maxWidth = 57
 			maxHeight = 30
+			format = center
 		}
 		instantTextBoxType = {
 			name = "influence_label"
-			position = { x = 218 y = 1 }
+			position = { x = -83 y = 1 }
+			orientation = upper_right
 			font = "cg_16b"
 			text = "INFLUENCE_GAIN_FROM_FACTION" # not moddable
 			maxWidth = 68
@@ -946,11 +996,19 @@ guiTypes = {
 	containerWindowType = {
 		name = "outliner_member_sector_entry_window"
 		size = { width = @outliner_w height = @outliner_h }
-		position = { x = 0 y = 0 }
+		if_resolution = {
+			min_width = 3440
+			size = { width = @outliner_w_3440 height = @outliner_h }
+		}
 		buttonType = {
 			name = "background"
 			quadTextureSprite = "GFX_outliner_member_small_bg"
-			position = { x = -3 y = -5 }
+			if_resolution = {
+				min_width = 3440
+				quadTextureSprite = "GFX_outliner_member_small_3440_bg"
+			}
+			position = { x = -4 y = -5 }
+			clicksound = "click_outliner"
 		}
 		instantTextBoxType = {
 			name = "name"
@@ -1013,6 +1071,10 @@ guiTypes = {
 		name = "outliner_options_window"
 		size = { width = 300 height = 900 }
 		position = { x = -610 y = 65 }
+		if_resolution = {
+			min_width = 3440
+			position = { x = -710 y = 65 }
+		}
 		orientation = upper_right
 		moveable = yes
 		background = {
@@ -1167,6 +1229,10 @@ guiTypes = {
         name = "outliner_rearrange_window"
 		size = { width = 300 height = 900 }
 		position = { x = -610 y = 65 }
+		if_resolution = {
+			min_width = 3440
+			position = { x = -710 y = 65 }
+		}
 		orientation = upper_right
 		moveable = yes
 		background = {
@@ -1249,7 +1315,7 @@ guiTypes = {
 			name = "sort_distance"
 			quadTextureSprite = "GFX_button_95_24"
 			position = { x = 0 y = 55 }
-			buttonText = "Distance"
+			buttonText = "OUTLINER_REARRANGE_DISTANCE"
 			buttonFont = "cg_16b"
 			pdx_tooltip = "EXPANSION_PLANNER_SORT_DISTANCE"
 		}
@@ -1257,7 +1323,7 @@ guiTypes = {
 			name = "sort_name"
 			quadTextureSprite = "GFX_button_95_24"
 			position = { x = 99 y = 55 }
-			buttonText = "Nom" #Calvitix
+			buttonText = "OUTLINER_REARRANGE_NAME"
 			buttonFont = "cg_16b"
 			pdx_tooltip = "EXPANSION_PLANNER_SORT_NAME"
 		}
@@ -1265,7 +1331,7 @@ guiTypes = {
 			name = "sort_pops"
 			quadTextureSprite = "GFX_button_75_24"
 			position = { x = 198 y = 55 }
-			buttonText = "Pops"
+			buttonText = "OUTLINER_REARRANGE_POPS"
 			buttonFont = "cg_16b"
 			pdx_tooltip = "SORT_BY_POP"
 		}
@@ -1273,7 +1339,7 @@ guiTypes = {
 			name = "sort_class"
 			quadTextureSprite = "GFX_button_116_24"
 			position = { x = 0 y = 85 }
-			buttonText = "Classe de Planète" #Calvitix Trad.
+			buttonText = "OUTLINER_REARRANGE_PLANET_CLASS"
 			buttonFont = "cg_16b"
 			pdx_tooltip = "EXPANSION_PLANNER_SORT_CLASS"
 		}
@@ -1281,7 +1347,7 @@ guiTypes = {
 			name = "sort_designation"
 			quadTextureSprite = "GFX_button_150_24"
 			position = { x = 123 y = 85 }
-			buttonText = "Désignation" #Calvitix
+			buttonText = "OUTLINER_REARRANGE_DESIGNATION"
 			buttonFont = "cg_16b"
 			pdx_tooltip = "SORT_BY_DESIGNATION_H"
 		}
@@ -1359,21 +1425,19 @@ guiTypes = {
 	containerWindowType = {
 		name = "outliner_member_integration_entry_window"
 		size = { width = @outliner_w height = @outliner_h }
-		position = { x = 0 y = 0 }
+		if_resolution = {
+			min_width = 3440
+			size = { width = @outliner_w_3440 height = @outliner_h }
+		}
 		buttonType = {
 			name = "background"
 			quadTextureSprite = "GFX_outliner_member_small_bg"
-			position = { x = -3 y = -5 }
-		}
-		containerWindowType = {
-			name = "selected_overlay"
-			position = { x = 0 y = 0 }
-			size = { width = @overlay_w height = 100% }
-			background = {
-				name = "selected_bg"
-				spriteType = "GFX_glow_tile_orange_no_padding"
-				alwaysTransparent = yes
+			if_resolution = {
+				min_width = 3440
+				quadTextureSprite = "GFX_outliner_member_small_3440_bg"
 			}
+			position = { x = -4 y = -5 }
+			clicksound = "click_outliner"
 		}
 		buttonType = {
 			name = "flag"
@@ -1405,22 +1469,19 @@ guiTypes = {
 	containerWindowType = {
 		name = "outliner_member_terraforming_entry_window"
 		size = { width = @outliner_w height = @outliner_h }
-		position = { x = 0 y = 0 }
+		if_resolution = {
+			min_width = 3440
+			size = { width = @outliner_w_3440 height = @outliner_h }
+		}
 		buttonType = {
 			name = "background"
 			quadTextureSprite = "GFX_outliner_member_small_bg"
-			position = { x = -3 y = -5 }
-			clicksound = "click_outliner"
-		}
-		containerWindowType = {
-			name = "selected_overlay"
-			position = { x = 0 y = 0 }
-			size = { width = @outliner_w height = 100% }
-			background = {
-				name = "selected_bg"
-				spriteType = "GFX_glow_tile_orange_no_padding"
-				alwaysTransparent = yes
+			if_resolution = {
+				min_width = 3440
+				quadTextureSprite = "GFX_outliner_member_small_3440_bg"
 			}
+			position = { x = -4 y = -5 }
+			clicksound = "click_outliner"
 		}
 		iconType = {
 			name = "type_start"
@@ -1476,25 +1537,21 @@ guiTypes = {
 	containerWindowType = {
 		name = "outliner_member_starbase_entry_window"
 		size = { width = @outliner_w height = @outliner_h }
-		position = { x = 0 y = 0 }
+		if_resolution = {
+			min_width = 3440
+			size = { width = @outliner_w_3440 height = @outliner_h }
+		}
 		@text_max_height = 20
 		@text_bottom_y = 1
 		buttonType = {
 			name = "background"
 			quadTextureSprite = "GFX_outliner_member_small_bg"
-			position = { x = -3 y = -5 }
-			clicksound = "click_outliner"
-			oversound = no_sound
-		}
-		containerWindowType = {
-			name = "selected_overlay"
-			position = { x = 0 y = 0 }
-			size = { width = @overlay_w height = 100% }
-			background = {
-				name = "selected_bg"
-				spriteType = "GFX_glow_tile_orange_no_padding"
-				alwaysTransparent = yes
+			if_resolution = {
+				min_width = 3440
+				quadTextureSprite = "GFX_outliner_member_small_3440_bg"
 			}
+			position = { x = -4 y = -5 }
+			clicksound = "click_outliner"
 		}
 		iconType = {
 			name = "type"
@@ -1615,26 +1672,184 @@ guiTypes = {
 			format = left
 		}
 	}
-	### SHIPYARD ###
 	containerWindowType = {
-		name = "outliner_member_shipyard_entry_window"
-		size = { width = @outliner_w height = @outliner_h }
+		name = "outliner_member_starbase_construction_entry_progress_bar_window"
+		# Should be as wide as the largest progress bar
+		size = { width = 50 height = 50 }
 		position = { x = 0 y = 0 }
+		@x_pos = 0
+		@y_pos = 0
+		iconType = {
+			name = "progress_bar_1"
+			position = { x = @x_pos y = @y_pos }
+			spriteType = "GFX_outliner_starbase_construction_progressbar_1"
+			alwaysTransparent = yes
+		}
+		iconType = {
+			name = "progress_bar_2"
+			position = { x = @x_pos y = @y_pos }
+			spriteType = "GFX_outliner_starbase_construction_progressbar_2"
+			alwaysTransparent = yes
+		}
+		iconType = {
+			name = "progress_bar_3"
+			position = { x = @x_pos y = @y_pos }
+			spriteType = "GFX_outliner_starbase_construction_progressbar_3"
+			alwaysTransparent = yes
+		}
+		iconType = {
+			name = "progress_bar_4"
+			position = { x = @x_pos y = @y_pos }
+			spriteType = "GFX_outliner_starbase_construction_progressbar_4"
+			alwaysTransparent = yes
+		}
+		iconType = {
+			name = "progress_bar_5"
+			position = { x = @x_pos y = @y_pos }
+			spriteType = "GFX_outliner_starbase_construction_progressbar_5"
+			alwaysTransparent = yes
+		}
+		iconType = {
+			name = "progress_bar_6"
+			position = { x = @x_pos y = @y_pos }
+			spriteType = "GFX_outliner_starbase_construction_progressbar_6"
+			alwaysTransparent = yes
+		}
+	}
+	containerWindowType = {
+		name = "observer_outliner_country_window"
+		size = { width = 295 height = 41 }
+		position = { x = 0 y = 0 }
+		if_resolution = {
+			min_width = 3440
+			size = { width = 395 height = 41 }
+		}
+		clipping = no
 		buttonType = {
 			name = "background"
-			quadTextureSprite = "GFX_outliner_member_small_bg"
-			position = { x = -3 y = -5 }
+			quadTextureSprite = "GFX_ui_outliner_member_bg"
+			if_resolution = {
+				min_width = 3440
+				quadTextureSprite = "GFX_ui_outliner_member_bg_3440"
+			}
+			position = { x = -4 y = -5 }
 			clicksound = "click_outliner"
 		}
 		containerWindowType = {
 			name = "selected_overlay"
-			position = { x = 0 y = 0 }
-			size = { width = @overlay_w height = 100% }
+			position = { x = 1 y = 0 }
+			size = { width = 287 height = 100% }
 			background = {
 				name = "selected_bg"
 				spriteType = "GFX_glow_tile_orange_no_padding"
 				alwaysTransparent = yes
 			}
+		}
+		iconType = {
+			name = "country"
+			position = { x = 0 y = 4 }
+			spriteType = "GFX_empire_flag_32"
+			alwaysTransparent = yes
+		}
+		instantTextBoxType = {
+			name = "name"
+			font = "cg_16b"
+			text = "0"
+			position = { x = 35 y = 3 }
+			maxWidth = 185
+			maxHeight = 20
+			fixedSize = yes
+			format = left
+			text_color_code = "E"
+			alwaysTransparent = yes
+		}
+		instantTextBoxType = {
+			name = "alliance"
+			font = "cg_16b"
+			text = "0"
+			position = { x = 35 y = 21 }
+			maxWidth = 105
+			maxHeight = 20
+			fixedSize = yes
+			format = left
+			text_color_code = "B"
+			alwaysTransparent = yes
+		}
+		iconType = {
+			name = "fighting"
+			position = { x = 0 y = 0 }
+			scale = 0.0
+			quadTextureSprite = "GFX_outliner_war_vs"
+		}
+		iconType = {
+			name = "war_status_icon"
+			position = { x = 16 y = 19 }
+			scale = 0.6
+			quadTextureSprite = "GFX_diplomacy_status_war"
+		}
+		instantTextBoxType = {
+			name = "might"
+			font = "cg_16b"
+			text = "0"
+			position = { x = 145 y = 21 }
+			maxWidth = 72
+			maxHeight = 20
+			fixedSize = yes
+			format = left
+			text_color_code = "Y"
+			alwaysTransparent = yes
+		}
+		instantTextBoxType = {
+			name = "fleet_power"
+			font = "cg_16b"
+			text = "0"
+			position = { x = 220 y = 21 }
+			maxWidth = 66
+			maxHeight = 20
+			fixedSize = yes
+			format = left
+			text_color_code = "Y"
+			alwaysTransparent = yes
+		}
+		instantTextBoxType = {
+			name = "pops"
+			font = "cg_16b"
+			text = "0"
+			position = { x = 220 y = 3 }
+			maxWidth = 66
+			maxHeight = 20
+			fixedSize = yes
+			format = left
+			text_color_code = "Y"
+			alwaysTransparent = yes
+		}
+	}
+	containerWindowType = {
+		name = "planet_or_starbase_status_entry"
+		size = { width = 15 height = 15 }
+		position = { x = 220 y = 0 }
+		iconType = {
+			name = "status"
+			spriteType = "GFX_outliner_status"
+		}
+	}
+	### SHIPYARD ###
+	containerWindowType = {
+		name = "outliner_member_shipyard_entry_window"
+		size = { width = @outliner_w height = @outliner_h }
+		if_resolution = {
+			min_width = 3440
+			size = { width = @outliner_w_3440 height = @outliner_h }
+		}
+		buttonType = {
+			name = "background"
+			quadTextureSprite = "GFX_outliner_member_small_bg"
+			if_resolution = {
+				min_width = 3440
+				quadTextureSprite = "GFX_outliner_member_small_3440_bg"
+			}
+			position = { x = -4 y = -5 }
+			clicksound = "click_outliner"
 		}
 		iconType = {
 			name = "type"
@@ -1807,222 +2022,6 @@ guiTypes = {
 		iconType = {
 			name = "progress_bar_20"
 			spriteType = "GFX_outliner_shipyard_construction_progressbar_20"
-			alwaysTransparent = yes
-		}
-	}
-	containerWindowType = {
-		name = "outliner_member_starbase_construction_entry_progress_bar_window"
-		# Should be as wide as the largest progress bar
-		size = { width = 50 height = 50 }
-		position = { x = 0 y = 0 }
-		@x_pos = 0
-		@y_pos = 0
-		iconType = {
-			name = "progress_bar_1"
-			position = { x = @x_pos y = @y_pos }
-			spriteType = "GFX_outliner_starbase_construction_progressbar_1"
-			alwaysTransparent = yes
-		}
-		iconType = {
-			name = "progress_bar_2"
-			position = { x = @x_pos y = @y_pos }
-			spriteType = "GFX_outliner_starbase_construction_progressbar_2"
-			alwaysTransparent = yes
-		}
-		iconType = {
-			name = "progress_bar_3"
-			position = { x = @x_pos y = @y_pos }
-			spriteType = "GFX_outliner_starbase_construction_progressbar_3"
-			alwaysTransparent = yes
-		}
-		iconType = {
-			name = "progress_bar_4"
-			position = { x = @x_pos y = @y_pos }
-			spriteType = "GFX_outliner_starbase_construction_progressbar_4"
-			alwaysTransparent = yes
-		}
-		iconType = {
-			name = "progress_bar_5"
-			position = { x = @x_pos y = @y_pos }
-			spriteType = "GFX_outliner_starbase_construction_progressbar_5"
-			alwaysTransparent = yes
-		}
-		iconType = {
-			name = "progress_bar_6"
-			position = { x = @x_pos y = @y_pos }
-			spriteType = "GFX_outliner_starbase_construction_progressbar_6"
-			alwaysTransparent = yes
-		}
-	}
-	containerWindowType = {
-		name = "observer_outliner_country_window"
-		size = { width = 295 height = 41 }
-		position = { x = 0 y = 0 }
-		clipping = no
-		buttonType = {
-			name = "background"
-			quadTextureSprite = "GFX_ui_outliner_member_bg"
-			position = { x = -3 y = -5 }
-			clicksound = "click_outliner"
-			oversound = no_sound
-		}
-		containerWindowType = {
-			name = "selected_overlay"
-			position = { x = 1 y = 0 }
-			size = { width = 287 height = 100% }
-			background = {
-				name = "selected_bg"
-				spriteType = "GFX_glow_tile_orange_no_padding"
-				alwaysTransparent = yes
-			}
-		}
-		iconType = {
-			name = "country"
-			position = { x = 0 y = 4 }
-			spriteType = "GFX_empire_flag_32"
-			alwaysTransparent = yes
-		}
-		instantTextBoxType = {
-			name = "name"
-			font = "cg_16b"
-			text = "0"
-			position = { x = 35 y = 3 }
-			maxWidth = 185
-			maxHeight = 20
-			fixedSize = yes
-			format = left
-			text_color_code = "E"
-			alwaysTransparent = yes
-		}
-		instantTextBoxType = {
-			name = "alliance"
-			font = "cg_16b"
-			text = "0"
-			position = { x = 35 y = 21 }
-			maxWidth = 105
-			maxHeight = 20
-			fixedSize = yes
-			format = left
-			text_color_code = "B"
-			alwaysTransparent = yes
-		}
-		iconType = {
-			name = "fighting"
-			position = { x = 0 y = 0 }
-			scale = 0.0
-			quadTextureSprite = "GFX_outliner_war_vs"
-		}
-		iconType = {
-			name = "war_status_icon"
-			position = { x = 16 y = 19 }
-			scale = 0.6
-			quadTextureSprite = "GFX_diplomacy_status_war"
-		}
-		instantTextBoxType = {
-			name = "might"
-			font = "cg_16b"
-			text = "0"
-			position = { x = 145 y = 21 }
-			maxWidth = 72
-			maxHeight = 20
-			fixedSize = yes
-			format = left
-			text_color_code = "Y"
-			alwaysTransparent = yes
-		}
-		instantTextBoxType = {
-			name = "fleet_power"
-			font = "cg_16b"
-			text = "0"
-			position = { x = 220 y = 21 }
-			maxWidth = 66
-			maxHeight = 20
-			fixedSize = yes
-			format = left
-			text_color_code = "Y"
-			alwaysTransparent = yes
-		}
-		instantTextBoxType = {
-			name = "pops"
-			font = "cg_16b"
-			text = "0"
-			position = { x = 220 y = 3 }
-			maxWidth = 66
-			maxHeight = 20
-			fixedSize = yes
-			format = left
-			text_color_code = "Y"
-			alwaysTransparent = yes
-		}
-	}
-	containerWindowType = {
-		name = "planet_or_starbase_status_entry"
-		size = { width = 15 height = 15 }
-		position = { x = 220 y = 0 }
-		iconType = {
-			name = "status"
-			spriteType = "GFX_outliner_status"
-		}
-	}
-	containerWindowType = {
-		name = "outliner_member_rallypoint_window"
-		size = { width = @outliner_w height = @outliner_h }
-		position = { x = 0 y = 0 }
-		buttonType = {
-			name = "background"
-			quadTextureSprite = "GFX_outliner_member_small_bg"
-			position = { x = -3 y = -5 }
-			clicksound = click_outliner
-		}
-		containerWindowType = {
-			name = "selected_overlay"
-			position = { x = 0 y = 0 }
-			size = { width = @overlay_w height = 100% }
-			background = {
-				name = "selected_bg"
-				spriteType = "GFX_glow_tile_orange_no_padding"
-				alwaysTransparent = yes
-			}
-		}
-		iconType = {
-			name = "planet"
-			position = { x = 6 y = 0 }
-			spriteType = "GFX_planet_type"
-			frame = 1
-			alwaysTransparent = yes
-			scale = 0.52
-		}
-		iconType = {
-			name = "fleet"
-			position = { x = 7 y = 1 }
-			spriteType = "GFX_ship_class_medium"
-			frame = 15
-			alwaysTransparent = yes
-			scale = 0.52
-		}
-		instantTextBoxType = {
-			name = "name"
-			font = "cg_16b"
-			text = "0"
-			position = { x = 28 y = 1 }
-			maxWidth = 140
-			maxHeight = 20
-			fixedSize = yes
-			format = left
-			text_color_code = "E"
-			alwaysTransparent = yes
-		}
-		instantTextBoxType = {
-			name = "location"
-			font = "cg_16b"
-			text = ""
-			position = { x = -82 y = 1 }
-			maxWidth = 74
-			maxHeight = 20
-			fixedSize = yes
-			orientation = upper_right
-			format = right
-			text_color_code = "g"
 			alwaysTransparent = yes
 		}
 	}

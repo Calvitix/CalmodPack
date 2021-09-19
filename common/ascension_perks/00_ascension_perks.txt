@@ -330,12 +330,41 @@ ap_engineered_evolution = {
 		}
 		custom_tooltip = {
 			fail_text = "requires_not_ap_the_flesh_is_weak"
-			NOT = { has_ascension_perk = ap_the_flesh_is_weak }
+#Plentiful Perks
+			OR = {
+				NOT = { has_ascension_perk = ap_the_flesh_is_weak }
+				AND = { 
+					num_ascension_perks > 12
+					AND = {
+						has_tradition = tr_plentiful_biogenesis_finish
+						has_tradition = tr_plentiful_mutagenesis_finish
+					}
+					has_tradition = tr_plentiful_cybernetics_finish
+					has_ascension_perk = ap_the_flesh_is_weak
+				}
+			}
+###
 		}
 		custom_tooltip = {
 			fail_text = "requires_not_ap_mind_over_matter"
-			NOT = { has_ascension_perk = ap_mind_over_matter }
+###Plentiful perks
+			OR = {
+				NOT = { has_ascension_perk = ap_mind_over_matter }
+				AND = { 
+					num_ascension_perks > 12
+					AND = {
+						has_tradition = tr_plentiful_biogenesis_finish
+						has_tradition = tr_plentiful_mutagenesis_finish
+					}
+					AND = {
+						has_tradition = tr_plentiful_mysticism_finish
+						has_tradition = tr_plentiful_faith_finish
+					}
+					has_ascension_perk = ap_mind_over_matter
+				}
+			}
 		}
+###
 	}
 	modifier = {
 		description = ap_engineered_evolution_modifier_desc
@@ -520,6 +549,12 @@ ap_the_flesh_is_weak = {
 				has_ethic = ethic_fanatic_spiritualist
 			}
 		}
+#plentiful perks
+		modifier = {
+			factor = 0
+			num_owned_planets < 10
+		}
+###
 		modifier = {
 			factor = 0
 			has_origin = origin_necrophage
@@ -824,7 +859,17 @@ ap_galactic_force_projection = {
 	}
 
 	ai_weight = {
-		factor = 2
+#Plentiful perks
+		factor = 10 #2
+		modifier = {
+			factor = 1.5
+			num_owned_planets < 10
+		}
+		modifier = {
+			factor = 1.5
+			num_owned_planets < 20
+		}
+###
 		modifier = {
 			factor = 2
 			has_ethic = ethic_militarist

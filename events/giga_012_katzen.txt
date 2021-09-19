@@ -1,8 +1,8 @@
 # Giga File
 #
-# Calvitix Check 3.0.2  28/04/2021
+# Calvitix Check 3.1.1  14/09/2021
 #
-# Last Update : 27/06/2021
+# Last Update : 16/09/2021
 #
 #Calvitix Trad Names
 namespace = giga_katzen
@@ -919,10 +919,10 @@ country_event = {
 		force_remove_civic = civic_increasing_urbanization
 		force_add_civic = civic_distinguished_admiralty
 		force_add_civic = civic_warrior_culture
+		set_country_type = katzenartig_imperium
 		change_government = {
 			authority = auth_imperial
 		}
-		set_country_type = katzenartig_imperium
 		every_country = {
 			limit = {
 				ehof_default_country = yes
@@ -4563,6 +4563,31 @@ country_event = { #Manage war forges
 	}
 
 	immediate = {
+		event_target:flusion_primitives_country = {
+			if = {
+				limit = {
+					NOT = { any_owned_fleet = { has_fleet_flag = kaiser_moon_fleet } }
+					NOT = { has_country_flag = kaiser_moon_destroyed }
+				}
+				every_country = {
+					limit = { has_country_flag = allied_to_kaiser }
+					country_event = { id = giga_katzen.3003 days = 15 } #FTO collapses
+				}
+				every_country = {
+					limit = { has_country_flag = katzen_vassal }
+					country_event = { id = giga_katzen.0033 days = 15 } #Vassals rebel
+				}
+				every_country = {
+					country_event = { id = giga_katzen.089 }
+				}
+				set_country_flag = kaiser_moon_destroyed
+				add_modifier = {
+					modifier = katzenartig_disarray
+					days = -1
+				}
+				country_event = { id = giga_katmoons.001 days = 3600 } #make a new one CHANGE TO 10 YEARS
+			}
+		}
 		country_event = { id = giga_katzen.030 days = 30 }
 		event_target:flusion_primitives_country = {
 			set_variable = {
@@ -6715,17 +6740,11 @@ country_event = { #10 years
 			add_building = building_giga_flusion_home
 			solar_system = {
 				spawn_megastructure = {
-					type = orbital_arcology_0_l
+					type = orbital_arcology_1_l
 					planet = event_target:gigaflusion
 					owner = event_target:flusion_primitives_country
 				}
 			}
-		}
-		random_owned_megastructure = { #Running out of space, we require an orbital arcology
-			limit = {
-				is_megastructure_type = orbital_arcology_0_l
-			}
-			upgrade_megastructure_to = orbital_arcology_1_l
 		}
 	}
 }
@@ -6864,6 +6883,23 @@ country_event = { #30 years
 			add_district = district_generator
 			add_district = district_industrial
 		}
+	}
+}
+
+
+country_event = { #Kaiser Moon destroyed :(
+	id = giga_katzen.089
+	title = "giga_flusion.089.name"
+	desc = "giga_flusion.089.desc"
+	location = from
+	is_triggered_only = yes
+
+	picture = GFX_evt_large_explosion
+	show_sound = event_structural_collapse
+
+	option = { #RIP
+		name = "giga_flusion.091.a"
+		custom_tooltip = "giga_flusion.090.a.tooltip"
 	}
 }
 
@@ -7170,9 +7206,7 @@ event = { #Flusion is GONE (destroyed, checks monthly)
 
 	trigger = {
 		exists = event_target:giga_jublio_system
-		exists = event_target:gigaflusion
 		NOT = { has_global_flag = katzenartig_disabled }
-		any_galaxy_planet = { has_planet_flag = gigaflusion }
 		AND = {
 			OR = {
 				event_target:gigaflusion = {
@@ -7185,15 +7219,14 @@ event = { #Flusion is GONE (destroyed, checks monthly)
 					}
 				}
 				event_target:giga_jublio_system = { #Flusion has been completely obliterated
-					NOT = { any_galaxy_planet = { has_planet_flag = gigaflusion } }
+					NOT = { any_system_planet = { has_planet_flag = gigaflusion } }
 				}
+				NOT = { exists = event_target:gigaflusion }
 			}
 			has_global_flag = katzenartig_imperium_happened
-			NOT = {
-				has_global_flag = katzenartig_imperium_defeated
+			NOT = { has_global_flag = katzenartig_imperium_defeated }
 			}
 		}
-	}
 
 	immediate = {
 		every_country = {
@@ -8335,32 +8368,32 @@ planet_event = { #After 5 years, add more pops + make arcology
 	immediate = {
 		clear_blockers = yes
 		planet_event = { id = giga_katzen.103 days = 1800 random = 200 }
-		if = {
-			limit = {
-				NOR = {
-					has_modifier = orbital_arcology_modifier_1
-					has_modifier = orbital_arcology_modifier_2
-					has_modifier = orbital_arcology_modifier_3
-					habitable_structure = yes
-				}
-			}
-			save_event_target_as = arcology_target #Running out of space, we require an orbital arcology
-			solar_system = {
-				spawn_megastructure = {
-					type = orbital_arcology_0_l
-					planet = event_target:arcology_target
-					owner = event_target:flusion_primitives_country
-				}
-			}
-			owner = {
-				random_owned_megastructure = {
-					limit = {
-						is_megastructure_type = orbital_arcology_0_l
-					}
-					upgrade_megastructure_to = orbital_arcology_1_l
-				}
-			}
-		}
+		# if = {
+		# 	limit = {
+		# 		NOR = {
+		# 			has_modifier = orbital_arcology_modifier_1
+		# 			has_modifier = orbital_arcology_modifier_2
+		# 			has_modifier = orbital_arcology_modifier_3
+		# 			habitable_structure = yes
+		# 		}
+		# 	}
+		# 	save_event_target_as = arcology_target #Running out of space, we require an orbital arcology
+		# 	solar_system = {
+		# 		spawn_megastructure = {
+		# 			type = orbital_arcology_0_l
+		# 			planet = event_target:arcology_target
+		# 			owner = event_target:flusion_primitives_country
+		# 		}
+		# 	}
+		# 	owner = {
+		# 		random_owned_megastructure = {
+		# 			limit = {
+		# 				is_megastructure_type = orbital_arcology_0_l
+		# 			}
+		# 			upgrade_megastructure_to = orbital_arcology_1_l
+		# 		}
+		# 	}
+		# }
 		while = {
 			count = 3
 			create_pop = {
@@ -8640,32 +8673,32 @@ planet_event = { #After 5 years, add more pops + make arcology
 	immediate = {
 		clear_blockers = yes
 		planet_event = { id = giga_katzen.113 days = 1800 random = 200 }
-		if = {
-			limit = {
-				NOR = {
-					has_modifier = orbital_arcology_modifier_1
-					has_modifier = orbital_arcology_modifier_2
-					has_modifier = orbital_arcology_modifier_3
-					habitable_structure = yes
-				}
-			}
-			save_event_target_as = arcology_target #Running out of space, we require an orbital arcology
-			solar_system = {
-				spawn_megastructure = {
-					type = orbital_arcology_0_l
-					planet = event_target:arcology_target
-					owner = event_target:flusion_primitives_country
-				}
-			}
-			owner = {
-				every_owned_megastructure = {
-					limit = {
-						is_megastructure_type = orbital_arcology_0_l
-					}
-					upgrade_megastructure_to = orbital_arcology_1_l
-				}
-			}
-		}
+		# if = {
+		# 	limit = {
+		# 		NOR = {
+		# 			has_modifier = orbital_arcology_modifier_1
+		# 			has_modifier = orbital_arcology_modifier_2
+		# 			has_modifier = orbital_arcology_modifier_3
+		# 			habitable_structure = yes
+		# 		}
+		# 	}
+		# 	save_event_target_as = arcology_target #Running out of space, we require an orbital arcology
+		# 	solar_system = {
+		# 		spawn_megastructure = {
+		# 			type = orbital_arcology_0_l
+		# 			planet = event_target:arcology_target
+		# 			owner = event_target:flusion_primitives_country
+		# 		}
+		# 	}
+		# 	owner = {
+		# 		every_owned_megastructure = {
+		# 			limit = {
+		# 				is_megastructure_type = orbital_arcology_0_l
+		# 			}
+		# 			upgrade_megastructure_to = orbital_arcology_1_l
+		# 		}
+		# 	}
+		# }
 		while = {
 			count = 10
 			create_pop = {

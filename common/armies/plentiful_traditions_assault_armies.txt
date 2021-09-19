@@ -10,7 +10,7 @@ defense_slave_army = {
 	morale = 1.50
 	collateral_damage = 1.00
 	war_exhaustion = 0.00
-	icon_frame = 10
+	icon = GFX_army_type_slave
 	prerequisites = { "tech_neural_implants" }
 	allow = {
 		has_building = "building_slave_processing"
@@ -44,7 +44,7 @@ slave_army = {
 	collateral_damage = 1.50
 	war_exhaustion = 0.50
 	time = 60
-	icon_frame = 10
+	icon = GFX_army_type_slave
 	resources = {
 		category = armies
 		cost = {
@@ -57,9 +57,16 @@ slave_army = {
 	prerequisites = { "tech_neural_implants" }
 	allow = {
 		any_owned_pop = { is_pop_category = slave }
+		has_building = building_slave_processing
 		NOT = { has_building = building_plentiful_traditions_advanced_slave_processing }
 	}
 	potential = {
+		owner = {
+			any_owned_pop = {
+				is_pop_category = slave
+				is_same_species = from
+			}
+		}
 		from = {
 			NOR = {
 				has_trait = "trait_mechanical"
@@ -68,6 +75,7 @@ slave_army = {
 			}
 		}
 		owner = {
+			has_policy_flag = slavery_allowed
 			NOT = { has_authority = auth_machine_intelligence }
 		}
 	}
@@ -82,7 +90,7 @@ advanced_defense_slave_army = {
 	morale = 2.00
 	collateral_damage = 1.75
 	war_exhaustion = 0.00
-	icon_frame = 10
+	icon = GFX_army_type_slave
 	prerequisites = { "tech_neural_implants" }
 	allow = {
 		any_owned_pop = { is_pop_category = slave }
@@ -130,7 +138,7 @@ advanced_slave_army = {
 	collateral_damage = 1.75
 	war_exhaustion = 0.50
 	time = 75
-	icon_frame = 10
+	icon = GFX_army_type_slave
 	resources = {
 		category = armies
 		cost = {
@@ -146,22 +154,13 @@ advanced_slave_army = {
 		has_building = "building_plentiful_traditions_advanced_slave_processing"
 	}
 	potential = {
+		owner = {
+			any_owned_pop = {
+				is_pop_category = slave
+				is_same_species = from
+			}
+		}
 		from = {
-#			OR = {
-#				has_citizenship_type = {
-#					#country = planet.owner
-#					type = citizenship_slavery
-#				}
-#				has_citizenship_type = {
-#					#country = planet.owner
-#					type = citizenship_caste_system
-#				}
-#				has_citizenship_type = {
-#					#country = planet.owner
-#					type = citizenship_caste_system_limited
-#				}
-#			}
-			has_technology = tech_neural_implants
 			NOR = {
 				has_trait = "trait_mechanical"
 				has_trait = "trait_machine_unit"
@@ -169,6 +168,7 @@ advanced_slave_army = {
 			}
 		}
 		owner = {
+			has_policy_flag = slavery_allowed
 			NOT = { has_authority = auth_machine_intelligence }
 		}
 	}

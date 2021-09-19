@@ -87,11 +87,11 @@ col_dome_leisure = {
 		base = 200
 		modifier = {
 			factor = 2
-			has_designation = col_habitat_leisure
+			has_designation = col_dome_leisure
 		}
 		modifier = {
 			factor = 3
-			num_districts = { type = district_hab_cultural value >= 4 }
+			num_districts = { type = district_pdhab_cultural value >= 4 }
 		}
 	}
 }
@@ -134,11 +134,11 @@ col_dome_trade = {
 		}
 		modifier = {
 			factor = 2
-			has_designation = col_habitat_trade
+			has_designation = col_dome_trade
 		}
 		modifier = {
 			factor = 3
-			num_districts = { type = district_hab_commercial value >= 4 }
+			num_districts = { type = district_pdhab_commercial value >= 4 }
 		}
 	}
 }
@@ -175,12 +175,12 @@ col_dome_research = {
 		}
 		modifier = {
 			factor = 2
-			has_designation = col_habitat_research
+			has_designation = col_dome_research
 		}
 		modifier = {
 			factor = 3
 			OR = {
-				num_districts = { type = district_hab_science value >= 4 }
+				num_districts = { type = district_pdhab_science value >= 4 }
 				num_buildings = { type = building_research_lab_1 value >= 4 }
 				num_buildings = { type = building_research_lab_2 value >= 4 }
 				num_buildings = { type = building_research_lab_3 value >= 4 }
@@ -218,11 +218,11 @@ col_dome_mining = {
 		}
 		modifier = {
 			factor = 2
-			has_designation = col_habitat_mining
+			has_designation = col_dome_mining
 		}
 		modifier = {
 			factor = 3
-			num_districts = { type = district_hab_mining value >= 4 }
+			num_districts = { type = district_pdhab_mining value >= 4 }
 		}
 	}
 }
@@ -252,13 +252,79 @@ col_dome_fortress = {
 		base = 500
 		modifier = {
 			factor = 2
-			has_designation = col_habitat_fortress
+			has_designation = col_dome_fortress
 		}
 		modifier = {
 			factor = 3
 			num_buildings = { type = building_stronghold value >= 8 }
 		}
 
+	}
+}
+
+# Habitat Industrial
+col_dome_industrial = {
+	icon = GFX_colony_type_industrial
+
+	potential = {
+		OR = {
+			is_planet_class = pc_pd_barren_cold_hab
+			is_planet_class = pc_pd_barren_hab
+			is_planet_class = pc_pd_frozen_hab
+			is_planet_class = pc_pd_gas_giant_hab
+			is_planet_class = pc_pd_hothouse_hab
+			is_planet_class = pc_pd_toxic_hab
+			is_planet_class = pc_pd_molten_hab
+			is_planet_class = pc_pd_asteroid_hab
+		}
+	}
+	planet_modifier = {
+		planet_district_hab_industrial_build_speed_mult = 0.25
+		planet_metallurgists_upkeep_mult = -0.1
+		planet_artisans_upkeep_mult = -0.1
+	}
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_galactic_community_member = yes
+			}
+			OR = {
+				is_active_resolution = "resolution_industry_environmental_ordinance_waivers"
+				is_active_resolution = "resolution_industry_project_cornucopia"
+			}
+		}
+		modifier = {
+			planet_artisans_produces_mult = 0.05
+			planet_metallurgists_produces_mult = 0.05
+		}
+	}
+
+	weight_modifier = {
+		base = 600
+		modifier = {
+			factor = 3
+			AND = {
+				OR = {
+					has_building = building_factory_1
+					has_building = building_factory_2
+					has_building = building_factory_3
+				}
+				OR = {
+					has_building = building_foundry_1
+					has_building = building_foundry_2
+					has_building = building_foundry_3
+				}
+			}
+		}
+		modifier = {
+			factor = 3
+			has_designation = col_dome_industrial
+		}
+		modifier = {
+			factor = 0
+			num_districts = { type = district_pdhab_industrial value = 0 }
+		}
 	}
 }
 
@@ -290,7 +356,7 @@ col_dome_foundry = {
 		}
 		modifier = {
 			factor = 2
-			has_designation = col_habitat_foundry
+			has_designation = col_dome_foundry
 		} 
 		modifier = {
 			factor = 3
@@ -336,7 +402,7 @@ col_dome_factory = {
 		}
 		modifier = {
 			factor = 2
-			has_designation = col_habitat_factory
+			has_designation = col_dome_factory
 		}
 		modifier = {
 			factor = 3
@@ -386,7 +452,7 @@ col_dome_refinery = {
 			}
 			modifier = {
 				factor = 2
-				has_designation = col_habitat_refinery
+				has_designation = col_dome_refinery
 			}
 			modifier = {
 				factor = 3

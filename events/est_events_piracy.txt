@@ -38,44 +38,6 @@ country_event = {
 	}
 }
 
-#Raider adopt, gives bonus when war declared, removes it on peace.
-country_event = {
-	id = est_piracy.2
-	hide_window = yes
-	is_triggered_only = yes
-	
-	trigger = {
-		has_active_tradition = tr_est_piracy_adopt_special
-	}
-	
-	immediate = {
-		if = {
-			limit = {
-				is_at_war = yes
-			}
-			if = {
-				limit = {
-					Not = {
-						has_modifier = mod_est_piracy_adopt_special_GC
-					}
-				}
-				add_modifier = {
-					modifier = "mod_est_piracy_adopt_special_GC"
-					days = -1
-				}	
-			}
-		}
-		else = {
-			if = {
-				limit = {
-					has_modifier = mod_est_piracy_adopt_special_GC
-				}
-				remove_modifier = "mod_est_piracy_adopt_special_GC"
-			}
-		}
-	}
-}
-
 #Piracy 1, gives minerals when destroying ships (more from stations).
 country_event = {
 	id = est_piracy.3
@@ -83,7 +45,7 @@ country_event = {
 	is_triggered_only = yes
 	
 	trigger = {
-		has_non_swapped_tradition = tr_est_piracy_1
+		has_active_tradition = tr_est_piracy_2
 	}
 	
 	immediate = {
@@ -227,7 +189,7 @@ country_event = {
 	is_triggered_only = yes
 	
 	trigger = {
-		has_non_swapped_tradition = tr_est_piracy_3
+		has_active_tradition = tr_est_piracy_4
 	}
 
 	immediate = {
@@ -248,60 +210,6 @@ country_event = {
 					flag = flag_est_piracy_3_mod_just_added
 					days = 1
 				}					
-			}
-		}
-	}
-}
-
-#Piracy 5 Hive, triggers when planet successfully invaded. Gain food.
-country_event = {
-	id = est_piracy.5
-	hide_window = yes
-	is_triggered_only = yes
-	
-	trigger = {	
-		has_active_tradition = tr_est_piracy_5_hive
-	}
-	
-	immediate = {
-		fromfrom = {
-			if = {
-				limit = {
-					has_modifier = mod_est_piracy_finish
-				}
-				remove_modifier = "mod_est_piracy_finish"
-			}
-			else = {
-				every_owned_pop = {
-					root = {
-						add_resource = {
-							food = 10
-						}
-					}
-				}				
-			}
-		}
-	}	
-}
-
-#Piracy 5 machines, new pops on conquest.
-planet_event = {
-	id = est_piracy.6
-	hide_window = yes
-	is_triggered_only = yes
-	
-	trigger = {
-		owner = {
-			has_active_tradition = tr_est_piracy_5_machines
-		}
-		num_pops > 0
-	}
-
-	immediate = {
-		while = { 
-			count = 3
-			create_pop = {
-				species = owner
 			}
 		}
 	}
@@ -338,7 +246,7 @@ country_event = {
 			if = {
 				limit = {
 					root = {
-						has_non_swapped_tradition = tr_est_piracy_finish
+						has_active_tradition = tr_est_piracy_finish
 					}
 				}
 				add_modifier = {
@@ -358,7 +266,7 @@ planet_event = {
 	
 	trigger = {	
 		from = {
-			has_non_swapped_tradition = tr_est_piracy_finish
+			has_active_tradition = tr_est_piracy_finish
 		}
 	}
 	

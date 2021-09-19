@@ -1,0 +1,214 @@
+#	Example:
+#
+#	example_trigger = {
+#		is_country_type = default
+#		num_communications > 0
+#	}
+#
+#
+#	In a script file:
+#
+#	trigger = {
+#		example_trigger = yes
+#	}
+#
+
+# Basic weapons are weapons that fill all the basic weapon slots: small, medium, large. Disruptors are here in combination with Cloud Lightning.
+
+has_basic_weapon_1 = {
+	OR = {
+        has_technology = "tech_mass_drivers_3"
+        has_technology = "tech_lasers_3"
+        has_technology = "tech_disruptors_1"
+        has_technology = "tech_plasma_1"
+        has_technology = "tech_autocannons_1"
+    }
+}
+
+has_basic_weapon_2 = {
+	OR = {
+        has_technology = "tech_mass_drivers_4"
+        has_technology = "tech_lasers_4"
+        has_technology = "tech_disruptors_2"
+        has_technology = "tech_plasma_2"
+        has_technology = "tech_autocannons_2"
+    }
+}
+
+has_basic_weapon_3 = {
+	OR = {
+        has_technology = "tech_mass_drivers_5"
+        has_technology = "tech_lasers_5"
+        has_technology = "tech_disruptors_3"
+        has_technology = "tech_plasma_3"
+        has_technology = "tech_autocannons_3"
+    }
+}
+
+has_missile_1 = {
+	OR = {
+        has_technology = "tech_missiles_3"
+        has_technology = "tech_torpedoes_1"
+        has_technology = "tech_swarmer_missiles_1"
+    }
+}
+
+has_missile_2 = {
+	OR = {
+        has_technology = "tech_missiles_4"
+        has_technology = "tech_torpedoes_2"
+        has_technology = "tech_swarmer_missiles_2" # Only has two tiers.
+    }
+}
+
+has_missile_3 = {
+	OR = {
+        has_technology = "tech_missiles_5"
+        has_technology = "tech_torpedoes_3"
+        has_technology = "tech_swarmer_missiles_2" # Only has two tiers.
+    }
+}
+
+# Heavy weapons are L or XL sized advanced weapons. They include arc emmiters, lances, super canons, artillery, and particle launchers.
+
+has_heavy_weapon_1 = {
+	OR = {
+        has_technology = "tech_kinetic_artillery_1"
+        has_technology = "tech_mass_accelerator_1"
+        has_technology = "tech_energy_lance_1"
+        has_technology = "tech_arc_emitter_1"
+        has_technology = "tech_energy_torpedoes_1"
+    }
+}
+
+has_heavy_weapon_2 = {
+	OR = {
+        has_technology = "tech_kinetic_artillery_2"
+        has_technology = "tech_mass_accelerator_2"
+        has_technology = "tech_energy_lance_2"
+        has_technology = "tech_arc_emitter_2"
+        has_technology = "tech_energy_torpedoes_2"
+    }
+}
+
+has_L_weapon_1 = {
+	OR = {
+        has_technology = "tech_kinetic_artillery_1"
+        has_technology = "tech_energy_torpedoes_1"
+    }
+}
+
+has_L_weapon_2 = {
+	OR = {
+        has_technology = "tech_kinetic_artillery_2"
+        has_technology = "tech_energy_torpedoes_2"
+    }
+}
+
+has_X_weapon_1 = {
+	OR = {
+        has_technology = "tech_mass_accelerator_1"
+        has_technology = "tech_energy_lance_1"
+        has_technology = "tech_arc_emitter_1"
+    }
+}
+
+has_X_weapon_2 = {
+	OR = {
+        has_technology = "tech_mass_accelerator_2"
+        has_technology = "tech_energy_lance_2"
+        has_technology = "tech_arc_emitter_2"
+    }
+}
+
+# Special weapons are all the other weapons. They either use a specialized slot, lack one or more basic slots sizes, or have highly specialized damage modifiers.
+
+has_two_weapons_1 = {
+	calc_true_if = {
+        amount = 2
+        has_technology = "tech_mass_drivers_3"
+        has_technology = "tech_lasers_3"
+        has_technology = "tech_disruptors_1"
+        has_technology = "tech_disruptors_1" # Listed twice so that it counts as two weapons.
+        has_technology = "tech_plasma_1"
+        has_technology = "tech_autocannons_1"
+    }
+}
+
+has_two_weapons_2 = {
+	calc_true_if = {
+        amount = 2
+        has_technology = "tech_mass_drivers_4"
+        has_technology = "tech_lasers_4"
+        has_technology = "tech_disruptors_2"
+        has_technology = "tech_disruptors_2" # Listed twice so that it counts as two weapons.
+        has_technology = "tech_plasma_2"
+        has_technology = "tech_autocannons_2"
+    }
+}
+
+
+has_two_weapons_3 = {
+	calc_true_if = {
+        amount = 2
+        has_technology = "tech_mass_drivers_5"
+        has_technology = "tech_lasers_5"
+        has_technology = "tech_disruptors_3"
+        has_technology = "tech_disruptors_3" # Listed twice so that it counts as two weapons.
+        has_technology = "tech_plasma_3"
+        has_technology = "tech_autocannons_3"
+    }
+}
+
+has_PD_weapon_1 = {
+	OR = {
+        has_technology = "tech_pd_tracking_2"
+        has_technology = "tech_flak_batteries_2"
+    }
+}
+
+has_PD_weapon_3 = {
+	OR = {
+        has_technology = "tech_pd_tracking_3"
+        has_technology = "tech_flak_batteries_3"
+    }
+}
+
+d_has_crystals = {
+    OR = {
+        has_monthly_income = {
+    		resource = rare_crystals
+    		value >= 1
+        }
+		resource_stockpile_compare = { # Has a stockpile. Lack of income is likely temporary.
+			resource = rare_crystals
+			value > 500
+		}
+	}
+}
+
+d_has_gases = {
+    OR = {
+        has_monthly_income = {
+    		resource = exotic_gases
+    		value >= 1
+        }
+		resource_stockpile_compare = { # Has a stockpile. Lack of income is likely temporary.
+			resource = exotic_gases
+			value > 500
+		}
+	}
+}
+
+d_has_motes = {
+    OR = {
+        has_monthly_income = {
+    		resource = volatile_motes
+    		value >= 1
+        }
+		resource_stockpile_compare = { # Has a stockpile. Lack of income is likely temporary.
+			resource = volatile_motes
+			value > 500
+		}
+	}
+}

@@ -1172,42 +1172,42 @@ country_event = {
 }
 
 ### Thinking Asteroid 1
-ship_event = {
-	id = anomaly.75
-	title = "anomaly.75.name"
-	desc = "anomaly.75.desc"
-	picture = GFX_evt_mining_station
-	show_sound = event_scanner
-	location = FROM
+# ship_event = {
+	# id = anomaly.75
+	# title = "anomaly.75.name"
+	# desc = "anomaly.75.desc"
+	# picture = GFX_evt_mining_station
+	# show_sound = event_scanner
+	# location = FROM
 	
-	is_triggered_only = yes
+	# is_triggered_only = yes
 
-	immediate = {
-		from = { clear_deposits = yes }
-	}
+	# immediate = {
+		# from = { clear_deposits = yes }
+	# }
 
-	option = {
-		name = anomaly.75.a
-		hidden_effect = { ship_event = { id = anomaly.80 days = 5 } }
-	}
+	# option = {
+		# name = anomaly.75.a
+		# hidden_effect = { ship_event = { id = anomaly.80 days = 5 } }
+	# }
 
-	option = {
-		name = anomaly.75.b
-		#custom_tooltip = anomaly.75.b.tooltip
-		from = {
-			add_deposit = d_physics_2
-			add_deposit = d_society_2
-		}
-		hidden_effect = {
-			FROM = {
-				add_modifier = {
-					modifier = "rock_brain"
-					days = -1
-				}
-			}
-		}
-	}
-}
+	# option = {
+		# name = anomaly.75.b
+		# #custom_tooltip = anomaly.75.b.tooltip
+		# from = {
+			# add_deposit = d_physics_2
+			# add_deposit = d_society_2
+		# }
+		# hidden_effect = {
+			# FROM = {
+				# add_modifier = {
+					# modifier = "rock_brain"
+					# days = -1
+				# }
+			# }
+		# }
+	# }
+# }
 
 ### Thinking Asteroid 2
 ship_event = {
@@ -6997,6 +6997,7 @@ ship_event = {
 		text = anomaly.186.desc.v1
 		trigger = {
 			hidden:owner = {
+				is_machine_empire = no
 				OR = {
 					has_policy_flag = ai_outlawed
 					has_ethic = ethic_spiritualist
@@ -7013,7 +7014,10 @@ ship_event = {
 		text = anomaly.186.desc.v3
 		trigger = {
 			hidden:owner = {
+				OR = {
 				has_technology = tech_synthetic_workers
+					is_machine_empire = yes
+				}
 				NOR = {
 					has_policy_flag = ai_outlawed
 					has_ethic = ethic_spiritualist
@@ -7045,7 +7049,10 @@ ship_event = {
 		name = "anomaly.186.c"
 		trigger = {
 			owner = {
+				OR = {
 				has_technology = tech_synthetic_workers
+					is_machine_empire = yes
+				}
 				NOR = {
 					has_policy_flag = ai_outlawed
 					has_ethic = ethic_spiritualist
@@ -7059,20 +7066,20 @@ ship_event = {
 		}
 
 		owner = {
-			capital_scope = {
+			# planet/owner project, best start in country scope, instead of location scope
 				enable_special_project = {
 					name = "LIMBO_2_PROJECT"
-					location = this
+				location = capital_scope
 					owner = root.owner
 				}
 			}
 		}
-	}
 
 	option = {
 		name = "anomaly.186.d"
 		trigger = {
 			owner = {
+				is_machine_empire = no
 				OR = {
 					NOT = {
 						has_technology = tech_synthetic_workers
@@ -7119,6 +7126,8 @@ country_event = {
 				is_colony = no
 				has_anomaly = no
 				is_capital = no
+				NOT = { has_modifier = holy_planet }
+				NOT = { has_modifier = phaseshifted } #exp.mod
 			}
 			save_event_target_as = new_colony
 		}
@@ -7135,6 +7144,7 @@ country_event = {
 				is_colony = no
 				has_anomaly = no
 				is_capital = no
+				NOT = { has_modifier = holy_planet }
 			}
 		}
 		allow = {
@@ -7144,6 +7154,7 @@ country_event = {
 				is_colony = no
 				has_anomaly = no
 				is_capital = no
+				NOT = { has_modifier = holy_planet }
 			}
 		}
 		hidden_effect = {
@@ -7151,6 +7162,22 @@ country_event = {
 				set_owner = root
 				set_controller = root
 				prevent_anomaly = yes
+#exp.mod
+				if = {
+					limit = { host_has_dlc = "Synthetic Dawn Story Pack" }
+					create_species = {
+						name = "NAME_Awoken_Robot"
+						plural = "NAME_Awoken_Robot"
+						class = ROBOT
+						namelist = FUN3
+						portrait = "sd_fun_robot"
+						traits = {
+							trait = "trait_mechanical"
+							trait = "trait_robot_awoken"
+						}
+					}
+				}
+				else = {
 				create_species = {
 					name = "NAME_Awoken_Robot"
 					plural = "NAME_Awoken_Robot"
@@ -7159,6 +7186,9 @@ country_event = {
 					portrait = "default_robot"
 					traits = {
 						trait = "trait_mechanical"
+							trait = "trait_robot_awoken"
+						}
+###
 					}
 				}
 				while = {
@@ -7169,6 +7199,19 @@ country_event = {
 				}
 			}
 		}
+###
+		hidden_effect = {
+			country_event = { id = anomaly.1197 }
+			if = {
+				limit = { has_event_chain = mandate_colonize_planet_chain }
+				country_event = { id = moremandate.62 }
+			}
+			if = {
+				limit = { has_event_chain = mandate_uplift_chain }
+				country_event = { id = moremandate.83 }
+			}
+		}
+###
 	}
 
 	# They're on their own (the droids colonize a planet outside the borders if available or "just disappear")
@@ -7190,6 +7233,7 @@ country_event = {
 					has_anomaly = no
 					is_colony = no
 					is_capital = no
+					NOT = { has_modifier = holy_planet }
 				}
 			}
 		}
@@ -7207,12 +7251,22 @@ country_event = {
 					has_anomaly = no
 					is_colony = no
 					is_capital = no
+					NOT = { has_modifier = holy_planet }
 				}
 			}
 		}
 		hidden_effect = {
 			country_event = { id = anomaly.1197 }
 		}
+#exp.mod
+		hidden_effect = {
+			country_event = { id = anomaly.1197 }
+			if = {
+				limit = { has_event_chain = mandate_uplift_chain }
+				country_event = { id = moremandate.83 }
+			}
+		}
+###		
 	}
 
 	#dismantle the robots for parts
@@ -7247,6 +7301,7 @@ country_event = {
 						has_anomaly = no
 						is_colony = no
 						is_capital = no
+						NOT = { has_modifier = holy_planet }
 						NOR = {
 							exists = owner
 							exists = controller
@@ -7268,6 +7323,7 @@ country_event = {
 						has_anomaly = no
 						is_colony = no
 						is_capital = no
+						NOT = { has_modifier = holy_planet }
 						NOR = {
 							exists = owner
 							exists = controller
@@ -7278,8 +7334,11 @@ country_event = {
 				random_system_planet = {
 					limit = {
 						habitable_planet = yes
-						has_owner = no
+						is_colony = no	
+						has_anomaly = no
 						is_capital = no
+						NOT = { has_modifier = holy_planet }
+						NOT = { has_modifier = phaseshifted }
 					}
 					save_event_target_as = colonized_planet
 					set_surveyed = {
@@ -7287,6 +7346,22 @@ country_event = {
 						surveyor = root
 					}
 					prevent_anomaly = yes
+#exp.mod    				
+    				if = {
+						limit = { host_has_dlc = "Synthetic Dawn Story Pack" }
+						create_species = {
+							name = "NAME_Awoken_Robot"
+							plural = "NAME_Awoken_Robot"
+							class = ROBOT
+							namelist = FUN3
+							portrait = "sd_fun_robot"
+							traits = {
+								trait = "trait_mechanical"
+								trait = "trait_robot_awoken"
+							}
+						}
+					}
+					else = {
 					create_species = {
 						name = "NAME_Awoken_Robot"
 						plural = "NAME_Awoken_Robot"
@@ -7295,6 +7370,8 @@ country_event = {
 						portrait = "default_robot"
 						traits = {
 							trait = "trait_mechanical"
+								trait = "trait_robot_awoken"
+							}
 						}
 					}
 					create_country = {
@@ -7394,6 +7471,10 @@ country_event = {
 							species = last_created_species
 						}
 					}
+					add_district = district_city
+					add_district = district_city
+					add_district = district_industrial
+					add_district = district_industrial
 					add_building = building_research_lab_1
 					add_building = building_foundry_1
 					add_building = building_factory_1
@@ -7401,8 +7482,6 @@ country_event = {
 					add_district = district_generator
 					add_district = district_mining
 					add_district = district_mining
-					add_district = district_city
-					add_district = district_city
 					root = { country_event = { id = anomaly.1196 days = 10 } }
 				}
 			}
@@ -7487,14 +7566,13 @@ country_event = {
 		trigger = {
 			NOT = { has_policy_flag = ai_outlawed }
 		}
-		capital_scope = {
+		# planet/owner project, best start in country scope, instead of location scope
 			enable_special_project = {
 				name = "LIMBO_2_PROJECT"
-				location = this
+			location = capital_scope
 				owner = root
 			}
 		}
-	}
 
 	# Ends the event chain
 	option = {
@@ -7564,6 +7642,7 @@ country_event = {
 					is_colony = no
 					has_anomaly = no
 					is_capital = no
+					NOT = { has_modifier = holy_planet }
 					NOR = {
 						exists = owner
 						exists = controller
@@ -7576,6 +7655,8 @@ country_event = {
 					is_colony = no
 					has_anomaly = no
 					is_capital = no
+					NOT = { has_modifier = holy_planet }
+					NOT = { has_modifier = phaseshifted }
 					NOR = {
 						exists = owner
 						exists = controller
@@ -7600,6 +7681,7 @@ country_event = {
 				is_colony = no
 				has_anomaly = no
 				is_capital = no
+				NOT = { has_modifier = holy_planet }
 				NOR = {
 					exists = owner
 					exists = controller
@@ -7618,6 +7700,7 @@ country_event = {
 				is_colony = no
 				has_anomaly = no
 				is_capital = no
+				NOT = { has_modifier = holy_planet }
 				NOR = {
 					exists = owner
 					exists = controller
@@ -7637,6 +7720,8 @@ country_event = {
 						is_colony = no
 						has_anomaly = no
 						is_capital = no
+						NOT = { has_modifier = holy_planet }
+						NOT = { has_modifier = phaseshifted }
 						NOR = {
 							exists = owner
 							exists = controller
@@ -7649,6 +7734,22 @@ country_event = {
 				set_owner = root
 				set_controller = root
 				prevent_anomaly = yes
+#exp.mod
+				if = {
+					limit = { host_has_dlc = "Synthetic Dawn Story Pack" }
+					create_species = {
+						name = "NAME_Awoken_Robot"
+						plural = "NAME_Awoken_Robot"
+						class = ROBOT
+						namelist = FUN3
+						portrait = "sd_fun_robot"
+						traits = {
+							trait = "trait_mechanical"
+							trait = "trait_robot_awoken"
+						}
+					}
+				}
+				else = {
 				create_species = {
 					name = "NAME_Awoken_Robot"
 					plural = "NAME_Awoken_Robot"
@@ -7657,6 +7758,8 @@ country_event = {
 					portrait = "default_robot"
 					traits = {
 						trait = "trait_mechanical"
+							trait = "trait_robot_awoken"
+						}
 					}
 				}
 				while = {
@@ -7666,13 +7769,31 @@ country_event = {
 					}
 				}
 			}
+#exp.mod
+			if = {
+				limit = { has_event_chain = mandate_colonize_planet_chain }
+				country_event = { id = moremandate.62 }
+			}
+			
+			if = {
+				limit = { has_event_chain = mandate_uplift_chain }
+				country_event = { id = moremandate.83 }
+			}
+###
 		}
 	}
 
 	option = {
 		name = anomaly.1198.a
 		custom_tooltip = anomaly.189.b.tooltip
-		hidden_effect = { country_event = { id = anomaly.1195 days = 40 } }
+#exp.mod
+		hidden_effect = {
+			country_event = { id = anomaly.1195 days = 40 }
+			if = {
+				limit = { has_event_chain = mandate_uplift_chain }
+				country_event = { id = moremandate.83 }
+			}
+		}
 	}
 
 	# dismantle the robots for parts
@@ -7723,6 +7844,7 @@ country_event = {
 					has_anomaly = no
 					#is_colony = no
 					#is_capital = no
+					NOT = { has_modifier = holy_planet }
 					NOR = {
 						exists = owner
 						exists = controller
@@ -7747,6 +7869,7 @@ country_event = {
 					has_anomaly = no
 					#is_colony = no
 					#is_capital = no
+					NOT = { has_modifier = holy_planet }
 					NOR = {
 						exists = owner
 						exists = controller
@@ -7770,6 +7893,7 @@ country_event = {
 						has_anomaly = no
 						is_colony = no
 						is_capital = no
+						NOT = { has_modifier = holy_planet }
 						NOR = {
 							exists = owner
 							exists = controller
@@ -7783,6 +7907,8 @@ country_event = {
 						has_anomaly = no
 						is_colony = no
 						is_capital = no
+						NOT = { has_modifier = holy_planet }
+						NOT = { has_modifier = phaseshifted }
 					}
 					save_event_target_as = colonized_planet
 					set_surveyed = {
@@ -7790,6 +7916,22 @@ country_event = {
 						surveyor = root
 					}
 					prevent_anomaly = yes
+#exp.mod
+    				if = {
+						limit = { host_has_dlc = "Synthetic Dawn Story Pack" }
+						create_species = {
+							name = "NAME_Awoken_Robot"
+							plural = "NAME_Awoken_Robot"
+							class = ROBOT
+							namelist = FUN3
+							portrait = "sd_fun_robot"
+							traits = {
+								trait = "trait_mechanical"
+								trait = "trait_robot_awoken"
+							}
+						}
+					}
+					else = {
 					create_species = {
 						name = "NAME_Awoken_Robot"
 						plural = "NAME_Awoken_Robot"
@@ -7798,6 +7940,8 @@ country_event = {
 						portrait = "default_robot"
 						traits = {
 							trait = "trait_mechanical"
+								trait = "trait_robot_awoken"
+							}
 						}
 					}
 					create_country = {
@@ -7903,6 +8047,10 @@ country_event = {
 							species = last_created_species
 						}
 					}
+					add_district = district_city
+					add_district = district_city
+					add_district = district_industrial
+					add_district = district_industrial
 					add_building = building_research_lab_1
 					add_building = building_foundry_1
 					add_building = building_factory_1
@@ -7910,8 +8058,6 @@ country_event = {
 					add_district = district_generator
 					add_district = district_mining
 					add_district = district_mining
-					add_district = district_city
-					add_district = district_city
 					create_army = {
 						name = "NAME_Awoken_Army"
 						owner = event_target:awoken_country
@@ -7924,8 +8070,6 @@ country_event = {
 		}
 	}
 }
-
-
 # Special Project Completed
 ship_event = {
 	id = anomaly.2501
