@@ -472,6 +472,7 @@ event = {
 				destroy_ambient_object = THIS
 			}
 			every_system_megastructure = {
+				limit = { NOT = { mega_blokkats_wont_stripmine = yes } }
 				remove_megastructure = THIS
 			}
 			every_fleet_in_system = {
@@ -1088,6 +1089,28 @@ country_event = {
 	hide_window = yes
 
 	immediate = {
+		if = {
+			limit = {
+				NOT = { has_global_flag = blokkat_crisis_defeated }
+				any_system = {
+					is_star_class = sc_blokkat_stripmined
+					exists = starbase
+				}
+			}
+			every_system = {
+				limit = {
+					is_star_class = sc_blokkat_stripmined
+					exists = starbase
+				}
+				starbase = { 
+					set_owner = event_target:global_event_country
+				}
+				every_ship_in_system = {
+					limit = { owner = { is_country = event_target:global_event_country } }
+					destroy_ship = THIS
+				}
+			}
+		}
 		if = {
 			limit = {
 				NOT = { has_global_flag = blokkat_crisis_defeated }
@@ -1968,6 +1991,24 @@ country_event = {
 	}
 
 	immediate = { set_country_flag = blokkat_diplomacy_engaged }
+
+	option = { #Uh oh
+		name = "giga_blokkat.5010.butwhy"
+		response_text = "giga_blokkat.5010.butwhy.response"
+		is_dialog_only = yes
+	}
+
+	option = { #Uh oh
+		name = "giga_blokkat.5010.coexist"
+		response_text = "giga_blokkat.5010.coexist.response"
+		is_dialog_only = yes
+	}
+
+	option = { #Uh oh
+		name = "giga_blokkat.5010.nogalaxytravel"
+		response_text = "giga_blokkat.5010.nogalaxytravel.response"
+		is_dialog_only = yes
+	}
 
 	option = { #Uh oh
 		name = "giga_blokkat.5010.a"
@@ -4267,6 +4308,26 @@ country_event = {
 		custom_gui = blokkat_bureau_option
 		trigger = {
 			has_country_flag = researched_blokkat_scrap
+			NOT = {
+				AND = {
+					has_technology = giga_tech_blokkat_afterburner
+					has_technology = giga_tech_blokkat_laser
+					has_technology = giga_tech_blokkat_plasma
+					has_technology = giga_tech_blokkat_hullrepair
+					has_technology = giga_tech_blokkat_strikecraft
+					has_technology = giga_tech_blokkat_reactor
+					has_technology = giga_tech_blokkat_shield
+					has_technology = giga_tech_blokkat_sensors
+					has_technology = giga_tech_blokkat_armor
+					has_technology = giga_tech_blokkat_emitter
+					has_technology = giga_tech_blokkat_obliterator
+					has_technology = giga_tech_blokkat_missile
+					has_technology = giga_tech_blokkat_computer
+					has_technology = giga_tech_blokkat_pd
+					has_technology = giga_tech_blokkat_ftl
+					has_technology = giga_tech_blokkat_booster
+				}
+			}
 		}
 		hidden_effect = {
 			country_event = { id = giga_blokkat.3090 }
@@ -6906,12 +6967,15 @@ country_event = {
 		name = "giga_blokkat.3221.a"
 		custom_tooltip = "giga_blokkat.3221.a.tooltip"
 		hidden_effect = {
+			if = {
+				limit = { has_country_flag = blokkat_inquietude_taught }
 			change_variable = {
 				which = blokkat_inquietude_value
 				value = 0.25
 			}
 			update_blokkat_inquietude_display = yes
 		}
+	}
 	}
 }
 
@@ -7054,12 +7118,15 @@ country_event = {
 		name = "giga_blokkat.3223.a"
 		custom_tooltip = "giga_blokkat.3223.a.tooltip"
 		hidden_effect = {
+			if = {
+				limit = { has_country_flag = blokkat_inquietude_taught }
 			change_variable = {
 				which = blokkat_inquietude_value
 				value = 2
 			}
 			update_blokkat_inquietude_display = yes
 		}
+	}
 	}
 }
 
@@ -7205,12 +7272,15 @@ country_event = {
 		name = "giga_blokkat.3226.a"
 		custom_tooltip = "giga_blokkat.3226.a.tooltip"
 		hidden_effect = {
+			if = {
+				limit = { has_country_flag = blokkat_inquietude_taught }
 			change_variable = {
 				which = blokkat_inquietude_value
 				value = 0.5
 			}
 			update_blokkat_inquietude_display = yes
 		}
+	}
 	}
 }
 
@@ -8006,6 +8076,7 @@ country_event = {
 	option = {
 		name = "giga_blokkat.3211.b"
 		hidden_effect = {
+			remove_country_flag = considering_doing_blokkat_experiment
 			country_event = { id = giga_blokkat.3210 }
 		}
 	}
@@ -8279,11 +8350,15 @@ country_event = {
 			custom_tooltip = {
 				fail_text = "blokkat_prison_already_doing_this"
 				event_target:blokkat_prison_being_managed = {
+					NOT = { 
+						AND = { 
 					NOT = { has_megastructure_flag = boosting_blokkat_physics }
 					NOT = { has_megastructure_flag = boosting_blokkat_society }
 					NOT = { has_megastructure_flag = boosting_blokkat_engineering }
 				}
 			}
+		}
+	}
 		}
 	}
 
