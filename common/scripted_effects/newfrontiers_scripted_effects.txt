@@ -150,9 +150,8 @@ set_warm_giant_entity = {
 }
 
 planet_heating_effect = {
-	switch = {
-		trigger = is_planet_class
-		pc_desert = {
+	if = {
+		limit = { is_desert_planet = yes }
 			if = {
 				limit = { has_modifier = "oasis_world" }
 				remove_subclass_modifiers = yes
@@ -178,7 +177,8 @@ planet_heating_effect = {
 				reroll_deposits = yes
 			}
 		}
-		pc_arid = {
+	else_if = {
+		limit = { is_arid_planet = yes }
 			if = {
 				limit = { has_modifier = "mediterranean_world" } 
 				remove_subclass_modifiers = yes
@@ -220,7 +220,8 @@ planet_heating_effect = {
 				reroll_deposits = yes
 			}
 		}
-		pc_savannah = {
+	else_if = {
+		limit = { is_savannah_planet = yes }
 			if = {
 				limit = {
 					OR = {
@@ -283,7 +284,8 @@ planet_heating_effect = {
 				reset_planet = yes
 			}
 		}
-		pc_continental = {
+	else_if = {
+		limit = { is_continental_planet = yes }
 			if = {
 				limit = { has_modifier = "boreal_world" }
 				remove_subclass_modifiers = yes
@@ -417,7 +419,8 @@ planet_heating_effect = {
 				}
 			}
 		}
-		pc_tropical = {
+	else_if = {
+		limit = { is_tropical_planet = yes }
 			if = {
 				limit = {
 					OR = {
@@ -450,7 +453,8 @@ planet_heating_effect = {
 				}
 			}
 		}
-		pc_ocean = {
+	else_if = {
+		limit = { is_ocean_planet = yes }
 			if = {
 				limit = { has_modifier = "panthalassic_world" }
 				remove_subclass_modifiers = yes
@@ -540,7 +544,8 @@ planet_heating_effect = {
 				}
 			}
 		}
-		pc_gaia = {
+	else_if = {
+		limit = { is_gaia_planet = yes }
 			if = {
 				limit = { has_modifier = "ancient_world" }
 				remove_subclass_modifiers = yes
@@ -608,7 +613,8 @@ planet_heating_effect = {
 				}
 			}
 		}
-		pc_tundra = {
+	else_if = {
+		limit = { is_tundra_planet = yes }
 			if = {
 				limit = { has_modifier = "frigid_world" }
 				random_list = {
@@ -743,7 +749,8 @@ planet_heating_effect = {
 				}
 			}
 		}
-		pc_alpine = {
+	else_if = {
+		limit = { is_alpine_planet = yes }
 			if = {
 				limit = {
 					OR = {
@@ -783,7 +790,8 @@ planet_heating_effect = {
 				reroll_deposits = yes
 			}
 		}
-		pc_arctic = {
+	else_if = {
+		limit = { is_arctic_planet = yes }
 			if = {
 				limit = { has_modifier = "melting_world" }
 				random_list = {
@@ -935,8 +943,11 @@ planet_heating_effect = {
 				}
 			}
 		}
-		
-		default = {
+	else_if = {
+		limit = { is_planet_class = pc_hollow }
+		#Null
+	}
+	else = {
 			change_pc = pc_desert
 			remove_subclass_modifiers = yes
 			set_planet_entity = {
@@ -949,13 +960,12 @@ planet_heating_effect = {
 			}
 			reroll_deposits = yes
 		}
-	}
 }
 
 planet_cooling_effect = {
-	switch = {
-		trigger = is_planet_class
-		pc_desert = {
+
+		if = {
+			limit = { is_desert_planet = yes }
 			if = {
 				limit = { has_modifier = "dune_world" }
 				remove_subclass_modifiers = yes
@@ -1029,7 +1039,8 @@ planet_cooling_effect = {
 				}
 			}
 		}
-		pc_arid = {
+		else_if = {
+			limit = { is_arid_planet = yes }
 			if = {
 				limit = { 
 					OR = {
@@ -1150,7 +1161,8 @@ planet_cooling_effect = {
 				}
 			}
 		}
-		pc_savannah = {
+		else_if = {
+			limit = { is_savannah_planet = yes }
 			if = {
 				limit = {
 					OR = {
@@ -1212,7 +1224,8 @@ planet_cooling_effect = {
 				reset_planet = yes
 			}
 		}
-		pc_continental = {
+		else_if = {
+			limit = { is_continental_planet = yes }
 			if = {
 				limit = { has_modifier = "pangea_world" }
 				change_pc = pc_arctic
@@ -1324,7 +1337,8 @@ planet_cooling_effect = {
 				}
 			}
 		}
-		pc_tropical = {
+		else_if = {
+			limit = { is_tropical_planet = yes }
 			if = {
 				limit = { has_modifier = "forest_world" }
 				remove_subclass_modifiers = yes
@@ -1404,7 +1418,8 @@ planet_cooling_effect = {
 				}
 			}
 		}
-		pc_ocean = {
+		else_if = {
+			limit = { is_ocean_planet = yes }
 			random_list = {
 				50 = { 
 					change_pc = pc_arctic
@@ -1434,7 +1449,8 @@ planet_cooling_effect = {
 				}
 			}
 		}
-		pc_gaia = {
+		else_if = {
+			limit = { is_gaia_planet = yes }
 			if = {
 				limit = { has_modifier = "ancient_world" }
 				remove_subclass_modifiers = yes
@@ -1493,7 +1509,8 @@ planet_cooling_effect = {
 				}
 			}
 		}
-		pc_tundra = {
+		else_if = {
+			limit = { is_tundra_planet = yes }
 			if = {
 				limit = { has_modifier = "awakened_world" }
 				change_pc = pc_arctic
@@ -1544,7 +1561,8 @@ planet_cooling_effect = {
 				}
 			}
 		}
-		pc_alpine = {
+		else_if = {
+			limit = { is_alpine_planet = yes }
 			if = {
 				limit = { has_modifier = "mineral_world" }
 				remove_subclass_modifiers = yes
@@ -1582,7 +1600,8 @@ planet_cooling_effect = {
 				}
 			}
 		}
-		pc_arctic = {
+		else_if = {
+			limit = { is_arctic_planet = yes }
 			if = {
 				limit = { NOT = { has_modifier = "glacial_world" } }
 				remove_subclass_modifiers = yes
@@ -1597,8 +1616,11 @@ planet_cooling_effect = {
 				reroll_deposits = yes
 			}
 		}
-		
-		default = {
+		else_if = {
+			limit = { is_planet_class = pc_hollow }
+			#Null
+		}
+		else = {
 			change_pc = pc_arctic
 			remove_subclass_modifiers = yes
 			set_planet_entity = {
@@ -1611,12 +1633,11 @@ planet_cooling_effect = {
 			}
 			reroll_deposits = yes
 		}
-	}
 }
 
 planet_strong_heating_effect = {
 	if = { 
-		limit = { is_planet_class = pc_desert }
+		limit = { is_desert_planet = yes }
 		set_planet_entity = {
 			picture = pc_dune
 			entity = dune_planet_01_entity
@@ -1629,7 +1650,7 @@ planet_strong_heating_effect = {
 		reroll_deposits = yes
 	}
 	else_if = {
-		limit = { is_planet_class = pc_arid }
+		limit = { is_arid_planet = yes }
 		remove_subclass_modifiers = yes
 		set_planet_entity = {
 			picture = pc_dust
@@ -3652,6 +3673,7 @@ climatic_effects = {
 					has_modifier = "dune_world"
 					has_modifier = "dust_world"
 					has_modifier = "adiabatic_world"
+					has_modifier = "flaming_world"
 					has_modifier = "arid_tidally_locked"
 					AND = {
 				has_modifier = "hazardous_weather"
