@@ -3,7 +3,7 @@
 # Calvitix Check 3.1.1  14/09/2021
 #
 # Merge with Planet. Diversity
-# Merge with Starnet OK    22/08/2021
+# Merge with Starnet OK    23/09/2021
 ##################
 # Unity buildings
 ##################
@@ -282,10 +282,7 @@ building_temple = {
 			}
 		}
 		NOT = { has_modifier = slave_colony }
-		OR = {
 		owner = { is_ai = no }
-			free_building_slots > 0
-		}
 	}
 
 	destroy_trigger = {
@@ -296,7 +293,7 @@ building_temple = {
 					has_valid_civic = civic_death_cult
 					has_valid_civic = civic_death_cult_corporate
 					is_spiritualist = no
-#mod ? 	
+#Starnet AI 	
 					and = {
 						is_ai = yes 
 						num_ascension_perks > 2 
@@ -553,10 +550,14 @@ building_sacrificial_temple_1 = {
 		OR = {
 			owner = { is_ai = no }
 #Starnet AI
-			and = { free_building_slots > 0 
-				nor = { has_building = building_sacrificial_temple_1 
-				has_building = building_sacrificial_temple_2 has_building = building_sacrificial_temple_3  } 
-				free_district_slots = 0 
+			and = {
+				free_building_slots > 0
+				nor = {
+					has_building = building_sacrificial_temple_1
+					has_building = building_sacrificial_temple_2
+					has_building = building_sacrificial_temple_3
+				}
+				free_district_slots = 0
 			}
 ###
 		}
@@ -862,29 +863,6 @@ building_galactic_memorial_1 = {
 	#	planet_stability_add = 5
 	#}
 
-#Starnet AI
-	triggered_planet_modifier = {
-		potential = {
-			exists = owner
-			owner = { is_ai = yes }
-			num_pops > 40
-			num_buildings = {
-				type = building_galactic_memorial_1
-				value < 2
-			}
-			num_buildings = {
-				type = building_galactic_memorial_2
-				value < 1
-			}
-			num_buildings = {
-				type = building_galactic_memorial_3
-				value < 1
-			}
-		}
-		job_starnet_spice_melange_farmer_add = 1
-		job_starnet_spice_melange_antifarmer_add = -1
-	}
-###
 
 	#Jobs
 	triggered_planet_modifier = {
@@ -947,15 +925,19 @@ building_galactic_memorial_1 = {
 		text = "job_chronicle_drone_effect_desc"
 	}
 
-#mod ?
+#Starnet AI
 	ai_resource_production = {
 		alloys = 10
-		trigger = { num_pops > 30 owner = {
-			OR = {
-				has_valid_civic = civic_memorialist
-				has_valid_civic = civic_hive_memorialist
-				has_valid_civic = civic_machine_memorialist
-			} } }
+		trigger = { 
+			num_pops > 30 
+			owner = {
+				OR = {
+					has_valid_civic = civic_memorialist
+					has_valid_civic = civic_hive_memorialist
+					has_valid_civic = civic_machine_memorialist
+				} 
+			} 
+		}
 	}
 ###
 }
@@ -1261,7 +1243,7 @@ building_hive_node = {
 		}
 	}
 
-#mod ? 
+#Starnet AI 
  	allow = {
 	    or = {
 	        owner = {
@@ -1294,7 +1276,7 @@ building_hive_node = {
 		exists = owner
 		OR = {
 			owner = { is_hive_empire = no }
-#mod ?
+#Starnet AI
 			and = {
 				owner = { is_ai = yes }
 				is_capital = yes
@@ -1629,7 +1611,7 @@ building_simulation_1 = {
 		}
 	}
 
-#mod ?
+#Starnet AI
 	allow = {
 		or = {
 			owner = { is_ai = no }
@@ -1638,10 +1620,12 @@ building_simulation_1 = {
 				has_building = building_simulation_2
 				has_building = building_simulation_2
 				owner = { num_ascension_perks > 2 }
-				owner = { resource_income_compare = {
+				owner = {
+					resource_income_compare = {
 					resource = unity
 					value > 50
-				} }
+					}
+				}
 				has_designation = col_research
 				has_designation = col_bureau
 			}
@@ -1655,7 +1639,7 @@ building_simulation_1 = {
 			OR = {
 				is_machine_empire = no
 				has_valid_civic = civic_machine_servitor
-#mod ?
+#Starnet AI
 				and = {
 					is_ai = yes
 					num_ascension_perks > 2
@@ -2408,7 +2392,13 @@ building_organic_sanctuary = {
 			owner = {
 				is_ai = yes
 			}
-			count_owned_pop = { limit = { has_citizenship_type = { type = citizenship_organic_trophy } is_unemployed = yes } count > 0 }
+			count_owned_pop = {
+				limit = {
+					has_citizenship_type = { type = citizenship_organic_trophy }
+					is_unemployed = yes
+				}
+				count > 0
+			}
 			free_building_slots > 0
 		}
 		modifier = {
@@ -2438,11 +2428,16 @@ building_organic_sanctuary = {
 	upgrades = {
 		"building_organic_paradise"
 	}
-#mod ?
+#Starnet AI
 	ai_resource_production = {
 		alloys = 10
 		trigger = {
-			count_owned_pop = { limit = { has_citizenship_type = { type = citizenship_organic_trophy } } count > 0 }
+			count_owned_pop = {
+				limit = {
+					has_citizenship_type = { type = citizenship_organic_trophy }
+				}
+				count > 0
+			}
 			free_building_slots > 0
 		}
 	}

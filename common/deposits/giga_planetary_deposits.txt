@@ -2,7 +2,7 @@
 #
 # Calvitix Check 3.1.1  14/09/2021
 #
-# Last Update : 16/09/2021
+# Last Update : 22/09/2021
 #
 # Flusion
 d_flusion_katown = {
@@ -174,7 +174,7 @@ d_found_communities = {
 	potential = { always = no }
 	drop_weight = { weight = 0 }
 	triggered_planet_modifier = { potential = { planet = { has_planet_flag = machine_empire_no  } } pop_growth_speed = 0.1 }
-	triggered_planet_modifier = { potential = { planet = { has_planet_flag = machine_empire_yes } } pop_assembly_speed = 0.1 }
+	triggered_planet_modifier = { potential = { planet = { has_planet_flag = machine_empire_yes } } planet_pop_assembly_add = 4 }
 
 	resources = {
 		category = planet_deposits
@@ -1784,6 +1784,60 @@ d_alderson_ruined_artisan = {
 				hidden_effect = {
 					change_variable = { which = alderson_origin_artisan value = 1 }
 					add_deposit = d_alderson_ruined_artisan
+				}
+			}
+			else = {
+				hidden_effect = {
+					set_variable = { which = alderson_origin_artisan value = 0 }
+					owner = { change_variable = { which = alderson_origin_district_cost value = 1 } }
+				}
+			}
+		}
+	}
+}
+
+d_alderson_ruined_crafters = {
+	is_for_colonizable = yes
+	time = 90
+	icon = "d_city_ruins"
+	category = deposit_cat_blockers
+	potential = { always = no }
+	drop_weight = { weight = 0 }
+	resources = {
+		category = deposit_blockers
+		cost = { trigger = { planet = { check_variable = { which = alderson_origin_artisan value = 0  } } } energy = 950 }
+		cost = { trigger = { planet = { check_variable = { which = alderson_origin_artisan value = 1  } } } energy = 1900 }
+		cost = { trigger = { planet = { check_variable = { which = alderson_origin_artisan value = 2  } } } energy = 2850 }
+		cost = { trigger = { planet = { check_variable = { which = alderson_origin_artisan value = 3  } } } energy = 3800 }
+		cost = { trigger = { planet = { check_variable = { which = alderson_origin_artisan value = 4  } } } energy = 4750 }
+		cost = { trigger = { planet = { check_variable = { which = alderson_origin_artisan value = 5  } } } energy = 5700 }
+		cost = { trigger = { planet = { check_variable = { which = alderson_origin_artisan value = 6  } } } energy = 5700 }
+		cost = { trigger = { planet = { check_variable = { which = alderson_origin_artisan value = 7  } } } energy = 6650 }
+		cost = { trigger = { planet = { check_variable = { which = alderson_origin_artisan value = 8  } } } energy = 7600 }
+		cost = { trigger = { planet = { check_variable = { which = alderson_origin_artisan value = 9  } } } energy = 8550 }
+		cost = { trigger = { planet = { check_variable = { which = alderson_origin_artisan value = 10 } } } energy = 9500 }
+		cost = { trigger = { planet = { check_variable = { which = alderson_origin_artisan value = 11 } } } energy = 10450 }
+	}
+	triggered_planet_modifier = { potential = { planet = { check_variable = { which = alderson_origin_artisan value = 0  } } } job_artificer_add = -57 }
+	triggered_planet_modifier = { potential = { planet = { check_variable = { which = alderson_origin_artisan value = 1  } } } job_artificer_add = -55 }
+	triggered_planet_modifier = { potential = { planet = { check_variable = { which = alderson_origin_artisan value = 2  } } } job_artificer_add = -50 }
+	triggered_planet_modifier = { potential = { planet = { check_variable = { which = alderson_origin_artisan value = 3  } } } job_artificer_add = -45 }
+	triggered_planet_modifier = { potential = { planet = { check_variable = { which = alderson_origin_artisan value = 4  } } } job_artificer_add = -40 }
+	triggered_planet_modifier = { potential = { planet = { check_variable = { which = alderson_origin_artisan value = 5  } } } job_artificer_add = -35 }
+	triggered_planet_modifier = { potential = { planet = { check_variable = { which = alderson_origin_artisan value = 6  } } } job_artificer_add = -30 }
+	triggered_planet_modifier = { potential = { planet = { check_variable = { which = alderson_origin_artisan value = 7  } } } job_artificer_add = -25 }
+	triggered_planet_modifier = { potential = { planet = { check_variable = { which = alderson_origin_artisan value = 8  } } } job_artificer_add = -20 }
+	triggered_planet_modifier = { potential = { planet = { check_variable = { which = alderson_origin_artisan value = 9  } } } job_artificer_add = -15 }
+	triggered_planet_modifier = { potential = { planet = { check_variable = { which = alderson_origin_artisan value = 10 } } } job_artificer_add = -10 }
+	triggered_planet_modifier = { potential = { planet = { check_variable = { which = alderson_origin_artisan value = 11 } } } job_artificer_add = -5 }
+	on_cleared = {
+		custom_tooltip = "d_alderson_ruined_crafters_cleared"
+		planet = {
+			if = {
+				limit = { check_variable = { which = alderson_origin_artisan value < 11 } }
+				hidden_effect = {
+					change_variable = { which = alderson_origin_artisan value = 1 }
+					add_deposit = d_alderson_ruined_crafters
 				}
 			}
 			else = {
