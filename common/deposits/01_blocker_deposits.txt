@@ -5,7 +5,7 @@
 # Merge with Aripatch
 # Merge with RS New Frontiers  23/05/2021
 # Merge with RS Planetary Exploration 23/05/2021
-# Merge with Eco mod + Calvitix addition
+# Merge with Eco mod + Calvitix addition 24/09/2021
 #
 ## Possible Deposit Variables ##
 # resources, resource and amount
@@ -1507,36 +1507,35 @@ d_decrepit_dwellings = {
 	
 	on_cleared = {
 		hidden_effect = {
-		if = {
-			limit = {
-				any_owned_pop = {
-						NOT = { has_trait = trait_hive_mind }
-					is_robot_pop = no
-				}
-			}
-			random_owned_pop = {
+			if = {
 				limit = {
-						NOT = { has_trait = trait_hive_mind }
-					is_robot_pop = no
+					any_owned_pop = {
+						is_gestalt = no
+						is_robot_pop = no
+					}
 				}
-				root = {
-					create_pop = {
-						species = prev
+				random_owned_pop = {
+					limit = {
+						is_gestalt = no
+						is_robot_pop = no
+					}
+					root = {
+						create_pop = {
+							species = prev
+						}
+					}
+				}
+			}
+			else = {
+				random_owned_pop = {
+					root = {
+						create_pop = {
+							species = prev
+						}
 					}
 				}
 			}
 		}
-		else = {
-			random_owned_pop = {
-				root = {
-					create_pop = {
-						species = prev
-					}
-				}
-			}
-		}
-	}
-		custom_tooltip = d_decrepit_dwellings_custom_tooltip	
 	}
 	
 	resources = {
@@ -1796,33 +1795,10 @@ d_unsupervised_settlement = {
 	}
 	
 	on_cleared = {
-		if = {
-			limit = {
-				any_owned_pop = {
-					is_robot_pop = no
-				}
-			}
-			random_owned_pop = {
-				limit = {
-					is_robot_pop = no
-				}
-				root = {
 					create_pop = {
-						species = prev
+			species = owner
 					}
 				}
-			}
-		}
-		else = {
-			random_owned_pop = {
-				root = {
-					create_pop = {
-						species = prev
-					}
-				}
-			}
-		}
-	}
 	
 	resources = {
 		category = deposit_blockers

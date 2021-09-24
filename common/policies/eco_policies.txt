@@ -1,3 +1,10 @@
+# Ecology Mod File
+#
+# Calvitix Check 3.1.1  18/09/2021
+#
+# Last update 24/09/2021
+#
+#
 # Environmental Regulation Policies
 eco_environmental_policy = {
 
@@ -181,6 +188,8 @@ eco_recycling_policy = {
 	option = {
 		name = "eco_recycling_policy_default"
 		
+		potential = { NOT = { has_technology = eco_tech_waste_recycling_2 } }
+		
 		policy_flags = {
 			eco_policy_default
 		}
@@ -196,7 +205,28 @@ eco_recycling_policy = {
 	}
 
 	option = {
+		name = "eco_recycling_policy_default_advanced"
+		
+		potential = { has_technology = eco_tech_waste_recycling_2 }
+		
+		policy_flags = {
+			eco_policy_default_advanced
+		}
+		
+		AI_weight = {
+			factor = 1
+			
+			modifier = { 
+				factor = 10
+				is_machine_empire = yes
+			}
+		}
+	}
+
+	option = {
 		name = "eco_recycling_policy_material"
+		
+		potential = { NOT = { has_technology = eco_tech_waste_recycling_2 } }
 		
 		policy_flags = {
 			eco_policy_material
@@ -208,9 +238,26 @@ eco_recycling_policy = {
 	}
 	
 	option = {
+		name = "eco_recycling_policy_material_advanced"
+		
+		potential = { has_technology = eco_tech_waste_recycling_2 }
+		
+		policy_flags = {
+			eco_policy_material_advanced
+		}
+		
+		AI_weight = {
+			factor = 0
+		}
+	}
+	
+	option = {
 		name = "eco_recycling_policy_food"
 		
-		potential = { is_hive_empire = yes }
+		potential = { 
+			is_hive_empire = yes
+			NOT = { has_technology = eco_tech_waste_recycling_2 }
+		}
 		
 		policy_flags = {
 			eco_policy_food
@@ -226,10 +273,51 @@ eco_recycling_policy = {
 	}
 	
 	option = {
+		name = "eco_recycling_policy_food_advanced"
+		
+		potential = { 
+			is_hive_empire = yes
+			has_technology = eco_tech_waste_recycling_2
+		}
+		
+		policy_flags = {
+			eco_policy_food_advanced
+		}
+		
+		AI_weight = {
+			factor = 0
+			modifier = { 
+				factor = 10
+				is_hive_empire = yes
+			}	
+		}
+	}
+	
+	option = {
 		name = "eco_recycling_policy_reuse"
+		
+		potential = { NOT = { has_technology = eco_tech_waste_recycling_2 } }
 		
 		policy_flags = {
 			eco_policy_reuse
+		}
+		
+		AI_weight = {
+			factor = 0
+		}
+	}
+	
+	option = {
+		name = "eco_recycling_policy_reuse_advanced"
+		
+		potential = { 
+			is_hive_empire = no
+			is_machine_empire = no
+			has_technology = eco_tech_waste_recycling_2
+		}
+		
+		policy_flags = {
+			eco_policy_reuse_advanced
 		}
 		
 		AI_weight = {
@@ -267,9 +355,9 @@ eco_reproductive_policy = {
 			NOT = { has_ethic = "ethic_fanatic_authoritarian" }
 		}
 		
-		on_disabled = {
-			custom_tooltip = eco_reproductive_policy_minimal_tooltip
-		}
+		# on_disabled = {
+		# 	custom_tooltip = eco_reproductive_policy_minimal_tooltip
+		# }
 		
 		AI_weight = {
 			factor = 1
@@ -292,9 +380,9 @@ eco_reproductive_policy = {
 			pop_growth_speed = 0.20
 		}
 		
-		on_disabled = {
-			custom_tooltip = eco_reproductive_policy_none_tooltip
-		}
+		# on_disabled = {
+		# 	custom_tooltip = eco_reproductive_policy_none_tooltip
+		# }
 		
 		AI_weight = {
 			factor = 0
@@ -321,9 +409,9 @@ eco_reproductive_policy = {
 			pop_growth_speed = -0.20
 		}
 		
-		on_disabled = {
-			custom_tooltip = eco_reproductive_policy_full_tooltip
-		}
+		# on_disabled = {
+		# 	custom_tooltip = eco_reproductive_policy_full_tooltip
+		# }
 		
 		AI_weight = {
 			factor = 0

@@ -1,3 +1,9 @@
+# Amazing Civics - Megacorp
+#
+# Calvitix Check 3.1.1  14/09/2021
+#
+# Last Update : 24/09/2021
+#
 
 
 ###############################################################################
@@ -13,10 +19,11 @@ country_event = {
 	hide_window = yes
 	
 	is_triggered_only = yes	
-	trigger = { has_valid_civic = civic_am_civics_locust_capitalism }
+	trigger = { has_origin = origin_am_civics_locust_capitalism }
 	
 	immediate = {
 		### Every Deposit with an active Mining Station has a chance to be destroyed.
+		
 		every_planet_within_border = {
 			limit = { 
 				### Note to self: This effect is replicated below. 
@@ -32,7 +39,7 @@ country_event = {
 		### Our subjects suffer the same faith.
 		every_subject = {	
 			limit = { ### ...unless they happen to also be Locust Capitalists. In this case, their own country_event will handle things.
-				NOT = { has_valid_civic = civic_am_civics_locust_capitalism }
+				NOT = { has_origin = origin_am_civics_locust_capitalism }
 			}
 			every_planet_within_border = {
 				limit = {
@@ -59,21 +66,21 @@ planet_event = {
 		random_list = {
 			### The more time passes, the higher the chance a station will be destroyed this year. 
 			5000 =  {}			
-			25 = {
+			50 = {
 				modifier = { factor = 0 NOT = { has_planet_flag = am_civics_station_in_danger } }
 				clear_deposits = yes
 				mining_station = { dismantle = yes }
 				log = "Destroyed a Mining Deposit on [this.GetName] ([this.solar_system.GetName])."
-				modifier = { factor = 2 	has_planet_flag = am_civics_locust_virtual_timer_5_years  } # 50
-				modifier = { factor = 3 	has_planet_flag = am_civics_locust_virtual_timer_10_years } # 75
-				modifier = { factor = 5 	has_planet_flag = am_civics_locust_virtual_timer_15_years } # 125
-				modifier = { factor = 10 	has_planet_flag = am_civics_locust_virtual_timer_20_years } # 250
-				modifier = { factor = 15 	has_planet_flag = am_civics_locust_virtual_timer_25_years } # 375
-				modifier = { factor = 20 	has_planet_flag = am_civics_locust_virtual_timer_30_years } # 500
-				modifier = { factor = 30 	has_planet_flag = am_civics_locust_virtual_timer_35_years } # 750
-				modifier = { factor = 45 	has_planet_flag = am_civics_locust_virtual_timer_40_years } # 1125
-				modifier = { factor = 60 	has_planet_flag = am_civics_locust_virtual_timer_45_years } # 1500
-				modifier = { factor = 100 	has_planet_flag = am_civics_locust_virtual_timer_50_years } # 2500
+				modifier = { factor = 2 	has_planet_flag = am_civics_locust_virtual_timer_5_years  } # 100
+				modifier = { factor = 3 	has_planet_flag = am_civics_locust_virtual_timer_10_years } # 150
+				modifier = { factor = 5 	has_planet_flag = am_civics_locust_virtual_timer_15_years } # 250
+				modifier = { factor = 10 	has_planet_flag = am_civics_locust_virtual_timer_20_years } # 500
+				modifier = { factor = 15 	has_planet_flag = am_civics_locust_virtual_timer_25_years } # 750
+				modifier = { factor = 20 	has_planet_flag = am_civics_locust_virtual_timer_30_years } # 1000
+				modifier = { factor = 30 	has_planet_flag = am_civics_locust_virtual_timer_35_years } # 1500
+				modifier = { factor = 45 	has_planet_flag = am_civics_locust_virtual_timer_40_years } # 2250
+				modifier = { factor = 60 	has_planet_flag = am_civics_locust_virtual_timer_45_years } # 3000
+				modifier = { factor = 100 	has_planet_flag = am_civics_locust_virtual_timer_50_years } # 5000
 			}
 		}
 	}
@@ -87,7 +94,7 @@ country_event = {
 	
 	is_triggered_only = yes	
 	trigger = { 
-		has_valid_civic = civic_am_civics_locust_capitalism 
+		has_origin = origin_am_civics_locust_capitalism 
 		NOT = { has_technology = tech_am_civics_locust_sustainability_industries }
 	}
 	
@@ -106,7 +113,7 @@ country_event = {
 		### Mining Stations owned by our Subjects are destroyed over time as well.
 		every_subject = {		
 			### ...unless they  happen to also be Locust Capitalists. In this case, their own country_event will handle things.
-			limit = {  NOT = { has_valid_civic = civic_am_civics_locust_capitalism } }
+			limit = {  NOT = { has_origin = origin_am_civics_locust_capitalism } }
 		
 			### (Wrapper) Keeps track of how long (roughly) planets have been under the rule of a Locust for Deposit / Mining Station Destruction events
 			country_event = { id = events_am_civics_locust_capitalism.4 }
@@ -123,7 +130,7 @@ country_event = {
 	is_triggered_only = yes	
 	
 	trigger = { 
-		has_valid_civic = civic_am_civics_locust_capitalism 
+		has_origin = origin_am_civics_locust_capitalism 
 		NOT = { event_target:owner_country = { has_technology = tech_am_civics_locust_sustainability_industries } }
 	}
 	
@@ -187,41 +194,20 @@ country_event = {
 	
 	is_triggered_only = yes	
 
-	immediate = {
-		IF = {
-			limit = { has_valid_civic = civic_am_civics_locust_capitalism }
-			save_event_target_as = event_owner
-			IF = {
-				limit = { has_origin = origin_void_dwellers }
-				every_owned_planet = {
-					limit = { has_planet_flag = void_dweller_habitat_1 }
-					add_modifier = { modifier = static_modifier_am_civics_locust_habitat_1 }
-				}
-				every_owned_planet = {
-					limit = { has_planet_flag = void_dweller_habitat_2 }
-					add_modifier = { modifier = static_modifier_am_civics_locust_habitat_2 }
-				}
-				every_owned_planet = {
-					limit = { has_planet_flag = void_dweller_habitat_3 }
-					add_modifier = { modifier = static_modifier_am_civics_locust_habitat_3 }
-					planet_event = { id = events_am_civics_locust_capitalism.15 days = 1800 }
-				}
-			}
-			ELSE_IF = {
-				limit = { has_origin = origin_shattered_ring }
-				### Might implement this later if I can think of something interesting.
-				### For now, this combination is not allowed.
-			}
-			### all other starts
-			ELSE = {
-				every_owned_planet = {
-					limit = { is_capital = yes }
-					set_planet_flag = am_civics_decay_active
-					add_modifier = { modifier = static_modifier_am_civics_planet_decay_4 }
-				}
-			}
-		}
+	trigger = {		
+		has_origin = origin_am_civics_locust_capitalism
 	}
+
+	immediate = {
+				every_owned_planet = {
+			limit = {
+				is_capital = yes
+				owner = { is_primitive = no }
+				}
+					set_planet_flag = am_civics_decay_active
+			add_modifier = { modifier = static_modifier_am_civics_planet_decay_5 }
+				}
+			}
 }
 
 ### Triggered by on_action: on_monthly_pulse_country
@@ -247,19 +233,20 @@ country_event = {
 				num_pops > 5
 			}
 			random_list = {
-				### We start with a 33% chance per month so players have some time to adapt, but...
-				40 = { }			
-				20 = { 
-					### ...if decay has reached level 9, this increases to 50%...
+				### We start with a 50% chance per month so players have some time to adapt, but...
+				50 = { 
 					modifier = {
-						factor = 2
-						owner = { has_modifier = static_modifier_am_civics_planet_decay_9 }
-					}
-					### ...and on decay level 10, the chance is ~90%.
-					modifier = {
-						factor = 10						
+						factor = 0
 						owner = { has_modifier = static_modifier_am_civics_planet_decay_10 }
 					}
+				}			
+				50 = { 
+					### ...if decay has reached level 9, this increases to 75%...
+					modifier = {
+						factor = 3
+						owner = { has_modifier = static_modifier_am_civics_planet_decay_9 }
+					}
+					### ...and on decay level 10, the chance is 100% because the other outcome has factor = 0.
 										
 					log = "Planet [this.GetName] is being evacuated."
 					### Pops are being resettled based on their strata. Workers first, then
@@ -355,7 +342,9 @@ planet_event = {
 	option = {
 		name = "events_am_civics_locust_capitalism.8.option.a"	
 		custom_tooltip = "events_am_civics_locust_capitalism.8.option.a.tt"
-		hidden_effect = { add_modifier = { modifier = "static_modifier_am_civics_destructive_flight" } }
+		hidden_effect = { 
+			add_modifier = { modifier = "static_modifier_am_civics_destructive_flight" }
+		}
 	}
 	option = {
 		name = "events_am_civics_locust_capitalism.8.option.b"	
@@ -505,26 +494,26 @@ planet_event = {
 	immediate = {
 		IF = {
 			limit = { num_pops >= 50 }
-			planet_event = { id = events_am_civics_locust_capitalism.11 days = 2160 random = 720 } # 6-8 years
+			planet_event = { id = events_am_civics_locust_capitalism.11 days = 1800 random = 720 } # 5-7 years
 		}		
 		ELSE_IF = {
 			limit = { num_pops >= 40 }
+			planet_event = { id = events_am_civics_locust_capitalism.11 days = 2160 random = 720 } # 6-8 years
+		}		
+		ELSE_IF = {
+			limit = { num_pops >= 30 }
 			planet_event = { id = events_am_civics_locust_capitalism.11 days = 2880 random = 720 } # 8-10 years
 		}
 		ELSE_IF = {
-			limit = { num_pops >= 30 }
+			limit = { num_pops >= 20 }
 			planet_event = { id = events_am_civics_locust_capitalism.11 days = 3600 random = 720 } # 10-12 years
 		}
 		ELSE_IF = {
-			limit = { num_pops >= 20 }
-			planet_event = { id = events_am_civics_locust_capitalism.11 days = 4320 random = 720 } # 12-14 years
-		}
-		ELSE_IF = {
 			limit = { num_pops >= 10 }
-			planet_event = { id = events_am_civics_locust_capitalism.11 days = 6480 random = 1080 } # 14-17 years
+			planet_event = { id = events_am_civics_locust_capitalism.11 days = 4320 random = 1080 } # 12-14 years
 		}
 		ELSE = {
-			planet_event = { id = events_am_civics_locust_capitalism.11 days = 6120 random = 1080 } # 17-20 years
+			planet_event = { id = events_am_civics_locust_capitalism.11 days = 6480 random = 1080 } # 14-17 years
 		}
 	}		
 }
@@ -619,255 +608,6 @@ country_event = {
 			remove_modifier = static_modifier_am_civics_planet_decay_10
 			remove_modifier = static_modifier_am_civics_destructive_panic
 			remove_modifier = static_modifier_am_civics_destructive_flight
-		}
-	}
-}
-
-### Triggered by event: events_am_civics_locust_capitalism.6
-### Habitat Warning I
-planet_event = {
-	id = events_am_civics_locust_capitalism.15
-	title = "events_am_civics_locust_capitalism.15.name"
-	desc = "events_am_civics_locust_capitalism.15.desc"
-	picture = GFX_evt_megastructure_construction
-	location = this
-
-	is_triggered_only = yes
-	
-	pre_triggers = {
-		has_owner = yes
-		original_owner = yes
-	}
-	
-	trigger = {
-		owner = { has_valid_civic = civic_am_civics_locust_capitalism }
-		owner = { NOT = { has_country_flag = locust_capitalist_gave_up_colony } }
-	}
-	
-	### Troll-Option
-	option = {
-		name = "events_am_civics_locust_capitalism.15.option.a"	
-		allow = {
-			custom_tooltip = {
-				fail_text = events_am_civics_locust_capitalism.15.option.a.tt
-				always = no
-			}
-		}
-		
-		### Subtract the costs... not!
-		event_target:event_owner = {
-			add_resource = {
-				energy = -400
-			}
-		}
-	}
-	# Duct-Tape Wuhuhu!
-	option = {
-		name = "events_am_civics_locust_capitalism.15.option.b"	
-		hidden_effect = {
-			planet_event = { id = events_am_civics_locust_capitalism.16 }
-		}
-	}
-}
-
-### Triggered by event: events_am_civics_locust_capitalism.15
-planet_event = {
-	id = events_am_civics_locust_capitalism.16
-	title = "events_am_civics_locust_capitalism.16.name"
-	desc = "events_am_civics_locust_capitalism.16.desc"
-	picture = GFX_evt_caravaneers
-	location = this
-
-	is_triggered_only = yes
-	
-	pre_triggers = {
-		has_owner = yes
-		original_owner = yes
-	}
-	
-	trigger = {
-		owner = { has_valid_civic = civic_am_civics_locust_capitalism }
-		owner = { NOT = { has_country_flag = locust_capitalist_gave_up_colony } }
-	}
-	
-	immediate = {
-		event_target:event_owner = {
-			leader = {
-				save_event_target_as = event_leader
-			}
-		}
-		planet_event = { id = events_am_civics_locust_capitalism.17 days = 3600 }
-	}
-	
-	option = {
-		name = "events_am_civics_locust_capitalism.16.option.a"	
-		hidden_effect = { 
-			remove_modifier = "static_modifier_am_civics_locust_habitat_3"
-			add_modifier = { modifier = "static_modifier_am_civics_locust_habitat_5" }
-		}
-	}
-}
-
-### Triggered by event: events_am_civics_locust_capitalism.16
-### Habitat Warning II
-planet_event = {
-	id = events_am_civics_locust_capitalism.17
-	title = "events_am_civics_locust_capitalism.17.name"
-	desc = "events_am_civics_locust_capitalism.17.desc"
-	picture = GFX_evt_megastructure_construction
-	location = this
-	show_sound = event_air_raid_siren
-
-	is_triggered_only = yes
-	
-	pre_triggers = {
-		has_owner = yes
-		original_owner = yes
-	}
-	
-	trigger = {
-		owner = { has_valid_civic = civic_am_civics_locust_capitalism }
-		owner = { NOT = { has_country_flag = locust_capitalist_gave_up_colony } }
-	}
-	
-	immediate = {
-		add_planet_devastation = 30
-	}
-	
-	### Troll-Option
-	option = {
-		name = "events_am_civics_locust_capitalism.17.option.a"	
-		allow = {
-			custom_tooltip = {
-				fail_text = events_am_civics_locust_capitalism.17.option.a.tt
-				always = no
-			}
-		}
-		
-		### Subtract the costs... not!
-		event_target:event_owner = {
-			add_resource = {
-				energy = -2000
-			}
-		}	
-	}
-	
-	### More Duct Tape
-	option = {
-		name = "events_am_civics_locust_capitalism.17.option.b"	
-		hidden_effect = { 
-			remove_modifier = "static_modifier_am_civics_locust_habitat_5"
-			add_modifier = { modifier = "static_modifier_am_civics_locust_habitat_6" }
-			planet_event = { id = events_am_civics_locust_capitalism.18 days = 30 }
-		}
-	}
-}
-
-### Triggered by event: events_am_civics_locust_capitalism.17
-### Habitat Warning III
-planet_event = {
-	id = events_am_civics_locust_capitalism.18
-	title = "events_am_civics_locust_capitalism.18.name"
-	desc = "events_am_civics_locust_capitalism.18.desc"
-	picture = GFX_evt_megastructure_construction
-	location = this
-
-	is_triggered_only = yes
-	
-	pre_triggers = {
-		has_owner = yes
-		original_owner = yes
-	}
-	
-	trigger = {
-		owner = { has_valid_civic = civic_am_civics_locust_capitalism }
-		owner = { NOT = { has_country_flag = locust_capitalist_gave_up_colony } }
-	}
-	
-	immediate = {
-		planet_event = { id = events_am_civics_locust_capitalism.19 days = 360 random 720 }
-	}
-	
-	option = {
-		name = "events_am_civics_locust_capitalism.18.option.a"	
-		custom_tooltip = events_am_civics_locust_capitalism.18.option.a.tt
-	}
-}
-
-### Triggered by event: events_am_civics_locust_capitalism.18
-### Habitat goes Boom
-planet_event = {
-	id = events_am_civics_locust_capitalism.19
-	title = "events_am_civics_locust_capitalism.19.name"
-	desc = "events_am_civics_locust_capitalism.19.desc"
-	picture = GFX_evt_megastructure_construction
-	location = this
-	show_sound = event_air_raid_siren
-
-	is_triggered_only = yes
-	
-	pre_triggers = {
-		has_owner = yes
-		original_owner = yes
-	}
-	
-	trigger = {
-		owner = { has_valid_civic = civic_am_civics_locust_capitalism }
-		owner = { NOT = { has_country_flag = locust_capitalist_gave_up_colony } }
-	}
-	
-	immediate = {	
-		set_planet_flag = locust_capitalist_habitat_down
-		change_pc = pc_habitat_shielded		
-		remove_modifier = "static_modifier_am_civics_locust_habitat_6"
-	}
-	
-	### R.I.P.
-	option = {
-		name = "events_am_civics_locust_capitalism.19.option.a"
-		hidden_effect = {
-			clear_deposits = yes
-		}
-		add_deposit = d_alloys_5
-	}
-}
-
-### In case the habitat was given up early.
-planet_event = {
-	id = events_am_civics_locust_capitalism.20
-	
-	hide_window = yes
-	
-	
-	pre_triggers = {
-		has_owner = no
-	}
-	
-	trigger = {
-		has_planet_flag = void_dweller_habitat_3
-		NOT = { has_planet_flag = locust_capitalist_habitat_down }
-		is_colony = no
-		is_under_colonization = no
-		solar_system = {
-			exists = owner
-			owner = {
-				has_valid_civic = civic_am_civics_locust_capitalism
-				NOT = { has_country_flag = locust_capitalist_gave_up_colony }
-			}
-		}
-	}
-	
-	immediate = {
-		change_pc = pc_habitat_shielded	
-		remove_modifier = "static_modifier_am_civics_locust_habitat_3"
-		remove_modifier = "static_modifier_am_civics_locust_habitat_5"
-		remove_modifier = "static_modifier_am_civics_locust_habitat_6"
-		save_event_target_as = event_location
-		solar_system = {
-			owner = {
-				set_country_flag = locust_capitalist_gave_up_colony
-				country_event = { id = events_am_civics_locust_capitalism.21 days = 7 random = 7 }
-			}
 		}
 	}
 }
