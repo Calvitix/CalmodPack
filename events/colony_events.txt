@@ -5,7 +5,7 @@
 # Merge with GPM   16/09/2021
 # Merge with Arisphaos Unofficial patch
 # MERGE WITH Planet Diversity  16/09/2021
-# Merge with Expanded events 01/06/2021
+# Merge with Expanded events 25/09/2021
 
 ############################
 #
@@ -223,6 +223,14 @@ planet_event = {
 		hidden_effect = {
 			remove_deposit = d_migrating_forests
 		}
+#exp. events
+		owner = {
+			if = {
+				limit = { is_xenophile = yes }
+				gain_negative_media_coverage = yes
+			}
+		}
+###
 	}
 }
 
@@ -3758,7 +3766,10 @@ planet_event = {
 	trigger = {
 		owner = { is_ai = no }  #debug
 		NOT = { has_planet_flag = armageddon_nuked }
-		is_planet_class = pc_nuked
+		OR = {
+			is_nuked = yes
+			has_planet_flag = colonized_tomb_world
+		}
 		NOR = {
 			has_planet_flag = wasteland_space_station
 			has_planet_flag = primitives_nuked_themselves
@@ -3888,7 +3899,7 @@ planet_event = {
 	trigger = {
 		owner = { is_ai = no }  #debug
 		NOT = { has_planet_flag = armageddon_nuked }
-		is_planet_class = pc_nuked
+		is_nuked = yes
 		OR = {
 			has_planet_flag = primitives_nuked_themselves
 			has_planet_flag = armageddon_nuked
@@ -3941,12 +3952,8 @@ planet_event = {
 		custom_tooltip = colony.164.a.tooltip
 		trigger = {
 			owner = {
-				NOR = {
-					has_ethic = "ethic_militarist"
-					has_ethic = "ethic_fanatic_militarist"
-					has_ethic = "ethic_pacifist"
-					has_ethic = "ethic_fanatic_pacifist"
-				}
+				is_pacifist = no
+				is_militarist = no
 			}
 		}
 		random_owned_pop = {
@@ -3982,10 +3989,7 @@ planet_event = {
 		custom_tooltip = colony.164.a.tooltip
 		trigger = {
 			owner = {
-				OR = {
-					has_ethic = "ethic_militarist"
-					has_ethic = "ethic_fanatic_militarist"
-				}
+				is_militarist = yes
 			}
 		}
 		random_owned_pop = {
@@ -4094,7 +4098,10 @@ planet_event = {
 	trigger = {
 		owner = { is_ai = no }  #debug
 		NOT = { has_planet_flag = armageddon_nuked }
-		is_planet_class = pc_nuked
+		OR = {
+			is_nuked = yes
+			has_planet_flag = colonized_tomb_world
+		}
 		NOR = {
 			has_planet_flag = wasteland_orbital_debris
 			has_planet_flag = primitives_nuked_themselves
