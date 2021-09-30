@@ -3,7 +3,7 @@
 # v3.1.1
 # Last update 16/09/2021
 #
-
+# Merge with Unlock More Building Slots 28/09/2021
 
 
 @archive_cost = 500
@@ -37,6 +37,7 @@ district_archive_housing = {
 	
 	planet_modifier = {
 		planet_housing_add = 8
+		planet_max_buildings_add = 2 #more slot mod
 	}
 	
 	triggered_planet_modifier = {
@@ -56,26 +57,6 @@ district_archive_housing = {
 		}
 		text = job_maintenance_drone_effect_desc
 	}	
-
-	ai_weight = {
-		weight = 0
-		modifier = {
-			weight = 250
-			planet = {
-				num_districts = { type = district_hab_housing value < 1 }
-			}
-		}
-		modifier = {
-			weight = 250
-			planet = {
-				owner = {
-					is_regular_empire = yes
-					has_ascension_perk = ap_master_builders
-				}
-				num_districts = { type = district_hab_housing value < 2 }
-			}
-		}
-	}
 }
 
 district_archive_energy = {
@@ -166,31 +147,6 @@ district_archive_energy = {
 			owner = { is_fallen_empire_spiritualist = yes }
 		}
 		text = job_fe_acolyte_generator_effect_desc
-	}
-
-	ai_weight = {
-		weight = 0
-
-		modifier = {
-			weight = 250
-			OR = {
-				owner = {
-					has_monthly_income = {
-						resource = energy
-						value < 200
-					}
-				}
-				planet = { has_district = district_hab_energy }
-			}
-			NOT = { planet = { has_district = district_hab_science } }
-		}
-	}
-
-	ai_resource_production = {
-		energy = 1
-		trigger = {
-			always = yes
-		}
 	}
 }
 
@@ -588,27 +544,6 @@ district_archive_industrial = {
 		}
 		text = job_maintenance_drone_effect_desc
 	}
-
-	ai_weight = {
-		weight = 0
-		modifier = {
-			weight = 100
-			owner = {
-				has_monthly_income = {
-					resource = minerals
-					value > 50
-				}
-			}
-		}
-		modifier = {
-			factor = 3
-			NOR = {
-				has_planet_flag = research_habitat
-				has_planet_flag = mining_habitat
-				has_planet_flag = energy_habitat
-			}
-		}
-	}
 }
 
 district_archive_science = {
@@ -690,22 +625,6 @@ district_archive_science = {
 		}
 		text = job_calculator_effect_desc
 	}	
-
-	ai_weight = {
-		weight = 0
-		modifier = {
-			weight = 250
-			planet = {
-				NOT = { has_district = district_hab_energy }
-			}
-			owner = {
-				has_monthly_income = {
-					resource = minerals
-					value > 80
-				}
-			}
-		}
-	}
 }
 
 district_archive_cultural = {
@@ -810,15 +729,6 @@ district_archive_cultural = {
 			}
 		}
 		text = job_culture_worker_effect_desc
-	}
-
-	ai_weight = {
-		weight = 0
-		modifier = {
-			weight = 200
-			owner = { has_valid_civic = civic_machine_servitor }
-			NOT = { planet = { has_district = district_hab_cultural } }
-		}
 	}
 
 	ai_resource_production = {

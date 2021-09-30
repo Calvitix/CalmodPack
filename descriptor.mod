@@ -1,4 +1,4 @@
-version="16.09.2021"
+version="28.09.2021"
 name="CalmodPack [3.1+]"
 tags={
 	"ModPack"

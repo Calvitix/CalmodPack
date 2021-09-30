@@ -1,3 +1,9 @@
+# Giga File
+#
+# Calvitix Check 3.1.2  29/09/2021
+#
+# Last Update : 30/09/2021
+#
 namespace = giga_blokkat
 
 #SPAWNING SCRIPT
@@ -226,7 +232,7 @@ country_event = {
 				}
 				every_country = { #wait, no
 					limit = {
-						ehof_default_country = yes
+						OR = { ehof_default_country = yes is_ai = no }
 					}
 					country_event = { id = giga_blokkat.1006 days = 1 }
 				}
@@ -2080,6 +2086,9 @@ country_event = {
 		}
 		hidden_effect = {
 			country_event = { id = giga_blokkat.1021 days = 180 } #BRB
+			event_target:global_event_country = {
+				country_event = { id = giga_blokkat.10210 days = 181 }
+			}
 			event_target:blokkat_country = {
 				every_owned_fleet = {
 					limit = { has_fleet_flag = blokkat_stripmine_fleet }
@@ -2109,6 +2118,24 @@ country_event = {
 
 	option = { #Uh oh
 		name = "giga_blokkat.1020.a"
+	}
+}
+
+country_event = {
+	id = giga_blokkat.10210
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		every_country = {
+			limit = { is_ai = no }
+			if = {
+				limit = {
+					NOT = { has_country_flag = blokkat_bureau_unlocked }
+					set_country_flag = blokkat_bureau_unlocked
+				}
+			}
+		}
 	}
 }
 
@@ -4408,7 +4435,7 @@ country_event = {
 			}
 			change_variable = {
 				which = blokkat_scrap_value
-				value = 5
+				value = 1
 			}
 		}
 		if = {
@@ -4420,7 +4447,7 @@ country_event = {
 			}
 			change_variable = {
 				which = blokkat_scrap_value
-				value = 15
+				value = 7
 			}
 		}
 		if = {
@@ -4432,7 +4459,7 @@ country_event = {
 			}
 			change_variable = {
 				which = blokkat_scrap_value
-				value = 90
+				value = 40
 			}
 		}
 		if = {
@@ -4444,7 +4471,7 @@ country_event = {
 			}
 			change_variable = {
 				which = blokkat_scrap_value
-				value = 150
+				value = 75
 			}
 		}
 		if = {
@@ -7344,7 +7371,7 @@ planet_event = {
 	picture = GFX_evt_inhabited_solar_system
 
 	trigger = {
-		NOT = { has_country_flag = currently_fighting_blokkat }
+		owner = { NOT = { has_country_flag = currently_fighting_blokkat } } #calvitix debug
 	}
 
 	immediate = {
@@ -7369,7 +7396,7 @@ planet_event = {
 	option = { #kk
 		name = "giga_blokkat.3204.a"
 		custom_tooltip = "giga_blokkat.3204.a.tooltip"
-		add_resource = { influence = 50 }
+		owner = { add_resource = { influence = 50 } } #calvitix debug
 		hidden_effect = {
 			set_planet_flag = planet_fighting_blokkat
 			planet_event = { id = giga_blokkat.3205 }
@@ -7406,7 +7433,7 @@ planet_event = {
 	option = { #kk
 		name = "giga_blokkat.3204.b"
 		hidden_effect = {
-			remove_country_flag = currently_fighting_blokkat
+			owner = { remove_country_flag = currently_fighting_blokkat } #calvitix debug
 		}
 	}
 }
@@ -9924,12 +9951,12 @@ fleet_event = { #this event is ran monthly on the mothership fleet
 				queue_actions = {
 					find_closest_system = {
 						trigger = {
-							id = giga_blokkat.7003.trigger.3
+							id = "giga_blokkat.7003.trigger.3"
 							is_same_value = event_target:future_blokkat_mothership_system
 						}
 						found_system = {
 							effect = {
-								id = giga_blokkat.7003.trigger.4
+								id = "giga_blokkat.7003.trigger.4"
 								THIS = {
 									if = {
 										limit = {
@@ -10363,12 +10390,12 @@ country_event = {
 				queue_actions = {
 					find_closest_system = {
 						trigger = {
-							id = giga_blokkat.8000.trigger.9
+							id = "giga_blokkat.8000.trigger.9"
 							is_same_value = event_target:future_blokkat_mothership_system
 						}
 						found_system = {
 							effect = {
-								id = giga_blokkat.8000.trigger.10
+								id = "giga_blokkat.8000.trigger.10"
 							}
 							move_to = this
 						}
