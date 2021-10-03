@@ -409,7 +409,7 @@ planet_event = {
 	id = unrest.101
 	title = unrest.101.name
 	desc = unrest.101.desc
-	picture = GFX_evt_burning_settlement
+	picture = GFX_evt_night_raid
 	show_sound = event_air_raid_siren
 	location = root
 
@@ -426,7 +426,7 @@ planet_event = {
 		}
 		set_timed_planet_flag = {
 			flag = recent_unrest_event
-			days = 180
+			days = 720
 		}
 	}
 
@@ -450,7 +450,7 @@ planet_event = {
 	id = unrest.105
 	title = unrest.105.name
 	desc = unrest.105.desc
-	picture = GFX_evt_burning_settlement
+	picture = GFX_evt_night_raid
 	show_sound = event_air_raid_siren
 	location = root
 
@@ -467,7 +467,7 @@ planet_event = {
 		}
 		set_timed_planet_flag = {
 			flag = recent_unrest_event
-			days = 180
+			days = 720
 		}
 	}
 
@@ -487,12 +487,55 @@ planet_event = {
 	id = unrest.110
 	title = unrest.110.name
 	desc = unrest.110.desc
-	picture = GFX_evt_colony_settlement
-	show_sound = event_celebration
+	picture = GFX_evt_announcement
+	show_sound = event_announcement
 	location = root
 
-	is_triggered_only = yes
+	pre_triggers = {
+		has_owner = yes
+		has_ground_combat = no
+	}
 	
+	trigger = {
+		has_orbital_bombardment = no
+		owner = {
+			is_country_type = default
+			NOT = { has_ethic = ethic_gestalt_consciousness }
+		}
+		exists = controller
+		controller = { is_same_value = root.owner }
+		planet_stability < @stabilitylevel2
+		planet_stability >= @stabilitylevel1
+		NOR = {
+			has_planet_flag = recent_unrest_event
+			OR = {
+				has_modifier = riots_averted
+				has_modifier = spiritualist_unrest
+				has_modifier = authoritarian_unrest
+				has_modifier = materialist_unrest
+				has_modifier = xenophobe_unrest
+				has_modifier = xenophile_unrest
+				has_modifier = pacifist_unrest
+				has_modifier = militarist_unrest
+				has_modifier = authoritarian_unrest
+				has_modifier = egalitarian_unrest
+				has_modifier = major_terrorist_action
+				has_modifier = minor_terrorist_action
+			}
+		}
+	}
+
+	mean_time_to_happen = {
+		years = 50
+		modifier = {
+			factor = 0.8
+			planet_stability < @stabilitylevel2
+		}
+		modifier = {
+			factor = 0.8
+			planet_stability < @stabilitylevel1
+		}
+	}
 
 	immediate = {
 		add_modifier = {
@@ -501,7 +544,7 @@ planet_event = {
 		}
 		set_timed_planet_flag = {
 			flag = recent_unrest_event
-			days = 360
+			days = 720
 		}
 	}
 
@@ -521,12 +564,54 @@ planet_event = {
 	id = unrest.115
 	title = unrest.115.name
 	desc = unrest.115.desc
-	picture = GFX_evt_psionics
+	picture = GFX_evt_conclave
 	show_sound = event_mystic_reveal
 	location = root
 
-	is_triggered_only = yes
+	pre_triggers = {
+		has_owner = yes
+		has_ground_combat = no
+	}
 	
+	trigger = {
+		has_orbital_bombardment = no
+		owner = {
+			is_country_type = default
+			NOT = { has_ethic = ethic_gestalt_consciousness }
+		}
+		exists = controller
+		controller = { is_same_value = root.owner }
+		planet_stability < @stabilitylevel2
+		NOR = {
+			has_planet_flag = recent_unrest_event
+			OR = {
+				has_modifier = riots_averted
+				has_modifier = spiritualist_unrest
+				has_modifier = authoritarian_unrest
+				has_modifier = materialist_unrest
+				has_modifier = xenophobe_unrest
+				has_modifier = xenophile_unrest
+				has_modifier = pacifist_unrest
+				has_modifier = militarist_unrest
+				has_modifier = authoritarian_unrest
+				has_modifier = egalitarian_unrest
+				has_modifier = major_terrorist_action
+				has_modifier = minor_terrorist_action
+			}
+		}
+	}
+
+	mean_time_to_happen = {
+		years = 50
+		modifier = {
+			factor = 0.8
+			planet_stability < @stabilitylevel2
+		}
+		modifier = {
+			factor = 0.8
+			planet_stability < @stabilitylevel1
+		}
+	}
 
 	immediate = {
 		add_modifier = {
@@ -535,7 +620,7 @@ planet_event = {
 		}
 		set_timed_planet_flag = {
 			flag = recent_unrest_event
-			days = 180
+			days = 720
 		}
 		set_timed_planet_flag = {
 			flag = cc_revolt_imminent
@@ -562,7 +647,50 @@ planet_event = {
 	show_sound = event_celebration
 	location = root
 
-	is_triggered_only = yes
+	pre_triggers = {
+		has_owner = yes
+		has_ground_combat = no
+	}
+
+	trigger = {
+		has_orbital_bombardment = no
+		owner = {
+			is_country_type = default
+			NOT = { has_ethic = ethic_gestalt_consciousness }
+		}
+		exists = controller
+		controller = { is_same_value = root.owner }
+		planet_stability < @stabilitylevel2
+		NOR = {
+			has_planet_flag = recent_unrest_event
+			OR = {
+				has_modifier = riots_averted
+				has_modifier = spiritualist_unrest
+				has_modifier = authoritarian_unrest
+				has_modifier = materialist_unrest
+				has_modifier = xenophobe_unrest
+				has_modifier = xenophile_unrest
+				has_modifier = pacifist_unrest
+				has_modifier = militarist_unrest
+				has_modifier = authoritarian_unrest
+				has_modifier = egalitarian_unrest
+				has_modifier = major_terrorist_action
+				has_modifier = minor_terrorist_action
+			}
+		}
+	}
+
+	mean_time_to_happen = {
+		years = 50
+		modifier = {
+			factor = 0.8
+			planet_stability < @stabilitylevel2
+		}
+		modifier = {
+			factor = 0.8
+			planet_stability < @stabilitylevel1
+		}
+	}
 	
 	immediate = {
 		add_modifier = {
@@ -571,7 +699,7 @@ planet_event = {
 		}
 		set_timed_planet_flag = {
 			flag = recent_unrest_event
-			days = 180
+			days = 720
 		}
 		set_timed_planet_flag = {
 			flag = cc_revolt_imminent
@@ -598,7 +726,59 @@ planet_event = {
 	show_sound = event_public_unrest
 	location = root
 
-	is_triggered_only = yes
+	pre_triggers = {
+		has_owner = yes
+		has_ground_combat = no
+	}
+
+	trigger = {
+		has_orbital_bombardment = no
+		owner = {
+			is_country_type = default
+			NOT = { has_ethic = ethic_gestalt_consciousness }
+		}
+		exists = controller
+		controller = { is_same_value = root.owner }
+		planet_stability < @stabilitylevel2
+		NOR = {
+			has_planet_flag = recent_unrest_event
+			OR = {
+				has_modifier = riots_averted
+				has_modifier = spiritualist_unrest
+				has_modifier = authoritarian_unrest
+				has_modifier = materialist_unrest
+				has_modifier = xenophobe_unrest
+				has_modifier = xenophile_unrest
+				has_modifier = pacifist_unrest
+				has_modifier = militarist_unrest
+				has_modifier = authoritarian_unrest
+				has_modifier = egalitarian_unrest
+				has_modifier = major_terrorist_action
+				has_modifier = minor_terrorist_action
+			}
+		}
+		any_owned_pop = {
+			NOT = {
+				is_same_species = owner
+			}
+		}
+		any_owned_pop = {
+			is_same_species = owner
+		}
+
+	}
+
+	mean_time_to_happen = {
+		years = 50
+		modifier = {
+			factor = 0.8
+			planet_stability < @stabilitylevel2
+		}
+		modifier = {
+			factor = 0.8
+			planet_stability < @stabilitylevel1
+		}
+	}
 
 	immediate = {
 		add_modifier = {
@@ -607,7 +787,7 @@ planet_event = {
 		}
 		set_timed_planet_flag = {
 			flag = recent_unrest_event
-			days = 180
+			days = 720
 		}
 		set_timed_planet_flag = {
 			flag = cc_revolt_imminent
@@ -630,11 +810,52 @@ planet_event = {
 	id = unrest.130
 	title = unrest.130.name
 	desc = unrest.130.desc
-	picture = GFX_evt_atmospheric_entry
-	show_sound = event_cityscape
+	picture = GFX_evt_announcement
+	show_sound = event_announcement
 	location = root
 	
-	is_triggered_only = yes
+	pre_triggers = {
+		has_owner = yes
+	}
+
+	trigger = {
+		owner = {
+			is_country_type = default
+			NOT = { has_ethic = ethic_gestalt_consciousness }
+		}
+		exists = controller
+		controller = { is_same_value = root.owner }
+		planet_stability < @stabilitylevel2
+		NOR = {
+			has_planet_flag = recent_unrest_event
+			OR = {
+				has_modifier = riots_averted
+				has_modifier = spiritualist_unrest
+				has_modifier = authoritarian_unrest
+				has_modifier = materialist_unrest
+				has_modifier = xenophobe_unrest
+				has_modifier = xenophile_unrest
+				has_modifier = pacifist_unrest
+				has_modifier = militarist_unrest
+				has_modifier = authoritarian_unrest
+				has_modifier = egalitarian_unrest
+				has_modifier = major_terrorist_action
+				has_modifier = minor_terrorist_action
+			}
+		}
+	}
+
+	mean_time_to_happen = {
+		years = 50
+		modifier = {
+			factor = 0.8
+			planet_stability < @stabilitylevel2
+		}
+		modifier = {
+			factor = 0.8
+			planet_stability < @stabilitylevel1
+		}
+	}
 
 	immediate = {
 		add_modifier = {
@@ -643,7 +864,7 @@ planet_event = {
 		}
 		set_timed_planet_flag = {
 			flag = recent_unrest_event
-			days = 180
+			days = 720
 		}
 		set_timed_planet_flag = {
 			flag = cc_revolt_imminent
@@ -670,7 +891,59 @@ planet_event = {
 	show_sound = event_public_unrest
 	location = root
 
-	is_triggered_only = yes
+	pre_triggers = {
+		has_owner = yes
+		has_ground_combat = no
+	}
+
+	trigger = {
+		has_orbital_bombardment = no
+		owner = {
+			is_country_type = default
+			NOT = { has_ethic = ethic_gestalt_consciousness }
+		}
+		exists = controller
+		controller = { is_same_value = root.owner }
+		planet_stability < @stabilitylevel2
+
+		any_owned_pop = {
+			NOT = {
+				is_same_species = owner
+			}
+		}
+		any_owned_pop = {
+			is_same_species = owner
+		}
+		NOR = {
+			has_planet_flag = recent_unrest_event
+			OR = {
+				has_modifier = riots_averted
+				has_modifier = spiritualist_unrest
+				has_modifier = authoritarian_unrest
+				has_modifier = materialist_unrest
+				has_modifier = xenophobe_unrest
+				has_modifier = xenophile_unrest
+				has_modifier = pacifist_unrest
+				has_modifier = militarist_unrest
+				has_modifier = authoritarian_unrest
+				has_modifier = egalitarian_unrest
+				has_modifier = major_terrorist_action
+				has_modifier = minor_terrorist_action
+			}
+		}
+	}
+
+	mean_time_to_happen = {
+		years = 50
+		modifier = {
+			factor = 0.8
+			planet_stability < @stabilitylevel2
+		}
+		modifier = {
+			factor = 0.8
+			planet_stability < @stabilitylevel1
+		}
+	}
 	
 	immediate = {
 		add_modifier = {
@@ -679,7 +952,7 @@ planet_event = {
 		}
 		set_timed_planet_flag = {
 			flag = recent_unrest_event
-			days = 180
+			days = 720
 		}
 		set_timed_planet_flag = {
 			flag = cc_revolt_imminent
@@ -703,11 +976,54 @@ planet_event = {
 	id = unrest.140
 	title = unrest.140.name
 	desc = unrest.140.desc
-	picture = GFX_evt_colony_settlement
-	show_sound = event_celebration
+	picture = GFX_evt_announcement
+	show_sound = event_announcement
 	location = root
 	
-	is_triggered_only = yes
+	pre_triggers = {
+		has_owner = yes
+		has_ground_combat = no
+	}
+
+	trigger = {
+		has_orbital_bombardment = no
+		owner = {
+			is_country_type = default
+			NOT = { has_ethic = ethic_gestalt_consciousness }
+		}
+		exists = controller
+		controller = { is_same_value = root.owner }
+		planet_stability < @stabilitylevel2
+		NOR = {
+			has_planet_flag = recent_unrest_event
+			OR = {
+				has_modifier = riots_averted
+				has_modifier = spiritualist_unrest
+				has_modifier = authoritarian_unrest
+				has_modifier = materialist_unrest
+				has_modifier = xenophobe_unrest
+				has_modifier = xenophile_unrest
+				has_modifier = pacifist_unrest
+				has_modifier = militarist_unrest
+				has_modifier = authoritarian_unrest
+				has_modifier = egalitarian_unrest
+				has_modifier = major_terrorist_action
+				has_modifier = minor_terrorist_action
+			}
+		}
+	}
+
+	mean_time_to_happen = {
+		years = 50
+		modifier = {
+			factor = 0.8
+			planet_stability < @stabilitylevel2
+		}
+		modifier = {
+			factor = 0.8
+			planet_stability < @stabilitylevel1
+		}
+	}
 
 	immediate = {
 		add_modifier = {
@@ -716,7 +1032,7 @@ planet_event = {
 		}
 		set_timed_planet_flag = {
 			flag = recent_unrest_event
-			days = 180
+			days = 720
 		}
 		set_timed_planet_flag = {
 			flag = cc_revolt_imminent
@@ -741,11 +1057,54 @@ planet_event = {
 	id = unrest.145
 	title = unrest.145.name
 	desc = unrest.145.desc
-	picture = GFX_evt_arguing_senate
-	show_sound = event_public_unrest
+	picture = GFX_evt_announcement
+	show_sound = event_announcement
 	location = root
 
-	is_triggered_only = yes
+	pre_triggers = {
+		has_owner = yes
+		has_ground_combat = no
+	}
+
+	trigger = {
+		has_orbital_bombardment = no
+		owner = {
+			is_country_type = default
+			NOT = { has_ethic = ethic_gestalt_consciousness }
+		}
+		exists = controller
+		controller = { is_same_value = root.owner }
+		planet_stability < @stabilitylevel2
+		NOR = {
+			has_planet_flag = recent_unrest_event
+			OR = {
+				has_modifier = riots_averted
+				has_modifier = spiritualist_unrest
+				has_modifier = authoritarian_unrest
+				has_modifier = materialist_unrest
+				has_modifier = xenophobe_unrest
+				has_modifier = xenophile_unrest
+				has_modifier = pacifist_unrest
+				has_modifier = militarist_unrest
+				has_modifier = authoritarian_unrest
+				has_modifier = egalitarian_unrest
+				has_modifier = major_terrorist_action
+				has_modifier = minor_terrorist_action
+			}
+		}
+	}
+
+	mean_time_to_happen = {
+		years = 50
+		modifier = {
+			factor = 0.8
+			planet_stability < @stabilitylevel2
+		}
+		modifier = {
+			factor = 0.8
+			planet_stability < @stabilitylevel1
+		}
+	}
 	
 	immediate = {
 		add_modifier = {
@@ -754,7 +1113,7 @@ planet_event = {
 		}
 		set_timed_planet_flag = {
 			flag = recent_unrest_event
-			days = 180
+			days = 720
 		}
 		set_timed_planet_flag = {
 			flag = cc_revolt_imminent
@@ -777,11 +1136,54 @@ planet_event = {
 	id = unrest.150
 	title = unrest.150.name
 	desc = unrest.150.desc
-	picture = GFX_evt_interior_battle
+	picture = GFX_evt_victorious_army
 	show_sound = event_alien_signal
 	location = root
 
-	is_triggered_only = yes
+	pre_triggers = {
+		has_owner = yes
+		has_ground_combat = no
+	}
+
+	trigger = {
+		has_orbital_bombardment = no
+		owner = {
+			is_country_type = default
+			NOT = { has_ethic = ethic_gestalt_consciousness }
+		}
+		exists = controller
+		controller = { is_same_value = root.owner }
+		planet_stability < @stabilitylevel2
+		NOR = {
+			has_planet_flag = recent_unrest_event
+			OR = {
+				has_modifier = riots_averted
+				has_modifier = spiritualist_unrest
+				has_modifier = authoritarian_unrest
+				has_modifier = materialist_unrest
+				has_modifier = xenophobe_unrest
+				has_modifier = xenophile_unrest
+				has_modifier = pacifist_unrest
+				has_modifier = militarist_unrest
+				has_modifier = authoritarian_unrest
+				has_modifier = egalitarian_unrest
+				has_modifier = major_terrorist_action
+				has_modifier = minor_terrorist_action
+			}
+		}
+	}
+
+	mean_time_to_happen = {
+		years = 50
+		modifier = {
+			factor = 0.8
+			planet_stability < @stabilitylevel2
+		}
+		modifier = {
+			factor = 0.8
+			planet_stability < @stabilitylevel1
+		}
+	}
 	
 	immediate = {
 		add_modifier = {
@@ -790,7 +1192,7 @@ planet_event = {
 		}
 		set_timed_planet_flag = {
 			flag = recent_unrest_event
-			days = 180
+			days = 720
 		}
 		set_timed_planet_flag = {
 			flag = cc_revolt_imminent
@@ -1044,7 +1446,7 @@ planet_event = {
 		else = {
 			planet_event = { id = unrest.159 } 
 		}
-		planet_event = { id = unrest.157 days = 361 }
+		planet_event = { id = unrest.157 days = 721 random = 10 }
  	}
 }
 
@@ -1053,7 +1455,7 @@ planet_event = {
 	id = unrest.156
 	title = unrest.156.name
 	desc = unrest.156.desc
-	picture = GFX_evt_burning_settlement
+	picture = GFX_evt_night_raid
 	show_sound = event_ship_explosion
 	location = event_target:revolt_planet
 
@@ -1063,7 +1465,7 @@ planet_event = {
 		add_planet_devastation = 30
 		set_timed_planet_flag = {
 			flag = recent_unrest_event
-			days = 360
+			days = 720
 		}
 		set_timed_planet_flag = { 
 			flag = slave_resistance
@@ -1099,7 +1501,7 @@ planet_event = {
 		}
 		add_modifier = {
 			modifier = slave_hunger_strike
-			days = 1800
+			days = 7200
 		}
 		set_timed_planet_flag = { 
 			flag = slave_resistance
@@ -1112,7 +1514,7 @@ planet_event = {
 		tooltip = {
 			add_modifier = {
 			modifier = slave_hunger_strike
-			days = 1800
+			days = 7200
 			}
 		}
 	}
@@ -1121,7 +1523,7 @@ planet_event = {
 		tooltip = {
 			add_modifier = {
 			modifier = slave_hunger_strike
-			days = 1800
+			days = 7200
 			}
 		}
 	}
