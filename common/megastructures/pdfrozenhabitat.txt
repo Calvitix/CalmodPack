@@ -2,7 +2,7 @@
 #
 # Calvitix Check 3.0.3  21/05/2021
 #
-# Merge with PD Habitats Update 21/05/2021
+# Merge with PD Habitats Update 10/10/2021
 # 
 #
 # see README.txt for example
@@ -624,6 +624,16 @@ pd_frozen_hab_0 = {
 				IF = { limit = { NOT = { has_planet_flag = pd_hab_d1 } } set_planet_flag = pd_hab_d1 }
 				ELSE_IF = { limit = { has_planet_flag = pd_hab_d1 } set_planet_flag = pd_hab_d2 }
 			}
+			if = {
+				limit = {
+					fromfrom.planet = { has_modifier = terraforming_candidate }
+				}
+				set_planet_flag = pd_science_hab
+				IF = { limit = { NOT = { has_planet_flag = pd_hab_d1 } } set_planet_flag = pd_hab_d1 }
+				ELSE_IF = { limit = { has_planet_flag = pd_hab_d1 } set_planet_flag = pd_hab_d2 }
+				remove_modifier = terraforming_candidate
+				add_modifier = { modifier = hab_terraforming_candidate days = -1 }
+			}
 			IF = {
 				limit = {
 						is_planet_class = pc_pd_frozen_hab
@@ -639,7 +649,7 @@ pd_frozen_hab_0 = {
 				}
 				add_deposit = d_fblock15
 				add_deposit = d_fblock3
-				#add_deposit = d_fblock1
+				#add_deposit = d_fblock1 #calvitix change to have 1 more deposit
 			}
 			IF = {
 				limit = {
@@ -806,7 +816,7 @@ pd_frozen_hab_0 = {
 				}
 				add_deposit = d_fblock1
 			}
-			IF = {
+			IF = { #calvitix change
 				limit = {
 					is_moon = no
 				}

@@ -2,7 +2,7 @@
 #
 # Calvitix Check 3.1.2  29/09/2021
 #
-# Last Update : 30/09/2021
+# Last Update : 08/10/2021
 #
 namespace = giga_blokkat
 
@@ -1097,6 +1097,19 @@ country_event = {
 	immediate = {
 		if = {
 			limit = {
+				has_global_flag = blokkat_bureau_popup
+				NOT = { has_global_flag = blokkat_crisis_defeated }
+			}
+			every_country = {
+				limit = { is_ai = no }
+				if = {
+					limit = { NOT = { has_country_flag = blokkat_bureau_unlocked } }
+					set_country_flag = blokkat_bureau_unlocked
+				}
+			}
+		}
+		if = {
+			limit = {
 				NOT = { has_global_flag = blokkat_crisis_defeated }
 				any_system = {
 					is_star_class = sc_blokkat_stripmined
@@ -2089,18 +2102,6 @@ country_event = {
 			event_target:global_event_country = {
 				country_event = { id = giga_blokkat.10210 days = 181 }
 			}
-			event_target:blokkat_country = {
-				every_owned_fleet = {
-					limit = { has_fleet_flag = blokkat_stripmine_fleet }
-					ROOT = {
-						add_event_chain_counter = {
-							event_chain = blokkat_chain
-							counter = blokkat_stripminer_count
-							amount = 1
-						}
-					}
-				}
-			}
 		}
 	}
 }
@@ -2127,16 +2128,15 @@ country_event = {
 	is_triggered_only = yes
 
 	immediate = {
+		set_global_flag = blokkat_bureau_fallback
 		every_country = {
 			limit = { is_ai = no }
 			if = {
-				limit = {
-					NOT = { has_country_flag = blokkat_bureau_unlocked }
+				limit = { NOT = { has_country_flag = blokkat_bureau_unlocked } }
 					set_country_flag = blokkat_bureau_unlocked
 				}
 			}
 		}
-	}
 }
 
 #Blokkat Research Bureau
@@ -2149,6 +2149,7 @@ country_event = {
 	picture = GFX_evt_physics_research
 
 	immediate = {
+		set_global_flag = blokkat_bureau_popup
 		set_country_flag = blokkat_bureau_unlocked
 		set_variable = {
 			which = blokkat_knowledge_earned_by_general_study
@@ -2940,14 +2941,6 @@ country_event = {
 			set_variable = { which = blokkat_inquietude_value value = 0 }
 		}
 		update_blokkat_inquietude_display = yes
-		every_country = {
-			limit = { has_event_chain = blokkat_chain }
-			add_event_chain_counter = {
-				event_chain = blokkat_chain
-				counter = blokkat_stripminer_count
-				amount = -1
-			}
-		}
 		save_global_event_target_as = destroyed_blokkat_dismantler_destroyer
 		event_target:recently_destroyed_blokkat_harvester.solar_system = {
 			create_ambient_object = {
@@ -4402,6 +4395,62 @@ country_event = {
 				hidden_trigger = {
 					NOT = { has_country_flag = blokkat_project_underway }
 				}
+			}
+		}
+	}
+}
+
+fleet_event = {
+	id = giga_blokkat.6500
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		OR = {
+			has_fleet_flag = blokkat_stripmine_fleet
+			has_fleet_flag = blokkat_mothership_fleet
+		}
+		from = {
+			any_system_megastructure = {
+				OR = {
+					is_megastructure_type = gateway_final
+					is_megastructure_type = gateway_restored
+					is_megastructure_type = lgate_base
+					is_megastructure_type = ehof_pgate_gateway
+				}
+			}
+		}
+	}
+	
+	immediate = {
+		from = {
+			every_system_megastructure = {
+				limit = {
+					is_megastructure_type = ehof_pgate_gateway
+				}
+				upgrade_megastructure_to = blokkat_dummy_pillar
+				remove_megastructure = THIS
+			}
+			every_system_megastructure = {
+				limit = {
+					is_megastructure_type = gateway_final
+				}
+				upgrade_megastructure_to = blokkat_dummy_gateway
+				remove_megastructure = THIS
+			}
+			every_system_megastructure = {
+				limit = {
+					is_megastructure_type = gateway_restored
+				}
+				upgrade_megastructure_to = blokkat_dummy_gateway_repair
+				remove_megastructure = THIS
+			}
+			every_system_megastructure = {
+				limit = {
+					is_megastructure_type = lgate_base
+				}
+				upgrade_megastructure_to = blokkat_dummy_lgate
+				remove_megastructure = THIS
 			}
 		}
 	}
@@ -9951,12 +10000,12 @@ fleet_event = { #this event is ran monthly on the mothership fleet
 				queue_actions = {
 					find_closest_system = {
 						trigger = {
-							id = "giga_blokkat.7003.trigger.3"
+							id = giga_blokkat.7003.trigger.3
 							is_same_value = event_target:future_blokkat_mothership_system
 						}
 						found_system = {
 							effect = {
-								id = "giga_blokkat.7003.trigger.4"
+								id = giga_blokkat.7003.trigger.4
 								THIS = {
 									if = {
 										limit = {
@@ -10390,12 +10439,12 @@ country_event = {
 				queue_actions = {
 					find_closest_system = {
 						trigger = {
-							id = "giga_blokkat.8000.trigger.9"
+							id = giga_blokkat.8000.trigger.9
 							is_same_value = event_target:future_blokkat_mothership_system
 						}
 						found_system = {
 							effect = {
-								id = "giga_blokkat.8000.trigger.10"
+								id = giga_blokkat.8000.trigger.10
 							}
 							move_to = this
 						}

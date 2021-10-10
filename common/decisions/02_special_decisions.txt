@@ -984,7 +984,7 @@ decision_arcology_project = {
 		category = decisions
 		cost = {
 #Calvitix ressource change 'based on PD)
-			influence = 800
+			influence = 200
 			minerals = 20000
 			alloys = 20000
 			food = 20000
@@ -1046,15 +1046,6 @@ decision_arcology_project = {
 			remove_modifier = industrialized_planet #megacorp
 			remove_modifier = urban_idyll_colony #megacorp
 			set_industrial_focus_flags = yes
-			relic_world_conversion_effect = {
-				DISTRICT = district_arcology_housing
-				VARIABLE = num_housing_districts
-			}
-			relic_world_conversion_effect = {
-				DISTRICT = district_arcology_arms_industry
-				VARIABLE = num_industrial_districts
-			}
-			set_ecu_industrial_districts_effect = yes
 			change_pc = pc_city
 ###PD
 			IF = {
@@ -1110,6 +1101,15 @@ decision_arcology_project = {
 			owner = {
 				country_event = { id = distar.201 } # port for living planet distar.197, triggers in event
 			}
+			relic_world_conversion_effect = {
+				DISTRICT = district_arcology_housing
+				VARIABLE = num_housing_districts
+			}
+			relic_world_conversion_effect = {
+				DISTRICT = district_arcology_arms_industry
+				VARIABLE = num_industrial_districts
+			}
+			set_ecu_industrial_districts_effect = yes
 			planet_event = { id = mega.200 }
 			planet_event = { id = pdengine.14 }  ### PD
 			if = {
@@ -1127,7 +1127,11 @@ decision_arcology_project = {
 	}
 
 	ai_weight = {
-		weight = 0
+		weight = 10
+		modifier = { 
+			factor = 0	
+			owner = { any_owned_planet = { is_planet_class = pc_city } }
+		}
 	}
 }
 
@@ -1258,9 +1262,14 @@ decision_arcology_project_relic = {
 		}
 	}
 
-	ai_weight = {
-		weight = 0
+	ai_weight = { #PD
+		weight = 10
+		modifier = { 
+			factor = 0	
+			owner = { any_owned_planet = { is_planet_class = pc_city } }
+		}
 	}
+
 }
 
 # Market Candidate Nomination
