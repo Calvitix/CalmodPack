@@ -889,12 +889,6 @@ country_event = {
 				NOT = {
 					any_system_planet = { colonizable_planet = yes }
 				}
-				root = {
-					intel_level = {
-						level = none
-						system = prev
-					}
-				}
 				any_system_planet = {
 					is_barren = yes
 				}
@@ -925,12 +919,6 @@ country_event = {
 					NOT = {
 						any_system_planet = { colonizable_planet = yes }
 					}
-					root = {
-						intel_level = {
-							level = none
-							system = prev
-						}
-					}
 					any_system_planet = {
 						is_barren = yes
 					}
@@ -952,12 +940,6 @@ country_event = {
 		# The Persea, crashed on habitable planet, no one survived / survivors eaten / survivors still live / upset titanic life / lives with primitives / bleak planet / exofungus / hallucinogenics
 		closest_system = {
 			limit = {
-				root = {
-					intel_level = {
-						level = none
-						system = prev
-					}
-				}
 				any_system_planet = {
 					habitable_planet = yes
 					habitability = { who = event_target:human_species value > 0.45 }
@@ -984,12 +966,6 @@ country_event = {
 					min_jumps = 2
 					max_jumps = 6
 				}
-				root = {
-					intel_level = {
-						level = none
-						system = prev
-					}
-				}
 				NOT = {
 					exists = space_owner
 					any_neighbor_system = { exists = space_owner }
@@ -1014,12 +990,6 @@ country_event = {
 						min_jumps = 2
 						max_jumps = 20
 					}
-					root = {
-						intel_level = {
-							level = none
-							system = prev
-						}
-					}
 					NOT = {
 						exists = space_owner
 						any_neighbor_system = { exists = space_owner }
@@ -1041,12 +1011,6 @@ country_event = {
 					use_bypasses = no
 					min_jumps = 4
 					max_jumps = 10
-				}
-				root = {
-					intel_level = {
-						level = none
-						system = prev
-					}
 				}
 				NOT = {
 					exists = space_owner
@@ -1071,13 +1035,7 @@ country_event = {
 						source = event_target:capital
 						use_bypasses = no
 						min_jumps = 4
-						max_jumps = 25
-					}
-					root = {
-						intel_level = {
-							level = none
-							system = prev
-						}
+						max_jumps = 20
 					}
 					NOT = {
 						exists = space_owner
@@ -1389,21 +1347,6 @@ ship_event = {
 			}
 			15 = {
 				set_ship_flag = coriaria_drones
-				if = {
-					limit = {
-						owner = { NOT = { has_country_flag = drone_encountered } }
-					}
-					owner = {
-						set_country_flag = drone_encountered
-						capital_scope = {
-							enable_special_project = {
-								name = "DRONES_PROJECT"
-								location = this
-								owner = root.owner
-							}
-						}
-					}
-				}
 				create_drone_country = yes
 				FROMFROM = {
 					clear_deposits = yes
@@ -1558,17 +1501,6 @@ ship_event = {
 		hidden_effect = {
 			owner = {
 				country_event = { id = story.5 days = 30 }
-				if = {
-					limit = { NOT = { has_country_flag = drone_encountered } }
-					set_country_flag = drone_encountered
-					capital_scope = {
-						enable_special_project = {
-							name = "DRONES_PROJECT"
-							location = this
-							owner = root.owner
-						}
-					}
-				}
 			}
 		}
 	}
@@ -5399,11 +5331,19 @@ country_event = {
 			is_xenophobe = no
 			is_authoritarian = no
 			NOT = { has_country_flag = com_is_slaver }
+			has_intel_level = {
+				who = ROOT
+				category = economy
+				level >= 1 # rumors, but don't know for sure
+			}
 		}
 	}
 	
 	immediate = {
+		random_country = {
+			limit = { has_country_flag = human_1 }
 		country_event = { id = countryexpanded.61 days = 60 random = 2000 }
+	}
 	}
 }
 
@@ -13226,16 +13166,12 @@ ship_event = {
 				limit = { has_tech_option = tech_wormhole_stabilization }
 				add_tech_progress = {
 					tech = tech_wormhole_stabilization
-					progress = 0.66
+					progress = 0.1
 				}
 			}
 			else_if = {
 				limit = { NOT = { has_technology = tech_wormhole_stabilization } }
 				add_research_option = tech_wormhole_stabilization
-				add_tech_progress = {
-					tech = tech_wormhole_stabilization
-					progress = 0.33
-				}
 			}
 			else = {
 				add_monthly_resource_mult = {

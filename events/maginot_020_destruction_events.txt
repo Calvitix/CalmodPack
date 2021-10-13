@@ -2,7 +2,7 @@
 #
 # Calvitix Check 3.1.2  08/10/2021
 #
-# Last Update : 08/10/2021
+# Last Update : 13/10/2021
 #
 namespace = maginot_destruction
 
@@ -118,6 +118,16 @@ planet_event = {
 				system_star = {
 					remove_modifier = maginot_anti_jump_star_modifier
 				}
+				if = {
+					limit = { ROOT = { has_planet_flag = maginot_protocols_boost } }
+					ROOT = { remove_planet_flag = maginot_protocols_boost }
+					every_neighbor_system = {
+						remove_star_flag = maginot_anti_jump_star
+						system_star = {
+							remove_modifier = maginot_anti_jump_star_modifier
+						}
+					}
+				}
 				# Prevents NDB & QSO - not in neighbours
 				#every_system_planet = {
 				#	remove_planet_flag = cant_build_here
@@ -167,6 +177,16 @@ planet_event = {
 				remove_star_flag = maginot_anti_jump_star
 				system_star = {
 					remove_modifier = maginot_anti_jump_star_modifier
+				}
+				if = {
+					limit = { ROOT = { has_planet_flag = maginot_protocols_boost } }
+					ROOT = { remove_planet_flag = maginot_protocols_boost }
+					every_neighbor_system = {
+						remove_star_flag = maginot_anti_jump_star
+						system_star = {
+							remove_modifier = maginot_anti_jump_star_modifier
+						}
+					}
 				}
 				# Prevents NDB & QSO - not in neighbours
 				#every_system_planet = {
@@ -600,6 +620,10 @@ planet_event = {
 		clear_deposits = yes
 		remove_planet_flag = giga_maginot_world
 		remove_planet_flag = colony_event
+		if = {
+			limit = { has_modifier = giga_bulwark_trad_stability_maginot }
+			remove_modifier = giga_bulwark_trad_stability_maginot
+		}
 		# add minerals and alloys to the remnant
 		random_list = {
 			1 = {

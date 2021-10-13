@@ -2,7 +2,7 @@
 #
 # Calvitix Check 3.1.1  14/09/2021
 #
-# Last Update : 24/09/2021
+# Last Update : 10/10/2021
 #
 civic_am_civics_off_world_investors = {
 	potential = {
@@ -98,31 +98,24 @@ civic_am_civics_charitable_efforts = {
 	# modification = no
 }
 
-civic_am_civics_locust_capitalism = {
-	potential = {
-		OR = {
-			authority = { value = auth_corporate }
-			civics = { value = civic_galactic_sovereign_megacorp }
-		}
-	}
+origin_am_civics_locust_capitalism = {
+	is_origin = yes
 	random_weight = { base = 0 }
-	description = "tooltip_civic_am_civics_locust_capitalism_effects"
-	modification = no
-	possible = { 
-		origin = { 
-			NOT = { value = origin_doomsday }
-			NOT = { value = origin_shattered_ring }
-		} 		
-	}
+	icon = "gfx/interface/icons/origins/origins_am_civics_locust_capitalism.dds"
+	picture = GFX_origin_am_civics_locust_capitalism
+	
+	description = "tooltip_origin_am_civics_locust_capitalism_effects"
+	possible = {  authority = { value = auth_corporate } }
 	
 	modifier = {
-		country_claim_influence_cost_mult = -0.30
-		country_starbase_influence_cost_mult = -0.30
-		starbase_shipyard_build_cost_mult = -0.30
-		ships_upkeep_mult = -0.30
+		country_claim_influence_cost_mult = -0.50
+		country_starbase_influence_cost_mult = -0.50
+		starbase_shipyard_build_cost_mult = -0.25
+		ships_upkeep_mult = -0.50
 		country_naval_cap_mult = 0.50
-		station_gatherers_produces_mult = 0.75
-		station_researchers_produces_mult = 0.75
+		station_gatherers_produces_mult = 1.5
+		station_researchers_produces_mult = 1.5
+		planet_jobs_specialist_produces_mult = 0.25
 	}
 }
 
@@ -158,3 +151,54 @@ civic_am_civics_banking_giant = {
 	description = "tooltip_civic_am_civics_banking_giant_effects"
 }
 	
+civic_am_civics_mining_consortium = {
+	potential = {
+		OR = {
+			authority = { value = auth_corporate }
+			civics = { value = civic_galactic_sovereign_megacorp }
+		}
+	}
+	random_weight = { base = 5 }
+	
+	modifier = {
+		planet_miners_minerals_produces_add = -1
+		planet_miners_alloys_produces_add = 1
+		
+	}
+}
+
+civic_am_civics_guild_of_engineers = {
+	potential = {
+		OR = {
+			authority = { value = auth_corporate }
+			civics = { value = civic_galactic_sovereign_megacorp }
+		}
+	}
+	random_weight = { base = 5 }
+	
+	modifier = {
+		megastructures_habitat_influence_cost_mult = -0.20
+		country_megastructure_build_cap_add = 1
+	}
+}
+
+civic_am_civics_criminal_connections = {
+	modification = no
+	potential = {
+		OR = {
+			authority = { value = auth_corporate }
+			civics = { value = civic_galactic_sovereign_megacorp }
+		}
+	}	
+	possible = {
+		civics = { NOT = { value = civic_criminal_heritage } }
+	}	
+	random_weight = { base = 0 } # Allowing crime is not something the AI can handle
+	
+	description = "civic_am_civics_criminal_connections_effect"
+	
+	modifier = {
+		job_merchant_per_crime = 0.04
+		planet_crime_add = 40
+	}
+}
