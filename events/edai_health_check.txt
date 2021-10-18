@@ -115,7 +115,7 @@ event = {
 						owner = { has_monthly_income = { resource = energy value < -20 }}
 						#owner = { has_monthly_income = { resource = alloys value > 20 }}						
 						#has_building = building_foundry_1
-						free_jobs < 5
+						free_jobs < 10
 					}					
 					if = {
 						limit = {
@@ -137,11 +137,26 @@ event = {
 						log = "ME: Energy Crisis -20 : Adding district_rw_generator for [This.GetName]"					
 						add_modifier = { modifier = hc_generator_added days = 360 }										
 						#remove_building = building_foundry_1
-					}					
+					}
+					if = {
+						limit = {
+							#free_housing > 0
+							or = {
+								free_jobs < 2
+								has_unemployed_specialists = yes
+								}
+							free_building_slots > 1
+						}
+						add_building = eb_energy #energy
+						#owner = { add_resource = { minerals = -500 } }
+						log = "ME: Energy Crisis + Building : Adding building eb_energy for [This.GetName]"	
+						add_modifier = { modifier = hc_building_added days = 360 }		
+					}
+					
 				}
 				else_if = {
 					limit = {
-						free_jobs < 3
+						free_jobs < 5
 						owner = { has_monthly_income = { resource = energy value < 1 }}
 						#owner = { has_monthly_income = { resource = consumer_goods value > 10 }}						
 						#has_building = building_factory_1
@@ -184,7 +199,7 @@ event = {
 				if = {
 					limit = {
 						or = {
-							free_jobs < 10
+							free_jobs < 5
 							has_unemployed_workers = yes
 						}
 						owner = { has_monthly_income = { resource = energy value < 50 }}
@@ -208,6 +223,38 @@ event = {
 						add_modifier = { modifier = hc_generator_added days = 360 }
 					}					
 				}
+				###Pollution
+				#log = "ME: before pollution for [This.GetName]"					
+				if = {
+					limit = {
+						or = {
+							free_jobs < 5
+							has_unemployed_workers = yes
+							has_modifier = eco_catastrophic
+							has_modifier = eco_waste_high
+						}
+						or = { 
+							has_modifier = eco_heavy
+							has_modifier = eco_extreme
+							has_modifier = eco_catastrophic
+							has_modifier = eco_waste_mod
+							has_modifier = eco_waste_high
+						}
+						owner = { has_monthly_income = { resource = energy value > 0 }}
+					}
+					log = "ME: Need cleaning pollution for [This.GetName]"					
+					if = {
+						limit = {
+							owner = { resource_stockpile_compare = { resource = minerals value > 800 }}
+						}
+						add_building = eco_building_waste_recovery
+						add_resource = { minerals = -650 }
+						log = "ME: Unemployement + Pollution : Adding eco_building_waste_recovery for [This.GetName]"					
+						add_modifier = { modifier = hc_building_added days = 360 }				
+						
+					}
+				}
+				
 				if = {
 					limit = {
 						or = {
@@ -348,13 +395,18 @@ event = {
 							free_jobs < 2
 							has_unemployed_specialists = yes
 							}
-						free_building_slots > 1
+						free_building_slots > 4
+						owner = { has_monthly_income = { resource = energy value > 50 }}					
+						num_buildings = { type = building_research_lab_1 value < 4 }
+						
 					}
 					add_building = building_research_lab_1
 					owner = { add_resource = { minerals = -500 } }
-					log = "ME: Unemployement + Research : Adding building_research_lab_1 for [This.GetName]"	
+					log = "ME: Unemployement + energy + Research : Adding building_research_lab_1 for [This.GetName]"	
 					add_modifier = { modifier = hc_building_added days = 360 }		
 				}
+
+
 
 				###Calvitix Ressource Exchange
 				if = {
@@ -525,7 +577,22 @@ event = {
 						log = "E : Energy Crisis -20 : adding district_rw_generator for [This.GetName]"	
 						add_modifier = { modifier = hc_generator_added days = 360 }										
 						#remove_building = building_foundry_1
-					}					
+					}	
+					if = {
+						limit = {
+							#free_housing > 0
+							or = {
+								free_jobs < 2
+								has_unemployed_specialists = yes
+								}
+							free_building_slots > 1
+						}
+						add_building = eb_energy #energy
+						#owner = { add_resource = { minerals = -500 } }
+						log = "E: Energy Crisis + Building : Adding building eb_energy for [This.GetName]"	
+						add_modifier = { modifier = hc_building_added days = 360 }		
+					}
+					
 				}
 				if = {
 					limit = {
@@ -642,6 +709,40 @@ event = {
 					add_modifier = { modifier = hc_industrial_added days = 360 }				
 					
 				}
+
+				###Pollution
+				#log = "E: before pollution for [This.GetName]"					
+				if = {
+					limit = {
+						or = {
+							free_jobs < 5
+							has_unemployed_workers = yes
+							has_modifier = eco_catastrophic
+							has_modifier = eco_waste_high
+						}
+						or = { 
+							has_modifier = eco_moderate
+							has_modifier = eco_heavy
+							has_modifier = eco_extreme
+							has_modifier = eco_catastrophic
+							has_modifier = eco_waste_mod
+							has_modifier = eco_waste_high
+						}
+						owner = { has_monthly_income = { resource = energy value > 0 }}
+					}
+					log = "E: Need cleaning pollution for [This.GetName]"					
+					if = {
+						limit = {
+							owner = { resource_stockpile_compare = { resource = minerals value > 800 }}
+						}
+						add_building = eco_building_waste_recovery
+						owner = { add_resource = { minerals = -650 } }
+						log = "E: Unemployement + Pollution : Adding eco_building_waste_recovery for [This.GetName]"					
+						add_modifier = { modifier = hc_building_added days = 360 }				
+						
+					}
+				}
+
 
 				# Crime and Instability
 				if = {
@@ -786,6 +887,7 @@ event = {
 					else_if = {
 						limit = {
 							num_free_districts = { type = district_industrial value > 0 }
+							owner = { has_monthly_income = { resource = energy value > 20 }}
 							owner = { has_monthly_income = { resource = minerals value > 50 }}
 							owner = { has_monthly_income = { resource = consumer_goods value < 20 }}
 							owner = { resource_stockpile_compare = { resource = minerals value > 800 }}							
@@ -800,6 +902,7 @@ event = {
 							not = { has_building = building_research_lab_1 }
 							free_building_slots > 2
 							owner = { resource_stockpile_compare = { resource = minerals value > 800 }}
+							owner = { has_monthly_income = { resource = energy value > 50 }}
 							
 						}
 						add_building = building_research_lab_1					
@@ -821,7 +924,9 @@ event = {
 					else_if = {
 						limit = {
 							num_buildings = { type = building_research_lab_1 value < 4 }
+							free_jobs < 10
 							owner = { resource_stockpile_compare = { resource = minerals value > 800 }}
+							owner = { has_monthly_income = { resource = energy value > 20 }}
 							free_building_slots > 1
 						}
 						add_building = building_research_lab_1					
@@ -968,6 +1073,7 @@ event = {
 							limit = { num_buildings = { type = building_research_lab_1 value < 4 } }
 							add_building = building_research_lab_1	
 							owner = { add_resource = { minerals = -500 } }
+							owner = { has_monthly_income = { resource = energy value > 50 }}
 							log = "E: Unemployment & Research : Adding building_research_lab_1 for [This.GetName]"							
 							add_modifier = { modifier = hc_building_added days = 360 }		
 						}
@@ -1309,6 +1415,7 @@ event = {
 						free_jobs < 3
 						num_pops > 40
 						owner = { resource_stockpile_compare = { resource = minerals value > 800 }}
+						owner = { has_monthly_income = { resource = energy value > 50 }}
 						
 					}
 					add_building = building_research_lab_1
@@ -1326,6 +1433,7 @@ event = {
 						free_jobs < 3
 						num_pops > 45
 						owner = { resource_stockpile_compare = { resource = minerals value > 800 }}
+						owner = { has_monthly_income = { resource = energy value > 50 }}
 						
 					}
 					add_building = building_research_lab_1
@@ -1343,6 +1451,7 @@ event = {
 						free_jobs < 3
 						num_pops > 50
 						owner = { resource_stockpile_compare = { resource = minerals value > 800 }}
+						owner = { has_monthly_income = { resource = energy value > 50 }}
 						
 					}
 					add_building = building_research_lab_1
@@ -1598,7 +1707,22 @@ event = {
 						log = "H: Energy crisis < -20 : adding district_rw_generator for [This.GetName]"	
 						add_modifier = { modifier = hc_generator_added days = 360 }										
 						#remove_building = building_foundry_1
-					}					
+					}
+					if = {
+						limit = {
+							#free_housing > 0
+							or = {
+								free_jobs < 2
+								has_unemployed_specialists = yes
+								}
+							free_building_slots > 1
+						}
+						add_building = eb_energy #energy
+						#owner = { add_resource = { minerals = -500 } }
+						log = "H: Energy Crisis + Building : Adding building eb_energy for [This.GetName]"	
+						add_modifier = { modifier = hc_building_added days = 360 }		
+					}
+					
 				}
 				if = {
 					limit = {
@@ -1668,6 +1792,40 @@ event = {
 					add_modifier = { modifier = hc_industrial_added days = 360 }				
 				}
 				
+				###Pollution
+				#log = "H: before pollution for [This.GetName]"					
+				if = {
+					limit = {
+						or = {
+							free_jobs < 5
+							has_unemployed_workers = yes
+							has_modifier = eco_catastrophic
+							has_modifier = eco_waste_high
+						}
+						or = { 
+							has_modifier = eco_heavy
+							has_modifier = eco_extreme
+							has_modifier = eco_catastrophic
+							has_modifier = eco_waste_mod
+							has_modifier = eco_waste_high
+						}
+						owner = { has_monthly_income = { resource = energy value > 0 }}
+					}
+					log = "H: Need cleaning pollution for [This.GetName]"					
+					if = {
+						limit = {
+							owner = { resource_stockpile_compare = { resource = minerals value > 800 }}
+						}
+						add_building = eco_building_waste_recovery
+						owner = { add_resource = { minerals = -650 } }
+						log = "H: Unemployement + Pollution : Adding eco_building_waste_recovery for [This.GetName]"					
+						add_modifier = { modifier = hc_building_added days = 360 }				
+						
+					}
+				}
+
+
+
 				# Crime and Instability
 				if = {
 					limit = {
@@ -1787,7 +1945,8 @@ event = {
 					}
 					if = {
 						limit = {
-							not = { has_building = building_spawning_pool free_building_slots > 1 }
+							num_buildings = { type = building_spawning_pool value < 5 }							
+							free_building_slots > 1 
 							owner = { resource_stockpile_compare = { resource = minerals value > 800 }}
 						}
 						add_building = building_spawning_pool				
@@ -1839,6 +1998,7 @@ event = {
 					else_if = {
 						limit = { 
 							free_building_slots > 0 
+							num_buildings = { type = building_spawning_pool value < 5 }							
 							owner = { resource_stockpile_compare = { resource = minerals value > 800 }}
 						}
 						add_building = building_spawning_pool
@@ -1932,6 +2092,8 @@ event = {
 						else_if = {
 							limit = { 
 								num_buildings = { type = building_research_lab_1 value < 4 }
+								owner = { has_monthly_income = { resource = energy value > 20 }}
+								owner = { resource_stockpile_compare = { resource = minerals value > 800 }}
 							}
 							add_building = building_research_lab_1					
 							owner = { add_resource = { minerals = -500 } }
@@ -1942,14 +2104,19 @@ event = {
 							limit = {
 								num_buildings = { type = building_maintenance_depot value < 3 }
 								free_amenities < 10
+								owner = { resource_stockpile_compare = { resource = minerals value > 800 }}
 							}
 							add_building = building_maintenance_depot				
 							owner = { add_resource = { minerals = -500 } }
 							log = "H: Unemployment  : adding building_maintenance_depot for [This.GetName]"	
 							add_modifier = { modifier = hc_building_added days = 360 }				
 						}
-						else = { 
+						else_if = { 
+							limit = {
+								num_buildings = { type = building_maintenance_depot value < 3 }
+							}							
 							add_building = building_spawning_pool
+							owner = { add_resource = { minerals = -500 } }
 							log = "H: Unemployment  : adding building_spawning_pool for [This.GetName]"	
 							add_modifier = { modifier = hc_building_added days = 360 }				
 						}
@@ -1960,7 +2127,10 @@ event = {
 				# Calvitix Zone Commerc Vs Foundry
 				if = {
 					limit = {
-						free_jobs > 1
+						or = {
+							free_jobs < 5
+							any_owned_pop = { is_unemployed = yes }
+						}
 						#free_amenities > 20
 						owner = { has_monthly_income = { resource = alloys value < 20 }}						
 						owner = { has_monthly_income = { resource = minerals value > 50 }}						
@@ -2259,6 +2429,7 @@ event = {
 						free_jobs < 3
 						num_pops > 40
 						owner = { resource_stockpile_compare = { resource = minerals value > 800 }}
+						owner = { has_monthly_income = { resource = energy value > 30 }}
 						
 					}
 					add_building = building_research_lab_1
@@ -2276,6 +2447,7 @@ event = {
 						free_jobs < 3
 						num_pops > 45
 						owner = { resource_stockpile_compare = { resource = minerals value > 800 }}
+						owner = { has_monthly_income = { resource = energy value > 50 }}
 					}
 					add_building = building_research_lab_1
 					owner = { add_resource = { minerals = -500 } }
@@ -2292,6 +2464,7 @@ event = {
 						free_jobs < 3
 						num_pops > 50
 						owner = { resource_stockpile_compare = { resource = minerals value > 800 }}
+						owner = { has_monthly_income = { resource = energy value > 50 }}
 					}
 					add_building = building_research_lab_1
 					owner = { add_resource = { minerals = -500 } }

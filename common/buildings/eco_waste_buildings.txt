@@ -6,9 +6,56 @@
 #
 #
 eco_building_waste_recovery = {
+	base_cap_amount = 4 #calvitix
 	base_buildtime = @b1_time
 
 	category = amenity
+	
+	potential = {
+		exists = owner
+		or = {
+			owner = {
+				is_ai = no
+			}
+			and = {
+				owner = {
+					is_ai = yes
+				}
+				or = { 
+					has_modifier = eco_moderate	
+					has_modifier = eco_heavy
+					has_modifier = eco_extreme
+					has_modifier = eco_catastrophic
+				}
+			}
+		}
+	}
+	
+#starnet AI
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_ai = yes
+			    str_raw_ecocrisis_level_0 = no
+			}
+			num_buildings = {
+				type = eco_building_waste_recovery
+				value < 2 #calvitix change
+			}
+			or = { 
+				has_modifier = eco_heavy
+				has_modifier = eco_extreme
+				has_modifier = eco_catastrophic
+			}			
+		}
+		modifier = {
+			job_starnet_spice_melange_farmer_add = 1
+			job_starnet_spice_melange_antifarmer_add = -1
+		}
+	}
+###
+	
 	
 	triggered_planet_modifier = {
 		potential = {
@@ -95,30 +142,6 @@ eco_building_waste_recovery = {
 		text = eco_building_waste_gestalt_effect
 	}
 	
-	ai_weight = {
-		weight = 10 #100
-		modifier = {
-			factor = 1
-			has_modifier = eco_minimal
-		}
-		modifier = {
-			factor = 10
-			has_modifier = eco_moderate
-		}
-		modifier = {
-			factor = 100
-			has_modifier = eco_heavy
-		}
-		modifier = {
-			factor = 1000
-			has_modifier = eco_extreme
-		}
-		modifier = {
-			factor = 10000
-			has_modifier = eco_catastrophic
-		}
-	}
-	
 	on_built = {
 		set_planet_flag = eco_built_waste_building
 	}
@@ -126,6 +149,14 @@ eco_building_waste_recovery = {
 	on_destroy = {
 		remove_planet_flag = eco_built_waste_building
 	}
+	
+	ai_resource_production = {
+		energy = 3
+		trigger = {
+			always = yes
+		}
+	}
+	
 }
 
 eco_building_industrial_symbiosis = {
@@ -228,29 +259,6 @@ eco_building_industrial_symbiosis = {
 		text = eco_building_waste_gestalt_effect
 	}
 	
-	ai_weight = {
-		weight = 20 #100
-		modifier = {
-			factor = 1
-			has_modifier = eco_minimal
-		}
-		modifier = {
-			factor = 10
-			has_modifier = eco_moderate
-		}
-		modifier = {
-			factor = 100
-			has_modifier = eco_heavy
-		}
-		modifier = {
-			factor = 1000
-			has_modifier = eco_extreme
-		}
-		modifier = {
-			factor = 10000
-			has_modifier = eco_catastrophic
-		}
-	}
 	
 	on_built = {
 		set_planet_flag = eco_built_waste_building
@@ -259,6 +267,14 @@ eco_building_industrial_symbiosis = {
 	on_destroy = {
 		remove_planet_flag = eco_built_waste_building
 	}
+	
+	ai_resource_production = {
+		energy = 3
+		trigger = {
+			always = yes
+		}
+	}
+	
 }
 
 eco_building_industrial_metabolism = {
@@ -362,27 +378,10 @@ eco_building_industrial_metabolism = {
 		text = eco_building_waste_gestalt_effect
 	}
 	
-	ai_weight = {
-		weight = 10
-		modifier = {
-			factor = 1
-			has_modifier = eco_minimal
-		}
-		modifier = {
-			factor = 10
-			has_modifier = eco_moderate
-		}
-		modifier = {
-			factor = 100
-			has_modifier = eco_heavy
-		}
-		modifier = {
-			factor = 1000
-			has_modifier = eco_extreme
-		}
-		modifier = {
-			factor = 10000
-			has_modifier = eco_catastrophic
+	ai_resource_production = {
+		energy = 3
+		trigger = {
+			always = yes
 		}
 	}
 	

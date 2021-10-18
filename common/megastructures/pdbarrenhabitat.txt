@@ -17,31 +17,16 @@ pd_barren_hab_0 = {
 	resources = {
 		category = megastructures
 #Calvitix Ressources Balance
-		cost = { 
-			trigger = {
-				from = {
-					is_ai = no
-				}
-			}
-			alloys = 250
-			minerals = 100
-			influence = 75
-		}
 		cost = {
-			trigger = {
-				from = {
-					is_ai = yes
-				}
-			}
 			alloys = 450
 			influence = 75
-		}
+		}	
 	}
 	construction_blocks_others = no
 	construction_blocked_by_others = no
 
 	potential = { 
-		has_technology = tech_habitat_1 
+		has_technology = tech_pdhabitat_1 
 	}
 
 	possible = {
@@ -686,6 +671,14 @@ pd_barren_hab_0 = {
 				}
 				remove_deposit = d_nanites_deposit
 				add_deposit = d_hab_nanites_1
+				set_planet_flag = pd_science_hab
+				IF = { limit = { NOT = { has_planet_flag = pd_hab_d1 } } set_planet_flag = pd_hab_d1 }
+				ELSE_IF = { limit = { has_planet_flag = pd_hab_d1 } set_planet_flag = pd_hab_d2 }
+			}
+			if = {
+				limit = {
+					fromfrom.planet = { has_modifier = terraforming_candidate }
+				}
 				set_planet_flag = pd_science_hab
 				IF = { limit = { NOT = { has_planet_flag = pd_hab_d1 } } set_planet_flag = pd_hab_d1 }
 				ELSE_IF = { limit = { has_planet_flag = pd_hab_d1 } set_planet_flag = pd_hab_d2 }
