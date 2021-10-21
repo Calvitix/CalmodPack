@@ -8,6 +8,7 @@ planet_event = {
 	trigger = {
 		NOT = { has_planet_flag = had_fervor }
 		owner = { is_country_type = default }
+		NOT = { owner = { has_origin = origin_clone_army } }
 		OR = {
 			AND = {
 				owner = { has_origin = origin_void_dwellers }
@@ -80,5 +81,37 @@ planet_event = {
 
 	immediate = {
 		remove_modifier = colonial_fervor_modifier
+	}
+}
+
+planet_event = { #Clone Army
+	id = early_pop_growth.5
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		NOT = { has_planet_flag = had_fervor }
+		owner = { is_country_type = default }
+		owner = { has_origin = origin_clone_army }
+		NOT = { uses_district_set = habitat }
+	}
+
+	immediate = {
+		set_planet_flag = had_fervor
+		add_modifier = { modifier = colonial_fervor_clone_army_modifier days = 7200 }
+	}
+}
+
+planet_event = {
+	id = early_pop_growth.6
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_modifier = colonial_fervor_clone_army_modifier
+	}
+
+	immediate = {
+		remove_modifier = colonial_fervor_clone_army_modifier
 	}
 }
