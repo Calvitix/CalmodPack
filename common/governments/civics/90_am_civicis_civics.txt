@@ -2,7 +2,7 @@
 #
 # Calvitix Check 3.1.1  14/09/2021
 #
-# Last Update : 10/10/2021
+# Last Update : 29/10/2021
 #
 civic_am_civics_off_world_investors = {
 	potential = {
@@ -55,7 +55,9 @@ civic_am_civics_urban_parcification_tools = {
 			civics = { value = civic_galactic_sovereign_megacorp }
 		}
 	}
-	possible = { civics = { NOT = {	value = civic_criminal_heritage } } }
+	possible = {
+		civics = { NOT = { value = civic_criminal_heritage } NOT = { value = civic_am_civics_criminal_connections } }
+	}	
 	random_weight = { base = 5 }
 	description = "tooltip_civic_am_civics_urban_parcification_tools_effects"
 	modifier = {
@@ -191,14 +193,15 @@ civic_am_civics_criminal_connections = {
 		}
 	}	
 	possible = {
-		civics = { NOT = { value = civic_criminal_heritage } }
+		civics = { NOT = { value = civic_criminal_heritage } NOT = { value = civic_am_civics_urban_parcification_tools } }
 	}	
 	random_weight = { base = 0 } # Allowing crime is not something the AI can handle
 	
 	description = "civic_am_civics_criminal_connections_effect"
 	
 	modifier = {
-		job_merchant_per_crime = 0.04
-		planet_crime_add = 40
+		job_am_civics_shady_merchant_per_crime = 0.05
+		job_criminal_add = -5
+		planet_crime_add = 25
 	}
 }
