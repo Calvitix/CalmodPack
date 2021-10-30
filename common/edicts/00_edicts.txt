@@ -2,7 +2,7 @@
 #
 # Calvitix Check 3.1.1  14/09/2021
 #
-# Merge with Starnet AI 16/09/2021
+# Merge with Starnet AI 30/10/2021
 # #Calvitix, re-enable all edicts for more diversity
 #
 ##########################################################################
@@ -674,7 +674,7 @@ extended_shifts = {
 	}
 
 	ai_weight = {
-		weight = @EdictHighPrio
+		weight = @EdictMedPrio
 		modifier = {
 			factor = 1.5
 			has_ethic = ethic_authoritarian
@@ -794,7 +794,7 @@ drone_overdrive = {
 	}
 
 	ai_weight = {
-		weight = @EdictHighPrio
+		weight = @EdictMedPrio
 		modifier = {
 			factor = 1.5
 			has_ethic = ethic_authoritarian
@@ -829,7 +829,7 @@ capacity_subsidies = {
 
 	modifier = {
 		planet_technician_produces_mult = 0.50
-		planet_technician_energy_upkeep_add = 0.5 #3.1.1
+		planet_technician_energy_upkeep_add = 0.5
 	}
 
 	prerequisites = {
@@ -879,11 +879,9 @@ mining_subsidies = {
 
 	ai_weight = {
 		weight = @EdictMedPrio
-
 		modifier = {
-			factor = 2
-			has_monthly_income = { resource = minerals value < 0 }
-			has_monthly_income = { resource = energy value > 50 }
+			factor = 3
+			always = yes
 		}
 	}
 }
@@ -918,14 +916,19 @@ farming_subsidies = {
 		"tech_food_processing_1"
 	}
 
+	potential = {
+		or = {
+			is_ai = no
+			and = { 
+				has_edict = capacity_subsidies
+				has_edict = mining_subsidies
+				has_edict = fortify_the_border
+			}
+		}
+	}
+	
 	ai_weight = {
 		weight = @EdictMedPrio
-
-		modifier = {
-			factor = 2
-			has_monthly_income = { resource = food value < 0 }
-			has_monthly_income = { resource = energy value > 50 }
-		}
 		modifier = {
 			factor = 0
 			or = {

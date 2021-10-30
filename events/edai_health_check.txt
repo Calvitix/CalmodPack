@@ -9,7 +9,8 @@ event = {
 	is_triggered_only = yes
 	
 	immediate = {
-		
+
+		set_global_flag = edai_logging		
 		### Machine Empires
 		every_country = {
 			limit = {
@@ -48,7 +49,8 @@ event = {
 						
 					}
 					add_district = district_nexus
-					log = "ME: Adding Nexus for [This.GetName]"
+					
+					if = { limit = { has_global_flag = edai_logging	} log = "ME: Adding Nexus for [This.GetName]" }
 					add_modifier = { modifier = hc_city_added days = 360 }										
 				}
 				if = {
@@ -59,7 +61,7 @@ event = {
 						
 					}
 					add_district = district_rw_nexus
-					log = "ME: Adding RW Nexus for [This.GetName]"					
+					if = { limit = { has_global_flag = edai_logging	} log = "ME: Adding RW Nexus for [This.GetName]" }					
 					add_modifier = { modifier = hc_city_added days = 360 }										
 				}
 				
@@ -73,7 +75,7 @@ event = {
 						num_districts = { type = district_industrial value > 0 }
 
 					}
-					log = "ME: mineral crisis : Removing district_industrial for [This.GetName]"					
+					if = { limit = { has_global_flag = edai_logging	} log = "ME: mineral crisis : Removing district_industrial for [This.GetName]" }					
 					#remove_building = building_foundry_1
 					remove_district = district_industrial
 				}
@@ -93,7 +95,7 @@ event = {
 							num_free_districts = { type = district_rw_industrial value > 0 }
 						}
 						add_district = district_rw_industrial
-						log = "ME: Alloys needed : Adding district_rw_industrial for [This.GetName]"					
+						if = { limit = { has_global_flag = edai_logging	} log = "ME: Alloys needed : Adding district_rw_industrial for [This.GetName]" }					
 						add_modifier = { modifier = hc_industrial_added days = 360 }									
 					}
 					else = {
@@ -103,7 +105,7 @@ event = {
 							}						
 							add_district = district_industrial
 							add_modifier = { modifier = hc_industrial_added days = 360 }										
-							log = "ME: Alloys needed : Adding District_industrial for [This.GetName]"					
+							if = { limit = { has_global_flag = edai_logging	} log = "ME: Alloys needed : Adding District_industrial for [This.GetName]" }					
 						}
 					}										
 				}
@@ -123,7 +125,7 @@ event = {
 							num_free_districts = { type = district_generator value > 0 }
 						}
 						add_district = district_generator
-						log = "ME: Energy Crisis -20 : Adding district_generator for [This.GetName]"					
+						if = { limit = { has_global_flag = edai_logging	} log = "ME: Energy Crisis -20 : Adding district_generator for [This.GetName]" }					
 						
 						add_modifier = { modifier = hc_generator_added days = 360 }										
 						#remove_building = building_foundry_1
@@ -134,7 +136,7 @@ event = {
 							num_free_districts = { type = district_rw_generator value > 0 }
 						}
 						add_district = district_rw_generator
-						log = "ME: Energy Crisis -20 : Adding district_rw_generator for [This.GetName]"					
+						if = { limit = { has_global_flag = edai_logging	} log = "ME: Energy Crisis -20 : Adding district_rw_generator for [This.GetName]" }					
 						add_modifier = { modifier = hc_generator_added days = 360 }										
 						#remove_building = building_foundry_1
 					}
@@ -149,7 +151,7 @@ event = {
 						}
 						add_building = eb_energy #energy
 						#owner = { add_resource = { minerals = -500 } }
-						log = "ME: Energy Crisis + Building : Adding building eb_energy for [This.GetName]"	
+						if = { limit = { has_global_flag = edai_logging	} log = "ME: Energy Crisis + Building : Adding building eb_energy for [This.GetName]" }	
 						add_modifier = { modifier = hc_building_added days = 360 }		
 					}
 					
@@ -167,7 +169,7 @@ event = {
 							num_free_districts = { type = district_generator value > 0 }
 						}
 						add_district = district_generator
-						log = "ME: Energy Crisis <1 : Adding district_generator for [This.GetName]"					
+						if = { limit = { has_global_flag = edai_logging	} log = "ME: Energy Crisis <1 : Adding district_generator for [This.GetName]" }					
 						add_modifier = { modifier = hc_generator_added days = 360 }										
 						
 					}
@@ -177,7 +179,7 @@ event = {
 							num_free_districts = { type = district_rw_generator value > 0 }
 						}
 						add_district = district_rw_generator
-						log = "ME: Energy Crisis <1 : Adding district_rw_generator for [This.GetName]"					
+						if = { limit = { has_global_flag = edai_logging	} log = "ME: Energy Crisis <1 : Adding district_rw_generator for [This.GetName]" }					
 						add_modifier = { modifier = hc_generator_added days = 360 }										
 						
 					}					
@@ -191,7 +193,7 @@ event = {
 						num_free_districts = { type = district_nexus value < 2 }
 					}
 					add_building = building_drone_storage
-					log = "ME: Housing Crisis <1 : Adding drone_storage for [This.GetName]"					
+					if = { limit = { has_global_flag = edai_logging	} log = "ME: Housing Crisis <1 : Adding drone_storage for [This.GetName]" }					
 					add_modifier = { modifier = hc_building_added days = 360 }		
 				}
 				
@@ -210,7 +212,7 @@ event = {
 							num_free_districts = { type = district_generator value > 0 }
 						}
 						add_district = district_generator
-						log = "ME: Unemployement + Low Energy : Adding district_energy for [This.GetName]"					
+						if = { limit = { has_global_flag = edai_logging	} log = "ME: Unemployement + Low Energy : Adding district_energy for [This.GetName]" }					
 						add_modifier = { modifier = hc_generator_added days = 360 }				
 					}
 					else_if = {
@@ -219,12 +221,12 @@ event = {
 							num_free_districts = { type = district_rw_generator value > 0 }
 						}
 						add_district = district_rw_generator
-						log = "ME: Unemployement + Low Energy : Adding district_energy for [This.GetName]"					
+						if = { limit = { has_global_flag = edai_logging	} log = "ME: Unemployement + Low Energy : Adding district_energy for [This.GetName]" }					
 						add_modifier = { modifier = hc_generator_added days = 360 }
 					}					
 				}
 				###Pollution
-				#log = "ME: before pollution for [This.GetName]"					
+				#log = "ME: before pollution for [This.GetName]" }					
 				if = {
 					limit = {
 						or = {
@@ -242,14 +244,14 @@ event = {
 						}
 						owner = { has_monthly_income = { resource = energy value > 0 }}
 					}
-					log = "ME: Need cleaning pollution for [This.GetName]"					
+					if = { limit = { has_global_flag = edai_logging	} log = "ME: Need cleaning pollution for [This.GetName]" }					
 					if = {
 						limit = {
 							owner = { resource_stockpile_compare = { resource = minerals value > 800 }}
 						}
 						add_building = eco_building_waste_recovery
 						owner = { add_resource = { minerals = -650 } }
-						log = "ME: Unemployement + Pollution : Adding eco_building_waste_recovery for [This.GetName]"					
+						if = { limit = { has_global_flag = edai_logging	} log = "ME: Unemployement + Pollution : Adding eco_building_waste_recovery for [This.GetName]" }					
 						add_modifier = { modifier = hc_building_added days = 360 }				
 						
 					}
@@ -275,7 +277,7 @@ event = {
 							num_free_districts = { type = district_industrial value > 0 }
 						}
 						add_district = district_industrial
-						log = "ME: Unemployement + Good Miner. : Adding district_industrial for [This.GetName]"					
+						if = { limit = { has_global_flag = edai_logging	} log = "ME: Unemployement + Good Miner. : Adding district_industrial for [This.GetName]" }					
 						add_modifier = { modifier = hc_industrial_added days = 360 }				
 						
 					}
@@ -285,7 +287,7 @@ event = {
 							num_free_districts = { type = district_rw_industrial value > 0 }
 						}
 						add_district = district_rw_industrial
-						log = "ME: Unemployement + Good Miner. : Adding district_rw_industrial for [This.GetName]"					
+						if = { limit = { has_global_flag = edai_logging	} log = "ME: Unemployement + Good Miner. : Adding district_rw_industrial for [This.GetName]" }					
 						add_modifier = { modifier = hc_industrial_added days = 360 }				
 					
 					}
@@ -305,7 +307,7 @@ event = {
 							num_free_districts = { type = district_mining value > 0 }
 						}
 						add_district = district_mining
-						log = "ME: Unemployement + Low Miner. : Adding district_mining for [This.GetName]"					
+						if = { limit = { has_global_flag = edai_logging	} log = "ME: Unemployement + Low Miner. : Adding district_mining for [This.GetName]" }					
 						add_modifier = { modifier = hc_mining_added days = 360 }				
 						
 					}
@@ -330,7 +332,7 @@ event = {
 							not = { uses_district_set = ring_world }
 						}
 						add_district = district_farming
-						log = "ME: Unemployement + Low food : Adding district_farming for [This.GetName]"					
+						if = { limit = { has_global_flag = edai_logging	} log = "ME: Unemployement + Low food : Adding district_farming for [This.GetName]" }					
 						add_modifier = { modifier = hc_farming_added days = 360 }				
 						
 					}
@@ -340,7 +342,7 @@ event = {
 							uses_district_set = ring_world
 						}
 						add_district = district_rw_farming
-						log = "ME: Unemployement + Low food : Adding district_rw_farming for [This.GetName]"					
+						if = { limit = { has_global_flag = edai_logging	} log = "ME: Unemployement + Low food : Adding district_rw_farming for [This.GetName]" }					
 						add_modifier = { modifier = hc_farming_added days = 360 }				
 						
 					}					
@@ -357,7 +359,7 @@ event = {
 						owner = { has_monthly_income = { resource = consumer_goods value < 5 }}
 					}
 					add_building = building_factory_1
-					log = "ME: Low goods : Adding building_factory_1 for [This.GetName]"					
+					if = { limit = { has_global_flag = edai_logging	} log = "ME: Low goods : Adding building_factory_1 for [This.GetName]" }					
 					add_modifier = { modifier = hc_building_added days = 360 }		
 				}
 				if = {
@@ -372,7 +374,7 @@ event = {
 					}
 					add_building = building_maintenance_depot
 					owner = { add_resource = { minerals = -500 } }
-					log = "ME: Unemployement + Low services : Adding maintenance_depot for [This.GetName]"					
+					if = { limit = { has_global_flag = edai_logging	} log = "ME: Unemployement + Low services : Adding maintenance_depot for [This.GetName]" }					
 					add_modifier = { modifier = hc_building_added days = 360 }		
 				}
 				if = {
@@ -385,7 +387,7 @@ event = {
 						free_building_slots > 0
 					}
 					add_building = building_sentinel_posts
-					log = "ME: High crime : Adding building_sentinel_posts for [This.GetName]"					
+					if = { limit = { has_global_flag = edai_logging	} log = "ME: High crime : Adding building_sentinel_posts for [This.GetName]" }					
 					add_modifier = { modifier = hc_building_added days = 360 }		
 				}				
 				if = {
@@ -402,7 +404,7 @@ event = {
 					}
 					add_building = building_research_lab_1
 					owner = { add_resource = { minerals = -500 } }
-					log = "ME: Unemployement + energy + Research : Adding building_research_lab_1 for [This.GetName]"	
+					if = { limit = { has_global_flag = edai_logging	} log = "ME: Unemployement + energy + Research : Adding building_research_lab_1 for [This.GetName]" }	
 					add_modifier = { modifier = hc_building_added days = 360 }		
 				}
 
@@ -417,7 +419,7 @@ event = {
 						}
 					}
 					owner = {
-					log = "ME: Trade : -5000 minerals, +250 alloys for [This.GetName]"	
+					if = { limit = { has_global_flag = edai_logging	} log = "ME: Trade : -5000 minerals, +250 alloys for [This.GetName]" }	
 					add_resource = { alloys = 250 }
 					add_resource = { minerals = -5000 }
 					}
@@ -430,7 +432,7 @@ event = {
 						}
 					}
 					owner = {
-					log = "ME: Trade : -5000 food, +2500 energy for [This.GetName]"	
+					if = { limit = { has_global_flag = edai_logging	} log = "ME: Trade : -5000 food, +2500 energy for [This.GetName]" }	
 					add_resource = { energy = 2500 }
 					add_resource = { food = -5000 }
 					}
@@ -443,7 +445,7 @@ event = {
 						}
 					}
 					owner = {
-					log = "ME: Trade : -5000 goods, +5000 energy for [This.GetName]"	
+					if = { limit = { has_global_flag = edai_logging	} log = "ME: Trade : -5000 goods, +5000 energy for [This.GetName]" }	
 					add_resource = { energy = 5000 }
 					add_resource = { consumer_goods = -5000 }
 					}
@@ -474,7 +476,7 @@ event = {
 					}
 				}
 				owner = {
-					log = "ME: Hand of God : Superbonus for [This.GetName]"	
+					if = { limit = { has_global_flag = edai_logging	} log = "ME: Hand of God : Superbonus for [This.GetName]" }	
 					add_resource = { energy = 10000 }
 					add_resource = { consumer_goods = 10000 }
 					add_resource = { minerals = 10000 }
@@ -564,7 +566,7 @@ event = {
 							num_free_districts = { type = district_generator value > 0 }
 						}
 						add_district = district_generator
-						log = "E : Energy Crisis -20 : adding district_generator for [This.GetName]"	
+						if = { limit = { has_global_flag = edai_logging	} log = "E : Energy Crisis -20 : adding district_generator for [This.GetName]" }	
 						add_modifier = { modifier = hc_generator_added days = 360 }										
 						#remove_building = building_foundry_1
 					}
@@ -574,7 +576,7 @@ event = {
 							num_free_districts = { type = district_rw_generator value > 0 }
 						}
 						add_district = district_rw_generator
-						log = "E : Energy Crisis -20 : adding district_rw_generator for [This.GetName]"	
+						if = { limit = { has_global_flag = edai_logging	} log = "E : Energy Crisis -20 : adding district_rw_generator for [This.GetName]" }	
 						add_modifier = { modifier = hc_generator_added days = 360 }										
 						#remove_building = building_foundry_1
 					}	
@@ -589,7 +591,7 @@ event = {
 						}
 						add_building = eb_energy #energy
 						#owner = { add_resource = { minerals = -500 } }
-						log = "E: Energy Crisis + Building : Adding building eb_energy for [This.GetName]"	
+						if = { limit = { has_global_flag = edai_logging	} log = "E: Energy Crisis + Building : Adding building eb_energy for [This.GetName]" }	
 						add_modifier = { modifier = hc_building_added days = 360 }		
 					}
 					
@@ -607,7 +609,7 @@ event = {
 							num_free_districts = { type = district_generator value > 0 }
 						}
 						add_district = district_generator
-						log = "E : Energy Crisis < 1 : adding district_generator for [This.GetName]"	
+						if = { limit = { has_global_flag = edai_logging	} log = "E : Energy Crisis < 1 : adding district_generator for [This.GetName]" }	
 						add_modifier = { modifier = hc_generator_added days = 360 }										
 						
 					}
@@ -617,7 +619,7 @@ event = {
 							num_free_districts = { type = district_rw_generator value > 0 }
 						}
 						add_district = district_rw_generator
-						log = "E : Energy Crisis < 1 : adding district_rw_generator for [This.GetName]"	
+						if = { limit = { has_global_flag = edai_logging	} log = "E : Energy Crisis < 1 : adding district_rw_generator for [This.GetName]" }	
 						add_modifier = { modifier = hc_generator_added days = 360 }										
 						
 					}					
@@ -638,7 +640,7 @@ event = {
 							num_free_districts = { type = district_mining value > 0 }
 						}
 						add_district = district_mining
-						log = "E : Minerals Crisis < -5 : adding district_mining, delete district_industrial for [This.GetName]"	
+						if = { limit = { has_global_flag = edai_logging	} log = "E : Minerals Crisis < -5 : adding district_mining, delete district_industrial for [This.GetName]" }	
 						add_modifier = { modifier = hc_mining_added days = 360 }
 						remove_district = district_industrial
 					}
@@ -655,7 +657,7 @@ event = {
 							num_free_districts = { type = district_mining value > 0 }
 						}
 						add_district = district_mining
-						log = "E : Minerals Crisis < -20 : adding district_mining for [This.GetName]"	
+						if = { limit = { has_global_flag = edai_logging	} log = "E : Minerals Crisis < -20 : adding district_mining for [This.GetName]" }	
 						add_modifier = { modifier = hc_mining_added days = 360 }				
 						#remove_building = building_factory_1
 					}
@@ -672,7 +674,7 @@ event = {
 						num_free_districts = { type = district_industrial value > 0 }		
 					}
 					remove_building = building_research_lab_1
-					log = "E : alloy Crisis < -20 : adding district_industrial, removing research_lab for [This.GetName]"	
+					if = { limit = { has_global_flag = edai_logging	} log = "E : alloy Crisis < -20 : adding district_industrial, removing research_lab for [This.GetName]" }	
 					add_district = district_industrial
 					add_modifier = { modifier = hc_industrial_added days = 360 }				
 					
@@ -686,7 +688,7 @@ event = {
 						num_free_districts = { type = district_rw_industrial value > 0 }		
 					}
 					remove_building = building_research_lab_1
-					log = "E : alloy Crisis < -20 : adding district_rw_industrial, removing research_lab for [This.GetName]"	
+					if = { limit = { has_global_flag = edai_logging	} log = "E : alloy Crisis < -20 : adding district_rw_industrial, removing research_lab for [This.GetName]" }	
 					add_district = district_industrial
 					add_modifier = { modifier = hc_industrial_added days = 360 }				
 					
@@ -705,13 +707,13 @@ event = {
 					}
 					remove_building = building_commercial_zone
 					add_district = district_industrial
-					log = "E : alloy Crisis < -20 : adding district_industrial, removing commercial for [This.GetName]"	
+					if = { limit = { has_global_flag = edai_logging	} log = "E : alloy Crisis < -20 : adding district_industrial, removing commercial for [This.GetName]" }	
 					add_modifier = { modifier = hc_industrial_added days = 360 }				
 					
 				}
 
 				###Pollution
-				#log = "E: before pollution for [This.GetName]"					
+				#log = "E: before pollution for [This.GetName]" }					
 				if = {
 					limit = {
 						or = {
@@ -730,14 +732,14 @@ event = {
 						}
 						owner = { has_monthly_income = { resource = energy value > 0 }}
 					}
-					log = "E: Need cleaning pollution for [This.GetName]"					
+					if = { limit = { has_global_flag = edai_logging	} log = "E: Need cleaning pollution for [This.GetName]" }					
 					if = {
 						limit = {
 							owner = { resource_stockpile_compare = { resource = minerals value > 800 }}
 						}
 						add_building = eco_building_waste_recovery
 						owner = { add_resource = { minerals = -650 } }
-						log = "E: Unemployement + Pollution : Adding eco_building_waste_recovery for [This.GetName]"					
+						if = { limit = { has_global_flag = edai_logging	} log = "E: Unemployement + Pollution : Adding eco_building_waste_recovery for [This.GetName]" }					
 						add_modifier = { modifier = hc_building_added days = 360 }				
 						
 					}
@@ -763,21 +765,21 @@ event = {
 							free_jobs < 1
 						}
 						add_building = building_precinct_house
-						log = "E : High Crime > 20 : adding building_precinct_house for [This.GetName]"	
+						if = { limit = { has_global_flag = edai_logging	} log = "E : High Crime > 20 : adding building_precinct_house for [This.GetName]" }	
 						add_modifier = { modifier = hc_building_added days = 360 }		
 					}
 					else_if = {
 						limit = { has_building = building_holo_theatres }
 						remove_building = building_holo_theatres
 						add_building = building_precinct_house
-						log = "E : High Crime > 20 : adding building_precinct_house, removing building_holo_theatres for [This.GetName]"	
+						if = { limit = { has_global_flag = edai_logging	} log = "E : High Crime > 20 : adding building_precinct_house, removing building_holo_theatres for [This.GetName]" }	
 						add_modifier = { modifier = hc_building_added days = 360 }		
 					}
 					else_if = {
 						limit = { has_building = building_research_lab_1 }
 						remove_building = building_research_lab_1
 						add_building = building_precinct_house
-						log = "E : High Crime > 20 : adding building_precinct_house, removing building_research_lab_1 for [This.GetName]"	
+						if = { limit = { has_global_flag = edai_logging	} log = "E : High Crime > 20 : adding building_precinct_house, removing building_research_lab_1 for [This.GetName]" }	
 						add_modifier = { modifier = hc_building_added days = 360 }		
 					}
 					else_if = {
@@ -788,7 +790,7 @@ event = {
 						}
 						#remove_building = building_foundry_1
 						add_building = building_precinct_house
-						log = "E : High Crime > 20 : adding building_precinct_house for [This.GetName]"	
+						if = { limit = { has_global_flag = edai_logging	} log = "E : High Crime > 20 : adding building_precinct_house for [This.GetName]" }	
 						add_modifier = { modifier = hc_building_added days = 360 }		
 					}					
 				}
@@ -812,14 +814,14 @@ event = {
 							free_jobs < 1
 						}
 						add_building = building_holo_theatres
-						log = "E : Low Services < 5 : adding building_holo_theatres for [This.GetName]"	
+						if = { limit = { has_global_flag = edai_logging	} log = "E : Low Services < 5 : adding building_holo_theatres for [This.GetName]" }	
 						add_modifier = { modifier = hc_building_added days = 360 }		
 					}
 					else_if = {
 						limit = { has_building = building_research_lab_1 }
 						remove_building = building_research_lab_1
 						add_building = building_holo_theatres						
-						log = "E : Low Services < 5 : adding building_holo_theatres, removing building_research_lab_1 for [This.GetName]"	
+						if = { limit = { has_global_flag = edai_logging	} log = "E : Low Services < 5 : adding building_holo_theatres, removing building_research_lab_1 for [This.GetName]" }	
 						add_modifier = { modifier = hc_building_added days = 360 }		
 					}
 					else_if = {
@@ -830,7 +832,7 @@ event = {
 						}
 						#remove_building = building_foundry_1
 						add_building = building_holo_theatres
-						log = "E : Low Services < 5 : adding building_holo_theatres for [This.GetName]"	
+						if = { limit = { has_global_flag = edai_logging	} log = "E : Low Services < 5 : adding building_holo_theatres for [This.GetName]" }	
 						add_modifier = { modifier = hc_building_added days = 360 }		
 					}					
 				}
@@ -880,7 +882,7 @@ event = {
 						}
 						add_district = district_industrial
 						owner = { add_resource = { minerals = -500 } }
-						log = "E : Enough room : adding district_industrial for [This.GetName]"	
+						if = { limit = { has_global_flag = edai_logging	} log = "E : Enough room : adding district_industrial for [This.GetName]" }	
 						add_modifier = { modifier = hc_industrial_added days = 360 }				
 						
 					}
@@ -894,7 +896,7 @@ event = {
 						}
 						add_district = district_industrial					
 						owner = { add_resource = { minerals = -500 } }
-						log = "E : Enough room : adding district_industrial for [This.GetName]"	
+						if = { limit = { has_global_flag = edai_logging	} log = "E : Enough room : adding district_industrial for [This.GetName]" }	
 						add_modifier = { modifier = hc_industrial_added days = 360 }				
 					}
 					else_if = {
@@ -907,7 +909,7 @@ event = {
 						}
 						add_building = building_research_lab_1					
 						owner = { add_resource = { minerals = -500 } }
-						log = "E : Enough room : adding building_research_lab_1 for [This.GetName]"	
+						if = { limit = { has_global_flag = edai_logging	} log = "E : Enough room : adding building_research_lab_1 for [This.GetName]" }	
 						add_modifier = { modifier = hc_building_added days = 360 }		
 					}
 					else_if = {
@@ -918,7 +920,7 @@ event = {
 						}
 						add_building = building_holo_theatres				
 						owner = { add_resource = { minerals = -500 } }
-						log = "E : Enough room : adding building_holo_theatres for [This.GetName]"	
+						if = { limit = { has_global_flag = edai_logging	} log = "E : Enough room : adding building_holo_theatres for [This.GetName]" }	
 						add_modifier = { modifier = hc_building_added days = 360 }		
 					}
 					else_if = {
@@ -931,7 +933,7 @@ event = {
 						}
 						add_building = building_research_lab_1					
 						owner = { add_resource = { minerals = -500 } }
-						log = "E : Enough room : adding building_research_lab_1 for [This.GetName]"	
+						if = { limit = { has_global_flag = edai_logging	} log = "E : Enough room : adding building_research_lab_1 for [This.GetName]" }	
 						add_modifier = { modifier = hc_building_added days = 360 }		
 					}
 					else_if = {
@@ -942,7 +944,7 @@ event = {
 						}
 						add_building = building_commercial_zone
 						owner = { add_resource = { minerals = -500 } }
-						log = "E : Enough room : adding building_commercial_zone for [This.GetName]"	
+						if = { limit = { has_global_flag = edai_logging	} log = "E : Enough room : adding building_commercial_zone for [This.GetName]" }	
 						add_modifier = { modifier = hc_building_added days = 360 }		
 					}
 				}
@@ -960,7 +962,7 @@ event = {
 								num_free_districts = { type = district_generator value > 0 }
 							}
 							add_district = district_generator
-						log = "E : Unemployment & low Energy : adding district_generator for [This.GetName]"	
+						if = { limit = { has_global_flag = edai_logging	} log = "E : Unemployment & low Energy : adding district_generator for [This.GetName]" }	
 							add_modifier = { modifier = hc_generator_added days = 360 }				
 						}
 						else_if = {
@@ -969,7 +971,7 @@ event = {
 								num_free_districts = { type = district_rw_generator value > 0 }
 							}
 							add_district = district_rw_generator
-							log = "E : Unemployment & low Energy : adding district_rw_generator for [This.GetName]"	
+							if = { limit = { has_global_flag = edai_logging	} log = "E : Unemployment & low Energy : adding district_rw_generator for [This.GetName]" }	
 							add_modifier = { modifier = hc_generator_added days = 360 }											
 						}
 					}
@@ -984,7 +986,7 @@ event = {
 								num_free_districts = { type = district_industrial value > 0 }
 							}
 							add_district = district_industrial
-							log = "E : Unemployment & low alloy : adding district_industrial for [This.GetName]"	
+							if = { limit = { has_global_flag = edai_logging	} log = "E : Unemployment & low alloy : adding district_industrial for [This.GetName]" }	
 							add_modifier = { modifier = hc_industrial_added days = 360 }				
 						}
 						else_if = {
@@ -993,7 +995,7 @@ event = {
 								num_free_districts = { type = district_rw_industrial value > 0 }
 							}
 							add_district = district_rw_industrial
-							log = "E : Unemployment & low alloy : adding district_rw_industrial for [This.GetName]"	
+							if = { limit = { has_global_flag = edai_logging	} log = "E : Unemployment & low alloy : adding district_rw_industrial for [This.GetName]" }	
 							add_modifier = { modifier = hc_industrial_added days = 360 }				
 							
 						}
@@ -1008,7 +1010,7 @@ event = {
 								num_free_districts = { type = district_farming value > 0 }
 							}
 							add_district = district_farming
-							log = "E : Unemployment & low food : adding district_farming for [This.GetName]"	
+							if = { limit = { has_global_flag = edai_logging	} log = "E : Unemployment & low food : adding district_farming for [This.GetName]" }	
 							add_modifier = { modifier = hc_farming_added days = 360 }				
 						}
 						else_if = {
@@ -1017,7 +1019,7 @@ event = {
 								num_free_districts = { type = district_rw_farming value > 0 }
 							}
 							add_district = district_rw_farming
-							log = "E : Unemployment & low food : adding district_farming for [This.GetName]"	
+							if = { limit = { has_global_flag = edai_logging	} log = "E : Unemployment & low food : adding district_farming for [This.GetName]" }	
 							add_modifier = { modifier = hc_farming_added days = 360 }				
 						}					
 					}
@@ -1031,7 +1033,7 @@ event = {
 								num_free_districts = { type = district_mining value > 0 }
 							}
 							add_district = district_mining
-							log = "E: Unemployment & low minerals : Adding district_mining for [This.GetName]"
+							if = { limit = { has_global_flag = edai_logging	} log = "E: Unemployment & low minerals : Adding district_mining for [This.GetName]" }
 							add_modifier = { modifier = hc_mining_added days = 360 }				
 						}
 						else_if = {
@@ -1040,7 +1042,7 @@ event = {
 								num_free_districts = { type = district_rw_mining value > 0 }
 							}
 							add_district = district_rw_mining
-							log = "E: Unemployment & low minerals : Adding district_rw_mining for [This.GetName]"
+							if = { limit = { has_global_flag = edai_logging	} log = "E: Unemployment & low minerals : Adding district_rw_mining for [This.GetName]" }
 							add_modifier = { modifier = hc_mining_added days = 360 }				
 						}
 					}
@@ -1052,7 +1054,7 @@ event = {
 							num_free_districts = { type = district_industrial value > 0 }								
 						}
 						add_district = district_industrial
-						log = "E: Unemployment & low alloy : Adding district_industrial for [This.GetName]"
+						if = { limit = { has_global_flag = edai_logging	} log = "E: Unemployment & low alloy : Adding district_industrial for [This.GetName]" }
 						add_modifier = { modifier = hc_industrial_added days = 360 }				
 					}
 					else_if = {
@@ -1064,7 +1066,7 @@ event = {
 							
 						}
 						add_district = district_industrial
-						log = "E: Unemployment & low goods : Adding district_industrial for [This.GetName]"
+						if = { limit = { has_global_flag = edai_logging	} log = "E: Unemployment & low goods : Adding district_industrial for [This.GetName]" }
 						add_modifier = { modifier = hc_industrial_added days = 360 }				
 					}
 					else_if = {
@@ -1074,7 +1076,7 @@ event = {
 							add_building = building_research_lab_1	
 							owner = { add_resource = { minerals = -500 } }
 							owner = { has_monthly_income = { resource = energy value > 50 }}
-							log = "E: Unemployment & Research : Adding building_research_lab_1 for [This.GetName]"							
+							if = { limit = { has_global_flag = edai_logging	} log = "E: Unemployment & Research : Adding building_research_lab_1 for [This.GetName]" }							
 							add_modifier = { modifier = hc_building_added days = 360 }		
 						}
 						else_if = {
@@ -1084,13 +1086,13 @@ event = {
 							}
 							add_building = building_holo_theatres				
 							owner = { add_resource = { minerals = -500 } }
-							log = "E: Unemployment & low services : Adding building_holo_theatres for [This.GetName]"							
+							if = { limit = { has_global_flag = edai_logging	} log = "E: Unemployment & low services : Adding building_holo_theatres for [This.GetName]" }							
 							add_modifier = { modifier = hc_building_added days = 360 }		
 						}
 						else = { 
 							add_building = building_commercial_zone
 							owner = { add_resource = { minerals = -500 } }
-							log = "E: Unemployment : Adding building_commercial_zone for [This.GetName]"							
+							if = { limit = { has_global_flag = edai_logging	} log = "E: Unemployment : Adding building_commercial_zone for [This.GetName]" }							
 							add_modifier = { modifier = hc_building_added days = 360 }		
 						}
 					}					
@@ -1100,7 +1102,7 @@ event = {
 				# Uncleared blockers - just get rid of them
 				if = {
 					limit = { free_district_slots < 2 }
-					log = "E: Clear blocker for [This.GetName]"
+					if = { limit = { has_global_flag = edai_logging	} log = "E: Clear blocker for [This.GetName]" }
 					clear_blockers = yes
 				}
 				
@@ -1127,7 +1129,7 @@ event = {
 							}
 						}
 						remove_district = district_farming
-						log = "E: Enough food : Removing district_farming for [This.GetName]"					
+						if = { limit = { has_global_flag = edai_logging	} log = "E: Enough food : Removing district_farming for [This.GetName]" }					
 						
 					}
 				}
@@ -1153,7 +1155,7 @@ event = {
 							}
 						}
 						remove_district = district_mining
-						log = "E: Enough minerals : Removing district_mining for [This.GetName]"					
+						if = { limit = { has_global_flag = edai_logging	} log = "E: Enough minerals : Removing district_mining for [This.GetName]" }					
 						
 					}
 				}
@@ -1179,7 +1181,7 @@ event = {
 							}
 						}
 						remove_district = district_generator
-						log = "E: Enough minerals : Removing district_generator for [This.GetName]"					
+						if = { limit = { has_global_flag = edai_logging	} log = "E: Enough minerals : Removing district_generator for [This.GetName]" }					
 						
 					}
 				}
@@ -1196,7 +1198,7 @@ event = {
 							num_free_districts = { type = district_city value > 0 }
 						}
 						add_district = district_city
-						log = "E: Housing needed : Adding district_city for [This.GetName]"							
+						if = { limit = { has_global_flag = edai_logging	} log = "E: Housing needed : Adding district_city for [This.GetName]" }							
 						add_modifier = { modifier = hc_city_added days = 360 }				
 					}
 					else_if = {
@@ -1206,7 +1208,7 @@ event = {
 							num_free_districts = { type = district_giga_planet_city value > 0 }
 						}
 						add_district = district_giga_planet_city
-						log = "E: Housing needed : Adding district_giga_city for [This.GetName]"							
+						if = { limit = { has_global_flag = edai_logging	} log = "E: Housing needed : Adding district_giga_city for [This.GetName]" }							
 						add_modifier = { modifier = hc_city_added days = 360 }				
 					}
 					else_if = {
@@ -1215,7 +1217,7 @@ event = {
 							num_free_districts = { type = district_rw_city value > 0 }
 						}
 						add_district = district_rw_city
-						log = "E: Housing needed : Adding district_rw_city for [This.GetName]"							
+						if = { limit = { has_global_flag = edai_logging	} log = "E: Housing needed : Adding district_rw_city for [This.GetName]" }							
 						add_modifier = { modifier = hc_city_added days = 360 }				
 					}
 					else_if = {
@@ -1224,14 +1226,14 @@ event = {
 							num_free_districts = { type = district_rw_nexus value > 0 }
 						}
 						add_district = district_rw_nexus
-						log = "E: Housing needed : Adding district_rw_nexus for [This.GetName] - don't happen normally"							
+						if = { limit = { has_global_flag = edai_logging	} log = "E: Housing needed : Adding district_rw_nexus for [This.GetName] - don't happen normally"							
 						add_modifier = { modifier = hc_city_added days = 360 }									
 					}
 				}
 				else_if = {
 					limit = { free_housing < -1 }
 					clear_blockers = yes
-					log = "E: Housing needed : clearing blockers for [This.GetName]"							
+					if = { limit = { has_global_flag = edai_logging	} log = "E: Housing needed : clearing blockers for [This.GetName]" }							
 					
 				}
 				
@@ -1247,19 +1249,19 @@ event = {
 					random_owned_pop = {
 						limit = { is_unemployed = yes }
 						kill_pop = yes
-						log = "E: WARNING > 180 pops : killing unemployed for [This.GetName]"							
+						if = { limit = { has_global_flag = edai_logging	} log = "E: WARNING > 180 pops : killing unemployed for [This.GetName]" }							
 						
 					}
 					random_owned_pop = {
 						limit = { is_unemployed = yes }
 						kill_pop = yes
-						log = "E: WARNING > 180 pops : killing unemployed for [This.GetName]"							
+						if = { limit = { has_global_flag = edai_logging	} log = "E: WARNING > 180 pops : killing unemployed for [This.GetName]" }							
 						
 					}
 					random_owned_pop = {
 						limit = { is_unemployed = yes }
 						kill_pop = yes
-						log = "E: WARNING > 180 pops : killing unemployed for [This.GetName]"							
+						if = { limit = { has_global_flag = edai_logging	} log = "E: WARNING > 180 pops : killing unemployed for [This.GetName]" }							
 					}
 				}
 				
@@ -1275,7 +1277,7 @@ event = {
 							free_amenities > 5
 							has_building = ebh_slums_1
 						}
-						log = "E: Too much Housing (> 30) : removing slum building for [This.GetName]"							
+						if = { limit = { has_global_flag = edai_logging	} log = "E: Too much Housing (> 30) : removing slum building for [This.GetName]" }							
 						remove_building = ebh_slums_1					
 					}
 					else_if = {
@@ -1284,7 +1286,7 @@ event = {
 							free_housing > 50
 						}					
 						remove_district = district_city
-						log = "E: Too much Housing (> 30) : removing district_city for [This.GetName]"												
+						if = { limit = { has_global_flag = edai_logging	} log = "E: Too much Housing (> 30) : removing district_city for [This.GetName]" }												
 					}
 				}
 				if = {
@@ -1304,7 +1306,7 @@ event = {
 						}
 					}
 					remove_building = building_commercial_zone
-					log = "E: Too much services (> 30) : removing building_commercial_zone for [This.GetName]"							
+					if = { limit = { has_global_flag = edai_logging	} log = "E: Too much services (> 30) : removing building_commercial_zone for [This.GetName]" }							
 					
 				}
 				
@@ -1322,7 +1324,7 @@ event = {
 					}
 					remove_district = district_mining
 					add_district = district_farming
-					log = "E: Enough mining & low food : Adding district_farming and removing district_mining for [This.GetName]"							
+					if = { limit = { has_global_flag = edai_logging	} log = "E: Enough mining & low food : Adding district_farming and removing district_mining for [This.GetName]" }							
 					add_modifier = { modifier = hc_farming_added days = 360 }				
 					
 				}						
@@ -1347,7 +1349,7 @@ event = {
 					}
 					remove_district = district_generator
 					add_district = district_farming
-					log = "E: Enough energy & low food : Adding district_farming and removing district_generator for [This.GetName]"							
+					if = { limit = { has_global_flag = edai_logging	} log = "E: Enough energy & low food : Adding district_farming and removing district_generator for [This.GetName]" }							
 					add_modifier = { modifier = hc_farming_added days = 360 }									
 				}
 				if = {
@@ -1375,7 +1377,7 @@ event = {
 					}
 					remove_district = district_farming
 					add_district = district_generator
-					log = "E: Enough food & low Energy : Adding district_generator and removing district_farming for [This.GetName]"							
+					if = { limit = { has_global_flag = edai_logging	} log = "E: Enough food & low Energy : Adding district_generator and removing district_farming for [This.GetName]" }							
 					add_modifier = { modifier = hc_generator_added days = 360 }				
 					
 				}
@@ -1398,7 +1400,7 @@ event = {
 							num_free_districts = { type = district_mining value > 0 }
 						}
 						add_district = district_mining
-						log = "E: low minerals : Adding district_mining for [This.GetName]"							
+						if = { limit = { has_global_flag = edai_logging	} log = "E: low minerals : Adding district_mining for [This.GetName]" }							
 						add_modifier = { modifier = hc_mining_added days = 360 }				
 						
 					}
@@ -1420,7 +1422,7 @@ event = {
 					}
 					add_building = building_research_lab_1
 					owner = { add_resource = { minerals = -500 } }
-					log = "E: Enough room : Adding building_research_lab_1 for [This.GetName]"							
+					if = { limit = { has_global_flag = edai_logging	} log = "E: Enough room : Adding building_research_lab_1 for [This.GetName]" }							
 					add_modifier = { modifier = hc_building_added days = 360 }				
 				}				
 				if = {
@@ -1438,7 +1440,7 @@ event = {
 					}
 					add_building = building_research_lab_1
 					owner = { add_resource = { minerals = -500 } }
-					log = "E: Enough room : Adding building_research_lab_1 for [This.GetName]"							
+					if = { limit = { has_global_flag = edai_logging	} log = "E: Enough room : Adding building_research_lab_1 for [This.GetName]" }							
 					add_modifier = { modifier = hc_building_added days = 360 }				
 				}
 				if = {
@@ -1456,7 +1458,7 @@ event = {
 					}
 					add_building = building_research_lab_1
 					owner = { add_resource = { minerals = -500 } }
-					log = "E: Enough room : Adding building_research_lab_1 for [This.GetName]"							
+					if = { limit = { has_global_flag = edai_logging	} log = "E: Enough room : Adding building_research_lab_1 for [This.GetName]" }							
 					add_modifier = { modifier = hc_building_added days = 360 }				
 				}				
 
@@ -1503,7 +1505,7 @@ event = {
 							not = { has_job = artisan }
 						}
 						kill_pop = yes
-						log = "E: food & goods crisis : WARNING : killing Pop for [This.GetName]"	
+						if = { limit = { has_global_flag = edai_logging	} log = "E: food & goods crisis : WARNING : killing Pop for [This.GetName]" }	
 					}
 				}
 				
@@ -1518,7 +1520,7 @@ event = {
 					owner = {
 					add_resource = { alloys = 250 }
 					add_resource = { minerals = -5000 }
-					log = "E: Trade echange : Alloy +250, minerals - 5000 for [This.GetName]"	
+					if = { limit = { has_global_flag = edai_logging	} log = "E: Trade echange : Alloy +250, minerals - 5000 for [This.GetName]" }	
 					
 					}
 				}			
@@ -1532,7 +1534,7 @@ event = {
 					owner = {
 					add_resource = { energy = 2500 }
 					add_resource = { food = -5000 }
-					log = "E: Trade echange : Energy +2500, food -5000 for [This.GetName]"	
+					if = { limit = { has_global_flag = edai_logging	} log = "E: Trade echange : Energy +2500, food -5000 for [This.GetName]" }	
 					
 					}
 				}			
@@ -1546,7 +1548,7 @@ event = {
 					owner = {
 					add_resource = { energy = 5000 }
 					add_resource = { consumer_goods = -5000 }
-					log = "E: Trade echange : Energy +5000, goods -5000 for [This.GetName]"	
+					if = { limit = { has_global_flag = edai_logging	} log = "E: Trade echange : Energy +5000, goods -5000 for [This.GetName]" }	
 					
 					}
 				}
@@ -1582,7 +1584,7 @@ event = {
 					add_resource = { food = 10000 }
 					add_resource = { alloys = 1000 }
 					add_modifier = { modifier = hc_god_hand days = 600 }
-					log = "E: Hand of God : Superbonus for [This.GetName]"						
+					if = { limit = { has_global_flag = edai_logging	} log = "E: Hand of God : Superbonus for [This.GetName]" }						
 				}
 			}				
 		}
@@ -1664,7 +1666,7 @@ event = {
 							num_free_districts = { type = district_giga_planet_wind value > 0 }
 						}
 						add_district = district_giga_planet_wind
-						log = "H: Energy crisis < -20 : adding district_giga_planet_wind for [This.GetName]"	
+						if = { limit = { has_global_flag = edai_logging	} log = "H: Energy crisis < -20 : adding district_giga_planet_wind for [This.GetName]" }	
 						add_modifier = { modifier = hc_generator_added days = 360 }										
 						#remove_building = building_foundry_1
 					}
@@ -1674,7 +1676,7 @@ event = {
 							num_free_districts = { type = district_giga_planet_solar value > 0 }
 						}
 						add_district = district_giga_planet_solar
-						log = "H: Energy crisis < -20 : adding district_giga_planet_solar for [This.GetName]"	
+						if = { limit = { has_global_flag = edai_logging	} log = "H: Energy crisis < -20 : adding district_giga_planet_solar for [This.GetName]" }	
 						add_modifier = { modifier = hc_generator_added days = 360 }										
 						#remove_building = building_foundry_1
 					}
@@ -1684,7 +1686,7 @@ event = {
 							num_free_districts = { type = district_giga_planet_geothermal value > 0 }
 						}
 						add_district = district_giga_planet_geothermal
-						log = "H: Energy crisis < -20 : adding district_giga_planet_geothermal for [This.GetName]"	
+						if = { limit = { has_global_flag = edai_logging	} log = "H: Energy crisis < -20 : adding district_giga_planet_geothermal for [This.GetName]" }	
 						add_modifier = { modifier = hc_generator_added days = 360 }										
 						#remove_building = building_foundry_1
 					}
@@ -1694,7 +1696,7 @@ event = {
 							num_free_districts = { type = district_generator value > 0 }
 						}
 						add_district = district_generator
-						log = "H: Energy crisis < -20 : adding district_generator for [This.GetName]"	
+						if = { limit = { has_global_flag = edai_logging	} log = "H: Energy crisis < -20 : adding district_generator for [This.GetName]" }	
 						add_modifier = { modifier = hc_generator_added days = 360 }										
 						#remove_building = building_foundry_1
 					}
@@ -1704,7 +1706,7 @@ event = {
 							num_free_districts = { type = district_rw_generator value > 0 }
 						}
 						add_district = district_rw_generator
-						log = "H: Energy crisis < -20 : adding district_rw_generator for [This.GetName]"	
+						if = { limit = { has_global_flag = edai_logging	} log = "H: Energy crisis < -20 : adding district_rw_generator for [This.GetName]" }	
 						add_modifier = { modifier = hc_generator_added days = 360 }										
 						#remove_building = building_foundry_1
 					}
@@ -1719,7 +1721,7 @@ event = {
 						}
 						add_building = eb_energy #energy
 						#owner = { add_resource = { minerals = -500 } }
-						log = "H: Energy Crisis + Building : Adding building eb_energy for [This.GetName]"	
+						if = { limit = { has_global_flag = edai_logging	} log = "H: Energy Crisis + Building : Adding building eb_energy for [This.GetName]" }	
 						add_modifier = { modifier = hc_building_added days = 360 }		
 					}
 					
@@ -1737,7 +1739,7 @@ event = {
 							num_free_districts = { type = district_generator value > 0 }
 						}
 						add_district = district_generator
-						log = "H: Energy crisis < 1 : adding district_generator for [This.GetName]"	
+						if = { limit = { has_global_flag = edai_logging	} log = "H: Energy crisis < 1 : adding district_generator for [This.GetName]" }	
 						add_modifier = { modifier = hc_generator_added days = 360 }										
 						
 					}
@@ -1747,7 +1749,7 @@ event = {
 							num_free_districts = { type = district_rw_generator value > 0 }
 						}
 						add_district = district_rw_generator
-						log = "H: Energy crisis < 1 : adding district_rw_generator for [This.GetName]"	
+						if = { limit = { has_global_flag = edai_logging	} log = "H: Energy crisis < 1 : adding district_rw_generator for [This.GetName]" }	
 						#remove_building = building_factory_1
 						add_modifier = { modifier = hc_generator_added days = 360 }										
 						
@@ -1769,7 +1771,7 @@ event = {
 							num_free_districts = { type = district_mining value > 0 }
 						}
 						add_district = district_mining
-						log = "H: minerals crisis : adding district_mining, removing district_industrial for [This.GetName]"	
+						if = { limit = { has_global_flag = edai_logging	} log = "H: minerals crisis : adding district_mining, removing district_industrial for [This.GetName]" }	
 						add_modifier = { modifier = hc_mining_added days = 360 }				
 						remove_district = district_industrial
 						#remove_building = building_foundry_1
@@ -1788,12 +1790,12 @@ event = {
 					}
 					#remove_building = building_research_lab_1
 					add_district = district_industrial
-					log = "H: alloys crisis : adding district_industrial for [This.GetName]"	
+					if = { limit = { has_global_flag = edai_logging	} log = "H: alloys crisis : adding district_industrial for [This.GetName]" }	
 					add_modifier = { modifier = hc_industrial_added days = 360 }				
 				}
 				
 				###Pollution
-				#log = "H: before pollution for [This.GetName]"					
+				#log = "H: before pollution for [This.GetName]" }					
 				if = {
 					limit = {
 						or = {
@@ -1811,14 +1813,14 @@ event = {
 						}
 						owner = { has_monthly_income = { resource = energy value > 0 }}
 					}
-					log = "H: Need cleaning pollution for [This.GetName]"					
+					if = { limit = { has_global_flag = edai_logging	} log = "H: Need cleaning pollution for [This.GetName]" }					
 					if = {
 						limit = {
 							owner = { resource_stockpile_compare = { resource = minerals value > 800 }}
 						}
 						add_building = eco_building_waste_recovery
 						owner = { add_resource = { minerals = -650 } }
-						log = "H: Unemployement + Pollution : Adding eco_building_waste_recovery for [This.GetName]"					
+						if = { limit = { has_global_flag = edai_logging	} log = "H: Unemployement + Pollution : Adding eco_building_waste_recovery for [This.GetName]" }					
 						add_modifier = { modifier = hc_building_added days = 360 }				
 						
 					}
@@ -1844,21 +1846,21 @@ event = {
 							free_jobs < 1
 						}
 						add_building = building_sentinel_posts
-						log = "H: Crime crisis : adding building_sentinel_posts for [This.GetName]"	
+						if = { limit = { has_global_flag = edai_logging	} log = "H: Crime crisis : adding building_sentinel_posts for [This.GetName]" }	
 						add_modifier = { modifier = hc_building_added days = 360 }				
 					}
 					else_if = {
 						limit = { has_building = building_maintenance_depot }
 						remove_building = building_maintenance_depot
 						add_building = building_sentinel_posts
-						log = "H: Crime crisis : adding building_sentinel_posts, remove maintenance_depot for [This.GetName]"	
+						if = { limit = { has_global_flag = edai_logging	} log = "H: Crime crisis : adding building_sentinel_posts, remove maintenance_depot for [This.GetName]" }	
 						add_modifier = { modifier = hc_building_added days = 360 }				
 					}
 					else_if = {
 						limit = { has_building = building_research_lab_1 }
 						remove_building = building_research_lab_1
 						add_building = building_sentinel_posts
-						log = "H: Crime crisis : adding building_sentinel_posts, remove research_lab for [This.GetName]"							
+						if = { limit = { has_global_flag = edai_logging	} log = "H: Crime crisis : adding building_sentinel_posts, remove research_lab for [This.GetName]" }							
 						add_modifier = { modifier = hc_building_added days = 360 }				
 					}
 					else_if = {
@@ -1869,7 +1871,7 @@ event = {
 						}
 						#remove_building = building_foundry_1
 						add_building = building_sentinel_posts
-						log = "H: Crime crisis : adding building_sentinel_posts for [This.GetName]"	
+						if = { limit = { has_global_flag = edai_logging	} log = "H: Crime crisis : adding building_sentinel_posts for [This.GetName]" }	
 						add_modifier = { modifier = hc_building_added days = 360 }				
 					}					
 				}
@@ -1892,14 +1894,14 @@ event = {
 							free_jobs < 1
 						}
 						add_building = building_maintenance_depot
-						log = "H: low Services : adding building_maintenance_depot for [This.GetName]"	
+						if = { limit = { has_global_flag = edai_logging	} log = "H: low Services : adding building_maintenance_depot for [This.GetName]" }	
 						add_modifier = { modifier = hc_building_added days = 360 }				
 					}
 					else_if = {
 						limit = { has_building = building_research_lab_1 }
 						remove_building = building_research_lab_1
 						add_building = building_maintenance_depot						
-						log = "H: low Services : adding building_maintenance_depot, remove research_building for [This.GetName]"	
+						if = { limit = { has_global_flag = edai_logging	} log = "H: low Services : adding building_maintenance_depot, remove research_building for [This.GetName]" }	
 						add_modifier = { modifier = hc_building_added days = 360 }				
 					}
 					else_if = {
@@ -1910,7 +1912,7 @@ event = {
 						}
 						#remove_building = building_foundry_1
 						add_building = building_maintenance_depot
-						log = "H: low Services : adding building_maintenance_depot for [This.GetName]"	
+						if = { limit = { has_global_flag = edai_logging	} log = "H: low Services : adding building_maintenance_depot for [This.GetName]" }	
 						add_modifier = { modifier = hc_building_added days = 360 }				
 					}					
 				}
@@ -1951,7 +1953,7 @@ event = {
 						}
 						add_building = building_spawning_pool				
 						owner = { add_resource = { minerals = -500 } }
-						log = "H: Enough Room : adding building_spawning_pool for [This.GetName]"	
+						if = { limit = { has_global_flag = edai_logging	} log = "H: Enough Room : adding building_spawning_pool for [This.GetName]" }	
 						add_modifier = { modifier = hc_building_added days = 360 }				
 					}
 					else_if = {
@@ -1962,7 +1964,7 @@ event = {
 							owner = { has_monthly_income = { resource = alloys value < 20 }}
 						}
 						add_district = district_industrial
-						log = "H: Enough Room & low alloy: adding district_industrial for [This.GetName]"	
+						if = { limit = { has_global_flag = edai_logging	} log = "H: Enough Room & low alloy: adding district_industrial for [This.GetName]" }	
 						add_modifier = { modifier = hc_industrial_added days = 360 }				
 					}
 					else_if = {
@@ -1972,7 +1974,7 @@ event = {
 							owner = { has_monthly_income = { resource = consumer_goods value < 10 }}
 						}
 						add_district = district_industrial
-						log = "H: Enough Room & low good: adding district_industrial for [This.GetName]"	
+						if = { limit = { has_global_flag = edai_logging	} log = "H: Enough Room & low good: adding district_industrial for [This.GetName]" }	
 						add_modifier = { modifier = hc_industrial_added days = 360 }				
 					}
 					else_if = {
@@ -1982,7 +1984,7 @@ event = {
 						}
 						add_building = building_research_lab_1					
 						owner = { add_resource = { minerals = -500 } }
-						log = "H: Enough Room : adding building_research_lab_1 for [This.GetName]"	
+						if = { limit = { has_global_flag = edai_logging	} log = "H: Enough Room : adding building_research_lab_1 for [This.GetName]" }	
 						add_modifier = { modifier = hc_building_added days = 360 }				
 					}
 					else_if = {
@@ -1992,7 +1994,7 @@ event = {
 						}
 						add_building = building_maintenance_depot				
 						owner = { add_resource = { minerals = -500 } }
-						log = "H: Enough Room : adding building_maintenance_depot for [This.GetName]"	
+						if = { limit = { has_global_flag = edai_logging	} log = "H: Enough Room : adding building_maintenance_depot for [This.GetName]" }	
 						add_modifier = { modifier = hc_building_added days = 360 }				
 					}
 					else_if = {
@@ -2003,7 +2005,7 @@ event = {
 						}
 						add_building = building_spawning_pool
 						owner = { add_resource = { minerals = -500 } }
-						log = "H: Enough Room : adding building_spawning_pool for [This.GetName]"	
+						if = { limit = { has_global_flag = edai_logging	} log = "H: Enough Room : adding building_spawning_pool for [This.GetName]" }	
 						add_modifier = { modifier = hc_building_added days = 360 }				
 					}
 				}
@@ -2020,7 +2022,7 @@ event = {
 								num_free_districts = { type = district_generator value > 0 }
 							}
 							add_district = district_generator
-							log = "H: Unemployment & low Energy : adding district_generator for [This.GetName]"	
+							if = { limit = { has_global_flag = edai_logging	} log = "H: Unemployment & low Energy : adding district_generator for [This.GetName]" }	
 							add_modifier = { modifier = hc_generator_added days = 360 }				
 						}
 						else_if = {
@@ -2028,7 +2030,7 @@ event = {
 								num_free_districts = { type = district_rw_generator value > 0 }
 							}
 							add_district = district_rw_generator
-							log = "H: Unemployment & low Energy : adding district_rw_generator for [This.GetName]"	
+							if = { limit = { has_global_flag = edai_logging	} log = "H: Unemployment & low Energy : adding district_rw_generator for [This.GetName]" }	
 							add_modifier = { modifier = hc_generator_added days = 360 }				
 						}
 					}
@@ -2041,7 +2043,7 @@ event = {
 								num_free_districts = { type = district_farming value > 0 }
 							}
 							add_district = district_farming
-							log = "H: Unemployment & low food : adding district_farming for [This.GetName]"	
+							if = { limit = { has_global_flag = edai_logging	} log = "H: Unemployment & low food : adding district_farming for [This.GetName]" }	
 							add_modifier = { modifier = hc_farming_added days = 360 }				
 						}
 						else_if = {
@@ -2049,7 +2051,7 @@ event = {
 								num_free_districts = { type = district_rw_farming value > 0 }
 							}
 							add_district = district_rw_farming
-							log = "H: Unemployment & low food : adding district_rw_farming for [This.GetName]"	
+							if = { limit = { has_global_flag = edai_logging	} log = "H: Unemployment & low food : adding district_rw_farming for [This.GetName]" }	
 							add_modifier = { modifier = hc_farming_added days = 360 }				
 							
 						}					
@@ -2063,7 +2065,7 @@ event = {
 								num_free_districts = { type = district_mining value > 0 }
 							}
 							add_district = district_mining
-							log = "H: Unemployment & low minerals : adding district_mining for [This.GetName]"	
+							if = { limit = { has_global_flag = edai_logging	} log = "H: Unemployment & low minerals : adding district_mining for [This.GetName]" }	
 							add_modifier = { modifier = hc_mining_added days = 360 }				
 							
 						}
@@ -2077,7 +2079,7 @@ event = {
 								owner = { has_monthly_income = { resource = alloys value < 20 }}
 							}
 							add_district = district_industrial
-							log = "H: Unemployment & low alloys : adding district_industrial for [This.GetName]"	
+							if = { limit = { has_global_flag = edai_logging	} log = "H: Unemployment & low alloys : adding district_industrial for [This.GetName]" }	
 							add_modifier = { modifier = hc_industrial_added days = 360 }				
 						}
 						else_if = {
@@ -2086,7 +2088,7 @@ event = {
 								owner = { has_monthly_income = { resource = consumer_goods value < 25 }}
 							}
 							add_district = district_industrial
-							log = "H: Unemployment & low goods : adding district_industrial for [This.GetName]"	
+							if = { limit = { has_global_flag = edai_logging	} log = "H: Unemployment & low goods : adding district_industrial for [This.GetName]" }	
 							add_modifier = { modifier = hc_industrial_added days = 360 }				
 						}
 						else_if = {
@@ -2097,7 +2099,7 @@ event = {
 							}
 							add_building = building_research_lab_1					
 							owner = { add_resource = { minerals = -500 } }
-							log = "H: Unemployment  : adding research_lab for [This.GetName]"	
+							if = { limit = { has_global_flag = edai_logging	} log = "H: Unemployment  : adding research_lab for [This.GetName]" }	
 							add_modifier = { modifier = hc_building_added days = 360 }				
 						}
 						else_if = {
@@ -2108,7 +2110,7 @@ event = {
 							}
 							add_building = building_maintenance_depot				
 							owner = { add_resource = { minerals = -500 } }
-							log = "H: Unemployment  : adding building_maintenance_depot for [This.GetName]"	
+							if = { limit = { has_global_flag = edai_logging	} log = "H: Unemployment  : adding building_maintenance_depot for [This.GetName]" }	
 							add_modifier = { modifier = hc_building_added days = 360 }				
 						}
 						else_if = { 
@@ -2117,7 +2119,7 @@ event = {
 							}							
 							add_building = building_spawning_pool
 							owner = { add_resource = { minerals = -500 } }
-							log = "H: Unemployment  : adding building_spawning_pool for [This.GetName]"	
+							if = { limit = { has_global_flag = edai_logging	} log = "H: Unemployment  : adding building_spawning_pool for [This.GetName]" }	
 							add_modifier = { modifier = hc_building_added days = 360 }				
 						}
 					}
@@ -2138,7 +2140,7 @@ event = {
 					}
 					#remove_building = building_commercial_zone
 					add_district = district_industrial
-					log = "H: Unemployment  : adding district_industrial for [This.GetName]"						
+					if = { limit = { has_global_flag = edai_logging	} log = "H: Unemployment  : adding district_industrial for [This.GetName]" }						
 					add_modifier = { modifier = hc_industrial_added days = 360 }				
 				}
 				
@@ -2173,7 +2175,7 @@ event = {
 							}
 						}
 						remove_district = district_farming
-						log = "H: Enough food : removing district_farming for [This.GetName]"							
+						if = { limit = { has_global_flag = edai_logging	} log = "H: Enough food : removing district_farming for [This.GetName]" }							
 						
 					}
 				}
@@ -2198,7 +2200,7 @@ event = {
 								}
 							}
 						}
-						log = "H: Enough minerals : removing district_mining for [This.GetName]"							
+						if = { limit = { has_global_flag = edai_logging	} log = "H: Enough minerals : removing district_mining for [This.GetName]" }							
 					}
 				}
 				if = {
@@ -2223,7 +2225,7 @@ event = {
 							}
 						}
 						remove_district = district_generator
-						log = "H: Enough food : removing district_generator for [This.GetName]"							
+						if = { limit = { has_global_flag = edai_logging	} log = "H: Enough food : removing district_generator for [This.GetName]" }							
 						
 					}
 				}
@@ -2239,7 +2241,7 @@ event = {
 							num_free_districts = { type = district_hive value > 0 }
 						}
 						add_district = district_hive
-						log = "H: need housing : adding district_hive for [This.GetName]"	
+						if = { limit = { has_global_flag = edai_logging	} log = "H: need housing : adding district_hive for [This.GetName]" }	
 						add_modifier = { modifier = hc_city_added days = 360 }				
 					}
 					else_if = {
@@ -2248,7 +2250,7 @@ event = {
 							num_free_districts = { type = district_rw_hive value > 0 }
 						}
 						add_district = district_rw_hive
-						log = "H: need housing : adding district_rw_hive for [This.GetName]"	
+						if = { limit = { has_global_flag = edai_logging	} log = "H: need housing : adding district_rw_hive for [This.GetName]" }	
 						add_modifier = { modifier = hc_city_added days = 360 }				
 					}
 					else_if = {
@@ -2257,7 +2259,7 @@ event = {
 							num_free_districts = { type = district_rw_nexus value > 0 }
 						}
 						add_district = district_rw_nexus
-						log = "H: need housing : adding district_rw_nexus for [This.GetName] NOT SUPPOSED TO HAPPEN"	
+						if = { limit = { has_global_flag = edai_logging	} log = "H: need housing : adding district_rw_nexus for [This.GetName] NOT SUPPOSED TO HAPPEN"	
 						add_modifier = { modifier = hc_city_added days = 360 }				
 					}
 
@@ -2298,7 +2300,7 @@ event = {
 						free_jobs > 2
 					}
 					remove_district = district_hive
-					log = "H: Enough Housing : removing district_hive for [This.GetName]"							
+					if = { limit = { has_global_flag = edai_logging	} log = "H: Enough Housing : removing district_hive for [This.GetName]" }							
 					
 				}
 				if = {
@@ -2318,7 +2320,7 @@ event = {
 						}
 					}
 					remove_building = building_maintenance_depot
-					log = "H: Enough Amenities : removing building_maintenance_depot for [This.GetName]"							
+					if = { limit = { has_global_flag = edai_logging	} log = "H: Enough Amenities : removing building_maintenance_depot for [This.GetName]" }							
 					
 				}
 				
@@ -2336,7 +2338,7 @@ event = {
 					}
 					remove_district = district_mining
 					add_district = district_farming
-					log = "H: low food : adding district_farming, removing district_mining for [This.GetName]"	
+					if = { limit = { has_global_flag = edai_logging	} log = "H: low food : adding district_farming, removing district_mining for [This.GetName]" }	
 					add_modifier = { modifier = hc_farming_added days = 360 }				
 					
 				}						
@@ -2361,7 +2363,7 @@ event = {
 					}
 					remove_district = district_generator
 					add_district = district_farming
-					log = "H: low food : adding district_farming, removing district_generator for [This.GetName]"	
+					if = { limit = { has_global_flag = edai_logging	} log = "H: low food : adding district_farming, removing district_generator for [This.GetName]" }	
 					add_modifier = { modifier = hc_farming_added days = 360 }				
 					
 				}
@@ -2390,7 +2392,7 @@ event = {
 					}
 					remove_district = district_farming
 					add_district = district_generator
-					log = "H: low energy : adding district_generator, removing district_farming for [This.GetName]"	
+					if = { limit = { has_global_flag = edai_logging	} log = "H: low energy : adding district_generator, removing district_farming for [This.GetName]" }	
 					add_modifier = { modifier = hc_generator_added days = 360 }				
 					
 				}
@@ -2413,7 +2415,7 @@ event = {
 							num_free_districts = { type = district_mining value > 0 }
 						}
 						add_district = district_mining
-						log = "H: low minerals : adding district_mining,  for [This.GetName]"	
+						if = { limit = { has_global_flag = edai_logging	} log = "H: low minerals : adding district_mining,  for [This.GetName]" }	
 						add_modifier = { modifier = hc_mining_added days = 360 }
 					}
 				}
@@ -2434,7 +2436,7 @@ event = {
 					}
 					add_building = building_research_lab_1
 					owner = { add_resource = { minerals = -500 } }
-					log = "H: Enough room : adding building_research_lab_1,  for [This.GetName]"	
+					if = { limit = { has_global_flag = edai_logging	} log = "H: Enough room : adding building_research_lab_1,  for [This.GetName]" }	
 					add_modifier = { modifier = hc_building_added days = 360 }
 				}				
 				if = {
@@ -2451,7 +2453,7 @@ event = {
 					}
 					add_building = building_research_lab_1
 					owner = { add_resource = { minerals = -500 } }
-					log = "H: Enough room : adding building_research_lab_1,  for [This.GetName]"	
+					if = { limit = { has_global_flag = edai_logging	} log = "H: Enough room : adding building_research_lab_1,  for [This.GetName]" }	
 					add_modifier = { modifier = hc_building_added days = 360 }
 				}
 				if = {
@@ -2468,7 +2470,7 @@ event = {
 					}
 					add_building = building_research_lab_1
 					owner = { add_resource = { minerals = -500 } }
-					log = "H: Enough room : adding building_research_lab_1,  for [This.GetName]"	
+					if = { limit = { has_global_flag = edai_logging	} log = "H: Enough room : adding building_research_lab_1,  for [This.GetName]" }	
 					add_modifier = { modifier = hc_building_added days = 360 }
 				}				
 
@@ -2529,7 +2531,7 @@ event = {
 					owner = {
 					add_resource = { alloys = 250 }
 					add_resource = { minerals = -5000 }
-					log = "H: Trade exchange : alloys +250, minerals -5000,  for [This.GetName]"	
+					if = { limit = { has_global_flag = edai_logging	} log = "H: Trade exchange : alloys +250, minerals -5000,  for [This.GetName]" }	
 					
 					}
 				}			
@@ -2543,7 +2545,7 @@ event = {
 					owner = {
 					add_resource = { energy = 2500 }
 					add_resource = { food = -5000 }
-					log = "H: Trade exchange : energy +2500, food -5000,  for [This.GetName]"	
+					if = { limit = { has_global_flag = edai_logging	} log = "H: Trade exchange : energy +2500, food -5000,  for [This.GetName]" }	
 					
 					}
 				}			
@@ -2557,7 +2559,7 @@ event = {
 					owner = {
 					add_resource = { energy = 5000 }
 					add_resource = { consumer_goods = -5000 }
-					log = "H: Trade exchange : energy +250, goods -5000,  for [This.GetName]"	
+					if = { limit = { has_global_flag = edai_logging	} log = "H: Trade exchange : energy +250, goods -5000,  for [This.GetName]" }	
 					
 					}
 				}
@@ -2594,7 +2596,7 @@ event = {
 					add_resource = { food = 10000 }
 					add_resource = { alloys = 1000 }
 					add_modifier = { modifier = hc_god_hand days = 600 }
-					log = "H: Hand of God : Superbonus for [This.GetName]"	
+					if = { limit = { has_global_flag = edai_logging	} log = "H: Hand of God : Superbonus for [This.GetName]" }	
 					
 				}
 			}				

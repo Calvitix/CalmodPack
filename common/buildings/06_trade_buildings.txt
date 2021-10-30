@@ -2,7 +2,7 @@
 #
 # Calvitix Check 3.1.1  14/09/2021
 #
-# Merge with Starnet AI 16/09/2021
+# Merge with Starnet AI 30/10/2021
 
 
 #############
@@ -20,6 +20,7 @@ building_commercial_zone = {
 			or = {
 				is_ai = no
 				years_passed < 3
+				prev = { str_uses_comzones = yes }
 			}
 		}
 		NOT = { has_modifier = slave_colony }
@@ -29,13 +30,27 @@ building_commercial_zone = {
 		OR = {
 			owner = { is_regular_empire = no }
 			has_modifier = slave_colony
-			#and = { owner = { is_ai = yes } years_passed > 5 } #Calvitix, no building destruct.
+			and = {
+				owner = { is_ai = yes }
+				years_passed > 5
+				str_uses_comzones = no 
+			}
 		}
 	}
 
 	allow = {
-		buildings_simple_allow = yes
-		#owner = { is_ai = no } #Calvitix disabled, Starnet AI
+		or = {
+		owner = { is_ai = no }
+			and = {
+				str_uses_comzones = yes
+				free_amenities < 2
+				or = {
+					str_is_col_research = no
+					str_is_col_bureau = no
+					free_amenities < -5
+				}
+			}
+		}
 	}
 
 

@@ -2,7 +2,7 @@
 #
 # Calvitix Check 3.1.2  29/09/2021
 #
-# Merge with Starnet AI 16/09/2021
+# Merge with Starnet AI 30/10/2021
 # Merge with PDiv.
 # Calvitix ressources balances
 #
@@ -26,9 +26,9 @@ building_robot_assembly_plant = {
 				free_building_slots > 0
 				owner = { num_pops < 1000 }
 			or = {
-				nor = {
-					has_designation = col_factory
-					has_designation = col_foundry
+				AND = {
+						str_is_col_factory = no
+						str_is_col_foundry = no
 				}
 			owner = { has_technology = tech_droid_workers }
 			free_district_slots > 3
@@ -105,7 +105,6 @@ building_robot_assembly_plant = {
 						type = any
 						value = 16
 					}
-					# num_pops > 80 Starnet
 					is_planet_class = pc_habitat
 ###PD
 					is_planet_class = pc_pd_barren_cold_hab
@@ -126,7 +125,7 @@ building_robot_assembly_plant = {
 ###STARNET AI
 			owner = {
 				is_ai = yes 
-				num_pops > 950 
+				num_pops > 1500
 			}
 ###
 		}
@@ -141,6 +140,7 @@ building_robot_assembly_plant = {
 #Calvitix Ressources Balance
 		cost = { 
 			trigger = {
+				exists = from
 				from = {
 					is_ai = no
 				}
@@ -148,6 +148,7 @@ building_robot_assembly_plant = {
 		alloys = 20 minerals = @b2_minerals}
 		cost = {
 			trigger = {
+				exists = from
 				from = {
 					is_ai = yes
 				}
@@ -263,6 +264,7 @@ building_machine_assembly_plant = {
 #Calvitix Ressources Balance
 		cost = { 
 			trigger = {
+				exists = from
 				from = {
 					is_ai = no
 				}
@@ -270,6 +272,7 @@ building_machine_assembly_plant = {
 		alloys = 20 minerals = @b1_minerals}
 		cost = {
 			trigger = {
+				exists = from
 				from = {
 					is_ai = yes
 				}
@@ -286,7 +289,6 @@ building_machine_assembly_plant = {
 	}
 	
 	prerequisites = {
-
 	}
 	
 	triggered_desc = {
@@ -381,6 +383,7 @@ building_machine_assembly_complex = {
 	#Calvitix Ressources Balance
 		cost = { 
 			trigger = {
+				exists = from
 				from = {
 					is_ai = no
 				}
@@ -391,6 +394,7 @@ building_machine_assembly_complex = {
 		}
 		cost = {
 			trigger = {
+				exists = from
 				from = {
 					is_ai = yes
 				}
@@ -804,7 +808,7 @@ building_clone_army_clone_vat = {
 		potential = {
 			exists = owner
 			owner = { is_ai = yes }
-			can_assemble_clone_soldier_pop = yes
+			#can_assemble_clone_soldier_pop = yes  #disabled 30/10/2021
 		}
 		planet_pop_assembly_organic_add = 2
 	}

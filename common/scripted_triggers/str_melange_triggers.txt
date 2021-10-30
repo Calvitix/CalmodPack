@@ -3,7 +3,7 @@
 #
 # Calvitix Check 3.1.1  14/09/2021
 #
-# Merge with Starnet AI 16/09/2021
+# Merge with Starnet AI 30/10/2021
 #
 #
 
@@ -12,15 +12,9 @@ str_force_city_district = {
 	years_passed > 10
 	free_district_slots > 0
 
-	or = {
-		num_districts = {
-			type = district_city
-			value < 9
-		}
-		num_districts = {
-			type = district_hive
-			value < 9
-		}
+	str_num_districts_city = {
+		operator = <
+		num = 9
 	}
 	exists = owner
 	owner = {
@@ -95,8 +89,8 @@ str_force_city_district = {
 		and = {
 			free_building_slots = 0
 	or = { 
-				has_designation = col_research
-				has_designation = col_bureau
+				str_is_col_research = yes
+				str_is_col_bureau = yes
 			}
 			owner = { str_raw_ecocrisis_level_0 = no }
 		}
@@ -106,20 +100,18 @@ str_force_city_district = {
 str_force_food_processing = {
 	or = {
 		and = {
-			num_districts = {
-				type = district_farming
-				value > 2
+			str_num_districts_farming = {
+				operator = >
+				num = 2
 			}
-			num_free_districts = {
-				type = district_farming
-				value > 2
+			str_num_free_districts_farming = {
+				operator = >
+				num = 2
 			}
 		}
-		and = {
-			num_districts = {
-				type = district_farming
-				value > 4
-			}
+		str_num_districts_farming = {
+			operator = >
+			num = 4
 		}
 	}
 	free_building_slots > 0
@@ -129,35 +121,33 @@ str_force_food_processing = {
 		value > 400
 		}
 	}
-	has_designation = col_farming
+	str_is_col_farming = yes
 	num_pops > 12
 	num_buildings = {
 		type = building_food_processing_center
 		value = 0
 	}
-	num_districts = {
-		type = district_farming
-		value > 3
+	str_num_districts_farming = {
+		operator = >
+		num = 3
 	}
 }
 
 str_force_energy_grid = { 
 	or = {
 		and = {
-			num_districts = {
-				type = district_generator
-				value > 2
+			str_num_districts_generator = {
+				operator = >
+				num = 2
 			}
-			num_free_districts = {
-				type = district_generator
-				value > 2
+			str_num_free_districts_generator = {
+				operator = >
+				num = 2
 			}
 		}
-		and = {
-			num_districts = {
-				type = district_generator
-				value > 3
-			}
+		str_num_districts_generator = {
+			operator = >
+			num = 3
 		}
 		has_planet_flag = str_designated_energy_guaranteed
 	}
@@ -168,7 +158,7 @@ str_force_energy_grid = {
 		value > 400
 		}
 	}
-	has_designation = col_generator
+	str_is_col_generator = yes
 	or = {
 	num_pops > 12
 	has_planet_flag = str_designated_energy_guaranteed	
@@ -177,9 +167,9 @@ str_force_energy_grid = {
 		type = building_energy_grid
 		value = 0
 	}
-	num_districts = {
-		type = district_generator
-		value > 3
+	str_num_districts_generator = {
+		operator = >
+		num = 3
 	}
 }
 
@@ -187,20 +177,18 @@ str_force_mineral_purification = {
 
 	or = {
 		and = {
-			num_districts = {
-				type = district_mining
-				value > 2
+			str_num_districts_mining = {
+				operator = >
+				num = 2
 			}
-			num_free_districts = {
-				type = district_mining
-				value > 2
+			str_num_free_districts_mining = {
+				operator = >
+				num = 2
 			}
 		}
-		and = {
-			num_districts = {
-				type = district_mining
-				value > 4
-			}
+		str_num_districts_mining = {
+			operator = >
+			num = 4
 		}
 	}
 	free_building_slots > 0
@@ -210,15 +198,15 @@ str_force_mineral_purification = {
 		value > 400
 		}
 	}
-	has_designation = col_mining
+	str_is_col_mining = yes
 	num_pops > 12
 	num_buildings = {
 		type = building_mineral_purification_hub
 		value = 0
 	}
-	num_districts = {
-		type = district_mining
-		value > 3
+	str_num_districts_mining = {
+		operator = >
+		num = 3
 	}
 }
 
@@ -232,10 +220,10 @@ str_force_building_factory = {
 				value > 1000
 			}
 		}
-		has_designation = col_factory
-		num_districts = {
-			type = district_industrial
-			value > 3
+		str_is_col_factory = yes
+		str_num_districts_civindustry = {
+			operator = >
+			num = 3
 		}
 		str_factory_to_foundry_switcher = no
 		owner = { str_raw_ecocrisis_level_0 = no }
@@ -316,10 +304,10 @@ str_force_building_foundry = {
 				value > 1000
 			}
 		}
-		has_designation = col_foundry
-		num_districts = {
-			type = district_industrial
-			value > 2
+			str_is_col_foundry = yes
+			str_num_districts_milindustry = {
+				operator = >
+				num = 2
 		}
 		str_extra_switcher = no
 		owner = { str_raw_ecocrisis_level_0 = no }
@@ -346,10 +334,10 @@ str_force_building_factory_upgrade = {
 			value > 2
 		}
 	}
-	has_designation = col_factory
-	num_districts = {
-		type = district_industrial
-		value > 3
+	str_is_col_factory = yes
+	str_num_districts_civindustry = {
+		operator = >
+		num = 3
 	}
 	str_factory_to_foundry_switcher = no
 	owner = { str_raw_ecocrisis_level_0 = no }
@@ -366,10 +354,10 @@ str_force_building_foundry_upgrade = {
 			value > 2
 		}
 	}
-	has_designation = col_foundry
-	num_districts = {
-		type = district_industrial
-		value > 3
+	str_is_col_foundry = yes
+	str_num_districts_milindustry = {
+		operator = >
+		num = 3
 	}
 	str_foundry_to_factory_switcher = no
 	owner = { str_raw_ecocrisis_level_0 = no }
@@ -405,9 +393,9 @@ str_force_district_farming = {
 
 str_force_district_mining = {
 	exists = owner
-	num_free_districts = {
-		type = district_mining
-		value > 0
+	str_num_free_districts_mining = {
+		operator = >
+		num = 0
 	}
 	has_building_construction = no
 	years_passed < 7
@@ -455,6 +443,24 @@ str_force_holotheatre = {
 	num_pops > 11
 }
 
+str_force_comzones = {
+	owner = {
+		resource_stockpile_compare = {
+			resource = minerals
+			value > 700
+		}
+	}
+	free_building_slots > 0
+	or = {
+		free_amenities < 0
+		and = {
+			has_modifier = planet_luxuries_boost
+			free_amenities < 8
+		}
+	}
+	num_pops > 11
+	str_uses_comzones = yes
+}
 
 str_force_gases = {
 	is_ai = yes

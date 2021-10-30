@@ -3,7 +3,7 @@
 # Calvitix Check 3.1.1  14/09/2021
 #
 # Merge with Giga 21/04/2021
-# Merge wit Starnet AI 16/09/2021
+# Merge wit Starnet AI 30/10/2021
 # Merge Planetary Div  08/10/2021
 #
 #############
@@ -284,7 +284,7 @@ building_foundry_1 = {
 ###
 
 	ai_resource_production = {
-		alloys = 4 # This is an important building for future upgrades
+		alloys = 3 #4 # This is an important building for future upgrades
 		trigger = {
 			always = yes
 		}
@@ -300,7 +300,7 @@ building_foundry_1 = {
 	ai_resource_production = { # Overvalue this building if this planet is a major source of alloys.
 		alloys = 3
 		trigger = {
-			has_designation = col_foundry
+			str_is_col_foundry = yes
 			planet_resource_compare = {
 				resource = alloys
 				value >= 20
@@ -311,7 +311,7 @@ building_foundry_1 = {
 	ai_resource_production = {
 		alloys = 3
 		trigger = {
-			has_designation = col_foundry
+			str_is_col_foundry = yes
 			planet_resource_compare = {
 				resource = alloys
 				value >= 40
@@ -322,7 +322,7 @@ building_foundry_1 = {
 	ai_resource_production = {
 		alloys = 3
 		trigger = {
-			has_designation = col_foundry
+			str_is_col_foundry = yes
 			planet_resource_compare = {
 				resource = alloys
 				value >= 50
@@ -379,23 +379,6 @@ building_foundry_2 = {
 		planet_metallurgists_alloys_produces_add = 1
 	}
 
-	triggered_planet_modifier = {
-		potential = {
-			exists = owner
-			owner = {
-				is_catalytic_empire = no
-			}
-			NOT = { is_planet_class = pc_crucible } #PD
-		}
-		modifier = {
-			planet_metallurgists_minerals_upkeep_add = 2
-		}
-	}
-
-###
-
-
-
 #Starnet AI
 	triggered_planet_modifier = {
 		potential = {
@@ -415,6 +398,22 @@ building_foundry_2 = {
 		}
 	}
 ###
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_catalytic_empire = no
+			}
+			NOT = { is_planet_class = pc_crucible } #PD
+		}
+		modifier = {
+			planet_metallurgists_minerals_upkeep_add = 2
+		}
+	}
+
+###
+
 
 #PD
 	triggered_planet_modifier = {
@@ -1052,6 +1051,22 @@ building_factory_1 = {
 		}
 	}
 
+#Starnet AI
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_ai = yes
+			}
+			str_force_building_factory = yes
+		}
+		modifier = {
+			job_starnet_spice_melange_farmer_add = 1
+			job_starnet_spice_melange_antifarmer_add = -1
+		}
+	}
+###
+
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
@@ -1097,22 +1112,6 @@ building_factory_1 = {
 			energy = @b1_upkeep
 		}
 	}
-
-#Starnet AI
-	triggered_planet_modifier = {
-		potential = {
-			exists = owner
-			owner = {
-				is_ai = yes
-			}
-			str_force_building_factory = yes
-		}
-		modifier = {
-			job_starnet_spice_melange_farmer_add = 1
-			job_starnet_spice_melange_antifarmer_add = -1
-		}
-	}
-###
 
 	prerequisites = {
 		tech_basic_industry
@@ -1640,6 +1639,7 @@ building_refinery = {
 #Calvitix ressources balance
 		cost = { 
 			trigger = {
+				exists = from
 				from = {
 					is_ai = no
 				}
@@ -1648,6 +1648,7 @@ building_refinery = {
 		}
 		cost = {
 			trigger = {
+				exists = from
 				from = {
 					is_ai = yes
 				}
@@ -1735,10 +1736,12 @@ building_chemical_plant = {
 	}
 
 	on_queued = {
-		owner = { set_timed_country_flag = {
-			flag = str_is_bulding_motes
-			days = 720
-		} }
+		owner = {
+			set_timed_country_flag = {
+				flag = str_is_bulding_motes
+				days = 720
+			}
+		}
 	}
 ###
 
@@ -1767,6 +1770,7 @@ building_chemical_plant = {
 #Calvitix ressources balance
 		cost = { 
 			trigger = {
+				exists = from
 				from = {
 					is_ai = no
 				}
@@ -1775,6 +1779,7 @@ building_chemical_plant = {
 		}
 		cost = {
 			trigger = {
+				exists = from
 				from = {
 					is_ai = yes
 				}
@@ -1863,10 +1868,12 @@ building_crystal_plant = {
 	}
 
 	on_queued = {
-		owner = { set_timed_country_flag = {
-			flag = str_is_bulding_crystals
-			days = 720
-		} }
+		owner = {
+			set_timed_country_flag = {
+				flag = str_is_bulding_crystals
+				days = 720
+			}
+		} 
 	}
 ###
 
@@ -1895,6 +1902,7 @@ building_crystal_plant = {
 #Calvitix ressources balance
 		cost = { 
 			trigger = {
+				exists = from
 				from = {
 					is_ai = no
 				}
@@ -1903,6 +1911,7 @@ building_crystal_plant = {
 		}
 		cost = {
 			trigger = {
+				exists = from
 				from = {
 					is_ai = yes
 				}
@@ -1985,6 +1994,7 @@ building_nanite_transmuter = {
 #Calvitix ressources balance
 		cost = { 
 			trigger = {
+				exists = from
 				from = {
 					is_ai = no
 				}
@@ -1993,6 +2003,7 @@ building_nanite_transmuter = {
 		}
 		cost = {
 			trigger = {
+				exists = from
 				from = {
 					is_ai = yes
 				}
@@ -2070,10 +2081,10 @@ building_ministry_production = {
 				resource = consumer_goods
 				value > 80
 			}
-			has_designation = col_foundry
-			has_designation = col_factory
-			has_designation = col_ecu_foundry
-			has_designation = col_mac_foundry
+			str_is_col_factory = yes
+			str_is_col_foundry = yes
+			str_is_col_industrial = yes
+			has_designation = col_mac_foundry #calvitix, needed ? 30/10/2021
 			has_designation = col_habitat_factory
 			has_designation = col_habitat_foundry
 		}
@@ -2110,7 +2121,11 @@ building_ministry_production = {
 				type = building_ministry_production
 				value = 0
 			}
-			or = { has_designation = col_factory has_designation = col_foundry has_designation = col_habitat_factory has_designation = col_habitat_foundry } 
+			or = {
+				str_is_col_foundry = yes
+				str_is_col_factory = yes
+				str_is_col_industrial = yes
+			}
 		}
 		modifier = {
 			job_starnet_spice_melange_farmer_add = 1
@@ -2210,9 +2225,9 @@ building_production_center = {
 				resource = consumer_goods
 				value > 80
 			}
-			has_designation = col_foundry
-			has_designation = col_factory
-			has_designation = col_ecu_foundry
+			str_is_col_foundry = yes
+			str_is_col_factory = yes
+			str_is_col_industrial = yes
 			has_designation = col_mac_foundry
 			has_designation = col_habitat_factory
 			has_designation = col_habitat_foundry

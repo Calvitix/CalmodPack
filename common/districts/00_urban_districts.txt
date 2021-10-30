@@ -2,7 +2,7 @@
 #
 # Calvitix Check 3.1.1  14/09/2021
 #
-# Merge with STARNET 16/09/2021
+# Merge with STARNET 30/10/2021
 # Merge with Plentiful Trad
 # Merge with Unlock More Building Slots 28/09/2021
 #
@@ -141,6 +141,7 @@ district_city = {
 		potential = {
 			exists = owner
 			owner = { has_active_tradition = tr_prosperity_interstellar_franchising }
+			str_enable_clerks = yes 
 		}
 		modifier = {
 			job_clerk_add = 1
@@ -162,8 +163,9 @@ district_city = {
 				num_pops > 15
 				free_building_slots = 0
 				nor = {
-				has_designation = col_factory
-				has_designation = col_foundry
+				str_is_col_factory = yes #replaced because city is in tons of district sets
+				str_is_col_foundry = yes
+				str_is_col_industrial = yes
 				}
 				or = {
 				owner = {
@@ -212,8 +214,9 @@ district_city = {
 				free_housing < 20
 				free_building_slots = 0
 				or = {
-				has_designation = col_factory
-				has_designation = col_foundry
+				str_is_col_factory = yes
+				str_is_col_foundry = yes
+				str_is_col_industrial = yes
 				}
 				free_jobs > 0
 				owner = {
@@ -469,6 +472,7 @@ district_nexus = {
 
 	allow = {
 		NOT = { has_modifier = resort_colony }
+		str_nexus_district_allow = yes
 	}
 
 	conversion_ratio = 1
@@ -591,6 +595,19 @@ district_industrial = {
 		}
 	}
 
+	planet_modifier = {
+		planet_housing_add = 2
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_crafter_empire = yes }
+		}
+		modifier = {
+			planet_max_buildings_add = 0.68  # moreslot mod 0.34
+		}
+	}
 
 	triggered_planet_modifier = {
 		potential = {
@@ -606,19 +623,6 @@ district_industrial = {
 		}
 	}
 
-	planet_modifier = {
-		planet_housing_add = 2
-	}
-
-	triggered_planet_modifier = {
-		potential = {
-			exists = owner
-			owner = { is_crafter_empire = yes }
-		}
-		modifier = {
-			planet_max_buildings_add = 0.68  # moreslot mod 0.34
-		}
-	}
 
 	triggered_planet_modifier = {
 		potential = {
@@ -1107,20 +1111,20 @@ district_industrial = {
 	ai_resource_production = {
 		alloys = 3
 		trigger = {
-			planet = { not = { has_designation = col_factory } }
+			planet = { str_is_col_factory = no } #replaced because industrial is in tons of district sets
 		}
 	}
 	ai_resource_production = {
 		alloys = 5
 		trigger = {
-			planet = {  has_designation = col_foundry }
+			planet = { str_is_col_foundry = yes }
 		}
 	}
 
 	ai_resource_production = {
 		consumer_goods = 3
 		trigger = {
-			planet = { not = { has_designation = col_foundry } }
+			planet = { str_is_col_foundry = no }
 			owner = {
 				country_uses_consumer_goods = yes
 			}
@@ -1130,7 +1134,7 @@ district_industrial = {
 	ai_resource_production = {
 		consumer_goods = 5
 		trigger = {
-			planet = { has_designation = col_factory  }
+			planet = { str_is_col_factory = yes }
 			owner = {
 				country_uses_consumer_goods = yes
 			}
