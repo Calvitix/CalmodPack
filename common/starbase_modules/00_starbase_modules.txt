@@ -292,7 +292,7 @@ gun_battery = {
 	ai_build_at_chokepoint = yes
 	ai_build_outside_chokepoint = yes
 	ai_weight = {
-		weight = 60 #10
+		weight = 80 #10
 		modifier = {
 			factor = 2
 			exists = owner
@@ -360,7 +360,7 @@ missile_battery = {
 	ai_build_at_chokepoint = yes
 	ai_build_outside_chokepoint = yes
 	ai_weight = {
-		weight = 60 #10
+		weight = 70 #10
 		modifier = {
 			factor = 2
 			exists = owner
@@ -436,7 +436,7 @@ pd_battery = {
 	}
 	
 	ai_weight = {
-		weight = 60
+		weight = 80
 #CALVITIX
 		modifier = { factor = 0.8 count_starbase_modules = { type = pd_battery count > 0 } }
 		modifier = { factor = 0.8 count_starbase_modules = { type = pd_battery count > 1 } }
@@ -447,7 +447,7 @@ pd_battery = {
 		modifier = { factor = 0.8 count_starbase_modules = { type = pd_battery count > 6 } }
 		modifier = { factor = 0.5 count_starbase_modules = { type = pd_battery count > 7 } }				
 ####
-		modifier = { factor = 0.5 has_starbase_size < starbase_starfortress }		
+		modifier = { factor = 0.9 has_starbase_size < starbase_starfortress }		
 		#modifier = { factor = 0 count_starbase_modules = { type = pd_battery count = 2 } }
 	}
 }
@@ -519,7 +519,7 @@ large_battery = {
 		}			
 ####
 		modifier = { factor = 0 has_starbase_size < starbase_starfortress }
-		modifier = { factor = 0 count_starbase_modules = { type = large_battery count = 5 } }
+		modifier = { factor = 0 count_starbase_modules = { type = large_battery count > 3 } }
 	}	
 }
 
@@ -1127,11 +1127,19 @@ asteroid_mining = {
 			alloys = 50
 		}
 
-		produces = { minerals = 10 }
+		produces = { minerals = 8 } #10
 		produces = { trigger = { has_starbase_building = mining_experts } minerals = 2 }
 		upkeep = { energy = 2 }
 	}
-	possible = { custom_tooltip = { fail_text = "nsc.requires.asteroid" solar_system = { any_system_planet = { is_asteroid = yes }	} } }	
+	possible = { custom_tooltip = { fail_text = "nsc.requires.asteroid" solar_system = { any_system_planet = { is_asteroid = yes }	} } }
+##Calvitix Balance
+	possible = {
+		custom_tooltip = {
+			fail_text = "starbase_h_limit.tooltip.fail"
+			count_starbase_modules = { count < 4 type = asteroid_mining }
+		}
+	}
+###	
 	ai_build_at_chokepoint = yes
 	ai_build_outside_chokepoint = yes
 	ai_weight = {
@@ -1258,13 +1266,14 @@ space_foundry = {
 			}
 			alloys = 75
 		}
-		produces = { alloys = 8 }
+		produces = { alloys = 6 }
 		produces = { trigger = { has_starbase_building = chain_manufacturing } alloys = 1 }
-		upkeep = { minerals = 14 energy = 2 }
+		upkeep = { minerals = 10 energy = 2 }
 	}	
 	ai_build_at_chokepoint = yes
 	ai_build_outside_chokepoint = yes
 	potential = { exists = owner owner = { has_technology = tech_alloys_1 } }
+	
 	ai_weight = {
 		weight = 250
 		modifier = { factor = 5 has_starbase_size < starbase_starport }
@@ -1328,9 +1337,9 @@ space_factory = {
 			}
 			alloys = 75
 		}
-		produces = { consumer_goods = 10 }
+		produces = { consumer_goods = 6 }
 		produces = { trigger = { has_starbase_building = chain_manufacturing } consumer_goods = 2 }
-		upkeep = { minerals = 10 energy = 2 }
+		upkeep = { minerals = 6 energy = 2 }
 	}	
 	ai_build_at_chokepoint = no
 	ai_build_outside_chokepoint = yes

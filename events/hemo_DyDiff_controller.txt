@@ -9,14 +9,11 @@ event = {
 	is_triggered_only = yes
 
 	trigger = {
-		exists = owner
-		owner = {
-			NOT = { has_modifier = hemo_Dydiff_disabled }
-		}
+		NOT = { has_global_flag = hemo_Dydiff_disabled }
 	}
 
 	immediate = {
-
+		set_global_flag = hemo_DyDiff_logging
 		if = { 
 			limit = { 
 				OR = {
@@ -24,12 +21,15 @@ event = {
 					has_global_flag = hemo_DyDiff_no_cooldown 
 				}
 			}
+			log = "Hemo: hemo_DyDiff_controller start"
+			set_global_flag = hemo_DyDiff_no_player	 #Calvitix		
 			every_country = {
 				limit = {
 					is_ai = no	# tell me if you start analysing the game
-					has_global_flag = hemo_DyDiff_debug 
 				}
-				#country_event = { id = hemo_DyDiff_debug.4 }
+				remove_global_flag = hemo_DyDiff_no_player	#Player found		
+				if = { limit = { has_global_flag = hemo_DyDiff_debug } country_event = { id = hemo_DyDiff_debug.4 } }
+				if = { limit = { has_global_flag = hemo_DyDiff_logging	} log = "Hemo: Start Analysis for Player : [This.GetName]" }	
 			}	
 			every_country = {
 				limit = {		# iterate through all players, compare them to each other
@@ -49,7 +49,9 @@ event = {
 								has_global_flag = hemo_DyDiff_debug
 							}
 							country_event = { id = hemo_DyDiff_debug.5 }
+							
 						} 
+							if = { limit = { has_global_flag = hemo_DyDiff_logging	} log = "Hemo: Weaker Player : [This.GetName]" }	
 					}
 					
 				}
@@ -75,8 +77,10 @@ event = {
 							limit = {	# tell me who is the challenger
 								has_global_flag = hemo_DyDiff_debug
 							}
-							#country_event = { id = hemo_DyDiff_debug.7 }
+							country_event = { id = hemo_DyDiff_debug.7 }
+							
 						} 
+							if = { limit = { has_global_flag = hemo_DyDiff_logging	} log = "Hemo: Challenger A.I. : [This.GetName]" }	
 					}
 					if = {
 						limit = {	# check if you find a worthy opponent
@@ -89,8 +93,10 @@ event = {
 							limit = {	# tell me who is the challenger
 								has_global_flag = hemo_DyDiff_debug
 							}
-							#country_event = { id = hemo_DyDiff_debug.15 }
+							country_event = { id = hemo_DyDiff_debug.15 }
+							
 						} 
+							if = { limit = { has_global_flag = hemo_DyDiff_logging	} log = "Hemo: Challenger A.I. with Fleet : [This.GetName]" }	
 					}
 					if = {
 						limit = {	# check if you find a worthy opponent
@@ -103,9 +109,12 @@ event = {
 							limit = {	# tell me who is the challenger
 								has_global_flag = hemo_DyDiff_debug
 							}
-							#country_event = { id = hemo_DyDiff_debug.9 }
+							country_event = { id = hemo_DyDiff_debug.9 }
+							
 						} 
-					}
+							if = { limit = { has_global_flag = hemo_DyDiff_logging	} log = "Hemo: Challenger A.I. with Fleetpower and Tech : [This.GetName]" }	
+							
+						} 
 					if = {
 						limit = {	# check if you find a worthy opponent
 								# just overall superior or better
@@ -116,8 +125,10 @@ event = {
 							limit = {	# tell me who is the challenger
 								has_global_flag = hemo_DyDiff_debug
 							}
-							#country_event = { id = hemo_DyDiff_debug.11 }
+							country_event = { id = hemo_DyDiff_debug.11 }
+							
 						} 
+							if = { limit = { has_global_flag = hemo_DyDiff_logging	} log = "Hemo: Challenger A.I. with All : [This.GetName]" }	
 					}
 					if = {
 						limit = {	# check if it's too much
@@ -130,7 +141,9 @@ event = {
 								has_global_flag = hemo_DyDiff_debug
 							}
 							country_event = { id = hemo_DyDiff_debug.13 }
+							
 						} 
+							if = { limit = { has_global_flag = hemo_DyDiff_logging	} log = "Hemo: Goliath A.I., too Strong : [This.GetName]" }	
 					}
 				}
 						
@@ -144,15 +157,27 @@ event = {
 					limit = { is_country_type = global_event }
 					country_event = { id = hemo_DyDiff_decrease.1 days = 10 }	
 				}
+				if = { limit = { has_global_flag = hemo_DyDiff_logging	} log = "Hemo: Decrease Difficulty : [This.GetName]" }	
+				
 			}
 			else_if = {	# if it's not too much and there isn't a worthy opponent increase difficulty
 				limit = {
 					NOT = { has_global_flag = hemo_DyDiff_worthy_opponent }
+					NOT = { has_global_flag = hemo_DyDiff_no_player	}
+
 				}
 				random_country = {
 					limit = { is_country_type = global_event }
 					country_event = { id = hemo_DyDiff_increase.1 days = 10 }		
 				}
+				if = { limit = { has_global_flag = hemo_DyDiff_logging	} log = "Hemo: Increase Difficulty : [This.GetName]" }					
+			}
+			else_if = { #if there is no Human Playaer
+				limit = {
+					#NOT = { has_global_flag = hemo_DyDiff_worthy_opponent }
+					has_global_flag = hemo_DyDiff_no_player
+				}					
+				if = { limit = { has_global_flag = hemo_DyDiff_logging	} log = "Hemo: No Human Player : [This.GetName]" }					
 			}
 
 		}
@@ -164,6 +189,7 @@ event = {
 				}
 
 				country_event = { id = hemo_DyDiff_update.1 days = 20 }		# player-controlled empires				
+				#if = { limit = { has_global_flag = hemo_DyDiff_logging	} log = "Hemo: Update Diff for Player : [This.GetName]" }					
 
 			}
 			else = {
@@ -173,6 +199,7 @@ event = {
 					}			
 
 					country_event = { id = hemo_DyDiff_update.2 days = 20 }	# AI-controlled default-empires
+					#if = { limit = { has_global_flag = hemo_DyDiff_logging	} log = "Hemo: Update Diff for A.I. : [This.GetName]" }					
 
 				}
 				else_if = {
@@ -187,6 +214,8 @@ event = {
 					}
 
 					country_event = { id = hemo_DyDiff_update.3 days = 20 }	# AI-controlled non-default-empires
+					#if = { limit = { has_global_flag = hemo_DyDiff_logging	} log = "Hemo: Update Diff for A.I. special : [This.GetName]" }					
+					
 				
 				}
 			}

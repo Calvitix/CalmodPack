@@ -9,14 +9,15 @@ country_event = {
     hide_window = yes
     is_triggered_only = yes
     immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "STR: Starfix.1 begin for [This.GetName]" }
         if = {
             limit = {
-				is_at_war = no
+				#is_at_war = no
                 resource_stockpile_compare = {
                     resource = alloys
-                    value > 800
+                    value > 900 #800
                 }
-                used_naval_capacity_percent > 0.8
+                #used_naval_capacity_percent > 0.6 # 0.8
                 has_technology = tech_starbase_3
                 any_owned_starbase = {
                     has_starbase_size = starbase_starport
@@ -28,12 +29,12 @@ country_event = {
 		}
 		else_if = {
             limit = {
-				is_at_war = no
+				#is_at_war = no
                 resource_stockpile_compare = {
                     resource = alloys
                     value > 2000
                 }
-                used_naval_capacity_percent > 0.95
+                #used_naval_capacity_percent > 0.6 # 0.95
                 has_technology = tech_starbase_4
                 any_owned_starbase = {
                     has_starbase_size = starbase_starhold
@@ -54,12 +55,50 @@ country_event = {
 		random_owned_starbase = {
 			limit = { has_starbase_size = starbase_starport }
 			set_starbase_size = starbase_starhold
+			remove_starbase_module = { slot = 3 }
+			remove_starbase_module = { slot = 4 }
+			set_starbase_module = {
+				slot = 3
+				module = gun_battery
+			}			
+			set_starbase_module = {
+				slot = 4
+				module = pd_battery
+			}			
 			owner = {
 				add_resource = {
-					alloys = -500
+					alloys = -600
 				}
 			}
+			if = { limit = { has_global_flag = edai_logging	} log = "STR: Adding StarHold for [This.GetName]" }
+
 		}
+		random_owned_starbase = {
+			limit = { 
+						has_starbase_size = starbase_starhold
+						NOT = { has_starbase_module = gun_battery }
+					}
+			remove_starbase_module = { slot = 5 }
+			set_starbase_module = {
+				slot = 5
+				module = gun_battery
+			}			
+			if = { limit = { has_global_flag = edai_logging	} log = "STR: Adding gun_battery on slot 5 for [This.GetName]" }
+			
+		}
+		random_owned_starbase = {
+			limit = { 
+						has_starbase_size = starbase_starhold
+						NOT = { has_starbase_module = pd_battery }
+					}
+			remove_starbase_module = { slot = 6 }				
+			set_starbase_module = {
+				slot = 6
+				module = pd_battery
+			}			
+			if = { limit = { has_global_flag = edai_logging	} log = "STR: Adding pd_battery on slot 6 for [This.GetName]" }			
+		}
+		
 	}
 }
 
@@ -71,12 +110,50 @@ country_event = {
 		random_owned_starbase = {
 			limit = { has_starbase_size = starbase_starhold }
 			set_starbase_size = starbase_starfortress
+			remove_starbase_module = { slot = 0 }
+			remove_starbase_module = { slot = 1 }
+			set_starbase_module = {
+				slot = 0
+				module = gun_battery
+			}			
+			set_starbase_module = {
+				slot = 1
+				module = pd_battery
+			}						
 			owner = {
 				add_resource = {
-					alloys = -1250
+					alloys = -1350
 				}
 			}
+			if = { limit = { has_global_flag = edai_logging	} log = "STR: Adding StarFortress for [This.GetName]" }
+			
 		}
+		random_owned_starbase = {
+			limit = { 
+						has_starbase_size = starbase_starfortress
+						NOT = { has_starbase_module = gun_battery }
+					}
+			remove_starbase_module = { slot = 9 }
+			set_starbase_module = {
+				slot = 9
+				module = gun_battery
+			}			
+			if = { limit = { has_global_flag = edai_logging	} log = "STR: Adding gun_battery on slot 9 for [This.GetName]" }
+			
+		}
+		random_owned_starbase = {
+			limit = { 
+						has_starbase_size = starbase_starfortress
+						NOT = { has_starbase_module = pd_battery }
+					}
+			remove_starbase_module = { slot = 10 }
+			set_starbase_module = {
+				slot = 10
+				module = pd_battery
+			}			
+			if = { limit = { has_global_flag = edai_logging	} log = "STR: Adding pd_battery on slot 10 for [This.GetName]" }			
+		}
+		
 	}
 }
 
@@ -99,6 +176,8 @@ country_event = {
 				remove_starbase_module = { module = orbital_lab }
 				remove_starbase_module = { module = orbital_lab }
 				remove_starbase_module = { module = orbital_lab }
+				if = { limit = { has_global_flag = edai_logging	} log = "STR: Remove orbital_lab for [This.GetName]" }
+				
 			}
 		}
 		if = {
@@ -123,6 +202,8 @@ country_event = {
 				remove_starbase_module = { module = orbital_lab }
 				remove_starbase_module = { module = orbital_lab }
 				remove_starbase_module = { module = orbital_lab }
+				if = { limit = { has_global_flag = edai_logging	} log = "STR: Remove orbital_lab for [This.GetName]" }
+				
 			}
 		}
 	}

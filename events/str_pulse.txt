@@ -241,7 +241,7 @@ event = {
 					used_naval_capacity_percent > 0.85
 					years_passed > 40
 				}
-				country_event = { id = str_starbase_fix.4 days = 1	random = 180 }
+				#country_event = { id = str_starbase_fix.4 days = 1	random = 180 }
 			}
 		}
 ###		
@@ -259,5 +259,58 @@ event = {
 				remove_modifier = ai_mdrone_neg16
 			}
 		}
+	}
+}
+
+
+event = { #Calvitix, Starbase upgrade ofter
+	#Month pulse
+	id = starnet.6
+	hide_window = yes
+	is_triggered_only = yes
+	fire_only_once = no
+
+	immediate = {
+		every_country = {
+			limit = {
+				is_ai = yes
+				or = {
+					is_country_type = default
+					has_country_flag = str_normal_empire
+					is_country_type = awakened_fallen_empire
+				}
+			}
+##Starnet AI NSC
+			#if = { limit = { has_global_flag = edai_logging	} log = "STR: Pulse for Upgrading Starbases for [This.GetName]" }			
+			country_event = { id = str_starbase_fix.1 days = 1 random = 180  }
+		}
+###		
+	}
+}
+
+
+event = { #Calvitix, Starbase upgrade ofter
+	#Month pulse
+	id = starnet.7
+	hide_window = yes
+	is_triggered_only = yes
+	fire_only_once = no
+
+	immediate = {
+		every_country = {
+			limit = {
+				is_ai = yes
+				or = {
+					is_country_type = default
+					has_country_flag = str_normal_empire
+					is_country_type = awakened_fallen_empire
+				}
+			}
+##Starnet AI NSC
+			set_min_variables = yes
+			if = { limit = { has_global_flag = edai_logging	} log = "Exploit : Min reset for [This.GetName]" }			
+			#country_event = { id = str_starbase_fix.1 days = 1 random = 180  }
+		}
+###		
 	}
 }
