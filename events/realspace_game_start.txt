@@ -2394,6 +2394,42 @@ country_event = {
 		}
 	}
 	
+	# Exotic Subclasses
+	option = {
+		name = "realspace.221.exotic_subclasses_on"
+		trigger = { 
+			NOT = { has_global_flag = no_exotic_subclasses } 
+		}
+		hidden_effect = {
+			country_event = { id = realspace.237 }
+		}
+	}
+	option = {
+		name = "realspace.221.exotic_subclasses_off"
+		trigger = { has_global_flag = no_exotic_subclasses }
+		hidden_effect = {
+			country_event = { id = realspace.237 }
+		}
+	}
+	
+	# Legendary Subclasses
+	option = {
+		name = "realspace.221.legendary_subclasses_on"
+		trigger = { 
+			NOT = { has_global_flag = no_legendary_subclasses } 
+		}
+		hidden_effect = {
+			country_event = { id = realspace.238 }
+		}
+	}
+	option = {
+		name = "realspace.221.legendary_subclasses_off"
+		trigger = { has_global_flag = no_legendary_subclasses }
+		hidden_effect = {
+			country_event = { id = realspace.238 }
+		}
+	}
+	
 	#Disasters
 	option = {
 		name = "realspace.221.disasters_on"
@@ -2438,19 +2474,27 @@ country_event = {
 		}
 	}
 	
-	#First Colonization modifiers
+	#Expanse Events
 	option = {
-		name = "realspace.221.first_colonization_modifiers_on"
+		name = "realspace.221.expanse_events_on"
 		trigger = { 
-			NOT = { has_global_flag = no_first_colonization_modifiers } 
+			NOR = { 
+				has_global_flag = no_first_colonization_modifiers
+				has_global_flag = disable_expance_events
+			} 
 		}
 		hidden_effect = {
 			country_event = { id = realspace.235 }
 		}
 	}
 	option = {
-		name = "realspace.221.first_colonization_modifiers_off"
-		trigger = { has_global_flag = no_first_colonization_modifiers }
+		name = "realspace.221.expanse_events_off"
+		trigger = {
+			OR = {
+				has_global_flag = no_first_colonization_modifiers
+				has_global_flag = disable_expance_events
+			}
+		}
 		hidden_effect = {
 			country_event = { id = realspace.235 }
 		}
@@ -3063,7 +3107,6 @@ country_event = {
 	}
 }
 
-
 #Planetary Exploration Addon
 country_event = {
 	id = realspace.232
@@ -3168,7 +3211,7 @@ country_event = {
 	}
 }
 
-#New Frontiers First Colonization modifiers
+#New Frontiers Expanse Events
 country_event = {
 	id = realspace.235
 	title = "realspace.235.name"
@@ -3180,16 +3223,26 @@ country_event = {
 	is_triggered_only = yes
 
 	option = {
-		name = "realspace.235.first_colonization_modifiers_on"
-		trigger = { has_global_flag = no_first_colonization_modifiers }
+		name = "realspace.235.expanse_events_on"
+		trigger = {
+			OR = {
+				has_global_flag = no_first_colonization_modifiers
+				has_global_flag = disable_expance_events
+			}
+		}
 		hidden_effect = {
 			remove_global_flag = no_first_colonization_modifiers
 			country_event = { id = realspace.221 }
 		}
 	}
 	option = {
-		name = "realspace.235.first_colonization_modifiers_off"
-		trigger = { NOT = { has_global_flag = no_first_colonization_modifiers } }
+		name = "realspace.235.expanse_events_off"
+		trigger = { 
+			NOR = { 
+				has_global_flag = no_first_colonization_modifiers
+				has_global_flag = disable_expance_events				
+			} 
+		}
 		hidden_effect = {
 			set_global_flag = no_first_colonization_modifiers
 			country_event = { id = realspace.221 }
@@ -3240,6 +3293,102 @@ country_event = {
 		trigger = { NOT = { has_global_flag = no_resource_depletion } }
 		hidden_effect = {
 			set_global_flag = no_resource_depletion
+			country_event = { id = realspace.221 }
+		}
+	}
+	
+	option = {
+		name = "realspace.newfrontiers_settings"
+		hidden_effect = {
+			country_event = { id = realspace.221 }
+		}
+	}
+	option = {
+		name = "realspace.realspace_menu"
+		hidden_effect = {
+			country_event = { id = realspace.206 }
+		}
+	}
+	option = {
+		name = "realspace.close"
+		hidden_effect = {
+			country_event = { id = realspace.1000 }
+		}
+	}
+}
+
+#New Frontiers Exotic Subclasses
+country_event = {
+	id = realspace.237
+	title = "realspace.237.name"
+	desc = "realspace.237.desc"
+	picture = GFX_evt_new_frontiers_menu
+	show_sound = event_radio_chatter
+	location = ROOT
+	
+	is_triggered_only = yes
+
+	option = {
+		name = "realspace.237.exotic_subclasses_on"
+		trigger = { has_global_flag = no_exotic_subclasses }
+		hidden_effect = {
+			remove_global_flag = no_exotic_subclasses
+			country_event = { id = realspace.221 }
+		}
+	}
+	option = {
+		name = "realspace.237.exotic_subclasses_off"
+		trigger = { NOT = { has_global_flag = no_exotic_subclasses } }
+		hidden_effect = {
+			set_global_flag = no_exotic_subclasses
+			country_event = { id = realspace.221 }
+		}
+	}
+	
+	option = {
+		name = "realspace.newfrontiers_settings"
+		hidden_effect = {
+			country_event = { id = realspace.221 }
+		}
+	}
+	option = {
+		name = "realspace.realspace_menu"
+		hidden_effect = {
+			country_event = { id = realspace.206 }
+		}
+	}
+	option = {
+		name = "realspace.close"
+		hidden_effect = {
+			country_event = { id = realspace.1000 }
+		}
+	}
+}
+
+#New Frontiers Legendary Subclasses
+country_event = {
+	id = realspace.238
+	title = "realspace.238.name"
+	desc = "realspace.238.desc"
+	picture = GFX_evt_new_frontiers_menu
+	show_sound = event_radio_chatter
+	location = ROOT
+	
+	is_triggered_only = yes
+
+	option = {
+		name = "realspace.238.legendary_subclasses_on"
+		trigger = { has_global_flag = no_legendary_subclasses }
+		hidden_effect = {
+			remove_global_flag = no_legendary_subclasses
+			country_event = { id = realspace.221 }
+		}
+	}
+	option = {
+		name = "realspace.238.legendary_subclasses_off"
+		trigger = { NOT = { has_global_flag = no_legendary_subclasses } }
+		hidden_effect = {
+			set_global_flag = no_legendary_subclasses
 			country_event = { id = realspace.221 }
 		}
 	}
