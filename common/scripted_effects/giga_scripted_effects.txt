@@ -2,7 +2,7 @@
 #
 # Calvitix Check 3.1.2  08/10/2021
 #
-# Last Update : 13/10/2021
+# Last Update : 09/11/2021
 #
 #################################
 ### Planet Effects ##############
@@ -2050,5 +2050,57 @@ apply_giga_bulwark_trad_build_speed = {
 				days = -1
 			}
 		}
+	}
+}
+
+giga_alderson_repair_effect = {
+	# if = {
+	# 	limit = {
+	# 		num_districts = {
+	# 			type = $pre_repair_district$
+	# 			value > 0
+	# 		}
+	# 	}
+	# }
+	export_trigger_value_to_variable = { 
+		trigger = num_districts 
+		parameters = { type = $pre_repair_district$ }
+		variable = $var_name$
+	}
+	if = {
+		limit = {
+			check_variable = {
+				which = $var_name$
+				value < 6
+			}
+		}
+		set_variable = {
+			which = $var_name$
+			value = 1
+		}
+	}
+	else = {
+		divide_variable = { which = $var_name$ value = 6 }
+		floor_variable = $var_name$
+	}
+}
+
+giga_alderson_repair_after_effect = {
+	while = { count = $var_name$ add_district = $post_repair_district$ }
+	set_variable = { which = $var_name$ value = 0 }  
+}
+
+clear_giga_mega_balance_modifiers = {
+	if = {
+		limit = { has_modifier = giga_mega_upkeep_balance }
+		remove_modifier = giga_mega_upkeep_balance
+	}
+	if = {
+		limit = { has_modifier = giga_mega_cost_balance }
+		remove_modifier = giga_mega_cost_balance
+	}
+	if = {
+		limit = { has_modifier = giga_mega_output_balance }
+		remove_modifier = giga_mega_output_balance
 	}
 }
