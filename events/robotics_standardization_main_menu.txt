@@ -1,0 +1,541 @@
+### Autoformat in VSCode: Shift + Alt + F
+namespace = robotics_standardization_main_menu
+country_event = {
+	id = robotics_standardization_main_menu.1
+	title = robotics_standardization_main_menu.1.title
+	desc = robotics_standardization_main_menu.1.desc
+	picture = GFX_evt_robot_assembly_plant
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		# save_event_target_as = nct_country
+		# USING: # event_target:nct_country = {...}
+		# Initialize default settings
+		if = {
+			limit = {
+				NOR = {
+					has_country_flag = NCT_SAVE_EXTERIOR
+					has_country_flag = NCT_DONT_SAVE_EXTERIOR
+				}
+			}
+			set_country_flag = NCT_SAVE_EXTERIOR
+			log = "Флаг сохранения портретов установлен на ВКЛ. (при первом запуске)"
+		}
+		country_event = {
+			id = robotics_standardization_function.10
+		}
+	}
+	# "Hull type", "Exterior" - это портрет
+	option = {
+		name = robotics_standardization_main_menu.1.save_exterior
+		trigger = {
+			has_country_flag = NCT_SAVE_EXTERIOR
+		}
+		custom_tooltip = robotics_standardization_main_menu.1.save_exterior.tooltip
+		hidden_effect = {
+			set_country_flag = NCT_DONT_SAVE_EXTERIOR
+			remove_country_flag = NCT_SAVE_EXTERIOR
+			log = "Флаг сохранения портретов изменен на ВЫКЛ."
+			country_event = {
+				id = robotics_standardization_main_menu.1
+			}
+		}
+	}
+	option = {
+		name = robotics_standardization_main_menu.1.dont_save_exterior
+		trigger = {
+			has_country_flag = NCT_DONT_SAVE_EXTERIOR
+		}
+		custom_tooltip = robotics_standardization_main_menu.1.dont_save_exterior.tooltip
+		hidden_effect = {
+			set_country_flag = NCT_SAVE_EXTERIOR
+			remove_country_flag = NCT_DONT_SAVE_EXTERIOR
+			log = "Флаг сохранения портретов изменен на ВКЛ."
+			country_event = {
+				id = robotics_standardization_main_menu.1
+			}
+		}
+	}
+	option = {
+		name = robotics_standardization_main_menu.1.nct_choose_target_robot_species
+		custom_tooltip = robotics_standardization_main_menu.1.nct_choose_target_robot_species.tooltip
+		hidden_effect = {
+			country_event = {
+				id = robotics_standardization_main_menu.2
+			}
+		}
+	}
+	option = {
+		name = robotics_standardization_main_menu.1.robotics_standardization_in_one_net
+		hidden_effect = {
+			country_event = {
+				id = robotics_standardization_function.1
+				# days = 1
+			}
+		}
+	}
+	option = {
+		name = robotics_standardization_main_menu.1.in_target_net_robotics_standardization_with_similar_traits
+		hidden_effect = {
+			country_event = {
+				id = robotics_standardization_function.3
+				# days = 1
+			}
+		}
+	}
+	option = {
+		name = robotics_standardization_main_menu.1.robotics_standardization_with_similar_traits
+		hidden_effect = {
+			country_event = {
+				id = robotics_standardization_function.5
+				# days = 1
+			}
+		}
+	}
+	# option = {
+	# 	name = robotics_standardization_main_menu.1.debug_force_mark_robots_for_merge
+	# 	hidden_effect = {
+	# 		country_event = {
+	# 			id = robotics_standardization_function.11
+	# 			# days = 1
+	# 		}
+	# 		country_event = {
+	# 			id = robotics_standardization_main_menu.1
+	# 		}
+	# 	}
+	# }
+	option = {
+		name = robotics_standardization_main_menu.1.close
+		country_event = {
+			id = robotics_standardization_function.13
+		}
+	}
+}
+
+# Очистка метки для списка species
+country_event = {
+	id = robotics_standardization_main_menu.3
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		# При выходе из меню выбора целевого вида очищаем метки (флаги) о заполненности кнопок
+		remove_country_flag = NCT_STANDARDIZATION_ROBOTS_TARGET_1_READY
+		remove_country_flag = NCT_STANDARDIZATION_ROBOTS_TARGET_2_READY
+		remove_country_flag = NCT_STANDARDIZATION_ROBOTS_TARGET_3_READY
+		remove_country_flag = NCT_STANDARDIZATION_ROBOTS_TARGET_4_READY
+		remove_country_flag = NCT_STANDARDIZATION_ROBOTS_TARGET_5_READY
+		remove_country_flag = NCT_STANDARDIZATION_ROBOTS_TARGET_6_READY
+		remove_country_flag = NCT_STANDARDIZATION_ROBOTS_TARGET_7_READY
+		remove_country_flag = NCT_STANDARDIZATION_ROBOTS_TARGET_8_READY
+		remove_country_flag = NCT_STANDARDIZATION_ROBOTS_TARGET_9_READY
+		remove_country_flag = NCT_STANDARDIZATION_ROBOTS_TARGET_10_READY
+		remove_country_flag = NCT_STANDARDIZATION_ROBOTS_HAS_NEXT_TARGETS
+		# Снимаем со всех видов метку "is_listed_flag"
+		every_owned_pop_species = {
+			limit = {
+				has_species_flag = is_listed_flag
+			}
+			remove_species_flag = is_listed_flag
+		}
+	}
+}
+
+country_event = {
+	id = robotics_standardization_main_menu.2
+	title = robotics_standardization_main_menu.2.title
+	desc = robotics_standardization_main_menu.2.desc
+	picture = GFX_evt_robot_assembly_plant
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		# Перед заполнением данных кнопок очищаем метки (флаги) о их заполненности
+		remove_country_flag = NCT_STANDARDIZATION_ROBOTS_TARGET_1_READY
+		remove_country_flag = NCT_STANDARDIZATION_ROBOTS_TARGET_2_READY
+		remove_country_flag = NCT_STANDARDIZATION_ROBOTS_TARGET_3_READY
+		remove_country_flag = NCT_STANDARDIZATION_ROBOTS_TARGET_4_READY
+		remove_country_flag = NCT_STANDARDIZATION_ROBOTS_TARGET_5_READY
+		remove_country_flag = NCT_STANDARDIZATION_ROBOTS_TARGET_6_READY
+		remove_country_flag = NCT_STANDARDIZATION_ROBOTS_TARGET_7_READY
+		remove_country_flag = NCT_STANDARDIZATION_ROBOTS_TARGET_8_READY
+		remove_country_flag = NCT_STANDARDIZATION_ROBOTS_TARGET_9_READY
+		remove_country_flag = NCT_STANDARDIZATION_ROBOTS_TARGET_10_READY
+		remove_country_flag = NCT_STANDARDIZATION_ROBOTS_HAS_NEXT_TARGETS
+		every_owned_pop_species = {
+			limit = {
+				# Убирается главный вид из поиска, чтобы его не трогать (если основатели империи сейчас являются синтетиками)
+				NOT = {
+					OR = {
+						is_same_species = root.owner_species
+						is_subspecies = root.owner_species
+					}
+				}
+				# Выбираются только роботы империи
+				OR = {
+					is_species_class = MACHINE
+					is_species_class = ROBOT
+				}
+				# Проверяем флаг о том что мы уже записали данные этого вида в переменную "standardization_target_N"
+				# Если этот флаг выставлен то этот вид пропускается
+				NOT = {
+					has_species_flag = is_listed_flag
+				}
+			}
+			if = {
+				limit = {
+					# Проверяем флаг о том обрабатывались ли данные для первой кнопки
+					root = {
+						NOT = {
+							has_country_flag = NCT_STANDARDIZATION_ROBOTS_TARGET_1_READY
+						}
+					}
+				}
+				save_event_target_as = standardization_target_1
+				# Ставим флаг-метку для того чтобы при перелистывании списка уже отображенные species не появлялись
+				set_species_flag = is_listed_flag
+				# Ставим флаг на страну, что первый вариант для кнопки заполнен!
+				root = {
+					set_country_flag = NCT_STANDARDIZATION_ROBOTS_TARGET_1_READY
+				}
+			}
+			else_if = {
+				limit = {
+					root = {
+						NOT = {
+							has_country_flag = NCT_STANDARDIZATION_ROBOTS_TARGET_2_READY
+						}
+					}
+				}
+				save_event_target_as = standardization_target_2
+				set_species_flag = is_listed_flag
+				root = {
+					set_country_flag = NCT_STANDARDIZATION_ROBOTS_TARGET_2_READY
+				}
+			}
+			else_if = {
+				limit = {
+					root = {
+						NOT = {
+							has_country_flag = NCT_STANDARDIZATION_ROBOTS_TARGET_3_READY
+						}
+					}
+				}
+				save_event_target_as = standardization_target_3
+				set_species_flag = is_listed_flag
+				root = {
+					set_country_flag = NCT_STANDARDIZATION_ROBOTS_TARGET_3_READY
+				}
+			}
+			else_if = {
+				limit = {
+					root = {
+						NOT = {
+							has_country_flag = NCT_STANDARDIZATION_ROBOTS_TARGET_4_READY
+						}
+					}
+				}
+				save_event_target_as = standardization_target_4
+				set_species_flag = is_listed_flag
+				root = {
+					set_country_flag = NCT_STANDARDIZATION_ROBOTS_TARGET_4_READY
+				}
+			}
+			else_if = {
+				limit = {
+					root = {
+						NOT = {
+							has_country_flag = NCT_STANDARDIZATION_ROBOTS_TARGET_5_READY
+						}
+					}
+				}
+				save_event_target_as = standardization_target_5
+				set_species_flag = is_listed_flag
+				root = {
+					set_country_flag = NCT_STANDARDIZATION_ROBOTS_TARGET_5_READY
+				}
+			}
+			else_if = {
+				limit = {
+					root = {
+						NOT = {
+							has_country_flag = NCT_STANDARDIZATION_ROBOTS_TARGET_6_READY
+						}
+					}
+				}
+				save_event_target_as = standardization_target_6
+				set_species_flag = is_listed_flag
+				root = {
+					set_country_flag = NCT_STANDARDIZATION_ROBOTS_TARGET_6_READY
+				}
+			}
+			else_if = {
+				limit = {
+					root = {
+						NOT = {
+							has_country_flag = NCT_STANDARDIZATION_ROBOTS_TARGET_7_READY
+						}
+					}
+				}
+				save_event_target_as = standardization_target_7
+				set_species_flag = is_listed_flag
+				root = {
+					set_country_flag = NCT_STANDARDIZATION_ROBOTS_TARGET_7_READY
+				}
+			}
+			else_if = {
+				limit = {
+					root = {
+						NOT = {
+							has_country_flag = NCT_STANDARDIZATION_ROBOTS_TARGET_8_READY
+						}
+					}
+				}
+				save_event_target_as = standardization_target_8
+				set_species_flag = is_listed_flag
+				root = {
+					set_country_flag = NCT_STANDARDIZATION_ROBOTS_TARGET_8_READY
+				}
+			}
+			else_if = {
+				limit = {
+					root = {
+						NOT = {
+							has_country_flag = NCT_STANDARDIZATION_ROBOTS_TARGET_9_READY
+						}
+					}
+				}
+				save_event_target_as = standardization_target_9
+				set_species_flag = is_listed_flag
+				root = {
+					set_country_flag = NCT_STANDARDIZATION_ROBOTS_TARGET_9_READY
+				}
+			}
+			else_if = {
+				limit = {
+					root = {
+						NOT = {
+							has_country_flag = NCT_STANDARDIZATION_ROBOTS_TARGET_10_READY
+						}
+					}
+				}
+				save_event_target_as = standardization_target_10
+				set_species_flag = is_listed_flag
+				root = {
+					set_country_flag = NCT_STANDARDIZATION_ROBOTS_TARGET_10_READY
+				}
+			}
+			else_if = {
+				limit = {
+					# Флаг не обязательно проверять, так как его точно нет
+					# root = {
+					# 	NOT = {
+					# 		has_country_flag = NCT_STANDARDIZATION_ROBOTS_HAS_NEXT_TARGETS
+					# 	}
+					# }
+				}
+				root = {
+					set_country_flag = NCT_STANDARDIZATION_ROBOTS_HAS_NEXT_TARGETS
+				}
+			}
+		}
+	}
+	option = {
+		name = robotics_standardization_main_menu.2.target_1
+		# Кнопка отображается только если связанная с ней переменная содержит species и флаг "is_listed_flag" 
+		trigger = {
+			has_country_flag = NCT_STANDARDIZATION_ROBOTS_TARGET_1_READY
+		}
+		# Назначаем species этой кнопки целевым видом для объединения
+		event_target:standardization_target_1 = {
+			save_event_target_as = target_standardization_species
+			set_species_flag = TARGET_SPECIES_FLAG
+		}
+		log = "Выбор пункта 1: Species name = [target_standardization_species.GetName]"
+		# Очищаем метки при выходе из меню выбора species
+		country_event = {
+			id = robotics_standardization_main_menu.3
+		}
+		# Возвращаемся в главное меню
+		country_event = {
+			id = robotics_standardization_main_menu.1
+		}
+	}
+	option = {
+		name = robotics_standardization_main_menu.2.target_2
+		trigger = {
+			has_country_flag = NCT_STANDARDIZATION_ROBOTS_TARGET_2_READY
+		}
+		event_target:standardization_target_2 = {
+			save_event_target_as = target_standardization_species
+			set_species_flag = TARGET_SPECIES_FLAG
+		}
+		country_event = {
+			id = robotics_standardization_main_menu.3
+		}
+		country_event = {
+			id = robotics_standardization_main_menu.1
+		}
+	}
+	option = {
+		name = robotics_standardization_main_menu.2.target_3
+		trigger = {
+			has_country_flag = NCT_STANDARDIZATION_ROBOTS_TARGET_3_READY
+		}
+		event_target:standardization_target_3 = {
+			save_event_target_as = target_standardization_species
+			set_species_flag = TARGET_SPECIES_FLAG
+		}
+		country_event = {
+			id = robotics_standardization_main_menu.3
+		}
+		country_event = {
+			id = robotics_standardization_main_menu.1
+		}
+	}
+	option = {
+		name = robotics_standardization_main_menu.2.target_4
+		trigger = {
+			has_country_flag = NCT_STANDARDIZATION_ROBOTS_TARGET_4_READY
+		}
+		event_target:standardization_target_4 = {
+			save_event_target_as = target_standardization_species
+			set_species_flag = TARGET_SPECIES_FLAG
+		}
+		country_event = {
+			id = robotics_standardization_main_menu.3
+		}
+		country_event = {
+			id = robotics_standardization_main_menu.1
+		}
+	}
+	option = {
+		name = robotics_standardization_main_menu.2.target_5
+		trigger = {
+			has_country_flag = NCT_STANDARDIZATION_ROBOTS_TARGET_5_READY
+		}
+		event_target:standardization_target_5 = {
+			save_event_target_as = target_standardization_species
+			set_species_flag = TARGET_SPECIES_FLAG
+		}
+		country_event = {
+			id = robotics_standardization_main_menu.3
+		}
+		country_event = {
+			id = robotics_standardization_main_menu.1
+		}
+	}
+	option = {
+		name = robotics_standardization_main_menu.2.target_6
+		trigger = {
+			has_country_flag = NCT_STANDARDIZATION_ROBOTS_TARGET_6_READY
+		}
+		event_target:standardization_target_6 = {
+			save_event_target_as = target_standardization_species
+			set_species_flag = TARGET_SPECIES_FLAG
+		}
+		country_event = {
+			id = robotics_standardization_main_menu.3
+		}
+		country_event = {
+			id = robotics_standardization_main_menu.1
+		}
+	}
+	option = {
+		name = robotics_standardization_main_menu.2.target_7
+		trigger = {
+			has_country_flag = NCT_STANDARDIZATION_ROBOTS_TARGET_7_READY
+		}
+		event_target:standardization_target_7 = {
+			save_event_target_as = target_standardization_species
+			set_species_flag = TARGET_SPECIES_FLAG
+		}
+		country_event = {
+			id = robotics_standardization_main_menu.3
+		}
+		country_event = {
+			id = robotics_standardization_main_menu.1
+		}
+	}
+	option = {
+		name = robotics_standardization_main_menu.2.target_8
+		trigger = {
+			has_country_flag = NCT_STANDARDIZATION_ROBOTS_TARGET_8_READY
+		}
+		event_target:standardization_target_8 = {
+			save_event_target_as = target_standardization_species
+			set_species_flag = TARGET_SPECIES_FLAG
+		}
+		country_event = {
+			id = robotics_standardization_main_menu.3
+		}
+		country_event = {
+			id = robotics_standardization_main_menu.1
+		}
+	}
+	option = {
+		name = robotics_standardization_main_menu.2.target_9
+		trigger = {
+			has_country_flag = NCT_STANDARDIZATION_ROBOTS_TARGET_9_READY
+		}
+		event_target:standardization_target_9 = {
+			save_event_target_as = target_standardization_species
+			set_species_flag = TARGET_SPECIES_FLAG
+		}
+		country_event = {
+			id = robotics_standardization_main_menu.3
+		}
+		country_event = {
+			id = robotics_standardization_main_menu.1
+		}
+	}
+	option = {
+		name = robotics_standardization_main_menu.2.target_10
+		trigger = {
+			has_country_flag = NCT_STANDARDIZATION_ROBOTS_TARGET_10_READY
+		}
+		event_target:standardization_target_10 = {
+			save_event_target_as = target_standardization_species
+			set_species_flag = TARGET_SPECIES_FLAG
+		}
+		country_event = {
+			id = robotics_standardization_main_menu.3
+		}
+		country_event = {
+			id = robotics_standardization_main_menu.1
+		}
+	}
+	# ###
+	option = {
+		name = robotics_standardization_main_menu.2.next
+		trigger = {
+			has_country_flag = NCT_STANDARDIZATION_ROBOTS_HAS_NEXT_TARGETS
+		}
+		country_event = {
+			id = robotics_standardization_main_menu.2
+		}
+	}
+	option = {
+		name = robotics_standardization_main_menu.2.main
+		country_event = {
+			id = robotics_standardization_main_menu.3
+		}
+		country_event = {
+			id = robotics_standardization_main_menu.1
+		}
+	}
+	option = {
+		name = robotics_standardization_main_menu.2.close
+		country_event = {
+			id = robotics_standardization_main_menu.3
+		}
+		country_event = {
+			id = robotics_standardization_function.13
+		}
+	}
+}

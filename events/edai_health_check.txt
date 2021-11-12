@@ -29,7 +29,41 @@ event = {
 					is_colony = yes
 					count_owned_pop = { count >= 5 }
 					not = { has_planet_flag = pf_health_checked }
+					is_under_colonization = no
 				}
+
+				random_list = {
+					30 = {
+						set_timed_planet_flag = {
+							flag = pf_health_checked
+							days = 270
+						}
+						add_modifier = {
+							modifier = health_checking
+							days = 270
+						}
+					}
+					30 = {
+						set_timed_planet_flag = {
+							flag = pf_health_checked
+							days = 360
+						}
+						add_modifier = {
+							modifier = health_checking
+							days = 360
+						}
+					}
+					30 = {
+						set_timed_planet_flag = {
+							flag = pf_health_checked
+							days = 180
+						}
+						add_modifier = {
+							modifier = health_checking
+							days = 180
+						}
+					}
+					10 = {
 				set_timed_planet_flag = {
 					flag = pf_health_checked
 					days = 90
@@ -38,6 +72,9 @@ event = {
 					modifier = health_checking
 					days = 90
 				}
+					}
+				}
+
 				
 				#log = "ME: EDAI Check for planet [This.GetName]"
 				# Housing shortage - Nexus possible
@@ -49,7 +86,7 @@ event = {
 						
 					}
 					add_district = district_nexus
-					
+					owner = { add_resource = { minerals = -500 } }					
 					if = { limit = { has_global_flag = edai_logging	} log = "ME: Adding Nexus for [This.GetName]" }
 					add_modifier = { modifier = hc_city_added days = 360 }										
 				}
@@ -61,6 +98,7 @@ event = {
 						
 					}
 					add_district = district_rw_nexus
+					owner = { add_resource = { minerals = -500 } }
 					if = { limit = { has_global_flag = edai_logging	} log = "ME: Adding RW Nexus for [This.GetName]" }					
 					add_modifier = { modifier = hc_city_added days = 360 }										
 				}
@@ -68,9 +106,11 @@ event = {
 				# Early minerals crisis
 				if = {
 					limit = {
-						free_jobs > 1
+						free_jobs < 10
 						owner = { has_monthly_income = { resource = minerals value < -5 }}
 						owner = { has_monthly_income = { resource = alloys value > 10 }}						
+						owner = { resource_stockpile_compare = { resource = minerals value < 1000 } }
+
 						#num_buildings = { type = building_foundry_1 value > 1 }
 						num_districts = { type = district_industrial value > 0 }
 
@@ -83,10 +123,12 @@ event = {
 				# Calvitix Zone Commerc Vs Foundry
 				if = {
 					limit = {
-						free_jobs > 3
+						free_jobs < 10
 						#free_amenities > 20
 						owner = { has_monthly_income = { resource = alloys value < 5 }}						
-						owner = { has_monthly_income = { resource = minerals value > 40 }}						
+						owner = { has_monthly_income = { resource = minerals value > 20 }}						
+						owner = { resource_stockpile_compare = { resource = alloys value < 1000 } }
+						
 					}
 					#remove_building = building_commercial_zone
 					if = {
@@ -95,6 +137,7 @@ event = {
 							num_free_districts = { type = district_rw_industrial value > 0 }
 						}
 						add_district = district_rw_industrial
+						owner = { add_resource = { minerals = -500 } }
 						if = { limit = { has_global_flag = edai_logging	} log = "ME: Alloys needed : Adding district_rw_industrial for [This.GetName]" }					
 						add_modifier = { modifier = hc_industrial_added days = 360 }									
 					}
@@ -104,6 +147,7 @@ event = {
 								num_free_districts = { type = district_industrial value > 0 }
 							}						
 							add_district = district_industrial
+							owner = { add_resource = { minerals = -500 } }
 							add_modifier = { modifier = hc_industrial_added days = 360 }										
 							if = { limit = { has_global_flag = edai_logging	} log = "ME: Alloys needed : Adding District_industrial for [This.GetName]" }					
 						}
@@ -115,6 +159,7 @@ event = {
 				if = {
 					limit = {
 						owner = { has_monthly_income = { resource = energy value < -20 }}
+						owner = { resource_stockpile_compare = { resource = energy value < 1000 } }
 						#owner = { has_monthly_income = { resource = alloys value > 20 }}						
 						#has_building = building_foundry_1
 						free_jobs < 10
@@ -130,7 +175,18 @@ event = {
 						add_modifier = { modifier = hc_generator_added days = 360 }										
 						#remove_building = building_foundry_1
 					}
-					if = {
+					else_if = {
+						limit = {
+							not = { uses_district_set = ring_world }
+							num_free_districts = { type = district_generator_uncapped value > 0 }
+						}
+						add_district = district_generator_uncapped
+						if = { limit = { has_global_flag = edai_logging	} log = "ME: Energy Crisis -20 : Adding district_generator_uncapped for [This.GetName]" }					
+						
+						add_modifier = { modifier = hc_generator_added days = 360 }										
+						#remove_building = building_foundry_1
+					}
+					else_if = {
 						limit = {
 							uses_district_set = ring_world
 							num_free_districts = { type = district_rw_generator value > 0 }
@@ -144,8 +200,9 @@ event = {
 						limit = {
 							#free_housing > 0
 							or = {
-								free_jobs < 2
-								has_unemployed_specialists = yes
+								free_jobs < 4
+								num_unemployed > 0
+								has_unemployed = yes
 								}
 							free_building_slots > 1
 						}
@@ -160,6 +217,7 @@ event = {
 					limit = {
 						free_jobs < 5
 						owner = { has_monthly_income = { resource = energy value < 1 }}
+						owner = { resource_stockpile_compare = { resource = energy value < 1000 } }
 						#owner = { has_monthly_income = { resource = consumer_goods value > 10 }}						
 						#has_building = building_factory_1
 					}
@@ -169,6 +227,7 @@ event = {
 							num_free_districts = { type = district_generator value > 0 }
 						}
 						add_district = district_generator
+						owner = { add_resource = { minerals = -500 } }
 						if = { limit = { has_global_flag = edai_logging	} log = "ME: Energy Crisis <1 : Adding district_generator for [This.GetName]" }					
 						add_modifier = { modifier = hc_generator_added days = 360 }										
 						
@@ -179,7 +238,19 @@ event = {
 							num_free_districts = { type = district_rw_generator value > 0 }
 						}
 						add_district = district_rw_generator
+						owner = { add_resource = { minerals = -500 } }
 						if = { limit = { has_global_flag = edai_logging	} log = "ME: Energy Crisis <1 : Adding district_rw_generator for [This.GetName]" }					
+						add_modifier = { modifier = hc_generator_added days = 360 }										
+						
+					}					
+					else_if = {
+						limit = {
+							not = { uses_district_set = ring_world }
+							num_free_districts = { type = district_generator_uncapped value > 0 }
+						}
+						add_district = district_generator_uncapped
+						owner = { add_resource = { minerals = -500 } }
+						if = { limit = { has_global_flag = edai_logging	} log = "ME: Energy Crisis <1 : Adding district_generator_uncapped for [This.GetName]" }					
 						add_modifier = { modifier = hc_generator_added days = 360 }										
 						
 					}					
@@ -202,9 +273,10 @@ event = {
 					limit = {
 						or = {
 							free_jobs < 5
-							has_unemployed_workers = yes
+							num_unemployed > 0
 						}
-						owner = { has_monthly_income = { resource = energy value < 50 }}
+						owner = { has_monthly_income = { resource = energy value < 30 }}
+						owner = { resource_stockpile_compare = { resource = energy value < 5000 } }						
 					}
 					if = {
 						limit = {
@@ -212,6 +284,7 @@ event = {
 							num_free_districts = { type = district_generator value > 0 }
 						}
 						add_district = district_generator
+						owner = { add_resource = { minerals = -500 } }
 						if = { limit = { has_global_flag = edai_logging	} log = "ME: Unemployement + Low Energy : Adding district_energy for [This.GetName]" }					
 						add_modifier = { modifier = hc_generator_added days = 360 }				
 					}
@@ -221,17 +294,79 @@ event = {
 							num_free_districts = { type = district_rw_generator value > 0 }
 						}
 						add_district = district_rw_generator
+						owner = { add_resource = { minerals = -500 } }
 						if = { limit = { has_global_flag = edai_logging	} log = "ME: Unemployement + Low Energy : Adding district_energy for [This.GetName]" }					
 						add_modifier = { modifier = hc_generator_added days = 360 }
 					}					
+					else_if = {
+						limit = {
+							not = { uses_district_set = ring_world }						
+							num_free_districts = { type = district_generator_uncapped value > 0 }
+						}
+						add_district = district_generator_uncapped
+						owner = { add_resource = { minerals = -500 } }
+						if = { limit = { has_global_flag = edai_logging	} log = "ME: Unemployement + Low Energy : Adding district_generator_uncapped for [This.GetName]" }					
+						add_modifier = { modifier = hc_generator_added days = 360 }				
+					}					
 				}
+				if = {
+					limit = {
+						or = {
+							free_jobs < 5
+							num_unemployed > 0
+							has_unemployed = yes
+						}
+						owner = { has_monthly_income = { resource = minerals value < 30 }}
+						owner = { resource_stockpile_compare = { resource = minerals value < 5000 } }												
+					}
+					if = {
+						limit = {
+							not = { uses_district_set = ring_world }						
+							num_free_districts = { type = district_mining value > 0 }
+						}
+						add_district = district_mining
+						owner = { add_resource = { minerals = -500 } }
+						if = { limit = { has_global_flag = edai_logging	} log = "ME: Unemployement + Low minerals : Adding district_mining for [This.GetName]" }					
+						add_modifier = { modifier = hc_mining_added days = 360 }				
+					}
+					else_if = {
+						limit = {
+							uses_district_set = ring_world
+							num_free_districts = { type = district_rw_mining value > 0 }
+						}
+						add_district = district_rw_mining
+						owner = { add_resource = { minerals = -500 } }
+						if = { limit = { has_global_flag = edai_logging	} log = "ME: Unemployement + Low minerals : Adding district_rw_mining for [This.GetName]" }					
+						add_modifier = { modifier = hc_mining_added days = 360 }
+					}					
+					else_if = {
+						limit = {							
+							num_free_districts = { type = district_mining_uncapped value > 0 }
+						}
+						add_district = district_mining_uncapped
+						owner = { add_resource = { minerals = -500 } }
+						if = { limit = { has_global_flag = edai_logging	} log = "ME: Unemployement + Low minerals : Adding district_mining_uncapped for [This.GetName]" }					
+						add_modifier = { modifier = hc_mining_added days = 360 }
+					}				
+					
+					else
+					{
+						#set_variable = { which = nb_libre_dis value = num_free_districts }
+						if = { limit = { has_global_flag = edai_logging	} log = "ME: Unemployement + Low minerals : pb num_free_districts for [This.GetName]" }					
+					}
+				}
+				else_if = {
+						set_variable = { which = nb_chomeurs value = num_unemployed }
+						if = { limit = { has_global_flag = edai_logging	} log = "ME: Unemployement + Low minerals : not the case : [This.nb_chomeurs] for [This.GetName]" }					
+				}
+				
 				###Pollution
 				#log = "ME: before pollution for [This.GetName]" 								
 				if = {
 					limit = {
 						or = {
 							free_jobs < 5
-							has_unemployed_workers = yes
+							num_unemployed > 0
 							has_modifier = eco_catastrophic
 							has_modifier = eco_waste_high
 						}
@@ -242,7 +377,10 @@ event = {
 							has_modifier = eco_waste_mod
 							has_modifier = eco_waste_high
 						}
+						or = {
 						owner = { has_monthly_income = { resource = energy value > 0 }}
+							owner = { resource_stockpile_compare = { resource = energy value > 5000 } }
+						}
 					}
 					if = { limit = { has_global_flag = edai_logging	} log = "ME: Need cleaning pollution for [This.GetName]" }					
 					if = {
@@ -261,12 +399,12 @@ event = {
 					limit = {
 						or = {
 							free_jobs < 5
-							has_unemployed_specialists = yes
+							num_unemployed > 0
 						}
-						owner = { has_monthly_income = { resource = minerals value > 50 }}
+						owner = { has_monthly_income = { resource = minerals value > 30 }}
 						owner = { 
 							or = { 
-								has_monthly_income = { resource = alloys value < 50 }
+								has_monthly_income = { resource = alloys value < 30 }
 								has_monthly_income = { resource = consumer_goods value < 10}
 							}
 						}
@@ -277,6 +415,7 @@ event = {
 							num_free_districts = { type = district_industrial value > 0 }
 						}
 						add_district = district_industrial
+						owner = { add_resource = { minerals = -500 } }
 						if = { limit = { has_global_flag = edai_logging	} log = "ME: Unemployement + Good Miner. : Adding district_industrial for [This.GetName]" }					
 						add_modifier = { modifier = hc_industrial_added days = 360 }				
 						
@@ -287,6 +426,7 @@ event = {
 							num_free_districts = { type = district_rw_industrial value > 0 }
 						}
 						add_district = district_rw_industrial
+						owner = { add_resource = { minerals = -500 } }
 						if = { limit = { has_global_flag = edai_logging	} log = "ME: Unemployement + Good Miner. : Adding district_rw_industrial for [This.GetName]" }					
 						add_modifier = { modifier = hc_industrial_added days = 360 }				
 					
@@ -296,7 +436,7 @@ event = {
 					limit = {
 						or = {
 							free_jobs < 5
-							has_unemployed_workers = yes
+							num_unemployed > 0
 						}
 						owner = { has_monthly_income = { resource = energy value > 10 }}
 					}
@@ -304,35 +444,65 @@ event = {
 						limit = {
 							not = { uses_district_set = ring_world }
 							owner = { has_monthly_income = { resource = minerals value < 70 }}
+							owner = { resource_stockpile_compare = { resource = minerals value < 5000 } }							
 							num_free_districts = { type = district_mining value > 0 }
 						}
 						add_district = district_mining
+						owner = { add_resource = { minerals = -500 } }
 						if = { limit = { has_global_flag = edai_logging	} log = "ME: Unemployement + Low Miner. : Adding district_mining for [This.GetName]" }					
 						add_modifier = { modifier = hc_mining_added days = 360 }				
 						
 					}
+					else_if = {
+						limit = {
+							not = { uses_district_set = ring_world }
+							owner = { has_monthly_income = { resource = minerals value < 70 }}
+							owner = { resource_stockpile_compare = { resource = minerals value < 5000 } }							
+							num_free_districts = { type = district_mining_uncapped value > 0 }
+						}
+						add_district = district_mining_uncapped
+						owner = { add_resource = { minerals = -500 } }
+						if = { limit = { has_global_flag = edai_logging	} log = "ME: Unemployement + Low Miner. : Adding district_mining_uncapped for [This.GetName]" }					
+						add_modifier = { modifier = hc_mining_added days = 360 }				
+						
+					}
+					
 				}
 				if = {
 					limit = {
 						or = {					
 							owner = { country_uses_food = yes }
-							owner = { has_monthly_income = { resource = food value < -15 }}
+							owner = { has_monthly_income = { resource = food value < -2 }}
 						}
 						or = {
-							has_unemployed_workers = yes
+							num_unemployed > 0
 							free_jobs < 4
 							
 						}
-						owner = { has_monthly_income = { resource = food value < -1 }}
+						owner = { has_monthly_income = { resource = food value < 5 }}
+						owner = { resource_stockpile_compare = { resource = food value < 1000 } }							
 					}
 					if = {
 						limit = {
-							owner = { has_monthly_income = { resource = food value < -1 }}
+							#owner = { has_monthly_income = { resource = food value < -1 }}
 							num_free_districts = { type = district_farming value > 0 }
 							not = { uses_district_set = ring_world }
 						}
 						add_district = district_farming
+						owner = { add_resource = { minerals = -300 } }
 						if = { limit = { has_global_flag = edai_logging	} log = "ME: Unemployement + Low food : Adding district_farming for [This.GetName]" }					
+						add_modifier = { modifier = hc_farming_added days = 360 }				
+						
+					}
+					else_if = {
+						limit = {
+							#owner = { has_monthly_income = { resource = food value < -1 }}
+							num_free_districts = { type = district_farming_uncapped value > 0 }
+							not = { uses_district_set = ring_world }
+						}
+						add_district = district_farming_uncapped
+						owner = { add_resource = { minerals = -300 } }
+						if = { limit = { has_global_flag = edai_logging	} log = "ME: Unemployement + Low food : Adding district_farming_uncapped for [This.GetName]" }					
 						add_modifier = { modifier = hc_farming_added days = 360 }				
 						
 					}
@@ -342,6 +512,7 @@ event = {
 							uses_district_set = ring_world
 						}
 						add_district = district_rw_farming
+						owner = { add_resource = { minerals = -300 } }
 						if = { limit = { has_global_flag = edai_logging	} log = "ME: Unemployement + Low food : Adding district_rw_farming for [This.GetName]" }					
 						add_modifier = { modifier = hc_farming_added days = 360 }				
 						
@@ -352,7 +523,7 @@ event = {
 						owner = { has_valid_civic = civic_machine_servitor }
 						or = {
 							free_jobs < 3
-							has_unemployed_workers = yes
+							num_unemployed > 0
 						}
 						free_building_slots > 0
 						owner = { has_monthly_income = { resource = minerals value > 50 }}
@@ -367,7 +538,7 @@ event = {
 						free_amenities < 5
 						or = {
 							free_jobs < 3
-							has_unemployed_workers = yes
+							num_unemployed > 0
 							}
 						free_building_slots > 0
 						not = { has_building = building_maintenance_depot }
@@ -381,7 +552,7 @@ event = {
 					limit = {
 						planet_crime > 10
 						or = {
-							has_unemployed_workers = yes
+							num_unemployed > 0
 							free_jobs < 14
 						}
 						free_building_slots > 0
@@ -395,7 +566,7 @@ event = {
 						free_housing > 0
 						or = {
 							free_jobs < 2
-							has_unemployed_specialists = yes
+							num_unemployed > 0
 							}
 						free_building_slots > 4
 						owner = { has_monthly_income = { resource = energy value > 50 }}					
@@ -506,6 +677,7 @@ event = {
 					is_colony = yes
 					num_pops > 4
 					not = { has_planet_flag = pf_health_checked }
+					is_under_colonization = no
 				}
 				#log = "E: EDAI Check for planet [This.GetName]"
 
@@ -572,6 +744,16 @@ event = {
 					}
 					if = {
 						limit = {
+							not = { uses_district_set = ring_world }
+							num_free_districts = { type = district_generator_uncapped value > 0 }
+						}
+						add_district = district_generator_uncapped
+						if = { limit = { has_global_flag = edai_logging	} log = "E : Energy Crisis -20 : adding district_generator_uncapped for [This.GetName]" }	
+						add_modifier = { modifier = hc_generator_added days = 360 }										
+						#remove_building = building_foundry_1
+					}
+					if = {
+						limit = {
 							uses_district_set = ring_world
 							num_free_districts = { type = district_rw_generator value > 0 }
 						}
@@ -585,7 +767,7 @@ event = {
 							#free_housing > 0
 							or = {
 								free_jobs < 2
-								has_unemployed_specialists = yes
+								num_unemployed > 0
 								}
 							free_building_slots > 1
 						}
@@ -609,6 +791,7 @@ event = {
 							num_free_districts = { type = district_generator value > 0 }
 						}
 						add_district = district_generator
+						owner = { add_resource = { minerals = -500 } }
 						if = { limit = { has_global_flag = edai_logging	} log = "E : Energy Crisis < 1 : adding district_generator for [This.GetName]" }	
 						add_modifier = { modifier = hc_generator_added days = 360 }										
 						
@@ -619,7 +802,19 @@ event = {
 							num_free_districts = { type = district_rw_generator value > 0 }
 						}
 						add_district = district_rw_generator
+						owner = { add_resource = { minerals = -500 } }
 						if = { limit = { has_global_flag = edai_logging	} log = "E : Energy Crisis < 1 : adding district_rw_generator for [This.GetName]" }	
+						add_modifier = { modifier = hc_generator_added days = 360 }										
+						
+					}					
+					else_if = {
+						limit = {
+							not = { uses_district_set = ring_world }
+							num_free_districts = { type = district_generator_uncapped value > 0 }
+						}
+						add_district = district_generator_uncapped
+						owner = { add_resource = { minerals = -500 } }
+						if = { limit = { has_global_flag = edai_logging	} log = "E : Energy Crisis < 1 : adding district_generator_uncapped for [This.GetName]" }	
 						add_modifier = { modifier = hc_generator_added days = 360 }										
 						
 					}					
@@ -640,10 +835,19 @@ event = {
 							num_free_districts = { type = district_mining value > 0 }
 						}
 						add_district = district_mining
-						if = { limit = { has_global_flag = edai_logging	} log = "E : Minerals Crisis < -5 : adding district_mining, delete district_industrial for [This.GetName]" }	
+						if = { limit = { has_global_flag = edai_logging	} log = "E : Minerals Crisis < -5 : adding district_mining, for [This.GetName]" }	
 						add_modifier = { modifier = hc_mining_added days = 360 }
-						remove_district = district_industrial
+						#remove_district = district_industrial
 					}
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_mining_uncapped value > 0 }
+						}
+						add_district = district_mining_uncapped
+						if = { limit = { has_global_flag = edai_logging	} log = "E : Minerals Crisis < -5 : adding district_mining_uncapped, for [This.GetName]" }	
+						add_modifier = { modifier = hc_mining_added days = 360 }
+						#remove_district = district_industrial
+					}					
 				}
 				if = {
 					limit = {
@@ -661,6 +865,16 @@ event = {
 						add_modifier = { modifier = hc_mining_added days = 360 }				
 						#remove_building = building_factory_1
 					}
+					else_if = {
+						limit = {
+							owner = { has_monthly_income = { resource = minerals value < -20 }}
+							num_free_districts = { type = district_mining_uncapped value > 0 }
+						}
+						add_district = district_mining
+						if = { limit = { has_global_flag = edai_logging	} log = "E : Minerals Crisis < -20 : adding district_mining_uncapped for [This.GetName]" }	
+						add_modifier = { modifier = hc_mining_added days = 360 }				
+						#remove_building = building_factory_1
+					}					
 				}
 				
 				# Early CGs crisis
@@ -676,6 +890,7 @@ event = {
 					remove_building = building_research_lab_1
 					if = { limit = { has_global_flag = edai_logging	} log = "E : alloy Crisis < -20 : adding district_industrial, removing research_lab for [This.GetName]" }	
 					add_district = district_industrial
+					owner = { add_resource = { minerals = -500 } }
 					add_modifier = { modifier = hc_industrial_added days = 360 }				
 					
 				}
@@ -690,6 +905,7 @@ event = {
 					remove_building = building_research_lab_1
 					if = { limit = { has_global_flag = edai_logging	} log = "E : alloy Crisis < -20 : adding district_rw_industrial, removing research_lab for [This.GetName]" }	
 					add_district = district_industrial
+					owner = { add_resource = { minerals = -500 } }
 					add_modifier = { modifier = hc_industrial_added days = 360 }				
 					
 				}
@@ -700,13 +916,14 @@ event = {
 						free_jobs > 1
 						free_amenities > 20
 						owner = { has_monthly_income = { resource = alloys value < -20 }}						
-						owner = { has_monthly_income = { resource = minerals value > 50 }}
+						owner = { has_monthly_income = { resource = minerals value > 30 }}
 						owner = { has_monthly_income = { resource = energy value > 50 }}
 						num_buildings = { type = building_commercial_zone value > 1 }
 						num_free_districts = { type = district_industrial value > 0 }								
 					}
 					remove_building = building_commercial_zone
 					add_district = district_industrial
+					owner = { add_resource = { minerals = -500 } }
 					if = { limit = { has_global_flag = edai_logging	} log = "E : alloy Crisis < -20 : adding district_industrial, removing commercial for [This.GetName]" }	
 					add_modifier = { modifier = hc_industrial_added days = 360 }				
 					
@@ -718,7 +935,8 @@ event = {
 					limit = {
 						or = {
 							free_jobs < 5
-							has_unemployed_workers = yes
+							num_unemployed > 0
+
 							has_modifier = eco_catastrophic
 							has_modifier = eco_waste_high
 						}
@@ -962,6 +1180,7 @@ event = {
 								num_free_districts = { type = district_generator value > 0 }
 							}
 							add_district = district_generator
+						owner = { add_resource = { minerals = -500 } }
 						if = { limit = { has_global_flag = edai_logging	} log = "E : Unemployment & low Energy : adding district_generator for [This.GetName]" }	
 							add_modifier = { modifier = hc_generator_added days = 360 }				
 						}
@@ -974,6 +1193,16 @@ event = {
 							if = { limit = { has_global_flag = edai_logging	} log = "E : Unemployment & low Energy : adding district_rw_generator for [This.GetName]" }	
 							add_modifier = { modifier = hc_generator_added days = 360 }											
 						}
+						else_if = {
+							limit = {
+								not = { uses_district_set = ring_world }
+								num_free_districts = { type = district_generator_uncapped value > 0 }
+							}
+							add_district = district_generator_uncapped
+						owner = { add_resource = { minerals = -500 } }
+						if = { limit = { has_global_flag = edai_logging	} log = "E : Unemployment & low Energy : adding district_generator_uncapped for [This.GetName]" }	
+							add_modifier = { modifier = hc_generator_added days = 360 }				
+						}						
 					}
 					else_if = {
 						limit = {
@@ -986,6 +1215,7 @@ event = {
 								num_free_districts = { type = district_industrial value > 0 }
 							}
 							add_district = district_industrial
+						owner = { add_resource = { minerals = -500 } }
 							if = { limit = { has_global_flag = edai_logging	} log = "E : Unemployment & low alloy : adding district_industrial for [This.GetName]" }	
 							add_modifier = { modifier = hc_industrial_added days = 360 }				
 						}
@@ -1010,7 +1240,18 @@ event = {
 								num_free_districts = { type = district_farming value > 0 }
 							}
 							add_district = district_farming
+						owner = { add_resource = { minerals = -300 } }
 							if = { limit = { has_global_flag = edai_logging	} log = "E : Unemployment & low food : adding district_farming for [This.GetName]" }	
+							add_modifier = { modifier = hc_farming_added days = 360 }				
+						}
+						else_if = {
+							limit = {
+								not = { uses_district_set = ring_world }
+								num_free_districts = { type = district_farming_uncapped value > 0 }
+							}
+							add_district = district_farming_uncapped
+							owner = { add_resource = { minerals = -300 } }
+							if = { limit = { has_global_flag = edai_logging	} log = "E : Unemployment & low food : adding district_farming_uncapped for [This.GetName]" }	
 							add_modifier = { modifier = hc_farming_added days = 360 }				
 						}
 						else_if = {
@@ -1019,6 +1260,7 @@ event = {
 								num_free_districts = { type = district_rw_farming value > 0 }
 							}
 							add_district = district_rw_farming
+							owner = { add_resource = { minerals = -300 } }
 							if = { limit = { has_global_flag = edai_logging	} log = "E : Unemployment & low food : adding district_farming for [This.GetName]" }	
 							add_modifier = { modifier = hc_farming_added days = 360 }				
 						}					
@@ -1033,18 +1275,30 @@ event = {
 								num_free_districts = { type = district_mining value > 0 }
 							}
 							add_district = district_mining
+							owner = { add_resource = { minerals = -300 } }
 							if = { limit = { has_global_flag = edai_logging	} log = "E: Unemployment & low minerals : Adding district_mining for [This.GetName]" }
 							add_modifier = { modifier = hc_mining_added days = 360 }				
 						}
 						else_if = {
 							limit = {
-								not = { uses_district_set = ring_world }
+								uses_district_set = ring_world
 								num_free_districts = { type = district_rw_mining value > 0 }
 							}
 							add_district = district_rw_mining
+							owner = { add_resource = { minerals = -300 } }
 							if = { limit = { has_global_flag = edai_logging	} log = "E: Unemployment & low minerals : Adding district_rw_mining for [This.GetName]" }
 							add_modifier = { modifier = hc_mining_added days = 360 }				
 						}
+						else_if = {
+							limit = {
+								not = { uses_district_set = ring_world }
+								num_free_districts = { type = district_mining_uncapped value > 0 }
+							}
+							add_district = district_mining_uncapped
+							owner = { add_resource = { minerals = -300 } }
+							if = { limit = { has_global_flag = edai_logging	} log = "E: Unemployment & low minerals : Adding district_mining_uncapped for [This.GetName]" }
+							add_modifier = { modifier = hc_mining_added days = 360 }				
+						}						
 					}
 					else_if = {
 						limit = {
@@ -1054,6 +1308,7 @@ event = {
 							num_free_districts = { type = district_industrial value > 0 }								
 						}
 						add_district = district_industrial
+						owner = { add_resource = { minerals = -500 } }
 						if = { limit = { has_global_flag = edai_logging	} log = "E: Unemployment & low alloy : Adding district_industrial for [This.GetName]" }
 						add_modifier = { modifier = hc_industrial_added days = 360 }				
 					}
@@ -1066,6 +1321,7 @@ event = {
 							
 						}
 						add_district = district_industrial
+						owner = { add_resource = { minerals = -500 } }
 						if = { limit = { has_global_flag = edai_logging	} log = "E: Unemployment & low goods : Adding district_industrial for [This.GetName]" }
 						add_modifier = { modifier = hc_industrial_added days = 360 }				
 					}
@@ -1181,9 +1437,28 @@ event = {
 							}
 						}
 						remove_district = district_generator
-						if = { limit = { has_global_flag = edai_logging	} log = "E: Enough minerals : Removing district_generator for [This.GetName]" }					
+						if = { limit = { has_global_flag = edai_logging	} log = "E: Enough energy : Removing district_generator for [This.GetName]" }					
 						
 					}
+					if = {
+						limit = {
+							has_district = district_generator_uncapped
+							owner = {
+								has_monthly_income = {
+									resource = energy
+									value > 250
+								}
+								resource_stockpile_compare = {
+									resource = energy
+									value > 10000
+								}
+							}
+						}
+						remove_district = district_generator_uncapped
+						if = { limit = { has_global_flag = edai_logging	} log = "E: Enough energy : Removing district_generator_uncapped for [This.GetName]" }					
+						
+					}
+					
 				}
 				
 				# Housing
@@ -1198,6 +1473,7 @@ event = {
 							num_free_districts = { type = district_city value > 0 }
 						}
 						add_district = district_city
+						owner = { add_resource = { minerals = -500 } }
 						if = { limit = { has_global_flag = edai_logging	} log = "E: Housing needed : Adding district_city for [This.GetName]" }							
 						add_modifier = { modifier = hc_city_added days = 360 }				
 					}
@@ -1208,6 +1484,7 @@ event = {
 							num_free_districts = { type = district_giga_planet_city value > 0 }
 						}
 						add_district = district_giga_planet_city
+						owner = { add_resource = { minerals = -500 } }
 						if = { limit = { has_global_flag = edai_logging	} log = "E: Housing needed : Adding district_giga_city for [This.GetName]" }							
 						add_modifier = { modifier = hc_city_added days = 360 }				
 					}
@@ -1226,6 +1503,7 @@ event = {
 							num_free_districts = { type = district_rw_nexus value > 0 }
 						}
 						add_district = district_rw_nexus
+						owner = { add_resource = { minerals = -500 } }
 						if = { limit = { has_global_flag = edai_logging	} log = "E: Housing needed : Adding district_rw_nexus for [This.GetName] - don't happen normally" }							
 						add_modifier = { modifier = hc_city_added days = 360 }									
 					}
@@ -1400,10 +1678,21 @@ event = {
 							num_free_districts = { type = district_mining value > 0 }
 						}
 						add_district = district_mining
+						owner = { add_resource = { minerals = -500 } }
 						if = { limit = { has_global_flag = edai_logging	} log = "E: low minerals : Adding district_mining for [This.GetName]" }							
 						add_modifier = { modifier = hc_mining_added days = 360 }				
 						
 					}
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_mining_uncapped value > 0 }
+						}
+						add_district = district_mining_uncapped
+						owner = { add_resource = { minerals = -500 } }
+						if = { limit = { has_global_flag = edai_logging	} log = "E: low minerals : Adding district_mining_uncapped for [This.GetName]" }							
+						add_modifier = { modifier = hc_mining_added days = 360 }				
+						
+					}					
 				}
 
 				# Homeworld with too many empty building slots			
@@ -1607,6 +1896,7 @@ event = {
 					is_colony = yes
 					num_pops > 4
 					not = { has_planet_flag = pf_health_checked }
+					is_under_colonization = no
 				}
 				#log = "H: EDAI Check for planet [This.GetName]"	
 				random_list = {
@@ -1702,6 +1992,16 @@ event = {
 					}
 					else_if = {
 						limit = {
+							not = { uses_district_set = ring_world }
+							num_free_districts = { type = district_generator_uncapped value > 0 }
+						}
+						add_district = district_generator_uncapped
+						if = { limit = { has_global_flag = edai_logging	} log = "H: Energy crisis < -20 : adding district_generator_uncapped for [This.GetName]" }	
+						add_modifier = { modifier = hc_generator_added days = 360 }										
+						#remove_building = building_foundry_1
+					}
+					else_if = {
+						limit = {
 							uses_district_set = ring_world
 							num_free_districts = { type = district_rw_generator value > 0 }
 						}
@@ -1715,7 +2015,8 @@ event = {
 							#free_housing > 0
 							or = {
 								free_jobs < 2
-								has_unemployed_specialists = yes
+								num_unemployed > 0
+
 								}
 							free_building_slots > 1
 						}
@@ -1739,7 +2040,19 @@ event = {
 							num_free_districts = { type = district_generator value > 0 }
 						}
 						add_district = district_generator
+						owner = { add_resource = { minerals = -500 } }
 						if = { limit = { has_global_flag = edai_logging	} log = "H: Energy crisis < 1 : adding district_generator for [This.GetName]" }	
+						add_modifier = { modifier = hc_generator_added days = 360 }										
+						
+					}
+					else_if = {
+						limit = {
+							not = { uses_district_set = ring_world }
+							num_free_districts = { type = district_generator_uncapped value > 0 }
+						}
+						add_district = district_generator_uncapped
+						owner = { add_resource = { minerals = -500 } }
+						if = { limit = { has_global_flag = edai_logging	} log = "H: Energy crisis < 1 : adding district_generator_uncapped for [This.GetName]" }	
 						add_modifier = { modifier = hc_generator_added days = 360 }										
 						
 					}
@@ -1749,6 +2062,7 @@ event = {
 							num_free_districts = { type = district_rw_generator value > 0 }
 						}
 						add_district = district_rw_generator
+						owner = { add_resource = { minerals = -500 } }
 						if = { limit = { has_global_flag = edai_logging	} log = "H: Energy crisis < 1 : adding district_rw_generator for [This.GetName]" }	
 						#remove_building = building_factory_1
 						add_modifier = { modifier = hc_generator_added days = 360 }										
@@ -1776,6 +2090,16 @@ event = {
 						remove_district = district_industrial
 						#remove_building = building_foundry_1
 					}
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_mining_uncapped value > 0 }
+						}
+						add_district = district_mining_uncapped
+						if = { limit = { has_global_flag = edai_logging	} log = "H: minerals crisis : adding district_mining_uncapped, removing district_industrial for [This.GetName]" }	
+						add_modifier = { modifier = hc_mining_added days = 360 }				
+						remove_district = district_industrial
+						#remove_building = building_foundry_1
+					}					
 				}
 				
 				# Early CGs crisis
@@ -1790,6 +2114,7 @@ event = {
 					}
 					#remove_building = building_research_lab_1
 					add_district = district_industrial
+					owner = { add_resource = { minerals = -500 } }
 					if = { limit = { has_global_flag = edai_logging	} log = "H: alloys crisis : adding district_industrial for [This.GetName]" }	
 					add_modifier = { modifier = hc_industrial_added days = 360 }				
 				}
@@ -1800,7 +2125,8 @@ event = {
 					limit = {
 						or = {
 							free_jobs < 5
-							has_unemployed_workers = yes
+							num_unemployed > 0
+
 							has_modifier = eco_catastrophic
 							has_modifier = eco_waste_high
 						}
@@ -1964,6 +2290,7 @@ event = {
 							owner = { has_monthly_income = { resource = alloys value < 20 }}
 						}
 						add_district = district_industrial
+						owner = { add_resource = { minerals = -500 } }
 						if = { limit = { has_global_flag = edai_logging	} log = "H: Enough Room & low alloy: adding district_industrial for [This.GetName]" }	
 						add_modifier = { modifier = hc_industrial_added days = 360 }				
 					}
@@ -1974,6 +2301,7 @@ event = {
 							owner = { has_monthly_income = { resource = consumer_goods value < 10 }}
 						}
 						add_district = district_industrial
+						owner = { add_resource = { minerals = -500 } }
 						if = { limit = { has_global_flag = edai_logging	} log = "H: Enough Room & low good: adding district_industrial for [This.GetName]" }	
 						add_modifier = { modifier = hc_industrial_added days = 360 }				
 					}
@@ -2016,20 +2344,32 @@ event = {
 					if = {
 						limit = { 
 							owner = { has_monthly_income = { resource = energy value < 50 }}
+							owner = { has_monthly_income = { resource = food value > -2 }}							
 						}
 						if = {
 							limit = {
 								num_free_districts = { type = district_generator value > 0 }
 							}
 							add_district = district_generator
+							owner = { add_resource = { minerals = -500 } }
 							if = { limit = { has_global_flag = edai_logging	} log = "H: Unemployment & low Energy : adding district_generator for [This.GetName]" }	
 							add_modifier = { modifier = hc_generator_added days = 360 }				
 						}
 						else_if = {
 							limit = {
+								num_free_districts = { type = district_generator_uncapped value > 0 }
+							}
+							add_district = district_generator_uncapped
+							owner = { add_resource = { minerals = -500 } }
+							if = { limit = { has_global_flag = edai_logging	} log = "H: Unemployment & low Energy : adding district_generator_uncapped for [This.GetName]" }	
+							add_modifier = { modifier = hc_generator_added days = 360 }				
+						}						
+						else_if = {
+							limit = {
 								num_free_districts = { type = district_rw_generator value > 0 }
 							}
 							add_district = district_rw_generator
+							owner = { add_resource = { minerals = -500 } }
 							if = { limit = { has_global_flag = edai_logging	} log = "H: Unemployment & low Energy : adding district_rw_generator for [This.GetName]" }	
 							add_modifier = { modifier = hc_generator_added days = 360 }				
 						}
@@ -2043,7 +2383,17 @@ event = {
 								num_free_districts = { type = district_farming value > 0 }
 							}
 							add_district = district_farming
+							owner = { add_resource = { minerals = -300 } }
 							if = { limit = { has_global_flag = edai_logging	} log = "H: Unemployment & low food : adding district_farming for [This.GetName]" }	
+							add_modifier = { modifier = hc_farming_added days = 360 }				
+						}
+						else_if = {
+							limit = {
+								num_free_districts = { type = district_farming_uncapped value > 0 }
+							}
+							add_district = district_farming_uncapped
+							owner = { add_resource = { minerals = -300 } }
+							if = { limit = { has_global_flag = edai_logging	} log = "H: Unemployment & low food : adding district_farming_uncapped for [This.GetName]" }	
 							add_modifier = { modifier = hc_farming_added days = 360 }				
 						}
 						else_if = {
@@ -2051,6 +2401,7 @@ event = {
 								num_free_districts = { type = district_rw_farming value > 0 }
 							}
 							add_district = district_rw_farming
+							owner = { add_resource = { minerals = -300 } }
 							if = { limit = { has_global_flag = edai_logging	} log = "H: Unemployment & low food : adding district_rw_farming for [This.GetName]" }	
 							add_modifier = { modifier = hc_farming_added days = 360 }				
 							
@@ -2065,10 +2416,21 @@ event = {
 								num_free_districts = { type = district_mining value > 0 }
 							}
 							add_district = district_mining
+							owner = { add_resource = { minerals = -500 } }
 							if = { limit = { has_global_flag = edai_logging	} log = "H: Unemployment & low minerals : adding district_mining for [This.GetName]" }	
 							add_modifier = { modifier = hc_mining_added days = 360 }				
 							
 						}
+						else_if = {
+							limit = {
+								num_free_districts = { type = district_mining_uncapped value > 0 }
+							}
+							add_district = district_mining_uncapped
+							owner = { add_resource = { minerals = -500 } }
+							if = { limit = { has_global_flag = edai_logging	} log = "H: Unemployment & low minerals : adding district_mining_uncapped for [This.GetName]" }	
+							add_modifier = { modifier = hc_mining_added days = 360 }				
+							
+						}						
 					}
 					else_if = {
 						limit = { free_building_slots > 1 }
@@ -2079,6 +2441,7 @@ event = {
 								owner = { has_monthly_income = { resource = alloys value < 20 }}
 							}
 							add_district = district_industrial
+							owner = { add_resource = { minerals = -500 } }
 							if = { limit = { has_global_flag = edai_logging	} log = "H: Unemployment & low alloys : adding district_industrial for [This.GetName]" }	
 							add_modifier = { modifier = hc_industrial_added days = 360 }				
 						}
@@ -2088,6 +2451,7 @@ event = {
 								owner = { has_monthly_income = { resource = consumer_goods value < 25 }}
 							}
 							add_district = district_industrial
+							owner = { add_resource = { minerals = -500 } }
 							if = { limit = { has_global_flag = edai_logging	} log = "H: Unemployment & low goods : adding district_industrial for [This.GetName]" }	
 							add_modifier = { modifier = hc_industrial_added days = 360 }				
 						}
@@ -2140,6 +2504,7 @@ event = {
 					}
 					#remove_building = building_commercial_zone
 					add_district = district_industrial
+					owner = { add_resource = { minerals = -500 } }
 					if = { limit = { has_global_flag = edai_logging	} log = "H: Unemployment  : adding district_industrial for [This.GetName]" }						
 					add_modifier = { modifier = hc_industrial_added days = 360 }				
 				}
@@ -2241,6 +2606,7 @@ event = {
 							num_free_districts = { type = district_hive value > 0 }
 						}
 						add_district = district_hive
+						owner = { add_resource = { minerals = -500 } }
 						if = { limit = { has_global_flag = edai_logging	} log = "H: need housing : adding district_hive for [This.GetName]" }	
 						add_modifier = { modifier = hc_city_added days = 360 }				
 					}
@@ -2250,6 +2616,7 @@ event = {
 							num_free_districts = { type = district_rw_hive value > 0 }
 						}
 						add_district = district_rw_hive
+						owner = { add_resource = { minerals = -500 } }
 						if = { limit = { has_global_flag = edai_logging	} log = "H: need housing : adding district_rw_hive for [This.GetName]" }	
 						add_modifier = { modifier = hc_city_added days = 360 }				
 					}
@@ -2259,6 +2626,7 @@ event = {
 							num_free_districts = { type = district_rw_nexus value > 0 }
 						}
 						add_district = district_rw_nexus
+						owner = { add_resource = { minerals = -500 } }
 						if = { limit = { has_global_flag = edai_logging	} log = "H: need housing : adding district_rw_nexus for [This.GetName] NOT SUPPOSED TO HAPPEN" }	
 						add_modifier = { modifier = hc_city_added days = 360 }				
 					}
@@ -2418,6 +2786,14 @@ event = {
 						if = { limit = { has_global_flag = edai_logging	} log = "H: low minerals : adding district_mining,  for [This.GetName]" }	
 						add_modifier = { modifier = hc_mining_added days = 360 }
 					}
+					else_if = {
+						limit = {
+							num_free_districts = { type = district_mining_uncapped value > 0 }
+						}
+						add_district = district_mining_uncapped
+						if = { limit = { has_global_flag = edai_logging	} log = "H: low minerals : adding district_mining_uncapped,  for [This.GetName]" }	
+						add_modifier = { modifier = hc_mining_added days = 360 }
+					}					
 				}
 
 				# Homeworld with too many empty building slots			

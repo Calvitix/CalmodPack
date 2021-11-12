@@ -645,10 +645,27 @@ str_energy_district_allow = {
 
 
 str_food_district_allow = {
+	or = {
+	    and = { #calvitix added, food emergency
+	        exists = owner
+	        owner = {
+	            resource_stockpile_compare = {
+	                resource = food
+	                value < 50
+	            }
+	            resource_income_compare = {
+	                resource = food
+	                value < 0
+	            }
+	        }
+	    }
+	    and = {
 	str_food_allow_compatibility = yes
 	nand = {
 		exists = owner
-		owner = { is_ai = yes }
+	            owner = {
+	                is_ai = yes
+	            }
 		or = {
 			has_planet_flag = str_designated_energy_guaranteed
 			has_planet_flag = str_designated_alloy_guaranteed
@@ -668,28 +685,42 @@ str_food_district_allow = {
 	}
 	nand = {
 		exists = owner
-		owner = { is_ai = yes }
+	            owner = {
+	                is_ai = yes
+	            }
 		years_passed < 8
-		owner = { num_owned_planets > 2 }
+	            owner = {
+	                num_owned_planets > 2
+	            }
 		has_planet_flag = prescripted_ideal
 		owner = { 
-			not = { has_country_flag = str_has_tried_to_designate_energy_alloy  } 
+	                not = {
+	                    has_country_flag = str_has_tried_to_designate_energy_alloy
+	                }
 		}
 	}
     NAND = {
         exists = owner
-		owner = { is_ai = yes }
+	            owner = {
+	                is_ai = yes
+	            }
         str_prepare_unemployed_to_resettle = yes
         or = {
             free_jobs > 0
-			not = { has_planet_flag = str_five_year_new_colony }
+	                not = {
+	                    has_planet_flag = str_five_year_new_colony
+	                }
+	            }
+	            owner = {
+	                str_food_crisis_1 = no
         }
-		owner = { str_food_crisis_1 = no }
     }
     nand = {
         exists = owner
-		owner = { is_ai = yes }
-        free_jobs > 8 # 3 Calvitix (2 is too restrictiv)
+	            owner = {
+	                is_ai = yes
+	            }
+	            free_jobs > 8 # 3 Calvitix(2 is too restrictiv)
     }
     or = {
         str_force_district_farming = yes
@@ -711,12 +742,16 @@ str_food_district_allow = {
         and = {
 		    nand = {
 		        exists = owner
-				owner = { is_ai = yes }
+	                    owner = {
+	                        is_ai = yes
+	                    }
 		        has_planet_flag = str_just_removed_food_district
 		    }
 		    nand = {
 				exists = owner
-				owner = { is_ai = yes }
+	                    owner = {
+	                        is_ai = yes
+	                    }
 		        free_amenities < -9
 		        free_building_slots = 0
 		            owner = {
@@ -748,12 +783,16 @@ str_food_district_allow = {
 		    }
 		    nand = {
 		        exists = owner
-				owner = { is_ai = yes }
+	                    owner = {
+	                        is_ai = yes
+	                    }
 		        resettlement_cheesy_disable = yes
 		    }
 		    nand = {
 		        exists = owner
-				owner = { is_ai = yes }
+	                    owner = {
+	                        is_ai = yes
+	                    }
 		        or = {
 		            free_jobs > 3
 		            and = {
@@ -779,7 +818,9 @@ str_food_district_allow = {
 		    }
 		    NAND = {
 		        exists = owner
-				owner = { is_ai = yes }
+	                    owner = {
+	                        is_ai = yes
+	                    }
 		        owner = {
 		            resource_income_compare = {
 		                resource = food
@@ -789,6 +830,8 @@ str_food_district_allow = {
 		    }
 		}
     }
+	    }
+	}
 }
 
 str_mineral_district_allow = {

@@ -4,7 +4,7 @@
 #
 # Merge with Planetary Diversity 16/09/2021
 # Merge with GPM 24/04/2021
-# Merge with STARNET AI   16/09/2021
+# Merge with STARNET AI   12/11/2021
 # Merge with Megacordp mod 21/05/2021
 #
 #root = planet
@@ -222,7 +222,7 @@ col_mining = {
 			num_free_districts = { type = district_hive value <= @small_planet_threshold }
 		}
 		modifier = {
-			add = 3
+			add = 2
 			num_free_districts = { type = district_mining value > @free_districts_medium_threshold }
 			num_free_districts = { type = district_farming value < @free_districts_low_threshold }
 			num_free_districts = { type = district_generator value < @free_districts_low_threshold }
@@ -231,7 +231,7 @@ col_mining = {
 			num_free_districts = { type = district_hive value <= @small_planet_threshold }
 		}
 		modifier = {
-			add = 2
+			add = 3
 			has_designation = col_mining
 		}
 		modifier = {
@@ -385,7 +385,7 @@ col_farming = {
 			num_free_districts = { type = district_hive value <= @small_planet_threshold }
 		}
 		modifier = {
-			add = 3
+			add = 2
 			num_free_districts = { type = district_mining value < @free_districts_low_threshold }
 			num_free_districts = { type = district_farming value > @free_districts_medium_threshold }
 			num_free_districts = { type = district_generator value < @free_districts_low_threshold }
@@ -394,7 +394,7 @@ col_farming = {
 			num_free_districts = { type = district_hive value <= @small_planet_threshold }
 		}
 		modifier = {
-			add = 2
+			add = 3
 			has_designation = col_farming
 		}
 		modifier = {
@@ -549,7 +549,7 @@ col_generator = {
 
 	weight_modifier = {
 		modifier = {
-			add = 1
+			add = 3
 			num_free_districts = { type = district_mining value < @free_districts_low_threshold }
 			num_free_districts = { type = district_farming value < @free_districts_low_threshold }
 			num_free_districts = { type = district_generator value > @free_districts_low_threshold }
@@ -558,7 +558,7 @@ col_generator = {
 			num_free_districts = { type = district_hive value <= @small_planet_threshold }
 		}
 		modifier = {
-			add = 3
+			add = 5
 			num_free_districts = { type = district_mining value < @free_districts_low_threshold }
 			num_free_districts = { type = district_farming value < @free_districts_low_threshold }
 			num_free_districts = { type = district_generator value > @free_districts_medium_threshold }
@@ -567,7 +567,7 @@ col_generator = {
 			num_free_districts = { type = district_hive value <= @small_planet_threshold }
 		}
 		modifier = {
-			add = 2
+			add = 3
 			has_designation = col_generator
 		}
 		modifier = {
@@ -597,6 +597,13 @@ col_generator = {
 			factor = 0.1
 			has_modifier = gpm_weak_magnetic_field_2
 		}
+#Staret AI
+		modifier = {
+			add = 20
+			years_passed < 15
+			has_planet_flag = str_designated_energy_guaranteed
+		}
+###
 		modifier = {
 			add = 3
 			num_districts = { type = district_generator value >= 1 }
@@ -847,6 +854,10 @@ col_industrial = {
 			factor = 0
 			num_districts = { type = district_industrial value = 0 }
 		}
+		modifier = {
+			factor = 0
+			owner = { is_ai = yes }
+		}
 	}
 }
 
@@ -905,12 +916,11 @@ col_foundry = {
 
 	weight_modifier = {
 		modifier = {
-			add = 5
-			owner = {
+			add = 3
 			OR = {
-					country_uses_consumer_goods = no
-					has_monthly_income = { resource = consumer_goods value >= 0 }
-				}
+				num_free_districts = { type = district_city value = @free_districts_high_threshold }
+				num_free_districts = { type = district_nexus value = @free_districts_high_threshold }
+				num_free_districts = { type = district_hive value = @free_districts_high_threshold }
 			}
 			OR = {
 				AND = {
@@ -935,16 +945,23 @@ col_foundry = {
 				}
 				AND = {
 					owner = {
-						has_monthly_income = { resource = alloys value < 60 }
+						has_monthly_income = { resource = alloys value < 50 }
 					years_passed > 75
+						years_passed < 100
 					}
 				}
 			}
 		}
 
 		modifier = {
-			add = 7 #5
+			add = 7
 			has_designation = col_foundry
+		}
+
+		modifier = {
+			add = 20
+			years_passed < 15
+			has_planet_flag = str_designated_alloy_guaranteed
 		}
 
 		modifier = {
@@ -1089,7 +1106,8 @@ col_foundry = {
 			resource_stockpile_compare = {
 				resource = energy
 				value < 1000
-			} }
+				}
+			}
 		}
 
 
@@ -1151,30 +1169,34 @@ col_foundry = {
 			resource_income_compare = {
 				resource = consumer_goods
 				value > 1000
-			} }
+				}
+			}
 			num_buildings = { type = building_factory_1 value = 0 }
 			num_buildings = { type = building_factory_2 value = 0 }
 		}
 		modifier = {
 			factor = 0
-			not = { owner = {
-			has_deficit = consumer_goods
-			resource_stockpile_compare = {
-				resource = food
-				value < 300
+			not = {
+				owner = {
+					has_deficit = consumer_goods
+					resource_stockpile_compare = {
+						resource = food
+						value < 300
+					}
+					resource_income_compare = {
+						resource = food
+						value < -12
+					}
+					resource_income_compare = {
+						resource = energy
+						value < 10
+					}
+					resource_stockpile_compare = {
+						resource = energy
+						value < 1000
+					}
+				}
 			}
-			resource_income_compare = {
-				resource = food
-				value < -12
-			}
-			resource_income_compare = {
-				resource = energy
-				value < 10
-			}
-			resource_stockpile_compare = {
-				resource = energy
-				value < 1000
-			} } }
 			owner = {
 			or = {
 			and = {
@@ -1220,7 +1242,8 @@ col_foundry = {
 			resource_income_compare = {
 				resource = consumer_goods
 				value > 1000
-			} }
+				}
+			}
 		}
 	}
 }
@@ -1280,37 +1303,14 @@ col_factory = {
 
 	weight_modifier = {
 		modifier = {
-			add = 5
+			add = 4
 			owner = { has_monthly_income = { resource = consumer_goods value < 5 } }
 			OR = {
-				AND = {
-					owner = {
-						has_monthly_income = { resource = alloys value > 20 }
-						years_passed <= 20
+				num_free_districts = { type = district_city value >= @free_districts_high_threshold }
+				num_free_districts = { type = district_hive value >= @free_districts_high_threshold }
+				num_free_districts = { type = district_nexus value >= @free_districts_high_threshold }
 					}
 				}
-				AND = {
-					owner = {
-						has_monthly_income = { resource = alloys value > 40 }
-						years_passed > 20
-						years_passed < 50
-					}
-				}
-				AND = {
-					owner = {
-						has_monthly_income = { resource = alloys value > 70 }
-						years_passed > 50
-						years_passed < 75
-					}
-				}
-				AND = {
-					owner = {
-						has_monthly_income = { resource = alloys value > 100 }
-						years_passed > 75
-					}
-				}
-			}
-		}
 ### STARNET AI		
 		modifier = {
 			add = 100
@@ -1326,8 +1326,10 @@ col_factory = {
 			resource_stockpile_compare = {
 				resource = consumer_goods
 				value < 10
-			} }
-			not = { owner = {
+				}
+			}
+			not = {
+				owner = {
 				has_deficit = consumer_goods
 				resource_stockpile_compare = {
 					resource = food
@@ -1344,7 +1346,9 @@ col_factory = {
 				resource_stockpile_compare = {
 					resource = energy
 					value < 1000
-				} } }
+					}
+				}
+			}
 		}
 		
 
@@ -1353,6 +1357,11 @@ col_factory = {
 			has_designation = col_factory
 		}
 
+		modifier = {
+			add = 20
+			years_passed < 15
+			has_planet_flag = str_designated_alloy_guaranteed
+		}
 
 		modifier = {
 			add = 5
@@ -1386,7 +1395,6 @@ col_factory = {
 				}
 			}
 		}
-
 
 		modifier = {
 			add = 50
@@ -1455,7 +1463,8 @@ col_factory = {
 			resource_stockpile_compare = {
 				resource = alloys
 				value > 7000
-			} }
+				}
+			}
 			num_buildings = { type = building_factory_1 value = 0 }
 			num_buildings = { type = building_factory_2 value = 0 }
 		}
@@ -1470,22 +1479,25 @@ col_factory = {
 			resource_stockpile_compare = {
 				resource = alloys
 				value > 7000
-			} }
+				}
+			}
 		}
 
 		modifier = {
 			add = 5
 			has_designation = col_factory
 			owner = { 
-			or = {
-			resource_income_compare = {
-				resource = consumer_goods
-				value < 20 }
-			resource_stockpile_compare = {
-				resource = consumer_goods
-				value < 250
+				or = {
+					resource_income_compare = {
+						resource = consumer_goods
+								value < 20
+					}
+					resource_stockpile_compare = {
+						resource = consumer_goods
+						value < 250
+					}
+				}
 			}
-			} }
 		}
 		modifier = {
 			add = 5
@@ -2091,22 +2103,34 @@ col_habitat_energy = {
 		}
 	}
 	weight_modifier = {
-		base = 200
+		base = 0
 		modifier = {
-			factor = 2
-			owner = { has_monthly_income = { resource = energy value < 0 } }
+			add = 1.8
+			num_districts = {type = district_hab_energy value >= 1}
 		}
 		modifier = {
-			factor = 3
-			has_designation = col_habitat_energy
+			add = 1.8
+			num_districts = {type = district_hab_energy value >= 2}
 		}
 		modifier = {
-			factor = 3
-			num_districts = { type = district_hab_energy value >= 3 }
+			add = 3.6
+			num_districts = {type = district_hab_energy value >= 4}
 		}
 		modifier = {
-			factor = 5
-			has_planet_flag = energy_habitat
+			add = 3.6
+			num_districts = {type = district_hab_energy value >= 6}
+		}
+		modifier = {
+			factor = 1.16
+			has_building = building_energy_grid
+		}
+		modifier = {
+			factor = 1.33
+			has_building = building_energy_nexus
+		}
+		modifier = {
+			factor = 1.33
+			owner = { is_hive_empire = yes }
 		}
 	}
 }
@@ -2200,34 +2224,54 @@ col_habitat_research = {
 		planet_researchers_produces_mult = 0.1
 	}
 	weight_modifier = {
-		base = 300
+		base = 0
 		modifier = {
-			factor = 2
-			OR = {
-				owner = { has_monthly_income = { resource = physics_research value < 100 } }
-				owner = { has_monthly_income = { resource = society_research value < 100 } }
-				owner = { has_monthly_income = { resource = engineering_research value < 100 } }
+			add = 1.08
+			num_districts = { type = district_hab_science value >= 1 }
 			}
+		modifier = {
+			add = 1.08
+			num_districts = { type = district_hab_science value >= 2 }
 		}
 		modifier = {
-			factor = 3
-			has_designation = col_habitat_research
+			add = 2.16
+			num_districts = { type = district_hab_science value >= 4 }
 		}
 		modifier = {
-			factor = 3
-			num_districts = { type = district_hab_science value >= 3 }
+			add = 2.16
+			num_districts = { type = district_hab_science value >= 6 }
 		}
 		modifier = {
-			factor = 2
+			add = 0.72
+			num_buildings = { type = building_research_lab_1 value >= 1 }
+		}
+		modifier = {
+			add = 0.72
 			num_buildings = { type = building_research_lab_1 value >= 2 }
 		}
 		modifier = {
-			factor = 2
+			add = 1.44
+			num_buildings = { type = building_research_lab_1 value >= 4 }
+		}
+		modifier = {
+			add = 2.88
 			num_buildings = { type = building_research_lab_2 value >= 2 }
 		}
 		modifier = {
-			factor = 2
+			add = 2.88
+			num_buildings = { type = building_research_lab_2 value >= 4 }
+		}
+		modifier = {
+			add = 4.32
 			num_buildings = { type = building_research_lab_3 value >= 2 }
+		}
+		modifier = {
+			add = 4.32
+			num_buildings = { type = building_research_lab_3 value >= 4 }
+		}
+		modifier = { 		#Count 1 Consumer good as 2.5 energy.
+			factor = 1.25
+			owner = { country_uses_consumer_goods = yes }
 		}
 	}
 }
@@ -2286,18 +2330,38 @@ col_habitat_mining = {
 	}
 
 	weight_modifier = {
-		base = 1000
+		base = 0
 		modifier = {
-			factor = 2
-			owner = { has_monthly_income = { resource = minerals value < 0 } }
+			add = 1.2
+			num_districts = { type = district_hab_mining value >= 1 }
 		}
 		modifier = {
-			factor = 3
-			has_designation = col_habitat_mining
+			add = 1.2
+			num_districts = { type = district_hab_mining value >= 2 }
 		}
 		modifier = {
-			factor = 3
-			num_districts = { type = district_hab_mining value >= 3 }
+			add = 2.4
+			num_districts = { type = district_hab_mining value >= 4 }
+		}
+		modifier = {
+			add = 2.4
+			num_districts = { type = district_hab_mining value >= 6 }
+		}
+		modifier = {
+			factor = 1.25
+			has_building = building_mineral_purification_plant
+		}
+		modifier = {
+			factor = 1.50
+			has_building = building_mineral_purification_plant
+		}
+		modifier = {
+			factor = 1.33
+			owner = { is_hive_empire = yes }
+		}
+		modifier = { 		#Count 1 Mineral as 1.5 energy
+			factor = 1.5
+			always = yes
 		}
 	}
 }
@@ -2401,6 +2465,10 @@ col_habitat_industrial = {
 			factor = 0
 			num_districts = { type = district_hab_industrial value = 0 }
 		}
+		modifier = {
+			factor = 0
+			owner = { is_ai = yes }
+		}
 	}
 }
 
@@ -2438,32 +2506,50 @@ col_habitat_foundry = {
 	}
 
 	weight_modifier = {
-		base = 300
+		base = 0
 		modifier = {
-			factor = 2
-			owner = { has_monthly_income = { resource = alloys value < 10 } }
+			add = 3.2
+			num_districts = {type = district_hab_industrial value >= 1}
 		}
 		modifier = {
-			factor = 3
-			has_designation = col_habitat_foundry
+			add = 3.2
+			num_districts = {type = district_hab_industrial value >= 2}
 		}
 		modifier = {
-			add = 2
-			has_building = building_foundry_1
+			add = 6.4
+			num_districts = {type = district_hab_industrial value >= 4}
 		}
 		modifier = {
-			add = 4
+			add = 6.4
+			num_districts = {type = district_hab_industrial value >= 6}
+		}
+		modifier = {
+			factor = 1.25
 			has_building = building_foundry_2
 		}
 		modifier = {
-			factor = 0
-			num_buildings = { type = building_foundry_1 value = 0 }
-			num_buildings = { type = building_foundry_2 value = 0 }
-			NOT = { num_districts = { type = district_hab_industrial value >= 3 } }
+			factor = 1.5
+			has_building = building_foundry_3
+		}
+		modifier = { 		#Count 1 Mineral as 1.5 energy
+			factor = 1.5
+			always = yes
 		}
 		modifier = {
-			factor = 3
-			num_districts = { type = district_hab_industrial value >= 3 }
+			factor = 0
+			NOR = {
+			has_building = building_foundry_1
+			has_building = building_foundry_2
+				has_building = building_foundry_3
+			}
+		}
+		modifier = {
+			factor = 0
+			OR = {
+				has_building = building_factory_1
+				has_building = building_factory_2
+				has_building = building_factory_2
+		}
 		}
 	}
 }
@@ -2501,34 +2587,51 @@ col_habitat_factory = {
 			planet_artisans_produces_mult = 0.05
 		}
 	}
-
 	weight_modifier = {
-		base = 500
+		base = 0
 		modifier = {
-			factor = 2
-			owner = { has_monthly_income = { resource = consumer_goods value < 5 } }
+			add = 2.4
+			num_districts = {type = district_hab_industrial value >= 1}
 		}
 		modifier = {
-			factor = 3
-			has_designation = col_habitat_factory
+			add = 2.4
+			num_districts = {type = district_hab_industrial value >= 2}
 		}
 		modifier = {
-			add = 2
-				has_building = building_factory_1
+			add = 4.8
+			num_districts = {type = district_hab_industrial value >= 4}
 		}
 		modifier = {
-			add = 4
-				has_building = building_factory_2
-			}	
+			add = 4.8
+			num_districts = {type = district_hab_industrial value >= 6}
+		}
+		modifier = {
+			factor = 1.16
+			has_building = building_factory_2
+		}
+		modifier = {
+			factor = 1.33
+			has_building = building_factory_3
+		}
+		modifier = { 		#Count 1 Mineral as 1.5 energy
+			factor = 1.5
+			always = yes
+		}
 		modifier = {
 			factor = 0
-			num_buildings = { type = building_factory_1 value = 0 }
-			num_buildings = { type = building_factory_2 value = 0 }
-			NOT = { num_districts = { type = district_hab_industrial value >= 3 } }
+			OR = {
+				has_building = building_foundry_1
+				has_building = building_foundry_2
+				has_building = building_foundry_3
+			}
 		}
 		modifier = {
-			factor = 3
-			num_districts = { type = district_hab_industrial value >= 3 }
+			factor = 0
+			NOR = {
+				has_building = building_factory_1
+				has_building = building_factory_2
+				has_building = building_factory_2
+			}	
 		}
 	}
 }
@@ -2571,64 +2674,34 @@ col_habitat_refinery = {
 	}
 
 	weight_modifier = {
-		base = 500
+		base = 0
 		modifier = {
-			factor = 0
-			NOR = {
-				has_building = building_refinery
-				has_building = building_crystal_plant
-				has_building = building_chemical_plant
-			}
+			add = 4
+			num_buildings = { type = building_chemical_plant value >= 2}
 		}
 		modifier = {
-			factor = 2
-			owner = {
-				OR = {
-					has_monthly_income = { resource = volatile_motes value < 0 }
-					has_monthly_income = { resource = exotic_gases value < 0 }
-					has_monthly_income = { resource = rare_crystals value < 0 }
-				}
-			}
+			add = 4
+			num_buildings = { type = building_crystal_plant value >= 2}
 		}
 		modifier = {
-			factor = 3
-			has_designation = col_habitat_refinery
+			add = 4
+			num_buildings = { type = building_refinery value >= 2}
 		}
 		modifier = {
-			factor = 2
-			num_buildings = { type = building_refinery value >= 2 }
+			add = 4
+			num_buildings = { type = building_chemical_plant value >= 4}
 		}
 		modifier = {
-			factor = 3
-			num_buildings = { type = building_refinery value >= 3 }
+			add = 4
+			num_buildings = { type = building_crystal_plant value >= 4}
 		}
 		modifier = {
-			factor = 2
-			num_buildings = { type = building_crystal_plant value >= 2 }
+			add = 4
+			num_buildings = { type = building_refinery value >= 4}
 		}
-		modifier = {
-			factor = 3
-			num_buildings = { type = building_crystal_plant value >= 3 }
-		}
-		modifier = {
-			factor = 3
-			num_buildings = { type = building_crystal_plant value >= 4 }
-		}
-		modifier = {
-			factor = 2
-			num_buildings = { type = building_chemical_plant value >= 2 }
-		}
-		modifier = {
-			factor = 3
-			num_buildings = { type = building_chemical_plant value >= 3 }
-		}
-		modifier = {
-			factor = 5
-			OR = {
-				num_buildings = { type = building_refinery value >= 4 }
-				num_buildings = { type = building_crystal_plant value >= 4 }
-				num_buildings = { type = building_chemical_plant value >= 4 }
-		}
+		modifier = { 		#Count 1 Mineral as 1.5 energy
+			factor = 1.5
+			always = yes
 		}
 	}
 }
@@ -3111,10 +3184,21 @@ col_ring_research = {
 
 	weight_modifier = {
 		modifier = {
-			add = 50
-			owner = { has_monthly_income = { resource = physics_research value < 200 } }
-			owner = { has_monthly_income = { resource = society_research value < 200 } }
-			owner = { has_monthly_income = { resource = engineering_research value < 200 } }
+			add = 150
+			or = {
+				num_buildings = {
+					type = building_research_lab_1
+					value > 4
+				}
+				num_buildings = {
+					type = building_research_lab_2
+					value > 2
+				}
+				num_buildings = {
+					type = building_research_lab_3
+					value > 1
+		}
+			}
 		}
 		modifier = {
 			add = 100
@@ -3988,23 +4072,23 @@ col_bureau = {
 			num_buildings = { type = building_bureaucratic_1 value >= 2 }
 		}
 		modifier = {
-			add = 4
+			add = 2
 			num_buildings = { type = building_bureaucratic_1 value >= 3 }
 		}
 		modifier = {
-			add = 5
+			add = 2
 			num_buildings = { type = building_bureaucratic_1 value >= 4 }
 		}
 		modifier = {
-			add = 6
+			add = 2
 			num_buildings = { type = building_bureaucratic_1 value >= 5 }
 		}
 		modifier = {
-			add = 5
+			add = 4
 			num_buildings = { type = building_bureaucratic_2 value >= 1 }
 		}
 		modifier = {
-			add = 6
+			add = 4
 			num_buildings = { type = building_bureaucratic_2 value >= 2 }
 		}
 ###Aripatch

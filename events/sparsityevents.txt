@@ -17,9 +17,21 @@ event = {
 				not = { is_country_type = awakened_marauders }
 				#not = { is_country_type = neutral_zone }				
 			}
-			add_modifier = {
-				modifier = sparsity_worker_nerf
-				days = -1
+			if = {
+				limit = {
+					is_machine_empire = yes
+				}								
+				add_modifier = {
+					modifier = sparsity_worker_nerf_machine
+					days = -1
+				}
+			}
+			else
+			{
+				add_modifier = {
+					modifier = sparsity_worker_nerf
+					days = -1
+				}				
 			}
 		}
 		every_galaxy_planet = {
@@ -57,22 +69,40 @@ event = {
 				not = { is_country_type = awakened_marauders }
 				#not = { is_country_type = neutral_zone }				
 			}
+			
 			if = {
 				limit = { 
 					has_global_flag = hemo_Dydiff_disabled
-					has_modifier = sparsity_worker_nerf				
+					or = {
+						has_modifier = sparsity_worker_nerf				
+						has_modifier = sparsity_worker_nerf_machine
+					}
 				}				
 				remove_modifier = sparsity_worker_nerf
+				remove_modifier = sparsity_worker_nerf_machine
 			}
 			else_if = {
 				limit = { 
 					not = { has_global_flag = hemo_Dydiff_disabled }
 					not = { has_modifier = sparsity_worker_nerf	}
+					not = { has_modifier = sparsity_worker_nerf_machine	}
 				}				
-				add_modifier = {
-					modifier = sparsity_worker_nerf
-					days = -1
-				}						
+				if = {
+					limit = {
+						is_machine_empire = yes
+					}								
+					add_modifier = {
+						modifier = sparsity_worker_nerf_machine
+						days = -1
+					}
+				}
+				else
+				{
+					add_modifier = {
+						modifier = sparsity_worker_nerf
+						days = -1
+					}				
+				}
 			}
 		}
 	}

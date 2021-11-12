@@ -1,0 +1,1055 @@
+namespace = robotics_standardization_function
+# Объединяем всех роботов в один вид с объединением подвидов с одинаковыми чертами
+country_event = {
+	id = robotics_standardization_function.1
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		country_event = {
+			id = robotics_standardization_function.11
+		}
+		country_event = {
+			id = robotics_standardization_function.21
+		}
+		country_event = {
+			id = robotics_standardization_function.12
+		}
+		country_event = {
+			id = robotics_standardization_main_menu.1
+		}
+	}
+}
+
+# Объединяем всех роботов в один вид без объединения подвидов с одинаковыми чертами
+country_event = {
+	id = robotics_standardization_function.3
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		country_event = {
+			id = robotics_standardization_function.11
+		}
+		country_event = {
+			id = robotics_standardization_function.23
+		}
+		country_event = {
+			id = robotics_standardization_function.12
+		}
+		country_event = {
+			id = robotics_standardization_main_menu.1
+		}
+	}
+}
+
+# Объединяем все виды и подвиды с одинаковыми чертами в соответствующие отдельные виды или подвиды
+country_event = {
+	id = robotics_standardization_function.5
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		country_event = {
+			id = robotics_standardization_function.11
+		}
+		country_event = {
+			id = robotics_standardization_function.24
+		}
+		country_event = {
+			id = robotics_standardization_function.12
+		}
+		country_event = {
+			id = robotics_standardization_main_menu.1
+		}
+	}
+}
+
+# ??? В процессе создаются НОВЫЕ виды, котоыре не промаркированы флагом "standardization_species_currently_processing" ???
+country_event = {
+	id = robotics_standardization_function.21
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {		
+		log = "Функция изменения сети роботов"
+		every_owned_pop = {
+			limit = {
+				is_being_purged = no
+				species = {
+					has_species_flag = standardization_species_currently_processing
+				}
+			}
+			if = {
+				limit = {
+					root = {
+						has_country_flag = NCT_DONT_SAVE_EXTERIOR
+					}
+				}
+				log = "Изменение портретов: ВКЛЮЧЕНО"
+				modify_species = {
+					base = event_target:target_standardization_species
+					portrait = event_target:target_standardization_species
+					change_scoped_species = yes
+				}
+				# log = "PROCESSED_SPECIES: [this.GetName]\tTARGET_SPECIES: [event_target:target_standardization_species.GetName]"
+			}
+			else_if = {
+				limit = {
+					root = {
+						has_country_flag = NCT_SAVE_EXTERIOR
+					}
+				}
+				log = "Изменение портретов: ВЫКЛЮЧЕНО"
+				modify_species = {
+					base = event_target:target_standardization_species
+					change_scoped_species = yes
+				}
+				# log = "PROCESSED_SPECIES: [this.GetName]\tTARGET_SPECIES: [event_target:target_standardization_species.GetName]"
+			}
+			# Создав промежуточный вариант подвида, сводим всех роботов в этот подвид
+			# change_species = event_target:target_standardization_sub_species
+		}
+		# root = {
+		# Должно работать, но не работает
+		# set_built_species = event_target:target_standardization_species
+		# }
+	}
+}
+
+# Функция объединения ВСЕХ видов роботов с одинаковыми чертами в свои отдельные подвиды в основном ранее выбранном виде
+country_event = {
+	id = robotics_standardization_function.23
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		log = "Функция объединения попов с одинаковыми чертами в отдельные подвиды"
+		every_owned_pop_species = {
+			limit = {
+				# Если мы хотим объединить ВСЕ виды в один вид в ОДНОМ вкладке ОСНОВНОГО вида,
+				# то должны провести операцию объединения взяв целевые виды только среди видов и подвидов ОСНОВНОГО вида
+				# Если мы хотим объединить виды с одинаковыми чертами между собой в случайные целевые виды и подвиды (не обязательно в одной вкладке),
+				# то следующее условие OR = {...} нужно убрать
+				OR = {
+					is_same_species = event_target:target_standardization_species
+					is_subspecies = event_target:target_standardization_species
+				}
+				# ###
+				has_species_flag = standardization_species_currently_processing
+			}
+			save_event_target_as = target_standardization_sub_species
+			root = {
+				every_owned_pop = {
+					limit = {
+						is_being_purged = no
+						species = {
+							has_species_flag = standardization_species_currently_processing
+						}
+						# Для определения нужно ли объединять этого попа с этим видом сравниваем ихз черты
+						# Простого способа чтобы сравнить черты попа и четры вида я не нашел,
+						# поэтому проверяем по очереди наличие или отсутствие конкретных черт у робота (единицы) и вида
+						# Если черта есть и у робота и у вида, или ее нет у обоих, то проверяем дальше
+						# trait_robot_bulky
+						OR = {
+							AND = {
+								prevprev = {
+									has_trait = trait_robot_bulky
+								}
+								pop_has_trait = trait_robot_bulky
+							}
+							NOR = {
+								prevprev = {
+									has_trait = trait_robot_bulky
+								}
+								pop_has_trait = trait_robot_bulky
+							}
+						}
+						# trait_robot_custom_made
+						OR = {
+							AND = {
+								prevprev = {
+									has_trait = trait_robot_custom_made
+								}
+								pop_has_trait = trait_robot_custom_made
+							}
+							NOR = {
+								prevprev = {
+									has_trait = trait_robot_custom_made
+								}
+								pop_has_trait = trait_robot_custom_made
+							}
+						}
+						# trait_robot_domestic_protocols
+						OR = {
+							AND = {
+								prevprev = {
+									has_trait = trait_robot_domestic_protocols
+								}
+								pop_has_trait = trait_robot_domestic_protocols
+							}
+							NOR = {
+								prevprev = {
+									has_trait = trait_robot_domestic_protocols
+								}
+								pop_has_trait = trait_robot_domestic_protocols
+							}
+						}
+						# trait_robot_double_jointed
+						OR = {
+							AND = {
+								prevprev = {
+									has_trait = trait_robot_double_jointed
+								}
+								pop_has_trait = trait_robot_double_jointed
+							}
+							NOR = {
+								prevprev = {
+									has_trait = trait_robot_double_jointed
+								}
+								pop_has_trait = trait_robot_double_jointed
+							}
+						}
+						# trait_robot_durable
+						OR = {
+							AND = {
+								prevprev = {
+									has_trait = trait_robot_durable
+								}
+								pop_has_trait = trait_robot_durable
+							}
+							NOR = {
+								prevprev = {
+									has_trait = trait_robot_durable
+								}
+								pop_has_trait = trait_robot_durable
+							}
+						}
+						# trait_robot_efficient_processors
+						OR = {
+							AND = {
+								prevprev = {
+									has_trait = trait_robot_efficient_processors
+								}
+								pop_has_trait = trait_robot_efficient_processors
+							}
+							NOR = {
+								prevprev = {
+									has_trait = trait_robot_efficient_processors
+								}
+								pop_has_trait = trait_robot_efficient_processors
+							}
+						}
+						# trait_robot_emotion_emulators
+						OR = {
+							AND = {
+								prevprev = {
+									has_trait = trait_robot_emotion_emulators
+								}
+								pop_has_trait = trait_robot_emotion_emulators
+							}
+							NOR = {
+								prevprev = {
+									has_trait = trait_robot_emotion_emulators
+								}
+								pop_has_trait = trait_robot_emotion_emulators
+							}
+						}
+						# trait_robot_enhanced_memory
+						OR = {
+							AND = {
+								prevprev = {
+									has_trait = trait_robot_enhanced_memory
+								}
+								pop_has_trait = trait_robot_enhanced_memory
+							}
+							NOR = {
+								prevprev = {
+									has_trait = trait_robot_enhanced_memory
+								}
+								pop_has_trait = trait_robot_enhanced_memory
+							}
+						}
+						# trait_robot_harvesters
+						OR = {
+							AND = {
+								prevprev = {
+									has_trait = trait_robot_harvesters
+								}
+								pop_has_trait = trait_robot_harvesters
+							}
+							NOR = {
+								prevprev = {
+									has_trait = trait_robot_harvesters
+								}
+								pop_has_trait = trait_robot_harvesters
+							}
+						}
+						# trait_robot_high_bandwidth
+						OR = {
+							AND = {
+								prevprev = {
+									has_trait = trait_robot_high_bandwidth
+								}
+								pop_has_trait = trait_robot_high_bandwidth
+							}
+							NOR = {
+								prevprev = {
+									has_trait = trait_robot_high_bandwidth
+								}
+								pop_has_trait = trait_robot_high_bandwidth
+							}
+						}
+						# trait_robot_high_maintenance
+						OR = {
+							AND = {
+								prevprev = {
+									has_trait = trait_robot_high_maintenance
+								}
+								pop_has_trait = trait_robot_high_maintenance
+							}
+							NOR = {
+								prevprev = {
+									has_trait = trait_robot_high_maintenance
+								}
+								pop_has_trait = trait_robot_high_maintenance
+							}
+						}
+						# trait_robot_learning_algorithms
+						OR = {
+							AND = {
+								prevprev = {
+									has_trait = trait_robot_learning_algorithms
+								}
+								pop_has_trait = trait_robot_learning_algorithms
+							}
+							NOR = {
+								prevprev = {
+									has_trait = trait_robot_learning_algorithms
+								}
+								pop_has_trait = trait_robot_learning_algorithms
+							}
+						}
+						# trait_robot_logic_engines
+						OR = {
+							AND = {
+								prevprev = {
+									has_trait = trait_robot_logic_engines
+								}
+								pop_has_trait = trait_robot_logic_engines
+							}
+							NOR = {
+								prevprev = {
+									has_trait = trait_robot_logic_engines
+								}
+								pop_has_trait = trait_robot_logic_engines
+							}
+						}
+						# trait_robot_loyalty_circuits
+						OR = {
+							AND = {
+								prevprev = {
+									has_trait = trait_robot_loyalty_circuits
+								}
+								pop_has_trait = trait_robot_loyalty_circuits
+							}
+							NOR = {
+								prevprev = {
+									has_trait = trait_robot_loyalty_circuits
+								}
+								pop_has_trait = trait_robot_loyalty_circuits
+							}
+						}
+						# trait_robot_luxurious
+						OR = {
+							AND = {
+								prevprev = {
+									has_trait = trait_robot_luxurious
+								}
+								pop_has_trait = trait_robot_luxurious
+							}
+							NOR = {
+								prevprev = {
+									has_trait = trait_robot_luxurious
+								}
+								pop_has_trait = trait_robot_luxurious
+							}
+						}
+						# trait_robot_mass_produced
+						OR = {
+							AND = {
+								prevprev = {
+									has_trait = trait_robot_mass_produced
+								}
+								pop_has_trait = trait_robot_mass_produced
+							}
+							NOR = {
+								prevprev = {
+									has_trait = trait_robot_mass_produced
+								}
+								pop_has_trait = trait_robot_mass_produced
+							}
+						}
+						# trait_robot_power_drills
+						OR = {
+							AND = {
+								prevprev = {
+									has_trait = trait_robot_power_drills
+								}
+								pop_has_trait = trait_robot_power_drills
+							}
+							NOR = {
+								prevprev = {
+									has_trait = trait_robot_power_drills
+								}
+								pop_has_trait = trait_robot_power_drills
+							}
+						}
+						# trait_robot_propaganda_machines
+						OR = {
+							AND = {
+								prevprev = {
+									has_trait = trait_robot_propaganda_machines
+								}
+								pop_has_trait = trait_robot_propaganda_machines
+							}
+							NOR = {
+								prevprev = {
+									has_trait = trait_robot_propaganda_machines
+								}
+								pop_has_trait = trait_robot_propaganda_machines
+							}
+						}
+						# trait_robot_recycled
+						OR = {
+							AND = {
+								prevprev = {
+									has_trait = trait_robot_recycled
+								}
+								pop_has_trait = trait_robot_recycled
+							}
+							NOR = {
+								prevprev = {
+									has_trait = trait_robot_recycled
+								}
+								pop_has_trait = trait_robot_recycled
+							}
+						}
+						# trait_robot_repurposed_hardware
+						OR = {
+							AND = {
+								prevprev = {
+									has_trait = trait_robot_repurposed_hardware
+								}
+								pop_has_trait = trait_robot_repurposed_hardware
+							}
+							NOR = {
+								prevprev = {
+									has_trait = trait_robot_repurposed_hardware
+								}
+								pop_has_trait = trait_robot_repurposed_hardware
+							}
+						}
+						# trait_robot_streamlined_protocols
+						OR = {
+							AND = {
+								prevprev = {
+									has_trait = trait_robot_streamlined_protocols
+								}
+								pop_has_trait = trait_robot_streamlined_protocols
+							}
+							NOR = {
+								prevprev = {
+									has_trait = trait_robot_streamlined_protocols
+								}
+								pop_has_trait = trait_robot_streamlined_protocols
+							}
+						}
+						# trait_robot_superconductive
+						OR = {
+							AND = {
+								prevprev = {
+									has_trait = trait_robot_superconductive
+								}
+								pop_has_trait = trait_robot_superconductive
+							}
+							NOR = {
+								prevprev = {
+									has_trait = trait_robot_superconductive
+								}
+								pop_has_trait = trait_robot_superconductive
+							}
+						}
+						# trait_robot_uncanny
+						OR = {
+							AND = {
+								prevprev = {
+									has_trait = trait_robot_uncanny
+								}
+								pop_has_trait = trait_robot_uncanny
+							}
+							NOR = {
+								prevprev = {
+									has_trait = trait_robot_uncanny
+								}
+								pop_has_trait = trait_robot_uncanny
+							}
+						}
+					}
+					change_species = event_target:target_standardization_sub_species
+				}
+			}
+			remove_species_flag = standardization_species_currently_processing
+			# root = {
+			# Должно работать, но не работает
+			# set_built_species = event_target:target_standardization_species
+		}
+	}
+}
+
+# Функция объединения ВСЕХ видов роботов с одинаковыми чертами в свои отдельные виды
+country_event = {
+	id = robotics_standardization_function.24
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		every_owned_pop_species = {
+			limit = {
+				# Если мы хотим объединить ВСЕ виды в один вид в ОДНОМ вкладке ОСНОВНОГО вида,
+				# то должны провести операцию объединения взяв целевые виды только среди видов и подвидов ОСНОВНОГО вида
+				# Если мы хотим объединить виды с одинаковыми чертами между собой в случайные целевые виды и подвиды (не обязательно в одной вкладке),
+				# то следующее условие OR = {...} нужно убрать
+				# OR = {
+				# 	is_same_species = event_target:target_standardization_species
+				# 	is_subspecies = event_target:target_standardization_species
+				# }
+				# ###
+				has_species_flag = standardization_species_currently_processing
+			}
+			save_event_target_as = target_standardization_sub_species
+			root = {
+				every_owned_pop = {
+					limit = {
+						is_being_purged = no
+						species = {
+							has_species_flag = standardization_species_currently_processing
+						}
+						# Для определения нужно ли объединять этого попа с этим видом сравниваем ихз черты
+						# Простого способа чтобы сравнить черты попа и четры вида я не нашел,
+						# поэтому проверяем по очереди наличие или отсутствие конкретных черт у робота (единицы) и вида
+						# Если черта есть и у робота и у вида, или ее нет у обоих, то проверяем дальше
+						# trait_robot_bulky
+						OR = {
+							AND = {
+								prevprev = {
+									has_trait = trait_robot_bulky
+								}
+								pop_has_trait = trait_robot_bulky
+							}
+							NOR = {
+								prevprev = {
+									has_trait = trait_robot_bulky
+								}
+								pop_has_trait = trait_robot_bulky
+							}
+						}
+						# trait_robot_custom_made
+						OR = {
+							AND = {
+								prevprev = {
+									has_trait = trait_robot_custom_made
+								}
+								pop_has_trait = trait_robot_custom_made
+							}
+							NOR = {
+								prevprev = {
+									has_trait = trait_robot_custom_made
+								}
+								pop_has_trait = trait_robot_custom_made
+							}
+						}
+						# trait_robot_domestic_protocols
+						OR = {
+							AND = {
+								prevprev = {
+									has_trait = trait_robot_domestic_protocols
+								}
+								pop_has_trait = trait_robot_domestic_protocols
+							}
+							NOR = {
+								prevprev = {
+									has_trait = trait_robot_domestic_protocols
+								}
+								pop_has_trait = trait_robot_domestic_protocols
+							}
+						}
+						# trait_robot_double_jointed
+						OR = {
+							AND = {
+								prevprev = {
+									has_trait = trait_robot_double_jointed
+								}
+								pop_has_trait = trait_robot_double_jointed
+							}
+							NOR = {
+								prevprev = {
+									has_trait = trait_robot_double_jointed
+								}
+								pop_has_trait = trait_robot_double_jointed
+							}
+						}
+						# trait_robot_durable
+						OR = {
+							AND = {
+								prevprev = {
+									has_trait = trait_robot_durable
+								}
+								pop_has_trait = trait_robot_durable
+							}
+							NOR = {
+								prevprev = {
+									has_trait = trait_robot_durable
+								}
+								pop_has_trait = trait_robot_durable
+							}
+						}
+						# trait_robot_efficient_processors
+						OR = {
+							AND = {
+								prevprev = {
+									has_trait = trait_robot_efficient_processors
+								}
+								pop_has_trait = trait_robot_efficient_processors
+							}
+							NOR = {
+								prevprev = {
+									has_trait = trait_robot_efficient_processors
+								}
+								pop_has_trait = trait_robot_efficient_processors
+							}
+						}
+						# trait_robot_emotion_emulators
+						OR = {
+							AND = {
+								prevprev = {
+									has_trait = trait_robot_emotion_emulators
+								}
+								pop_has_trait = trait_robot_emotion_emulators
+							}
+							NOR = {
+								prevprev = {
+									has_trait = trait_robot_emotion_emulators
+								}
+								pop_has_trait = trait_robot_emotion_emulators
+							}
+						}
+						# trait_robot_enhanced_memory
+						OR = {
+							AND = {
+								prevprev = {
+									has_trait = trait_robot_enhanced_memory
+								}
+								pop_has_trait = trait_robot_enhanced_memory
+							}
+							NOR = {
+								prevprev = {
+									has_trait = trait_robot_enhanced_memory
+								}
+								pop_has_trait = trait_robot_enhanced_memory
+							}
+						}
+						# trait_robot_harvesters
+						OR = {
+							AND = {
+								prevprev = {
+									has_trait = trait_robot_harvesters
+								}
+								pop_has_trait = trait_robot_harvesters
+							}
+							NOR = {
+								prevprev = {
+									has_trait = trait_robot_harvesters
+								}
+								pop_has_trait = trait_robot_harvesters
+							}
+						}
+						# trait_robot_high_bandwidth
+						OR = {
+							AND = {
+								prevprev = {
+									has_trait = trait_robot_high_bandwidth
+								}
+								pop_has_trait = trait_robot_high_bandwidth
+							}
+							NOR = {
+								prevprev = {
+									has_trait = trait_robot_high_bandwidth
+								}
+								pop_has_trait = trait_robot_high_bandwidth
+							}
+						}
+						# trait_robot_high_maintenance
+						OR = {
+							AND = {
+								prevprev = {
+									has_trait = trait_robot_high_maintenance
+								}
+								pop_has_trait = trait_robot_high_maintenance
+							}
+							NOR = {
+								prevprev = {
+									has_trait = trait_robot_high_maintenance
+								}
+								pop_has_trait = trait_robot_high_maintenance
+							}
+						}
+						# trait_robot_learning_algorithms
+						OR = {
+							AND = {
+								prevprev = {
+									has_trait = trait_robot_learning_algorithms
+								}
+								pop_has_trait = trait_robot_learning_algorithms
+							}
+							NOR = {
+								prevprev = {
+									has_trait = trait_robot_learning_algorithms
+								}
+								pop_has_trait = trait_robot_learning_algorithms
+							}
+						}
+						# trait_robot_logic_engines
+						OR = {
+							AND = {
+								prevprev = {
+									has_trait = trait_robot_logic_engines
+								}
+								pop_has_trait = trait_robot_logic_engines
+							}
+							NOR = {
+								prevprev = {
+									has_trait = trait_robot_logic_engines
+								}
+								pop_has_trait = trait_robot_logic_engines
+							}
+						}
+						# trait_robot_loyalty_circuits
+						OR = {
+							AND = {
+								prevprev = {
+									has_trait = trait_robot_loyalty_circuits
+								}
+								pop_has_trait = trait_robot_loyalty_circuits
+							}
+							NOR = {
+								prevprev = {
+									has_trait = trait_robot_loyalty_circuits
+								}
+								pop_has_trait = trait_robot_loyalty_circuits
+							}
+						}
+						# trait_robot_luxurious
+						OR = {
+							AND = {
+								prevprev = {
+									has_trait = trait_robot_luxurious
+								}
+								pop_has_trait = trait_robot_luxurious
+							}
+							NOR = {
+								prevprev = {
+									has_trait = trait_robot_luxurious
+								}
+								pop_has_trait = trait_robot_luxurious
+							}
+						}
+						# trait_robot_mass_produced
+						OR = {
+							AND = {
+								prevprev = {
+									has_trait = trait_robot_mass_produced
+								}
+								pop_has_trait = trait_robot_mass_produced
+							}
+							NOR = {
+								prevprev = {
+									has_trait = trait_robot_mass_produced
+								}
+								pop_has_trait = trait_robot_mass_produced
+							}
+						}
+						# trait_robot_power_drills
+						OR = {
+							AND = {
+								prevprev = {
+									has_trait = trait_robot_power_drills
+								}
+								pop_has_trait = trait_robot_power_drills
+							}
+							NOR = {
+								prevprev = {
+									has_trait = trait_robot_power_drills
+								}
+								pop_has_trait = trait_robot_power_drills
+							}
+						}
+						# trait_robot_propaganda_machines
+						OR = {
+							AND = {
+								prevprev = {
+									has_trait = trait_robot_propaganda_machines
+								}
+								pop_has_trait = trait_robot_propaganda_machines
+							}
+							NOR = {
+								prevprev = {
+									has_trait = trait_robot_propaganda_machines
+								}
+								pop_has_trait = trait_robot_propaganda_machines
+							}
+						}
+						# trait_robot_recycled
+						OR = {
+							AND = {
+								prevprev = {
+									has_trait = trait_robot_recycled
+								}
+								pop_has_trait = trait_robot_recycled
+							}
+							NOR = {
+								prevprev = {
+									has_trait = trait_robot_recycled
+								}
+								pop_has_trait = trait_robot_recycled
+							}
+						}
+						# trait_robot_repurposed_hardware
+						OR = {
+							AND = {
+								prevprev = {
+									has_trait = trait_robot_repurposed_hardware
+								}
+								pop_has_trait = trait_robot_repurposed_hardware
+							}
+							NOR = {
+								prevprev = {
+									has_trait = trait_robot_repurposed_hardware
+								}
+								pop_has_trait = trait_robot_repurposed_hardware
+							}
+						}
+						# trait_robot_streamlined_protocols
+						OR = {
+							AND = {
+								prevprev = {
+									has_trait = trait_robot_streamlined_protocols
+								}
+								pop_has_trait = trait_robot_streamlined_protocols
+							}
+							NOR = {
+								prevprev = {
+									has_trait = trait_robot_streamlined_protocols
+								}
+								pop_has_trait = trait_robot_streamlined_protocols
+							}
+						}
+						# trait_robot_superconductive
+						OR = {
+							AND = {
+								prevprev = {
+									has_trait = trait_robot_superconductive
+								}
+								pop_has_trait = trait_robot_superconductive
+							}
+							NOR = {
+								prevprev = {
+									has_trait = trait_robot_superconductive
+								}
+								pop_has_trait = trait_robot_superconductive
+							}
+						}
+						# trait_robot_uncanny
+						OR = {
+							AND = {
+								prevprev = {
+									has_trait = trait_robot_uncanny
+								}
+								pop_has_trait = trait_robot_uncanny
+							}
+							NOR = {
+								prevprev = {
+									has_trait = trait_robot_uncanny
+								}
+								pop_has_trait = trait_robot_uncanny
+							}
+						}
+					}
+					change_species = event_target:target_standardization_sub_species
+				}
+			}
+			remove_species_flag = standardization_species_currently_processing
+			# root = {
+			# Должно работать, но не работает
+			# set_built_species = event_target:target_standardization_species
+		}
+	}
+}
+
+# Если меню запускается в первый раз проведем поиск случайного целевого вида для объединения
+country_event = {
+	id = robotics_standardization_function.10
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+		NOT = {
+			has_country_flag = first_start_menu_passed
+		}
+	}
+	immediate = {
+		every_owned_pop_species = {
+			limit = {
+				# Убирается главный вид из поиска, чтобы его не трогать (если основатели империи сейчас являются синтетиками)
+				NOT = {
+					OR = {
+						is_same_species = root.owner_species
+						is_subspecies = root.owner_species
+					}
+				}
+				# Выбираются только роботы империи
+				OR = {
+					is_species_class = MACHINE
+					is_species_class = ROBOT
+				}
+			}
+			# rename_species = { name = random } # Для теста
+			# mutate_species = yes # Для теста
+			# Ставим метку на всех роботов в империи
+			# set_species_flag = standardization_species_currently_processing
+			# Последний обработанный вид роботов (даже если он один) будет принят как целевой вид объединения для некоторых функций
+			# event_target:target_standardization_species = {
+			# 	remove_species_flag = TARGET_SPECIES_FLAG
+			# }
+			set_species_flag = TARGET_SPECIES_FLAG
+			save_event_target_as = target_standardization_species
+		}
+		every_owned_pop_species = {
+			limit = {
+				NOT = { is_exact_same_species = event_target:target_standardization_species }
+			}
+			remove_species_flag = TARGET_SPECIES_FLAG
+		}
+		# Снимаем со всех видов метку объединения
+		every_owned_pop_species = {
+			limit = {
+				has_species_flag = standardization_species_currently_processing
+			}
+			remove_species_flag = standardization_species_currently_processing
+		}
+		# Ставим метку о том что ПРЕДВАРИТЕЛЬНОЕ АВТОСКАНИРОВАНИЕ с первым запуском меню было выполнено
+		set_country_flag = first_start_menu_passed
+	}
+}
+
+# Маркируем все виды и подвиды роботов (кроме основателей, если они синты) как подлежащие объединению
+# Целевой вид/подвид пока случайный (последний обработанный)
+country_event = {
+	id = robotics_standardization_function.11
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {		
+		log = "Функция маркировки роботов подлежащих объединению"
+		every_owned_pop_species = {
+			limit = {
+				# Убирается главный вид из поиска, чтобы его не трогать (если основатели империи сейчас являются синтетиками)
+				NOT = {
+					OR = {
+						is_same_species = root.owner_species
+						is_subspecies = root.owner_species
+					}
+				}
+				# Выбираются только роботы империи
+				OR = {
+					is_species_class = MACHINE
+					is_species_class = ROBOT
+				}
+			}
+			#Ставим метку на всех роботов в империи
+			set_species_flag = standardization_species_currently_processing
+		}
+	}
+}
+
+# Снимаем маркеры объединения со всех видов и подвидов роботов
+country_event = {
+	id = robotics_standardization_function.12
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		log = "Функция очистки всей маркировки"
+		# Снимаем со всех видов метку объединения
+		every_owned_pop_species = {
+			limit = {
+				has_species_flag = standardization_species_currently_processing
+			}
+			remove_species_flag = standardization_species_currently_processing
+		}
+		# Снимаем со метку целевого вида для объединения
+		every_owned_pop_species = {
+			limit = {
+				has_species_flag = TARGET_SPECIES_FLAG
+			}
+			remove_species_flag = TARGET_SPECIES_FLAG
+		}
+	}
+}
+
+# [Полный выход из меню]
+# Принудительно снимаем маркеры объединения со всех видов и подвидов роботов
+# При правильной работе предыдущих фукций, таких маркеров не останется
+country_event = {
+	id = robotics_standardization_function.13
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		is_ai = no
+	}
+	immediate = {
+		log = "Функция очистки всей маркировки"
+		# Снимаем со всех видов метку объединения
+		every_owned_pop_species = {
+			limit = {
+				has_species_flag = standardization_species_currently_processing
+			}
+			remove_species_flag = standardization_species_currently_processing
+		}
+		# Снимаем со метку целевого вида для объединения
+		every_owned_pop_species = {
+			limit = {
+				has_species_flag = TARGET_SPECIES_FLAG
+			}
+			remove_species_flag = TARGET_SPECIES_FLAG
+		}
+		# Очищаем метку о прошедшем первом запуске меню
+		remove_country_flag = first_start_menu_passed
+	}
+}
