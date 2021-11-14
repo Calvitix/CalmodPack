@@ -2,7 +2,7 @@
 #
 # Calvitix Check 3.1.2  08/10/2021
 #
-# Last Update : 13/10/2021
+# Last Update : 14/11/2021
 #
 ##################################
 ### Subspace disruption system ###
@@ -30,7 +30,19 @@ decision_maginot_anti_jump_on = {
 	allow = {
 		custom_tooltip = {
 			fail_text = decision_maginot_anti_jump_on_must_not_already_be_active
-			solar_system = { NOT = { has_star_flag = maginot_anti_jump_star } }
+			# fail if system is already protected
+			# EXCEPTION: nearby system is not protected, allowing extending field protection incrementally
+			solar_system = {
+				OR = {
+					NOT = { has_star_flag = maginot_anti_jump_star }
+					if = {
+						limit = { has_star_flag = maginot_anti_jump_star }
+						any_neighbor_system = {
+							NOT = { has_star_flag = maginot_anti_jump_star }
+		}
+	}
+				}
+			}
 		}
 	}
 	
@@ -47,10 +59,13 @@ decision_maginot_anti_jump_on = {
 				# Prevents jump drives
 				set_star_flag = maginot_anti_jump_star
 				system_star = {
+					if = {
+						limit = { NOT = { has_modifier = maginot_anti_jump_star_modifier } }
 					add_modifier = {
 						modifier = maginot_anti_jump_star_modifier
 						days = -1
 					}
+				}
 				}
 				# Prevents NDB & QSO
 				every_system_planet = {
@@ -67,10 +82,13 @@ decision_maginot_anti_jump_on = {
 					# Prevents jump drives
 					set_star_flag = maginot_anti_jump_star
 					system_star = {
+						if = {
+							limit = { NOT = { has_modifier = maginot_anti_jump_star_modifier } }
 						add_modifier = {
 							modifier = maginot_anti_jump_star_modifier
 							days = -1
 						}
+					}
 					}
 					if = { #trad boosts it
 						limit = { ROOT.owner = { has_active_tradition = tr_gigabulwark_maginot_protocols } }
@@ -84,12 +102,15 @@ decision_maginot_anti_jump_on = {
 							# Prevents jump drives
 							set_star_flag = maginot_anti_jump_star
 							system_star = {
+								if = {
+									limit = { NOT = { has_modifier = maginot_anti_jump_star_modifier } }
 								add_modifier = {
 									modifier = maginot_anti_jump_star_modifier
 									days = -1
 								}
 							}
 						}
+					}
 					}
 					# Prevents NDB & QSO - nope, not in neighbours
 					#every_system_planet = {
