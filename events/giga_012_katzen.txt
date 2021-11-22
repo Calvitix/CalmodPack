@@ -2,7 +2,7 @@
 #
 # Calvitix Check 3.1.1  14/09/2021
 #
-# Last Update : 09/11/2021
+# Last Update : 20/11/2021
 #
 #Calvitix Trad Names
 namespace = giga_katzen
@@ -2335,6 +2335,7 @@ country_event = { #hello
 				is_at_war_with = event_target:flusion_primitives_country
 				has_country_flag = allied_to_kaiser #i know kaiser is handsome but u cant ally him twice, sorry
 				has_country_flag = katzen_vassal
+				has_country_flag = already_allied_to_kaiser_once
 			}
 		}
 		allow = {
@@ -3166,6 +3167,7 @@ country_event = { #Allying with Kaiser
 				modifier = fto_member
 				days = -1
 			}
+			set_country_flag = already_allied_to_kaiser_once
 			set_country_flag = allied_to_kaiser
 			remove_country_flag = katzen_diplomacy_engaged
 			save_global_event_target_as = new_katzen_ally
@@ -5842,7 +5844,7 @@ country_event = {
 	hide_window = yes
 
 	trigger = {
-		is_country = event_target:solakia
+		has_country_flag = solakia
 		any_owned_planet = {
 			has_planet_flag = gigaflusion
 		}
@@ -7873,14 +7875,16 @@ event = { #unbork flusion
 	hide_window = yes
 
 	trigger = {
+		AND = {
+			exists = event_target:gigaflusion
 		event_target:gigaflusion = {
 			OR = {
 				is_occupied_flag = yes
-				exists = controller #calvitix debug
 				controller = {
 					NOT = { is_country_type = katzenartig_imperium }
 				}
 			}
+		}
 		}
 		has_global_flag = katzenartig_imperium_happened
 		NOT = { has_global_flag = katzenartig_imperium_defeated }
@@ -8058,6 +8062,7 @@ country_event = { #Collapse of Katzenartig
 	is_triggered_only = yes
 
 	immediate = {
+		set_update_modifiers_batch = begin
 		every_system = {
 			every_ship_in_system = {
 				limit = {
@@ -9026,6 +9031,7 @@ country_event = { #Collapse of Katzenartig
 				}
 			}
 		}
+		set_update_modifiers_batch = end
 	}
 }
 

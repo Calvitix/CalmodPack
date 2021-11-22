@@ -5,6 +5,7 @@
 # Merge with STARNET 30/10/2021
 # Merge with Plentiful Trad
 # Merge with Unlock More Building Slots 28/09/2021
+# Merge with AriPatch 19/11/2021
 #
 @base_cost = 300
 @city_cost = 500
@@ -39,6 +40,22 @@ district_city = {
 		NOT = { has_modifier = resort_colony }
 		NOT = { has_modifier = slave_colony }
 		#str_city_district_allow = yes   #Calvitix disabled
+		OR = { #AriPath 3.2
+			NOT = { exists = owner }
+			AND = {
+				exists = owner
+				OR = {
+					owner = { is_ai = no }
+					AND = {
+						num_districts = { type = district_city value < 3 }
+					}
+					AND = {
+						num_districts = { type = district_city value < 6 }
+						is_capital = yes
+					}
+				}
+			}
+		}
 	}
 
 	conversion_ratio = 1
@@ -79,6 +96,9 @@ district_city = {
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
+			owner = {
+				is_regular_empire = yes
+			}
 			str_enable_clerks = yes  #Starnet AI
 		}
 		modifier = {
@@ -141,7 +161,7 @@ district_city = {
 		potential = {
 			exists = owner
 			owner = { has_active_tradition = tr_prosperity_interstellar_franchising }
-			str_enable_clerks = yes 
+			str_enable_clerks = yes #Starnet AI
 		}
 		modifier = {
 			job_clerk_add = 1
@@ -304,6 +324,22 @@ district_hive = {
 
 	allow = {
 		NOT = { has_modifier = resort_colony }
+		OR = { #3.2
+			NOT = { exists = owner }
+			AND = {
+				exists = owner
+				OR = {
+					owner = { is_ai = no }
+					AND = {
+						num_districts = { type = district_hive value < 3 }
+					}
+					AND = {
+						num_districts = { type = district_hive value < 6 }
+						is_capital = yes
+					}
+				}
+			}
+		}
 		#str_city_district_allow = yes  #Calvitix disabled
 	}
 
@@ -472,7 +508,23 @@ district_nexus = {
 
 	allow = {
 		NOT = { has_modifier = resort_colony }
-		str_nexus_district_allow = yes
+		OR = { 
+			NOT = { exists = owner }
+			AND = {
+				exists = owner
+				OR = {
+					owner = { is_ai = no }
+					AND = {
+						num_districts = { type = district_nexus value < 3 }
+					}
+					AND = {
+						num_districts = { type = district_nexus value < 6 }
+						is_capital = yes
+					}
+				}
+			}
+		}
+		#str_nexus_district_allow = yes #Starnet AI, Calvitix disabled
 	}
 
 	conversion_ratio = 1
@@ -609,6 +661,7 @@ district_industrial = {
 		}
 	}
 
+#Starnet AI
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
@@ -622,7 +675,7 @@ district_industrial = {
 			job_starnet_spice_melange_antifarmer_add = -1
 		}
 	}
-
+###
 
 	triggered_planet_modifier = {
 		potential = {
@@ -1109,7 +1162,7 @@ district_industrial = {
 
 #STARNET AI
 	ai_resource_production = {
-		alloys = 3
+		alloys = 3 #1
 		trigger = {
 			planet = { str_is_col_factory = no } #replaced because industrial is in tons of district sets
 		}

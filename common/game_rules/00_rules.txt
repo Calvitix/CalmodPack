@@ -2,7 +2,7 @@
 #
 # Calvitix Check 3.1.1  14/09/2021
 #
-# Merge with Arisphaos Unofficial patch
+# Merge with Arisphaos Unofficial patch 19/11/2021
 # Merge with Expanded events
 # Merge with Fix
 # Merge with ver exp. vassals 17/05/2021
@@ -1140,7 +1140,7 @@ can_take_hostile_actions = {
 	else_if = {
 		limit = {
 			AND = {
-				NOT = { has_country_flag = hostile_to_nomads }
+				NOT = { is_hostile = root } #3.2
 				ROOT = {
 					is_country_type = nomad
 				}
@@ -1601,7 +1601,8 @@ can_orbital_bombard = {
                 is_country_type = primitive
             }
         }
-        ROOT.OWNER = {
+		# Risa fix.
+		ROOT.OWNER = {
             is_hostile = FROM.CONTROLLER
         }
         ROOT.OWNER = {
@@ -1615,8 +1616,8 @@ can_orbital_bombard = {
                 is_country_type = swarm
                 is_country_type = ai_empire
                 is_country_type = cybrex_empire
-                is_country_type = compound_empire
-                is_country_type = katzenartig_imperium
+                is_country_type = compound_empire #Giga
+                is_country_type = katzenartig_imperium #Giga
                 AND = {
                     is_country_type = awakened_marauders
                     ROOT.OWNER = {
@@ -1632,14 +1633,14 @@ can_orbital_bombard = {
                 is_country_type = extradimensional_3
                 is_country_type = swarm
                 is_country_type = ai_empire
-                is_country_type = cybrex_empire
+				#is_country_type = cybrex_empire		# should be governed by hostile rule Aripatch
                 is_country_type = dormant_marauders
                 is_country_type = marauder_raiders
                 is_country_type = ruined_marauders
                 is_country_type = gray_goo
                 is_country_type = vol
-                is_country_type = compound_empire
-                is_country_type = katzenartig_imperium
+                is_country_type = compound_empire #Giga
+                is_country_type = katzenartig_imperium #Giga
                 AND = {
                     is_country_type = awakened_marauders
                     FROM.CONTROLLER = {
@@ -1665,7 +1666,7 @@ can_orbital_bombard = {
                 is_same_value = root.owner
             }
         }
-        AND = {
+        AND = { #Mem
             exists = ROOT.OWNER
             exists = FROM.CONTROLLER
             ROOT.OWNER = {
@@ -1679,7 +1680,7 @@ can_orbital_bombard = {
             }
         }
     }
-    FROM = {
+    FROM = { #RS New Frontiers
         NOR = {
             has_modifier = "infernal_world"
             has_modifier = "subglacial_world"
@@ -1905,7 +1906,12 @@ can_spawn_debris = {
 ai_should_restrict_system = {
 	OR = {
 		AND = {
-			root = { is_country_type = fallen_empire }
+			root = {
+				OR = {
+					is_country_type = caravaneer_fleet
+					is_country_type = fallen_empire
+				}
+			}
 			exists = owner
 			owner = { 
 				OR = {
@@ -1917,6 +1923,7 @@ ai_should_restrict_system = {
 		AND = {
 			root = { 
 				OR = {
+					is_country_type = caravaneer_fleet
 					is_country_type = awakened_marauders 
 					is_country_type = marauder_raiders # Doesn't actually work but I register my protest anyway.
 				}
@@ -1930,6 +1937,7 @@ ai_should_restrict_system = {
 					is_country_type = fallen_empire
 					is_country_type = awakened_marauders
 					is_country_type = marauder_raiders
+					is_country_type = caravaneer_fleet
 				}
 			}
 			has_star_flag = guardian
@@ -1946,6 +1954,7 @@ ai_should_restrict_system = {
 					is_country_type = fallen_empire
 					is_country_type = awakened_marauders
 					is_country_type = marauder_raiders
+					is_country_type = caravaneer_fleet
 				}
 			}
 			OR = {
@@ -1998,7 +2007,7 @@ can_spawn_occupation_armies = {
 # root = country
 system_blocks_sensors = {
 	OR = {
-		AND = {
+		AND = { #WildSpace Mod
 			exists = starbase
 			starbase = { has_starbase_building = ariphaos_sensors_jammer_starbase }
 			ROOT = { NOT = { has_technology = tech_ariphaos_sensors_jammed } }
@@ -2525,7 +2534,7 @@ can_be_sold_on_slave_market = {
 			is_unemployed = yes
 			is_being_assimilated = no
 			planet = {
-				num_unemployed > 3
+				num_unemployed > 2  #3 Aripatch 3.2
 			}
 			OR = {
 				NOT = { has_trait = trait_syncretic_proles }
@@ -2681,8 +2690,8 @@ can_planet_auto_migrate = {
 	OR = {
 			colony_age > 60
 			is_capital = yes # Don't break Doomsday!
-			has_planet_flag = pd_habitat_start_luna
-			has_planet_flag = pd_habitat_start_mars
+			has_planet_flag = pd_habitat_start_luna #PD ?
+			has_planet_flag = pd_habitat_start_mars #PD ?
 	}
 	exists = owner
 	owner = {
@@ -2711,8 +2720,6 @@ can_planet_receive_auto_migration = {
 		has_modifier = doomsday_5
 	}
 }
-#3.0.3b end
-
 
 # This = country contacting
 # From = target country

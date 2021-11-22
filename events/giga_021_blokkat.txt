@@ -1,6 +1,6 @@
 # Giga File
 #
-# Last Update : 09/11/2021
+# Last Update : 17/11/2021
 #
 
 namespace = giga_blokkat
@@ -1474,10 +1474,38 @@ country_event = {
 				}
 				event_target:blokkat_mothership_fleet = { destroy_fleet = THIS }
 			}
+			if = {
+				limit = { exists = event_target:blokkat_mothership_escort_fleet }
+				event_target:blokkat_mothership_escort_fleet = { destroy_fleet = THIS }
+			}
 			every_country = {
 				country_event = { id = giga_blokkat.50031 }
 			}
 			set_global_flag = gotta_respawn_blokkat_mothership
+		}
+		if = { #delete IF shield is down
+			limit = {
+				NOT = { has_global_flag = gotta_respawn_blokkat_mothership }
+				has_global_flag = blokkat_mothership_shield_down
+				NOT = { has_global_flag = blokkat_mothership_killed_legit }
+				NOT = { has_global_flag = blokkat_crisis_defeated }
+				NOT = { any_owned_fleet = { has_fleet_flag = blokkat_mothership_fleet } }
+			}
+			#set_global_flag = blokkat_mothership_killed_legit
+			if = {
+				limit = {
+					event_target:blokkat_mothership_ship = { is_disabled = yes }
+				}
+				event_target:blokkat_mothership_fleet = { destroy_fleet = THIS }
+			}
+			if = {
+				limit = { exists = event_target:blokkat_mothership_escort_fleet }
+				event_target:blokkat_mothership_escort_fleet = { destroy_fleet = THIS }
+			}
+			random_country = {
+				limit = { is_ai = no }
+				country_event = { id = giga_blokkat.1030 }
+			}
 		}
 		every_megastructure = {
 			limit = {
@@ -2675,7 +2703,6 @@ ship_event = {
 	}
 
 	immediate = {
-		set_global_flag = blokkat_mothership_killed_legit
 		ROOT.solar_system = {
 			create_ambient_object = {
 				type = "star_explosion"
@@ -2718,6 +2745,7 @@ country_event = {
 	picture = GFX_evt_supernova
 
 	immediate = {
+		set_global_flag = blokkat_mothership_killed_legit
 		save_global_event_target_as = blokkat_vanquisher
 		remove_global_flag = blokkat_crisis_ongoing
 		set_global_flag = blokkat_crisis_defeated
@@ -10071,6 +10099,88 @@ fleet_event = {
 	}
 }
 
+fleet_event = {
+	id = giga_blokkat.7008
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		fleet_event = { id = giga_blokkat.7008 days = 15 }
+		clear_fleet_actions = this
+		clear_orders = yes
+		remove_auto_move_target = yes
+		auto_follow_fleet = {
+			target = event_target:blokkat_mothership_fleet
+			attack_fleet = no
+		}
+	}
+}
+
+#Set unbork timer
+fleet_event = {
+	id = giga_blokkat.7009
+	is_triggered_only = yes
+	hide_window = yes
+
+	trigger = {
+		has_fleet_flag = blokkat_stripmine_fleet
+		FROM = { NOT = { is_star_class = sc_blokkat_stripmined } }
+	}
+
+	immediate = {
+		FROM = { #give it a kick if stuck
+			system_event = { id = giga_blokkat.7010 days = 360 }
+		}
+	}
+}
+
+system_event = {
+	id = giga_blokkat.7010
+	is_triggered_only = yes
+	hide_window = yes
+
+	trigger = {
+		any_fleet_in_system = { has_fleet_flag = blokkat_stripmine_fleet }
+	}
+
+	immediate = {
+		if = {
+			limit = { any_fleet_in_system = { has_fleet_flag = blokkat_stripmine_fleet } }
+			system_event = { id = giga_blokkat.7010 days = 60 }
+			every_fleet_in_system = {
+				limit = { has_fleet_flag = blokkat_stripmine_fleet }
+				queue_actions = {
+					find_closest_system = {
+						trigger = {
+							id = giga_blokkat.7010.trigger.1
+							is_same_value = event_target:future_blokkat_mothership_system
+						}
+						found_system = {
+							effect = {
+								id = giga_blokkat.7010.trigger.2
+								THIS = {
+									if = {
+										limit = {
+											NOT = {
+												has_hyperlane_to = event_target:current_blokkat_mothership_system
+											}
+										}
+										add_hyperlane = {
+											from = event_target:current_blokkat_mothership_system
+											to = THIS
+										}
+									}
+								}
+							}
+							move_to = this
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
 fleet_event = { #this event is ran monthly on the harvesting fleets
 	id = giga_blokkat.7001
 	hide_window = yes
@@ -10409,8 +10519,9 @@ fleet_event = { #this event is ran monthly on the mothership fleet
 				NOT = { has_fleet_flag = blokkat_mothership_fleet_goes_to_star }
 				solar_system = {
 					exists = THIS
-					NOT = {
+					NOR = {
 						has_star_flag = blokkat_stripmined_system
+						has_star_flag = blokkat_system_being_stripmined
 					}
 				}
 			}

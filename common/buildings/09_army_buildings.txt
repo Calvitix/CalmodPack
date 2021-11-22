@@ -4,6 +4,7 @@
 #
 # Merge with Starnet AI 30/10/2021
 # Merge with Mem_planetary
+# Merge with Aripatch   19/11/2021
 #
 #############
 # Army buildings
@@ -153,6 +154,19 @@ building_stronghold = {
 	}
 
 	destroy_trigger = {
+		#exists = owner  #Ori
+		#owner = { is_ai = yes }
+		#AND = {
+		#	OR = {
+		#		num_buildings = { type = building_stronghold value > 1 }
+		#		has_building = building_fortress
+		#	}
+		#	free_building_slots = 0
+		#	owner = {
+		#		used_naval_capacity_percent < 0.6
+		#		is_at_war = no # don't destroy while at war
+		#	}
+		#}
 		str_stronghold_destroy = yes
 	}
 	
@@ -387,16 +401,18 @@ building_fortress = {
 	category = army
 	
 	allow = {
-		exists = owner
 		has_upgraded_capital = yes
-#Starnet AI
-		buildings_upgrade_allow = yes
-		buildings_has_motes = yes
-		or = {
+		exists = owner
+		OR = {
 			owner = { is_ai = no }
+			AND = {
+				buildings_upgrade_allow = yes
+				buildings_has_motes = yes
+			}
+#Starnet AI
 			has_planet_flag = str_supervisor
-		}
 #
+		}
 	}
 	
 	destroy_trigger = {
@@ -422,7 +438,7 @@ building_fortress = {
 				free_building_slots = 0
 				owner = { used_naval_capacity_percent < 0.4	}
 			}
-			and = {
+			and = { #Starnet AI
 				buildings_no_motes = yes
 				has_planet_flag = str_supervisor
 			}

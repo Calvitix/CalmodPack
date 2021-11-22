@@ -2,7 +2,7 @@
 #
 # Calvitix Check 3.1.2  08/10/2021
 #
-# Last Update : 13/10/2021
+# Last Update : 16/11/2021
 #
 namespace = giga_aeternum
 
@@ -12,8 +12,16 @@ country_event = {
 	is_triggered_only = yes
 
 	immediate = {
+		if = {
+			limit = { NOT = { has_global_flag = giga_core_aeternum_4 } }
 		event_target:aeternum_birch_world = {
 			add_district = district_giga_birch_structure
+		}
+		}
+		else = {
+			event_target:aeternum_birch_world = {
+				add_district = district_void_birch_structure
+			}
 		}
 		country_event = { id = giga_aeternum.1001 days = 2 }
 	}
@@ -44,12 +52,36 @@ country_event = {
 					days = -1
 				}
 			}
+			else_if = {
+				limit = { has_global_flag = giga_core_aeternum_4 }
+				add_modifier = {
+					modifier = aeternum_buff_4
+					days = -1
+				}
+			}
 		}
 		event_target:aeternum_birch_world = {
 			solar_system = { random_system_planet = { limit = { is_planet_class = pc_core_black_hole } set_name = "Aiondiaukko" } }
+			if = {
+				limit = { has_global_flag = giga_core_aeternum_4 }
+				solar_system = {
+					random_system_planet = { 
+						limit = { is_planet_class = pc_core_black_hole }
+						set_planet_size = 1 
+					}
+				}
+			}
+			if = {
+				limit = { NOT = { has_global_flag = giga_core_aeternum_4 } }
 			add_district = district_giga_birch_extraction
 			add_district = district_giga_birch_ktisma
 			add_district = district_giga_birch_physma
+			}
+			else = {
+				add_district = district_void_birch_extraction
+				add_district = district_void_birch_matrioshka
+				add_district = district_void_birch_nidavellir
+			}
 
 			katzen_clear_capitals = yes
 
@@ -418,6 +450,13 @@ event = {
 					set_variable = {
 						which = years_until_awakening
 						value = 3
+					}
+				}
+				else_if = {
+					limit = { has_global_flag = giga_core_aeternum_4 }
+					set_variable = {
+						which = years_until_awakening
+						value = 0
 					}
 				}
 			}
@@ -1500,6 +1539,15 @@ country_event = {
 				}
 			}
 		}
+		else_if = {
+			limit = { has_global_flag = giga_core_aeternum_4 }
+			event_target:birch_aeternum = {
+				set_variable = {
+					which = max_allowed_aeternum_forges
+					value = 999 #Lol
+				}
+			}
+		}
 		event_target:birch_aeternum = {
 			country_event = { id = giga_aeternum.4100 days = 30 } #do it again
 			if = { #resettle pops to alondia
@@ -1742,6 +1790,13 @@ country_event = {
 							set_timed_country_flag = {
 								flag = aeternum_forge_built_recently
 								days = 180
+							}
+						}
+						if = {
+							limit = { has_global_flag = giga_core_aeternum_4 }
+							set_timed_country_flag = {
+								flag = aeternum_forge_built_recently
+								days = 10
 							}
 						}
 					}
@@ -2253,11 +2308,13 @@ country_event = {
 			remove_modifier = birch_world_grand_shield
 		}
 		hidden_effect = {
+			if = {
+				limit = { NOT = { has_global_flag = giga_core_aeternum_4 } }
 			event_target:aeternum_birch_world = {
-				set_planet_entity = {
-					entity = birch_world_01_entity
+					set_planet_entity = { entity = birch_world_01_entity }
 				}
 			}
+
 			if = {
 				limit = { has_modifier = disrupting_alondia_shield }
 				remove_modifier = disrupting_alondia_shield
@@ -2443,7 +2500,10 @@ country_event = {
 					NOT = {
 						has_country_flag = giga_achievement_aet3
 					}
+					OR = {
 					has_global_flag = giga_core_aeternum_3
+						has_global_flag = giga_core_aeternum_4
+					}
 				}
 				set_country_flag = giga_achievement_aet1
 				set_country_flag = giga_achievement_aet2
@@ -6436,6 +6496,13 @@ country_event = {
 					value = 2
 				}
 			}
+			else_if = {
+				limit = { has_global_flag = giga_core_aeternum_4 }
+				change_variable = {
+					which = years_until_awakening
+					value = 0
+				}
+			}
 			change_variable = {
 				which = speed_debuff
 				value = 15
@@ -7359,8 +7426,16 @@ country_event = {
 	is_triggered_only = yes
 
 	immediate = {
+		if = {
+			limit = { NOT = { has_global_flag = giga_core_aeternum_4 } }
 		event_target:aeternum_birch_world = {
 			add_district = district_giga_birch_structure
+		}
+		}
+		else = {
+			event_target:aeternum_birch_world = {
+				add_district = district_void_birch_structure
+			}
 		}
 		country_event = { id = giga_aeternum.9992 days = 2 }
 	}
@@ -7375,9 +7450,18 @@ country_event = {
 	immediate = {
 		event_target:aeternum_birch_world = {
 			solar_system = { random_system_planet = { limit = { is_planet_class = pc_core_black_hole } set_name = "Aiondiaukko" } }
+
+			if = {
+				limit = { NOT = { has_global_flag = giga_core_aeternum_4 } }
 			add_district = district_giga_birch_extraction
 			add_district = district_giga_birch_ktisma
 			add_district = district_giga_birch_physma
+			}
+			else = {
+				add_district = district_void_birch_extraction
+				add_district = district_void_birch_matrioshka
+				add_district = district_void_birch_nidavellir
+			}
 
 			katzen_clear_capitals = yes
 
@@ -7405,5 +7489,22 @@ country_event = {
 			add_deposit = d_aeternum_decaying_hyperstructure
 			add_deposit = d_aeternum_decaying_hyperstructure
 		}
+	}
+}
+
+#kill aeternite herc
+ship_event = {
+	id = giga_aeternum.6000
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_global_flag = sofe_activated
+		is_ship_size = precursor_colossus
+		owner = { is_country_type = dormant_aeternum }
+	}
+
+	immediate = {
+		destroy_ship = ROOT
 	}
 }

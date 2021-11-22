@@ -3,7 +3,7 @@
 # Calvitix Check 3.1.1  14/09/2021
 #
 # Merge with Starnet AI 12/11/2021
-#
+# Merge with Aripatch   19/11/2021
 #
 #############
 # Science buildings
@@ -137,26 +137,30 @@ building_research_lab_2 = {
 
 	allow = {
 		has_upgraded_capital = yes
-#Starnet AI
-		buildings_has_exotic_gases = yes
 		or = {
 			owner = {
 				is_ai = no
-	}
+			}
 			and = {
 				free_building_slots = 0
+				buildings_has_exotic_gases = yes
+				ariphaos_patch_unemployed_specialist = yes
 				free_district_slots < 3
 				free_jobs < 2
 				or = {
-					str_is_col_research = yes
-					num_unemployed > 1
+					#has_designation = col_research
+					str_is_col_research = yes #Starnet AI
 					is_capital = yes
+					and = {
+						num_unemployed > 1
+						free_district_slots < 3
+					}
 				}
-				free_housing > 5
-				str_research_allow = yes
+				free_housing > 5 # 3
+				str_research_allow = yes #Starnet AI
+
 			}
 		}
-###
 	}
 
 	destroy_trigger = {
@@ -442,7 +446,7 @@ building_institute = {
 
 	allow = {
 		has_major_upgraded_capital = yes
-#mod ?
+#mod Starnet AI
 		exists = owner
 		or = {
 			owner = { is_ai = no }

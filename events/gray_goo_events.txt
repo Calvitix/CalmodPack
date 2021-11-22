@@ -1,8 +1,8 @@
 # Original File
 #
-# Calvitix Check 3.0.3b  30/04/2021
+# Calvitix Check 3.2  19/11/2021
 #
-# Merge with Arisphaos Unofficial patch
+# Merge with Arisphaos Unofficial patch 19/11/2021
 # Merge with JL PICARD 04/05/2021
 # Merge with expanded events 28/06/2021
 #
@@ -276,6 +276,7 @@ country_event = {
 				}
 				NOT = { is_same_value = root }
 			}
+			liquidate_clues = yes
 			country_event = { id = graygoo.11 }
 		}
 		observer_event = { id = observer.64 }
@@ -1164,6 +1165,7 @@ country_event = {
 					}
 					NOT = { is_same_value = root }
 				}
+				liquidate_clues = yes
 				country_event = { id = graygoo.111 }
 			}
 			every_playable_country = {
@@ -1906,7 +1908,7 @@ country_event = {
 	trigger = {
 		event_target:lcluster_factory_system = {
 			any_fleet_in_system = {
-				owner = { is_same_empire = root }
+				owner = { is_same_value = root }
 			}
 		}
 		event_target:lcluster_factory_system = {
@@ -2069,6 +2071,7 @@ country_event = {
 	desc = "graygoo.181.desc"
 	picture = GFX_evt_large_explosion
 	show_sound = event_ship_explosion
+	location = event_target:lcluster5
 
 	is_triggered_only = yes
 
@@ -2719,36 +2722,18 @@ country_event = {
 				fail_text = graygoo.500.allow.a
 				any_owned_army = {
 					army_type = gray_army
-					if = {
-						limit = { exists = planet }
-						planet = { has_ground_combat = no }
-					}
-				}
-			}
-		}
-		allow = {
-			hidden_trigger = {
-				any_owned_army = {
-					army_type = gray_army
 					OR = {
+						AND = {
 							exists = planet
+							planet = { has_ground_combat = no }
+						}
 						AND = {
 							exists = fleet
-							fleet = { num_ships > 0 }
-						}
-					}
-				}
-			}
-			custom_tooltip = {
-				fail_text = graygoo.500.allow.a
-				any_owned_army = {
-					army_type = gray_army
-					if = {
-						limit = { exists = fleet }
 						fleet = { is_in_combat = no }
 					}
 				}
 			}
+		}
 		}
 		hidden_effect = {
 			create_gray_governor = yes
@@ -2758,7 +2743,7 @@ country_event = {
 		name = graygoo.500.b
 		response_text = graygoo.503.b.response
 		allow = {
-			hidden_trigger = {
+			hidden_trigger = {  # To prevent exploit
 				any_owned_army = {
 					army_type = gray_army
 					OR = {
@@ -2774,36 +2759,18 @@ country_event = {
 				fail_text = graygoo.500.allow.a
 				any_owned_army = {
 					army_type = gray_army
-					if = {
-						limit = { exists = planet }
-						planet = { has_ground_combat = no }
-					}
-				}
-			}
-		}
-		allow = {
-			hidden_trigger = {
-				any_owned_army = {
-					army_type = gray_army
 					OR = {
+						AND = {
 							exists = planet
+							planet = { has_ground_combat = no }
+						}
 						AND = {
 							exists = fleet
-							fleet = { num_ships > 0 }
-						}
-					}
-				}
-			}
-			custom_tooltip = {
-				fail_text = graygoo.500.allow.a
-				any_owned_army = {
-					army_type = gray_army
-					if = {
-						limit = { exists = fleet }
 						fleet = { is_in_combat = no }
 					}
 				}
 			}
+		}
 		}
 		hidden_effect = {
 			create_gray_warship = yes
@@ -2961,11 +2928,20 @@ planet_event = {
 	is_triggered_only = yes #calvitix debug pre-3.2
 
 	trigger = {
+        has_global_flag = l_cluster_opened
+        has_global_flag = gray_goo_crisis_active
+        exists = event_target:graygoo_country
 		has_modifier = tamed_nanite_swarm_modifier
-		FROM = { is_country_type = gray_goo }
+        exists = root.from # only due vanilla bug
+        root.from = { is_same_empire = event_target:graygoo_country } # is_country_type = gray_goo
 	}
+
 	immediate = {
+        destroy_colony = yes
+        if = { limit = { NOT = { is_planet_class = pc_gray_goo } }
 		change_pc = pc_gray_goo
+        }
+        remove_modifier = tamed_nanite_swarm_modifier # only to be sure
 		reset_planet = yes
 	}
 
