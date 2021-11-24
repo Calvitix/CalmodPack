@@ -1,7 +1,7 @@
 
 # Original File
 #
-# Calvitix Check 3.0.1  18/04/2021
+# Calvitix Check 3.2  22/11/2021
 #
 # Merge with NSC
 # Merge with Starnet NSC 21/05/2021
@@ -9,6 +9,14 @@
 
 #root = starbase
 #from = player
+
+# Weights in the ai_design part are multiplied with the base weight of 00_starbase_buildings.txt and 00_starbase_modules.txt
+# Then, a random number between that value and and extra 50% of that it is ADDED to it
+# F.e. 100 base weight multiplies with 2.00 = 200. Then we take a random number between 0 and 100 (50% of 200) and ADD it to 200. 235 then, for example
+# This is done for ALL starbase modules and buildings in the list every time an evaluation is made
+# And the building or module with the highest value will be chosen to being built
+# The implication of that is that you can not balance the weights TOO FAR from each other - otherwise some modules will never be chosen, unless they are the only thing on the evaluation
+# Due to the progression of the game and the unlocking of tech, though, it is often the case that there will only be 1 item on the list at any given time anyway
 
 ######################
 ### STARBASE TYPES ###
@@ -20,7 +28,7 @@ sshipyard = {
 		OR = {
 			count_starbase_modules = { type = shipyard count > 0 }
 			has_starbase_building = drydock
-		owner = {
+			owner = {
 				NOT = { 
 					any_owned_starbase = { 
 						has_starbase_module = shipyard 
@@ -92,7 +100,8 @@ sshipyard = {
 			strategic_defenses = { base = 1.4 }
 			warp_fluctuator = { base = 1.4 }
 			drydock = { base = 1.0 }
-			target_uplink_computer = { base = 0.8 } 
+			dragon_hatchery = {	base = 1.00	}
+			ice_mining_station = { base = 1.00 }							target_uplink_computer = { base = 0.8 } 
 			crew_quarters = { base = 0.8 }
 			fleet_academy = { base = 0.8 }
 			naval_logistics_office = { base = 0.8 }
@@ -143,7 +152,7 @@ sanchorage = {
 		count_starbase_modules = {
 			type = anchorage
 			count > 0
-		}
+		}		
 	}
 
 	weight_modifier = {
@@ -213,12 +222,17 @@ sanchorage = {
 		buildings = {
 			hydroponics_bay = { base = 5 }
 			asteroid_mining = { base = 2 }
+			curator_think_tank = { base = 2.00 }
+			art_college = { base = 2.00	}
+			nebula_refinery = { base = 2.00	}
+			ice_mining_station = { base = 2.00 }
+			dragon_hatchery = {	base = 2.00	}
 			reinforced_defenses = { base = 1.4 }
 			target_uplink_computer = { base = 1.4 } 
 			warp_fluctuator = { base = 1.4 }
 			crew_quarters = { base = 1.0 }
 			fleet_academy = { base = 1.0 }
-			naval_logistics_office = { base = 0.8 }
+			naval_logistics_office = { base = 1.0 }
 			listening_post = { base = 0.8 }
 			resource_silo = { base = 0.8 }
 			mining_base = { base = 0.8 }
@@ -249,6 +263,7 @@ sanchorage = {
 			asteroid_mining = { base = 2 }
 			anchorage = { base = 1.8 }
 			orbital_lab = { base = 1.8 }
+			solar_panel_network = {	base = 1.00	}
 			gun_battery = { base = 1.6 }
 			pd_battery = { base = 1.4 }
 			space_foundry = {base = 1 }
@@ -346,9 +361,13 @@ strading_hub = {
 			asteroid_mining = { base = 2 }
 			reinforced_defenses = { base = 1.8 }
 			warp_fluctuator = { base = 1.4 }
+			nebula_refinery = {	base = 1.00	}
 			hydroponics_bay = { base = 1.0 }
 			crew_quarters = { base = 1.0 }
 			listening_post = { base = 1.0 }
+			curator_think_tank = { base = 1.00	}
+			ice_mining_station = { base = 1.00 }
+			dragon_hatchery = {	base = 1.00	}					
 			sensor_station = { base = 0.8 }
 			strategic_defenses = { base = 0.8 }
 			trader_proxy_office = { base = 0.8 }
@@ -575,6 +594,8 @@ sfortress = {
 
 		# token followed by priority
 		buildings = {
+			ice_mining_station = { base = 3.00 }
+			dragon_hatchery = {	base = 3.00	}			
 			reinforced_defenses = { base = 1.8 }
 			target_uplink_computer = { base = 1.8 }
 			warp_fluctuator = { base = 1.4 }

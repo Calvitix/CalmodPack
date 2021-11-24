@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.1.1  15/09/2021
+# Calvitix Check 3.2  22/11/2021
 #
 # Merge with Arisphaos Unofficial patch
 #
@@ -87,9 +87,7 @@ odd_factory_worker = {
 		is_sapient = yes
 	}
 
-	possible = {
-		worker_job_check_trigger = yes
-	}
+	possible_precalc = can_fill_worker_job
 
 	resources = {
 		category = planet_metallurgists
@@ -133,9 +131,7 @@ odd_factory_drone = {
 		is_sapient = yes
 	}
 
-	possible = {
-		drone_job_check_trigger = yes
-	}
+	possible_precalc = can_fill_drone_job
 
 	resources = {
 		category = planet_metallurgists
@@ -158,7 +154,7 @@ underground_trade_worker = {
 	condition_string = SPECIALIST_JOB_TRIGGER
 	building_icon = building_holo_theatres
 	clothes_texture_index = 3
-	icon = clerk
+	#icon = clerk
 
 	possible_pre_triggers = {
 		has_owner = yes
@@ -168,9 +164,7 @@ underground_trade_worker = {
 		is_sapient = yes
 	}
 
-	possible = {
-		specialist_job_check_trigger = yes
-	}
+	possible_precalc = can_fill_specialist_job
 
 	planet_modifier = {
 		planet_amenities_add = 3
@@ -276,9 +270,7 @@ underground_contact_drone = {
 		is_sapient = yes
 	}
 
-	possible = {
-		drone_job_check_trigger = yes
-	}
+	possible_precalc = can_fill_drone_job
 
 	planet_modifier = {
 		planet_amenities_add = 3
@@ -346,6 +338,7 @@ dimensional_portal_researcher = {
 		is_sapient = yes
 	}
 
+	possible_precalc = can_fill_specialist_job
 	possible = {
 		complex_specialist_job_check_trigger = yes
 	}
@@ -535,9 +528,9 @@ dimensional_portal_researcher_gestalt = {
 		is_sapient = yes
 	}
 
-	possible = {
-		complex_specialist_job_check_trigger = yes
-	}
+	possible_precalc = can_fill_drone_job
+
+	possible = { NOT = { has_trait = trait_nerve_stapled } }
 
 	triggered_planet_modifier = {
 		potential = {
@@ -773,12 +766,13 @@ gas_plant_engineer = {
 
 	possible_pre_triggers = {
 		has_owner = yes
+		is_enslaved = no
+		is_being_purged = no
+		is_being_assimilated = no
 		is_sapient = yes
 	}
 
-	possible = {
-		specialist_job_check_trigger = yes
-	}
+	possible_precalc = can_fill_specialist_job
 
 	triggered_planet_modifier = {
 		potential = {
@@ -834,7 +828,7 @@ gas_plant_engineer = {
 
 # Gestalt Species
 gas_plant_engineer_gestalt = {
-	category = simple_drone
+	category = complex_drone
 	condition_string = SPECIALIST_JOB_TRIGGER
 	building_icon = building_refinery
 	clothes_texture_index = 3
@@ -842,12 +836,15 @@ gas_plant_engineer_gestalt = {
 
 	possible_pre_triggers = {
 		has_owner = yes
+		is_enslaved = no
+		is_being_purged = no
+		is_being_assimilated = no
 		is_sapient = yes
 	}
 
-	possible = {
-		specialist_job_check_trigger = yes
-	}
+	possible_precalc = can_fill_drone_job
+
+	possible = { NOT = { has_trait = trait_nerve_stapled } }
 
 	triggered_planet_modifier = {
 		potential = {
@@ -863,7 +860,7 @@ gas_plant_engineer_gestalt = {
 	resources = {
 		category = planet_refiners
 		produces = {
-			exotic_gases = 2
+			exotic_gases = 2 #3
 		}
 		upkeep = {
 			minerals = 10
@@ -901,8 +898,8 @@ gas_plant_engineer_gestalt = {
 
 # Ordinary Species
 cave_cleaner = {
-	category = specialist
-	condition_string = SPECIALIST_JOB_TRIGGER
+	category = worker
+	condition_string = WORKER_JOB_TRIGGER
 	building_icon = building_mineral_purification_plant
 	clothes_texture_index = 3
 	icon = miner
@@ -912,9 +909,7 @@ cave_cleaner = {
 		is_sapient = yes
 	}
 
-	possible = {
-		specialist_job_check_trigger = yes
-	}
+	possible_precalc = can_fill_worker_job
 
 	triggered_planet_modifier = {
 		potential = {
@@ -970,20 +965,21 @@ cave_cleaner = {
 
 # Gestalt Species
 cave_cleaner_gestalt = {
-	category = complex_drone
-	condition_string = SPECIALIST_JOB_TRIGGER
+	category = simple_drone
+	condition_string = DRONE_JOB_TRIGGER
 	building_icon = building_mineral_purification_plant
 	clothes_texture_index = 3
 	icon = mining_drone
 
 	possible_pre_triggers = {
 		has_owner = yes
+		is_enslaved = no
+		is_being_purged = no
+		is_being_assimilated = no
 		is_sapient = yes
 	}
 
-	possible = {
-		specialist_job_check_trigger = yes
-	}
+	possible_precalc = can_fill_drone_job
 
 	triggered_planet_modifier = {
 		potential = {
@@ -1048,9 +1044,7 @@ titan_hunter = {
 		is_sapient = yes
 	}
 
-	possible = {
-		worker_job_check_trigger = yes
-	}
+	possible_precalc = can_fill_worker_job
 
 	planet_modifier = {
 		trade_value_add = 8
@@ -1078,18 +1072,6 @@ titan_hunter = {
 		category = planet_farmers
 		produces = {
 			food = 8
-		}
-		produces = { #3.0.3b2
-			trigger = {
-				planet = { has_active_building = building_food_processing_facility }
-			}
-			food = 1
-		}
-		produces = {
-			trigger = {
-				planet = { has_active_building = building_food_processing_center }
-			}
-			food = 2
 		}
 	}
 
@@ -1195,6 +1177,7 @@ robot_caretaker = {
 		is_sapient = yes
 	}
 
+	possible_precalc = can_fill_specialist_job
 	possible = {
 		complex_specialist_job_check_trigger = yes
 	}
@@ -1270,9 +1253,7 @@ turtle_miner = {
 		is_sapient = yes
 	}
 
-	possible = {
-		worker_job_check_trigger = yes
-	}
+	possible_precalc = can_fill_worker_job
 
 	resources = {
 		category = planet_miners
@@ -1406,10 +1387,7 @@ turtle_miner_gestalt = {
 		is_sapient = yes
 	}
 
-	possible = {
-		drone_job_check_trigger = yes
-	}
-
+	possible_precalc = can_fill_drone_job
 
 	resources = {
 		category = planet_miners

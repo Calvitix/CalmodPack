@@ -1,8 +1,8 @@
 # Giga File
 #
-# Calvitix Check 3.1.2  08/10/2021
+# Calvitix Check 3.2
 #
-# Last Update : 09/11/2021
+# Last Update : 24/11/2021
 #
 #Calvitix Trad Names
 namespace = giga_mega
@@ -19,119 +19,6 @@ event = {
 	immediate = {
 		set_global_flag = gigastructures_enabled
 		set_global_flag = already_warned_about_new_megas
-
-		#Flusion
-		if = {
-			limit = { NOT = { any_system = { has_star_flag = flusion_system } } }
-			random_system = { spawn_system = { initializer = "giga_flusion_initializer" } }
-			last_created_system = {
-				# Add extra hyperlane
-				random_list = {
-					1 = { while = { count = 1 giga_generate_hyperlane = yes } }
-					1 = { while = { count = 2 giga_generate_hyperlane = yes } }
-				}
-
-				if = {
-					limit = { NOT = { any_system = { has_star_flag = jupitwo_system } } }
-					spawn_system = {
-						initializer = "giga_jupitwo_initializer"
-						max_distance = 4
-						min_distance = 5
-					}
-					last_created_system = {
-						# Add extra hyperlane
-						random_list = {
-							1 = { while = { count = 1 giga_generate_hyperlane = yes } }
-							1 = { while = { count = 2 giga_generate_hyperlane = yes } }
-						}
-					}
-				}
-			}
-		}
-		
-		# Paluush System
-			if = {
-				limit = { NOT = { any_system = { has_star_flag = Paluush_system } } }
-				random_system = {
-					limit = {
-						NOR = {
-							has_star_flag = giga_inner
-							has_star_flag = giga_outer_01
-							has_star_flag = giga_outer_02
-							has_star_flag = giga_outer_03
-							has_star_flag = giga_galactic_center
-						}
-					}
-					spawn_system = { initializer = "giga_paluush_initializer" }
-				}
-			}
-			random_system = {
-				limit = { has_star_flag = giga_system_six }
-
-				# Add extra hyperlane
-				random_list = {
-					1 = { while = { count = 1 giga_generate_hyperlane = yes } }
-					1 = { while = { count = 2 giga_generate_hyperlane = yes } }
-				}
-			}
-
-		# Kerbol System
-		random = {
-			chance = 60
-			if = {
-				limit = { NOT = { any_system = { has_star_flag = kerbol_system } } }
-				random_system = {
-					limit = {
-						NOR = {
-							has_star_flag = giga_inner
-							has_star_flag = giga_outer_01
-							has_star_flag = giga_outer_02
-							has_star_flag = giga_outer_03
-							has_star_flag = giga_galactic_center
-						}
-					}
-					spawn_system = { initializer = "giga_kerbol_initializer" }
-				}
-			}
-			random_system = {
-				limit = { has_star_flag = giga_system_eight }
-
-				# Add extra hyperlane
-				random_list = {
-					1 = { while = { count = 1 giga_generate_hyperlane = yes } }
-					1 = { while = { count = 2 giga_generate_hyperlane = yes } }
-				}
-			}
-		}
-
-		# Squareworld System
-		random = {
-			chance = 30
-			if = {
-				limit = { NOT = { any_system = { has_star_flag = ruined_square_ring_system } } }
-				random_system = {
-					limit = {
-						NOR = {
-							has_star_flag = giga_inner
-							has_star_flag = giga_outer_01
-							has_star_flag = giga_outer_02
-							has_star_flag = giga_outer_03
-							has_star_flag = giga_galactic_center
-						}
-					}
-					spawn_system = { initializer = "square_world_init_01" }
-				}
-			}
-			random_system = {
-				limit = { has_star_flag = ruined_square_ring_system }
-
-				# Add extra hyperlane
-				random_list = {
-					1 = { while = { count = 1 giga_generate_hyperlane = yes } }
-					1 = { while = { count = 2 giga_generate_hyperlane = yes } }
-				}
-			}
-		}
 
 		random_list = {
 			40 = {}
@@ -291,7 +178,7 @@ planet_event = {
 		}
 		if = {
 			limit = { has_planet_flag = giga_ringworld_gar }
-			set_planet_size = 20
+			set_planet_size = 40
 			set_planet_entity = { entity = "gargantuan_tech_sector_entity" graphical_culture = event_target:giga_upgrade_owner picture = pc_ringworld_section }
 			create_ambient_object = {
 				type = "giga_ringworld_upgrade_gargantuan"
@@ -300,12 +187,13 @@ planet_event = {
 				base_angle_towards = solar_system.star
 				entity_face_object = solar_system.star
 			}
+			add_modifier = { modifier = "giga_gargantuan_housing" days = -1 }
 			event_target:giga_upgrade_owner = { set_variable = { which = giga_upgrade_time value = 3600 } }
 			planet_event = { id = giga_mega.102 days = 3600 }
 		}
 		else_if = {
 			limit = { has_planet_flag = giga_ringworld_beh }
-			set_planet_size = 15
+			set_planet_size = 30
 			set_planet_entity = { entity = "behemoth_tech_sector_entity" graphical_culture = event_target:giga_upgrade_owner picture = pc_ringworld_section }
 			create_ambient_object = {
 				type = "giga_ringworld_upgrade_behemoth"
@@ -314,12 +202,13 @@ planet_event = {
 				base_angle_towards = solar_system.star
 				entity_face_object = solar_system.star
 			}
+			add_modifier = { modifier = "giga_behemoth_housing" days = -1 }
 			event_target:giga_upgrade_owner = { set_variable = { which = giga_upgrade_time value = 2700 } }
 			planet_event = { id = giga_mega.102 days = 2700 }
 		}
 		else_if = {
 			limit = { has_planet_flag = giga_ringworld_tit }
-			set_planet_size = 10
+			set_planet_size = 20
 			set_planet_entity = { entity = "titanic_tech_sector_entity" graphical_culture = event_target:giga_upgrade_owner picture = pc_ringworld_section }
 			create_ambient_object = {
 				type = "giga_ringworld_upgrade_titanic"
@@ -328,6 +217,7 @@ planet_event = {
 				base_angle_towards = solar_system.star
 				entity_face_object = solar_system.star
 			}
+			add_modifier = { modifier = "giga_titanic_housing" days = -1 }
 			event_target:giga_upgrade_owner = { set_variable = { which = giga_upgrade_time value = 1800 } }
 			planet_event = { id = giga_mega.102 days = 1800 }
 		}
@@ -366,7 +256,7 @@ planet_event = {
 		else_if = {	limit = { has_planet_flag = giga_ringworld_tit }	set_planet_entity = { entity = "titanic_gaia_habitable_sector_entity" graphical_culture = event_target:giga_upgrade_owner picture = pc_ringworld } }
 		else = {														set_planet_entity = { entity = "vanilla_gaia_habitable_entity" graphical_culture = event_target:giga_upgrade_owner picture = pc_ringworld } }
 
-		# Set name #calvitix renamed
+		# Set name
 		solar_system = {
 			every_system_ambient_object = { limit = { has_ambient_object_flag = giga_upgrading_@root } destroy_ambient_object = this }
 			if = {		limit = { NOT = { has_star_flag = ring_01 } } set_star_flag = ring_01 event_target:ring_section = { set_name = "Section Habitable A" } }
@@ -573,6 +463,7 @@ event = {
 		NOR = {
 			has_global_flag = birch_black_hole_occured
 			has_global_flag = giga_core_disabled
+			has_global_flag = giga_galactic_core_spawned
 		}
 		OR = {
 			mid_game_years_passed >= 1
@@ -598,6 +489,10 @@ country_event = {
 	show_sound = event_sensor_ping
 	is_triggered_only = yes
 
+	trigger = {
+		NOT = { has_global_flag = giga_galactic_core_spawned }
+	}
+
 	option = {
 		name = "giga_mega.402.a"
 			enable_special_project = {
@@ -621,6 +516,7 @@ country_event = {
 	option = { name = "giga_mega.403.a" }
 
 	immediate = {
+		set_global_flag = giga_galactic_core_spawned
 		set_spawn_system_batch = begin
 		if = {
 			limit = { has_global_flag = giga_core_aeternum }

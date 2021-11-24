@@ -1,4 +1,7 @@
 # Original File
+#
+# Calvitix Check 3.2  22/11/2021
+#
 ############################
 #
 # Anomaly Events
@@ -8,7 +11,53 @@
 ############################
 
 namespace = anomaly
+### Ocean Beneath the Ice
+ship_event = {
+	id = anomaly.2510
+	title = "anomaly.2510.name"
+	desc = "anomaly.2510.desc"
+	picture = GFX_evt_microscopic_life
+	show_sound = event_scanner
+	location = FROM
+	trackable = yes
 
+	is_triggered_only = yes
+
+	immediate = {
+		from = { clear_deposits = yes }
+		owner = { country_event = { id = story.1 days = 30 } }
+	}
+
+	option = {
+		name = INTERESTING
+		hidden_effect = {
+			FROM = {
+				add_modifier = {
+					modifier = "subterranean_ocean"
+					days = -1
+				}
+			}
+		}
+		FROM = {
+			set_deposit = d_society_3
+			if = {
+				limit = {
+					root.owner = {
+						OR = {
+							is_machine_empire = no
+							has_valid_civic = civic_machine_servitor
+						}
+					}
+				}
+				enable_special_project = {
+					name = "SEA_EXPEDITION_PROJECT"
+					location = this
+					owner = root.owner
+				}
+			}
+		}
+	}
+}
 # Special Project Completed 1
 ship_event = {
 	id = anomaly.2512
@@ -132,7 +181,18 @@ ship_event = {
 		name = "anomaly.2520.a.term"
 		from = {
 			enable_special_project = {
-				name = "GIGANTIC_SKELETON_PROJECT_MOD"
+				name = "GIGANTIC_SKELETON_PROJECT"
+				location = this
+				owner = root.owner
+			}
+		}
+	}
+	option = {
+		trigger = { owner = { has_valid_civic = civic_reanimated_armies } }
+		name = anomaly.2520.a.rean
+		from = {
+			enable_special_project = {
+				name = "GIGANTIC_SKELETON_RESURRECTION_PROJECT"
 				location = this
 				owner = root.owner
 			}
@@ -199,6 +259,40 @@ ship_event = {
 				value = @tier1researchreward
 				min = @tier1researchmin
 				max = @tier1researchmax
+			}
+		}
+	}
+}
+
+ship_event = {
+	id = anomaly.2523
+	title = "PROJECT_COMPLETE"
+	desc = "anomaly.2523.desc"
+	picture = GFX_evt_alien_wildlife
+	show_sound = event_scanner
+	location = FROMFROMFROM
+
+	is_triggered_only = yes
+	option = {
+		name = it_hungers
+		custom_tooltip = anomaly.2523.tooltip
+		solar_system = {
+			create_fleet = {
+				name = "NAME_Skeletal_Giant"
+				effect = {
+					set_owner = root.owner
+					create_army_transport = {
+						ship_name = "NAME_Skeletal_Transport"
+						army_name = "NAME_Skeletal_Giant"
+						army_type = "giant_undead_army"
+						species = root.owner
+					}
+					set_location = {
+						target = root
+						distance = 10
+						angle = random
+					}
+				}
 			}
 		}
 	}

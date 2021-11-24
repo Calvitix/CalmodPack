@@ -1,8 +1,8 @@
 # Planetary Diversity
 #
-# Calvitix Check 3.1.1  16/09/2021
+# Calvitix Check 3.2
 #
-# Last Planetary Diversity update 19/09/2021
+# Last Planetary Diversity update 24/11/2021
 #
 
 ##########################################################################
@@ -47,7 +47,21 @@ decision_baol_life_seed = {
 		custom_tooltip = decision_baol_life_seed_effects
 		hidden_effect = {
 			owner = { remove_country_flag = relic_last_baol_activated }
-			change_pc = pc_gaia
+			if = {
+				limit = { 
+					OR = {
+						is_planet_class = pc_tidallylocked
+						is_planet_class = pc_eyeball
+					}
+				}
+				change_pc = pc_tidallygaia
+			}
+			if = {
+				limit = { 
+					NOT = { is_planet_class = pc_tidallygaia }
+				}
+				change_pc = pc_gaia
+			}
 			if = {
 				limit = { NOT = { exists = event_target:nu_baol_species } }
 				create_nu_baol_effect = yes
@@ -91,6 +105,12 @@ decision_baol_life_seed = {
 					picture = pc_wetvenus
 					entity = "gaiavenus_planet_entity"
 				}
+			}
+			if = {
+				limit = { 
+					has_planet_flag = pdaquapicture
+				}
+				remove_planet_flag = pdaquapicture
 			}
 		}
 	}

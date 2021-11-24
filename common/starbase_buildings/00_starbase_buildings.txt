@@ -1,10 +1,10 @@
 
 # Original File
 #
-# Calvitix Check 3.1.1  15/09/2021
+# Calvitix Check 3.2  22/11/2021
 #
 # Merge with NSC   19/09/2021
-# Merge with Starnet AI 01/06/2021
+# Merge with Starnet AI 24/11/2021
 # Modified by Calvitix balance
 #
 crew_quarters = {
@@ -47,7 +47,7 @@ crew_quarters = {
 	ai_build_outside_chokepoint = yes
 	ai_weight = {
 #STARNET AI
-		weight = 50
+		weight = 100 #use same weight here - ai weighting is done in starbase_types.txt
 		modifier = {
 			factor = 0
 			years_passed < 40
@@ -1010,7 +1010,7 @@ defense_grid = {
 	}
 
 	station_modifier = {
-		starbase_defense_platform_capacity_add = 100 #8
+		starbase_defense_platform_capacity_add = 20 #100 #8 #Calvitix
 	}
 
 	show_in_tech = "tech_synchronized_defences"
@@ -1180,9 +1180,9 @@ curator_think_tank = {
 		}
 
 		produces = {
-			physics_research = 2 #5
-			society_research = 2 #5
-			engineering_research = 2 #5
+			physics_research = 5
+			society_research = 5
+			engineering_research = 5
 		}
 
 		produces = {
@@ -1197,9 +1197,9 @@ curator_think_tank = {
 					is_active_resolution = "resolution_galacticstudies_extradimensional_experimentation"
 				}
 			}
-			physics_research = 3 #5
-			society_research = 3 #5
-			engineering_research = 3 #5
+			physics_research = 5
+			society_research = 5
+			engineering_research = 5
 		}
 
 		upkeep = {
@@ -1566,6 +1566,8 @@ transit_hub = {
 		planet_resettlement_unemployed_mult = 1.00
 	}
 
+	custom_tooltip = sm_transit_hub_desc_modifier
+
 	show_in_tech = "tech_hyper_drive_2"
 
 	ai_build_at_chokepoint = yes
@@ -1791,6 +1793,113 @@ trader_proxy_office = {
 				solar_system = {
 					any_fleet_in_system = {
 						has_fleet_flag = trader_enclave_station
+					}
+				}
+			}
+		}
+	}
+}
+
+dragon_hatchery = {
+	icon = "GFX_starbase_dragon_hatchery"
+	construction_days = 720
+
+	potential = {
+		exists = owner
+		owner = {
+			is_dragon_breeder_country = yes
+		}
+	}
+
+	possible = {
+		custom_tooltip = {
+			fail_text = "requires_citadel"
+			has_starbase_size >= starbase_citadel
+		}
+	}
+
+	resources = {
+		category = starbase_buildings
+		cost = {
+			alloys = 750
+		}
+		upkeep = {
+			energy = 10
+		}
+	}
+
+	custom_tooltip = dragon_hatchery_tooltip
+
+	ai_build_at_chokepoint = yes
+	ai_build_outside_chokepoint = yes
+	ai_weight = {
+		weight = 100 #use same weight here - ai weighting is done in starbase_types.txt
+		modifier = {
+			factor = 0
+			owner = {
+				count_owned_starbase = {
+					count >= 1
+					limit = {
+						has_starbase_building = dragon_hatchery
+					}
+				}
+			}
+		}
+	}
+}
+
+ice_mining_station = {
+	icon = "GFX_starbase_ice_mining_station"
+	construction_days = 360
+
+	potential = {
+		exists = owner
+		owner = {
+			has_ascension_perk = ap_hydrocentric
+		}
+	}
+
+	possible = {
+		custom_tooltip = {
+			fail_text = "requires_starport"
+			has_starbase_size >= starbase_starport
+		}
+
+		custom_tooltip = {
+			fail_text = requires_ice_source
+			solar_system = {
+				OR = {
+					has_planet_class = pc_ice_asteroid
+					has_planet_class = pc_frozen
+				}
+			}
+		}
+	}
+
+	resources = {
+		category = starbase_buildings
+		cost = {
+			alloys = 100
+		}
+	}
+
+	custom_tooltip = ice_mining_station_tooltip
+
+	system_modifier = {
+		station_gatherers_produces_mult = 0.15
+	}
+
+	ai_build_at_chokepoint = yes
+	ai_build_outside_chokepoint = yes
+	ai_weight = {
+		weight = 100 #use same weight here - ai weighting is done in starbase_types.txt
+		modifier = {
+			factor = 0
+			owner = {
+				count_owned_starbase = {
+					count >= 2
+					limit = {
+						has_starbase_building = ice_mining_station
 					}
 				}
 			}

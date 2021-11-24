@@ -1123,9 +1123,7 @@ can_destroy_planet_with_PLANET_KILLER_CRACKER = {
                 }
                 AND = {
                     exists = space_owner
-                    space_owner = {
-                        is_same_empire = from.owner
-                    }
+						space_owner = { is_same_value = from.owner }                    
                 }
             }
             OR = {
@@ -1141,26 +1139,6 @@ can_destroy_planet_with_PLANET_KILLER_CRACKER = {
                 is_planet_class = pc_hydrocarbon
                 is_planet_class = pc_subglacial
                 is_planet_class = pc_iron
-#PD ?
-                is_planet_class = pc_barren
-                is_planet_class = pc_barren_cold
-                is_planet_class = pc_frozen
-                is_planet_class = pc_molten
-                is_planet_class = pc_toxic
-                is_planet_class = pc_desert
-                is_planet_class = pc_tropical
-                is_planet_class = pc_arid
-                is_planet_class = pc_continental
-                is_planet_class = pc_ocean
-                is_planet_class = pc_tundra
-                is_planet_class = pc_arctic
-                is_planet_class = pc_alpine
-                is_planet_class = pc_savannah
-                is_planet_class = pc_gaia
-                is_planet_class = pc_relic
-                is_planet_class = pc_nuked
-                is_planet_class = pc_ringworld_habitable
-                is_planet_class = pc_habitat
             }
         }
     }
@@ -1184,6 +1162,21 @@ can_destroy_planet_with_PLANET_KILLER_SHIELDER = {
 				exists = owner
 				owner = {
 					is_country_type = primitive
+				}
+			}
+		}
+	}
+	if = { #3.2
+		limit = {
+			exists = owner
+			owner = { is_country_type = primitive }
+		}
+		custom_tooltip = {
+			fail_text = primitives_not_active_or_full_interference
+			from.owner = {
+				OR = {
+					has_policy_flag = interference_active
+					has_policy_flag = interference_full
 				}
 			}
 		}
@@ -1289,6 +1282,21 @@ can_destroy_planet_with_PLANET_KILLER_GODRAY = {
 			}
 		}
 	}
+	if = { #3.2
+		limit = {
+			exists = owner
+			owner = { is_country_type = primitive }
+		}
+		custom_tooltip = {
+			fail_text = primitives_not_active_or_full_interference
+			from.owner = {
+				OR = {
+					has_policy_flag = interference_active
+					has_policy_flag = interference_full
+				}
+			}
+		}
+	}
 	# target own colony
 	if = {
 		limit = {
@@ -1349,6 +1357,12 @@ can_destroy_planet_with_PLANET_KILLER_NANOBOTS = {
 			fail_text = primitives_not_in_borders
 			exists = space_owner
 			space_owner = { is_same_value = from.owner }
+		}
+		custom_tooltip = {
+			fail_text = primitives_not_full_interference
+			from.owner = {
+				has_policy_flag = interference_full
+			}
 		}
 	}
 	custom_tooltip = {

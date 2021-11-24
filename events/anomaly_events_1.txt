@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.0.1  23/04/2021
+# Calvitix Check 3.2  22/11/2021
 #
 # Merge with Arisphaos Unofficial patch
 # Merge with Expanded events 02/06/2021
@@ -165,6 +165,21 @@ ship_event = {
 		}
 		FROM = {
 			set_deposit = d_society_3
+		}
+	}
+	option = { #3.2
+		exclusive_trigger = {
+			owner = {
+				is_lithoid_empire = yes
+			}
+		}
+		icon = {
+			icon = GFX_lithoid
+			text = IS_LITHOID_EMPIRE_ICON_TIP
+		}
+		name = anomaly.10.b
+		FROM = {
+			set_deposit = d_society_6
 		}
 	}
 	option = { #Exp. events
@@ -3649,7 +3664,7 @@ ship_event = {
 				}
 			}
 			from = {
-				add_deposit = d_society_3
+				add_deposit = d_society_4
 			}
 		}
 	}
@@ -4495,37 +4510,48 @@ ship_event = {
 
 	immediate = { owner = { country_event = { id = story.5 days = 30 } } }
 
-	option = {
-		name = REMARKABLE
+	option = { #3.2
+		name = anomaly.305.a
 		owner = {
-			if = {
-				limit = { is_gestalt = no } #Exp. events
-				add_monthly_resource_mult = {
-					resource = energy
-					value = @tier1materialreward
-					min = @tier1materialmin
-					max = @tier1materialmax
-				}
-#Exp. events
-				add_monthly_resource_mult = {
-					resource = consumer_goods
-					value = @tier1materialreward
-					min = @tier1materialmin
-					max = @tier1materialmax
-				}
+			add_monthly_resource_mult = {
+				resource = alloys
+				value = @tier1materialreward
+				min = @tier1materialmin
+				max = @tier1materialmax
 			}
-			else = {
-				add_monthly_resource_mult = {
-					resource = energy
-					value = @tier2materialreward
-					min = @tier2materialmin
-					max = @tier2materialmax
-				}
-			}
-			small_artifact_reward = yes
-###
 		}
 	}
+	option = {
+		trigger = { owner = { is_gestalt = no } }
+		name = anomaly.305.b
+		owner = {
+			add_monthly_resource_mult = {
+				resource = energy
+				value = @tier1materialreward
+				min = @tier1materialmin
+				max = @tier1materialmax
+			}
+		}
+	}
+	option = {
+		name = anomaly.305.c
+		owner = {
+			add_monthly_resource_mult = {
+				resource = society_research
+				value = @tier1researchreward
+				min = @tier1researchmin
+				max = @tier1researchmax
+			}
+		}
+	}
+	option = {
+		trigger = { has_ancrel = yes }
+		name = anomaly.305.d
+		owner = {
+			add_resource = { minor_artifacts = 1 }
+		}
+	}
+
 }
 
 ### Social Experiment
@@ -5715,6 +5741,11 @@ ship_event = {
 		FROM = {
 			set_deposit = d_engineering_3
 		}
+	}
+	option = { #3.2
+		trigger = { owner = { has_origin = origin_lithoid } }
+		name = anomaly.660.b
+		owner = { add_modifier = { modifier = asteroid_thrusters days = -1 } } 
 	}
 }
 

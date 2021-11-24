@@ -1,9 +1,9 @@
 # Original File
 #
-# Calvitix Check 3.1.1  15/09/2021
+# Calvitix Check 3.2  22/11/2021
 #
-# Merge with Arisphaos Unofficial patch
-#
+# Merge with Arisphaos Unofficial patch 24/11/2021
+# Merge with Planetary Div. 24/11/2021
 #
 
 trait_agrarian = {
@@ -929,7 +929,7 @@ trait_plantoid_radiotrophic = {
 	custom_tooltip = TRAIT_PLANTOID_RADIOTROPHIC_EFFECT
 	modifier = {
 		pc_nuked_habitability = 0.1
-		pc_irradiated_habitability = 0.1
+		pc_irradiated_habitability = 0.1 #PD or RS New Frontiers mod
 	}
 	triggered_planet_growth_modifier = {
 		potential = {
@@ -957,5 +957,39 @@ trait_plantoid_budding = {
 	# Organic Pop Assembly set by plantoid_budding_rate in \pop_categories\ and 00_scripted_variables
 	slave_cost = {
 		energy = 250
+	}
+}
+
+trait_harvested_radiotrophic = {
+	icon = "gfx/interface/icons/traits/trait_plantoid_radiotrophic.dds"
+	host_has_dlc = "Plantoids Species Pack"
+	initial = no
+	randomized = no
+	cost = 2
+	potential_crossbreeding_chance = 1.0
+	opposites = { "trait_plantoid_phototrophic" "trait_plantoid_radiotrophic" }
+	allowed_archetypes = { BIOLOGICAL }
+	species_class = { HUM MAM REP AVI ART MOL NECROID AQUATIC }
+	
+	species_potential_add = {
+		exists = from
+		from = {
+			has_country_flag = harvested_radiotrophic_dna
+		}
+	}
+	
+	custom_tooltip = TRAIT_PLANTOID_RADIOTROPHIC_EFFECT
+	modifier = {
+		pc_nuked_habitability = 0.1
+	}
+	triggered_planet_growth_modifier = {
+		potential = {
+			exists = planet
+			planet = { is_planet_class = pc_nuked }
+		}
+		pop_growth_speed = 0.10
+	}
+	slave_cost = {
+		energy = 150
 	}
 }

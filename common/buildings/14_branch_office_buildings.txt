@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.1.1  14/09/2021
+# Calvitix Check 3.2  22/11/2021
 #
 # Merge with Starnet AI 16/09/2021
 #
@@ -21,8 +21,8 @@ building_private_mining_consortium = {
 	potential = {
 		has_branch_office = yes
 		branch_office_owner = {
+			is_ai = no
 			is_criminal_syndicate = no
-			NOT = { is_ai = yes }
 		}
 		is_artificial = no
 		NOR = {
@@ -62,8 +62,8 @@ building_food_conglomerate = {
 	potential = {
 		has_branch_office = yes
 		branch_office_owner = {
+			is_ai = no
 			is_criminal_syndicate = no
-			NOT = { is_ai = yes }
 		}
 		NOR = {
 			is_planet_class = pc_hive
@@ -72,8 +72,35 @@ building_food_conglomerate = {
 		}
 	}
 
-	planet_modifier = {
-		job_farmer_add = 1
+	triggered_planet_modifier = { #3.2
+		potential = {
+			exists = owner
+			OR = {
+				owner = {
+					is_anglers_empire = no
+					AND = {
+						is_anglers_empire = yes
+						NOT = { PREV = { planet = { is_wet = yes } } }
+					}
+				}
+			}
+		}
+		modifier = {
+			job_farmer_add = 1
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_anglers_empire = yes
+				PREV = { planet = { is_wet = yes } }
+			}
+		}
+		modifier = {
+			job_angler_add = 1
+		}
 	}
 
 	resources = {
@@ -152,8 +179,8 @@ building_private_shipyards = {
 	potential = {
 		has_branch_office = yes
 		branch_office_owner = {
+			is_ai = no
 			is_criminal_syndicate = no
-			NOT = { is_ai = yes }
 		}
 	}
 
@@ -187,8 +214,8 @@ building_military_contractors = {
 	potential = {
 		has_branch_office = yes
 		branch_office_owner = {
+			is_ai = no
 			is_criminal_syndicate = no
-			NOT = { is_ai = yes }
 		}
 	}
 
@@ -448,8 +475,8 @@ building_wildcat_miners = {
 	potential = {
 		has_branch_office = yes
 		branch_office_owner = {
+			is_ai = no
 			is_criminal_syndicate = yes
-			NOT = { is_ai = yes }
 		}
 		is_artificial = no
 		NOR = {
@@ -490,8 +517,8 @@ building_bio_reprocessing_facilities = {
 	potential = {
 		has_branch_office = yes
 		branch_office_owner = {
+			is_ai = no
 			is_criminal_syndicate = yes
-			NOT = { is_ai = yes }
 		}
 		NOR = {
 			is_planet_class = pc_hive
@@ -582,8 +609,8 @@ building_wrecking_yards = {
 	potential = {
 		has_branch_office = yes
 		branch_office_owner = {
+			is_ai = no
 			is_criminal_syndicate = yes
-			NOT = { is_ai = yes }
 		}
 	}
 
@@ -618,8 +645,8 @@ building_pirate_haven = {
 	potential = {
 		has_branch_office = yes
 		branch_office_owner = {
+			is_ai = no
 			is_criminal_syndicate = yes
-			NOT = { is_ai = yes }
 		}
 	}
 
@@ -966,7 +993,7 @@ building_executive_retreat = {
 	potential = {
 		has_branch_office = yes
 		branch_office_owner = {
-			NOT = { is_ai = yes }
+			is_ai = no
 		}
 	}
 
@@ -1010,7 +1037,7 @@ building_xeno_tourism_agency = {
 	potential = {
 		has_branch_office = yes
 		branch_office_owner = {
-			NOT = { is_ai = yes }
+			is_ai = no
 		}
 	}
 

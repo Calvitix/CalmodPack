@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.1.1  14/09/2021
+# Calvitix Check 3.2  22/11/2021
 #
 # Merge with Arisphaos Unofficial patch
 # Merge with Expanded Events  24/09/2021
@@ -146,6 +146,7 @@ debris_asteroid_category = {
 # Expanded Events mod
 	on_success = {
 		2 = anomaly.30
+		2 = anomaly.6800 #3.2
 		2 = anomalymod.258
 		0 = {
 			modifier = {
@@ -290,6 +291,7 @@ collision_asteroid_category = {
 # Expanded Events mod
 	on_success = {
 		2 = anomaly.55
+		2 = anomaly.6805 #3.2
 		2 = anomalymod.262
 		0 = {
 			modifier = {
@@ -327,6 +329,7 @@ station_asteroid_category = {
 # Expanded Events mod
 	on_success = {
 		2 = anomaly.40
+		2 = anomaly.6810 #3.2
 		0 = {
 			modifier = {
 				add = 1
@@ -366,6 +369,7 @@ life_asteroid_category = {
 # Expanded Events mod
 	on_success = {
 		2 = anomaly.10
+		2 = anomaly.6825 #3.2
 		3 = {
 			modifier = {
 				factor = 0
@@ -526,6 +530,13 @@ moon_gasgiant_category = {
 # Expanded Events mod
 	on_success = {
 		2 = anomaly.340
+		0 = { #3.2
+			modifier = {
+				add = 10
+				FROM = { has_ring = no }
+			}
+			anomaly_event = anomaly.6840
+		}
 		0 = {
 			modifier = {
 				add = 1
@@ -564,6 +575,7 @@ life_gasgiant_category = {
 			}
 			anomaly_event = anomaly.300
 		}
+		2 = anomaly.6845  #3.2
 		2 = anomalymod.257
 		0 = {
 			modifier = {
@@ -641,7 +653,21 @@ storms_gasgiant_category = {
 		}
 	}
 
-	on_success = anomaly.330
+	on_success = { #3.2
+		1 = anomaly.330
+		0 = {
+			modifier = {
+				add = 1
+				owner = {
+					count_owned_ship = {
+						limit = { is_ship_class = shipclass_science_ship }
+						count > 1
+					}
+				}
+			}
+			anomaly_event = anomaly.6855
+		}
+	}
 }
 
 
@@ -716,7 +742,10 @@ cargo_gasgiant_category = {
 		}
 	}
 	
-	on_success = anomaly.305
+	on_success = { #3.2
+		1 = anomaly.305
+		1 = anomaly.6865
+	}
 }
 
 
@@ -989,7 +1018,10 @@ asteroid_uninhabitable_category = {
 		}
 	}
 	
-	on_success = anomaly.660
+	on_success = { #3.2
+		1 = anomaly.660
+		1 = anomaly.6875
+	}
 }
 
 # Solar Sailer (Uninhabitable Planet)
@@ -1032,6 +1064,10 @@ life_toxic_category = {
 			anomaly_event = anomaly.690
 			max_once = no
 		}
+		2 = {
+			anomaly_event = anomaly.6895 #3.2
+			max_once = no
+		}
 		2 = anomalymod.243
 		0 = {
 			modifier = {
@@ -1065,20 +1101,12 @@ life_frozen_category = {
 			is_frozen = yes
 			has_any_strategic_resource = no
 		}
-		modifier = {
-			factor = 0
-			from.owner = {
-				AND = {
-					has_authority = auth_machine_intelligence
-					NOT =  { has_civic = civic_machine_servitor }
-				}
-			}
-		}
 	}
 	
 # Expanded Events mod
 	on_success = {
 		2 = anomaly.2510
+		2 = anomaly.6900 #3.2
 		2 = anomalymod.229
 		2 = anomalymod.232
 		0 = {
@@ -1315,7 +1343,10 @@ mountain_uninhabitable_category = {
 		}
 	}
 	
-	on_success = anomaly.2520
+	on_success = { #3.2
+		1 = anomaly.2520
+		1 = anomaly.6905
+	}
 }
 
 
@@ -1423,7 +1454,7 @@ terraforming_candidate_category = {
 	
 	spawn_chance = {		
 		modifier = {
-			add = 0.5
+			add = 1
 			NOR = { 
 				has_modifier = terraforming_candidate
 				has_deposit = d_nanites_deposit 
@@ -1431,6 +1462,10 @@ terraforming_candidate_category = {
 			OR = {
 				is_planet_class = pc_barren
 				is_planet_class = pc_barren_cold
+				AND = {
+					is_planet_class = pc_frozen
+					from.owner = { has_ascension_perk = ap_hydrocentric }
+				}
 			}	
 			planet_size > 9
 			planet_size < 26	

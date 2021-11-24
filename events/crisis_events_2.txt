@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.1.1  15/09/2021
+# Calvitix Check 3.2  22/11/2021
 #
 # Merge with Arisphaos Unofficial patch
 # Merge with Expanded Events 03/05/2021
@@ -150,6 +150,7 @@ country_event = {
 					create_species = {
 						name = "NAME_Unbidden"
 						class = EXD
+						namelist = Extradimensional
 						portrait = exd1
 						traits = random
 						effect = { save_event_target_as = extradimensional_species }
@@ -1087,10 +1088,7 @@ planet_event = {
 		destroy_colony = yes
 		if = {
 			limit = {
-				NOR = {
-					is_planet_class = pc_ringworld_habitable
-					is_planet_class = pc_habitat
-				}
+				is_artificial = no
 			}
 			random_list = {
 				50 = { change_pc = pc_barren }
@@ -1103,7 +1101,9 @@ planet_event = {
 			}
 		}
 		else_if = {
-			limit = { is_planet_class = pc_ringworld_habitable }
+			limit = {
+				is_ringworld = yes
+			}
 			change_pc = pc_ringworld_habitable_damaged
 			reset_planet = yes
 		}
@@ -2804,7 +2804,10 @@ country_event = {
 			any_country = {
 				is_country_type = portal_holder
 				count_owned_ship = {
-					limit = { is_ship_size = dimensional_portal_ed }
+					limit = {
+						is_ship_size = dimensional_portal_ed
+						is_within_borders_of = root
+					}
 					count > 0
 				}
 			}
@@ -2943,7 +2946,10 @@ country_event = {
 				AND = {
 					is_country_type = portal_holder
 					count_owned_ship = {
-						limit = { is_ship_size = dimensional_portal_ed }
+						limit = {
+							is_ship_size = dimensional_portal_ed
+							is_within_borders_of = root
+						}
 						count > 0
 					}
 				}
@@ -2952,6 +2958,20 @@ country_event = {
 	}
 
 	immediate = {
+		random_country = {
+			limit = { is_country_type = portal_holder }
+			random_owned_ship = {
+				limit = {
+					is_ship_size = dimensional_portal_ed
+					is_within_borders_of = root
+				}
+				save_event_target_as = dimensional_portal
+			}
+		}
+		random_owned_ship = {
+			limit = { is_ship_size = dimensional_portal_ed }
+			save_event_target_as = dimensional_portal
+		}
 		owner_species = { save_event_target_as = extradimensional_species }
 		country_event = { id = crisis.1260 } # Restart spawn cycle
 
@@ -3235,7 +3255,10 @@ country_event = {
 				AND = {
 					is_country_type = portal_holder
 					count_owned_ship = {
-						limit = { is_ship_size = dimensional_portal_ed }
+						limit = {
+							is_ship_size = dimensional_portal_ed
+							is_within_borders_of = root
+						}
 						count > 0
 					}
 				}
@@ -3250,6 +3273,20 @@ country_event = {
 
 	immediate = {
 		# Extradimensionals 1
+		random_country = {
+			limit = { is_country_type = portal_holder }
+			random_owned_ship = {
+				limit = {
+					is_ship_size = dimensional_portal_ed
+					is_within_borders_of = root
+				}
+				save_event_target_as = dimensional_portal
+			}
+		}
+		random_owned_ship = {
+			limit = { is_ship_size = dimensional_portal_ed }
+			save_event_target_as = dimensional_portal
+		}
 		if = {
 			limit = { is_country_type = extradimensional }
 			while = {
@@ -3348,7 +3385,10 @@ ship_event = {
 					AND = {
 						is_country_type = portal_holder
 						count_owned_ship = {
-							limit = { is_ship_size = dimensional_portal_ed }
+							limit = {
+								is_ship_size = dimensional_portal_ed
+								is_within_borders_of = root.owner
+							}
 							count > 0
 						}
 					}
@@ -3366,6 +3406,20 @@ ship_event = {
 	immediate = {
 		owner = {
 			country_event = { id = crisis.1266 days = 6 } # Spawn Construction Ships if needed
+			random_country = {
+				limit = { is_country_type = portal_holder }
+				random_owned_ship = {
+					limit = {
+						is_ship_size = dimensional_portal_ed
+						is_within_borders_of = root
+					}
+					save_event_target_as = dimensional_portal
+				}
+			}
+			random_owned_ship = {
+				limit = { is_ship_size = dimensional_portal_ed }
+				save_event_target_as = dimensional_portal
+			}
 			owner_species = { save_event_target_as = extradimensional_species }
 
 			# Extradimensionals 1

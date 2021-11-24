@@ -1,9 +1,9 @@
 
 # Original File
 #
-# Calvitix Check 3.1.1  02/05/2021
+# Calvitix Check 3.2  22/11/2021
 #
-# Merge with Real Space 16/09/2021
+# Merge with Real Space 23/11/2021
 
 
 ###############################################################################
@@ -1105,9 +1105,11 @@ com_sol_system = {
 				species_portrait = human
 				has_origin = origin_lost_colony
 			}
-			NOT = { any_system = { has_star_flag = sol } }
-			NOT = { has_star_flag = empire_cluster }
-			
+			NOR = {
+				any_country = { has_country_flag = human_1 }
+				any_system = { has_star_flag = sol }
+				has_star_flag = empire_cluster
+			}
 			add = 99999
 		}
 	}
@@ -1119,7 +1121,6 @@ com_sol_system = {
 				set_star_flag = empire_cluster
 			}
 		}
-		
 		generate_home_system_resources = yes
 	}
 	
@@ -1155,7 +1156,6 @@ com_sol_system = {
 	}
 	
 	planet = {
-		name = "NAME_Earth"
 		class = "pc_continental"
 		orbit_distance = 20
 		orbit_angle = 120
@@ -1228,6 +1228,14 @@ com_sol_system = {
 						}
 						set_origin = origin_necrophage
 						set_country_flag = necrophage_une
+					}
+					if = {
+						limit = {
+							event_target:commonwealth = {
+								has_origin = origin_clone_army
+							}
+						}
+						set_origin = origin_clone_army
 					}
 				}
 			}
@@ -1540,7 +1548,6 @@ lost_colony_sol_system = {
 		type = icy_asteroid_belt
 		radius = 460
 	}
-
 	flags = { sol_system lost_colony_sol sol empire_home_system }
 
 	usage = misc_system_init
@@ -1568,7 +1575,6 @@ lost_colony_sol_system = {
 				set_star_flag = empire_cluster
 			}
 		}
-
 		generate_home_system_resources = yes
 	}
 
@@ -1602,7 +1608,6 @@ lost_colony_sol_system = {
 	}
 	
 	planet = {
-		name = "NAME_Earth"
 		class = "pc_continental"
 		orbit_distance = 20
 		orbit_angle = 120

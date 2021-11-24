@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.0.1  18/04/2021
+# Calvitix Check 3.2  22/11/2021
 #
 # Merge with Banned
 #
@@ -28,12 +28,6 @@ xenoist = {
 		has_encountered_other_species = yes
 		NOT = { has_ethic = ethic_gestalt_consciousness }
 		NOT = { has_country_flag = suppress_vanilla_factions }
-		count_owned_pop = {
-			count >= 5
-			limit = {
-				has_ethic = ethic_xenophile
-			}
-		}
 		NOT = { has_modifier = banned_xenophile }
 	}
 	
@@ -54,10 +48,6 @@ xenoist = {
 	can_join_faction = {
 		is_shackled_robot = no
 		NOT = { has_trait = trait_nerve_stapled }
-		OR = {
-			has_ethic = ethic_xenophile
-			has_ethic = ethic_fanatic_xenophile
-		}
 	}
 	
 	attraction = {
@@ -170,10 +160,10 @@ xenoist = {
 		potential = {
 			exists = owner
 			owner = {
-				any_owned_pop = {
+				any_owned_species = {
 					NOR = {
-						is_same_species = root.owner
-						is_robot_pop = yes
+						is_same_species = prev
+						is_robotic = yes
 						is_sapient = no
 					}
 				}
@@ -184,7 +174,7 @@ xenoist = {
 			owner = {
 				NOT = {
 					#has_policy_flag = slavery_allowed
-					any_owned_pop = {
+					any_owned_species = {
 						has_citizenship_type = { country = prev type = citizenship_slavery }
 					}
 				}
@@ -226,9 +216,9 @@ xenoist = {
 			exists = owner
 			owner = {
 				num_communications > 3
-				any_owned_pop = {
+				any_owned_species = {
 					NOR = {
-						is_same_species = root.owner
+						is_same_species = prev
 						has_trait = trait_mechanical
 						has_trait = trait_machine_unit
 						has_trait = trait_hive_mind
@@ -256,8 +246,8 @@ xenoist = {
 			exists = owner
 			owner = {
 				any_relation = {
-					has_communications = root.owner
 					is_country_type = default
+					has_communications = prev
 				}
 			}
 		}
@@ -290,6 +280,7 @@ xenoist = {
 		trigger = {
 			owner = {
 				any_system_within_border = {
+					has_star_flag = enclave
 					any_fleet_in_system = {
 						exists = owner
 						owner = { is_country_type = enclave }
@@ -333,8 +324,8 @@ xenoist = {
 			exists = owner
 			owner = {
 				OR = {
-					any_owned_ship = { is_ship_size = observation_station }
 					has_country_flag = recent_enlightenment_timed
+					any_owned_fleet = { is_ship_size = observation_station }
 					# fixes demand disappearing when fulfilled (station dismantles)
 				}
 			}

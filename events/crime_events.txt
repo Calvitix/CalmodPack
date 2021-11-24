@@ -2,7 +2,7 @@
 #
 # Calvitix Check 3.1.1  15/09/2021
 #
-# Merge with Arisphaos Unofficial patch
+# Merge with Arisphaos Unofficial patch 24/11/2021
 #
 #
 
@@ -68,7 +68,10 @@ planet_event = {
 	trigger = {
 		is_under_colonization = no
 		owner = { is_country_type = default }
+		num_pops > 3
+		num_unemployed > 3 #early out before the expensive count_owned_pop to come
 		NOR = {
+			has_planet_flag = criminal_underworld_disappeared # Cooldown
 			has_planet_flag = criminal_underworld_event_up
 			has_modifier = unemployment_benefits
 			has_modifier = activity_program
@@ -80,14 +83,13 @@ planet_event = {
 			has_modifier = center_of_drug_trade
 			has_modifier = mob_rule
 		}
-		NOT = { has_planet_flag = criminal_underworld_disappeared } # Cooldown
-		num_pops > 3
 		OR = {
 			AND = {
+				owner = { is_gestalt = no }
 				count_owned_pop = {
 					limit = { 
-						is_shackled_robot = no
 						is_unemployed = yes
+						is_shackled_robot = no
 						NOR = {
 							has_living_standard = { type = living_standard_utopian }
 							has_living_standard = { type = living_standard_good }
@@ -96,9 +98,9 @@ planet_event = {
 					}
 					count > 3
 				}
-				owner = { is_gestalt = no }
 			}
 			AND = {
+				owner = { is_gestalt = yes }
 				count_owned_pop = {
 					limit = { 
 						is_unemployed = yes
@@ -106,7 +108,6 @@ planet_event = {
 					}
 					count > 10
 				}
-				owner = { is_gestalt = yes }
 			}
 		}
 	}

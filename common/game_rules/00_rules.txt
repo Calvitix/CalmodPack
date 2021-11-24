@@ -1,12 +1,12 @@
 # Original File
 #
-# Calvitix Check 3.1.1  14/09/2021
+# Calvitix Check 3.2  22/11/2021
 #
 # Merge with Arisphaos Unofficial patch 19/11/2021
 # Merge with Expanded events
 # Merge with Fix
 # Merge with ver exp. vassals 17/05/2021
-# Merge with Planetary Diversity Exotic world 08/10/2021
+# Merge with Planetary Diversity 24/11/2021
 #
 #Tooltips will be generated from these rules when they fail. Use of custom_tooltip is recommended
 #There are still multiple hard-coded rules that apply in addition to these.
@@ -935,6 +935,7 @@ species_can_live_on_planet = {
 ###	
 }
 
+#Note: this is also used in pop faction support calculations
 #Root = country
 #This = pop
 can_vote_in_democratic_election = {
@@ -1284,15 +1285,18 @@ can_colonize_outside_borders = {
 #Root = country
 #This = planet
 can_terraform_planet = {
-    NAND = {
-		root = { has_policy_flag = pre_sapients_protect }
-		any_owned_species = { is_sapient = no }
-    }
-    NAND = {
-        root = {
-            has_origin = origin_pd_tree_of_life
-        }
-    }
+	custom_tooltip = {
+		fail_text = terraform_fail_no_presapient_protection_or_no_presapients
+	    NAND = {
+			root = { has_policy_flag = pre_sapients_protect }
+			any_owned_species = { is_sapient = no }
+	    }
+	}
+    #NAND = {
+    #    root = {
+    #        has_origin = origin_pd_tree_of_life
+    #    }
+    #}
     custom_tooltip = {
         fail_text = NO_TERRAFORM_HOLLOW_WORLD
         NOT = {
@@ -1495,6 +1499,7 @@ can_species_procreate = {
 			}
 		}
 	}
+	NOT = { has_species_flag = nivlac_no_procreation }
 }
 
 # Checks if a pop can be assembled
@@ -2244,7 +2249,7 @@ should_spawn_deposits = {
 
 # This = Planet
 is_new_colony = {
-	colony_age < 15
+	colony_age < 180
 	num_pops < 10
 }
 
@@ -2313,8 +2318,11 @@ can_force_grow_on_planet = {
 # This = planet
 # Root = country
 can_force_decline_on_planet = {
+	custom_tooltip = {
+		fail_text = FORCE_DECLINE_NEEDS_POP_CONTROLS
 	exists = owner
 	owner = { NOT = { has_policy_flag = population_controls_not_allowed } }
+	}
 	custom_tooltip = {
 		fail_text = FORCED_DECLINE_ALREADY_PURGING
 		NOT = {
@@ -2340,7 +2348,7 @@ can_force_decline_species = {
 # From = planet
 ## Note: success text tooltips are shown in alert_pops_declining alert.
 should_force_decline_species = {
-	# Infertile Clone Army pops should decline if in foreign country or Vat shortage.
+	# Infertile Clone Army pops should decline if in Country that can't have Vats, or there is a Vat shortage.
 	custom_tooltip = {
 		success_text = CLONE_ARMY_FORCE_DECLINE
 		OR = {
@@ -2349,10 +2357,18 @@ should_force_decline_species = {
 		}
 		from = {
 			OR = {
+				# Check if country is unable to build Vats for this species.
 				AND = {
 					exists = owner
-					owner = { NOT = { has_origin = origin_clone_army } }
+					owner = {
+						OR = {
+							NOT = { has_origin = origin_clone_army }					# Can't have Vats.
+							has_country_flag = clone_army_fertility_unlocked			# Can't have Vats anymore.
+							NOT = { owner_main_species = { is_same_species = root } }	# Our Vats can't build this species.
 				}
+					}
+				}
+				# Vats check out, but are there more pops than Vats support?
 				check_variable = { which = clone_pops_missing value < 0 }
 			}
 		}
@@ -2791,6 +2807,15 @@ can_have_first_contact = {
 			}
 		}
 	}
+	else_if = { #3.2
+		limit = {
+			from = {
+				is_country_type = dragon_dummy
+			}
+		}
+		has_origin = origin_here_be_dragons
+		from = { has_country_flag = dragon_of@prev }
+	}
 }
 
 # Root = Country with envoys to send
@@ -2818,6 +2843,122 @@ can_use_envoys_to_lower_imperial_authority = {
 		has_trait = trait_plentiful_traditions_pt_cocoon
 	}
 	
+}
+
+#this/root = pop #3.2
+#checked if job's possible_precalc = can_fill_drone_job
+can_fill_drone_job = {
+	custom_tooltip = DRONE_JOB_TRIGGER
+	hidden_trigger = {
+		exists = owner
+		owner = { is_gestalt = yes }
+		is_being_purged = no
+		is_enslaved = no
+		is_being_assimilated = no
+		NOT = { has_citizenship_type = { type = citizenship_organic_trophy } }
+	}
+}
+
+#this/root = pop
+#checked if job's possible_precalc = can_fill_worker_job
+can_fill_worker_job = {
+	custom_tooltip = WORKER_JOB_TRIGGER
+	hidden_trigger = {
+		NOT = { has_ethic = ethic_gestalt_consciousness }
+		exists = owner
+		is_being_purged = no
+		is_being_assimilated = no
+		NOT = { has_citizenship_type = { type = citizenship_organic_trophy } }
+		NAND = {
+			has_citizenship_type = { type = citizenship_slavery }
+			OR = {
+				has_slavery_type = { type = slavery_livestock }
+				has_slavery_type = { type = slavery_matrix }
+			}
+		}
+		if = {
+			limit = {
+				divinity_right_to_work_job_check_trigger_exempt = no
+			}
+			divinity_right_to_work_job_check_trigger_worker = yes
+		}
+	}
+}
+
+#this/root = pop
+#checked if job's possible_precalc = can_fill_specialist_job
+can_fill_specialist_job = {
+	custom_tooltip = SPECIALIST_JOB_TRIGGER
+	hidden_trigger = {
+		NOT = { has_ethic = ethic_gestalt_consciousness }
+		exists = owner
+		OR = {
+			is_enslaved = no
+			has_slavery_type = { type = slavery_indentured }
+		}
+		is_being_purged = no
+		is_being_assimilated = no
+		NOT = { has_trait = trait_syncretic_proles }
+		NOT = { has_trait = trait_nerve_stapled }
+		OR = {
+			NOT = { has_trait = trait_mechanical }
+			owner = { has_technology = tech_droid_workers }
+		}
+		NOT = { has_citizenship_type = { type = citizenship_organic_trophy } }
+		if = {
+			limit = {
+				divinity_right_to_work_job_check_trigger_exempt = no
+			}
+			divinity_right_to_work_job_check_trigger_specialist = yes
+		}
+	}
+}
+
+#this/root = pop
+#checked if job's possible_precalc = can_fill_ruler_job
+can_fill_ruler_job = {
+	if = {
+		limit = {
+			exists = owner
+			owner = {
+				has_origin = origin_necrophage
+				has_trait = trait_necrophage
+			}
+		}
+		custom_tooltip = {
+			text = RULER_JOB_NECROPHAGE_TRIGGER
+			has_trait = trait_necrophage
+			is_enslaved = no
+			is_being_purged = no
+			is_being_assimilated = no
+		}
+	}
+	else = {
+		custom_tooltip = RULER_JOB_TRIGGER
+		hidden_trigger = {
+			NOT = { has_ethic = ethic_gestalt_consciousness }
+			exists = owner
+			is_enslaved = no
+			is_being_purged = no
+			is_being_assimilated = no
+			NOT = { has_trait = trait_syncretic_proles }
+			NOT = { has_trait = trait_nerve_stapled }
+			OR = {
+				NOT = { has_trait = trait_mechanical }
+				AND = {
+					owner = { has_technology = tech_synthetic_workers }
+					owner = { has_policy_flag = ai_full_rights }
+				}
+			}
+			NOT = { has_citizenship_type = { type = citizenship_organic_trophy } }
+			if = {
+				limit = {
+					divinity_right_to_work_job_check_trigger_exempt = no
+				}
+				divinity_right_to_work_job_check_trigger_ruler = yes
+			}
+		}
+	}
 }
 
 # Checks whether the game should try and build a building or district on a planet via scripts in common/colony_automation
