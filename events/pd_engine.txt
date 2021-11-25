@@ -2,7 +2,7 @@
 #
 # Calvitix Check 3.1.1  16/09/2021
 #
-# Last update 24/11/2021
+# Last update 25/11/2021
 #
 #Calvitix Warning : if change in pdengine.00, Have to Change D:\Documents\Paradox Interactive\Stellaris\mod\Calmodpack\events\!!_z_pd_engine_overwrite.txt too
 #
@@ -2020,7 +2020,7 @@ planet_event = {
 			is_planet_class = pc_mushroom
 			is_planet_class = pc_med
 			is_planet_class = pc_savannah
-			is_ringworld = yes
+			is_planet_class = pc_ringworld_habitable
 			is_planet_class = pc_city
 			is_planet_class = pc_mesa
 			is_planet_class = pc_badlands
@@ -2047,6 +2047,11 @@ planet_event = {
 	}
 
 	immediate = {
+			#Aquatics
+			IF = { limit = { is_planet_class = pc_aquatic NOT = { OR = { has_planet_flag = hotaquatic has_planet_flag = coldaquatic } } } set_planet_entity = { picture = pc_aquatic_uw } set_planet_flag = pdaquapicture }
+			IF = { limit = { is_planet_class = pc_aquatic has_planet_flag = hotaquatic } set_planet_entity = { picture = pc_aquatichot_uw } set_planet_flag = pdaquapicture }
+			IF = { limit = { is_planet_class = pc_aquatic has_planet_flag = coldaquatic } set_planet_entity = { picture = pc_aquaticcold_uw } set_planet_flag = pdaquapicture }
+			#Wet
 			IF = { limit = { is_planet_class = pc_ocean } set_planet_entity = { picture = pc_aquatic_uw } set_planet_flag = pdaquapicture }
 			IF = { limit = { is_planet_class = pc_continental } set_planet_entity = { picture = pc_aquatic_uw } set_planet_flag = pdaquapicture }
 			IF = { limit = { is_planet_class = pc_forest } set_planet_entity = { picture = pc_aquatic_uw } set_planet_flag = pdaquapicture }
@@ -3024,14 +3029,14 @@ planet_event = {
 		ELSE_IF = {
 			limit = { 
 				is_artificial = yes
-				NOT = { is_ringworld = yes }
+				NOT = { is_planet_class = pc_ringworld_habitable }
 			 }
 		add_deposit = d_pd_tree_of_life_habitat
 		set_planet_flag = pd_tolx
 		}
 		ELSE_IF = {
 			limit = { 
-				is_ringworld = yes
+				is_planet_class = pc_ringworld_habitable
 			 }
 		add_deposit = d_pd_tree_of_life_ringworld
 		set_planet_flag = pd_tolx
@@ -3515,7 +3520,7 @@ country_event = {
 				solar_system = { NOT = { has_star_flag = empire_home_system } }
 			}	
 			random_list = {
-				2 = {   #Calvitix, keep old version
+				3 = { 
 					change_pc = pc_diamond
 					this = { clear_deposits = yes }
 					random_list = {
@@ -3525,15 +3530,8 @@ country_event = {
 						20 = { add_deposit = d_rare_crystals_2 }
 						40 = { add_deposit = d_rare_crystals_1 }
 					}
-					random_list = {
-						10 = { add_deposit = d_rare_crystals_5 }
-						10 = { add_deposit = d_rare_crystals_4 }
-						20 = { add_deposit = d_rare_crystals_3 }
-						20 = { add_deposit = d_rare_crystals_2 }
-						40 = { add_deposit = d_rare_crystals_1 }
 					}
-				}
-				98 = { }	
+				97 = { }	
 			}
 		}
 		every_galaxy_planet = { 
@@ -3834,13 +3832,6 @@ country_event = {
 						20 = { add_deposit = d_exotic_gases_2 }
 						40 = { add_deposit = d_exotic_gases_1 }
 					}
-					random_list = {
-						10 = { add_deposit = d_exotic_gases_5 }
-						10 = { add_deposit = d_exotic_gases_4 }
-						20 = { add_deposit = d_exotic_gases_3 }
-						20 = { add_deposit = d_exotic_gases_2 }
-						40 = { add_deposit = d_exotic_gases_1 }
-					}
 				}
 				75 = { } 
 			}
@@ -3959,13 +3950,6 @@ country_event = {
 				10 = {
 					change_pc = pc_ethane_ocean
 					this = { clear_deposits = yes }
-					random_list = {
-						10 = { add_deposit = d_volatile_motes_5 }
-						10 = { add_deposit = d_volatile_motes_4 }
-						20 = { add_deposit = d_volatile_motes_3 }
-						20 = { add_deposit = d_volatile_motes_2 }
-						40 = { add_deposit = d_volatile_motes_1 }
-					}
 					random_list = {
 						10 = { add_deposit = d_volatile_motes_5 }
 						10 = { add_deposit = d_volatile_motes_4 }
@@ -7229,6 +7213,7 @@ country_event = {
 						is_homeworld = no
 						NOR = { 
 							has_planet_flag = pd_ignore 
+							has_planet_flag = living_planet
 							solar_system = { has_star_flag = empire_cluster } 
 							has_modifier = pdterra_reef
 						}
@@ -7627,6 +7612,7 @@ country_event = {
 						is_homeworld = no
 						NOR = { 
 							has_planet_flag = pd_ignore 
+							has_planet_flag = living_planet
 							solar_system = { has_star_flag = empire_cluster } 
 							has_modifier = pdterra_reef
 						}
@@ -8023,6 +8009,7 @@ country_event = {
 						}
 						is_homeworld = no
 						NOR = { 
+							has_planet_flag = living_planet
 							has_planet_flag = pd_ignore 
 							solar_system = { has_star_flag = empire_cluster } 
 							has_modifier = pdterra_reef
