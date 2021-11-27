@@ -415,10 +415,25 @@ building_communal_housing = {
 		}
 		or = {
 			owner = { is_ai = no }
+			nor = {
+				is_capital = yes
+				num_buildings = {
+					type = building_research_lab_1
+					value > 0
+				}
+				num_pops < 13
+			}
+		}
+		or = {
+			owner = { is_ai = no }
 			and = {
 			free_jobs > 0
 			free_amenities < -4
-			or = { free_district_slots < 3 num_pops < 16 num_pops > 11 }
+				or = {
+					free_district_slots < 3
+					num_pops < 16
+					num_pops > 11
+				}
 			free_amenities > -9
 			}
 			and = {
@@ -876,10 +891,6 @@ building_hive_warren = {
 	destroy_trigger = {
 		exists = owner
 		OR = {
-			AND = { #3.1.1
-				owner = { is_ai = yes }
-				years_passed < 3
-			}#Blow up the one on the homeworld.
 			AND = {
 				planet = {
 					free_building_slots = 0
@@ -931,8 +942,10 @@ building_hive_warren = {
 			free_housing < 20
 			free_jobs > 1
 			free_building_slots > 0
-			or = { has_planet_flag = str_good_habitability 
-			has_planet_flag = str_acceptable_habitability }
+			or = {
+				has_planet_flag = str_good_habitability
+				has_planet_flag = str_acceptable_habitability
+			}
 			owner = {
 				has_country_flag = str_has_room_to_grow
 				resource_income_compare = {
@@ -1055,7 +1068,10 @@ building_holo_theatres = {
 		}
 		and = {
 		free_amenities < 2
-		or = { years_passed > 15 free_amenities < -2 }
+				or = {
+					years_passed > 15
+					free_amenities < -2
+				}
 		owner = { has_origin = origin_default }
 		is_capital = yes
 		not = { has_building = building_holo_theatres }
@@ -1072,26 +1088,8 @@ building_holo_theatres = {
 			AND = {
 				free_building_slots = 0
 				owner = { is_ai = yes }
-				OR = {
 				free_amenities > 30
-					AND = {
-						count_owned_pop = { limit = { is_sapient = yes } count < 75 }
-						owner = {
-							has_technology = tech_frontier_health
-						}
-						NOR = {
-							has_building = building_clinic
-							has_building = building_hospital
-						}
-					}
-					AND = {
-						owner = {
-							NOT = { has_policy_flag = robots_outlawed }
-							has_technology = tech_robotic_workers
-						}
-						NOT = { has_building = building_robot_assembly_plant }
-					}
-				}
+				years_passed > 25
 			}
 		}
 	}
@@ -1283,7 +1281,10 @@ building_clinic = {
 	category = amenity
 
 	potential = {
-		owner = { is_regular_empire = yes is_ai = no }
+		owner = {
+			is_regular_empire = yes
+			is_ai = no
+		}
 		NOT = { has_modifier = slave_colony }
 	}
 
@@ -1426,7 +1427,7 @@ building_maintenance_depot = {
 
 building_spawning_pool = {
 	base_buildtime = @b1_time
-	base_cap_amount = 5 #1 calvitix
+	base_cap_amount = 4 #1 calvitix
 
 	category = amenity
 

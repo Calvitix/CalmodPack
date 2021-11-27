@@ -1,8 +1,8 @@
 # Ecology Mod File
 #
-# Calvitix Check 3.1.1  18/09/2021
+# Calvitix Check 3.2
 #
-# Last update 26/09/2021
+# Last update 26/11/2021
 #
 #
 ###################
@@ -14,10 +14,19 @@ waste_handler = {
 	building_icon = eco_building_waste_recovery
 	clothes_texture_index = 2
 
+	possible_pre_triggers = {
+		has_owner = yes
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+
 	possible_precalc = can_fill_worker_job
 	possible = {
 		hidden_trigger = { exists = owner }
-		owner = { is_fallen_empire = no }
+		owner = {
+			is_gestalt = no
+		}
 	}
 
 	resources = {
@@ -220,6 +229,14 @@ waste_drone = {
 	condition_string = DRONE_JOB_TRIGGER
 	building_icon = eco_building_waste_recovery
 	
+	possible_pre_triggers = {
+		has_owner = yes
+		is_enslaved = no
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+
 	possible_precalc = can_fill_drone_job
 
 	resources = {
@@ -304,6 +321,7 @@ waste_drone = {
 			owner = { 
 				OR = {
 					has_policy_flag = eco_policy_reuse
+					has_policy_flag = eco_policy_food_advanced
 					has_policy_flag = eco_policy_reuse_advanced #calvitix debug
 				}
 			}
@@ -414,6 +432,14 @@ waste_manager = {
 	building_icon = eco_building_waste_recovery
 	clothes_texture_index = 3
 
+	possible_pre_triggers = {
+		has_owner = yes
+		is_enslaved = no
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+
 	possible_precalc = can_fill_ruler_job
 
 	resources = {
@@ -489,7 +515,17 @@ waste_overseer = {
 	condition_string = DRONE_JOB_TRIGGER
 	building_icon = eco_building_waste_recovery
 	
+	possible_pre_triggers = {
+		has_owner = yes
+		is_enslaved = no
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+
 	possible_precalc = can_fill_drone_job
+	
+	possible = { NOT = { has_trait = trait_nerve_stapled } }
 	
 	resources = {
 		category = planet_waste
@@ -600,7 +636,21 @@ park_ranger = {
 	building_icon = building_executive_retreat
 	clothes_texture_index = 3
 	
+	possible_pre_triggers = {
+		has_owner = yes
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+
 	possible_precalc = can_fill_specialist_job
+	
+	possible = {
+		hidden_trigger = { exists = owner }
+		owner = {
+			is_gestalt = no
+		}
+	}
 	
 	resources = {
 		category = planet_ranger
@@ -668,7 +718,17 @@ ranger_drone = {
 	condition_string = DRONE_JOB_TRIGGER
 	building_icon = building_executive_retreat
 	
+	possible_pre_triggers = {
+		has_owner = yes
+		is_enslaved = no
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+
 	possible_precalc = can_fill_drone_job
+	
+	possible = { NOT = { has_trait = trait_nerve_stapled } }
 	
 	pop_modifier = {
 		pop_defense_armies_add = 1
