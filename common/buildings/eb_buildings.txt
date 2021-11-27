@@ -1,252 +1,139 @@
 #Mineral Building
 
 eb_mineral = {
-	base_buildtime = 360
+	base_buildtime = @b1_time
 
 	category = resource
 	
+	destroy_trigger = {
+		has_modifier = resort_colony
+	}
+
 	potential = {
 		NOT = { has_modifier = resort_colony }
 
-		NOR = { #Ringworlds and Habitats get a custom mine.
+		NOR = { # Ringworlds don't have mines
 			is_planet_class = pc_ringworld_habitable
 			is_planet_class = pc_cybrex
-			is_planet_class = pc_habitat
+		}
+		OR = { # Habitats only have mines if they're built on an appropriate deposit
+			NOT = { is_planet_class = pc_habitat }
+			has_planet_flag = mining_habitat
+		}
+	}
+
+	allow = {
+		buildings_simple_allow = yes
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			NOT = { is_planet_class = pc_shattered_ring_habitable }
+			exists = owner
+			owner = {
+				is_regular_empire = yes
+				is_fallen_empire_spiritualist = no
+			}
+		}
+		modifier = {
+			job_miner_add = @b1_jobs
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			NOT = { is_planet_class = pc_shattered_ring_habitable }
+			exists = owner
+			owner = { is_fallen_empire_spiritualist = yes }
+		}
+		modifier = {
+			job_fe_acolyte_mine_add = @b1_jobs
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			NOT = { is_planet_class = pc_shattered_ring_habitable }
+			exists = owner
+			owner = { is_gestalt = yes }
+		}
+		modifier = {
+			job_mining_drone_add = @b1_jobs
 		}
 	}
 	
 	triggered_planet_modifier = {
 		potential = {
+			is_planet_class = pc_shattered_ring_habitable
 			exists = owner
 			owner = { is_regular_empire = yes }
 		}
 		modifier = {
-			job_miner_add = 2
-		}
-	}
-
-	triggered_planet_modifier = {
-		potential = {
-			exists = owner
-			owner = {
-				is_gestalt = no
-			}
-			has_active_building = building_mineral_purification_plant
-		}
-		modifier = {
-			job_miner_add = 1
-		}
-	}
-
-	triggered_planet_modifier = {
-		potential = {
-			exists = owner
-			owner = { is_gestalt = yes }
-		}
-		modifier = {
-			job_mining_drone_add = 2
-		}
-	}
-
-	triggered_planet_modifier = {
-		potential = {
-			exists = owner
-			owner = { is_gestalt = yes }
-			has_active_building = building_mineral_purification_plant
-		}
-		modifier = {
-			job_mining_drone_add = 1
+			job_scrap_miner_add = @b1_jobs
 		}
 	}
 	
 	resources = {
 		category = planet_buildings
 		cost = {
-			minerals = 300
+			minerals = @b1_minerals
 		}
 		upkeep = {
-			energy = 2
+			energy = @b1_upkeep
 		}
 	}	
 	
-	triggered_desc = {
-		trigger = {
-			exists = owner
-			owner = { is_gestalt = yes }
-		}
-		text = job_mining_drone_effect_desc
-	}
-	triggered_desc = {
-		trigger = {
-			exists = owner
-			owner = { is_gestalt = no }
-		}
-		text = job_miner_effect_desc
+	prerequisites = {
+		"tech_mining_1"
 	}
 	
-	prerequisites = {
-		tech_mineral_purification_1
-	}
 	upgrades = {
 		"eb_mineral2"
 	}
 
-	ai_resource_production = {
-		minerals = 1
-		trigger = {
-			always = yes
-		}
-	}
-}
-
-eb_mineral_hab = {
-	base_buildtime = 360
-
-	category = resource
-	
-	potential = {
-		OR = { 
-			is_planet_class = pc_habitat
-			is_planet_class = pc_ringworld_habitable
-			is_planet_class = pc_cybrex
-		}
-		NOT = { has_modifier = resort_colony }
-	}
-	
-	triggered_planet_modifier = {
-		potential = {
-			exists = owner
-			owner = { is_regular_empire = yes }
-		}
-		modifier = {
-			job_miner_add = 1
-		}
-	}
-
-	triggered_planet_modifier = {
-		potential = {
-			exists = owner
-			owner = {
-				is_gestalt = no
-			}
-			has_active_building = building_mineral_purification_plant
-		}
-		modifier = {
-			job_miner_add = 1
-		}
-	}
-	
-	triggered_planet_modifier = {
-		potential = {
-			exists = owner
-			owner = { is_regular_empire = yes }
-			planet = { 
-				OR = { 
-					AND = {
-						has_planet_flag = mining_habitat 
-						is_planet_class = pc_habitat
-					}
-					is_planet_class = pc_ringworld_habitable
-					is_planet_class = pc_cybrex
-				}
-			}
-		}
-		modifier = {
-			job_miner_add = 1
-		}
-	}
-
-	triggered_planet_modifier = {
-		potential = {
-			exists = owner
-			owner = { is_gestalt = yes }
-		}
-		modifier = {
-			job_mining_drone_add = 1
-		}
-	}
-
-	triggered_planet_modifier = {
-		potential = {
-			exists = owner
-			owner = { is_gestalt = yes }
-			has_active_building = building_mineral_purification_plant
-		}
-		modifier = {
-			job_mining_drone_add = 1
-		}
-	}
-	
-	triggered_planet_modifier = {
-		potential = {
-			exists = owner
-			owner = { is_gestalt = yes }
-			planet = { 
-				OR = { 
-					AND = {
-						has_planet_flag = mining_habitat 
-						is_planet_class = pc_habitat
-					}
-					is_planet_class = pc_ringworld_habitable
-					is_planet_class = pc_cybrex
-				}
-			}
-		}
-		modifier = {
-			job_mining_drone_add = 1
-		}
-	}
-	
-	resources = {
-		category = planet_buildings
-		cost = {
-			minerals = 300
-		}
-		upkeep = {
-			energy = 2
-		}
-	}
-	
 	triggered_desc = {
 		trigger = {
-			exists = owner
-			owner = { 
-				OR = {
-					is_gestalt = yes
-					is_regular_empire = yes
-				}
-			}
-			planet = {
-				NOT = { has_planet_flag = mining_habitat }
-				is_planet_class = pc_habitat
-				NOT = { is_planet_class = pc_ringworld_habitable }
-				NOT = { is_planet_class = pc_cybrex }
-			}
-		}
-		text = eb_mineral_hab_bad
-	}
-	
-	triggered_desc = {
-		trigger = {
+			NOT = { is_planet_class = pc_shattered_ring_habitable }
 			exists = owner
 			owner = { is_gestalt = yes }
 		}
 		text = job_mining_drone_effect_desc
-	}
+		}
 	triggered_desc = {
 		trigger = {
+			NOT = { is_planet_class = pc_shattered_ring_habitable }
 			exists = owner
-			owner = { is_gestalt = no }
+			owner = {
+				is_gestalt = no
+				is_fallen_empire_spiritualist = no
+			}
 		}
 		text = job_miner_effect_desc
 	}	
-	
-	prerequisites = {
-		tech_mineral_purification_1
+	triggered_desc = {
+		trigger = {
+			NOT = { is_planet_class = pc_shattered_ring_habitable }
+			exists = owner
+			owner = { is_fallen_empire_spiritualist = yes }
+		}
+		text = job_fe_acolyte_mine_effect_desc
 	}
 	
-	upgrades = {
-		"eb_mineral_hab2"
+	triggered_desc = {
+		trigger = {
+			is_planet_class = pc_shattered_ring_habitable
+			exists = owner
+			owner = { is_gestalt = yes }
+		}
+		text = job_scrap_miner_drone_effect_desc
+	}
+	triggered_desc = {
+		trigger = {
+			is_planet_class = pc_shattered_ring_habitable
+			exists = owner
+			owner = { is_regular_empire = yes }
+		}
+		text = job_scrap_miner_effect_desc
 	}
 
 	ai_resource_production = {
@@ -260,12 +147,28 @@ eb_mineral_hab = {
 #Energy Building
 
 eb_energy = {
-	base_buildtime = 360
+	base_buildtime = @b1_time
 
 	category = resource
 	
+	destroy_trigger = {
+		has_modifier = resort_colony
+	}
+
 	potential = {
 		NOT = { has_modifier = resort_colony }
+		OR = {
+			NOT = { is_planet_class = pc_habitat }
+			AND = {
+				exists = owner
+				owner = { is_gestalt = yes }
+			}
+			has_planet_flag = energy_habitat
+		}
+	}
+
+	allow = {
+		buildings_simple_allow = yes
 	}
 	
 	triggered_planet_modifier = {
@@ -274,30 +177,17 @@ eb_energy = {
 			owner = { is_regular_empire = yes }
 		}
 		modifier = {
-			job_technician_add = 2
+			job_technician_add = @b1_jobs
 		}
 	}
 
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
-			owner = {
-				is_gestalt = no
-			}
-			has_active_building = building_energy_grid
+			owner = { is_fallen_empire_spiritualist = yes }
 		}
 		modifier = {
-			job_technician_add = 1
-		}
-	}
-
-	triggered_planet_modifier = {
-		potential = {
-			exists = owner
-			owner = { is_gestalt = yes }
-		}
-		modifier = {
-			job_technician_drone_add = 2
+			job_fe_acolyte_generator_add = @b1_jobs
 		}
 	}
 
@@ -305,20 +195,19 @@ eb_energy = {
 		potential = {
 			exists = owner
 			owner = { is_gestalt = yes }
-			has_active_building = building_energy_grid
 		}
 		modifier = {
-			job_technician_drone_add = 1
+			job_technician_drone_add = @b1_jobs
 		}
 	}
 	
 	resources = {
 		category = planet_buildings
 		cost = {
-			minerals = 300
+			minerals = @b1_minerals
 		}
 		upkeep = {
-			minerals = 2
+			energy = 2
 		}
 	}	
 	
@@ -338,7 +227,7 @@ eb_energy = {
 	}
 	
 	prerequisites = {
-		tech_power_hub_1
+		tech_power_plant_2
 	}
 	
 	upgrades = {

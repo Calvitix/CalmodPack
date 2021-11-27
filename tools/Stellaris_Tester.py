@@ -298,6 +298,7 @@ def FrenchTranslate (mySearchString):
                         mydummy = '[===_'+str(dummycount)+']'
                         donottranslate.append([myrightString,mydummy])
                         mySearchString = mySearchString.replace(myrightString,mydummy,1)
+                        lastdolbegin = lastdolbegin + len(mydummy) - len(myrightString)                         
                     else :
                         print ('chaine [ impaire')
                     mydolbegin = mySearchString.find('[',lastdolbegin)
@@ -325,6 +326,7 @@ def FrenchTranslate (mySearchString):
                         mydummy = '[===_'+str(dummycount)+']'
                         donottranslate.append([myrightString,mydummy])
                         mySearchString = mySearchString.replace(myrightString,mydummy,1)
+                        lastdolbegin = lastdolbegin + len(mydummy) - len(myrightString) 
                     else :
                         print ('chaine [ impaire')
                     mydolbegin = mySearchString.find('£',lastdolbegin)
@@ -351,19 +353,51 @@ def FrenchTranslate (mySearchString):
                         mydummy = '[===_'+str(dummycount)+']'
                         donottranslate.append([myrightString,mydummy])
                         mySearchString = mySearchString.replace(myrightString,mydummy,1)
+                        lastdolbegin = lastdolbegin + len(mydummy) - len(myrightString)                         
                     else :
                         print ('chaine [ impaire')
                     mydolbegin = mySearchString.find('$',lastdolbegin)
+
+                #remove the §Y... and replace with dummy
+                lastdolbegin = 0
+                mydolbegin = mySearchString.find('§')
+                mycountchar = 0
+                mynextchar = ''
+                while mydolbegin > -1 :
+                    mycountchar = mydolbegin+1
+                    mydolend = mycountchar
+                    #mynextchar = mySearchString[mycountchar:mycountchar+1]
+                    #while mynextchar != '' and mynextchar != ' ' and mynextchar != '"' and mynextchar != '{' and mynextchar != '£':
+                    #    mycountchar = mycountchar+1
+                    #    mynextchar = mySearchString[mycountchar:mycountchar+1]
+                    #if mynextchar == '$' :   
+                    #    mydolend = mycountchar
+                    #else:
+                    #    mydolend = mycountchar-1                
+                    if mydolend > -1 :
+                        lastdolbegin = mydolend 
+                        myrightString = mySearchString[mydolbegin:mydolend+1]
+                        dummycount = dummycount+1
+                        mydummy = '[===_'+str(dummycount)+']'
+                        donottranslate.append([myrightString,mydummy])
+                        mySearchString = mySearchString.replace(myrightString,mydummy,1)
+                        lastdolbegin = lastdolbegin + len(mydummy) - len(myrightString)                         
+                    else :
+                        print ('chaine [ impaire')
+                    mydolbegin = mySearchString.find('§',lastdolbegin)
 
 
                 translation = translator.translate(mySearchString,dest ='fr')
                 myfound = translation.text    
                 #for translation in translations:
                 #print(translation.origin, ' -> ', translation.text)
-                myfound = StellarisImproveText(myfound)
+                myfound = StellarisImproveText(myfound,True)
 
                 for item in donottranslate:
                     myfound = myfound.replace(item[1],item[0],1)
+
+
+                myfound = StellarisImproveText(myfound,False)
 
                 myfound = myfound.replace(' {xxspxx} ','\\n')
                 myfound = myfound.replace('{xxspxx} ','\\n')
@@ -388,7 +422,8 @@ def FrenchTranslate (mySearchString):
                 myfound = myfound.replace(' {xxspxx}','\\n')
                 myfound = myfound.replace(' {xxspxx} ','\\n')
                 myfound = myfound.replace('{xxspxx}','\\n')
-
+                myfound = myfound.rstrip()
+                myfound = myfound.rstrip(' ')
 
 
 
@@ -404,20 +439,22 @@ def FrenchTranslate (mySearchString):
 
     return myfound
 
-def StellarisImproveText (mystring):
+def StellarisImproveText (mystring,point):
 
     myreturn =''
-    print(mystring)
+    #print(mystring)
     myreturn = mystring
     myreturn = myreturn.replace('!',' ! ')
     myreturn = myreturn.replace('  !',' !') 
     myreturn = myreturn.replace('!  ','! ') 
     myreturn = myreturn.replace('! "','!"')     
-    myreturn = myreturn.replace('.','. ')
+    if point :
+        myreturn = myreturn.replace('.','. ')
     myreturn = myreturn.replace('.  ','. ')
     myreturn = myreturn.replace(' . . .','...')
     myreturn = myreturn.replace('. "','."')
     myreturn = myreturn.replace(',',', ')
+    myreturn = myreturn.replace(',,',',')     
     myreturn = myreturn.replace(',  ',', ')
     myreturn = myreturn.replace('?',' ?')
     myreturn = myreturn.replace('?',' ? ')
@@ -433,17 +470,21 @@ def StellarisImproveText (mystring):
     myreturn = myreturn.replace('§B [','§B[')    
     myreturn = myreturn.replace('§E [','§E[')    
     myreturn = myreturn.replace('§H [','§H[')    
-    myreturn = myreturn.replace('§Y $','§Y$')
-    myreturn = myreturn.replace('§S $','§S$')
-    myreturn = myreturn.replace('§B $','§B$')
-    myreturn = myreturn.replace('§H $','§H$')
-    myreturn = myreturn.replace('§E $','§E$')
-    myreturn = myreturn.replace('§R $','§R$')
+    myreturn = myreturn.replace('§Y ','§Y')
+    myreturn = myreturn.replace('§S ','§S')
+    myreturn = myreturn.replace('§B ','§B')
+    myreturn = myreturn.replace('§H ','§H')
+    myreturn = myreturn.replace('§E ','§E')
+    myreturn = myreturn.replace('§R ','§R')
+    myreturn = myreturn.replace('§G ','§G')
+    myreturn = myreturn.replace('§L ','§L')
+    myreturn = myreturn.replace('§W ','§W')
     myreturn = myreturn.replace('] § !',']§!')
     myreturn = myreturn.replace(']§ !',']§!')    
     myreturn = myreturn.replace('$ § !','$§!')
     myreturn = myreturn.replace('$ §!','$§!')
     myreturn = myreturn.replace('§ !','§!')    
+    myreturn = myreturn.replace(' §!','§!')    
     myreturn = myreturn.replace('\\ ','')
     myreturn = myreturn.replace('"','\'')
     myreturn = myreturn.replace('§yy','§Y')    
@@ -451,7 +492,9 @@ def StellarisImproveText (mystring):
     myreturn = myreturn.replace('[ ===','[===')
     myreturn = myreturn.replace('[====','[===')
     myreturn = myreturn.replace('[ ===','[===')
+    myreturn = myreturn.replace('[==== _ ','[===_')
     myreturn = myreturn.replace('[=== _ ','[===_')
+    myreturn = myreturn.replace('[==== _','[===_')
     myreturn = myreturn.replace('[ ===','[===')
     myreturn = myreturn.replace('[=== _','[===_')
     myreturn = myreturn.replace('[ ===','[===')
@@ -466,8 +509,15 @@ def StellarisImproveText (mystring):
     myreturn = myreturn.replace('XX }','XX}')
     myreturn = myreturn.replace('œ','oe')
     myreturn = myreturn.replace('’','\'')
+    myreturn = myreturn.replace('. "','."')
+    myreturn = myreturn.replace(' .','.')
+    myreturn = myreturn.replace(' ,',',')
 
-
+    myreturn = myreturn.replace('[=== 5]','[===_5]')
+    myreturn = myreturn.replace('[=== 4]','[===_4]')
+    myreturn = myreturn.replace('[=== 3]','[===_3]')
+    myreturn = myreturn.replace('[=== 2]','[===_2]')
+    myreturn = myreturn.replace('[=== 1]','[===_1]')
 
     #valeur modificateurs avec pourcentage
     myreturn = myreturn.replace(' + ','+')
@@ -574,10 +624,10 @@ def BtnCompFRENG():
     filename = values['-TXTFILE-'].rstrip('\n')
     filenameref = values['-TXTDESTFILE-'].rstrip('\n')
     if not filename :
-        filename = u'E:\\Documents\\Paradox Interactive\\Stellaris\\mod\\frenchtranslationpack2.6\\localisation\\replace\\ethic_rebuild_l_french.yml'
+        filename = u'D:\\Documents\\Paradox Interactive\\Stellaris\\mod\\frenchtranslationpack2.6\\localisation\\replace\\ethic_rebuild_l_french.yml'
     if not filenameref :
-        filenameref = u'E:\\Documents\\Paradox Interactive\\Stellaris\\mod\\frenchtranslationpack2.6\\localisation\\replace\\dummy.yml'
-        #filenameref = u'E:\\Documents\\Paradox Interactive\\Stellaris\\mod\\frenchtranslationpack2.6\\localisation\\french\\l_french.yml'
+        filenameref = u'D:\\Documents\\Paradox Interactive\\Stellaris\\mod\\frenchtranslationpack2.6\\localisation\\replace\\dummy.yml'
+        #filenameref = u'D:\\Documents\\Paradox Interactive\\Stellaris\\mod\\frenchtranslationpack2.6\\localisation\\french\\l_french.yml'
     #searchcontent = values['-TXTDESTFILE-']
     new_filename = 'new.txt'
     findyml = filename.find('.')
@@ -681,78 +731,120 @@ def BtnUpdateNames():
 
     filename = values['-TXTFILE-'].rstrip('\n')
     filenameref = values['-TXTDESTFILE-'].rstrip('\n')
+    
+        
+    
+    
+    
     if not filename :
-        #filename = u'E:\\Documents\\Paradox Interactive\\Stellaris\\mod\\frenchtranslationpack2.6\\localisation\\replace\\ethic_rebuild_l_french.yml'
-        filename = u'C:\\Personnel\\Github\\Stellaris-French-Translation-Pack\\localisation\\l_french_dpe_diplo_events.yml'
+        #filename = u'D:\\Documents\\Paradox Interactive\\Stellaris\\mod\\frenchtranslationpack2.6\\localisation\\replace\\ethic_rebuild_l_french.yml'
+        filename = u'D:\\Documents\\Paradox Interactive\\Stellaris\\mod\\Calmodpack\\common\\terraform\\'
+        
     #if not filenameref :
-        #   filenameref = u'E:\\Documents\\Paradox Interactive\\Stellaris\\mod\\frenchtranslationpack2.6\\localisation\\replace\\dummy.yml'
-        #filenameref = u'E:\\Documents\\Paradox Interactive\\Stellaris\\mod\\frenchtranslationpack2.6\\localisation\\french\\l_french.yml'
+        #   filenameref = u'D:\\Documents\\Paradox Interactive\\Stellaris\\mod\\frenchtranslationpack2.6\\localisation\\replace\\dummy.yml'
+        #filenameref = u'D:\\Documents\\Paradox Interactive\\Stellaris\\mod\\frenchtranslationpack2.6\\localisation\\french\\l_french.yml'
     #searchcontent = values['-TXTDESTFILE-']
     new_filename = 'new.txt'
     isalready_newidx = filename.find('_new.')
-    if isalready_newidx == -1 :
-        findyml = filename.find('.')
-        while findyml > -1:
-            new_filename = filename[:findyml]+'_new.'+ filename[findyml+1:]
-            findyml = filename.find('.',findyml+1)
+    #if isalready_newidx == -1 :
+    #    findyml = filename.find('.')
+    #    while findyml > -1:
+    #        new_filename = filename[:findyml]+'_new.'+ filename[findyml+1:]
+    #        findyml = filename.find('.',findyml+1)
+    #else:
+
+    listeFichiers = []
+    filepath = ''
+    
+    if filename.find(u'.yml') < 0 :
+        from os import walk
+        filepath = filename
+        for (repertoire, sousRepertoires, fichiers) in walk(filename):
+            listeFichiers.extend(fichiers)        
     else:
+        listeFichiers.append(filename)
+    
+    
+    for myfile in listeFichiers:
+        
+        if filepath:
+            filename = filepath + myfile
+        else:
+           filename = myfile
         new_filename = filename
-
-
-
-    with open(filename, encoding='utf8') as f:
-        content = f.readlines()
-    #lines = [line.rstrip('\n') for line in f]
-    f.close
-
-    my_dest_list = list()
-    already_labeled = list()
-
-    try:    
-        for line in content :
-            print (line)
-            myCountBegin = line.find(u':')       
-            myCountStringBegin = line.find(u'"',myCountBegin+1)       
-            if myCountBegin > -1:
-                if myCountStringBegin > -1:
-                    my_label = line[:myCountBegin]
-                    my_string = line[myCountStringBegin+1:]
-                    my_string = my_string.rstrip('\n')
-                    my_string = my_string.rstrip()
-                    my_string = my_string.rstrip('\"')
-                    if my_label.strip() in already_labeled:
-                        print ("doublon : " + my_label)
-                    else:
-                        #already_labeled.append(my_label.strip())
-                        if my_string.strip() != '':
-                            foundfrench = FrenchReplaceInverted(my_string,StringToSearch,StringReplace)
-                        if not foundfrench:
-                            my_dest_list.append(line)
-                        else:                    
-                            print("found : " + my_label + " : " + foundfrench)
-                            #foundfrench = StellarisImproveText(foundfrench)
-                            mydeststring = line[:myCountStringBegin+1] + foundfrench + '\"\n'
-                            #foundfrench = StellarisImproveText(foundfrench)
-                            my_dest_list.append(mydeststring)
-                else:
-                    my_dest_list.append(line)                
-            else:
-                my_dest_list.append(line)
-
-    except:
-        print("Erreur lors du processus") 
-
-
-    finally:
-        TxtDest = str(my_dest_list)
-
-        fdest = open(new_filename,'w', encoding='utf8')
-        fdest.writelines(["%s" % item  for item in my_dest_list])
+    
+    
+    
+        with open(filename, encoding='utf8') as f:
+            content = f.readlines()
+        #lines = [line.rstrip('\n') for line in f]
+        f.close
+    
+        my_dest_list = list()
+        already_labeled = list()
+        my_from = ''
+        my_to = ''
+    
+        try:    
+            for line in content :
+                print (line)
+                new_line = line
+                myCountBegin = new_line.find(u'from = pc_')       
+                myCountStringBegin = new_line.find(u'from = pc_')       
+                if myCountBegin > -1:
+                    if myCountStringBegin > -1:
+                        my_label = new_line[:myCountBegin]
+                        my_string = new_line[myCountStringBegin+10:]
+                        my_string = my_string.rstrip('\n')
+                        my_string = my_string.rstrip()
+                        my_string = my_string.rstrip('\"')
+                        my_from = my_string
+    
+                myCountBegin = new_line.find(u'to = pc_')       
+                myCountStringBegin = new_line.find(u'to = pc_')       
+                if myCountBegin > -1:
+                    if myCountStringBegin > -1:
+                        my_label = new_line[:myCountBegin]
+                        my_string = new_line[myCountStringBegin+8:]
+                        my_string = my_string.rstrip('\n')
+                        my_string = my_string.rstrip()
+                        my_string = my_string.rstrip('\"')
+                        my_to = my_string
+    
+                myCountBegin = new_line.find(u'gai_likes_desert')       
+                myCountStringBegin = new_line.find(u'gai_likes_desert')       
+                if myCountBegin > -1:
+                    if myCountStringBegin > -1:
+                        new_line = new_line.replace(u'gai_likes_desert',u'gai_likes_'+my_to)
+    
+                myCountBegin = new_line.find(u'has_country_flag = m_has_')       
+                myCountStringBegin = new_line.find(u'_species }')       
+                if myCountBegin > -1:
+                    if myCountStringBegin > -1:
+                        my_label = new_line[:myCountBegin]
+                        my_string = new_line[myCountStringBegin:]
+                        my_string = my_string.rstrip('\n')
+                        my_string = my_string.rstrip()
+                        my_string = my_string.rstrip('\"')
+                        new_line = my_label + 'has_country_flag = m_has_' + my_from + my_string + '\n'
+    
+                        
+                my_dest_list.append(new_line)
+    
+        except:
+            print("Erreur lors du processus") 
+    
+    
+        finally:
+            TxtDest = str(my_dest_list)
+    
+            fdest = open(new_filename,'w', encoding='utf8')
+            fdest.writelines(["%s" % item  for item in my_dest_list])
+            fdest.close
+    
+        print("Translation done") 
+    
         fdest.close
-
-    print("Translation done") 
-
-    fdest.close
 
 
 def BtnScanErrorLog():
@@ -761,11 +853,11 @@ def BtnScanErrorLog():
     filename = values['-TXTFILE-'].rstrip('\n')
     filenameref = values['-TXTDESTFILE-'].rstrip('\n')
     if not filename :
-        filename = u'E:\\Documents\\Paradox Interactive\\Stellaris\\logs\\error.log'
+        filename = u'D:\\Documents\\Paradox Interactive\\Stellaris\\logs\\error.log'
         #filename = u'C:\\Personnel\\Github\\Stellaris-French-Translation-Pack\\localisation\\l_french_dpe_diplo_events.yml'
     #if not filenameref :
-        #   filenameref = u'E:\\Documents\\Paradox Interactive\\Stellaris\\mod\\frenchtranslationpack2.6\\localisation\\replace\\dummy.yml'
-        #filenameref = u'E:\\Documents\\Paradox Interactive\\Stellaris\\mod\\frenchtranslationpack2.6\\localisation\\french\\l_french.yml'
+        #   filenameref = u'D:\\Documents\\Paradox Interactive\\Stellaris\\mod\\frenchtranslationpack2.6\\localisation\\replace\\dummy.yml'
+        #filenameref = u'D:\\Documents\\Paradox Interactive\\Stellaris\\mod\\frenchtranslationpack2.6\\localisation\\french\\l_french.yml'
     #searchcontent = values['-TXTDESTFILE-']
     new_filename = 'new.txt'
     findyml = filename.find('.')
@@ -868,6 +960,8 @@ def BtnScanErrorLog():
             myCountEffect1 = line.find(u'id has to be unique')
             myCountEffect2 = line.find(u'Error "failed effect validation')
 
+
+
             myCountInitializer = line.find(u': An initializer called')
             myCountInitializer2 = line.find(u'[trigger.cpp:403]: Unsynchronized trigger usage! callstack:')
 
@@ -917,6 +1011,7 @@ def BtnScanErrorLog():
             myCountEventFiles1 = line.find(u'file: events/')
             myCountEventFiles2 = line.find(u'in events/')
             myCountEventFiles3 = line.find(u'Invalid Event ID Tag')
+            myCountEventFiles4 = line.find(u'An error occurred when reading trigger.h')
             #Error in fire event effect at  file: events')
 
             myCountContextError1 = line.find(u': Script Error: Invalid context switch[species]')
@@ -1214,13 +1309,15 @@ def BtnScanErrorLog():
                 print ('Ignoring')            
 
 
-            #elif myCountEventFiles1 > -1:
+            elif myCountEventFiles1 > -1:
                 print ('Ignoring')
-            #elif myCountEventFiles2 > -1:
-            #    print ('Ignoring')
-            #elif myCountEventFiles3 > -1:
-            #    print ('Ignoring')
+            elif myCountEventFiles2 > -1:
+                print ('Ignoring')
+            elif myCountEventFiles3 > -1:
+                print ('Ignoring')
 
+            elif myCountEventFiles4 > -1:
+                print ('Ignoring')
 
 
 
@@ -1289,11 +1386,11 @@ def BtnTBD(StringToSearch='',StringReplace=''):
     filename = values['-TXTFILE-'].rstrip('\n')
     filenameref = values['-TXTDESTFILE-'].rstrip('\n')
     if not filename :
-        filename = u'E:\\Documents\\Paradox Interactive\\Stellaris\\logs\\game.log'
+        filename = u'D:\\Documents\\Paradox Interactive\\Stellaris\\logs\\game.log'
         #filename = u'C:\\Personnel\\Github\\Stellaris-French-Translation-Pack\\localisation\\l_french_dpe_diplo_events.yml'
     #if not filenameref :
-        #   filenameref = u'E:\\Documents\\Paradox Interactive\\Stellaris\\mod\\frenchtranslationpack2.6\\localisation\\replace\\dummy.yml'
-        #filenameref = u'E:\\Documents\\Paradox Interactive\\Stellaris\\mod\\frenchtranslationpack2.6\\localisation\\french\\l_french.yml'
+        #   filenameref = u'D:\\Documents\\Paradox Interactive\\Stellaris\\mod\\frenchtranslationpack2.6\\localisation\\replace\\dummy.yml'
+        #filenameref = u'D:\\Documents\\Paradox Interactive\\Stellaris\\mod\\frenchtranslationpack2.6\\localisation\\french\\l_french.yml'
     #searchcontent = values['-TXTDESTFILE-']
     new_filename = 'new.txt'
     findyml = filename.find('.')
@@ -1753,7 +1850,7 @@ def BtnTBD(StringToSearch='',StringReplace=''):
 
 
             #elif myCountEventFiles1 > -1:
-                print ('Ignoring')
+            #    print ('Ignoring')
             #elif myCountEventFiles2 > -1:
             #    print ('Ignoring')
             #elif myCountEventFiles3 > -1:
@@ -1815,200 +1912,253 @@ def BtnTBD(StringToSearch='',StringReplace=''):
 
 
 
-def BtnRemoveGender():
+def BtnAnalyseSave():
 
-    count = 0
-    content = values['-TXTFILE-']
-    FileString = content
-    #FileString = self.textEditor.Value
+    print('Button Scan Game Log')
 
-    #if len(StringToSearch) < 1 :
-    StringToSearch = '</Text>\n\t\t\t<Gender>Male</Gender>\n\t\t\t<Plural>0</Plural>' #values['-STRTOSEARCH-']
-    StringReplace = ''#values['-STRTOREPLACE-']
+    filename = values['-TXTFILE-'].rstrip('\n')
+    filenameref = values['-TXTDESTFILE-'].rstrip('\n')
+    if not filename :
+        filename = u'S:\\Hubic\\personnel\\Jeux\\Stellaris Trad\\gamestate'
+        #filename = u'C:\\data\hub\\personnel\\Jeux\\Stellaris Trad\\gamestate'
+        #filename = u'C:\\Personnel\\Github\\Stellaris-French-Translation-Pack\\localisation\\l_french_dpe_diplo_events.yml'
+    #if not filenameref :
+        #   filenameref = u'D:\\Documents\\Paradox Interactive\\Stellaris\\mod\\frenchtranslationpack2.6\\localisation\\replace\\dummy.yml'
+        #filenameref = u'D:\\Documents\\Paradox Interactive\\Stellaris\\mod\\frenchtranslationpack2.6\\localisation\\french\\l_french.yml'
+    #searchcontent = values['-TXTDESTFILE-']
+    new_filename = 'new.txt'
+    findyml = filename.find('.')
+    if filename.find('gamestate') > -1 and findyml < 0 :
+        new_filename = filename + '.txt'
+        import shutil
+        shutil.copyfile(filename, new_filename)
+        filename = new_filename
 
-
-    print(StringToSearch)
-    print(StringReplace)
-
-    Onlyonce = False
-    #VÃ©rifier si pas de boucle infinie
-    mycheck = StringReplace.find(StringToSearch)
-    if mycheck > -1 :
-        Onlyonce = True
-        #StringToSearch = ''
-        #StringReplace = ''
-    lenStr = len(StringToSearch)
-    lenfile = len(FileString)
-    nbfound = 0
-    if len(FileString) > 0 and lenStr > 0:
-        print('searching...')
-        myTagBegin = FileString.find(StringToSearch)
-        lastTagBegin = 0        
-        while myTagBegin > -1:
-            myCountBegin = -1
-            myIndiceRecul = 0
-            while myCountBegin < 0 and (myTagBegin+myIndiceRecul) > 0 :
-                myIndiceRecul = myIndiceRecul - 100            
-                myCountBegin = FileString.find(u'<French>',myTagBegin+myIndiceRecul,myTagBegin)
-                myCountEnd = FileString.find(u'</French>',max(myCountBegin,0))
-
-            if myCountBegin > -1 and myCountBegin < myCountEnd and myTagBegin > myCountBegin and myTagBegin < myCountEnd:
-                MyStringbefore = FileString[:myCountBegin+8]
-                MyString = FileString[myCountBegin+8:myCountEnd]
-                myFrenchTxt = MyString
-                FileStringAfter = FileString[myCountEnd:]
-                myContentTxt = ''
-                if (MyString.find(u'<Text>') > -1): #si frenchtxt complexe
-                    myContentBegin = myFrenchTxt.find(u'<Text>')
-                    myContentEnd = myFrenchTxt.find(u'</Text>')
-                    myContentTxt = myFrenchTxt[myContentBegin+6:myContentEnd]
-                    print('Remove Gender : ' + myContentTxt)
-                    myTagBeginMyString = MyString.find(StringToSearch)
-                    if myTagBeginMyString > -1:
-                        nbfound = nbfound + 1
-                        print('found : ' + str(nbfound))
-                        count = count + 1
-                        myResult = myContentTxt # MyString[:myTagBeginMyString] + StringReplace + MyString[myTagBeginMyString+lenStr:]
-                        FileStringnew = MyStringbefore + myResult + FileStringAfter
-                        window['-TXTDESTFILE-'].update(FileStringnew)
-                        FileString = FileStringnew
-                    else :
-                        print('Search not found in French Tag')
-
-                        #self.textResult2.Value = self.textResult2.Value + MyString[:myEnglishEnd] + u'</English>\n\t\t<French>' + myEnglishTxt + u'</French>' + MyString[myEnglishEnd+10:] + u'</TEXT>'
-
-            else :
-                print('not in French Tag')
-
-            lastTagBegin = max(myTagBegin,myCountBegin)+1
-            lastCountBegin = max(myCountBegin,0)+1
-            if (lastTagBegin < lenfile):
-                if (Onlyonce != True):                    
-                    myTagBegin = FileString.find(StringToSearch,lastTagBegin)
-                else :
-                    myTagBegin = -1
-                myCountBegin = FileString.find(u'<French>',lastTagBegin)
-                myCountEnd = FileString.find(u'</French>',lastTagBegin) 
-            else :
-                print('File Done, replace :' + str(nbfound))
-
-                myTagBegin = -1                                           
-        print('no more search, replace :' + str(nbfound))
-
-    else :
-        print('vide')
-
-    window['-TXTFILE-'].update(FileString)
-    window['-targetTXT-'].update("Found : " + str(count))
-    return count    
-
-
-def BtnSearchBonMal(StringToSearch='',StringReplace=''):
-
-#E:\Documents\Paradox Interactive\Stellaris\mod\calmodpack\common\pop_faction_types\00_progressive.txt
+    findyml = filename.find('.')
+    while findyml > -1:
+        new_filename = filename[:findyml]+'_new.'+ filename[findyml+1:]
+        findyml = filename.find('.',findyml+1)
 
 
 
-    count = 0
-    content = values['-TXTFILE-']
-    FileString = content
-    #FileString = self.textEditor.Value
+        
 
-    if len(StringToSearch) < 1 :
-        StringToSearch = values['-STRTOSEARCH-']
-        StringReplace = values['-STRTOREPLACE-']
+    my_dest_list = list()
+    already_labeled = list()
+    StoreLine = list()
+    nberror = 0
+    nbaddedlines = 0
+    countlines = 0
+    line = ''
+    try:    
 
-
-    print(StringToSearch)
-    print(StringReplace)
-
-    print('Button BtnSearchBonMal callback')
-
-
-    mypath = values['-TXTFILE-'].strip('"').rstrip('\n')
-    mypath = u'E:\\Documents\\Paradox Interactive\\Stellaris\\mod\\Calmodpack\\events\\'
-    from os import listdir
-    from os.path import isfile, join
-    onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
-
-    for filenameonly in onlyfiles :
-
-        filename = mypath + filenameonly
-        print (filenameonly)
-               
-        #filename = values['-TXTFILE-'].strip('"').rstrip('\n')
-        filenameref = values['-TXTDESTFILE-'].strip('"').rstrip('\n')
-        if not filenameref :
-            filenameref = u'E:\\Documents\\Paradox Interactive\\Stellaris\\mod\\calmodpack\\common\\pop_faction_types\\00_progressive.txt'
-        if not filename :
-            filename = u'E:\\Documents\\Paradox Interactive\\Stellaris\\mod\\frenchtranslationpack2.6\\localisation\\replace\\ethic_rebuild_l_french.yml'
-            #filenameref = u'E:\\Documents\\Paradox Interactive\\Stellaris\\mod\\frenchtranslationpack2.6\\localisation\\french\\l_french.yml'
-        #searchcontent = values['-TXTDESTFILE-']
-        new_filename = 'new.txt'
-        findyml = filename.find('.')
-        while findyml > -1:
-            new_filename = filename[:findyml]+'_new.'+ filename[findyml+1:]
-            findyml = filename.find('.',findyml+1)
-    
-        #new_filename = 'E:\\Documents\\Paradox Interactive\\Stellaris\\mod\\frenchtranslationpack2.6\\localisation\\replace\\dummy.yml' 
-        new_filename = filename
         with open(filename, encoding='utf8') as f:
-            content = f.readlines()
-        #lines = [line.rstrip('\n') for line in f]
-        f.close
-    
-        #with open(filenameref, encoding='utf8') as fref:
-        #    searchcontent = fref.readlines()     
-        #fref.close
-    
-        my_dest_list = list()
-        already_labeled = list()
-        opendemand = False    
-        fulfilled_effect=-99.99
-        unfulfilled_effect=-99.99
-        demand_title=''
-        demand_unful_title=''
-        numligne = 0
-    
-        for line in content :
-            #print (line)
-            numligne = numligne+1
-            myDemandBegin = line.find(u'\tid =') 
-            if myDemandBegin == -1:
-                myDemandBegin = line.find(u' id =')       
-            myTitleBegin = line.find(u'event =')       
-            myCountTitleStringBegin = line.find(u'"',myTitleBegin+1)         
-            myunfulfilled_TitleBegin = line.find(u'unfulfilled_title =')       
-            myFulfilledBegin = line.find(u'fulfilled_effect =')       
-            myUnfulfilledBegin = line.find(u'unfulfilled_effect =')                     
-            if myTitleBegin > -1 :
-                opendemand = True
-            if myDemandBegin > -1 and myDemandBegin < 4:
-                if (opendemand):
-                    #CloseDemand(demand_title,fulfilled_effect,unfulfilled_effect)
-                    my_dest_list.append(line)
-                    my_log = u'\tlog = "Starting event : '+ line.lstrip('\t').rstrip('\n') + '"\n'
-                    my_dest_list.append(my_log)
-                    print(my_log)
-                    opendemand = False
-                else :    
-                    my_dest_list.append(line)
-                    #print('ignoring')
-            else :    
-                my_dest_list.append(line)
-                #print('ignoring')
+            #content = f.readlines()
+            nblines = 0
+            countlines = 0
+            mylastplanetnum = -1
+            level = 0 #niveau d'imbrication dans les données
+            Levellist = list()
+            lastline = ''
+            linebackup = list() ##lorsque lignes fusionnées
+            while 1:
+            
+                getnextnum = False
+                insidemyplanete = False
+            
+                lines = f.readlines(100000)
+                nbnextlines = nblines + 100000
+                #print('lecture lignes : '+str(nblines)+' à '+ str(nbnextlines))
+                nblines = nbnextlines
+            
+                if not lines:
+            
+                    break
+            
+                for fileline in lines:
+            
+                    mynum = -1
+                    myVariable = ''
+                    myValue = ''
+                    ignoreleveldiff = False
+                    countlines = countlines + 1
                     
+                    
+                    
+                    
+                    line = fileline
+
+                    #search for multiple lines
+                    myEgalidx = line.find(u'=')
+                    myOpenBracet = line.find(u'{')
+                    myCloseBracet = line.find(u'}')
+                    
+                    #something wrong
+                    if myEgalidx > -1 and (myOpenBracet > myEgalidx+1 or myCloseBracet > myEgalidx+1) :
+                        myidxright = line.rfind(u'\t\t\t')
+                        myidxleft = line.find(u'\t\t\t')
+                        if line[myidxleft+2:myidxright].strip('\t').strip('\t').strip('\t').strip('\t').strip('\t').strip('\t').strip('\n').strip('\t').strip('\t') :
+                            while myidxleft+3  < myidxright :
+                                linebackup.append(line[myidxright:])
+                                line = line[:myidxright]
+                                myidxright = line.rfind(u'\t\t\t')
+                                myidxleft = line.find(u'\t\t\t')
+                    
+                    
+                    while line :
+                    
+                        
+                        
+                        
+                        #findlevel
+                        level = 0
+                        if line.find(u'\t\t\t\t\t\t\t\t') > -1 :
+                            level = 8
+                        elif line.find(u'\t\t\t\t\t\t\t') > -1 :
+                            level = 7
+                        elif line.find(u'\t\t\t\t\t\t') > -1 :
+                            level = 6
+                        elif line.find(u'\t\t\t\t\t') > -1 :
+                            level = 5
+                        elif line.find(u'\t\t\t\t\t') > -1 :
+                            level = 5
+                        elif line.find(u'\t\t\t\t') > -1 :
+                            level = 4
+                        elif line.find(u'\t\t\t') > -1 :
+                            level = 3
+                        elif line.find(u'\t\t') > -1 :
+                            level = 2
+                        elif line.find(u'\t') > -1 :
+                            level = 1
     
+                        if line.strip(' ').strip('\n') == '' :
+                            level = 0
+                        else :
+                            
+                            
+                            if line.strip(' ').strip('\n') == '{' or (len(line) > 0 and line[0]=='"') :
+                                ignoreleveldiff = True
+                            
+                            
+                            myEgalidx = line.find(u'=')
+                            myOpenBracet = line.find(u'{')
+                            myCloseBracet = line.find(u'}')
+                            
+                            if myEgalidx == 0 :
+                                line = lastline+line
+                                ignoreleveldiff = True
+                                myEgalidx = line.find(u'=')
+                                myOpenBracet = line.find(u'{')
+                                myCloseBracet = line.find(u'}')
+                                
+                            
+                            if myEgalidx > 0 :
+                                mytextbefore = line[:myEgalidx].strip('\t').strip('\t').strip('\t').strip('\t').strip('\t').strip('\t').strip('\t').strip('\t')
+                                mytextafter = line[myEgalidx+1:].strip('\n')
+                            elif myCloseBracet == -1 and myOpenBracet == -1 :
+                                myVariable = ''
+                                myValue = line.strip('\t').strip('\t').strip('\t').strip('\t').strip('\t').strip('\t').strip('\n').strip('\t').strip('\t')
+                            elif myOpenBracet > -1 : ## sans_nom, sans ID
+                                mytextbefore = 'NO_ID'
+                                
+                            
+                            
+                            ### nouveau niveau
+                            if myOpenBracet > -1 and myCloseBracet == -1 :
+                                Levellist.append(mytextbefore)
+                                level = level +1
+                                #print('Start of : '+mytextbefore)
+                            
+                            ### fermeture d'un niveau
+                            elif myCloseBracet > -1 and myOpenBracet == -1 :
+                                #print('End of : '+ Levellist[-1])
+                                Levellist.pop()
+                                #level = level - 1
+
+                            elif myOpenBracet > -1 and myCloseBracet > -1 :
+                                myValue = mytextafter.strip('}').strip('{')
+                                
+                            ### sinon (même niveau)
+                            else :
+                                myVariable = mytextbefore
+                                myValue = mytextafter
+                                
+                            
+                            
+                            
+                            #
+        
+                            if len(Levellist) < 2 and myOpenBracet > -1 : #myVariable == 'name' or myVariable == 'date' :
+                                my_dest_list.append(line)
+                                print(line)
+                    
+                    
+                            #liste des planètes : a trouvé un début de planète
+                            if len(Levellist) == 3 and Levellist[0] == 'planets' :
+                                if myVariable == 'name' or myVariable == 'planet_class' or myVariable == 'planet_size' :
+                                    StoreLine.append(myVariable + '=' + myValue)
+                                    #print(line)
+                                    
+                            
+                            #listes des deposits
+                            if len(Levellist) == 3 and Levellist[0] == 'deposits' :
+                                if myVariable == 'name' or myVariable == 'planet_class' or myVariable == 'planet_size' :
+                                    StoreLine.append(myVariable + '=' + myValue)
+                                    print(line)
+                            
+                            
+                            if level > 0 and level < 8 and level != len(Levellist) and not ignoreleveldiff :
+                                print('Erreur comptage : ' + str(level) + ' / ' + str(len(Levellist)) + ' levelList = ' + str(Levellist) + ' line :' + line + " line nb : " + countlines)
+                    
+                    
+                            pass # do something**strong text**        
+                        lastline = line.strip(' ').strip('\n')
+                    
+                        if (len(linebackup) > 0) :
+                            line = linebackup[-1]
+                            linebackup.pop()
+                            ignoreleveldiff = True
+                        else :
+                            line =''
+                    
+                    
+            #lines = [line.rstrip('\n') for line in f]
+            f.close
+    
+    
+                #enlever l'heure
+                #mydatecount = line.find(u']')
+                #if mydatecount > -1:
+                    #line = line[mydatecount+1:]
+    
+    
+                #myindex = line.find(u'Log command triggered from effect in file:')
+                #if myindex > -1:
+                    #line = line[myindex+42:]
+    
+                #myindex = line.find(u'line:')
+                #if myindex > -1:
+                    #line = line[myindex+5:]
+    
+    
+                   #my_dest_list.append(line)
+
+    except Exception as Err :
+        print('Erreur lors du processus, ligne '+ str(countlines) +' : \n'+ line +'\n', Err) 
+
+
+    finally:
         TxtDest = str(my_dest_list)
-    
+
         fdest = open(new_filename,'w', encoding='utf8')
         fdest.writelines(["%s" % item  for item in my_dest_list])
         fdest.close
-    
 
-    #window['-TXTDESTFILE-'].update(TxtDest)
-    #window['-TXTFILE-'].update(TxtDest)
-    #window['-targetTXT-'].update("Found : " + str(count))
+        print("  ")
+        print("  ")
+        print("  ")
+    print("  ")
+    print("Scan Completed : " + str(nberror) + " lignes d'erreurs.")  
 
 
 def BtnSearchBonMal_backup(StringToSearch='',StringReplace=''):
@@ -2036,10 +2186,10 @@ def BtnSearchBonMal_backup(StringToSearch='',StringReplace=''):
     filename = values['-TXTFILE-'].rstrip('\n')
     filenameref = values['-TXTDESTFILE-'].rstrip('\n')
     if not filenameref :
-        filenameref = u'E:\\Documents\\Paradox Interactive\\Stellaris\\mod\\calmodpack\\common\\pop_faction_types\\00_progressive.txt'
+        filenameref = u'D:\\Documents\\Paradox Interactive\\Stellaris\\mod\\calmodpack\\common\\pop_faction_types\\00_progressive.txt'
     if not filename :
-        filename = u'E:\\Documents\\Paradox Interactive\\Stellaris\\mod\\frenchtranslationpack2.6\\localisation\\replace\\ethic_rebuild_l_french.yml'
-        #filenameref = u'E:\\Documents\\Paradox Interactive\\Stellaris\\mod\\frenchtranslationpack2.6\\localisation\\french\\l_french.yml'
+        filename = u'D:\\Documents\\Paradox Interactive\\Stellaris\\mod\\frenchtranslationpack2.6\\localisation\\replace\\ethic_rebuild_l_french.yml'
+        #filenameref = u'D:\\Documents\\Paradox Interactive\\Stellaris\\mod\\frenchtranslationpack2.6\\localisation\\french\\l_french.yml'
     #searchcontent = values['-TXTDESTFILE-']
     new_filename = 'new.txt'
     findyml = filename.find('.')
@@ -2047,7 +2197,7 @@ def BtnSearchBonMal_backup(StringToSearch='',StringReplace=''):
         new_filename = filename[:findyml]+'_new.'+ filename[findyml+1:]
         findyml = filename.find('.',findyml+1)
 
-    new_filename = 'E:\\Documents\\Paradox Interactive\\Stellaris\\mod\\frenchtranslationpack2.6\\localisation\\replace\\dummy.yml' 
+    new_filename = 'D:\\Documents\\Paradox Interactive\\Stellaris\\mod\\frenchtranslationpack2.6\\localisation\\replace\\dummy.yml' 
 
     with open(filename, encoding='utf8') as f:
         content = f.readlines()
@@ -2156,12 +2306,12 @@ def BtnTranslate(StringToSearch='',StringReplace=''):
     filename = values['-TXTFILE-'].rstrip('\n')
     filenameref = values['-TXTDESTFILE-'].rstrip('\n')
     if not filename :
-        #filename = u'E:\\Documents\\Paradox Interactive\\Stellaris\\mod\\frenchtranslationpack2.6\\localisation\\replace\\ethic_rebuild_l_french.yml'
+        #filename = u'D:\\Documents\\Paradox Interactive\\Stellaris\\mod\\frenchtranslationpack2.6\\localisation\\replace\\ethic_rebuild_l_french.yml'
             #	C:\Users\Francois\Desktop\Translate.txt       
         filename = u'C:\\Users\\Francois\\Desktop\\Translate.txt'
     #if not filenameref :
-        #   filenameref = u'E:\\Documents\\Paradox Interactive\\Stellaris\\mod\\frenchtranslationpack2.6\\localisation\\replace\\dummy.yml'
-        #filenameref = u'E:\\Documents\\Paradox Interactive\\Stellaris\\mod\\frenchtranslationpack2.6\\localisation\\french\\l_french.yml'
+        #   filenameref = u'D:\\Documents\\Paradox Interactive\\Stellaris\\mod\\frenchtranslationpack2.6\\localisation\\replace\\dummy.yml'
+        #filenameref = u'D:\\Documents\\Paradox Interactive\\Stellaris\\mod\\frenchtranslationpack2.6\\localisation\\french\\l_french.yml'
     #searchcontent = values['-TXTDESTFILE-']
     new_filename = 'new.txt'
     findyml = filename.find('.')
@@ -2202,7 +2352,7 @@ def BtnTranslate(StringToSearch='',StringReplace=''):
                             if not foundfrench:
                                 my_dest_list.append(line)
                             else:                    
-                                print("found : " + my_label + " : " + foundfrench)
+                                #print("found : " + my_label + " : " + foundfrench)
                                 #foundfrench = StellarisImproveText(foundfrench)
                                 mydeststring = line[:myCountStringBegin+1] + foundfrench + '\"\n'
                                 #foundfrench = StellarisImproveText(foundfrench)
@@ -2223,8 +2373,8 @@ def BtnTranslate(StringToSearch='',StringReplace=''):
                 fdest.close
                 i = 0
 
-    except:
-        print("Erreur lors du processus") 
+    except Exception as err:
+        print("Erreur lors du processus" + err) 
 
 
     finally:
@@ -2239,9 +2389,8 @@ def BtnTranslate(StringToSearch='',StringReplace=''):
 
 # Lookup dictionary that maps button to function to call
 dispatch_dictionary = {'Female':BtnFemale, 'Next':BtnNext, 'NextSame':BtnNextSame,'Sort':BtnLoad,
-                       'Save':BtnSave, 'Comp. Fr/ENG':BtnCompFRENG, 'SearchBON-MAL':BtnSearchBonMal,
-                       'Translate':BtnTranslate, 'ReplaceWord':BtnUpdateNames,
-                       'Scan GameLog':BtnTBD, 'Scan ErrorLog':BtnScanErrorLog,'AnalyseSave':AnalyseSave}
+                       'Save':BtnSave, 'Comp. Fr/ENG':BtnCompFRENG, 'Translate':BtnTranslate, 'ReplaceWord':BtnUpdateNames,
+                       'Scan GameLog':BtnTBD, 'Scan ErrorLog':BtnScanErrorLog,'AnalyseSave':BtnAnalyseSave}
 
 
 # ------ Menu Definition ------ #      
@@ -2261,7 +2410,7 @@ layout = [  [sg.Menu(menu_def, tearoff=True)],
             [sg.Text('Search', size=(8, 1)), sg.Input(key='-STRTOSEARCH-'),sg.Text('Last Pos', size=(8, 1)), sg.Input(key='-COUNTPOS-')],
             [sg.Text('Replace', size=(8, 1)), sg.Input(key='-STRTOREPLACE-')],
             [sg.Button('Sort'), sg.Button('Comp. Fr/ENG'), sg.Button('SearchBON-MAL'),
-             sg.Button('Translate'), sg.Button('ReplaceWord'), sg.Button('Scan ErrorLog'), sg.Button('Scan GameLog'), sg.Button('RemoveMaleGender')],
+             sg.Button('Translate'), sg.Button('ReplaceWord'), sg.Button('Scan ErrorLog'), sg.Button('Scan GameLog'), sg.Button('AnalyseSave')],
             #[sg.Text('Enter something on Row 2'), sg.InputText()],
             [sg.Multiline(default_text='', size=(40, 20), key='-TXTFILE-'),      
               sg.Multiline(default_text='', size=(40, 20), key='-TXTDESTFILE-'),

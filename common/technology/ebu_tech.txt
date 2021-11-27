@@ -1,47 +1,46 @@
-eb_mineral_tech = {
+tech_hydroponics = {
 	cost = @tier2cost3
-	area = engineering
-	tier = 2
-	category = { industry }	
-	prerequisites = { "tech_mineral_purification_2" }
-	weight = @tier2weight3
+	area = society
+	tier = 1
+	category = { biology }
+	prerequisites = { "tech_industrial_farming" }
+	weight = @tier1weight1
+	start_tech = yes
+
+	# unlock hydroponics buildings
 	
 	weight_modifier = {
 		factor = 2
 		modifier = {
-			factor = 1.25
-			research_leader = {
-				area = engineering
-				has_trait = "leader_trait_expertise_industry"
-			}			
-		}
-	}
-	
-	ai_weight = {
-		modifier = {
-			factor = 1.25
-			research_leader = {
-				area = engineering
-				has_trait = "leader_trait_expertise_industry"
+			factor = 0.01
+			OR = {
+				is_machine_empire = yes
+				is_lithoid_empire = yes
 			}
+			NOR = {
+				has_country_flag = non_lithoid_subspecies
+				has_valid_civic = civic_machine_servitor
+				has_valid_civic = civic_machine_assimilator
+				any_owned_planet = {
+					OR = {
+						num_districts = { type = district_farming value > 0 }
+						num_districts = { type = district_rw_farming value > 0 }
+					}
+			}			
 		}
 	}
-}
-
-eb_energy_tech = {
-	cost = @tier2cost3
-	area = physics
-	tier = 2
-	category = { field_manipulation }	
-	prerequisites = { "tech_power_hub_2" }
-	weight = @tier2weight3
-		
-	weight_modifier = {
+		modifier = {
+			factor = 0.5
+			OR = {
+				is_machine_empire = yes
+				is_lithoid_empire = yes
+		}
+	}
 		modifier = {
 			factor = 1.25
 			research_leader = {
-				area = physics
-				has_trait = "leader_trait_expertise_field_manipulation"
+				area = society
+				has_trait = "leader_trait_expertise_biology"
 			}			
 		}
 	}
@@ -50,8 +49,8 @@ eb_energy_tech = {
 		modifier = {
 			factor = 1.25
 			research_leader = {
-				area = physics
-				has_trait = "leader_trait_expertise_field_manipulation"
+				area = society
+				has_trait = "leader_trait_expertise_biology"
 			}
 		}
 	}

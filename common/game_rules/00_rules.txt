@@ -7,6 +7,7 @@
 # Merge with Fix
 # Merge with ver exp. vassals 17/05/2021
 # Merge with Planetary Diversity 24/11/2021
+# Merge with Plentiful Perks 26/11/2021
 #
 #Tooltips will be generated from these rules when they fail. Use of custom_tooltip is recommended
 #There are still multiple hard-coded rules that apply in addition to these.
@@ -1332,11 +1333,8 @@ can_colonize_with_pop = {
 	}
 	if = {
 		limit = {
-			OR = {
-				has_culture_shock = yes #Plentiful_perk
 				is_sapient = no
 			}
-		}
 		custom_tooltip = {
 			always = no
 		}
@@ -1371,11 +1369,11 @@ can_colonize_with_species = {
 			always = no
 		}
 	}
-	else_if = { #3.1.1
+	else_if = {
 		limit = { has_trait = trait_hive_mind }
 		root = { is_hive_empire = yes }
 	}
-	else_if = { #3.1.1
+	else_if = {
 		limit = { has_trait = trait_machine_unit }
 		root = { is_machine_empire = yes }
 	}
@@ -1480,12 +1478,6 @@ can_species_procreate = {
 		root = { has_modifier = slave_colony }
 		NOT = { has_citizenship_type = { type = citizenship_slavery country = root.owner } }
 	}
-	#plentiful_perks
-	
-	NOT = {
-		has_trait = trait_plentiful_traditions_pt_cocoon
-	}
-	
 	if = {
 		limit = {
 			has_trait = trait_necrophage
@@ -1493,11 +1485,17 @@ can_species_procreate = {
 		NOT = {
 			root = {
 				any_owned_species = {
-					has_population_control = { country = root.owner value = no } #3.1.1
+					has_population_control = { country = root.owner value = no }
 					species_can_be_necrophaged = yes
 				}
 			}
 		}
+	}
+
+	#plentiful_perks
+	
+	NOT = {
+		has_trait = trait_plentiful_traditions_pt_cocoon
 	}
 	NOT = { has_species_flag = nivlac_no_procreation }
 }
@@ -1508,16 +1506,6 @@ can_species_procreate = {
 can_species_be_assembled = {
 	is_sapient = yes
 	OR = {
-		has_trait = trait_machine_unit
-		has_trait = trait_mechanical
-	#plentiful_perks
-		
-		AND = {
-			root.owner = {
-				has_ascension_perk = ap_total_assimilation				
-			}
-			has_trait = trait_plentiful_traditions_pt_cocoon
-		}
 		AND = {
 			is_robotic = yes
 			root = {
@@ -1529,7 +1517,6 @@ can_species_be_assembled = {
 		}
 		AND = {
 			is_organic_species = yes
-# 3.1.1
 			if = {
 				limit = {
 					root.owner = { is_hive_empire = yes }
@@ -1565,7 +1552,6 @@ can_species_be_assembled = {
 			}
 		}
 	}
-###	
 	has_population_control = {
 		value = no
 		country = root.owner
