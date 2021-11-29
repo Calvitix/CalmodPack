@@ -80,9 +80,11 @@ planetary_drive_yard_0 = {
 		# Is this system a good location?
 		modifier = { factor = 0.1	any_neighbor_system = { exists = owner NOT = { owner = { is_same_value = from } } } }
 		modifier = { factor = 0.5	any_neighbor_system = { any_neighbor_system = { exists = owner NOT = { owner = { is_same_value = from } } } } }
-		modifier = { factor = 4		fromfrom.planet = { is_capital = yes } }
+		modifier = { factor = 4		exists = fromfrom exists = fromfrom.planet fromfrom.planet = { is_capital = yes } }
 		modifier = {
 			factor = 2
+			exists = fromfrom 
+			exists = fromfrom.planet
 			fromfrom.planet = {
 				OR = {
 					is_planet_class = pc_city
@@ -92,6 +94,8 @@ planetary_drive_yard_0 = {
 		}
 		modifier = {
 			factor = 0
+			exists = fromfrom 
+			exists = fromfrom.planet
 			fromfrom.planet = {
 				NOR = {
 					is_capital = yes
@@ -109,6 +113,11 @@ planetary_drive_yard_0 = {
 
 	on_build_complete = {
 		save_event_target_as = giga_system
+		if = {
+			limit = {
+				exists = fromfrom
+				exists = fromfrom.planet
+			}
 		fromfrom.planet = {
 			save_event_target_as = giga_planet
 			set_planet_flag = giga_drive_yard
@@ -117,6 +126,7 @@ planetary_drive_yard_0 = {
 			set_timed_country_flag = { flag = has_recently_built_planetary_drive_yard years = 20 }
 			country_event = { id = giga_dialog.13400 }	# Notification
 			change_variable = { which = giga_current_planetshipyard value = 1 }
+		}
 		}
 	}
 }
@@ -283,7 +293,7 @@ planetary_drive_yard_1_fortress = {
 	}
 
 	ai_weight = { factor = 10 } # If we can build it, we will build it
-	on_build_start = { apply_giga_bulwark_trad_build_speed = yes }
+	on_build_start = { if = { limit = { exists = fromfrom } apply_giga_bulwark_trad_build_speed = yes } }
 	on_build_complete = {
 		from = {
 			if = {

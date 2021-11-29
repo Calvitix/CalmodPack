@@ -2,7 +2,7 @@
 ### VANILLA STARBASE BUILDING OVERWRITES ###
 ############################################
 # NSC2 File, 
-# Calvitix 3.1.1. Check OK, 19/09/2021
+# Calvitix 3.2 Check OK, 28/11/2021
 #
 # Calvitix AI_weight Adjustements
 # First part Merged in D:\Documents\Paradox Interactive\Stellaris\mod\Calmodpack\common\starbase_buildings\00_starbase_buildings.txt
@@ -260,7 +260,6 @@ drydock = {
 		exists = owner
 		owner = { has_technology = tech_drydock_1 }
 		has_starbase_module = shipyard
-		#has_starbase_building = drydock
 	}
 	
 	station_modifier = { starbase_shipyard_capacity_add = 5 }
@@ -366,8 +365,10 @@ starbase_management = {
 	station_modifier = {
 		starbase_trade_protection_add = 3
 		starbase_trade_protection_range_add = 1
-		ship_shield_mult = 0.25
-		starbase_defense_platform_capacity_add = 10
+		ship_shield_mult = 0.10
+		ship_armor_mult = 0.10
+		ship_hull_mult = 0.10
+		starbase_defense_platform_capacity_mult = 0.25
 	}
 	
 	triggered_system_modifier = {
@@ -437,8 +438,10 @@ starbase_management_machine = {
 	}
 	
 	station_modifier = {
-		ship_shield_mult = 0.25
-		starbase_defense_platform_capacity_add = 10
+		ship_shield_mult = 0.10
+		ship_armor_mult = 0.10
+		ship_hull_mult = 0.10
+		starbase_defense_platform_capacity_mult = 0.25
 	}
 	
 	system_modifier = {
@@ -495,8 +498,10 @@ starbase_management_hive = {
 	}
 	
 	station_modifier = {
-		ship_shield_mult = 0.25
-		starbase_defense_platform_capacity_add = 10
+		ship_shield_mult = 0.10
+		ship_armor_mult = 0.10
+		ship_hull_mult = 0.10
+		starbase_defense_platform_capacity_mult = 0.25
 	}
 
 	system_modifier = {
@@ -554,20 +559,8 @@ mining_base = {
 	
 	country_modifier = { country_resource_max_minerals_add = 5000 }
 	
-	triggered_system_modifier = {
-		potential = {
-			exists = owner
-			owner = { is_gestalt = no }
-		}
-		modifier = { job_miner_add = 5 }
-	}
-
-	triggered_system_modifier = {
-		potential = {
-			exists = owner
-			owner = { is_gestalt = yes }
-		}
-		modifier = { job_mining_drone_add = 5 }
+	system_modifier = {
+		planet_miners_minerals_produces_add = 1
 	}
 
 	resources = {
@@ -619,20 +612,8 @@ power_station = {
 	
 	country_modifier = { country_resource_max_energy_add = 5000 }
 	
-	triggered_system_modifier = {
-		potential = {
-			exists = owner
-			owner = { is_gestalt = no }
-		}
-		modifier = { job_technician_add = 5 }
-	}
-
-	triggered_system_modifier = {
-		potential = {
-			exists = owner
-			owner = { is_gestalt = yes }
-		}
-		modifier = { job_technician_drone_add = 5 }
+	system_modifier = {
+		planet_technician_energy_produces_add = 1
 	}
 
 	resources = {
@@ -664,7 +645,7 @@ power_station = {
 	ai_build_outside_chokepoint = yes
 	
 	ai_weight = { 
-		weight = 55 	
+		weight = 100 	
 #Calvitix, count_starbase_buildings don't exists
 		modifier = { factor = 0.7 has_starbase_building = power_station }
 		#modifier = { factor = 0.7 count_starbase_buildings = { type = power_station count > 0 } }
@@ -690,20 +671,8 @@ farming_base = {
 		}
 	}
 	
-	triggered_system_modifier = {
-		potential = {
-			exists = owner
-			owner = { is_gestalt = no }
-		}
-		modifier = { job_farmer_add = 5 }
-	}
-
-	triggered_system_modifier = {
-		potential = {
-			exists = owner
-			owner = { is_gestalt = yes }
-		}
-		modifier = { job_agri_drone_add = 5 }
+	system_modifier = {
+		planet_farmers_food_produces_add = 1
 	}
 
 	resources = {
@@ -734,7 +703,7 @@ farming_base = {
 	ai_build_at_chokepoint = no
 	ai_build_outside_chokepoint = yes
 	
-	ai_weight = { weight = 25 
+	ai_weight = { weight = 45 
 #Calvitix
 		modifier = { factor = 0.7 has_starbase_building = farming_base }
 		#modifier = { factor = 0.7 count_starbase_buildings = { type = farming_base count > 0 } }
@@ -858,9 +827,7 @@ solar_panel_01 = {
 	ai_build_at_chokepoint = no
 	ai_build_outside_chokepoint = yes
 	
-	ai_weight = { weight = 25 
-			modifier = { factor = 0.7 has_starbase_building = solar_panel_01 }
-	}
+	ai_weight = { weight = 50 } #25
 }
 
 solar_panel_02 = {
@@ -876,7 +843,7 @@ solar_panel_02 = {
 		category = starbase_buildings
 #Calvitix ressource balance
 		cost = { 
-					trigger = {
+				trigger = {
 				from = {
 					is_ai = no
 				}
@@ -897,10 +864,7 @@ solar_panel_02 = {
 	ai_build_at_chokepoint = yes
 	ai_build_outside_chokepoint = yes
 	
-	ai_weight = { weight = 25 
-		modifier = { factor = 0.7 has_starbase_building = solar_panel_02 }
-	
-	}
+	ai_weight = { weight = 50 } #25
 }
 
 solar_panel_03 = {
@@ -978,7 +942,7 @@ solar_panel_04 = {
 	ai_build_at_chokepoint = yes
 	ai_build_outside_chokepoint = yes
 	
-	ai_weight = { weight = 40 }
+	ai_weight = { weight = 50 } #25
 }
 
 nsc_nanite_field = {
@@ -1062,7 +1026,7 @@ adv_space_engineers = {
 
 	ai_build_at_chokepoint = yes
 	ai_build_outside_chokepoint = yes
-	ai_weight = { weight = 1 }
+	ai_weight = { weight = 100 }
 }
 
 mining_experts = {
@@ -1197,7 +1161,7 @@ adv_starbase = {
 		ship_weapon_range_mult = 0.15
 	}
 	potential = { has_starbase_size >= starbase_citadel }
-	ai_build_at_chokepoint = no
+	ai_build_at_chokepoint = yes #no
 	ai_build_outside_chokepoint = yes
 	ai_weight = { weight = 50 modifier = { factor = 0.01 has_starbase_size < starbase_citadel } }
 	show_in_tech = "tech_starbase_5"
@@ -1224,8 +1188,8 @@ orbital_physics_support_lab = {
 			}
 			alloys = 100
 		}
-		produces = { physics_research = 3 } #6
-		upkeep = { energy = 3 }
+		produces = { physics_research = 6 } #6
+		upkeep = { energy = 2 }
 	}
 	possible = { 
 		has_starbase_module = orbital_lab 
@@ -1270,8 +1234,8 @@ orbital_society_support_lab = {
 			}
 			alloys = 100
 		}
-		produces = { society_research = 3 } #6
-		upkeep = { energy = 3 }
+		produces = { society_research = 6 } #6
+		upkeep = { energy = 2 }
 	}
 	possible = { 
 		has_starbase_module = orbital_lab 
@@ -1281,10 +1245,8 @@ orbital_society_support_lab = {
 		}
 		exists = owner owner = { has_technology = tech_society_2 } 
 	}
-	system_modifier = { 
-		planet_jobs_society_research_produces_mult = 0.1
-		station_researchers_society_research_produces_mult = 0.1
-	}
+
+
 	ai_build_at_chokepoint = no
 	ai_build_outside_chokepoint = yes
 	ai_weight = {
@@ -1316,8 +1278,8 @@ orbital_engineering_support_lab = {
 			}
 			alloys = 100
 		}
-		produces = { engineering_research = 3 } #6
-		upkeep = { energy = 3 }
+		produces = { engineering_research = 6 } #6
+		upkeep = { energy = 2 }
 	}
 	possible = { 
 		has_starbase_module = orbital_lab 
@@ -1326,10 +1288,6 @@ orbital_engineering_support_lab = {
 			has_starbase_building = orbital_physics_support_lab 
 		}
 		exists = owner owner = { has_technology = tech_engineering_2 } 
-	}
-	system_modifier = { 
-		planet_jobs_engineering_research_produces_mult = 0.1
-		station_researchers_engineering_research_produces_mult = 0.1	
 	}
 	ai_build_at_chokepoint = no
 	ai_build_outside_chokepoint = yes
@@ -1421,39 +1379,6 @@ advanced_military_program = {
 	show_in_tech = "tech_interstellar_fleet_traditions"
 }
 
-tile_blocker_cleaner = {
-	icon = "GFX_starbase_tile_blocker_cleaner"
-	construction_days = 200
-	resources = {
-		category = starbase_buildings
-#Calvitix ressource balance
-		cost = { 
-					trigger = {
-				from = {
-					is_ai = no
-				}
-			}
-		alloys = 50 energy = 200 minerals = 50}
-		cost = {
-			trigger = {
-				from = {
-					is_ai = yes
-				}
-			}
-			alloys = 200
-		}
-		upkeep = { energy = 2 }
-	}
-	system_modifier = { deposit_blockers_cost_mult = -0.40 deposit_blockers_time_cost_mult = -0.60 }
-	potential = { solar_system = { any_system_planet = { is_owned_by = from } } }
-	ai_build_at_chokepoint = no
-	ai_build_outside_chokepoint = yes	
-	ai_weight = {
-		weight = 50
-		modifier = { factor = 0.01 solar_system = { NOT = { any_system_planet = { is_owned_by = from } } } }
-	}
-}
-
 administration_office = {
 	icon = "GFX_starbase_administration_office"
 	construction_days = 480
@@ -1475,7 +1400,20 @@ administration_office = {
 			}
 			alloys = 200
 		}
-		upkeep = { energy = 2 }
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = { is_regular_empire = yes }
+			}
+			consumer_goods = 10
+		}
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = { is_gestalt = yes }
+			}
+			energy = 20
+		}
 	}
 	potential = {
 		has_starbase_size >= starbase_starfortress
@@ -1510,7 +1448,7 @@ synthetic_crystal_fabricator = {
 			alloys = 200
 		}
 		produces = { rare_crystals = 2 }
-		upkeep = { minerals = 10 energy = 2 }
+		upkeep = { minerals = 10 energy = 3 }
 	}
 	potential = { 
 		has_starbase_size >= starbase_starhold
@@ -1548,7 +1486,7 @@ synthetic_volatile_motes_fabricator = {
 			alloys = 200
 		}
 		produces = { volatile_motes = 2 }
-		upkeep = { minerals = 10 energy = 2 }
+		upkeep = { minerals = 10 energy = 3 }
 	}
 	potential = { 
 		has_starbase_size >= starbase_starhold
@@ -1586,7 +1524,7 @@ synthetic_gase_fabricator = {
 			alloys = 200
 		}
 		produces = { exotic_gases = 2 }
-		upkeep = { minerals = 10 energy = 2 }
+		upkeep = { minerals = 10 energy = 3 }
 	}
 	potential = { 
 		has_starbase_size >= starbase_starhold
@@ -1831,7 +1769,7 @@ stasis_chambers = {
 		}
 	}
 	system_modifier = { 
-		pop_growth_speed = 0.20
+		planet_pop_assembly_organic_mult = 0.20
 		pop_happiness = -0.20
 	}
 	ai_build_at_chokepoint = no
@@ -2100,10 +2038,11 @@ research_computers = {
 		owner = { has_technology = tech_basic_science_lab_3 }
 	}
 	system_modifier = { 
-		planet_jobs_physics_research_produces_mult = 0.1
-		planet_jobs_society_research_produces_mult = 0.1
-		planet_jobs_engineering_research_produces_mult = 0.1
+		planet_researchers_society_research_produces_add = 0.1
+		planet_researchers_physics_research_produces_add = 0.1
+		planet_researchers_engineering_research_produces_add = 0.1
 	}
+
 	ai_build_at_chokepoint = no
 	ai_build_outside_chokepoint = yes
 	ai_weight = {

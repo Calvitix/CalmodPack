@@ -5295,7 +5295,7 @@ ship_event = {
 						species = this
 						add_trait = trait_brainslug
 						add_traits_at_start_of_list = yes
-						hidden_effect = {
+						effect = {
 							set_citizenship_type = {
 								country = root.owner
 								type = citizenship_full
@@ -5387,7 +5387,7 @@ ship_event = {
 						species = this
 						add_trait = trait_brainslug
 						add_traits_at_start_of_list = yes
-						hidden_effect = {
+						effect = {
 							set_citizenship_type = {
 								country = root.owner
 								type = citizenship_full
@@ -14289,6 +14289,9 @@ ship_event = {
 				value = @tier3unityreward
 			}
 		}
+	}
+	
+	after = {
 		if = {
 			limit = {
 				from = {
@@ -14405,6 +14408,40 @@ ship_event = {
 
 	option = {
 		name = distar.2030.a
+		ai_chance = { #Exp.events
+			factor = 1
+			modifier = {
+				factor = 5
+				OR = {
+					is_xenophobe = yes
+					is_civic_inwards_perfection = yes
+				}
+			}
+			modifier = {
+				factor = 2
+				is_materialist = yes
+			}
+			modifier = {
+				factor = 2
+				is_gestalt = yes
+				is_civic_machine_servitor = no
+				is_open_gestalt = no
+			}
+			modifier = {
+				factor = 1.5
+				OR = {
+					is_authoritarian = yes
+					is_civic_authoritarian = yes
+				}
+			}
+			modifier = {
+				factor = 1.5
+				OR = {
+					is_militarist = yes
+					is_civic_militarist = yes
+				}
+			}
+		}
 		if = {
 			limit = {
 				owner = {
@@ -14414,7 +14451,7 @@ ship_event = {
 					}
 				}
 			}
-			#custom_tooltip = distar.2030.a.tooltip.mat
+			custom_tooltip = distar.2030.a.tooltip.mat
 		}
 		else_if = {
 			limit = {
@@ -14435,6 +14472,42 @@ ship_event = {
 	}
 	option = {
 		name = distar.2030.b
+		ai_chance = { #Exp. Events
+			factor = 1
+			modifier = {
+				factor = 4
+				owner = { is_xenophile = yes }
+			}
+			modifier = {
+				factor = 2
+				owner = {
+					OR = {
+						is_civic_machine_servitor = yes
+						is_open_gestalt = yes
+					}
+				}
+			}
+			modifier = {
+				factor = 1.5
+				owner = { is_egalitarian = yes }
+			}
+			modifier = {
+				factor = 1.5
+				owner = { is_civic_environmentalist = yes }
+			}
+			modifier = {
+				factor = 1.25
+				owner = { has_origin = origin_terraformer }
+			}
+			modifier = {
+				factor = 1.5
+				owner = { is_civic_diplomatic_corps = yes }
+			}
+			modifier = {
+				factor = 1.5
+				owner = { is_civic_free_haven = yes }
+			}
+		}
 		enable_special_project = {
 			name = STOP_TIME_LOOP
 			location = from
@@ -14443,6 +14516,39 @@ ship_event = {
 	}
 	option = {
 		name = distar.2030.c
+		ai_chance = { #Exp.events
+			factor = 1
+			modifier = {
+				factor = 2
+				owner = { is_auth_corporate = yes }
+			}
+			modifier = {
+				factor = 1.5
+				owner = {
+					OR = {
+						is_pacifist = yes
+						is_civic_inwards_perfection = yes
+					}
+				}
+			}
+			modifier = {
+				factor = 1.5
+				owner = {
+					OR = {
+						is_spiritualist = yes
+						is_civic_spiritualist = yes
+					}
+				}
+			}
+			modifier = {
+				factor = 1.5
+				owner = { is_civic_cutthroat_politics = yes }
+			}
+			modifier = {
+				factor = 1.5
+				owner = { is_spy_empire = yes }
+			}
+		}
 		owner = {
 			add_monthly_resource_mult = {
 				resource = physics_research
@@ -18006,6 +18112,29 @@ country_event = { # First words
 				}
 			}
 			save_event_target_as = nivlac_joint_planet
+
+			export_trigger_value_to_variable = { #exp.events
+				trigger = free_housing
+				variable = new_pops
+			}
+			if = {
+				limit = {
+					OR = {
+						check_variable = {
+							which = new_pops
+							value < 1
+						}
+						check_variable = {
+							which = new_pops
+							value > 7
+						}
+					}
+				}
+				set_variable = {
+					which = new_pops
+					value = 7
+				}
+			}
 		}
 	}
 
@@ -20028,6 +20157,9 @@ country_event = { # Alien Box researched
 	}
 
 	option = { # Sell it.
+		trigger = { #exp. events
+			is_gestalt = no
+		}
 		name = distar.3056.b
 		custom_tooltip = distar.3056.b.tooltip
 		add_monthly_resource_mult = {
@@ -20115,6 +20247,20 @@ country_event = { # Alien Box researched
 				}
 				country_event = { id = anomalymod.89 days = 10 }
 			}
+		}
+	}
+	option = { # Irradiate it.
+		trigger = {
+			is_gestalt = yes
+		}
+		name = distar.3056.c
+
+		custom_tooltip = distar.3056.c.tooltip
+		add_monthly_resource_mult = {
+			resource = physics_research
+			value = @tier5researchreward
+			min = @tier5researchmin
+			max = @tier5researchmax
 		}
 	}
 }

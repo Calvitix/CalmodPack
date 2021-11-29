@@ -54,15 +54,21 @@ asteroid_artillery_0 = {
 		}
 	}
 
-	on_build_start = { apply_giga_bulwark_trad_build_speed = yes }
+	on_build_start = { if = { limit = { exists = fromfrom } apply_giga_bulwark_trad_build_speed = yes } }
 
 	on_build_complete = {
 		save_event_target_as = giga_system
-		fromfrom.planet = {
-			save_event_target_as = giga_planet
-			if = { limit = { exists = orbital_station } orbital_station = { dismantle = yes } }
-			set_planet_flag = megastructure			# Vanilla uses to check if a megastrucure can be built here
-			set_planet_flag = has_megastructure		# Vanilla uses to check if an orbital station can be built here
+		if = { #calvitix debug ?
+			limit = {
+				exists = fromfrom
+				exists = fromfrom.planet
+			}
+			fromfrom.planet = {
+				save_event_target_as = giga_planet
+				if = { limit = { exists = orbital_station } orbital_station = { dismantle = yes } }
+				set_planet_flag = megastructure			# Vanilla uses to check if a megastrucure can be built here
+				set_planet_flag = has_megastructure		# Vanilla uses to check if an orbital station can be built here
+			}
 		}
 		from = {
 			set_timed_country_flag = { flag = has_recently_built_asteroid_artillery years = 10 }
@@ -88,9 +94,14 @@ asteroid_artillery_1 = {
 	possible = { from = { has_technology = giga_tech_asteroid_artillery } }
 
 	ai_weight = { factor = 10 } # If we can build it, we will build it
-	on_build_start = { apply_giga_bulwark_trad_build_speed = yes }
+	on_build_start = { if = { limit = { exists = fromfrom } apply_giga_bulwark_trad_build_speed = yes } }
 	on_build_complete = {
 		save_event_target_as = giga_system
+		if = {
+			limit = {
+				exists = fromfrom
+				exists = fromfrom.planet
+			}
 		fromfrom.planet = { save_event_target_as = giga_planet }
 		from = {
 			if = {
@@ -251,6 +262,7 @@ asteroid_artillery_1 = {
 				value = ROOT.fromfrom.planet.giga_asteroid_id
 			}
 		}
+		}
 	}
 }
 
@@ -328,7 +340,7 @@ asteroid_artillery_repaired = {
 	possible = { from = { has_technology = giga_tech_asteroid_artillery } }
 
 	ai_weight = { factor = 10 } # If we can build it, we will build it
-	on_build_start = { apply_giga_bulwark_trad_build_speed = yes }
+	on_build_start = { if = { limit = { exists = fromfrom } apply_giga_bulwark_trad_build_speed = yes } }
 	on_build_complete = {
 		save_event_target_as = giga_system
 		fromfrom.planet = {

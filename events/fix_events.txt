@@ -238,6 +238,7 @@ country_event = {
 	}
 
 	immediate = {
+		#if = { limit = { has_global_flag = edai_logging	} log = "FIX_Fleet: Check for Corvettes for [This.GetName]" }
 		random_owned_fleet = {
 			limit = {
 				count_owned_ship = {
@@ -247,6 +248,7 @@ country_event = {
 					count > 60
 				}
 			}
+			if = { limit = { has_global_flag = edai_logging	} log = "FIX_Fleet: Too many Corvettes on fleet [This.GetName] for [Owner.GetName]" }
 			if = {
 				limit = { 
 					prev = {
@@ -269,8 +271,10 @@ country_event = {
 					name = random
 					random_existing_design = destroyer
 				}
+				if = { limit = { has_global_flag = edai_logging	} log = "FIX_Fleet: Destroyer Exchange on fleet [This.GetName] for [Owner.GetName]" }				
 			}
 		}
+		
 		random_owned_fleet = {
 			limit = {
 				count_owned_ship = {
@@ -286,6 +290,7 @@ country_event = {
 						has_technology = tech_cruisers
 					}
 				}
+				if = { limit = { has_global_flag = edai_logging	} log = "FIX_Fleet: Too many Destroyers on fleet [This.GetName] for [Owner.GetName]" }
 				random_owned_ship = {
 					limit = {
 						is_ship_size = destroyer
@@ -302,8 +307,454 @@ country_event = {
 					name = random
 					random_existing_design = cruiser
 				}
+				if = { limit = { has_global_flag = edai_logging	} log = "FIX_Fleet: Cruiser Exchange on fleet [This.GetName] for [Owner.GetName]" }
 			}
 		}
+		
+		### Calvitix : Help the IA with too low Fleet and a lot of Alloys, to 'build' High-end Ships	
+		
+		#Add Dreadnought
+		if = {
+            limit = {
+					resource_stockpile_compare = {
+						resource = alloys
+						value > 50000
+					}
+					used_naval_capacity_percent < 0.8 # 0.95						
+					has_technology = tech_Dreadnought_1		
+					not = { has_country_flag = fix_added_fleet }										
+			}
+			if = { limit = { has_global_flag = edai_logging	} log = "FIX_Fleet: Too many Alloys & Low Naval Capacity, try to add 1 Dreadnought for [This.GetName]" }		
+		
+			random_owned_fleet = {
+				limit = {
+					count_owned_ship = {
+						limit = {
+						}
+						count > 1
+					}
+					count_owned_ship = {
+						limit = {
+						is_ship_size = transport
+						}
+						count = 0
+					}
+					count_owned_ship = {
+						limit = {
+							is_ship_size = Dreadnought
+						}
+						count < 15
+					}
+				}
+				if = {
+					limit = { 
+						prev = {
+							has_technology = tech_Dreadnought_1
+							not = { has_country_flag = fix_added_fleet }												
+						}
+					}
+					if = { limit = { has_global_flag = edai_logging	} log = "FIX_Fleet: Add 1 Dreadnought on fleet [This.GetName] for [Owner.GetName]" }
+					owner = {
+						add_resource = {
+							alloys = -10000
+						}
+					}				
+					create_ship = {
+						name = random
+						random_existing_design = Dreadnought
+					}
+					prev = { set_country_flag = fix_added_fleet }
+					
+				}
+			}
+		}		
+
+		#Add Battleships
+		if = {
+            limit = {
+					resource_stockpile_compare = {
+						resource = alloys
+						value > 50000
+					}
+					used_naval_capacity_percent < 0.8 # 0.95						
+					has_technology = tech_battleships		
+					not = { has_country_flag = fix_added_fleet }					
+					
+			}
+
+			if = { limit = { has_global_flag = edai_logging	} log = "FIX_Fleet: Too many Alloys & Low Naval Capacity,  try to add 2 battleships for [This.GetName]" }		
+		
+			random_owned_fleet = {
+				limit = {
+					count_owned_ship = {
+						limit = {
+						}
+						count > 1
+					}
+					count_owned_ship = {
+						limit = {
+						is_ship_size = transport
+						}
+						count = 0
+					}
+					count_owned_ship = {
+						limit = {
+							is_ship_size = battleships
+						}
+						count < 15
+					}
+				}
+				if = {
+					limit = { 
+						prev = {
+							has_technology = tech_battleships
+							not = { has_country_flag = fix_added_fleet }					
+							
+						}
+					}
+					if = { limit = { has_global_flag = edai_logging	} log = "FIX_Fleet: Add 2 battleships on fleet [This.GetName] for [Owner.GetName]" }
+					owner = {
+						add_resource = {
+							alloys = -8000
+						}
+					}				
+					create_ship = {
+						name = random
+						random_existing_design = battleship
+					}
+					create_ship = {
+						name = random
+						random_existing_design = battleship
+					}
+					prev = { set_country_flag = fix_added_fleet }
+				}
+			}
+		}
+
+		if = {
+            limit = {
+					resource_stockpile_compare = {
+						resource = alloys
+						value > 50000
+					}
+					used_naval_capacity_percent < 0.8 # 0.95						
+					has_technology = tech_Battlecruiser_1	
+					not = { has_country_flag = fix_added_fleet }					
+			}
+			if = { limit = { has_global_flag = edai_logging	} log = "FIX_Fleet: Too many Alloys & Low Naval Capacity,  try to add 2 Battlecruiser for [This.GetName]" }		
+		
+			random_owned_fleet = {
+				limit = {
+					count_owned_ship = {
+						limit = {
+						}
+						count > 1
+					}
+					count_owned_ship = {
+						limit = {
+						is_ship_size = transport
+						}
+						count = 0
+					}
+					count_owned_ship = {
+						limit = {
+							is_ship_size = Battlecruiser
+						}
+						count < 20
+					}
+				}
+				if = {
+					limit = { 
+						prev = {
+							has_technology = tech_Battlecruiser_1
+							not = { has_country_flag = fix_added_fleet }												
+						}
+					}
+					if = { limit = { has_global_flag = edai_logging	} log = "FIX_Fleet: Add 2 Battlecruisers on fleet [This.GetName] for [Owner.GetName]" }
+					owner = {
+						add_resource = {
+							alloys = -8000
+						}
+					}				
+					
+					create_ship = {
+						name = random
+						random_existing_design = Battlecruiser
+					}
+					create_ship = {
+						name = random
+						random_existing_design = Battlecruiser
+					}
+					prev = { set_country_flag = fix_added_fleet }
+					
+				}
+			}
+		}	
+		
+		#Carrier
+		if = {
+            limit = {
+					resource_stockpile_compare = {
+						resource = alloys
+						value > 60000
+					}
+					used_naval_capacity_percent < 0.8 # 0.95						
+					has_technology = tech_Carrier_1		
+					not = { has_country_flag = fix_added_fleet }										
+			}
+			if = { limit = { has_global_flag = edai_logging	} log = "FIX_Fleet: Too many Alloys & Low Naval Capacity,  try to add 1 Carrier for [This.GetName]" }		
+		
+			random_owned_fleet = {
+				limit = {
+					count_owned_ship = {
+						limit = {
+						}
+						count > 1
+					}
+					count_owned_ship = {
+						limit = {
+						is_ship_size = transport
+						}
+						count = 0
+					}
+					count_owned_ship = {
+						limit = {
+							is_ship_size = Carrier
+						}
+						count < 5
+					}
+				}
+				if = {
+					limit = { 
+						prev = {
+							has_technology = tech_Carrier_1
+							not = { has_country_flag = fix_added_fleet }												
+						}
+					}
+					if = { limit = { has_global_flag = edai_logging	} log = "FIX_Fleet: Add 1 Carrier on fleet [This.GetName] for [Owner.GetName]" }
+					owner = {
+						add_resource = {
+							alloys = -8000
+						}
+					}				
+					create_ship = {
+						name = random
+						random_existing_design = Carrier
+					}
+					prev = { set_country_flag = fix_added_fleet }
+					
+				}
+			}
+		}		
+
+
+
+		#StrikeCruisers
+		if = {
+            limit = {
+					resource_stockpile_compare = {
+						resource = alloys
+						value > 45000
+					}
+					used_naval_capacity_percent < 0.8 # 0.95						
+					has_technology = tech_StrikeCruiser_1		
+					not = { has_country_flag = fix_added_fleet }										
+			}
+			if = { limit = { has_global_flag = edai_logging	} log = "FIX_Fleet: Too many Alloys & Low Naval Capacity,  try to add 4 StrikeCruisers for [This.GetName]" }		
+		
+			random_owned_fleet = {
+				limit = {
+					count_owned_ship = {
+						limit = {
+						}
+						count > 1
+					}
+					count_owned_ship = {
+						limit = {
+						is_ship_size = transport
+						}
+						count = 0
+					}
+					count_owned_ship = {
+						limit = {
+							is_ship_size = StrikeCruiser
+						}
+						count < 20
+					}
+				}
+				if = {
+					limit = { 
+						prev = {
+							has_technology = tech_StrikeCruiser_1
+							not = { has_country_flag = fix_added_fleet }					
+								
+						}
+					}
+					if = { limit = { has_global_flag = edai_logging	} log = "FIX_Fleet: Add 4 StrikeCruisers on fleet [This.GetName] for [Owner.GetName]" }
+					owner = {
+						add_resource = {
+							alloys = -8000
+						}
+					}				
+					create_ship = {
+						name = random
+						random_existing_design = StrikeCruiser
+					}
+					create_ship = {
+						name = random
+						random_existing_design = StrikeCruiser
+					}
+					create_ship = {
+						name = random
+						random_existing_design = StrikeCruiser
+					}
+					create_ship = {
+						name = random
+						random_existing_design = StrikeCruiser
+					}
+					prev = { set_country_flag = fix_added_fleet }
+
+				}
+			}
+		}
+
+
+		#Add Escort
+		if = {
+            limit = {
+					resource_stockpile_compare = {
+						resource = alloys
+						value > 40000
+					}
+					used_naval_capacity_percent < 0.8 # 0.95					
+					has_technology = tech_escortcarrier_1					
+					not = { has_country_flag = fix_added_fleet }					
+					
+			}
+			if = { limit = { has_global_flag = edai_logging	} log = "FIX_Fleet: Too many Alloys & Low Naval Capacity,  try to add 2 Escorts if possible for [This.GetName]" }		
+		
+			random_owned_fleet = {
+				limit = {
+					count_owned_ship = {
+						limit = {
+						}
+						count > 1
+					}
+					count_owned_ship = {
+						limit = {
+						is_ship_size = transport
+						}
+						count = 0
+					}				
+					count_owned_ship = {
+						limit = {
+							is_ship_size = escortcarrier
+						}
+						count < 10
+					}
+				}
+				if = {
+					limit = { 
+						prev = {
+							has_technology = tech_escortcarrier_1
+							not = { has_country_flag = fix_added_fleet }					
+							
+						}
+					}
+					if = { limit = { has_global_flag = edai_logging	} log = "FIX_Fleet: Add 2 escortcarrier on fleet [This.GetName] for [Owner.GetName]" }
+					owner = {
+						add_resource = {
+							alloys = -5000
+						}
+					}				
+					create_ship = {
+						name = random
+						random_existing_design = escortcarrier
+					}
+					create_ship = {
+						name = random
+						random_existing_design = escortcarrier
+					}
+					prev = { set_country_flag = fix_added_fleet }
+					
+				}
+			}
+		}		
+
+		if = {
+            limit = {
+					resource_stockpile_compare = {
+						resource = alloys
+						value > 35000
+					}
+					used_naval_capacity_percent < 0.8 # 0.95					
+					has_technology = tech_cruisers
+					not = { has_country_flag = fix_added_fleet }					
+					
+			}
+			if = { limit = { has_global_flag = edai_logging	} log = "FIX_Fleet: Too many Alloys & Low Naval Capacity,  try to add 4 Cruisers for [This.GetName]" }		
+			random_owned_fleet = {
+				limit = {
+					count_owned_ship = {
+						limit = {
+						}
+						count > 1
+					}
+					count_owned_ship = {
+						limit = {
+						is_ship_size = transport
+						}
+						count = 0
+					}
+					count_owned_ship = {
+						limit = {
+							is_ship_size = cruiser
+						}
+						count < 30
+					}
+				}
+				if = {
+					limit = { 
+						prev = {
+							has_technology = tech_cruisers
+							not = { has_country_flag = fix_added_fleet }												
+						}
+					}
+					if = { limit = { has_global_flag = edai_logging	} log = "FIX_Fleet: Add 4 Cruisers on fleet [This.GetName] for [Owner.GetName]" }
+					owner = {
+						add_resource = {
+							alloys = -4000
+						}
+					}				
+					create_ship = {
+						name = random
+						random_existing_design = cruiser
+					}
+					create_ship = {
+						name = random
+						random_existing_design = cruiser
+					}
+					create_ship = {
+						name = random
+						random_existing_design = cruiser
+					}
+					create_ship = {
+						name = random
+						random_existing_design = cruiser
+					}
+					prev = { set_country_flag = fix_added_fleet }
+					
+				}
+			}
+		}
+
+
+		if = {
+		    limit = { 
+				has_country_flag = fix_added_fleet 
+			}					
+			remove_country_flag = fix_added_fleet 
+		}		
 	}
 }
 country_event = {
@@ -352,7 +803,7 @@ country_event = {
 		if = {
 			limit = {
 					num_pops > 29 #9
-					num_pops < 40 #20
+					num_pops < 50 #20
 			}
 			add_modifier = {
 					modifier = planet_pop_conversion_count_1 days = 60
@@ -364,8 +815,8 @@ country_event = {
 		}
 			else_if = {
 				limit = {
-					num_pops > 39
-					num_pops < 60
+					num_pops > 49
+					num_pops < 70
 				}
 				add_modifier = {
 					modifier = planet_pop_conversion_count_2 days = 60
@@ -377,8 +828,8 @@ country_event = {
 			}
 			else_if = {
 				limit = {
-					num_pops > 59
-					num_pops < 70
+					num_pops > 69
+					num_pops < 90
 				}
 				add_modifier = {
 					modifier = planet_pop_conversion_count_3 days = 60
@@ -390,8 +841,8 @@ country_event = {
 			}
 			else_if = {
 				limit = {
-					num_pops > 69
-					num_pops < 80
+					num_pops > 89
+					num_pops < 110
 				}
 				add_modifier = {
 					modifier = planet_pop_conversion_count_4 days = 60
@@ -403,7 +854,7 @@ country_event = {
 			}
 			else_if = {
 				limit = {
-					num_pops > 79
+					num_pops > 109
 				}
 				add_modifier = {
 					modifier = planet_pop_conversion_count_5 days = 60

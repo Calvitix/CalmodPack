@@ -145,6 +145,11 @@ orbital_artificial_eco_1 = {
 	ai_weight = { factor = 10 } # If we can build it, we will build it
 	on_build_complete = {
 		save_event_target_as = giga_system
+		if = {
+			limit = {
+				exists = fromfrom
+				exists = fromfrom.planet
+			}
 		fromfrom.planet = { save_event_target_as = giga_planet }
 		from = {
 			if = {
@@ -162,6 +167,7 @@ orbital_artificial_eco_1 = {
 				set_timed_country_flag = { flag = giga_achievement_56_notification days = 30 }
 				giga_achievement_sound = yes
 			}
+		}
 		}
 	}
 }
@@ -235,10 +241,16 @@ orbital_artificial_eco_restored = {
 	ai_weight = { factor = 10 } # If we can build it, we will build it
 	on_build_complete = {
 		save_event_target_as = giga_system
-		fromfrom.planet = { save_event_target_as = giga_planet }
-		giga_remove_system_debris = yes
-		from = {
-			country_event = { id = giga_dialog.1004 }	# Notification
+		if = {
+			limit = {
+				exists = fromfrom
+				exists = fromfrom.planet
+			}
+			fromfrom.planet = { save_event_target_as = giga_planet }
+			giga_remove_system_debris = yes
+			from = {
+				country_event = { id = giga_dialog.1004 }	# Notification
+			}
 		}
 	}
 }

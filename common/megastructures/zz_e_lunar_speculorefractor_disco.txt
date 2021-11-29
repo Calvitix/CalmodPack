@@ -1,3 +1,10 @@
+# Giga File
+#
+# Calvitix Check 3.2
+#
+# Last Update : 28/11/2021
+#
+
 lunar_disco_ball_0 = {
 	entity = "giga_consite_5_5_entity"
 	construction_entity = "giga_consite_5_5_entity"
@@ -47,6 +54,20 @@ lunar_disco_ball_0 = {
 			custom_tooltip = { fail_text = "requires_survey_not_habitable"		is_surveyed = { who = prev.from status = yes } is_planet_habitable = no }
 			custom_tooltip = { fail_text = "requires_not_asteroid"				is_asteroid = no }
 			custom_tooltip = { fail_text = "requires_not_star"					is_star = no }
+			custom_tooltip = {
+				fail_text = "must_build_around_habitable_planet"
+				OR = {
+					prev.from = { is_ai = no }
+					solar_system = {
+						any_system_planet = {
+							AND = {
+								any_moon = { is_same_value = prevprevprev }
+								is_colony = yes
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 
@@ -62,6 +83,8 @@ lunar_disco_ball_0 = {
 
 		modifier = {
 			factor = 4
+			exists = fromfrom 
+			exists = fromfrom.planet 
 			fromfrom.planet = {
 				solar_system = {
 					any_system_planet = {
@@ -94,8 +117,10 @@ lunar_disco_ball_0 = {
 		}
 
 		modifier = {
-			factor = 0
-			fromfrom.planet = {
+				factor = 0
+				exists = fromfrom 
+				exists = fromfrom.planet 
+				fromfrom.planet = {
 				solar_system = {
 					any_system_planet = {
 						AND = {

@@ -3,7 +3,7 @@
 #
 # Calvitix Check 3.2  22/11/2021
 #
-# Merge with NSC  09/05/2021
+# Merge with NSC  28/11/2021
 # Modified by Calvitix 15/05/2021
 # Merge with Starnet AI 24/11/2021
 # Merge with Starbase Upgrade  11/11/2021
@@ -150,6 +150,7 @@ shipyard = {
 	}
 }
 
+
 anchorage = {
 	icon = "GFX_starbase_anchorage"
 	section = "ANCHORAGE_STARBASE_SECTION"
@@ -185,6 +186,7 @@ anchorage = {
 	country_modifier = {
 		country_naval_cap_add = 10 # 15 # 4  #NSC
 	}
+
 	triggered_country_modifier = {
 		potential = { has_starbase_building = naval_logistics_office }
 		country_naval_cap_add = 10 #2   #NSC
@@ -237,7 +239,7 @@ anchorage = {
 		}
 		modifier = {
 			factor = 0
-			owner = { used_naval_capacity_percent < 0.9 }
+			owner = { used_naval_capacity_percent < 0.7 } #0.9
 		}
 		modifier = {
 			factor = 0
@@ -251,6 +253,7 @@ anchorage = {
 ###		
 	}
 }
+
 
 gun_battery = {
 	section = "BATTERY_STARBASE_SECTION"
@@ -320,6 +323,7 @@ gun_battery = {
 	show_in_tech = "tech_mass_drivers_1"
 }
 
+
 missile_battery = {
 	section = "MISSILE_STARBASE_SECTION"
 	icon = "GFX_starbase_missile_battery"
@@ -355,7 +359,7 @@ missile_battery = {
 #		ship_hull_mult = 0.10
 #		ship_armor_mult = 0.10
 #		starbase_trade_protection_range_add = 1
-		starbase_trade_protection_add = 3
+		starbase_trade_protection_add = 3 #5
 	}
 
 	ai_build_at_chokepoint = yes
@@ -508,19 +512,19 @@ large_battery = {
 			factor = 0.6
 			count_starbase_modules = {
 				type = large_battery
-				count > 4
+				count > 3
 			}
 		}
 		modifier = {
 			factor = 0.5
 			count_starbase_modules = {
 				type = large_battery
-				count > 6
+				count > 4
 			}
 		}			
 ####
 		modifier = { factor = 0 has_starbase_size < starbase_starfortress }
-		modifier = { factor = 0 count_starbase_modules = { type = large_battery count > 3 } }
+		modifier = { factor = 0 count_starbase_modules = { type = large_battery count > 5 } }
 	}	
 }
 
@@ -580,7 +584,7 @@ hangar_bay = {
 	ai_build_at_chokepoint = no
 	ai_build_outside_chokepoint = yes
 	ai_weight = {
-		weight = 40 #10
+		weight = 100 #10
 		modifier = {
 			factor = 3
 			exists = owner
@@ -591,6 +595,13 @@ hangar_bay = {
 			factor = 0.6
 			count_starbase_modules = {
 				type = hangar_bay
+				count > 1
+			}
+		}
+		modifier = {
+			factor = 0.5
+			count_starbase_modules = {
+				type = hangar_bay
 				count > 2
 			}
 		}
@@ -598,14 +609,7 @@ hangar_bay = {
 			factor = 0.5
 			count_starbase_modules = {
 				type = hangar_bay
-				count > 4
-			}
-		}
-		modifier = {
-			factor = 0.5
-			count_starbase_modules = {
-				type = hangar_bay
-				count > 6
+				count > 3
 			}
 		}			
 ####
@@ -689,6 +693,13 @@ xl_battery = {
 			factor = 0.6
 			count_starbase_modules = {
 				type = xl_battery
+				count > 1
+			}
+		}
+		modifier = {
+			factor = 0.5
+			count_starbase_modules = {
+				type = xl_battery
 				count > 2
 			}
 		}
@@ -696,14 +707,7 @@ xl_battery = {
 			factor = 0.5
 			count_starbase_modules = {
 				type = xl_battery
-				count > 4
-			}
-		}
-		modifier = {
-			factor = 0.5
-			count_starbase_modules = {
-				type = xl_battery
-				count > 6
+				count > 3
 			}
 		}			
 ####		
@@ -768,6 +772,13 @@ titanic_battery = {
 			factor = 0.6
 			count_starbase_modules = {
 				type = titanic_battery
+				count > 1
+			}
+		}
+		modifier = {
+			factor = 0.5
+			count_starbase_modules = {
+				type = titanic_battery
 				count > 2
 			}
 		}
@@ -775,14 +786,7 @@ titanic_battery = {
 			factor = 0.5
 			count_starbase_modules = {
 				type = titanic_battery
-				count > 4
-			}
-		}
-		modifier = {
-			factor = 0.5
-			count_starbase_modules = {
-				type = titanic_battery
-				count > 6
+				count > 3
 			}
 		}			
 ####		
@@ -822,11 +826,13 @@ shield_module = {
 	}
 	station_modifier = { 
 		ship_shield_add = 3000
+		ship_shield_regen_add_perc = 1
 	}
 	ai_build_at_chokepoint = yes
 	ai_build_outside_chokepoint = yes
 	potential = { 
 		has_starbase_size >= starbase_starport #not for outposts
+		solar_system = { NOT = { is_star_class = sc_pulsar } } #not for Pulsar Systems
 	}
 	ai_weight = {
 		weight = 100
@@ -876,6 +882,7 @@ armor_module = {
 	}
 	station_modifier = { 
 		ship_armor_add = 3000
+		ship_armor_regen_add_perc = 1
 	}
 	ai_build_at_chokepoint = yes
 	ai_build_outside_chokepoint = yes
@@ -973,7 +980,7 @@ solar_panel_network = {
 
 	ai_build_at_chokepoint = no
 	ai_weight = {
-		weight = 40 #15
+		weight = 100 #15
 #CALVITIX
 		modifier = {
 			factor = 0.9
@@ -1046,7 +1053,7 @@ trading_hub = {
 
 	ai_build_at_chokepoint = no
 	ai_weight = {
-		weight = 20 #15
+		weight = 100 #15
 		modifier = {
 			factor = 5
 			NOT = { has_starbase_module = trading_hub }
@@ -1158,12 +1165,12 @@ asteroid_mining = {
 			owner = { 
 			resource_stockpile_compare = {
 				resource = minerals
-				value > 2500
+				value > 5000
 			} }
 			owner = { 
 			resource_income_compare = {
 				resource = minerals
-				value > 150
+				value > 200
 				} }
 			}
 		}
@@ -1276,8 +1283,8 @@ space_foundry = {
 	potential = { exists = owner owner = { has_technology = tech_alloys_1 } }
 	
 	ai_weight = {
-		weight = 250
-		modifier = { factor = 5 has_starbase_size < starbase_starport }
+		weight = 80 #50
+		modifier = { factor = 5 has_starbase_size <= starbase_starfortress }
 		modifier = { factor = 4 count_starbase_modules = { type = space_foundry count > 1 } }
 		modifier = { factor = 3 count_starbase_modules = { type = space_foundry count > 2 } }
 		modifier = { factor = 2 count_starbase_modules = { type = space_foundry count > 3 } }
@@ -1349,8 +1356,8 @@ space_factory = {
 		owner = { has_technology = tech_luxuries_1 } 
 	}
 	ai_weight = {
-		weight = 150
-		modifier = { factor = 5 has_starbase_size < starbase_starport }
+		weight = 70 #50
+		modifier = { factor = 5 has_starbase_size < starbase_starfortress }
 		modifier = { factor = 4 count_starbase_modules = { type = space_factory count > 1 } }
 		modifier = { factor = 3 count_starbase_modules = { type = space_factory count > 2 } }
 		modifier = { factor = 2 count_starbase_modules = { type = space_factory count > 3 } }

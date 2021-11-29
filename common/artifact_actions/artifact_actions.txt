@@ -1,5 +1,10 @@
-# Calvitix Check 3.2  22/11/2021
-
+# Original File
+#
+# Calvitix Check 3.2  2/11/2021
+#
+# Merge with Exp. Events 28/11/2021
+#
+#
 
 @minor_artifact_decision_cost = 2
 @minor_artifact_decision_duration = 3600
@@ -60,23 +65,18 @@ artifact_lgate_clue = {
 		}
 	}
 	
-	ai_weight = {
-		weight = 1
-		modifier = {
-			factor = 0
-			has_resource = { type = minor_artifacts amount < 105 }
-		}
-	}
-	
 	potential = {
-		has_event_chain = l_cluster_chain
-		NOR = {
-			has_global_flag = l_cluster_opened
-			has_completed_event_chain_counter = {
-				event_chain = l_cluster_chain
-				counter = clues
-			}
-		}
+		#has_event_chain = l_cluster_chain
+		#NOR = {
+		#	has_global_flag = l_cluster_opened
+		#	has_completed_event_chain_counter = {
+		#		event_chain = l_cluster_chain
+		#		counter = clues
+		#	}
+		#}
+		has_country_flag = encountered_first_lgate
+		NOT = { has_country_flag = completed_lcluster_chain }
+		NOT = { has_global_flag = l_cluster_opened }
 		has_distar = yes
 	}
 
@@ -92,6 +92,50 @@ artifact_lgate_clue = {
 	
 			add_modifier = {
 				modifier = "artifact_lgate_insight_cooldown"
+				days = 3600
+			}
+		}
+	}
+	
+	ai_weight = {
+		weight = 1
+		modifier = {
+			factor = 0
+			has_resource = { type = minor_artifacts amount < 105 }
+		}
+	}
+}
+
+artifact_observer_clue = {
+	resources = {
+		category = artifact_actions
+		cost = {
+			minor_artifacts = 10
+		}
+	}
+	
+	ai_weight = {
+		weight = 1
+		modifier = {
+			factor = 0
+			has_resource = { type = minor_artifacts amount < 105 }
+		}
+	}
+	
+	potential = {
+		is_observation_chain_active = yes
+	}
+
+	allow = {
+		NOT = { has_modifier = artifact_observer_clue_cooldown }
+	}
+
+	effect = {
+		add_observer_clue = yes
+		custom_tooltip = artifact_observer_clue_effect
+		hidden_effect = {
+			add_modifier = {
+				modifier = "artifact_observer_clue_cooldown"
 				days = 3600
 			}
 		}
@@ -600,7 +644,7 @@ artifact_irassian_research = {
 	}
 	
 	ai_weight = {
-		weight = 10
+		weight = 100 #10
 	}
 
 	potential = {
@@ -632,7 +676,7 @@ artifact_yuht_research = {
 	}
 	
 	ai_weight = {
-		weight = 10
+		weight = 100 #10
 	}
 
 	potential = {
@@ -663,7 +707,7 @@ artifact_vultaum_research = {
 	}
 	
 	ai_weight = {
-		weight = 10
+		weight = 100 #10
 	}
 
 	potential = {
@@ -694,7 +738,7 @@ artifact_cybrex_research = {
 	}
 	
 	ai_weight = {
-		weight = 10
+		weight = 100 #10
 	}
 
 	potential = {
@@ -725,7 +769,7 @@ artifact_league_research = {
 	}
 	
 	ai_weight = {
-		weight = 10
+		weight = 100 #10
 	}
 
 	potential = {
@@ -762,7 +806,7 @@ artifact_baol_research = {
 	}
 	
 	ai_weight = {
-		weight = 10
+		weight = 100 #10
 	}
 
 	potential = {
@@ -794,7 +838,7 @@ artifact_zroni_research = {
 	}
 	
 	ai_weight = {
-		weight = 10
+		weight = 100 #10
 	}
 
 	potential = {
@@ -815,6 +859,7 @@ artifact_zroni_research = {
 		}
 	}
 }
+
 artifact_precursor_clue = {
 	resources = {
 		category = artifact_actions
@@ -908,40 +953,3 @@ artifact_precursor_clue = {
 		}
 	}
 }
-
-artifact_observer_clue = {
-	resources = {
-		category = artifact_actions
-		cost = {
-			minor_artifacts = 10
-		}
-	}
-	
-	ai_weight = {
-		weight = 1
-		modifier = {
-			factor = 0
-			has_resource = { type = minor_artifacts amount < 105 }
-		}
-	}
-	
-	potential = {
-		is_observation_chain_active = yes
-	}
-
-	allow = {
-		NOT = { has_modifier = artifact_observer_clue_cooldown }
-	}
-
-	effect = {
-		add_observer_clue = yes
-		custom_tooltip = artifact_observer_clue_effect
-		hidden_effect = {
-			add_modifier = {
-				modifier = "artifact_observer_clue_cooldown"
-				days = 3600
-			}
-		}
-	}
-}
-

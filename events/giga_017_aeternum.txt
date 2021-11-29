@@ -1,8 +1,8 @@
 # Giga File
 #
-# Calvitix Check 3.
+# Calvitix Check 3.2
 #
-# Last Update : 24/11/2021
+# Last Update : 27/11/2021
 #
 namespace = giga_aeternum
 
@@ -1492,24 +1492,36 @@ country_event = {
 		}
 		if = { #resettle aeternite pops to birch world if abducted (no cheesing!)
 			limit = {
-				any_galaxy_planet = {
-					owner = { is_at_war_with = event_target:birch_aeternum }
-					is_colony = yes
-					NOT = { is_planet_class = pc_birch }
-					any_owned_pop = {
+				any_country = {
+					NOT = { is_country = event_target:birch_aeternum }
+					any_owned_species = {
 						is_species = event_target:birch_aeternites
 					}
 				}
 			}
-			every_galaxy_pop = {
+			every_country = {
+				limit = {
+					NOT = { is_country = event_target:birch_aeternum }
+					any_owned_species = {
+						is_species = event_target:birch_aeternites
+					}
+				}
+				every_owned_planet = {
+					limit = {
+						any_owned_species = {
+							is_species = event_target:birch_aeternites
+						}
+					}
+					every_owned_pop = {
 				limit = {
 					is_species = event_target:birch_aeternites
-					planet = {NOT = { is_planet_class = pc_birch } }
 				}
 				resettle_pop = {
 					pop = THIS
 					planet = event_target:aeternum_birch_world
 				}
+			}
+		}
 			}
 		}
 		if = {

@@ -88,7 +88,7 @@ event = {
 				}
 			}
         }
-        # log = "Initialized"
+        # log = "MEM event :  Initialized"
     }
 }
 
@@ -109,7 +109,7 @@ fleet_event = {
             save_event_target_as = surveyor_system
             set_star_flag = mem_surveyor_visited
             remove_star_flag = mem_surveyor_next_target
-            # log = "[This.GetName] visited"
+            # log = "MEM event :  [This.GetName] visited"
             closest_system = { # Find the most appealing system
                 limit = {
                     NOR = {
@@ -225,7 +225,7 @@ fleet_event = {
                         found_system = {
                             effect = {
                                 id = mem_surveyor.vanilla.4
-                                # log = "Setting location to [This.GetName]"
+                                # log = "MEM event :  Setting location to [This.GetName]"
                                 root = {
                                     solar_system = {
                                         IF = {
@@ -246,7 +246,7 @@ fleet_event = {
                         failed = {
                             effect = {
                                 id = mem_surveyor.vanilla.5
-                                # log = "Found nothing"
+                                # log = "MEM event :  Found nothing"
                                 every_system = {
                                     limit = { has_star_flag = mem_surveyor_visited }
                                     remove_star_flag = mem_surveyor_visited
@@ -261,7 +261,7 @@ fleet_event = {
                                         value = 1
                                     }
                                 }
-                                # log = "Rebooting the cycle: [This.mem_surveyor_iteration_count]" 
+                                # log = "MEM event :  Rebooting the cycle: [This.mem_surveyor_iteration_count]" 
                                 fleet_event = { id = mem_surveyor.2 }
                             }
                         }
@@ -282,7 +282,7 @@ country_event = {
     is_triggered_only = yes
 
     trigger = {
-        # # log = "Trying to initiate first contact. [From.GetName]"
+        # # log = "MEM event :  Trying to initiate first contact. [From.GetName]"
         FROM = { is_country_type = mem_surveyor_country_green }
         NOT = { has_country_flag = mem_surveyor_spotted_probe }
     }
@@ -530,7 +530,7 @@ country_event = {
     }
 
     immediate = {
-        # log = "Probe killed by [From.GetName]"
+        # log = "MEM event :  Probe killed by [From.GetName]"
         FROM = { 
             save_event_target_as = probe_killers 
             set_country_flag = mem_surveyor_probe_killers
@@ -845,7 +845,7 @@ country_event = {
 
     immediate = {
         set_country_flag = mem_surveyor_offered_quest
-        # log = "[This.GetName] Is offered quest"
+        # log = "MEM event :  [This.GetName] Is offered quest"
         random_list = { #Revise weights when all is done!!!
             3 = { country_event = { id = mem_surveyor.103 } } #Ask to share computation
             5 = { country_event = { id = mem_surveyor.104 } } #Ask for raw resources
@@ -1203,7 +1203,7 @@ country_event = {
             flag = mem_surveyor_collected_reward
             days = 3600
         }
-        # log = "[This.GetName] Collects Reward"
+        # log = "MEM event :  [This.GetName] Collects Reward"
         random_list = { #Choosing the reward
             5 = { # Give survey data
                 country_event = { id = mem_surveyor.111 }
@@ -1862,10 +1862,10 @@ fleet_event = {
     }
 
     immediate = {
-        # log = ".210 loop"
+        # log = "MEM event :  .210 loop"
         IF = {
             limit = { has_fleet_flag = mem_surveyor_day_of_the_order }
-            # log = "Recent order flag is still present"
+            # log = "MEM event :  Recent order flag is still present"
         }
         solar_system = {
             remove_star_flag = mem_surveyor_next_target
@@ -1927,7 +1927,7 @@ fleet_event = {
                                     which = mem_surveyor_attriction_counter
                                     value = -1
                                 }
-                                # log = "Attrition: [This.mem_surveyor_attriction_counter]"
+                                # log = "MEM event :  Attrition: [This.mem_surveyor_attriction_counter]"
                             }
                         }                        
                         create_starbase = {
@@ -1958,7 +1958,7 @@ fleet_event = {
                     }
                 }
             }
-            # log = "Targeting things!!!"
+            # log = "MEM event :  Targeting things!!!"
             solar_system = {
                 random_system_planet = {
                     limit = {
@@ -1972,7 +1972,7 @@ fleet_event = {
                             }
                         }
                     }
-                    # log = "[This.GetName] targeted"
+                    # log = "MEM event :  [This.GetName] targeted"
                     set_planet_flag = mem_surveyor_next_target_planet
                 }
             }
@@ -2041,7 +2041,7 @@ fleet_event = {
                     }
                 }
                 min_steps = 1 #Apparently, landing in the same system breaks the AI
-                # log = "[This.GetName] is the next target."
+                # log = "MEM event :  [This.GetName] is the next target."
                 set_star_flag = mem_surveyor_next_target
                 every_playable_country = {
                     remove_country_flag = mem_surveyor_terrorize_this_country
@@ -2116,7 +2116,7 @@ planet_event = {
                     which = mem_surveyor_attriction_counter
                     value = -1
                 }
-                # log = "Attrition: [This.mem_surveyor_attriction_counter]"
+                # log = "MEM event :  Attrition: [This.mem_surveyor_attriction_counter]"
             }
         }
         
@@ -2163,7 +2163,7 @@ country_event = {
     }
 
     immediate = {
-        # log = "[From.GetName] won"
+        # log = "MEM event :  [From.GetName] won"
         set_global_flag = mem_surveyor_probe_took_a_planet
         FROMFROM = {
             set_planet_flag = mem_surveyor_former_owner@root
@@ -2214,7 +2214,7 @@ country_event = {
                                                 has_country_flag = marauder_3
                                             }
                                         }
-                                        # log = "Avenger initiated"
+                                        # log = "MEM event :  Avenger initiated"
                                         country_event = { id = mem_surveyor.240 days = 180 random = 360 } # Change timer here
                                     }
                                     kill_pop = yes
@@ -2307,7 +2307,7 @@ country_event = {
     }
 
     immediate = {
-        # log = "[From.GetName] lost"
+        # log = "MEM event :  [From.GetName] lost"
         FROMFROM = { 
             set_owner = ROOT 
             every_owned_pop = { clear_pop_category = yes }
@@ -2726,7 +2726,7 @@ country_event = {
             which = mem_surveyor_attriction_counter
             value = @attrition_yearly_increase
         }
-        # log = "Attrition: [This.mem_surveyor_attriction_counter]"
+        # log = "MEM event :  Attrition: [This.mem_surveyor_attriction_counter]"
         random_owned_ship = {
             limit = {
                 has_ship_flag = mem_surveyor_probe_ship
@@ -2757,7 +2757,7 @@ country_event = {
     }
 
     immediate = {
-        # log = "Berserker Probe is killed by [From.GetName]"
+        # log = "MEM event :  Berserker Probe is killed by [From.GetName]"
         FROM = { 
             save_event_target_as = probe_killers 
             set_country_flag = mem_surveyor_probe_killers
@@ -2978,14 +2978,14 @@ pop_event = {
     is_triggered_only = yes
 
     immediate = {
-        # log = "Evaluation for refugees: [This.GetSpeciesName] on [Planet.GetName]"
+        # log = "MEM event :  Evaluation for refugees: [This.GetSpeciesName] on [Planet.GetName]"
         IF = {
             limit = { is_valid_refugee_pop = yes }
 			save_event_target_as = refugee_pop #Must be saved for refugee_pop_effect to work
             mem_surveyor_refugee_pop_effect = yes
         }
         ELSE = {
-            # log = "Refugee dead"
+            # log = "MEM event :  Refugee dead"
             kill_pop = yes
         }
     }
@@ -3004,7 +3004,7 @@ pop_event = {
     location = root.planet
 
     immediate = {
-        # log = "[Planet.GetName] received refugees"
+        # log = "MEM event :  [Planet.GetName] received refugees"
     }
 
     option = {
@@ -3031,13 +3031,13 @@ country_event = {
     }
 
     immediate = {
-        # log = "Spawning hunters"
+        # log = "MEM event :  Spawning hunters"
         random_system = {
             limit = {
                 exists = space_owner
                 space_owner = { is_same_value = root }
             }
-            # log = "[This.GetName] is the starting system."
+            # log = "MEM event :  [This.GetName] is the starting system."
             save_event_target_as = starting_system
         }
         set_global_flag = mem_surveyor_survivor_spawned
@@ -3512,7 +3512,7 @@ country_event = {
     }
 
     immediate = {
-        # log = "[From.GetName] killed avengers."
+        # log = "MEM event :  [From.GetName] killed avengers."
         FROM = {
             save_event_target_as = avengers_killers
         }
@@ -3575,7 +3575,7 @@ country_event = {
                         which = mem_surveyor_attriction_counter
                         value = -1
                     }
-                    # log = "Attrition: [This.mem_surveyor_attriction_counter]"
+                    # log = "MEM event :  Attrition: [This.mem_surveyor_attriction_counter]"
                 }
             }
             every_playable_country = {
@@ -3986,7 +3986,7 @@ country_event = {
             random_list = {
                 66 = {}
                 33 = { # Change weights for something better
-                    # log = "Triggered Titanic Effort for [This.GetName]"
+                    # log = "MEM event :  Triggered Titanic Effort for [This.GetName]"
                     country_event = { id = mem_surveyor.262 days = 360 }
                 }
             }
@@ -4013,15 +4013,15 @@ country_event = {
         switch = {
             trigger = has_country_flag
             trader_enclave_country_1 = {
-                # log = "Xura Sponsored Titan"
+                # log = "MEM event :  Xura Sponsored Titan"
                 set_global_flag = mem_surveyor_xura_sponsored_titan
             }
             trader_enclave_country_2 = {
-                # log = "Rigga Sponsored Titan"
+                # log = "MEM event :  Rigga Sponsored Titan"
                 set_global_flag = mem_surveyor_riggan_sponsored_titan
             }
             trader_enclave_country_3 = {
-                # log = "Muutra Sponsored Titan"
+                # log = "MEM event :  Muutra Sponsored Titan"
                 set_global_flag = mem_surveyor_muutra_sponsored_titan
             }
 
@@ -4268,7 +4268,7 @@ country_event = {
     }
 
     immediate = {
-        # log = "[From.GetName] killed mercs."
+        # log = "MEM event :  [From.GetName] killed mercs."
         FROM = {
             save_event_target_as = mercs_killers
         }
@@ -4331,7 +4331,7 @@ country_event = {
                         which = mem_surveyor_attriction_counter
                         value = -1
                     }
-                    # log = "Attrition: [This.mem_surveyor_attriction_counter]"
+                    # log = "MEM event :  Attrition: [This.mem_surveyor_attriction_counter]"
                 }
             }
             every_playable_country = {

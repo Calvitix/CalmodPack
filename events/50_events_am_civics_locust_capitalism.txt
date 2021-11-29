@@ -70,7 +70,7 @@ planet_event = {
 				modifier = { factor = 0 NOT = { has_planet_flag = am_civics_station_in_danger } }
 				clear_deposits = yes
 				mining_station = { dismantle = yes }
-				log = "Destroyed a Mining Deposit on [this.GetName] ([this.solar_system.GetName])."
+				log = "Div. event :  Destroyed a Mining Deposit on [this.GetName] ([this.solar_system.GetName])."
 				modifier = { factor = 2 	has_planet_flag = am_civics_locust_virtual_timer_5_years  } # 100
 				modifier = { factor = 3 	has_planet_flag = am_civics_locust_virtual_timer_10_years } # 150
 				modifier = { factor = 5 	has_planet_flag = am_civics_locust_virtual_timer_15_years } # 250
@@ -100,7 +100,7 @@ country_event = {
 	
 	immediate = {	
 		save_event_target_as = owner_country
-		log = "Owner_country: [event_target:owner_country.GetName]"
+		log = "Div. event :  Owner_country: [event_target:owner_country.GetName]"
 		
 		### (Wrapper) Keeps track of how long (roughly) planets have been under the rule of a Locust for Deposit / Mining Station Destruction events
 		country_event = { id = events_am_civics_locust_capitalism.4 }
@@ -141,11 +141,11 @@ country_event = {
 				### Chance of Deposit / Mining Station destruction is reduced by 50% if we have Recycling Technology.
 				50 = { 
 					modifier = { factor = 0 event_target:owner_country = { NOT = { has_technology = tech_am_civics_locust_recycling_industries } } }
-					log = "Rolled to not update deposit ages. (Recycling Technology)"
+					log = "Div. event :  Rolled to not update deposit ages. (Recycling Technology)"
 				}
 				50 = {
 					### Keeps track of how long star systems were under the rule of a Locust certain player	
-					log = "Rolled to update deposit ages."						
+					log = "Div. event :  Rolled to update deposit ages."						
 					### Keeps track of how long star systems have belonged to a certain player
 					planet_event = { id = events_am_civics_locust_capitalism.13 }
 				}
@@ -248,7 +248,7 @@ country_event = {
 					}
 					### ...and on decay level 10, the chance is 100% because the other outcome has factor = 0.
 										
-					log = "Planet [this.GetName] is being evacuated."
+					log = "Div. event :  Planet [this.GetName] is being evacuated."
 					### Pops are being resettled based on their strata. Workers first, then
 					### Specialists, then Rulers. This is in place so players are not swarmed
 					### with Specialists and Rulers. Without this, Specialists will be resettled,
@@ -259,7 +259,7 @@ country_event = {
 						limit = {  is_pop_category = worker }
 						FROM = {
 							set_country_flag = resettle_pop_locust_dummy
-							log = "Resettle Pop from [this.GetName]. (Workers only)"
+							log = "Div. event :  Resettle Pop from [this.GetName]. (Workers only)"
 							random_owned_planet = {
 								limit = { 
 									NOT = {has_modifier = static_modifier_am_civics_planet_decay_8 } 
@@ -267,7 +267,7 @@ country_event = {
 									NOT = {has_modifier = static_modifier_am_civics_planet_decay_10 }
 									is_under_colonization = no									
 								}
-								log = " -- Resettled to: [this.GetName]."
+								log = "Div. event :   -- Resettled to: [this.GetName]."
 								resettle_pop = {
 									pop = PREVPREV
 									planet = THIS
@@ -281,7 +281,7 @@ country_event = {
 							limit = { is_pop_category = specialist }
 							FROM = {
 								set_country_flag = resettle_pop_locust_dummy
-								log = "Resettle Pop from [this.GetName]. (Specialists only)"
+								log = "Div. event :  Resettle Pop from [this.GetName]. (Specialists only)"
 								random_owned_planet = {
 									limit = { 
 										NOT = {has_modifier = static_modifier_am_civics_planet_decay_8 } 
@@ -289,7 +289,7 @@ country_event = {
 										NOT = {has_modifier = static_modifier_am_civics_planet_decay_10 }
 										is_under_colonization = no									
 									}
-									log = " -- Resettled to: [this.GetName]."
+									log = "Div. event :   -- Resettled to: [this.GetName]."
 									resettle_pop = {
 										pop = PREVPREV
 										planet = THIS
@@ -303,7 +303,7 @@ country_event = {
 						random_owned_pop = {
 							FROM = {
 								set_country_flag = resettle_pop_locust_dummy
-								log = "Resettle Pop from [this.GetName]. (Free For All)"
+								log = "Div. event :  Resettle Pop from [this.GetName]. (Free For All)"
 								random_owned_planet = {
 									limit = { 
 										NOT = {has_modifier = static_modifier_am_civics_planet_decay_8 } 
@@ -311,7 +311,7 @@ country_event = {
 										NOT = {has_modifier = static_modifier_am_civics_planet_decay_10 }
 										is_under_colonization = no									
 									}
-									log = " -- Resettled to: [this.GetName]."
+									log = "Div. event :   -- Resettled to: [this.GetName]."
 									resettle_pop = {
 										pop = PREVPREV
 										planet = THIS
@@ -476,7 +476,7 @@ planet_event = {
 		}
 		ELSE_IF = { # Bye!
 			limit = { has_modifier = static_modifier_am_civics_planet_decay_10 }
-			log = "Planet Destruction Event on [this.GetName]."
+			log = "Div. event :  Planet Destruction Event on [this.GetName]."
 			### Planet Destruction Event: Cracked World
 			planet_event = { id = events_am_civics_locust_capitalism.10 }
 		}
