@@ -4,7 +4,7 @@
 #
 # Merge with Arisphaos Unofficial patch
 # Merge with NSC   28/11/2021
-# Merge with STARNET AI 25/11/2021
+# Merge with STARNET AI 30/11/2021
 # Merge with Giga
 # Merge with Planetary Div. 26/11/2021
 
@@ -126,7 +126,7 @@ ap_become_the_crisis = {
 		}
 		modifier = {
 			factor = 0
-			count_playable_country = {
+			count_country = {
 				count > 2
 				limit = {
 					has_ascension_perk = ap_become_the_crisis
@@ -136,7 +136,7 @@ ap_become_the_crisis = {
 #Starnet AI
 		modifier = {
 			factor = 0
-			count_playable_country = {
+			count_country = {
 				count > 1
 				limit = {
 					has_ascension_perk = ap_become_the_crisis
@@ -251,6 +251,10 @@ ap_enigmatic_engineering = {
 			is_materialist = yes
 			is_xenophobe = yes
 		}
+		modifier = {
+			factor = 3
+			has_ethic = ethic_fanatic_materialist
+		}		
 	}
 }
 
@@ -487,7 +491,7 @@ ap_engineered_evolution = {
 			num_ascension_perks < 3
 		}
 		modifier = {
-			factor = 10000
+			factor = 100
 			is_gestalt = yes
 		}
 ###
@@ -734,7 +738,7 @@ ap_synthetic_evolution = {
 	}
 
 	ai_weight = {
-		factor = 200 #100, 500 too much ?  Starnet AI
+		factor = 200 #100, 5000 too much ?  Starnet AI
 		modifier = {  #mod ? Ori ?
 			factor = 0
 			has_origin = origin_necrophage
@@ -938,6 +942,14 @@ ap_world_shaper = {
 			has_ascension_perk = ap_machine_worlds
 			has_ascension_perk = ap_hive_worlds
 		}
+		modifier = {
+			factor = 5
+			or = {
+				has_ascension_perk = ap_transcendence
+				has_ascension_perk = ap_synthetic_evolution
+				has_ascension_perk = ap_evolutionary_mastery
+			}
+		}
 ###
 	}
 }
@@ -1061,6 +1073,8 @@ ap_defender_of_the_galaxy = {
 		modifier = { #3.2
 			factor = 0
 			NOR = {
+				has_global_flag = galactic_crisis_happened
+				has_global_flag = gray_goo_crisis_active
 				is_xenophile = yes
 				is_galactic_custodian = yes
 				is_galactic_emperor = yes
@@ -1073,22 +1087,11 @@ ap_defender_of_the_galaxy = {
 						is_country_type = extradimensional_3
 						is_country_type = ai_empire
 						is_country_type = gray_goo
-					}
-				}
-			}
-		}
-		modifier = {
-			factor = 0.25
-			NOT = {
-				any_country = {
-					OR = {
-						has_crisis_level = crisis_level_5
-						is_country_type = swarm
-						is_country_type = extradimensional
-						is_country_type = extradimensional_2
-						is_country_type = extradimensional_3
-						is_country_type = ai_empire
-						is_country_type = gray_goo
+						relative_power = {
+							who = prev
+							value > equivalent
+						}
+						has_ascension_perk = ap_become_the_crisis						
 					}
 				}
 			}
@@ -1155,7 +1158,7 @@ ap_interstellar_dominion = {
 		}
 		modifier = {
 			factor = 0.001
-			num_ascension_perks > 1
+			num_ascension_perks > 0 #1
 		}
 		modifier = {
 			factor = 0
@@ -1309,7 +1312,7 @@ ap_eternal_vigilance = {
 	}
 
 	ai_weight = {
-		factor = 10
+		factor = 5 # 10  #Starnet = 0
 		modifier = {
 			factor = 2
 			has_civic = civic_inwards_perfection
@@ -1690,7 +1693,12 @@ ap_voidborn = {
 	}
 
 	on_enabled = {
+		if = {
+			limit = { #Starnet AI
+				is_gestalt = no
+			}
 		custom_tooltip = "ap_voidborn_habitat_effect"
+		}
 		if = {
 			limit = {
 				NOT = { has_technology = tech_habitat_2 }
@@ -1851,6 +1859,14 @@ ap_galactic_wonders_utopia = {
 			factor = 3
 			has_ethic = ethic_fanatic_pacifist
 		}
+		modifier = { #Starnet AI
+			factor = 100
+			or = {
+				has_ascension_perk = ap_transcendence
+				has_ascension_perk = ap_synthetic_evolution
+				has_ascension_perk = ap_evolutionary_mastery
+			}
+		}
 	}
 }
 
@@ -1892,6 +1908,14 @@ ap_galactic_wonders_megacorp = {
 		modifier = {
 			factor = 3
 			has_ethic = ethic_fanatic_pacifist
+		}
+		modifier = { #Starnet AI
+			factor = 100
+			or = {
+				has_ascension_perk = ap_transcendence
+				has_ascension_perk = ap_synthetic_evolution
+				has_ascension_perk = ap_evolutionary_mastery
+			}
 		}
 	}
 }
@@ -2023,7 +2047,7 @@ ap_machine_worlds = {
 	}
 
 	ai_weight = {
-		factor = 1000 #20
+		factor = 20 #starnet 0
 		modifier = {
 			factor = 0
 			has_valid_civic = civic_machine_servitor
@@ -2069,7 +2093,7 @@ ap_hive_worlds = {
 	}
 
 	ai_weight = {
-		factor = 1000 #20
+		factor = 20
 		modifier = {
 			factor = 0
 			has_ascension_perk = ap_world_shaper
@@ -2111,15 +2135,48 @@ ap_arcology_project = {
 	}
 
 	ai_weight = {
+#Starnet AI
+		factor = 1000
+		modifier = {
+			factor = 10
+			resource_stockpile_compare = { resource = minerals value > 8000 }
+			nor = {
+				has_ascension_perk = ap_mind_over_matter
+				has_ascension_perk = ap_the_flesh_is_weak
+				has_ascension_perk = ap_engineered_evolution
+			}
+		}
+		modifier = {
+			factor = 200
+			or = {
+				has_ascension_perk = ap_transcendence
+				has_ascension_perk = ap_synthetic_evolution
+				has_ascension_perk = ap_evolutionary_mastery
+			}
+		}
+		modifier = {
+			factor = 0
+			or = {
+			has_origin = origin_remnants
+				has_ecumen = yes
+			}
+		}
+		modifier = {
+			factor = 50
+			is_pacifist = yes
+		}
+		modifier = {
 		factor = 5
-		modifier = {
-			factor = 2
-			has_ethic = ethic_pacifist
+			num_pops > 300
 		}
-		modifier = {
-			factor = 3
-			has_ethic = ethic_fanatic_pacifist
-		}
+		#modifier = {
+		#	factor = 2
+		#	has_ethic = ethic_pacifist
+		#}
+		#modifier = {
+		#	factor = 3
+		#	has_ethic = ethic_fanatic_pacifist
+		#}
 	}
 }
 

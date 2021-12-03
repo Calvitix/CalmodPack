@@ -1,6 +1,6 @@
 # RS New Frontiers File
 #
-# Calvitix Check 3.0.3b  02/05/2021
+# Calvitix Check 3.2  02/12/2021
 #
 #
 # 
@@ -204,6 +204,8 @@ decision_protective_equipment = {
 				has_modifier = death_world
 				has_modifier = lava_world
 				has_modifier = ash_world
+				has_modifier = "harmful_mold_2"
+				has_modifier = "harmful_mold_3"
 			}
 		}
 	}
@@ -1603,7 +1605,7 @@ decision_development_of_midnight_lands = {
 	}
 	
 	effect = {
-		custom_tooltip = decision_development_of_midnight_lands_effec_desc
+		custom_tooltip = decision_development_of_midnight_lands_effect_desc
 		hidden_effect = {
 			add_modifier = {
 				modifier = "midnight_lands"
@@ -1683,7 +1685,7 @@ decision_development_of_scorched_lands = {
 	}
 	
 	effect = {
-		custom_tooltip = decision_development_of_scorched_lands_effec_desc
+		custom_tooltip = decision_development_of_scorched_lands_effect_desc
 		hidden_effect = {
 			add_modifier = {
 				modifier = "scorched_lands"
@@ -2084,5 +2086,816 @@ decision_plant_a_seed = {
 
 	ai_weight = {
 		weight = 50
+	}
+}
+
+# Mold Decision
+
+decision_megamicelium_assimilation = {
+	owned_planets_only = yes
+	sound = event_space_whale
+	icon = decision_megamicelium_assimilation
+
+	enactment_time = 180
+
+	resources = {
+		category = decisions
+		cost = {
+			food = 5000
+		}
+	}
+
+	potential = {
+		owner = { has_origin = origin_exomycosis }
+		is_wet = yes
+		NOT = { has_modifier = mycelium_world }
+	}
+
+	effect = {
+		custom_tooltip = decision_megamicelium_assimilation_effect_desc
+		hidden_effect = {
+			change_pc = pc_tropical
+			set_planet_entity = {
+				picture = pc_mycelium
+				entity = mycelium_planet_01_entity
+			}
+			add_modifier = {
+				modifier = "mycelium_world"
+				days = -1
+			}
+		}
+	}
+
+	ai_weight = {
+		weight = 100
+	}
+}
+
+decision_infestation = {
+	owned_planets_only = yes
+	sound = event_space_whale
+	icon = decision_infestation
+
+	enactment_time = 360
+
+	resources = {
+		category = decisions
+		cost = {
+			food = 2000
+		}
+	}
+
+	potential = {
+		owner = { has_origin = origin_exomycosis }
+		has_modifier = mycelium_world
+	}
+	
+	allow = {
+		custom_tooltip = {
+			fail_text = max_infestation
+			count_deposit = {
+				limit = { is_deposit_type = d_exofungus_contamination }
+				count < 6
+			}
+		}
+	}
+
+	effect = {
+		add_deposit = d_exofungus_contamination
+	}
+
+	ai_weight = {
+		weight = 50
+	}
+}
+
+# Infection Decisions
+
+decision_quarantine = {
+	owned_planets_only = yes
+	sound = event_red_alert
+	icon = decision_penal_colony
+	
+	resources = {
+		category = decisions
+		cost = {
+			trigger = {
+				owner = { is_gestalt = yes }
+			}
+			energy = 500
+		}
+		cost = {
+			trigger = {
+				owner = { is_gestalt = no }
+			}
+			influence = 50
+			energy = 250
+		}
+	}
+	
+	potential = {
+		exists = owner
+		owner = { NOT = { has_origin = origin_exomycosis } }
+		any_owned_pop = {
+			OR = {
+				pop_has_trait = trait_infected
+				pop_has_trait = trait_corrupted
+			}
+		}
+	}
+	
+	allow = {
+		is_controlled_by = owner
+		has_ground_combat = no
+		has_orbital_bombardment = no
+		if = {
+			limit = { owner = { is_gestalt = yes } }
+			NOT = { has_modifier = planetary_quarantine_gestalt }
+		}
+		else = {
+			NOT = { has_modifier = planetary_quarantine }
+		}
+		custom_tooltip = {
+			fail_text = 3_armies_needed
+			count_planet_army = {
+				count >= 3
+			}
+		}
+	}
+	
+	effect = {
+		if = {
+			limit = { owner = { is_gestalt = yes } }
+			add_modifier = { modifier = planetary_quarantine_gestalt days = -1 }
+		}
+		else = {
+			add_modifier = { modifier = planetary_quarantine days = -1 }
+		}
+	}
+	
+	ai_weight = {
+		weight = 50
+	}
+}
+
+decision_abolish_quarantine = {
+	owned_planets_only = yes
+	sound = event_administrative_work
+	icon = decision_penal_colony
+
+	resources = {
+		category = decisions
+	}
+	
+	potential = {
+		OR = {
+			has_modifier = planetary_quarantine
+			has_modifier = planetary_quarantine_gestalt
+		}
+	}
+	
+	effect = {
+		if = {
+			limit = { has_modifier = planetary_quarantine }
+			remove_modifier = planetary_quarantine
+		}
+		if = {
+			limit = { has_modifier = planetary_quarantine_gestalt }
+			remove_modifier = planetary_quarantine_gestalt
+		}
+	}
+	
+	ai_weight = {
+		weight = 100	
+		modifier = {
+			factor = 0
+			any_owned_pop = {
+				OR = {
+					pop_has_trait = trait_infected
+					pop_has_trait = trait_corrupted
+				}
+			}
+		}
+	}
+}
+
+decision_liquidation_of_infected = {
+	owned_planets_only = yes
+	sound = event_ground_battle
+	icon = decision_martial_law
+
+	enactment_time = 180
+
+	resources = {
+		category = decisions
+		cost = {
+			influence = 100
+		}
+	}
+
+	potential = {
+		exists = owner
+		owner = { 
+			NOR = { 
+				has_origin = origin_exomycosis
+				has_authority = auth_machine_intelligence
+				has_authority = auth_hive_mind
+			} 
+		}
+		any_owned_pop = {
+			OR = {
+				pop_has_trait = trait_infected
+				pop_has_trait = trait_corrupted
+			}
+		}
+	}
+
+	allow = {
+		is_controlled_by = owner
+		has_ground_combat = no
+		has_orbital_bombardment = no
+		custom_tooltip = {
+			fail_text = 8_armies_needed
+			count_planet_army = {
+				count >= 8
+			}
+		}
+	}
+
+	effect = {
+		custom_tooltip = decision_liquidation_of_infected_effect_desc
+		hidden_effect = {
+			random_list = {
+				80 = {
+					planet_event = { id = newfrontiers_decision_event.37 days = 1 }
+				}
+				20 = {
+					planet_event = { id = newfrontiers_decision_event.38 days = 1 }
+				}
+			}
+		}
+	}
+
+	ai_weight = {
+		weight = 10
+		modifier = {
+			factor = 0
+			count_owned_pop = {
+				limit = { 
+					OR = {
+						pop_has_trait = trait_infected
+						pop_has_trait = trait_corrupted
+					}
+				}
+				count < 20
+			}
+		}
+	}
+}
+
+decision_purge_of_contagion  = {
+	owned_planets_only = yes
+	sound = event_life_support_fail
+	icon = decision_expel_population
+
+	enactment_time = 180
+
+	resources = {
+		category = decisions
+		cost = {
+			energy = 500
+		}
+	}
+
+	potential = {
+		exists = owner
+		owner = { 
+			NOT = { has_origin = origin_exomycosis }
+			has_authority = auth_hive_mind
+		}
+		any_owned_pop = {
+			OR = {
+				pop_has_trait = trait_infected
+				pop_has_trait = trait_corrupted
+			}
+		}
+	}
+
+	allow = {
+		is_controlled_by = owner
+		has_ground_combat = no
+		has_orbital_bombardment = no
+	}
+
+	effect = {
+		custom_tooltip = decision_purge_of_contagion_effect_desc
+		hidden_effect = {
+			random_list = {
+				50 = {
+					planet_event = { id = newfrontiers_decision_event.39 days = 1 }
+				}
+				50 = {
+					planet_event = { id = newfrontiers_decision_event.40 days = 1 }
+				}
+			}
+		}
+	}
+
+	ai_weight = {
+		weight = 20
+		modifier = {
+			factor = 0
+			count_owned_pop = {
+				limit = { 
+					OR = {
+						pop_has_trait = trait_infected
+						pop_has_trait = trait_corrupted
+					}
+				}
+				count < 20
+			}
+		}
+	}
+}
+
+decision_rejection  = {
+	owned_planets_only = yes
+	sound = event_construction
+	icon = decision_organic_oppression
+
+	enactment_time = 180
+
+	resources = {
+		category = decisions
+		cost = {
+			energy = 500
+		}
+	}
+
+	potential = {
+		exists = owner
+		owner = { 
+			NOT = { has_origin = origin_exomycosis }
+			has_authority = auth_machine_intelligence
+		}
+		any_owned_pop = {
+			OR = {
+				pop_has_trait = trait_infected
+				pop_has_trait = trait_corrupted
+			}
+		}
+	}
+
+	allow = {
+		is_controlled_by = owner
+		has_ground_combat = no
+		has_orbital_bombardment = no
+	}
+
+	effect = {
+		custom_tooltip = decision_rejection_effect_desc
+		hidden_effect = {
+			random_list = {
+				50 = {
+					planet_event = { id = newfrontiers_decision_event.41 days = 1 }
+				}
+				50 = {
+					planet_event = { id = newfrontiers_decision_event.42 days = 1 }
+				}
+			}
+		}
+	}
+
+	ai_weight = {
+		weight = 30
+		modifier = {
+			factor = 0
+			count_owned_pop = {
+				limit = { 
+					OR = {
+						pop_has_trait = trait_infected
+						pop_has_trait = trait_corrupted
+					}
+				}
+				count < 20
+			}
+		}
+	}
+}
+
+decision_disinfection  = {
+	owned_planets_only = yes
+	sound = event_air_raid_siren
+	icon = decision_disinfection
+
+	enactment_time = 180
+
+	resources = {
+		category = decisions
+		cost = {
+			energy = 500
+			exotic_gases = 200
+		}
+	}
+
+	potential = {
+		exists = owner
+		owner = { 
+			NOT = { has_origin = origin_exomycosis }
+			has_technology = tech_megamycete
+		}
+		NOT = { has_modifier = mycelium_world  }
+		OR = {
+			has_modifier = harmful_mold_1
+			has_modifier = harmful_mold_2
+			has_modifier = harmful_mold_3
+		}
+	}
+
+	allow = {
+		is_controlled_by = owner
+		has_ground_combat = no
+		has_orbital_bombardment = no
+	}
+
+	effect = {
+		custom_tooltip = decision_disinfection_effect_desc
+		hidden_effect = {
+			if = {
+				limit = { has_modifier = harmful_mold_1 }
+				remove_modifier = harmful_mold_1
+			}
+			if = {
+				limit = { has_modifier = harmful_mold_2 }
+				remove_modifier = harmful_mold_2
+			}
+			if = {
+				limit = { has_modifier = harmful_mold_3 }
+				remove_modifier = harmful_mold_3
+			}
+			
+			every_deposit = { 
+				limit = { is_deposit_type = d_exofungus_contamination }
+				remove_deposit = yes
+			}
+		}
+	}
+
+	ai_weight = {
+		weight = 100
+	}
+}
+
+decision_vaccination  = {
+	owned_planets_only = yes
+	sound = event_airlock
+	icon = decision_vaccination
+
+	enactment_time = 60
+
+	resources = {
+		category = decisions
+		cost = {
+			trigger = {
+				num_pops < 10
+			}
+			energy = 300
+		}
+		cost = {
+			trigger = {
+				num_pops >= 10
+				num_pops < 20
+			}
+			energy = 600
+		}
+		cost = {
+			trigger = {
+				num_pops >= 20
+				num_pops < 30
+			}
+			energy = 900
+		}
+		cost = {
+			trigger = {
+				num_pops >= 30
+				num_pops < 40
+			}
+			energy = 1200
+		}	
+		cost = {
+			trigger = {
+				num_pops >= 40
+				num_pops < 50
+			}
+			energy = 1500
+		}	
+		cost = {
+			trigger = {
+				num_pops >= 50
+				num_pops < 60
+			}
+			energy = 1800
+		}
+		cost = {
+			trigger = {
+				num_pops >= 60
+				num_pops < 70
+			}
+			energy = 2100
+		}
+		cost = {
+			trigger = {
+				num_pops >= 70
+				num_pops < 85
+			}
+			energy = 2400
+		}
+		cost = {
+			trigger = {
+				num_pops >= 85
+				num_pops < 100
+			}
+			energy = 2700
+		}	
+		cost = {
+			trigger = {
+				num_pops >= 100
+			}
+			energy = 3000
+		}
+	}
+
+	potential = {
+		exists = owner
+		owner = { 
+			has_technology = tech_invasive_necrotoxication
+		}
+		any_owned_pop = {
+			OR = {
+				pop_has_trait = trait_infected
+				pop_has_trait = trait_corrupted
+			}
+		}
+	}
+
+	allow = {
+		is_controlled_by = owner
+		has_ground_combat = no
+		has_orbital_bombardment = no
+	}
+
+	effect = {
+		custom_tooltip = decision_vaccination_effect_desc
+		hidden_effect = {
+			
+			every_owned_pop = { 
+				limit = { pop_has_trait = trait_infected }
+				modify_species = {
+					species = this
+					remove_trait = trait_infected
+				}
+			}
+			
+			every_owned_pop = { 
+				limit = { pop_has_trait = trait_corrupted }
+				modify_species = {
+					species = this
+					remove_trait = trait_corrupted
+				}
+			}
+		}
+	}
+
+	ai_weight = {
+		weight = 100
+	}
+}
+
+decision_sterilization_process  = {
+	owned_planets_only = yes
+	sound = event_airlock
+	icon = decision_cybernetics
+
+	enactment_time = 60
+
+	resources = {
+		category = decisions
+		cost = {
+			trigger = {
+				num_pops < 10
+			}
+			energy = 300
+		}
+		cost = {
+			trigger = {
+				num_pops >= 10
+				num_pops < 20
+			}
+			energy = 600
+		}
+		cost = {
+			trigger = {
+				num_pops >= 20
+				num_pops < 30
+			}
+			energy = 900
+		}
+		cost = {
+			trigger = {
+				num_pops >= 30
+				num_pops < 40
+			}
+			energy = 1200
+		}	
+		cost = {
+			trigger = {
+				num_pops >= 40
+				num_pops < 50
+			}
+			energy = 1500
+		}	
+		cost = {
+			trigger = {
+				num_pops >= 50
+				num_pops < 60
+			}
+			energy = 1800
+		}
+		cost = {
+			trigger = {
+				num_pops >= 60
+				num_pops < 70
+			}
+			energy = 2100
+		}
+		cost = {
+			trigger = {
+				num_pops >= 70
+				num_pops < 85
+			}
+			energy = 2400
+		}
+		cost = {
+			trigger = {
+				num_pops >= 85
+				num_pops < 100
+			}
+			energy = 2700
+		}	
+		cost = {
+			trigger = {
+				num_pops >= 100
+			}
+			energy = 3000
+		}
+	}
+
+	potential = {
+		exists = owner
+		owner = { 
+			has_technology = tech_structural_calcification
+		}
+		any_owned_pop = {
+			OR = {
+				pop_has_trait = trait_infected
+				pop_has_trait = trait_corrupted
+			}
+		}
+	}
+
+	allow = {
+		is_controlled_by = owner
+		has_ground_combat = no
+		has_orbital_bombardment = no
+	}
+
+	effect = {
+		custom_tooltip = decision_disinfection_effect_desc
+		hidden_effect = {
+		
+			every_owned_pop = { 
+				limit = { pop_has_trait = trait_infected }
+				modify_species = {
+					species = this
+					remove_trait = trait_infected
+				}
+			}
+			
+			every_owned_pop = { 
+				limit = { pop_has_trait = trait_corrupted }
+				modify_species = {
+					species = this
+					remove_trait = trait_corrupted
+				}
+			}
+		}
+	}
+
+	ai_weight = {
+		weight = 100
+	}
+}
+
+# Noxious World Decision
+
+decision_build_cloud_platform = {
+	owned_planets_only = yes
+	sound = event_construction
+	icon = decision_build_cloud_platform
+
+	enactment_time = 360
+
+	resources = {
+		category = decisions
+		cost = {
+			energy = 500
+			alloys = 500
+		}
+	}
+
+	potential = {
+		has_modifier = noxious_world
+		exists = owner
+		owner = { 
+			has_technology = tech_cloud_platform
+		}
+	}
+
+	allow = {
+		custom_tooltip = {
+			fail_text = cloud_platform_max
+			if = {
+				limit = { planet_size <= 12 }
+				count_deposits = { type = d_cloud_platform count < 1 }
+			}
+			if = {
+				limit = { 
+					planet_size > 12
+					planet_size <= 15
+				}
+				count_deposits = { type = d_cloud_platform count < 2 }
+			}
+			if = {
+				limit = { 
+					planet_size > 16
+					planet_size <= 19
+				}
+				count_deposits = { type = d_cloud_platform count < 3 }
+			}
+			if = {
+				limit = { 
+					planet_size > 19
+					planet_size <= 22
+				}
+				count_deposits = { type = d_cloud_platform count < 4 }
+			}
+			if = {
+				limit = { planet_size > 22 }
+				count_deposits = { type = d_cloud_platform count < 5 }
+			}
+		}
+	}
+
+	effect = {
+		add_deposit = d_cloud_platform
+	}
+
+	ai_weight = {
+		weight = 50
+	}
+}
+
+decision_demolish_cloud_platform = {
+	owned_planets_only = yes
+	sound = event_construction
+	icon = decision_demolish_cloud_platform
+
+	enactment_time = 360
+
+	resources = {
+		category = decisions
+		cost = {
+			energy = 250
+			alloys = 500
+		}
+	}
+
+	potential = {
+		has_modifier = noxious_world
+		exists = owner
+		has_deposit = d_cloud_platform
+	}
+
+	effect = {
+		owner = {
+			add_resource = {
+				alloys = 500
+			}
+		}
+		remove_deposit = d_cloud_platform
+	}
+
+	ai_weight = {
+		weight = 0
 	}
 }

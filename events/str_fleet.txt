@@ -1,6 +1,6 @@
 # Starnet AI File
 #
-# Calvitix Check 3.1.1  16/09/2021
+# Calvitix Check 3.2
 #
 # Last uptade Starnet AI 16/09/2021
 #
@@ -56,11 +56,15 @@ country_event = {
 
     random_owned_fleet = {
         limit = {
-            fleet_power > 100 # 500 #Calvitix Fleet Power Rebase, due to Defines to avoid 1 FP
+		            fleet_power > 50 # 500 #Calvitix Fleet Power Rebase, due to Defines to avoid 1 FP
             is_ship_class = shipclass_military
         }
         weights = {
             base = 1
+		            modifier = {
+		                add = 10
+		                fleet_power > 100 # 2000
+		            }
             modifier = {
                 add = 10
                 fleet_power > 500 # 2000
@@ -78,8 +82,8 @@ country_event = {
                 has_fleet_order = follow_order
             }
 			if = { limit = { has_global_flag = edai_logging	} log = "FIX_Fleet: Cancel Fleet follow Orders on fleet   [This.GetName] for [Owner.GetName]" }			
-        clear_orders = yes
-        clear_fleet_actions = this
+			clear_orders = yes
+			clear_fleet_actions = this
         }
         set_timed_fleet_flag = {
             flag = rallypoint_f
@@ -127,7 +131,7 @@ country_event = {
             limit = {
                 has_fleet_order = follow_order
             }
-        clear_orders = yes
+			clear_orders = yes
 			clear_fleet_actions = this			
 			if = { limit = { has_global_flag = edai_logging	} log = "FIX_Fleet: Cancel Fleet follow Orders FP >1000 on fleet   [This.GetName] for [Owner.GetName]" }			
         }
@@ -245,12 +249,10 @@ country_event = {
                 }
                 found_system = { 
                     move_to = this
-					if = { limit = { has_global_flag = edai_logging	} log = "FIX_Fleet: System to rally [This.GetName] for [Owner.GetName]" }
                 }
             }
-			if = { limit = { has_global_flag = edai_logging	} log = "FIX_Fleet: Setting Rally point Order on fleet   [This.GetName] for [Owner.GetName]" }
-			
         }
+		if = { limit = { has_global_flag = edai_logging	} log = "FIX_Fleet: Setting Rally point Order on fleet   [This.GetName] for [Owner.GetName]" }
 	}
     }
     else_if ={
@@ -263,11 +265,15 @@ country_event = {
 
         random_owned_fleet = {
             limit = {
-                fleet_power > 200 #1000
+	                fleet_power > 50 #1000
                 is_ship_class = shipclass_military
             }
             weights = {
                 base = 1
+                modifier = {
+                    add = 10
+                    fleet_power > 200 #2000
+                }
                 modifier = {
                     add = 10
                     fleet_power > 400 #2000
@@ -306,15 +312,16 @@ country_event = {
                         fleet_power > 700
                         is_fleet_idle = yes
                     }
-                auto_follow_fleet = {
+					auto_follow_fleet = {
                     target = prevprev
                     attack_fleet = no
-					if = { limit = { has_global_flag = edai_logging	} log = "FIX_Fleet: Setting follow Order on fleet   [This.GetName] for [Owner.GetName]" 	}				
-                }
+					}
+					if = { limit = { has_global_flag = edai_logging	} log = "FIX_Fleet: Setting follow Order on fleet   [This.GetName] for [Owner.GetName]" }
+				}
             }
         }
     }
-		}
+
 
         if = {
             limit = {
@@ -329,7 +336,7 @@ country_event = {
 			country_event = { id = str_doomstack.2 days = 5  }
 			country_event = { id = str_doomstack.2 days = 8  }
 			country_event = { id = str_doomstack.2 days = 11  }
-    }
+		}
     }
 }
 
@@ -439,14 +446,14 @@ country_event = { #Calvitix, Reset all Fleet instructions
 	is_triggered_only = yes
 	immediate = {
 
-	every_owned_fleet = {
-        limit = {
-            fleet_power > 10 # 500 #Calvitix Fleet Power Rebase, due to Defines to avoid 1 FP
-            is_ship_class = shipclass_military
-        }
-        clear_orders = yes
-        clear_fleet_actions = this
-		if = { limit = { has_global_flag = edai_logging	} log = "FIX_Fleet: Doomstack.9 : Reset Order on fleet   [This.GetName] for [Owner.GetName]" }
-    }
+		every_owned_fleet = {
+			limit = {
+				fleet_power > 10 # 500 #Calvitix Fleet Power Rebase, due to Defines to avoid 1 FP
+				is_ship_class = shipclass_military
+			}
+			clear_orders = yes
+			clear_fleet_actions = this
+			if = { limit = { has_global_flag = edai_logging	} log = "FIX_Fleet: Doomstack.9 : Reset Order on fleet   [This.GetName] for [Owner.GetName]" }
+		}
 	}
 }

@@ -9,91 +9,7 @@
 
 namespace = newfrontiers_action
 
-# Sets <planet_class>_surveyed country flag
-ship_event = {
-	id = newfrontiers_action.100
-	hide_window = yes
-
-	is_triggered_only = yes
-	
-	trigger = {
-		from = {
-			OR = {
-				has_modifier = scorched_world
-				has_modifier = frozen_ocean
-				has_modifier = ammonia_world
-			}
-		}
-	}
-
-	immediate = {
-		if = {
-			limit = {
-				from = { has_modifier = scorched_world }
-			}
-			random_list = {
-				4 = {
-					from = {
-						change_pc = { class = pc_desert }
-						set_planet_entity = { 
-							picture = pc_underground 
-							entity = scorched_planet_01_entity
-						}
-						
-						remove_subclass_modifiers = yes
-						add_modifier = {
-							modifier = underground_world
-							days = -1
-						}
-						reroll_deposits = yes	
-					}
-					ship_event = { id = newfrontiers_action.1 }
-				}
-				96 = {
-					#Null
-				}
-			}
-			break = yes
-		}
-		if = {
-			limit = {
-				from = { has_modifier = frozen_ocean }
-			}
-			random_list = {
-				3 = {
-					from = {
-						change_pc = { class = pc_arctic }
-						set_planet_entity = { 
-							picture = pc_cryokarst 
-							entity = frozen_ocean_planet_01_entity
-						}
-						
-						remove_subclass_modifiers = yes
-						add_modifier = {
-							modifier = cryokarst_world
-							days = -1
-						}
-						reroll_deposits = yes	
-					}
-					ship_event = { id = newfrontiers_action.3 }
-				}
-				97 = {
-					#Null
-				}
-			}
-			break = yes
-		}
-		if = {
-			limit = {
-				from = { has_modifier = ammonia_world }
-			}
-			ship_event = { id = newfrontiers_action.4 }
-			break = yes
-		}
-	}
-}
-
-### Underground World found!
+### Infernal World found!
 ship_event = {
 	id = newfrontiers_action.1
 	title = "newfrontiers_action.1.name"
@@ -585,26 +501,23 @@ country_event = {
 	}
 }
 
-### Capital check (Spoof Subclasses)
-event = {
+### Checks subclass match
+planet_event = {
 	id = newfrontiers_action.13
 	hide_window = yes
 
 	is_triggered_only = yes
 	
-	immediate = {
-		every_galaxy_planet = {
-			limit = {
-		is_capital = yes
+	trigger = {
 		is_planet_subclass = yes
-		NOT = { is_spoof_subclasses = yes }
 	}
-		set_spoof_subclass = yes
-	}
+	
+	immediate = {
+		remove_incorrect_subclass = yes
 	}
 }
 
-### First Colonization modifiers
+### Set spoof subclass
 planet_event = {
 	id = newfrontiers_action.14
 	hide_window = yes
@@ -612,95 +525,16 @@ planet_event = {
 	is_triggered_only = yes
 	
 	trigger = {
-		NOT = { has_global_flag = no_first_colonization_modifiers }
-		NOT = { has_planet_flag = explored_world }
-		NOR = {
-			is_planet_class = pc_habitat
-			is_ringworld = yes
-		}
+		is_planet_subclass = yes
 	}
 	
 	immediate = {
-		set_planet_flag = explored_world
-		
-		random_list = {
-			55 = {
-				if = { 
-					limit = { owner = { is_hive_empire = yes } }
-					add_modifier = {
-						modifier = adaptation_period_1
-						days = 3600
-					}
-				}
-				else_if = {
-					limit = { owner = { is_machine_empire = yes } }
-					add_modifier = {
-						modifier = data_collection_1
-						days = 9000
-					}
-				}
-				else = {
-					add_modifier = {
-						modifier = new_frontier_1
-						days = 18000
-					}
-				}
-			}
-			30 = {
-				modifier = {
-					factor = 2
-					planet_size > 17
-				}
-				if = { 
-					limit = { owner = { is_hive_empire = yes } }
-					add_modifier = {
-						modifier = adaptation_period_2
-						days = 3600
-					}
-				}
-				else_if = {
-					limit = { owner = { is_machine_empire = yes } }
-					add_modifier = {
-						modifier = data_collection_2
-						days = 9000
-					}
-				}
-				else = {
-					add_modifier = {
-						modifier = new_frontier_2
-						days = 18000
-					}
-				}
-				
-			}
-			15 = {
-				modifier = {
-					factor = 3
-					planet_size > 22
-				}
-				if = { 
-					limit = { owner = { is_hive_empire = yes } }
-					add_modifier = {
-						modifier = adaptation_period_3
-						days = 3600
-					}
-				}
-				else_if = {
-					limit = { owner = { is_machine_empire = yes } }
-					add_modifier = {
-						modifier = data_collection_3
-						days = 9000
-					}
-				}
-				else = {
-					add_modifier = {
-						modifier = new_frontier_3
-						days = 18000
-					}
-				}
-			}
-		}
-		
+		set_spoof_subclass = yes
 	}
 }
+
+
+	
+	
+		
 

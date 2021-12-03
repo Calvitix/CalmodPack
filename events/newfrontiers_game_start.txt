@@ -1,6 +1,6 @@
 # RS New Frontiers File
 #
-# Calvitix Check 3.0.3b  02/05/2021
+# Calvitix Check 3.2  02/12/2021
 #
 # newfrontiers.4 merged in !!_z_newfrontiers_game_start_overwrite.txt 23/05/2021
 # 
@@ -302,6 +302,21 @@ event = {
 									}
 								}
 								25 = {
+									modifier = {
+										factor = 0
+										owner = { species = { NOT = { is_species_class = FUN } } }
+									}
+									modifier = {
+										factor = 2
+										owner = { species = { is_species_class = FUN } }
+									}
+									change_pc = pc_mushroom
+									add_modifier = {
+										modifier = "mushroom_world"
+										days = -1
+									}
+								}
+								25 = {
 									change_pc = pc_awakened
 									add_modifier = {
 										modifier = "awakened_world"
@@ -409,17 +424,24 @@ event = {
 						else_if = {
 							limit = { is_planet_class = pc_sterile }
 							random_list = {
-								50 = {
+								40 = {
 									change_pc = pc_lava
 									add_modifier = {
 										modifier = "lava_world"
 										days = -1
 									}
 								}
-								50 = {
+								40 = {
 									change_pc = pc_ash
 									add_modifier = {
 										modifier = "ash_world"
+										days = -1
+									}
+								}
+								20 = {
+									change_pc = pc_archean
+									add_modifier = {
+										modifier = "archean_world"
 										days = -1
 									}
 								}
@@ -448,11 +470,20 @@ event = {
 						}
 					}
 				}
-				20 = {
+				20 = { #70
 					#Null
 				}
 			}
 		}	
+		
+		#Living Sea
+		random_galaxy_planet = {
+			limit = { has_modifier = "living_sea" }
+			set_planet_entity = {
+				picture = pc_living_sea
+				entity = ocean_planet_sea_of_conciousness_entity
+			}
+		}
 	}
 }
 
@@ -465,44 +496,52 @@ event = {
 	immediate = {
 		random_galaxy_planet = {
 			limit = { has_planet_flag = test_1 }
-			change_pc = pc_tidallylocked
+			change_pc = pc_tundra
+			set_planet_entity = {
+				picture = pc_mushroom
+				entity = mushroom_planet_01_entity
+			}
+			add_modifier = {
+				modifier = "mushroom_world"
+				days = -1
+			}
 			reroll_deposits = yes
 		}
 		random_galaxy_planet = {
 			limit = { has_planet_flag = test_2 }
-			change_pc = pc_tidallylocked
+			change_pc = pc_tropical
 			set_planet_entity = {
-				picture = pc_flaming
-				entity = flaming_planet_01_entity
+				picture = pc_megaflora
+				entity = megaflora_planet_01_entity
 			}
 			add_modifier = {
-				modifier = "flaming_world"
+				modifier = "megaflora_world"
 				days = -1
 			}
 			reroll_deposits = yes
 		}
 		random_galaxy_planet = {
 			limit = { has_planet_flag = test_3 }
-			change_pc = pc_tidallylocked
+			change_pc = pc_sterile
 			set_planet_entity = {
-				picture = pc_eyeball
-				entity = eyeball_planet_01_entity
+				picture = pc_archean
+				entity = archean_planet_01_entity
 			}
 			add_modifier = {
-				modifier = "eyeball_world"
+				modifier = "archean_world"
 				days = -1
 			}
 			reroll_deposits = yes
 		}
 		random_galaxy_planet = {
 			limit = { has_planet_flag = test_4 }
-			change_pc = pc_tidallylocked
+			change_pc = pc_tropical
 			set_planet_entity = {
-				picture = pc_meridiem
-				entity = meridiem_planet_01_entity
+				picture = pc_noxious
+				entity = noxious_planet_01_entity
 			}
 			add_modifier = {
-				modifier = "meridiem_world"
+				modifier = "noxious_world"
 				days = -1
 			}
 			reroll_deposits = yes
@@ -1760,7 +1799,7 @@ country_event = {
 		}
 	}
 	option = {
-		name = "newfrontiers.8.jungle"
+		name = "newfrontiers.8.megaflora"
 		trigger = {
 			capital_scope = { is_planet_class = pc_tropical }
 		}
@@ -1883,7 +1922,7 @@ country_event = {
 		}
 	}
 	option = {
-		name = "newfrontiers.8.awakened"
+		name = "newfrontiers.8.mushroom"
 		trigger = {
 			capital_scope = { is_planet_class = pc_tundra }
 		}
@@ -2024,6 +2063,16 @@ country_event = {
 		custom_tooltip = newfrontiers.8.more_details.tooltip
 		hidden_effect = {
 			country_event = { id = newfrontiers.58 }
+		}
+	}
+	option = {
+		name = "newfrontiers.8.archean"
+		trigger = {
+			capital_scope = { is_planet_class = pc_sterile }
+		}
+		custom_tooltip = newfrontiers.8.more_details.tooltip
+		hidden_effect = {
+			country_event = { id = newfrontiers.63 }
 		}
 	}
 	#Hollow
@@ -2241,6 +2290,53 @@ event = {
 	}
 }
 
+#Removal Exotic and Legendary Worlds
+event = {
+	id = newfrontiers.13
+	hide_window = yes
+	is_triggered_only = yes
+	
+	trigger = {
+		OR = {
+			has_global_flag = no_exotic_subclasses
+			has_global_flag = no_legendary_subclasses
+		}
+	}
+
+
+	immediate = {
+		if = {
+			limit = { has_global_flag = no_exotic_subclasses }
+			every_country = {
+				limit = { has_origin = origin_exomycosis }
+				set_origin = origin_default
+				every_owned_pop = {
+					modify_species = {
+						species = this
+						remove_trait = trait_molded
+					}
+				}
+				capital_scope = {
+					change_pc = pc_tropical
+					remove_subclass_modifiers = yes
+					generate_start_deposits_and_blockers = yes
+					remove_all_districts = yes
+					remove_all_buildings = yes
+					generate_start_buildings_and_districts = yes
+				}
+			}
+		}
+		if = {
+			limit = { has_global_flag = no_legendary_subclasses }
+			every_galaxy_planet = {
+				limit = { has_planet_flag = legendary_world }
+				remove_subclass_modifiers = yes
+				change_pc = pc_shattered
+				clear_deposits = yes
+			}
+		}
+	}
+}
 
 #Add Origin deposites and blockers
 # this: capital planet
@@ -2262,6 +2358,7 @@ planet_event = {
 						has_origin = origin_forsaken
 						has_origin = origin_derelict_evolution
 						has_origin = origin_sentient_planet
+						has_origin = origin_exomycosis
 			}
 			}
 		}
@@ -2394,7 +2491,7 @@ event = {
 
 
 	immediate = {
-		every_country = {
+		random_country = {
 			limit = { has_origin = origin_awakened }
 			capital_scope = {
 				while = {
@@ -2402,45 +2499,14 @@ event = {
 					random_owned_pop = { kill_pop = yes }
 				}
 			}
-			while = {
-				count = 2
-				random_galaxy_planet = {
+			
+			
+			every_galaxy_planet = {
 					limit = {
-						is_colonizable = yes
-						has_owner = no
-						solar_system = {
 							OR = {
-								has_star_flag = misc_system
-								has_star_flag = sol_sector
+						has_planet_flag = awakened_second_planet
+						has_planet_flag = awakened_third_planet
 							}
-							NOR = {
-								exists = space_owner
-								has_star_flag = hostile_system
-								any_ship_in_system = { always = yes }
-							}
-						}
-						NOR = {
-							is_ringworld = yes
-							is_planet_class = pc_habitat
-							is_planet_class = pc_relic
-							has_planet_flag = unique_planet #Use this flag for planets that should not be removed.
-							has_planet_flag = colony_event
-							has_planet_flag = ratling_planet
-							has_modifier = "living_sea"
-						}
-					}
-					if = { 
-						limit = { NOT = { has_modifier = ancient_world } }
-						set_planet_size = 16
-						change_pc = pc_gaia
-						set_planet_entity = {
-							picture = pc_ancient
-							entity = ancient_planet_01_entity
-						}
-						add_modifier = {
-							modifier = "ancient_world"
-							days = -1
-						}
 					}
 					set_owner = prev
 					
@@ -2464,7 +2530,6 @@ event = {
 						}
 					}
 				}
-			}
 			
 			while = {
 				count = 10
@@ -3126,12 +3191,12 @@ country_event = {
 	}
 }
 
-#Start on Jungle World 
+#Start on Megaflora World 
 country_event = {
 	id = newfrontiers.33
 	title = "newfrontiers.33.name"
 	desc = "newfrontiers.33.desc"
-	picture = GFX_evt_jungle_world
+	picture = GFX_evt_megaflora_world
 	show_sound = event_radio_chatter
 	location = ROOT
 	
@@ -3142,10 +3207,10 @@ country_event = {
 		custom_tooltip = newfrontiers.choose.tooltip
 		hidden_effect = {
 			capital_scope = {
-				change_pc = pc_jungle
+				change_pc = pc_megaflora
 				
 				add_modifier = {
-					modifier = "jungle_world"
+					modifier = "megaflora_world"
 					days = -1
 				}
 				
@@ -3623,12 +3688,12 @@ country_event = {
 	}
 }
 
-#Start on Awakened World 
+#Start on Mushroom World 
 country_event = {
 	id = newfrontiers.45
 	title = "newfrontiers.45.name"
 	desc = "newfrontiers.45.desc"
-	picture = GFX_evt_awakened_world
+	picture = GFX_evt_mushroom_world
 	show_sound = event_radio_chatter
 	location = ROOT
 	
@@ -3639,10 +3704,10 @@ country_event = {
 		custom_tooltip = newfrontiers.choose.tooltip
 		hidden_effect = {
 			capital_scope = {
-				change_pc = pc_awakened
+				change_pc = pc_mushroom
 				
 				add_modifier = {
-					modifier = "awakened_world"
+					modifier = "mushroom_world"
 					days = -1
 				}
 				
@@ -4293,5 +4358,45 @@ country_event = {
 	
 	option = {
 		name = OK
+	}
+}
+
+#Start on Archean World 
+country_event = {
+	id = newfrontiers.63
+	title = "newfrontiers.63.name"
+	desc = "newfrontiers.63.desc"
+	picture = GFX_evt_archean_world
+	show_sound = event_radio_chatter
+	location = ROOT
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = "newfrontiers.choose"
+		custom_tooltip = newfrontiers.choose.tooltip
+		hidden_effect = {
+			capital_scope = {
+				change_pc = pc_archean
+				
+				add_modifier = {
+					modifier = "archean_world"
+					days = -1
+				}
+				
+				add_newfrontiers_starting_deposits = yes
+			}
+		}
+	}
+	
+	option = {
+		name = "newfrontiers.back"
+		hidden_effect = {
+			country_event = { id = newfrontiers.8 }
+		}
+	}
+	
+	option = {
+		name = "newfrontiers.close"
 	}
 }

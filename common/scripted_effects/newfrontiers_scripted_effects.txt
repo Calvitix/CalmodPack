@@ -1,6 +1,6 @@
 # RS New Frontiers File
 #
-# Calvitix Check 3.0.3b  02/05/2021
+# Calvitix Check 3.2  02/12/2021
 #
 #
 # 
@@ -559,7 +559,7 @@ planet_heating_effect = {
 						change_pc = pc_tropical
 						remove_subclass_modifiers = yes
 						set_planet_entity = {
-							picture = pc_forest_world
+						picture = pc_forest
 							entity = forest_planet_01_entity
 						}
 						add_modifier = {
@@ -572,11 +572,11 @@ planet_heating_effect = {
 						change_pc = pc_tropical
 						remove_subclass_modifiers = yes
 						set_planet_entity = {
-							picture = pc_jungle_world
-							entity = jungle_planet_01_entity
+						picture = pc_megaflora
+						entity = megaflora_planet_01_entity
 						}
 						add_modifier = {
-							modifier = "jungle_world"
+						modifier = "megaflora_world"
 							days = -1
 						}
 						reroll_deposits = yes
@@ -1284,11 +1284,11 @@ planet_cooling_effect = {
 						change_pc = pc_tundra
 						remove_subclass_modifiers = yes
 						set_planet_entity = {
-							picture = pc_awakened
+							picture = pc_mushroom
 							entity = awakened_planet_01_entity
 						}
 						add_modifier = {
-							modifier = "awakened_world"
+							modifier = "mushroom_world"
 							days = -1
 						}
 						reroll_deposits = yes
@@ -1391,6 +1391,28 @@ planet_cooling_effect = {
 						}
 						add_modifier = {
 							modifier = "plateau_world"
+							days = -1
+						}
+						reroll_deposits = yes
+					}
+				}
+			}
+			else_if = {
+				limit = { has_modifier = "megaflora_world" }
+				random_list = {
+					50 = { 
+						change_pc = pc_continental
+						reset_planet = yes
+					}
+					50 = { 
+						change_pc = pc_tundra
+						remove_subclass_modifiers = yes
+						set_planet_entity = {
+							picture = pc_bog
+							entity = bog_planet_01_entity
+						}
+						add_modifier = {
+							modifier = "bog_world"
 							days = -1
 						}
 						reroll_deposits = yes
@@ -2927,6 +2949,64 @@ add_strong_volcanism = {
 	planet_event = { id = newfrontiers_periodic_event.1 days = 1 }
 }
 
+add_aggressive_flora = {
+	random_list = {
+		25 = {
+			add_modifier = {
+				modifier = "aggressive_flora"
+				days = 30
+			}
+			if = {
+				limit = { has_owner = yes }
+				add_deposit = d_dense_jungle
+			}
+		}
+		25 = {
+			add_modifier = {
+				modifier = "aggressive_flora"
+				days = 90
+			}
+			if = {
+				limit = { has_owner = yes }
+				add_deposit = d_dense_jungle
+				add_deposit = d_dense_jungle
+			}
+		}
+		25 = {
+			modifier = {
+				factor = 2
+				is_extreme_subclass = yes
+			}
+			add_modifier = {
+				modifier = "aggressive_flora"
+				days = 360
+			}
+			if = {
+				limit = { has_owner = yes }
+				add_deposit = d_dense_jungle
+				add_deposit = d_dense_jungle
+			}
+		}
+		25 = {
+			modifier = {
+				factor = 2
+				has_modifier = "death_world"
+			}
+			add_modifier = {
+				modifier = "aggressive_flora"
+				days = 720
+			}
+			if = {
+				limit = { has_owner = yes }
+				add_deposit = d_dense_jungle
+				add_deposit = d_dense_jungle
+				add_deposit = d_dense_jungle
+			}
+		}
+	}
+	planet_event = { id = newfrontiers_periodic_event.1 days = 1 }
+}
+
 give_random_eng_technology = {
 	random_list = {
 		4 = {
@@ -3845,6 +3925,68 @@ climatic_effects = {
 		}
 		60 = {
 			#Null
+		}
+	}
+}
+
+mold_assimilation = {
+	if = {
+		limit = {
+			NOT = {
+				any_country = {
+					has_origin = origin_exomycosis
+				}
+			}
+		}
+		create_species = {
+			name = "NAME_Molded"
+			class = FUN
+			portrait = fun09
+			traits = {
+				trait = trait_molded
+				trait = random_traits
+			}
+			homeworld = root
+		}
+		create_country = {
+			name = "NAME_Immersion"
+			species = last_created_species
+			type = default
+			ethos = { ethic = ethic_gestalt_consciousness }
+			authority = auth_hive_mind
+			origin = origin_exomycosis
+			civics = {
+				civic = civic_hive_devouring_swarm
+				civic = random
+			}
+			flag = {
+				icon = {
+					category = "spherical"
+					file = "flag_spherical_4.dds"
+				}
+				background= {
+					category = "backgrounds"
+					file = "00_solid.dds"
+				}
+				colors={
+					"black"
+					"null"
+					"null"
+					"null"
+				}
+			}
+			effect = {
+				set_country_flag = mold_country
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			NOT = { exists = event_target:mold_country }
+		}
+		random_country = {
+			limit = { has_origin = origin_exomycosis }
+			save_event_target_as = mold_country
 		}
 	}
 }

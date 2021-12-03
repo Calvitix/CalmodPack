@@ -406,8 +406,16 @@ def FrenchTranslate (mySearchString):
                 with Popen('deepl english french -t "' + mySearchString + '"',
                            stdout=PIPE, stderr=PIPE) as p:
                     output, errors = p.communicate()
-                myfound = output.decode('utf-8')#.splitlines()                
-                myerrors = errors.decode('utf-8')
+                try :
+                    myfound = output.decode('latin-1')#.splitlines()
+                    myerrors = errors.decode('latin-1')  #utf-8
+                except Exception as e:
+                    myfound = output.decode('utf-8')#.splitlines()
+                    myerrors = errors.decode('utf-8')  #utf-8
+
+                    
+                #myfound = str(output)
+                #myerrors = str(errors)
                 if myerrors :
                     raise Exception(myerrors) 
                 
@@ -1434,7 +1442,7 @@ def BtnTBD(StringToSearch='',StringReplace=''):
     while findyml > -1:
         new_filename = filename[:findyml]+'_new.'+ filename[findyml+1:]
         findyml = filename.find('.',findyml+1)
-
+    new_filename = new_filename.replace('.log','.xls')
 
 
     with open(filename, encoding='utf8') as f:
@@ -1446,17 +1454,40 @@ def BtnTBD(StringToSearch='',StringReplace=''):
     already_labeled = list()
     nberror = 0
     nbaddedlines = 0
+    my_dest_list.append('Texte' + '\t'+ 'Category' + '\t' + 'Game Date' + '\t' + 'Target' + '\t' + 'Planete' + '\n')
     try:    
         for line in content :
             print (line)
-
-
+            line = line.strip('\n')
+            idx = line.find('\x11')
+            while idx > -1 :
+                line= line.replace('\x11','§')
+                idx = line.find('\x11')
 
             #enlever l'heure
+            mygamedate =''
+            mytarget = ''
+            myplanet =''
             mydatecount = line.find(u']')
             if mydatecount > -1:
-                line = line[mydatecount+1:]
+                mydatecount2 = line.find(u']',mydatecount+1)
+                if mydatecount2 > -1:                               
+                    line = line[mydatecount2+2:]
+                else:
+                    line = line[mydatecount+2:]
 
+            mydatebegin = line.find(u'[')
+            mydateend = line.find(u']')
+            if mydatebegin > -1 and mydateend > -1:
+                mygamedate = line[mydatebegin+1:mydateend]
+                if len(mygamedate) == 8:
+                    mygamedate = mygamedate[:5]+ '0' + mygamedate[5:7] + '0' + mygamedate[7:]
+                elif len(mygamedate) == 9:
+                    if mygamedate[6] == '.':
+                        mygamedate = mygamedate[:5]+ '0' + mygamedate[5:]
+                    else :
+                        mygamedate = mygamedate[:8]+ '0' + mygamedate[8:]
+                        
 
             myindex = line.find(u'Log command triggered from effect in file:')
             if myindex > -1:
@@ -1465,470 +1496,100 @@ def BtnTBD(StringToSearch='',StringReplace=''):
             myindex = line.find(u'line:')
             if myindex > -1:
                 line = line[myindex+5:]
+            myindex = line.find(u'. ')
+            if myindex > -1:
+                line = line[myindex+2:]
+
+            myplanetIndex = line.find(u'on planet ')
+            if myplanetIndex == -1:
+                myplanetIndex = line.find(u'on fleet ')
+            mytargetIndex = line.find(u'for ')
+            if mytargetIndex > -1:
+                mytarget = line[mytargetIndex+4:]
+                mytarget = mytarget.strip('\n')
+                mytarget = mytarget.strip(' ')
+                line = line[:mytargetIndex]
+                if myplanetIndex > -1:
+                    myplanet = line[myplanetIndex+10:mytargetIndex] 
+                    myplanet = myplanet.strip(' ')
+                   
 
 
-            myCountFindMod = line.find(u'Could not find files for mod')
-
-            myCountSoundEffect = line.find(u'Sound effect with name')  
-            myCountSoundEffect2 = line.find(u'Unable to find sound effect')
-            myCountSoundEffect3 = line.find(u'Missing sound effect')
-            myCountSoundEffect4 = line.find(u'old category will be overwritten')
-            myCountSoundEffect5 = line.find(u'does not have a category assigned')
-            myCountSoundEffect6 = line.find(u'For best performance and quality')
-            myCountSoundEffect7 = line.find(u'is missing a sound')
+            myCountExploit = line.find(u'Exploit : Min')
+            myCountExploit2 = line.find(u'Sp.Exploit :')
+            myCountStarfix = line.find(u'STR: Starfix')
+            myCountEDAI = line.find(u'EDAI :')
+            myCountEDAIRessources = line.find(u'EDAI Ressources Trade')
+            myCountHemo = line.find(u'Hemo:')
+            myCountGPM = line.find(u'gpm_')
+            myCountGPM2 = line.find(u'Planet given')
+            myCountPirates = line.find(u'Pirate Waves :')
+            myCountGiga = line.find(u'Giga event :')
+            myCountEHOF = line.find(u'EHOF event :')
             
-
-            myCountTexture = line.find(u'Couldn\'t find texture file')
-            myCountTexture2 = line.find(u'Texture Handler encountered missing texture file')
-            myCountTexture3 = line.find(u'Error initialising texture')
-            myCountTexture4 = line.find(u'is missing texture')
-            myCountTexture5 = line.find(u'Duplicate texture')
-            myCountTexture6 = line.find(u'Could not find mesh file')
-            myCountTexture7 = line.find(u'is not compatible with mesh')
-
-
-            myCountAnimation = line.find(u'Couldn\'t find animation')
-            myCountAnimation2 = line.find(u'Particle name is not unique')
-            myCountAnimation3 = line.find(u'Timestamps need to be larger than the previous timestamp')
-            myCountAnimation4 = line.find(u'a 3d-type with the name')
-            myCountAnimation5 = line.find(u'Failed to find animation')
-            myCountAnimation6 = line.find(u'Couldn\'t find particle force')
-            myCountAnimation7 = line.find(u'[pdxparticletype.cpp:37]: Particle type [')
-            myCountAnimation8 = line.find(u'Could not find animation ')
-            myCountAnimation9 = line.find(u'is missing an animation')
+            myCountMandates = line.find(u'Mandates :')
             
-
-            myCountEntity = line.find(u'added to entity system')
-            myCountEntity2 = line.find(u'Failed to find entity "')
-            myCountEntity3 = line.find(u'but the entity does not have an animated mesh')
-
-            myCountToken = line.find(u'Unexpected token: volume')
-            myCountToken2 = line.find(u'Unexpected token: position')
-            myCountToken3 = line.find(u'Unexpected token: box_emitter_')
-            #Token and variables used by non included mods
-            myCountToken4 = line.find(u'Unexpected token: apsr_knowledge')   #To Check
-            myCountToken5 = line.find(u'Failed to read key reference apsr')  #To Check
-            myCountToken6 = line.find(u'in file: "common/pop_jobs/apsr')
-            myCountToken7 = line.find(u'[persistent.cpp:33]: Error: "Unexpected token: sr_')
-            myCountToken8 = line.find(u'in file: "common/pop_jobs/nhsc_')
-            myCountToken9 = line.find(u'job_energy_')
-            myCountToken10 = line.find(u'job_mining_')
-            myCountToken11 = line.find(u'_apsr')   
-            myCountToken12 = line.find(u'Failed to read key reference planet_apsr_buildings')
-
-            myCountGfx = line.find(u'in file: "gfx/')
-            myCountGfx2 = line.find(u'Couldn\'t find particle 3D object')
-            myCountGfx3 = line.find(u'Couldn\'t find mesh')
-            myCountGfx4 = line.find(u'Could not find particle effect')
-            myCountGfx5 = line.find(u': An item with name "')
-            myCountGfx6 = line.find(u'Missing modifier icon')
-            myCountGfx7 = line.find(u': Missing modifier scripted icon')
-            myCountGfx8 = line.find(u'Failed to find icon for technology')
-            myCountGfx9 = line.find(u'Failed to find texture')
-            myCountGfx10 = line.find(u'Failed to create material with shader')
-            myCountGfx11 = line.find(u'with animated mesh')
-            myCountGfx12 = line.find(u'is missing icon')
-            myCountGfx13 = line.find(u'has unknown graphical culture')
-            myCountGfx14 = line.find(u'Did not find an icon for')
-            myCountGfx15 = line.find(u'graphical_culture trigger is referencing invalid gfx culture')
-            myCountGfx16 = line.find(u'is referencing inexistent picture')
-            myCountGfx17 = line.find(u'graphical_culture trigger is referencing invalid gfx culture')
-            myCountGfx18 = line.find(u'graphical_culture trigger is referencing invalid gfx culture')
-            myCountGfx19 = line.find(u'graphical_culture trigger is referencing invalid gfx culture')
-
-
-            myCountEffect1 = line.find(u'id has to be unique')
-            myCountEffect2 = line.find(u'Error "failed effect validation')
-
-            myCountInitializer = line.find(u': An initializer called')
-            myCountInitializer2 = line.find(u'[trigger.cpp:403]: Unsynchronized trigger usage! callstack:')
-
-            myCountLeaderDesign = line.find(u'Leader design with invalid class')
-
-            myCountDeposit1 = line.find(u'invalid deposit type [')
-            myCountDeposit2 = line.find(u'Modifier has entry not allowed by category')
-
-
-            myCountVariableName = line.find(u']: Variable name')
-            IsAlreadyTaken = line.find(u'is already taken.')
-            myCountObjectwithkey = line.find(u': Object with key:')
-            Exists = line.find(u'exists')
-            myCountKeyRef = line.find(u': Failed to read key reference ')
-            myMultnotUsed = line.find(u'is never used from script.')
-
-            myCountShipComponent = line.find(u': Could not find any entity by the name')
-            myCountShipComponent2 = line.find(u': ship section entity')
-            myCountShipComponent3 = line.find(u'could not find any entity by the name')
-            myCountShipComponent4 = line.find(u': Component template key used multiple times')
-            myCountShipComponent5 = line.find(u'[ship_design_templates.cpp:')
-            myCountShipComponent6 = line.find(u': A ship design named') #already exists
-            myCountShipComponent7 = line.find(u'Unused starbase component modifier')
-            myCountShipComponent8 = line.find(u'cannot build any component in the component set')
-            myCountShipComponent9 = line.find(u'None of the components  in the component set')
-
-            myCountDuplicateTechno = line.find(u'Duplicate technology')
-
-            myCountEventAlreadyExists = line.find(u'[eventmanager.cpp:355]: an event with id')
-
-            myCountEthicsPolicyCivics = line.find(u'Could not get a valid policy option in policy')
-            myCountEthicsPolicyCivics2 = line.find(u'Invalid government type [')
-            myCountGenerationSystemm = line.find(u'Make sure the outer radius is smaller than 500')
-
-            myCountLocalisationError = line.find(u'Missing modifier localization')
-            myCountLocalisationError2 = line.find(u'Localization Key')
-            myCountLocalisationError3 = line.find(u'Missing economic category Localization Key')
-            myCountLocalisationError4 = line.find(u'Missing technology localization')
-            myCountLocalisationError5 = line.find(u'Missing localization key')
-            myCountLocalisationError6 = line.find(u'but not localized')
-            myCountLocalisationError7 = line.find(u'localization string')
-            myCountLocalisationError8 = line.find(u'but not localized')
-
+            myCountfleet_journey = line.find(u'continue_journey')  
+            myCountfleet_journey2 = line.find(u'untagged planet')
+            myCountfleet_journey3 = line.find(u'returning home')
             
+            myCountFix_fleet = line.find(u'FIX_Fleet:')
+            
+            myCountPrimitives = line.find(u'primitive conquest')
+
+            myCountMEM = line.find(u'MEM event :')
+            myCountDivEvent = line.find(u'Div. event :')
 
 
-            myCountEventFiles1 = line.find(u'file: events/')
-            myCountEventFiles2 = line.find(u'in events/')
-            myCountEventFiles3 = line.find(u'Invalid Event ID Tag')
-            #Error in fire event effect at  file: events')
+            mycategorie = ''
+            if myCountExploit > -1:                
+                mycategorie += ';Space Exploitation'
+            if myCountExploit2 > -1:                
+                mycategorie += ';Space Exploitation'
+            if myCountStarfix > -1:                
+                mycategorie += ';Starfix'
+            if myCountEDAI > -1:                
+                mycategorie += ';EDAI'
+            if myCountEDAIRessources > -1:                
+                mycategorie += ';EDAI Ressources Trade'
+            if myCountHemo > -1:                
+                mycategorie += ';Hemo Difficulty'
 
-            myCountContextError1 = line.find(u': Script Error: Invalid context switch[species]')
+            if myCountGPM > -1:                
+                mycategorie += ';Guillis PM'
+            if myCountGPM2 > -1:                
+                mycategorie += ';Guillis PM'
+            if myCountPirates > -1:                
+                mycategorie += ';Pirate Waves'
+            if myCountMandates > -1:                
+                mycategorie += ';Mandates'
+            if myCountfleet_journey > -1:                
+                mycategorie += ';Fleet journey'
+            if myCountfleet_journey2 > -1:                
+                mycategorie += ';Fleet journey'
+            if myCountfleet_journey3 > -1:                
+                mycategorie += ';Fleet journey'
+            if myCountFix_fleet > -1:                
+                mycategorie += ';Fix Fleet'
+            if myCountPrimitives > -1:                
+                mycategorie += ';Primitives'
+            if myCountMEM > -1:                
+                mycategorie += ';MEM events'
+            if myCountGiga > -1:                
+                mycategorie += ';Giga events'
+            if myCountEHOF > -1:                
+                mycategorie += ';EHOF events'
+            if myCountDivEvent > -1:                
+                mycategorie += ';Div. events'
 
-            myCountknownErrors1 = line.find('cannot find planet class with key')
-            myCountknownErrors2 = line.find('Invalid technology "')
-            myCountknownErrors3 = line.find('cannot find modifier with key:')
-            myCountknownErrors4 = line.find('Invalid government civic type')
-            myCountknownErrors5 = line.find('cannot find trait with key:')
-            myCountknownErrors6 = line.find('cannot find deposit with key:')
-            myCountknownErrors7 = line.find('Invalid origin with key')
-            myCountknownErrors8 = line.find('cannot find ethic of key')
-            myCountknownErrors9 = line.find('is using an invalid edict key')
-            myCountknownErrors10 = line.find('Invalid government authority type')
-            myCountknownErrors11 = line.find('cannot find deposit with key:')
-
-            myCountMissingElements1 = line.find(u'cannot find technology with the key')
-            myCountMissingElements2 = line.find(u'referring to a non-existent opinion modifier')
-            myCountMissingElements3 = line.find(u'could not find mega structure type with key')
-            myCountMissingElements4 = line.find(u'is referencing invalid government authority')
-            myCountMissingElements5 = line.find(u'Could not find technology with key:')
-            myCountMissingElements6 = line.find(u'XXXXX')
-            myCountMissingElements7 = line.find(u'XXXXX')
-            myCountMissingElements8 = line.find(u'XXXXX')
-
-
-            #All the conditions to Ignore the Error
-            if nbaddedlines > 0:  #when Error on 2 or more lines
-                nbaddedlines = nbaddedlines - 1
-                print ('Ignoring (due to line -1)')
-            elif myCountFindMod > -1:
-                print ('Ignoring')
-
-            elif myCountSoundEffect > -1:
-                print ('Ignoring')
-            elif myCountSoundEffect2 > -1:
-                print ('Ignoring')
-            elif myCountSoundEffect3 > -1:
-                print ('Ignoring')
-            elif myCountSoundEffect4 > -1:
-                print ('Ignoring')
-            elif myCountSoundEffect5 > -1:
-                print ('Ignoring')
-            elif myCountSoundEffect6 > -1:
-                print ('Ignoring')
-            elif myCountSoundEffect7 > -1:
-                print ('Ignoring')
-
-            elif myCountAnimation > -1:
-                print ('Ignoring')
-            elif myCountAnimation2 > -1:
-                print ('Ignoring')
-            elif myCountAnimation3 > -1:
-                print ('Ignoring')
-            elif myCountAnimation4 > -1:
-                print ('Ignoring')
-            elif myCountAnimation5 > -1:
-                print ('Ignoring')
-            elif myCountAnimation6 > -1:
-                print ('Ignoring')
-            elif myCountAnimation7 > -1:
-                print ('Ignoring')
-            elif myCountAnimation8 > -1:
-                print ('Ignoring')
-            elif myCountAnimation9 > -1:
-                print ('Ignoring')
-
-
-            elif myCountTexture > -1:
-                print ('Ignoring')
-            elif myCountTexture2 > -1:
-                print ('Ignoring')
-            elif myCountTexture3 > -1:
-                print ('Ignoring')
-            elif myCountTexture4 > -1:
-                print ('Ignoring')
-            elif myCountTexture5 > -1:
-                print ('Ignoring')
-            elif myCountTexture6 > -1:
-                print ('Ignoring')
-            elif myCountTexture7 > -1:
-                print ('Ignoring')
-
-
-            elif myCountEntity > -1:
-                print ('Ignoring')
-            elif myCountEntity2 > -1:
-                print ('Ignoring')
-            elif myCountEntity3 > -1:
-                print ('Ignoring')
-
-            elif myCountToken > -1:
-                print ('Ignoring')
-            elif myCountToken2 > -1:
-                print ('Ignoring')
-            elif myCountToken3 > -1:
-                print ('Ignoring')
-            elif myCountToken4 > -1:
-                print ('Ignoring')
-            elif myCountToken5 > -1:
-                print ('Ignoring')
-            elif myCountToken6 > -1:
-                print ('Ignoring')
-            elif myCountToken7 > -1:
-                print ('Ignoring')
-            elif myCountToken8 > -1:
-                print ('Ignoring')
-            elif myCountToken9 > -1:
-                print ('Ignoring')
-            elif myCountToken10 > -1:
-                print ('Ignoring')
-            elif myCountToken11 > -1:
-                print ('Ignoring')
-            elif myCountToken12 > -1:
-                print ('Ignoring')
-
-            #GFX    
-            elif myCountGfx > -1:
-                print ('Ignoring')
-            elif myCountGfx2 > -1:
-                print ('Ignoring')
-            elif myCountGfx3 > -1:
-                print ('Ignoring')
-            elif myCountGfx4 > -1:
-                print ('Ignoring')
-            elif myCountGfx5 > -1:
-                print ('Ignoring')
-            elif myCountGfx6 > -1:
-                print ('Ignoring')
-            elif myCountGfx7 > -1:
-                print ('Ignoring')
-            elif myCountGfx8 > -1:
-                print ('Ignoring')
-            elif myCountGfx9 > -1:
-                print ('Ignoring')
-            elif myCountGfx10 > -1:
-                print ('Ignoring')
-            elif myCountGfx11 > -1:
-                print ('Ignoring')
-            elif myCountGfx12 > -1:
-                print ('Ignoring')
-            elif myCountGfx13 > -1:
-                print ('Ignoring')
-            elif myCountGfx14 > -1:
-                print ('Ignoring')
-            elif myCountGfx15 > -1:
-                print ('Ignoring')
-            elif myCountGfx16 > -1:
-                print ('Ignoring')
-            elif myCountGfx17 > -1:
-                print ('Ignoring')
-            elif myCountGfx18 > -1:
-                print ('Ignoring')
-            elif myCountGfx19 > -1:
-                print ('Ignoring')
-
-
-
-            elif myCountEffect1 > -1:
-                print ('Ignoring')
-            elif myCountEffect2 > -1:
-                print ('Ignoring')
-                nbaddedlines = 1
-
-
-            elif myCountDeposit1 > -1:
-                print ('Ignoring')
-            elif myCountDeposit2 > -1:
-                print ('Ignoring')
-
-
-            elif myCountInitializer > -1:
-                print ('Ignoring')
-            elif myCountInitializer2 > -1:
-                print ('Ignoring')
-
-            elif myCountLeaderDesign > -1:
-                print ('Ignoring')
-
-
-            elif myCountVariableName > -1 and IsAlreadyTaken > -1:
-                print ('Ignoring')
-
-            elif myCountObjectwithkey > -1 and Exists > -1:
-                print ('Ignoring')
-
-            elif myCountEventAlreadyExists > -1 and Exists > -1:
-                print ('Ignoring')
-
-
-
-            elif myCountKeyRef > -1:
-                print ('Ignoring')
-            elif myMultnotUsed > -1:
-                print ('Ignoring')
-
-            #SHIP    
-            elif myCountShipComponent > -1:
-                print ('Ignoring')
-            elif myCountShipComponent2 > -1:
-                print ('Ignoring')
-            elif myCountShipComponent3 > -1:
-                print ('Ignoring')
-            elif myCountShipComponent4 > -1:
-                print ('Ignoring')
-            elif myCountShipComponent5 > -1:
-                print ('Ignoring')    
-            elif myCountShipComponent6 > -1:
-                print ('Ignoring')    
-            elif myCountShipComponent7 > -1:
-                print ('Ignoring')    
-                nbaddedlines = 3
-            elif myCountShipComponent8 > -1:
-                print ('Ignoring')    
-            elif myCountShipComponent9 > -1:
-                print ('Ignoring')    
-
-            #TECHNO
-            elif myCountDuplicateTechno > -1:
-                print ('Ignoring')
-
-
-            #Policy, Ethics, Civics,...
-            elif myCountEthicsPolicyCivics > -1:
-                print ('Ignoring')
-            elif myCountEthicsPolicyCivics2 > -1:
-                print ('Ignoring')
-
-
-            elif myCountGenerationSystemm > -1:
-                print ('Ignoring')
-
-
-            elif myCountLocalisationError > -1:
-                print ('Ignoring')
-            elif myCountLocalisationError2 > -1:
-                print ('Ignoring')
-            elif myCountLocalisationError3 > -1:
-                print ('Ignoring')
-            elif myCountLocalisationError4 > -1:
-                print ('Ignoring')
-            elif myCountLocalisationError5 > -1:
-                print ('Ignoring')
-            elif myCountLocalisationError6 > -1:
-                print ('Ignoring')
-            elif myCountLocalisationError7 > -1:
-                print ('Ignoring')
-            elif myCountLocalisationError8 > -1:
-                print ('Ignoring')
-
-
-
-            elif myCountContextError1 > -1:
-                print ('Ignoring')
-
-            elif myCountknownErrors1 > -1:
-                print ('Ignoring')
-            elif myCountknownErrors2 > -1:
-                print ('Ignoring')
-            elif myCountknownErrors3 > -1:
-                print ('Ignoring')
-            elif myCountknownErrors4 > -1:
-                print ('Ignoring')
-            elif myCountknownErrors5 > -1:
-                print ('Ignoring')
-            elif myCountknownErrors6 > -1:
-                print ('Ignoring')
-            elif myCountknownErrors7 > -1:
-                print ('Ignoring')
-            elif myCountknownErrors8 > -1:
-                print ('Ignoring')
-            elif myCountknownErrors9 > -1:
-                print ('Ignoring')
-            elif myCountknownErrors10 > -1:
-                print ('Ignoring')
-            elif myCountknownErrors11 > -1:
-                print ('Ignoring')
-
-
-            elif myCountMissingElements1 > -1:
-                print ('Ignoring')
-            elif myCountMissingElements2 > -1:
-                print ('Ignoring')
-            elif myCountMissingElements3 > -1:
-                print ('Ignoring')
-            elif myCountMissingElements4 > -1:
-                print ('Ignoring')            
-            elif myCountMissingElements5 > -1:
-                print ('Ignoring')
-            elif myCountMissingElements6 > -1:
-                print ('Ignoring')
-            elif myCountMissingElements7 > -1:
-                print ('Ignoring')
-            elif myCountMissingElements8 > -1:
-                print ('Ignoring')            
-
-
-            #elif myCountEventFiles1 > -1:
-            #    print ('Ignoring')
-            #elif myCountEventFiles2 > -1:
-            #    print ('Ignoring')
-            #elif myCountEventFiles3 > -1:
-            #    print ('Ignoring')
-
-
-
-
-
-            #If Not known Error : Keep in Error.log    
+            if mycategorie:
+                mycategorie = mycategorie[1:]
             else:
-                nberror = nberror+1
-                my_dest_list.append(line)
+                mycategorie = 'No Cat'
+            #If Not known Error : Keep in Error.log    
+            my_dest_list.append(line + '\t'+mycategorie + '\t' + mygamedate + '\t' + mytarget + '\t' + myplanet + '\n')
+            nberror+=1
 
-            #myCountBegin = line.find(u':')       
-            #myCountStringBegin = line.find(u'"',myCountBegin+1)       
-            #if myCountBegin > -1:
-                #if myCountStringBegin > -1:
-                    #my_label = line[:myCountBegin]
-                    #my_string = line[myCountStringBegin+1:]
-                    #my_string = my_string.rstrip('\n')
-                    #my_string = my_string.rstrip()
-                    #my_string = my_string.rstrip('\"')
-                    #if my_label.strip() in already_labeled:
-                        #print ("doublon : " + my_label)
-                    #else:
-                        #already_labeled.append(my_label.strip())
-                        #if my_string.strip() != '':
-                            #foundfrench = FrenchTranslate(my_string.strip())
-                        #if not foundfrench:
-                            #my_dest_list.append(line)
-                        #else:                    
-                            #print("found : " + my_label + " : " + foundfrench)
-                            ##foundfrench = StellarisImproveText(foundfrench)
-                            #mydeststring = line[:myCountStringBegin+1] + foundfrench + '\"\n'
-                            ##foundfrench = StellarisImproveText(foundfrench)
-                            #my_dest_list.append(mydeststring)
-                #else:
-                    #my_dest_list.append(line)                
-            #else:
-                #my_dest_list.append(line)
 
     except:
         print("Erreur lors du processus") 
@@ -1937,7 +1598,7 @@ def BtnTBD(StringToSearch='',StringReplace=''):
     finally:
         TxtDest = str(my_dest_list)
 
-        fdest = open(new_filename,'w', encoding='utf8')
+        fdest = open(new_filename,'w')
         fdest.writelines(["%s" % item  for item in my_dest_list])
         fdest.close
 
@@ -1945,7 +1606,7 @@ def BtnTBD(StringToSearch='',StringReplace=''):
         print("  ")
         print("  ")
     print("  ")
-    print("Scan Completed : " + str(nberror) + " lignes d'erreurs.")  
+    print("Scan Completed : " + str(nberror) + " lignes de logs.")  
 
 
 
@@ -2373,10 +2034,16 @@ def BtnTranslate(StringToSearch='',StringReplace=''):
     my_dest_list = list()
     already_labeled = list()
     i = 0
+    TxtSource = ''
+    TxtDest = ''
     try:    
         for line in content :
             i = i + 1
             print (line)
+            TxtSource += line
+            window['-TXTFILE-'].update(TxtSource)            
+            sg.Window.refresh
+            
             myCountBegin = line.find(u':')       
             myCountStringBegin = line.find(u'"',myCountBegin+1)       
             if myCountBegin > -1:
@@ -2419,12 +2086,21 @@ def BtnTranslate(StringToSearch='',StringReplace=''):
                                 mydeststring = line[:myCountStringBegin+1] + foundfrench + foundfrench_large + '\"\n'
                                 #foundfrench = StellarisImproveText(foundfrench)
                                 my_dest_list.append(mydeststring)
+                                TxtDest += mydeststring
+                                window['-TXTDESTFILE-'].update(TxtDest)            
+                                
                     else:
                         my_dest_list.append(line)                
+                        TxtDest += line
+                        window['-TXTDESTFILE-'].update(TxtDest)            
                 else:
                     my_dest_list.append(line)                
+                    TxtDest += line
+                    window['-TXTDESTFILE-'].update(TxtDest)            
             else:
                 my_dest_list.append(line)
+                TxtDest += line
+                window['-TXTDESTFILE-'].update(TxtDest)            
 
 
             if i > 25:

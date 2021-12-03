@@ -79,6 +79,7 @@ add_newfrontiers_starting_deposits = {
 					has_origin = origin_scavengers
 					has_origin = origin_forsaken
 					has_origin = origin_derelict_evolution
+					has_origin = origin_exomycosis
 				}
 			}
 		}
@@ -380,6 +381,28 @@ add_newfrontiers_starting_deposits = {
 			add_deposit = d_dust_caverns
 			add_deposit = d_crystal_forest
 		}
+		else_if = {
+			limit = { has_modifier = archean_world }
+			
+			# 3 + 3 energy
+			add_deposit = d_hot_springs
+			add_deposit = d_frozen_gas_lake
+			add_deposit = d_frozen_gas_lake
+			add_deposit = d_geothermal_vent
+
+			# 3 + 4 mining
+			add_deposit = d_mineral_fields
+			add_deposit = d_prosperous_mesa
+			add_deposit = d_prosperous_mesa
+			add_deposit = d_rich_mountain
+
+			# 2 + 2 farming	
+			add_deposit = d_hydroponic_complex
+			add_deposit = d_agrarian_dome
+			
+			add_deposit = d_dust_caverns
+			add_deposit = d_crystal_forest
+		}
 		else = {
 		
 			# 3 + 3 energy
@@ -433,6 +456,24 @@ add_newfrontiers_starting_deposits = {
 			# 3 + 3 energy
 			add_deposit = d_hot_springs
 			add_deposit = d_gaseous_eruption
+
+			# 3 + 4 mining
+			add_deposit = d_mineral_fields
+			add_deposit = d_prosperous_mesa
+			
+			add_deposit = d_dust_caverns
+			add_deposit = d_crystal_forest
+		}
+		else_if = {
+			limit = { has_modifier = archean_world }
+			
+			# blockers
+			add_deposit = d_rusty_debris
+			add_deposit = d_giant_fossils
+			
+			# 3 + 3 energy
+			add_deposit = d_hot_springs
+			add_deposit = d_frozen_gas_lake
 
 			# 3 + 4 mining
 			add_deposit = d_mineral_fields
@@ -498,6 +539,25 @@ add_newfrontiers_starting_deposits = {
 			
 			add_deposit = d_heart_of_the_overmind
 		}
+		else_if = {
+			limit = { has_modifier = archean_world }
+			
+			# 3 + 3 energy
+			add_deposit = d_hot_springs
+			add_deposit = d_frozen_gas_lake
+			add_deposit = d_geothermal_vent
+
+			# 3 + 4 mining
+			add_deposit = d_mineral_fields
+			add_deposit = d_prosperous_mesa
+			add_deposit = d_rich_mountain
+			add_deposit = d_rich_mountain
+			
+			add_deposit = d_dust_caverns
+			add_deposit = d_crystal_forest
+			
+			add_deposit = d_heart_of_the_overmind
+		}
 		else = {
 			
 			# 3 + 3 energy
@@ -513,6 +573,36 @@ add_newfrontiers_starting_deposits = {
 			
 			add_deposit = d_heart_of_the_overmind
 		}
+	}
+	#Exomycosis
+	if = {
+		limit = { owner = { has_origin = origin_exomycosis } }
+		
+		add_modifier = {
+			modifier = "mycelium_world"
+			days = -1
+		}
+		
+		# blockers
+		add_deposit = d_exofungus_contamination
+		add_deposit = d_exofungus_contamination
+		add_deposit = d_exofungus_contamination
+
+		# 3 + 3 energy
+		add_deposit = d_hot_springs
+		add_deposit = d_rushing_waterfalls
+		add_deposit = d_tempestous_mountain
+
+		# 3 + 3 mining
+		add_deposit = d_mineral_fields
+		add_deposit = d_prosperous_mesa
+		add_deposit = d_submerged_ore_veins
+
+		# 4 + 3 farming (lithoids swap 3 for minerals)
+		add_deposit = d_green_hills
+		add_deposit = d_green_hills
+		add_deposit = d_lush_jungle
+		add_deposit = d_fungal_forest
 	}
 	
 	#SUBCLASSES
@@ -1139,9 +1229,9 @@ add_newfrontiers_starting_deposits = {
 		
 		add_deposit = d_betharian_deposit
 	}
-	#Jungle
+	#Megaflora
 	if = {
-		limit = { has_modifier = jungle_world }
+		limit = { has_modifier = megaflora_world }
 
 		# 3 + 3 energy
 		add_deposit = d_hot_springs
@@ -1172,7 +1262,7 @@ add_newfrontiers_starting_deposits = {
 			}
 			else = {
 				add_deposit = d_green_hills
-				add_deposit = d_estuary_meadows
+				add_deposit = d_huge_tree
 			}
 		}
 	}
@@ -1334,7 +1424,10 @@ add_newfrontiers_starting_deposits = {
 	}
 	#Panthalassic
 	if = {
-		limit = { has_modifier = panthalassic_world }
+		limit = { 
+			has_modifier = panthalassic_world 
+			owner = { NOT = { has_origin = origin_ocean_paradise } }
+		}
 
 		# 3 + 3 energy
 		add_deposit = d_turbulent_currents
@@ -1372,7 +1465,10 @@ add_newfrontiers_starting_deposits = {
 	}
 	#Atoll
 	if = {
-		limit = { has_modifier = atoll_world }
+		limit = { 
+			has_modifier = atoll_world 
+			owner = { NOT = { has_origin = origin_ocean_paradise } }
+		}
 
 		# 3 + 3 energy
 		add_deposit = d_turbulent_currents
@@ -1412,7 +1508,10 @@ add_newfrontiers_starting_deposits = {
 	}
 	#Storm
 	if = {
-		limit = { has_modifier = storm_world }
+		limit = {
+			has_modifier = storm_world
+			owner = { NOT = { has_origin = origin_ocean_paradise } }
+		}
 
 		# 3 + 3 energy
 		add_deposit = d_turbulent_currents
@@ -1452,7 +1551,10 @@ add_newfrontiers_starting_deposits = {
 	}
 	#Crag
 	if = {
-		limit = { has_modifier = crag_world }
+		limit = {
+			has_modifier = crag_world
+			owner = { NOT = { has_origin = origin_ocean_paradise } }
+		}
 
 		# 3 + 3 energy
 		add_deposit = d_hot_springs
@@ -1608,9 +1710,9 @@ add_newfrontiers_starting_deposits = {
 		
 		add_deposit = d_fuming_bog
 	}
-	#Awakened
+	#Mushroom
 	if = {
-		limit = { has_modifier = awakened_world }
+		limit = { has_modifier = mushroom_world }
 
 		# 3 + 3 energy
 		add_deposit = d_hot_springs
@@ -1631,11 +1733,10 @@ add_newfrontiers_starting_deposits = {
 		add_deposit = d_rich_mountain
 
 		# 4 + 3 farming (lithoids swap 3 for minerals)
-		add_deposit = d_forgiving_tundra
-		add_deposit = d_agrothermal_plains
+		add_deposit = d_fungal_forest
 		if = {
 			limit = { owner = { is_machine_empire = no } }
-			add_deposit = d_forgiving_tundra
+			add_deposit = d_fungal_caves
 
 			if = {
 				limit = { owner = { is_lithoid_empire = yes } }
@@ -1960,6 +2061,53 @@ add_newfrontiers_starting_deposits = {
 	
 	#generate_start_buildings_and_districts = yes
 	#planet_event = { id = game_start.22 }
+	
+	# Ocean Paradise Origin
+	if = {
+		limit = {
+			owner = {
+				has_origin = origin_ocean_paradise
+			}
+		}
+		if = {
+			limit = {
+				owner = { is_hive_empire = yes }
+			}
+			add_modifier = { modifier = ocean_paradise_hive }
+		}
+		else = {
+			add_modifier = { modifier = ocean_paradise }
+		}
+		clear_deposits = yes
+		clear_blockers = yes
+		
+		# Food
+		add_deposit = d_teeming_reef
+		add_deposit = d_teeming_reef
+		add_deposit = d_teeming_reef
+		add_deposit = d_teeming_reef
+		add_deposit = d_teeming_reef
+		add_deposit = d_teeming_reef
+		add_deposit = d_teeming_reef
+		add_deposit = d_teeming_reef
+
+		# Minerals
+		add_deposit = d_submerged_ore_veins
+		add_deposit = d_submerged_ore_veins
+		add_deposit = d_submerged_ore_veins
+
+		# Energy
+		add_deposit = d_underwater_vent
+		add_deposit = d_underwater_vent
+		add_deposit = d_underwater_vent
+
+		# Bonus
+		add_deposit = d_crystal_reef
+		random_list = {
+			50 = { add_deposit = d_submerged_ore_veins }
+			50 = { add_deposit = d_underwater_vent }
+		}
+	}
 	
 	if = {
 		limit = {

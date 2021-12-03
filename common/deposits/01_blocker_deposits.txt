@@ -3,7 +3,7 @@
 # Calvitix Check 3.2  22/11/2021
 #
 # Merge with Aripatch
-# Merge with RS New Frontiers  03/11/2021
+# Merge with RS New Frontiers  03/12/2021
 # Merge with RS Planetary Exploration 23/05/2021
 # Merge with Eco mod + Calvitix addition 24/09/2021
 #
@@ -382,7 +382,10 @@ d_dense_jungle = {
 		}
 		modifier = {
 			factor = 5
+			or = {
 			has_modifier = "jungle_world"
+				has_modifier = "megaflora_world"
+			}
 		}
 		modifier = {
 			factor = 2
@@ -829,6 +832,10 @@ d_noxious_swamp = {
 	drop_weight = {
 		weight = @blocker_high
 		modifier = {
+			factor = 4
+			has_modifier = "noxious_world"
+		}
+		modifier = {
 			factor = 3
 			has_modifier = "swamp_world"
 			has_modifier = "bog_world"
@@ -891,6 +898,7 @@ d_massive_glacier = {
 			is_planet_class = pc_tidallylocked
 			has_modifier = "boreal_world"
 			has_modifier = "subglacial_world"
+			has_modifier = "archean_world"
 		}
 	}
 	
@@ -1107,6 +1115,13 @@ d_dune_sea = {
 			factor = 0
 			has_modifier = "infernal_world"
 		}
+		modifier = {
+			factor = 0
+			num_free_districts = {
+				type = district_city
+				value < 2
+			}
+		}		
 	}
 	
 	prerequisites = { "tech_dune_sea" }
@@ -1337,6 +1352,57 @@ d_ice_crust = {
 	prerequisites = { "tech_ice_crust" }
 }
 
+d_industrial_boneyard = {
+	time = 270
+	
+	is_for_colonizable = yes
+	category = deposit_cat_blockers
+	icon = d_metal_boneyard
+	
+	resources = {
+		category = deposit_blockers
+		cost = {
+			energy = 700
+		}
+	}
+	
+	potential = {
+		is_planet_class = pc_nuked
+	}
+	
+	planet_modifier = {
+		planet_max_districts_add = -1
+		planet_jobs_engineering_research_produces_mult = 0.10
+	}
+	
+	on_cleared = {
+		if = {
+			limit = { exists = owner }
+			owner = { 
+				add_resource = { alloys = 100 } 
+				if = {
+					limit = { has_origin = origin_scavengers }			
+					give_random_eng_technology = yes
+				}
+			}
+		}
+	}
+
+	drop_weight = {
+		weight = @blocker_high
+		modifier = {
+			factor = 5
+			has_modifier = "depleted_world"
+		}
+		modifier = {
+			factor = 0
+			num_free_districts = {
+				type = district_city
+				value < 2
+			}
+		}
+	}
+}
 
 d_igneous_traps = {
 	time = 300
@@ -1398,6 +1464,75 @@ d_igneous_traps = {
 	
 	prerequisites = { "tech_igneous_traps" }
 }
+
+d_exofungus_contamination = {
+	icon = d_infestation
+	time = 180
+	
+	is_for_colonizable = yes
+	category = deposit_cat_blockers
+	
+	resources = {
+		category = deposit_blockers
+		cost = {
+			energy = 500
+		}
+	}
+	
+	potential = { 
+		has_modifier = "mycelium_world"
+	}
+	
+	planet_modifier = {
+		planet_max_districts_add = -1
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_origin = origin_exomycosis }
+		}
+		modifier = {
+			pop_growth_speed = 0.05
+		}
+	}
+	
+	on_cleared = {
+		if = {
+			limit = {
+				exists = owner
+				owner = { has_origin = origin_exomycosis }
+			}
+			create_pop = {
+				species = owner
+			}
+		}
+	}
+
+	drop_weight = {
+		weight = @blocker_high
+		modifier = {
+			factor = 0
+			num_free_districts = {
+				type = district_city
+				value < 2
+			}
+		}
+	}
+	
+	can_be_cleared = {
+		custom_tooltip = {
+			fail_text = requires_actor_exomycosis
+			exists = owner
+			owner = { has_origin = origin_exomycosis }
+		}
+	}
+	
+	ai_weight = {
+		weight = 1
+	}
+}
+
 
 d_rusty_debris = {
 	icon = d_organic_landfill

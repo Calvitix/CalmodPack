@@ -1,6 +1,6 @@
 # RS New Frontiers File
 #
-# Calvitix Check 3.0.3b  02/05/2021
+# Calvitix Check 3.2  02/12/2021
 #
 # 
 #
@@ -37,28 +37,25 @@ event = {
 				}
 				modifier = {
 					factor = 3
-					has_global_flag = anger_galaxy
 					AND = {
 						has_global_flag = anger_galaxy
-						years_passed < 150
-						years_passed >= 250
+						years_passed > 150
+						years_passed <= 250
 					}
 				}
 				modifier = {
 					factor = 5
-					has_global_flag = anger_galaxy
 					AND = {
 						has_global_flag = anger_galaxy
-						years_passed < 250
-						years_passed >= 300
+						years_passed > 250
+						years_passed <= 300
 					}
 				}
 				modifier = {
 					factor = 8
-					has_global_flag = anger_galaxy
 					AND = {
 						has_global_flag = anger_galaxy
-						years_passed < 300
+						years_passed > 300
 					}
 				}
 				random_list = {
@@ -248,7 +245,10 @@ event = {
 						random_galaxy_planet = {
 							limit = { 
 								star_catastrophe_is_possible = yes
-								solar_system = { owner = { NOT = { has_modifier = monolith_whisper } } }
+								solar_system = {
+									exists = space_owner
+									space_owner = { NOT = { has_modifier = monolith_whisper } } 
+							}
 							}
 							planet_event = { id = newfrontiers_disasters.30 days = 30 random = 90 }
 						}
@@ -4077,7 +4077,7 @@ country_event = {
 					limit = {
 						is_extremaly_hot = yes
 						has_planet_flag = hot_zone
-						is_ringworld = yes
+						is_planet_class = pc_ringworld_habitable
 						owner = { num_owned_planets = 1 }
 						is_homeworld = yes
 					}

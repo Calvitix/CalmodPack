@@ -707,7 +707,7 @@ event = {
 						}
 						free_building_slots > 0
 						owner = { has_monthly_income = { resource = minerals value > 50 }}
-						owner = { resource_stockpile_compare = { resource = minerals value > 500 } }												
+						owner = { resource_stockpile_compare = { resource = minerals value > 800 } }												
 						owner = { has_monthly_income = { resource = consumer_goods value < 5 }}
 					}
 					add_building = building_factory_1
@@ -1650,6 +1650,7 @@ event = {
 						limit = { 
 							has_building = building_research_lab_1 
 							not = { has_modifier = hc_building_added }													
+							owner = { has_monthly_income = { resource = physics_research value > 35 } }
 						}
 						remove_building = building_research_lab_1
 						add_building = building_holo_theatres						
@@ -2012,6 +2013,8 @@ event = {
 							owner = { has_monthly_income = { resource = consumer_goods value < 20 }}
 							owner = { has_monthly_income = { resource = minerals value > 50 }}
 							num_free_districts = { type = district_industrial value > 0 }
+							owner = { resource_stockpile_compare = { resource = minerals value > 800 }}							
+							
 							
 						}
 						add_district = district_industrial
@@ -2023,6 +2026,9 @@ event = {
 						limit = { 
 							not = { has_modifier = hc_building_added }						
 							free_building_slots > 1 
+							add_building = building_research_lab_1							
+							owner = { resource_stockpile_compare = { resource = minerals value > 800 }}							
+							
 						}
 						if = {
 							limit = { num_buildings = { type = building_research_lab_1 value < 4 } }
@@ -2037,13 +2043,19 @@ event = {
 								not = { has_modifier = hc_building_added }						
 								not = { has_building = building_holo_theatres }
 								free_amenities < 10
+								owner = { resource_stockpile_compare = { resource = minerals value > 800 }}							
+								
 							}
 							add_building = building_holo_theatres				
 							owner = { add_resource = { minerals = -500 } }
 							if = { limit = { has_global_flag = edai_logging	} log = "EDAI :E : Unemployment & low services : Adding building_holo_theatres on planet [This.GetName] for [Owner.GetName]" }							
 							add_modifier = { modifier = hc_building_added days = 360 }		
 						}
-						else = { 
+						else_if = {
+							limit = {
+								owner = { resource_stockpile_compare = { resource = minerals value > 800 }}							
+								
+							}
 							add_building = building_commercial_zone
 							owner = { add_resource = { minerals = -500 } }
 							if = { limit = { has_global_flag = edai_logging	} log = "EDAI :E : Unemployment : Adding building_commercial_zone on planet [This.GetName] for [Owner.GetName]" }							
@@ -2162,7 +2174,13 @@ event = {
 				# Housing
 				if = {
 					limit = {
+						or = {
 						free_housing < 1
+							and = { #Calvitix, buildings Slot needed
+								free_district_slots > 3
+								free_building_slots = 0														
+							}
+						}
 					}
 					if = {
 						limit = {
@@ -2274,7 +2292,7 @@ event = {
 						limit = {
 							num_districts = { type = district_city value > 1 }
 							free_housing > 50
-							free_building_slots > 4							
+							free_building_slots > 2							
 						}					
 						remove_district = district_city
 						if = { limit = { has_global_flag = edai_logging	} log = "EDAI :E : Too much Housing (> 50) : removing district_city on planet [This.GetName] for [Owner.GetName]" }												

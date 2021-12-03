@@ -3,7 +3,7 @@
 # Calvitix Check 3.2  22/11/2021
 #
 # Merge with Skalla Ai's Overhaul
-# Merge with Starnet AI 20/06/2021
+# Merge with Starnet AI 30/11/2021
 #
 
 ## Categories used in this file must have use_for_ai_budget = yes defined in economic_categories ##
@@ -678,23 +678,10 @@ alloys_expenditure_decisions = {
 	type = expenditure
 	category = decisions
 	potential = {
-		OR = {
-		has_technology = tech_habitat_2
-			has_technology = tech_mega_engineering
-		}
+			has_technology = tech_habitat_2
 		any_owned_planet = {
-			OR = {
-				AND = {
 			is_planet_class = pc_habitat
 			NOT = { has_planet_flag = advanced_habitat_2 }
-					root = { has_technology = tech_habitat_2 }
-				}
-				AND = {
-					is_planet_class = pc_shattered_ring_habitable
-					num_uncleared_blockers < 1
-					root = { has_technology = tech_mega_engineering }
-				}
-			}
 		}
 		# only consider these kinds of decisions when "wealthy"
 		has_resource = {
@@ -705,7 +692,7 @@ alloys_expenditure_decisions = {
 	fraction = {
 		weight = 0.20
 	}
-	# based on habitat / restore ring
+	# based on mastery of nature decision
 	static_max = {
 		base = 2000
 		modifier = {
@@ -714,14 +701,6 @@ alloys_expenditure_decisions = {
 			any_owned_planet = {
 				has_planet_flag = advanced_habitat
 				NOT = { has_planet_flag = advanced_habitat_2 }
-			}
-		}
-		modifier = {
-			add = 8000
-			has_technology = tech_mega_engineering
-			any_owned_planet = {
-				is_planet_class = pc_shattered_ring_habitable
-				num_uncleared_blockers < 1
 			}
 		}
 	}
@@ -754,6 +733,10 @@ alloys_upkeep_ships = {
 			years_passed > @str_years_of_guaranteed_truce
 			has_country_flag = str_need_to_defend_against_rush 
 		is_at_war = yes
+			resource_stockpile_compare = {
+				resource = alloys
+				value > 12000
+			}
 		} 
 	}
 

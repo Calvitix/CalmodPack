@@ -1,6 +1,6 @@
 # RS New Frontiers File
 #
-# Calvitix Check 3.0.3  23/05/2021
+# Calvitix Check 3.2  02/12/2021
 #
 # 
 #
@@ -139,7 +139,7 @@ country_event = {
 }
 
 #Founding a new world
-ship_event = {
+fleet_event = {
 	id = newfrontiers_decision_event.3
 	title = "newfrontiers_decision_event.3.name"
 	desc = "newfrontiers_decision_event.3.desc"
@@ -149,7 +149,7 @@ ship_event = {
 	is_triggered_only = yes
 	
 	trigger = {
-		has_ship_flag = ark_ship
+		has_fleet_flag = ark_fleet
 		from = { 
 			is_colonizable = yes
 			solar_system = {
@@ -181,7 +181,7 @@ ship_event = {
 		}
 		custom_tooltip = newfrontiers_decision_event.3.a.tooltip
 		hidden_effect = {
-			fleet = { founding_ark_world = yes }
+			founding_ark_world = yes
 			
 			from = { planet_event = { id = newfrontiers_decision_event.34 days = 1 } }
 		}
@@ -212,7 +212,7 @@ ship_event = {
 			last_created_country = {
 				set_player = event_target:dying_empire
 			}
-			fleet = { founding_ark_world = yes }
+			founding_ark_world = yes
 			
 			from = { planet_event = { id = newfrontiers_decision_event.34 days = 1 } }
 		}
@@ -1430,6 +1430,9 @@ planet_event = {
 			add_building = building_colony_shelter
 		}
 		add_deposit = d_remains_of_ark
+		add_deposit = d_settler_camp
+		add_deposit = d_settler_camp
+		add_deposit = d_settler_camp
 		
 		# create armies
 		if = {
@@ -1506,5 +1509,380 @@ planet_event = {
 	option = {
 		name = CURSES
 		remove_deposit = d_sarcophagus
+	}
+}
+
+# Liquidation of Infected
+planet_event = {
+	id = newfrontiers_decision_event.37
+	title = "newfrontiers_decision_event.37.name"
+	desc = "newfrontiers_decision_event.37.desc"
+	picture = GFX_evt_ground_combat
+	location = ROOT
+	is_triggered_only = yes
+	show_sound = event_ground_battle
+	
+	is_triggered_only = yes
+	
+	immediate = {
+		while = {
+			limit = {
+				count_owned_pop = {
+					limit = { 
+						OR = {
+							pop_has_trait = trait_infected
+							pop_has_trait = trait_corrupted
+						}
+					}
+					count > 0
+				}
+			}
+			random_owned_pop = {
+				limit = {
+					OR = {
+						pop_has_trait = trait_infected
+						pop_has_trait = trait_corrupted
+					}
+				}
+				kill_pop = yes
+			}
+		}
+	
+		owner = {
+			if = {
+				limit = {
+					NOR = {
+						has_modifier = terrible_measures_1
+						has_modifier = terrible_measures_2
+						has_modifier = terrible_measures_3
+						has_modifier = terrible_measures_4
+						has_modifier = terrible_measures_5
+						has_modifier = terrible_measures_6
+						has_modifier = terrible_measures_7
+						has_modifier = terrible_measures_8
+					}
+				}
+				add_modifier = {
+					modifier = terrible_measures_1
+					days = 360
+				}
+			}
+			if = {
+				limit = { has_modifier = terrible_measures_2 }
+				add_modifier = {
+					modifier = terrible_measures_3
+					days = 360
+				}
+			}
+			if = {
+				limit = { has_modifier = terrible_measures_3 }
+				add_modifier = {
+					modifier = terrible_measures_4
+					days = 360
+				}
+			}
+			if = {
+				limit = { has_modifier = terrible_measures_4 }
+				add_modifier = {
+					modifier = terrible_measures_5
+					days = 360
+				}
+			}
+			if = {
+				limit = { has_modifier = terrible_measures_5 }
+				add_modifier = {
+					modifier = terrible_measures_6
+					days = 360
+				}
+			}
+			if = {
+				limit = { has_modifier = terrible_measures_6 }
+				add_modifier = {
+					modifier = terrible_measures_7
+					days = 360
+				}
+			}
+			if = {
+				limit = { has_modifier = terrible_measures_7 }
+				add_modifier = {
+					modifier = terrible_measures_8
+					days = 360
+				}
+			}
+		}
+	}
+
+	option = {
+		name = IT_WAS_NECESSARY
+	}
+}
+
+planet_event = {
+	id = newfrontiers_decision_event.38
+	title = "newfrontiers_decision_event.38.name"
+	desc = "newfrontiers_decision_event.38.desc"
+	picture = GFX_evt_ground_combat
+	location = ROOT
+	is_triggered_only = yes
+	show_sound = event_ground_battle
+	
+	is_triggered_only = yes
+	
+	immediate = {
+		while = {
+			limit = {
+				count_owned_pop = {
+					limit = { 
+						OR = {
+							pop_has_trait = trait_infected
+							pop_has_trait = trait_corrupted
+						}
+					}
+					count > 1
+				}
+			}
+			random_owned_pop = {
+				limit = {
+					OR = {
+						pop_has_trait = trait_infected
+						pop_has_trait = trait_corrupted
+					}
+				}
+				kill_pop = yes
+			}
+		}
+	
+		owner = {
+			if = {
+				limit = {
+					NOR = {
+						has_modifier = terrible_measures_1
+						has_modifier = terrible_measures_2
+						has_modifier = terrible_measures_3
+						has_modifier = terrible_measures_4
+						has_modifier = terrible_measures_5
+						has_modifier = terrible_measures_6
+						has_modifier = terrible_measures_7
+						has_modifier = terrible_measures_8
+					}
+				}
+				add_modifier = {
+					modifier = terrible_measures_1
+					days = 360
+				}
+			}
+			if = {
+				limit = { has_modifier = terrible_measures_2 }
+				add_modifier = {
+					modifier = terrible_measures_3
+					days = 360
+				}
+			}
+			if = {
+				limit = { has_modifier = terrible_measures_3 }
+				add_modifier = {
+					modifier = terrible_measures_4
+					days = 360
+				}
+			}
+			if = {
+				limit = { has_modifier = terrible_measures_4 }
+				add_modifier = {
+					modifier = terrible_measures_5
+					days = 360
+				}
+			}
+			if = {
+				limit = { has_modifier = terrible_measures_5 }
+				add_modifier = {
+					modifier = terrible_measures_6
+					days = 360
+				}
+			}
+			if = {
+				limit = { has_modifier = terrible_measures_6 }
+				add_modifier = {
+					modifier = terrible_measures_7
+					days = 360
+				}
+			}
+			if = {
+				limit = { has_modifier = terrible_measures_7 }
+				add_modifier = {
+					modifier = terrible_measures_8
+					days = 360
+				}
+			}
+		}
+	}
+
+	option = {
+		name = CURSES
+	}
+}
+
+# Purge of Contagion
+planet_event = {
+	id = newfrontiers_decision_event.39
+	title = "newfrontiers_decision_event.39.name"
+	desc = "newfrontiers_decision_event.39.desc"
+	picture = GFX_evt_necrophage
+	location = ROOT
+	is_triggered_only = yes
+	show_sound = event_yellow_alert
+	
+	is_triggered_only = yes
+	
+	immediate = {
+		while = {
+			limit = {
+				count_owned_pop = {
+					limit = { 
+						OR = {
+							pop_has_trait = trait_infected
+							pop_has_trait = trait_corrupted
+						}
+					}
+					count > 0
+				}
+			}
+			random_owned_pop = {
+				limit = {
+					OR = {
+						pop_has_trait = trait_infected
+						pop_has_trait = trait_corrupted
+					}
+				}
+				kill_pop = yes
+			}
+		}
+	}
+
+	option = {
+		name = GOOD
+	}
+}
+
+planet_event = {
+	id = newfrontiers_decision_event.40
+	title = "newfrontiers_decision_event.40.name"
+	desc = "newfrontiers_decision_event.40.desc"
+	picture = GFX_evt_alien_propaganda
+	location = ROOT
+	is_triggered_only = yes
+	show_sound = event_yellow_alert
+	
+	is_triggered_only = yes
+	
+	immediate = {
+		while = {
+			limit = {
+				count_owned_pop = {
+					limit = { 
+						OR = {
+							pop_has_trait = trait_infected
+							pop_has_trait = trait_corrupted
+						}
+					}
+					count > 1
+				}
+			}
+			random_owned_pop = {
+				limit = {
+					OR = {
+						pop_has_trait = trait_infected
+						pop_has_trait = trait_corrupted
+					}
+				}
+				kill_pop = yes
+			}
+		}
+	}
+
+	option = {
+		name = WORRYING
+	}
+}
+
+# Rejection
+planet_event = {
+	id = newfrontiers_decision_event.41
+	title = "newfrontiers_decision_event.41.name"
+	desc = "newfrontiers_decision_event.41.desc"
+	picture = GFX_evt_sapient_AI
+	location = ROOT
+	is_triggered_only = yes
+	show_sound = event_construction
+	
+	is_triggered_only = yes
+	
+	immediate = {
+		while = {
+			limit = {
+				count_owned_pop = {
+					limit = { 
+						OR = {
+							pop_has_trait = trait_infected
+							pop_has_trait = trait_corrupted
+						}
+					}
+					count > 0
+				}
+			}
+			random_owned_pop = {
+				limit = {
+					OR = {
+						pop_has_trait = trait_infected
+						pop_has_trait = trait_corrupted
+					}
+				}
+				kill_pop = yes
+			}
+		}
+	}
+
+	option = {
+		name = OK
+	}
+}
+
+planet_event = {
+	id = newfrontiers_decision_event.42
+	title = "newfrontiers_decision_event.42.name"
+	desc = "newfrontiers_decision_event.42.desc"
+	picture = GFX_evt_sapient_AI
+	location = ROOT
+	is_triggered_only = yes
+	show_sound = event_construction
+	
+	is_triggered_only = yes
+	
+	immediate = {
+		while = {
+			limit = {
+				count_owned_pop = {
+					limit = { 
+						OR = {
+							pop_has_trait = trait_infected
+							pop_has_trait = trait_corrupted
+						}
+					}
+					count > 1
+				}
+			}
+			random_owned_pop = {
+				limit = {
+					OR = {
+						pop_has_trait = trait_infected
+						pop_has_trait = trait_corrupted
+					}
+				}
+				kill_pop = yes
+			}
+		}
+	}
+
+	option = {
+		name = OK
 	}
 }

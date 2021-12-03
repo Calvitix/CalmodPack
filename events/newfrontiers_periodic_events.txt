@@ -1,6 +1,6 @@
 # RS New Frontiers File
 #
-# Last Update : 03/11/2021
+# Last Update : 02/12/2021
 #
 # 
 #
@@ -61,7 +61,6 @@ planet_event = {
 	}
 
 }
-
 
 ### Climate Change ###
 
@@ -1073,6 +1072,41 @@ planet_event = {
 	}
 }
 
+# Aggressive Flora
+planet_event = {
+	id = newfrontiers_periodic_event.67
+	hide_window = yes
+	
+	is_triggered_only = yes
+	
+	immediate = {
+		if = {
+			limit = { has_owner = yes }
+			planet_event = { id = newfrontiers_periodic_event.68 }
+		}
+		else = {
+			add_aggressive_flora = yes
+		}
+	}
+}
+
+# Aggressive Flora (Owner)
+planet_event = {
+	id = newfrontiers_periodic_event.68
+	title = "newfrontiers_periodic_event.68.name"
+	desc = "newfrontiers_periodic_event.68.desc"
+	picture = GFX_evt_aggressive_flora
+	show_sound = event_air_raid_siren
+	location = ROOT
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = UNFORTUNATE
+		add_aggressive_flora = yes
+	}
+}
+
 # Gatekeeper - Periodic Events
 event = {
 	id = newfrontiers_periodic_event.100
@@ -1100,6 +1134,21 @@ event = {
 					is_planet_class = pc_gaia
 				}
 				NOT = { has_planet_flag = periodic_event } 		
+			}
+			weights = {
+				base = 1
+				modifier = { 
+					add =  10
+					is_extreme_subclass = yes
+				}
+				modifier = { 
+					add =  5
+					has_modifier = "death_world"
+				}
+				modifier = { 
+					add =  5
+					is_planet_subclass = yes
+				}
 			}
 			random_list = {
 				1 = {
@@ -1702,7 +1751,35 @@ event = {
 					}
 					planet_event = { id = newfrontiers_periodic_event.65 days = 30 random = 300 }
 				}
-				68 = {
+				2 = {
+					#Aggressive Flora
+					modifier = {
+						factor = 5
+						has_modifier = "megaflora_world"
+					}
+					modifier = {
+						factor = 3
+						has_modifier = "forest_world"
+					}
+					modifier = {
+						factor = 2
+						has_modifier = "death_world"
+					}
+					modifier = {
+						factor = 0
+						NOT = { has_modifier = "titanic_life" }
+					}
+					modifier = {
+						factor = 0
+						NOR = {
+							is_planet_class = pc_tropical
+							is_planet_class = pc_continental
+							is_planet_class = pc_gaia
+						}
+					}
+					planet_event = { id = newfrontiers_periodic_event.67 days = 30 random = 300 }
+				}
+				66 = {
 					#Null
 				}
 			}

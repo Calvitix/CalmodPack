@@ -6,6 +6,7 @@
 # Merge with NSC  28/11/2021
 # Modified by Calvitix 15/05/2021
 # Merge with Starnet AI 24/11/2021
+# Merge with Starnet AI for NSC 02/12/2021
 # Merge with Starbase Upgrade  11/11/2021
 
 #Calvitix Modifs - to change the values of module (less alloys,..)
@@ -184,12 +185,12 @@ anchorage = {
 	}
 
 	country_modifier = {
-		country_naval_cap_add = 10 # 15 # 4  #NSC
+		country_naval_cap_add = 10 # 15 # 4  #NSC #Calvitix change
 	}
 
 	triggered_country_modifier = {
 		potential = { has_starbase_building = naval_logistics_office }
-		country_naval_cap_add = 10 #2   #NSC
+		country_naval_cap_add = 10 #2   #NSC #Calvitix change
 	}
 
 	ai_build_at_chokepoint = yes
@@ -239,16 +240,18 @@ anchorage = {
 		}
 		modifier = {
 			factor = 0
-			owner = { used_naval_capacity_percent < 0.7 } #0.9
+			owner = { used_naval_capacity_percent < 0.7 }
 		}
 		modifier = {
 			factor = 0
 			has_starbase_module = asteroid_mining
 			years_passed < 70
-			owner = { resource_stockpile_compare = {
-				resource = minerals
-				value < 1000
-			} }
+			owner = { 
+				resource_stockpile_compare = {
+					resource = minerals
+					value < 1000
+				} 
+			}
 		}
 ###		
 	}
@@ -287,16 +290,16 @@ gun_battery = {
 	}
 
 	station_modifier = {  #disabled by NSC (or Calvitix)
-		#ship_hull_mult = 0.10
-		#ship_armor_mult = 0.10
-		#starbase_trade_protection_range_add = 1
-		starbase_trade_protection_add = 3
+		ship_hull_mult = 0.10
+		ship_armor_mult = 0.10
+		#starbase_trade_protection_range_add = 1 #Calvitix change
+		starbase_trade_protection_add = 5
 	}
 
 	ai_build_at_chokepoint = yes
-	ai_build_outside_chokepoint = yes
+	ai_build_outside_chokepoint = yes #Calvitix change
 	ai_weight = {
-		weight = 80 #10
+		weight = 80 #20 #Calvitix change
 		modifier = {
 			factor = 2
 			exists = owner
@@ -356,16 +359,16 @@ missile_battery = {
 	}
 
 	station_modifier = {
-#		ship_hull_mult = 0.10
-#		ship_armor_mult = 0.10
-#		starbase_trade_protection_range_add = 1
-		starbase_trade_protection_add = 3 #5
+		ship_hull_mult = 0.10
+		ship_armor_mult = 0.10
+#		starbase_trade_protection_range_add = 1 #Calvitix change
+		starbase_trade_protection_add = 5
 	}
 
 	ai_build_at_chokepoint = yes
-	ai_build_outside_chokepoint = yes
+	ai_build_outside_chokepoint = yes #Calvitix change
 	ai_weight = {
-		weight = 70 #10
+		weight = 70 #10 #Calvitix change
 		modifier = {
 			factor = 2
 			exists = owner
@@ -423,7 +426,7 @@ pd_battery = {
 	}
 	
 	ai_build_at_chokepoint = yes
-	ai_build_outside_chokepoint = yes
+	ai_build_outside_chokepoint = yes #Calvitix change
 	
 	potential = { 
 		exists = owner 
@@ -488,11 +491,14 @@ large_battery = {
 	}
 	
 	station_modifier = { 
-		starbase_trade_protection_add = 3
+		ship_hull_mult = 0.10
+		ship_armor_mult = 0.10
+		starbase_trade_protection_range_add = 1
+		starbase_trade_protection_add = 5
 	}
 	
 	ai_build_at_chokepoint = yes
-	ai_build_outside_chokepoint = yes
+	ai_build_outside_chokepoint = yes #Calvitix change
 	
 	potential = { 
 		has_starbase_size >= starbase_starfortress
@@ -575,16 +581,16 @@ hangar_bay = {
 	}
 
 	station_modifier = {
-#		ship_hull_mult = 0.10
+#		ship_hull_mult = 0.10 #Calvitix change
 #		ship_armor_mult = 0.10
 #		starbase_trade_protection_range_add = 1
-		starbase_trade_protection_add = 5
+		starbase_trade_protection_add = 10
 	}
 
 	ai_build_at_chokepoint = no
 	ai_build_outside_chokepoint = yes
 	ai_weight = {
-		weight = 100 #10
+		weight = 150 #30
 		modifier = {
 			factor = 3
 			exists = owner
@@ -687,7 +693,7 @@ xl_battery = {
 	}
 
 	ai_weight = {
-		weight = 180
+		weight = 180 #50
 #CALVITIX
 		modifier = {
 			factor = 0.6
@@ -822,7 +828,7 @@ shield_module = {
 			alloys = 75
 		}
 
-		upkeep = { energy = 2 }
+		upkeep = { energy = 2 } #1
 	}
 	station_modifier = { 
 		ship_shield_add = 3000
@@ -835,7 +841,7 @@ shield_module = {
 		solar_system = { NOT = { is_star_class = sc_pulsar } } #not for Pulsar Systems
 	}
 	ai_weight = {
-		weight = 100
+		weight = 125 #0
 #CALVITIX
 		modifier = { factor = 0.75 count_starbase_modules = { type = shield_module count > 0 } }
 		modifier = { factor = 0.75 count_starbase_modules = { type = shield_module count > 1 } }
@@ -890,7 +896,7 @@ armor_module = {
 		has_starbase_size >= starbase_starport #not for outposts
 	}
 	ai_weight = {
-		weight = 105
+		weight = 130 #0
 #CALVITIX
 		modifier = { factor = 0.75 count_starbase_modules = { type = armor_module count > 0 } }
 		modifier = { factor = 0.75 count_starbase_modules = { type = armor_module count > 1 } }
@@ -1099,6 +1105,7 @@ space_power_plant = {
 	ai_build_at_chokepoint = no
 	ai_build_outside_chokepoint = yes
 	ai_weight = {
+#Calvitix
 		weight = 50
 		modifier = { factor = 5 has_starbase_size < starbase_starport }
 		modifier = { factor = 4 count_starbase_modules = { type = space_power_plant count > 1 } }
@@ -1106,6 +1113,32 @@ space_power_plant = {
 		modifier = { factor = 2 count_starbase_modules = { type = space_power_plant count > 3 } }
 		modifier = { factor = 1 count_starbase_modules = { type = space_power_plant count > 4 } }
 		modifier = { factor = 0 count_starbase_modules = { type = space_power_plant count > 5 } }
+###
+#Starnet AI NSC
+		modifier = {
+			factor = 0
+			not = { has_starbase_module = orbital_lab }
+			owner = { needs_shipyard = yes }
+		}	
+		modifier = {
+			factor = 0
+			has_starbase_module = shipyard
+			count_starbase_modules = {
+				type = shipyard
+				count < 2
+			}
+		}
+		modifier = {
+			factor = 0
+			owner = { used_naval_capacity_percent > 0.65 }
+			not = { has_starbase_module = space_power_plant }
+		}
+		modifier = {
+			factor = 0
+			has_starbase_module = asteroid_mining
+			years_passed < 70
+		}
+###		
 	}
 }
 
@@ -1151,8 +1184,14 @@ asteroid_mining = {
 	ai_build_at_chokepoint = yes
 	ai_build_outside_chokepoint = yes
 	ai_weight = {
-		weight = 50
+		weight = 75 #50, 800 in Starnet NSC
+#Calvitix		
 		modifier = { factor = 5 has_starbase_size < starbase_starport }
+		modifier = { 
+			factor = 500 
+			owner = { resource_income_compare = {	resource = minerals	value < 30	} }
+			owner = { resource_stockpile_compare = {	resource = minerals	value < 1000 } }
+		}
 		modifier = { factor = 4 count_starbase_modules = { type = asteroid_mining count > 1 } }
 		modifier = { factor = 3 count_starbase_modules = { type = asteroid_mining count > 2 } }
 		modifier = { factor = 2 count_starbase_modules = { type = asteroid_mining count > 3 } }
@@ -1165,19 +1204,19 @@ asteroid_mining = {
 			owner = { 
 			resource_stockpile_compare = {
 				resource = minerals
-				value > 5000
+				value > 2500
 			} }
 			owner = { 
 			resource_income_compare = {
 				resource = minerals
-				value > 200
+				value > 150
 				} }
 			}
 		}
 	}
 }
 
-orbital_lab = {
+orbital_lab = { #Disabled in last NSC Version, but keeped by Calvitix
 	section = "ANCHORAGE_STARBASE_SECTION"
 	icon = "GFX_starbase_starbase_lab"
 	construction_days = 120
@@ -1209,11 +1248,12 @@ orbital_lab = {
 		produces = { trigger = { has_starbase_building = orbital_engineering_support_lab } engineering_research = 2 }
 		upkeep = { energy = 4 alloys = 1 }
 	}	
-	ai_build_at_chokepoint = no
+	ai_build_at_chokepoint = yes
 	ai_build_outside_chokepoint = yes
 	ai_weight = {
-		weight = 120
+		weight = 300
 #CALVITIX
+		modifier = { factor = 4	owner = { has_monthly_income = { resource = physics_research value < 35 } } }
 		modifier = { factor = 0.75 count_starbase_modules = { type = orbital_lab count > 0 } }
 		modifier = { factor = 0.75 count_starbase_modules = { type = orbital_lab count > 1 } }
 		modifier = { factor = 0.9 count_starbase_modules = { type = orbital_lab count > 2 } }
