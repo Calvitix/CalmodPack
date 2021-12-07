@@ -2,7 +2,7 @@
 #
 # Calvitix Check 3.2
 #
-# Last uptade Starnet AI 16/09/2021
+# Last uptade Starnet AI 16.09.2021
 #
 #An event  which tries to make AI doomstack their fleets
 
@@ -25,302 +25,302 @@ country_event = {
 				is_at_war = no
 			}
     
-    random_owned_fleet = {
-        limit = {
-            is_ship_class = shipclass_transport
-            is_fleet_idle = yes
-        }
-        set_timed_fleet_flag = {
-            flag = rallypoint_armies
-            days = 3
-        }
-        closest_system = {
-            min_steps = 1
-            max_steps = 5
-            use_bypasses = no
-            limit = {
-                exists = owner
-                owner = {
-                    is_same_value = root.owner
-                }
-                starbase = {
-                    has_starbase_module = shipyard
-                }
-            }
-            set_timed_star_flag = {
-                flag = rallypoint_army
-                days = 3
-            }
-        }
-    }
+		    random_owned_fleet = {
+		        limit = {
+		            is_ship_class = shipclass_transport
+		            is_fleet_idle = yes
+		        }
+		        set_timed_fleet_flag = {
+		            flag = rallypoint_armies
+		            days = 3
+		        }
+		        closest_system = {
+		            min_steps = 1
+		            max_steps = 5
+		            use_bypasses = no
+		            limit = {
+		                exists = owner
+		                owner = {
+		                    is_same_value = root.owner
+		                }
+		                starbase = {
+		                    has_starbase_module = shipyard
+		                }
+		            }
+		            set_timed_star_flag = {
+		                flag = rallypoint_army
+		                days = 3
+		            }
+		        }
+		    }
 
-    random_owned_fleet = {
-        limit = {
+		    random_owned_fleet = {
+		        limit = {
 		            fleet_power > 50 # 500 #Calvitix Fleet Power Rebase, due to Defines to avoid 1 FP
-            is_ship_class = shipclass_military
-        }
-        weights = {
-            base = 1
+		            is_ship_class = shipclass_military
+		        }
+		        weights = {
+		            base = 1
 		            modifier = {
 		                add = 10
 		                fleet_power > 100 # 2000
 		            }
-            modifier = {
-                add = 10
-                fleet_power > 500 # 2000
-            }
-            modifier = {
-                add = 1000
-                fleet_power > 2000 #10000
-            }
-        }
+		            modifier = {
+		                add = 10
+		                fleet_power > 500 # 2000
+		            }
+		            modifier = {
+		                add = 1000
+		                fleet_power > 2000 #10000
+		            }
+		        }
+		
+		
+		
+		        if = {
+		            limit = {
+		                has_fleet_order = follow_order
+		            }
+					if = { limit = { has_global_flag = edai_logging	} log = "FIX_Fleet: Cancel Fleet follow Orders on fleet   [This.GetName] for [Owner.GetName]" }			
+					clear_orders = yes
+					clear_fleet_actions = this
+		        }
+		        set_timed_fleet_flag = {
+		            flag = rallypoint_f
+		            days = 3
+		        }
+		        closest_system = {
+		            min_steps = 1
+		            max_steps = 5
+		            use_bypasses = no
+		            limit = {
+		                exists = owner
+		                owner = {
+		                    is_same_value = root.owner
+		                }
+		                exists = starbase
+		                starbase = {
+		                    has_starbase_module = shipyard
+		                }
+		            }
+		            set_timed_star_flag = {
+		                flag = rallypoint
+		                days = 3
+		            }
+		        }
+		    }
 
 
+		    random_owned_fleet = {
+		        limit = {
+		            fleet_power > 1000 #5000
+		            is_ship_class = shipclass_military
+		        }
+		        weights = {
+		            base = 1
+		            modifier = {
+		                add = 10
+		                fleet_power > 2000 # 10000
+		            }
+		            modifier = {
+		                add = 1000
+		                fleet_power > 8000 #40000
+		            }
+		        }
+		        if = {
+		            limit = {
+		                has_fleet_order = follow_order
+		            }
+					clear_orders = yes
+					clear_fleet_actions = this			
+					if = { limit = { has_global_flag = edai_logging	} log = "FIX_Fleet: Cancel Fleet follow Orders FP >1000 on fleet   [This.GetName] for [Owner.GetName]" }			
+		        }
+		        set_timed_fleet_flag = {
+		            flag = rallypoint_f
+		            days = 3
+		        }
+		        closest_system = {
+		            limit = {
+		                exists = owner
+		                owner = {
+		                    is_same_value = root.owner
+		                }
+						starbase = {
+		                    has_starbase_module = shipyard
+		                }
+		            }
+		            set_timed_star_flag = {
+		                flag = rallypoint
+		                days = 3
+		            }
+		        }
+		    }
+		
+		
+		    random_owned_fleet = {
+		        limit = {
+		            fleet_power > 8000 #40000
+		            is_ship_class = shipclass_military
+		        }
+		        weights = {
+		            base = 1
+		            modifier = {
+		                add = 10
+		                fleet_power > 20000 #100000
+		            }
+		            modifier = {
+		                add = 1000
+		                fleet_power > 60000 #300000
+		            }
+		        }
+		        if = {
+		            limit = {
+		                has_fleet_order = follow_order
+		            }
+		        clear_orders = yes
+		        clear_fleet_actions = this
+				if = { limit = { has_global_flag = edai_logging	} log = "FIX_Fleet: Cancel Fleet follow Orders FP > 8000 on fleet   [This.GetName] for [Owner.GetName]" }			
+		        }
+		        set_timed_fleet_flag = {
+		            flag = rallypoint_f
+		            days = 3
+		        }
+		        closest_system = {
+		            limit = {
+		                exists = owner
+		                owner = {
+		                    is_same_value = root.owner
+		                }
+		                exists = starbase
+		                starbase = {
+		                    has_starbase_module = shipyard
+		                }
+		            }
+		            set_timed_star_flag = {
+		                flag = rallypoint
+		                days = 3
+		            }
+		        }
+		    }
+		
+			every_owned_fleet = {
+				limit = {
+		            is_ship_class = shipclass_transport
+		            is_fleet_idle = yes
+		            not = {
+		                has_fleet_flag = rallypoint_armies
+		            }
+		        }
+		        clear_orders = yes
+		        clear_fleet_actions = this
+				queue_actions = {
+		
+		            find_closest_system = {
+		                trigger = {
+		                    id = str_doomstack.rallypoint.armies
+		                    has_star_flag = rallypoint_army
+		                    is_owned_by = root
+		                }
+		                found_system = { 
+		                    move_to = this
+							
+		                }
+		            }
+		        }
+			}
 
-        if = {
-            limit = {
-                has_fleet_order = follow_order
-            }
-			if = { limit = { has_global_flag = edai_logging	} log = "FIX_Fleet: Cancel Fleet follow Orders on fleet   [This.GetName] for [Owner.GetName]" }			
-			clear_orders = yes
-			clear_fleet_actions = this
-        }
-        set_timed_fleet_flag = {
-            flag = rallypoint_f
-            days = 3
-        }
-        closest_system = {
-            min_steps = 1
-            max_steps = 5
-            use_bypasses = no
-            limit = {
-                exists = owner
-                owner = {
-                    is_same_value = root.owner
-                }
-                exists = starbase
-                starbase = {
-                    has_starbase_module = shipyard
-                }
-            }
-            set_timed_star_flag = {
-                flag = rallypoint
-                days = 3
-            }
-        }
-    }
-
-
-    random_owned_fleet = {
-        limit = {
-            fleet_power > 1000 #5000
-            is_ship_class = shipclass_military
-        }
-        weights = {
-            base = 1
-            modifier = {
-                add = 10
-                fleet_power > 2000 # 10000
-            }
-            modifier = {
-                add = 1000
-                fleet_power > 8000 #40000
-            }
-        }
-        if = {
-            limit = {
-                has_fleet_order = follow_order
-            }
-			clear_orders = yes
-			clear_fleet_actions = this			
-			if = { limit = { has_global_flag = edai_logging	} log = "FIX_Fleet: Cancel Fleet follow Orders FP >1000 on fleet   [This.GetName] for [Owner.GetName]" }			
-        }
-        set_timed_fleet_flag = {
-            flag = rallypoint_f
-            days = 3
-        }
-        closest_system = {
-            limit = {
-                exists = owner
-                owner = {
-                    is_same_value = root.owner
-                }
-				starbase = {
-                    has_starbase_module = shipyard
-                }
-            }
-            set_timed_star_flag = {
-                flag = rallypoint
-                days = 3
-            }
-        }
-    }
-
-
-    random_owned_fleet = {
-        limit = {
-            fleet_power > 8000 #40000
-            is_ship_class = shipclass_military
-        }
-        weights = {
-            base = 1
-            modifier = {
-                add = 10
-                fleet_power > 20000 #100000
-            }
-            modifier = {
-                add = 1000
-                fleet_power > 60000 #300000
-            }
-        }
-        if = {
-            limit = {
-                has_fleet_order = follow_order
-            }
-        clear_orders = yes
-        clear_fleet_actions = this
-		if = { limit = { has_global_flag = edai_logging	} log = "FIX_Fleet: Cancel Fleet follow Orders FP > 8000 on fleet   [This.GetName] for [Owner.GetName]" }			
-        }
-        set_timed_fleet_flag = {
-            flag = rallypoint_f
-            days = 3
-        }
-        closest_system = {
-            limit = {
-                exists = owner
-                owner = {
-                    is_same_value = root.owner
-                }
-                exists = starbase
-                starbase = {
-                    has_starbase_module = shipyard
-                }
-            }
-            set_timed_star_flag = {
-                flag = rallypoint
-                days = 3
-            }
-        }
-    }
-
-	every_owned_fleet = {
-		limit = {
-            is_ship_class = shipclass_transport
-            is_fleet_idle = yes
-            not = {
-                has_fleet_flag = rallypoint_armies
-            }
-        }
-        clear_orders = yes
-        clear_fleet_actions = this
-		queue_actions = {
-
-            find_closest_system = {
-                trigger = {
-                    id = str_doomstack.rallypoint.armies
-                    has_star_flag = rallypoint_army
-                    is_owned_by = root
-                }
-                found_system = { 
-                    move_to = this
-					
-                }
-            }
-        }
-	}
-
-	every_owned_fleet = {
-		limit = {
-            is_ship_class = shipclass_military
-            fleet_power > 50
-            not = {
-                has_fleet_flag = rallypoint_f
-            }
-        }
-        clear_orders = yes
-        clear_fleet_actions = this
-		queue_actions = {
-
-            find_closest_system = {
-                trigger = {
-                    id = str_doomstack.rallypoint
-                    has_star_flag = rallypoint
-                    is_owned_by = root
-                }
-                found_system = { 
-                    move_to = this
-                }
-            }
-        }
-		if = { limit = { has_global_flag = edai_logging	} log = "FIX_Fleet: Setting Rally point Order on fleet   [This.GetName] for [Owner.GetName]" }
-	}
-    }
-    else_if ={
-        limit = {
-            is_ai = yes
-            is_country_type = default
-            has_country_flag = str_normal_empire
-            is_at_war = yes
-        }
-
-        random_owned_fleet = {
-            limit = {
+			every_owned_fleet = {
+				limit = {
+		            is_ship_class = shipclass_military
+		            fleet_power > 50
+		            not = {
+		                has_fleet_flag = rallypoint_f
+		            }
+		        }
+		        clear_orders = yes
+		        clear_fleet_actions = this
+				queue_actions = {
+		
+		            find_closest_system = {
+		                trigger = {
+		                    id = str_doomstack.rallypoint
+		                    has_star_flag = rallypoint
+		                    is_owned_by = root
+		                }
+		                found_system = { 
+		                    move_to = this
+		                }
+		            }
+		        }
+				if = { limit = { has_global_flag = edai_logging	} log = "FIX_Fleet: Setting Rally point Order on fleet   [This.GetName] for [Owner.GetName]" }
+			}
+		}
+	    else_if ={
+	        limit = {
+	            is_ai = yes
+	            is_country_type = default
+	            has_country_flag = str_normal_empire
+	            is_at_war = yes
+	        }
+	
+	        random_owned_fleet = {
+	            limit = {
 	                fleet_power > 50 #1000
-                is_ship_class = shipclass_military
-            }
-            weights = {
-                base = 1
-                modifier = {
-                    add = 10
-                    fleet_power > 200 #2000
-                }
-                modifier = {
-                    add = 10
-                    fleet_power > 400 #2000
-                }
-                modifier = {
-                    add = 1000
-                    fleet_power > 2000 #10000
-                }
-                modifier = {
-                    add = 100000
-                    fleet_power > 20000 #80000
-                }
-            }
-            set_timed_fleet_flag = {
-                flag = str_flagman
-					days = 2
-            }
-			#log = "Flotte : [this.GetName] is str_flagman for [owner.GetName]"
-			if = { limit = { has_global_flag = edai_logging	} log = "FIX_Fleet: Str Flagman set on fleet   [This.GetName] for [Owner.GetName]" }
-				
-            if = {
-            limit = {
-                has_fleet_order = follow_order
-            }
-            clear_orders = yes
-			clear_fleet_actions = this
-            }
-            owner = {
-                every_owned_fleet = {
-                    limit = {
-                        not = {
-                            has_fleet_flag = str_flagman
-                        }
-                        has_hp_percentage > 0.95
-                        is_ship_class = shipclass_military
-                        fleet_power > 700
-                        is_fleet_idle = yes
-                    }
-					auto_follow_fleet = {
-                    target = prevprev
-                    attack_fleet = no
+	                is_ship_class = shipclass_military
+	            }
+	            weights = {
+	                base = 1
+	                modifier = {
+	                    add = 10
+	                    fleet_power > 200 #2000
+	                }
+	                modifier = {
+	                    add = 10
+	                    fleet_power > 400 #2000
+	                }
+	                modifier = {
+	                    add = 1000
+	                    fleet_power > 2000 #10000
+	                }
+	                modifier = {
+	                    add = 100000
+	                    fleet_power > 20000 #80000
+	                }
+	            }
+	            set_timed_fleet_flag = {
+	                flag = str_flagman
+						days = 2
+	            }
+				#log = "Flotte : [this.GetName] is str_flagman for [owner.GetName]"
+				if = { limit = { has_global_flag = edai_logging	} log = "FIX_Fleet: Str Flagman set on fleet   [This.GetName] for [Owner.GetName]" }
+					
+	            if = {
+	            limit = {
+	                has_fleet_order = follow_order
+	            }
+	            clear_orders = yes
+				clear_fleet_actions = this
+	            }
+	            owner = {
+	                every_owned_fleet = {
+	                    limit = {
+	                        not = {
+	                            has_fleet_flag = str_flagman
+	                        }
+	                        has_hp_percentage > 0.95
+	                        is_ship_class = shipclass_military
+	                        fleet_power > 700
+	                        is_fleet_idle = yes
+	                    }
+						auto_follow_fleet = {
+	                    target = prevprev
+	                    attack_fleet = no
+						}
+						if = { limit = { has_global_flag = edai_logging	} log = "FIX_Fleet: Setting follow Order on fleet   [This.GetName] for [Owner.GetName]" }
 					}
-					if = { limit = { has_global_flag = edai_logging	} log = "FIX_Fleet: Setting follow Order on fleet   [This.GetName] for [Owner.GetName]" }
-				}
-            }
-        }
-    }
+	            }
+	        }
+	    }
 
 
         if = {

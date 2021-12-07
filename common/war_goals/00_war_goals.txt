@@ -1,8 +1,9 @@
 # Original File
 #
-# Calvitix Check 3.2  22/11/2021
+# Calvitix Check 3.2  22.11.2021
 #
-# Merge with STARNET AI 16/09/2021
+# Merge with STARNET AI 16.09.2021
+# Merge with Venture Megacorp 06.12.2021
 #
 # See wg_example.txt for an explanation
 
@@ -107,6 +108,25 @@ wg_end_threat = {
 		always = yes
 	}
 
+	on_wargoal_set = {
+		random_war = {
+			limit = {
+				using_war_goal = {
+					type = wg_end_threat
+					owner = root
+				}
+			}
+			every_war_participant = {
+				limit = {
+					has_country_flag = empire_fed_no_war_subject
+				}
+				prev = {
+					remove_war_participant = prev
+				}
+			}
+		}
+	}
+
 	ai_weight = {
 		weight = 100
 	}
@@ -136,6 +156,25 @@ wg_end_threat_swarm = {
 		always = yes
 	}
 
+	on_wargoal_set = {
+		random_war = {
+			limit = {
+				using_war_goal = {
+					type = wg_end_threat
+					owner = root
+				}
+			}
+			every_war_participant = {
+				limit = {
+					has_country_flag = empire_fed_no_war_subject
+				}
+				prev = {
+					remove_war_participant = prev
+				}
+			}
+		}
+	}
+
 	ai_weight = {
 		weight = 100
 	}
@@ -163,6 +202,25 @@ wg_end_threat_assimilators = {
 	}
 	possible = {
 		always = yes
+	}
+
+	on_wargoal_set = {
+		random_war = {
+			limit = {
+				using_war_goal = {
+					type = wg_end_threat
+					owner = root
+				}
+			}
+			every_war_participant = {
+				limit = {
+					has_country_flag = empire_fed_no_war_subject
+				}
+				prev = {
+					remove_war_participant = prev
+				}
+			}
+		}
 	}
 
 	ai_weight = {
@@ -354,6 +412,25 @@ wg_assimilation_vs_fe = {
 		}
 	}
 
+	on_wargoal_set = {
+		random_war = {
+			limit = {
+				using_war_goal = {
+					type = wg_end_threat
+					owner = root
+				}
+			}
+			every_war_participant = {
+				limit = {
+					has_country_flag = empire_fed_no_war_subject
+				}
+				prev = {
+					remove_war_participant = prev
+				}
+			}
+		}
+	}
+
 	ai_weight = {
 		weight = 100
 	}
@@ -389,6 +466,25 @@ wg_cleansing_vs_fe = {
 		}
 	}
 
+	on_wargoal_set = {
+		random_war = {
+			limit = {
+				using_war_goal = {
+					type = wg_end_threat
+					owner = root
+				}
+			}
+			every_war_participant = {
+				limit = {
+					has_country_flag = empire_fed_no_war_subject
+				}
+				prev = {
+					remove_war_participant = prev
+				}
+			}
+		}
+	}
+
 	ai_weight = {
 		weight = 100
 	}
@@ -420,6 +516,25 @@ wg_absorption_vs_fe = {
 				is_active_resolution = resolution_emperor_pax_galactica
 				is_galactic_community_member = yes
 				from = { is_galactic_community_member = yes }
+			}
+		}
+	}
+
+	on_wargoal_set = {
+		random_war = {
+			limit = {
+				using_war_goal = {
+					type = wg_end_threat
+					owner = root
+				}
+			}
+			every_war_participant = {
+				limit = {
+					has_country_flag = empire_fed_no_war_subject
+				}
+				prev = {
+					remove_war_participant = prev
+				}
 			}
 		}
 	}
@@ -500,6 +615,25 @@ wg_plunder = {
 		hidden_effect = { from = { add_modifier = { modifier = raided days = 3600 } } }
 	}
 
+	on_wargoal_set = {
+		random_war = {
+			limit = {
+				using_war_goal = {
+					type = wg_end_threat
+					owner = root
+				}
+			}
+			every_war_participant = {
+				limit = {
+					has_country_flag = empire_fed_no_war_subject
+				}
+				prev = {
+					remove_war_participant = prev
+				}
+			}
+		}
+	}
+
 	ai_weight = {
 		weight = 100
 	}
@@ -546,6 +680,25 @@ wg_colossus = {
 				is_active_resolution = resolution_emperor_pax_galactica
 				is_galactic_community_member = yes
 				from = { is_galactic_community_member = yes }
+			}
+		}
+	}
+
+	on_wargoal_set = {
+		random_war = {
+			limit = {
+				using_war_goal = {
+					type = wg_end_threat
+					owner = root
+				}
+			}
+			every_war_participant = {
+				limit = {
+					has_country_flag = empire_fed_no_war_subject
+				}
+				prev = {
+					remove_war_participant = prev
+				}
 			}
 		}
 	}
@@ -600,6 +753,25 @@ wg_end_threat_colossus = {
 		}
 	}
 
+	on_wargoal_set = {
+		random_war = {
+			limit = {
+				using_war_goal = {
+					type = wg_end_threat
+					owner = root
+				}
+			}
+			every_war_participant = {
+				limit = {
+					has_country_flag = empire_fed_no_war_subject
+				}
+				prev = {
+					remove_war_participant = prev
+				}
+			}
+		}
+	}
+
 	ai_weight = {
 		weight = 100
 	}
@@ -627,9 +799,13 @@ wg_subjugation = {
 		}
 		NOR = {
 			has_valid_civic = civic_inwards_perfection
-			has_authority = auth_corporate
+			is_megacorp = yes
 		}
 		has_total_war_cb = no
+		NAND = {
+			is_galactic_emperor = yes
+			from = { is_galactic_community_member = yes }
+		}
 	}
 	possible = {
 		custom_tooltip = {
@@ -711,6 +887,25 @@ wg_subjugation = {
 		}
 	}
 
+	on_wargoal_set = {
+		random_war = {
+			limit = {
+				using_war_goal = {
+					type = wg_end_threat
+					owner = root
+				}
+			}
+			every_war_participant = {
+				limit = {
+					has_country_flag = empire_fed_no_war_subject
+				}
+				prev = {
+					remove_war_participant = prev
+				}
+			}
+		}
+	}
+
 	ai_weight = {
 		weight = 10
 		modifier = {
@@ -735,11 +930,15 @@ wg_tribute = {
 	surrender_acceptance = -75
 
 	potential = {
+		NOT = { is_megacorp = yes }
 		or = {
 			is_ai = no
 			years_passed > @str_ai_will_not_declare_war_until
 		}
-		NOT = { has_authority = auth_corporate }
+		NAND = {
+			is_galactic_emperor = yes
+			from = { is_galactic_community_member = yes }
+		}		
 		has_total_war_cb = no
 	}
 	possible = {
@@ -847,7 +1046,7 @@ wg_megacorp_subjugate = {
 
 
 	potential = {
-		has_authority = auth_corporate
+		is_megacorp = yes
 		has_total_war_cb = no
 		NAND = {
 			is_galactic_emperor = yes
@@ -1412,23 +1611,19 @@ wg_expel_corp = {
 		}
 	}
 	on_status_quo = {
-		hidden_effect = {
 			every_owned_planet = {
 				limit = { has_branch_office = from }
-				branch_office_owner = { add_resource = { energy = 1000 } }
+			hidden_effect = { branch_office_owner = { add_resource = { energy = 1000 } } }
 				close_branch_office = yes
 			}
-		}
 		custom_tooltip = wg_expel_corp_status_quo_effects
 	}
 	on_accept = {
-		hidden_effect = { 
 			every_owned_planet = {
 				limit = { has_branch_office = from }
 				close_branch_office = yes
-				owner = { add_resource = { energy = 1000 } }
+			hidden_effect = { owner = { add_resource = { energy = 1000 } } }
 			}
-		}
 		custom_tooltip = wg_expel_corp_effects
 	}
 
@@ -1436,7 +1631,6 @@ wg_expel_corp = {
 		weight = 10
 	}
 }
-
 
 wg_hostile_takeover = {
 	casus_belli = cb_hostile_takeover

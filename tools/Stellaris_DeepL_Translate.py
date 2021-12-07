@@ -407,11 +407,11 @@ def FrenchTranslate (mySearchString):
                            stdout=PIPE, stderr=PIPE) as p:
                     output, errors = p.communicate()
                 try :
-                    myfound = output.decode('latin-1')#.splitlines()
-                    myerrors = errors.decode('latin-1')  #utf-8
-                except Exception as e:
                     myfound = output.decode('utf-8')#.splitlines()
                     myerrors = errors.decode('utf-8')  #utf-8
+                except Exception as e:
+                    myfound = output.decode('latin-1')#.splitlines()
+                    myerrors = errors.decode('latin-1')  #utf-8
 
                     
                 #myfound = str(output)
@@ -950,6 +950,7 @@ def BtnScanErrorLog():
             myCountTexture5 = line.find(u'Duplicate texture')
             myCountTexture6 = line.find(u'Could not find mesh file')
             myCountTexture7 = line.find(u'is not compatible with mesh')
+            myCountTexture8 = line.find(u'Failed to load image')
 
 
             myCountAnimation = line.find(u'Couldn\'t find animation')
@@ -980,6 +981,8 @@ def BtnScanErrorLog():
             myCountToken10 = line.find(u'job_mining_')
             myCountToken11 = line.find(u'_apsr')   
             myCountToken12 = line.find(u'Failed to read key reference planet_apsr_buildings')
+            myCountToken13 = line.find(u'Malformed token: event_')
+
 
             myCountGfx = line.find(u'in file: "gfx/')
             myCountGfx2 = line.find(u'Couldn\'t find particle 3D object')
@@ -1139,6 +1142,8 @@ def BtnScanErrorLog():
                 print ('Ignoring')
             elif myCountTexture7 > -1:
                 print ('Ignoring')
+            elif myCountTexture8 > -1:
+                print ('Ignoring')
 
 
             elif myCountEntity > -1:
@@ -1172,6 +1177,9 @@ def BtnScanErrorLog():
                 print ('Ignoring')
             elif myCountToken12 > -1:
                 print ('Ignoring')
+            elif myCountToken13 > -1:
+                print ('Ignoring')
+                nbaddedlines = 1
 
             #GFX    
             elif myCountGfx > -1:
@@ -2004,6 +2012,11 @@ def BtnTranslate(StringToSearch='',StringReplace=''):
 
     filename = values['-TXTFILE-'].rstrip('\n')
     filenameref = values['-TXTDESTFILE-'].rstrip('\n')
+    filename_alt = filename.strip('"')
+    
+    if exists(filename_alt) : 
+        filename = filename_alt
+    new_filename = 'Translate_deepltrn.txt'    
     if not filename :
         #filename = u'D:\\Documents\\Paradox Interactive\\Stellaris\\mod\\frenchtranslationpack2.6\\localisation\\replace\\ethic_rebuild_l_french.yml'
             #	C:\Users\Francois\Desktop\Translate.txt       
@@ -2012,12 +2025,16 @@ def BtnTranslate(StringToSearch='',StringReplace=''):
         if not exists(filename) :
             filename = u'C:\\Users\\Francois\\Desktop\\Translate.txt'
             
+        if not exists(filename) :
+            filename = u'Translate.txt'
             
         #"C:\Users\billef\Desktop\Translate.txt"
     #if not filenameref :
         #   filenameref = u'D:\\Documents\\Paradox Interactive\\Stellaris\\mod\\frenchtranslationpack2.6\\localisation\\replace\\dummy.yml'
         #filenameref = u'D:\\Documents\\Paradox Interactive\\Stellaris\\mod\\frenchtranslationpack2.6\\localisation\\french\\l_french.yml'
     #searchcontent = values['-TXTDESTFILE-']
+    if exists(filename) :
+        
     new_filename = 'new.txt'
     findyml = filename.find('.')
     while findyml > -1:
@@ -2030,6 +2047,8 @@ def BtnTranslate(StringToSearch='',StringReplace=''):
         content = f.readlines()
     #lines = [line.rstrip('\n') for line in f]
     f.close
+    else:
+        content = filename.splitlines() 
 
     my_dest_list = list()
     already_labeled = list()
@@ -2040,7 +2059,7 @@ def BtnTranslate(StringToSearch='',StringReplace=''):
         for line in content :
             i = i + 1
             print (line)
-            TxtSource += line
+            TxtSource += line + '\n'
             window['-TXTFILE-'].update(TxtSource)            
             sg.Window.refresh
             
@@ -2086,26 +2105,26 @@ def BtnTranslate(StringToSearch='',StringReplace=''):
                                 mydeststring = line[:myCountStringBegin+1] + foundfrench + foundfrench_large + '\"\n'
                                 #foundfrench = StellarisImproveText(foundfrench)
                                 my_dest_list.append(mydeststring)
-                                TxtDest += mydeststring
+                                TxtDest += mydeststring #+'\n'
                                 window['-TXTDESTFILE-'].update(TxtDest)            
                                 
                     else:
                         my_dest_list.append(line)                
-                        TxtDest += line
+                        TxtDest += line +'\n'
                         window['-TXTDESTFILE-'].update(TxtDest)            
                 else:
                     my_dest_list.append(line)                
-                    TxtDest += line
+                    TxtDest += line +'\n'
                     window['-TXTDESTFILE-'].update(TxtDest)            
             else:
                 my_dest_list.append(line)
-                TxtDest += line
+                TxtDest += line + '\n'
                 window['-TXTDESTFILE-'].update(TxtDest)            
 
 
             if i > 25:
                 print("Temp Save Dest File")
-                TxtDest = str(my_dest_list)
+                TxtDestfile = str(my_dest_list)
                 fdest = open(new_filename,'w', encoding='utf8')
                 fdest.writelines(["%s" % item  for item in my_dest_list])
                 fdest.close
@@ -2116,7 +2135,7 @@ def BtnTranslate(StringToSearch='',StringReplace=''):
 
 
     finally:
-        TxtDest = str(my_dest_list)
+        TxtDestfile = str(my_dest_list)
 
         fdest = open(new_filename,'w', encoding='utf8')
         fdest.writelines(["%s" % item  for item in my_dest_list])
@@ -2150,9 +2169,9 @@ layout = [  [sg.Menu(menu_def, tearoff=True)],
             [sg.Button('Sort'), sg.Button('Comp. Fr/ENG'), sg.Button('SearchBON-MAL'),
              sg.Button('Translate'), sg.Button('ReplaceWord'), sg.Button('Scan ErrorLog'), sg.Button('Scan GameLog'), sg.Button('AnalyseSave')],
             #[sg.Text('Enter something on Row 2'), sg.InputText()],
-            [sg.Multiline(default_text='', size=(40, 20), key='-TXTFILE-'),      
-              sg.Multiline(default_text='', size=(40, 20), key='-TXTDESTFILE-'),
-             sg.Multiline(default_text='', size=(40, 20), key='-TXTSOURCEFILE-')],
+            [sg.Multiline(default_text='', size=(60, 20), key='-TXTFILE-'),      
+              sg.Multiline(default_text='', size=(60, 20), key='-TXTDESTFILE-'),
+             sg.Multiline(default_text='', size=(2, 20), key='-TXTSOURCEFILE-')],
              #[sg.Button('Ok'), sg.Button('Cancel')],
             #[sg.Button('', image_data=red_x_base64, button_color=('white',sg.theme_background_color()), border_width=0, image_subsample=2, key='Exit')]
             ]
