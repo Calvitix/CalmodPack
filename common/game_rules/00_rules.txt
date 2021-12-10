@@ -953,6 +953,7 @@ can_vote_in_democratic_election = {
 can_generate_leader_from_pop = {
 	has_citizenship_rights = yes
 	NOT = { has_trait = trait_syncretic_proles }
+	NOT = { has_trait = trait_tree_caretaker } #expanded event mod
 	NOT = { has_trait = trait_nerve_stapled }
 	NOT = { has_trait = trait_plentiful_traditions_pt_cocoon } #Plentiful_perk
 	NOT = { has_trait = trait_memorex_comatos } #expanded event mod
@@ -1496,7 +1497,17 @@ can_species_procreate = {
 			}
 		}
 	}
-
+	if = { #exp. event
+		limit = {
+			has_trait = trait_tree_caretaker
+		}
+		root = {
+			OR = {
+				has_deposit = d_tree_of_life_colony
+				has_deposit = d_tree_of_life_home
+			}
+		}
+	}
 	#plentiful_perks
 	
 	NOT = {
@@ -2101,6 +2112,10 @@ can_resettle_pop = {
 	custom_tooltip = {
 		fail_text = "self_modified_refuse"
 		NOT = { has_trait = trait_self_modified }
+	}
+	custom_tooltip = {
+		fail_text = "caretaker_refuse"
+		NOT = { has_trait = trait_tree_caretaker }
 	}
 	if = { #Done as an IF/ELSE so the tooltip isn't hideous and unreadable
 		limit = { is_shackled_robot = yes }

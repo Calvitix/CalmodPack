@@ -1,9 +1,9 @@
 # Expanded Events File
 #
-# Calvitix Check 3.0.2  25.04.2021
+# Calvitix Check 3.2
 #
 #
-# Merge in original leviathsn_events file  07.05.2021
+# Merge in original leviathans_events file  10.12.2021
 # 
 #
 #################################
@@ -587,3 +587,354 @@ namespace = leviathans
 		# }
 	# }
 # }
+# Curator Guardians Menu
+country_event = {
+	id = leviathans.508
+	title = leviathans.508.name
+	desc = leviathans.508.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	custom_gui = "enclave_curator_window"
+
+	picture_event_data = {
+		portrait = event_target:curators
+		room = enclave_curator_room
+	}
+
+	immediate = {
+		set_country_flag = curator_enclave_diplomacy_engaged
+	}
+
+	after = {
+		hidden_effect = {
+			remove_country_flag = curator_enclave_diplomacy_engaged
+		}
+	}
+
+	# "Find" option
+	option = {
+		name = leviathans.508.a
+		response_text = leviathans.508.a.reply
+		custom_gui = "enclave_curator_option"
+		custom_tooltip = opinion10
+		trigger = {
+			any_country = {
+				is_guardian_country = yes
+				NOT = { is_country_type = guardian } #unused I think, but just in case
+				NOT = {
+					has_communications = root
+				}
+				num_fleets > 0
+				any_owned_fleet = {
+					exists = solar_system
+					solar_system = {
+						has_star_flag = guardian
+						is_curator_guardian_poi = no
+					}
+				}
+			}
+		}
+		allow = {
+			resource_stockpile_compare = { resource = energy value >= 300 }
+		}
+		add_resource = { energy = -300 }
+		hidden_effect = {
+			event_target:curators = {
+				add_trust = {
+					who = root
+					amount = 10
+				}
+			}
+			capital_scope = {
+				closest_system = {
+					min_steps = 0
+					max_steps = 999
+					limit = {
+						has_star_flag = guardian
+						is_curator_guardian_poi = no
+						any_fleet_in_system = {
+							exists = owner
+							owner = {
+								is_guardian_country = yes
+								NOT = { is_country_type = guardian }
+								NOT = {
+									has_communications = root
+								}
+							}
+						}
+					}
+					random_fleet_in_system = {
+						limit = {
+							exists = owner
+							owner = {
+								is_guardian_country = yes
+								NOT = { is_country_type = guardian }
+								NOT = {
+									has_communications = root
+								}
+							}
+						}
+						owner = {
+							switch = {
+								trigger = is_country_type
+								guardian_dragon = {
+									create_curator_guardian_poi = {
+										POI = curator_poi_dragon
+									}
+								}
+								guardian_sphere = {
+									create_curator_guardian_poi = {
+										POI = curator_poi_technosphere
+									}
+								}
+								guardian_horror = {
+									create_curator_guardian_poi = {
+										POI = curator_poi_horror
+									}
+								}
+								guardian_stellarite = {
+									create_curator_guardian_poi = {
+										POI = curator_poi_stellarite
+									}
+								}
+								guardian_hiver = {
+									create_curator_guardian_poi = {
+										POI = curator_poi_hiver
+									}
+								}
+								guardian_fortress = {
+									create_curator_guardian_poi = {
+										POI = curator_poi_fortress
+									}
+								}
+								guardian_wraith = {
+									create_curator_guardian_poi = {
+										POI = curator_poi_wraith
+									}
+								}
+								guardian_dreadnought = {
+									create_curator_guardian_poi = {
+										POI = curator_poi_dreadnought
+									}
+								}
+								guardian_hatchling = {
+									create_curator_guardian_poi = {
+										POI = curator_poi_hatchling
+									}
+								}
+								guardian_scavenger_bot = {
+									create_curator_guardian_poi = {
+										POI = curator_poi_scavenger_bot
+									}
+								}
+								guardian_elderly_tiyanki = {
+									create_curator_guardian_poi = {
+										POI = curator_poi_tiyanki
+									}
+								}
+								default = {
+									log_error = "No option in leviathans.508.a for Leviathan country [This.GetCountryType]"
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	# "Poison" options
+	# Dragon
+	option = {
+		name = leviathans.508.b
+		custom_gui = "enclave_curator_option"
+		trigger = {
+			any_country = {
+				is_country_type = guardian_dragon
+				has_communications = root
+			}
+		}
+		hidden_effect = {
+			country_event = { id = leviathans.510 }
+		}
+	}
+	# Enigmatic Fortress
+	option = {
+		name = leviathans.508.c
+		custom_gui = "enclave_curator_option"
+		trigger = {
+			any_country = {
+				is_country_type = guardian_fortress
+				has_communications = root
+			}
+		}
+		hidden_effect = {
+			country_event = { id = leviathans.515 }
+		}
+	}
+	# Stellarite
+	option = {
+		name = leviathans.508.d
+		custom_gui = "enclave_curator_option"
+		trigger = {
+			any_country = {
+				is_country_type = guardian_stellarite
+				has_communications = root
+			}
+		}
+		hidden_effect = {
+			country_event = { id = leviathans.520 }
+		}
+	}
+	# Dimensional Horror
+	option = {
+		name = leviathans.508.e
+		custom_gui = "enclave_curator_option"
+		trigger = {
+			any_country = {
+				is_country_type = guardian_horror
+				has_communications = root
+			}
+		}
+		hidden_effect = {
+			country_event = { id = leviathans.525 }
+		}
+	}
+	# Hiver
+	option = {
+		name = leviathans.508.f
+		custom_gui = "enclave_curator_option"
+		trigger = {
+			any_country = {
+				is_country_type = guardian_hiver
+				has_communications = root
+			}
+		}
+		hidden_effect = {
+			country_event = { id = leviathans.530 }
+		}
+	}
+	# Technosphere
+	option = {
+		name = leviathans.508.g
+		custom_gui = "enclave_curator_option"
+		trigger = {
+			any_country = {
+				is_country_type = guardian_sphere
+				has_communications = root
+			}
+		}
+		hidden_effect = {
+			country_event = { id = leviathans.535 }
+		}
+	}
+	# Automated Dreadnought
+	option = {
+		name = leviathans.508.h
+		custom_gui = "enclave_curator_option"
+		trigger = {
+			any_country = {
+				is_country_type = guardian_dreadnought
+				has_communications = root
+			}
+		}
+		hidden_effect = {
+			country_event = { id = leviathans.540 }
+		}
+	}
+	# Wraith
+	option = {
+		name = leviathans.508.i
+		custom_gui = "enclave_curator_option"
+		trigger = {
+			any_country = {
+				is_country_type = guardian_wraith
+				has_communications = root
+			}
+		}
+		hidden_effect = {
+			country_event = { id = leviathans.545 }
+		}
+	}
+	# Hatchling
+	option = {
+		name = leviathans.508.j
+		custom_gui = "enclave_curator_option"
+		trigger = {
+			any_country = {
+				is_country_type = guardian_hatchling
+				has_communications = root
+			}
+		}
+		hidden_effect = {
+			country_event = { id = leviathans.550 }
+		}
+	}
+	# Void Dragon
+	option = {
+		name = leviathans.508.void_dragon
+		custom_gui = "enclave_curator_option"
+		trigger = {
+			any_country = {
+				is_country_type = guardian_hatchling_two
+				has_communications = root
+			}
+		}
+		hidden_effect = {
+			country_event = { id = leviathanexpanded.2 }
+		}
+	}
+	# Scavenger Bot
+	option = {
+		name = leviathans.508.k
+		custom_gui = "enclave_curator_option"
+		trigger = {
+			any_country = {
+				is_country_type = guardian_scavenger_bot
+				has_communications = root
+			}
+		}
+		hidden_effect = {
+			country_event = { id = leviathans.555 }
+		}
+	}
+	# Tiyanki Matriarch
+	option = {
+		name = leviathans.508.l
+		custom_gui = "enclave_curator_option"
+		trigger = {
+			any_country = {
+				is_country_type = guardian_elderly_tiyanki
+				has_communications = root
+			}
+		}
+		hidden_effect = {
+			country_event = { id = leviathans.556 }
+		}
+	}
+	option = {
+		name = leviathans.500.g
+		custom_gui = "enclave_curator_option"
+		trigger = {
+			has_country_flag = pantagruel
+			has_country_flag = asked_about_infinity_machine
+			NOT = { has_country_flag = offered_information }
+		}
+		hidden_effect = {
+			country_event = { id = leviathans.4000 }
+		}
+	}
+	option = { # Back
+		name = leviathans.506.d
+		custom_gui = "enclave_curator_option"
+		hidden_effect = {
+			country_event = { id = leviathans.505 }
+		}
+	}
+	option = { # Sign Off
+		name = leviathans.506.e
+		default_hide_option = yes
+		custom_gui = "enclave_curator_option"
+	}
+}

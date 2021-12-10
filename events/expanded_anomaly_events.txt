@@ -1,9 +1,9 @@
 # Expanded Events File
 #
-# Calvitix Check 3.0.3  22.05.2021
+# Calvitix Check 3.2
 #
 #
-# Merge with Expanded Events  25.09.2021
+# Update Expanded Events  10.12.2021
 # 
 #
 ############################
@@ -977,17 +977,9 @@ country_event = {
 		change_variable = { which = amoebas_owned value = -1 }
 		if = {
 			limit = {
-				NOT = {
-					any_owned_fleet = {
-						OR = {
-							has_fleet_flag = lost_amoeba_fleet@root
-							has_fleet_flag = lost_amoeba_adult_fleet@root
-							has_fleet_flag = lost_amoeba_centenarian_fleet@root
-							has_fleet_flag = lost_amoeba_offspring_fleet@root
-							has_fleet_flag = lost_amoeba_offspring_adult_fleet@root
-							has_fleet_flag = lost_amoeba_offspring_centenarian_fleet@root
-						}
-					}
+				check_variable = { 
+					which = "amoebas_owned" 
+					value < 1
 				}
 			}
 			set_variable = { which = amoebas_owned value = 0 }
@@ -1046,7 +1038,7 @@ country_event = {
 	id = anomalymod.32
 	title = "anomalymod.32.name"
 	desc = anomalymod.32.desc
-	picture = GFX_evt_mining_station
+	picture = GFX_evt_pirates_attacking_cargo
 	show_sound = event_space_battle
 	
 	is_triggered_only = yes
@@ -1091,7 +1083,7 @@ country_event = {
 	id = anomalymod.33
 	title = "anomalymod.33.name"
 	desc = anomalymod.33.desc
-	picture = GFX_evt_small_space_battle
+	picture = GFX_evt_pirates_attacking_cargo
 	show_sound = event_space_battle
 	
 	is_triggered_only = yes
@@ -1168,7 +1160,7 @@ country_event = {
 	id = anomalymod.35
 	title = "anomalymod.33.name"
 	desc = anomalymod.35.desc
-	picture = GFX_evt_small_space_battle
+	picture = GFX_evt_pirates_attacking_cargo
 	show_sound = event_space_battle
 	
 	is_triggered_only = yes
@@ -5165,6 +5157,638 @@ planet_event = {
 	}
 }
 
+##################################
+# Egg Events
+# Reserved 130 - 149
+##################################
+
+# Egg Begins to Hatch
+planet_event = {
+	id = anomalymod.130
+	hide_window = yes
+	is_triggered_only = yes
+	
+	trigger = {
+		NOT = { is_planet_class = pc_shattered }
+		NOT = { is_planet_class = pc_egg_cracked }
+	}
+	
+	immediate = {
+		random_list = {
+			1 = {
+				modifier = {
+					factor = 0
+					has_global_flag = expanded_egg_hatched
+				}
+				planet_event = { id = anomalymod.131 days = 3600 random = 3600 }
+			}
+			2 = {
+				planet_event = { id = anomalymod.141 days = 3600 random = 3600 }
+			}
+			1 = {
+				# nothing happens
+			}
+		}
+		if = {
+			limit = { exists = space_owner }
+			space_owner = { country_event = { id = anomalymod.135 } }
+		}
+	}
+}
+
+# Egg Hatches
+planet_event = {
+	id = anomalymod.131
+	hide_window = yes
+	is_triggered_only = yes
+	
+	trigger = {
+		NOT = { has_global_flag = expanded_egg_hatched }
+		NOT = { is_planet_class = pc_shattered }
+		NOT = { is_planet_class = pc_egg_cracked }
+		NAND = {
+			exists = space_owner
+			space_owner = { has_country_flag = stopped_egg_hatching }
+		}
+	}
+	
+	immediate = {
+		set_global_flag = expanded_egg_hatched
+		change_pc = pc_egg_cracked
+		clear_deposits = yes
+		set_deposit = d_society_10
+		# spawn animation
+		create_ambient_object = {
+			type = voidspawn_spawn_animation_object
+			entity_face_object = root.star
+		}
+		last_created_ambient_object = {
+			set_location = {
+				target = root
+				distance = 2.2
+				direction = in_system
+			}
+			save_event_target_as = voidspawn_spawn
+		}
+		if = {
+			limit = { has_research_station = yes }
+			research_station = { dismantle = yes }
+		}
+		planet_event = { id = anomalymod.132 days = 70 }
+		every_country = {
+			limit = {
+				has_special_project = PROJECT_CRACK_EGG_TWO
+			}
+			abort_special_project =  { type = PROJECT_CRACK_EGG_TWO }
+		}
+		if = {
+			limit = {
+				exists = space_owner
+				space_owner = { NOT = { has_country_flag = cracked_egg_failed } }
+			}
+			space_owner = { country_event = { id = anomalymod.138 } }
+		}
+	}
+}
+
+# hatchling Begins to Move
+planet_event = {
+	id = anomalymod.132
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		create_country = {
+			name = "NAME_Void_Dragon"
+			type = guardian_hatchling_two
+			flag = {
+				icon = {
+					category = "spherical"
+					file = "flag_spherical_6.dds"
+				}
+				background = {
+					category = "backgrounds"
+					file = "00_solid.dds"
+				}
+				colors = {
+					"red"
+					"red"
+					"null"
+					"null"
+				}
+			}
+			effect = {
+				if = {
+					limit = {
+						NOT = {
+							has_modifier = hatchling_power
+						}
+					}
+					add_modifier = {
+						modifier = hatchling_power
+						days = -1
+					}
+				}
+				save_global_event_target_as = hatchling_country_two
+				set_country_flag = hatchling_country_two
+				every_playable_country = {
+					establish_communications_no_message = event_target:hatchling_country_two
+				}
+				create_fleet = {
+					name = "NAME_Void_Dragon"
+					settings = {
+						spawn_debris = no
+						is_boss = yes
+					}
+					effect = {
+						set_owner = prev
+						create_ship = {
+							name = "NAME_Void_Dragon"
+							design = "NAME_Void_Dragon"
+							effect = {
+								set_ship_flag = hatchling_ship
+								save_global_event_target_as = hatchling_two
+								set_disabled = no
+								set_disable_at_health = 0.05
+							}
+						}
+						save_global_event_target_as = hatchling_fleet_two
+						set_location = {
+							target = root
+							distance = 0
+							angle = 90
+							direction = in_system
+						}
+						set_fleet_stance = aggressive
+						set_aggro_range_measure_from = self #or return_point
+						set_aggro_range = 300
+						auto_move_to_planet = {
+							target = event_target:new_location
+							clear_auto_move_on_arrival = no	# anomalymod.133 sets a new auto move target
+						}
+					}
+				}
+			}
+		}
+		event_target:voidspawn_spawn = { destroy_ambient_object = this }
+	}
+}
+
+# Hatchling Moves
+country_event = {
+	id = anomalymod.133
+	hide_window = yes
+
+	is_triggered_only = yes
+
+	trigger = {
+		exists = event_target:hatchling_country_two
+		exists = event_target:hatchling_fleet_two
+		is_same_value = event_target:hatchling_country_two
+		from = {
+			is_same_value = event_target:hatchling_fleet_two
+		}
+	}
+
+	immediate = {
+		from.solar_system = {
+			random_system_planet = {
+				limit = {
+					NOT = { is_same_value = root.from.orbit }
+				}
+				save_event_target_as = new_location
+			}
+		}
+		from = {
+			auto_move_to_planet = {
+				target = event_target:new_location
+				clear_auto_move_on_arrival = no		# anomalymod.133 sets a new auto move target
+			}
+		}
+	}
+}
+
+# Ship Disabled (HIDDEN)
+ship_event = {
+	id = anomalymod.134
+	hide_window = yes
+
+	is_triggered_only = yes
+
+	trigger = {
+		exists = event_target:hatchling_country_two
+		exists = event_target:hatchling_two
+		is_same_value = event_target:hatchling_two
+		owner = { is_same_value = event_target:hatchling_country_two }
+	}
+
+	immediate = {
+		fleet = {
+			delete_fleet = {
+				target = this
+				destroy_template = yes
+			}
+		}
+		FROM = {
+			owner = { country_event = { id = anomalymod.139 } }
+		}
+	}
+}
+
+# Empire warned egg is hatching
+country_event = {
+	id = anomalymod.135
+	title = "anomalymod.135.name"
+	desc = "anomalymod.135.desc"
+	picture = GFX_evt_shattered_planet
+	show_sound = event_red_alert
+	location = FROM
+
+	is_triggered_only = yes
+	
+	option = {
+		name = anomalymod.135.a
+		FROM = {
+			enable_special_project = {
+				name = "PROJECT_CRACK_EGG_TWO"
+				location = this
+				owner = root
+			}
+		}
+	}
+	option = {
+		name = anomalymod.135.b
+	}
+}
+
+# egg cracked
+ship_event = {
+	id = anomalymod.136
+	title = "anomalymod.136.name"
+	desc = {
+		text = anomalymod.136.desc
+		trigger = {
+			owner = { NOT = { has_country_flag = encountered_hatchling } }
+		}
+	}
+	desc = {
+		text = anomalymod.136.desc.hatchling
+		trigger = {
+			owner = { has_country_flag = encountered_hatchling }
+		}
+	}
+	picture = GFX_evt_society_research
+	location = fromfromfrom
+
+	is_triggered_only = yes
+	
+	immediate = {
+		fromfromfrom = { change_pc = pc_shattered }
+		owner = { set_country_flag = stopped_egg_hatching }
+	}
+
+	option = {
+		name = anomalymod.136.a
+		owner = {
+			if = {
+				limit = { is_robot_empire = yes }
+				add_modifier = { modifier = cracked_egg_genetics_machine days = -1 }
+			}
+			else = {
+				add_modifier = { modifier = cracked_egg_genetics days = -1 }
+			}
+			add_monthly_resource_mult = {
+				resource = society_research
+				value = @tier2researchreward
+				min = @tier2researchmin
+				max = @tier2researchmax
+			}
+		}
+	}
+	option = {
+		name = anomalymod.136.b
+		owner = {
+			add_modifier = { modifier = cracked_egg_armor days = -1 }
+			add_monthly_resource_mult = {
+				resource = society_research
+				value = @tier2researchreward
+				min = @tier2researchmin
+				max = @tier2researchmax
+			}
+		}
+	}
+}
+
+
+# Hatchling Unleashed
+ship_event = {
+	id = anomalymod.137
+	title = "PROJECT_FAILURE"
+	desc = {
+		trigger = { owner = { is_gestalt = no } }
+		text = "anomalymod.137.desc.regular"
+	}
+	desc = {
+		trigger = { owner = { is_gestalt = yes } }
+		text = "anomalymod.137.desc.gestalt"
+	}
+	picture = GFX_evt_voidspawn
+	show_sound = event_red_alert
+	is_triggered_only = yes
+	location = fromfromfrom
+
+	immediate = {
+		owner = { set_country_flag = cracked_egg_failed }
+		kill_leader = { type = scientist show_notification = yes }
+		fleet = { destroy_fleet = this }
+		fromfromfrom = {
+			planet_event = { id = anomalymod.131 }
+		}
+	}
+
+	option = {
+		name = TERRIBLE
+	}
+}
+
+# Empire told egg has hatched
+country_event = {
+	id = anomalymod.138
+	title = "distar.5003.name"
+	desc = "anomalymod.138.desc"
+	picture = GFX_evt_voidspawn
+	show_sound = event_red_alert
+	is_triggered_only = yes
+	location = from
+	
+	option = {
+		name = distar.5003.a
+	}
+}
+
+# Hatchling defeated
+country_event = {
+	id = anomalymod.139
+	title = "anomalymod.139.name"
+	desc = "anomalymod.139.desc"
+	picture = GFX_evt_voidspawn
+	show_sound = event_mystic_reveal
+	is_triggered_only = yes
+	location = event_target:slain_guardian_system
+	
+	immediate = {
+		fromfrom.solar_system = {
+			save_event_target_as = slain_guardian_system
+			every_fleet_in_system = {
+				add_modifier = { modifier = void_dragon_tachyon_damage days = 360 }
+			}
+		}
+	}
+	
+	option = {
+		name = anomalymod.139.a
+		custom_tooltip = anomalymod.139.a.tooltip
+		add_monthly_resource_mult = {
+			resource = unity
+			value = @tier1unityreward
+			min = @tier1unitymin
+			max = @tier1unitymax
+		}
+		capital_scope = {
+			enable_special_project = {
+				name = "PROJECT_STUDY_DRAGON_FTL"
+				location = this
+				owner = root
+			}
+		}
+	}
+}
+
+country_event = {
+	id = anomalymod.140
+	title = "PROJECT_COMPLETE"
+	desc = "anomalymod.140.desc"
+	picture = GFX_evt_physics_research
+	show_sound = event_sensor_ping
+	is_triggered_only = yes
+	
+	option = {
+		name = FASCINATING
+		add_modifier = { modifier = void_dragon_defeated days = -1 }
+		if = {
+			limit = { NOT = { has_technology = tech_experimental_subspace_navigation } }
+			add_research_option = tech_experimental_subspace_navigation
+			add_tech_progress = {
+				tech = tech_experimental_subspace_navigation
+				progress = 0.8
+			}
+		}
+		else_if = {
+			limit = { NOT = { has_technology = tech_hyper_drive_3 } }
+			add_research_option = tech_hyper_drive_3
+			add_tech_progress = {
+				tech = tech_hyper_drive_3
+				progress = 0.4
+			}
+		}
+		else_if = {
+			limit = { NOT = { has_technology = tech_jump_drive_1 } }
+			add_research_option = tech_jump_drive_1
+			add_tech_progress = {
+				tech = tech_jump_drive_1
+				progress = 0.1
+			}
+		}
+		else = {
+			add_monthly_resource_mult = {
+				resource = physics_research
+				value = @tier5researchreward
+				min = @tier5researchmin
+				max = @tier5researchmax
+			}
+		}
+	}
+}
+
+# Egg fails to hatch
+planet_event = {
+	id = anomalymod.141
+	hide_window = yes
+	is_triggered_only = yes
+	
+	trigger = {
+		NOT = { is_planet_class = pc_shattered }
+		NOT = { is_planet_class = pc_egg_cracked }
+		NAND = {
+			exists = space_owner
+			space_owner = { has_country_flag = stopped_egg_hatching }
+		}
+	}
+
+	immediate = {
+		if = {
+			limit = { exists = space_owner }
+			space_owner = { country_event = { id = anomalymod.142 } }
+		}
+	}
+}
+
+country_event = {
+	id = anomalymod.142
+	title = "anomalymod.142.name"
+	desc = anomalymod.142.desc
+	location = from
+	picture = {
+		trigger = {
+			From = { is_planet_class = pc_molten }
+		}
+		picture = GFX_evt_molten
+	}
+	picture = {
+		trigger = {
+			From = { is_planet_class = pc_toxic }
+		}
+		picture = GFX_evt_toxic
+	}
+	picture = {
+		trigger = {
+			From = { is_planet_class = pc_barren }
+		}
+		picture = GFX_evt_warm_barren
+	}
+	picture = {
+		trigger = {
+			From = { is_planet_class = pc_barren_cold }
+		}
+		picture = GFX_evt_cold_barren
+	}
+	picture = {
+		trigger = {
+			From = { is_planet_class = pc_frozen }
+		}
+		picture = GFX_evt_frozen
+	}
+	show_sound = event_ship_bridge
+	is_triggered_only = yes
+	
+	trigger = {
+		
+	}
+	
+	option = {
+		name = anomalymod.142.a
+		FROM = {
+			enable_special_project = {
+				name = "PROJECT_STUDY_EGG"
+				location = this
+				owner = root
+			}
+		}
+	}
+	
+	option = {
+		name = anomalymod.142.b
+		add_resource = { influence = 50 }
+	}
+	
+	option = {
+		name = anomalymod.142.c
+		trigger = { owner = { has_valid_civic = civic_hive_devouring_swarm } }
+		from = {
+			hidden_effect = {
+				clear_deposits = yes
+				if = {
+					limit = { has_research_station = yes }
+					research_station = { dismantle = yes }
+				}
+			}
+			add_deposit = d_food_10
+		}
+	}
+}
+
+# Egg Dead
+ship_event = {
+	id = anomalymod.143
+	title = "anomalymod.136.name"
+	desc = {
+		text = anomalymod.143.desc
+		trigger = {
+			owner = { NOT = { has_country_flag = encountered_hatchling } }
+		}
+	}
+	desc = {
+		text = anomalymod.143.desc.hatchling
+		trigger = {
+			owner = { has_country_flag = encountered_hatchling }
+		}
+	}
+	picture = GFX_evt_society_research
+	location = fromfromfrom
+
+	is_triggered_only = yes
+	
+	immediate = {
+		fromfromfrom = { change_pc = pc_shattered }
+		owner = { set_country_flag = stopped_egg_hatching }
+	}
+
+	option = {
+		name = anomalymod.136.a
+		owner = {
+			if = {
+				limit = { is_robot_empire = yes }
+				add_modifier = { modifier = cracked_egg_genetics_machine days = -1 }
+			}
+			else = {
+				add_modifier = { modifier = cracked_egg_genetics days = -1 }
+			}
+			add_monthly_resource_mult = {
+				resource = society_research
+				value = @tier2researchreward
+				min = @tier2researchmin
+				max = @tier2researchmax
+			}
+		}
+	}
+	option = {
+		name = anomalymod.136.b
+		owner = {
+			add_modifier = { modifier = cracked_egg_armor days = -1 }
+			add_monthly_resource_mult = {
+				resource = society_research
+				value = @tier2researchreward
+				min = @tier2researchmin
+				max = @tier2researchmax
+			}
+		}
+	}
+}
+
+ship_event = {
+	id = anomalymod.144
+	title = "anomalymod.144.name"
+	desc = anomalymod.144.desc
+	picture = GFX_evt_society_research
+	location = fromfromfrom
+
+	is_triggered_only = yes
+	
+	immediate = {
+	}
+
+	option = {
+		name = anomalymod.144.a
+		owner = {
+			add_monthly_resource_mult = {
+				resource = society_research
+				value = @tier5researchreward
+				min = @tier5researchmin
+				max = @tier5researchmax
+			}
+		}
+	}
+}
 
 ##################################
 # Vanilla Category Events

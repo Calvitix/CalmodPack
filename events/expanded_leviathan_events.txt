@@ -92,6 +92,107 @@ country_event = {
 	}
 }
 
+# Hatchling
+# Curator Guardians Menu
+country_event = {
+	id = leviathanexpanded.2
+	title = leviathanexpanded.2.name
+	desc = leviathanexpanded.2.desc
+
+	is_triggered_only = yes
+	diplomatic = yes
+	custom_gui = "enclave_curator_window"
+
+	picture_event_data = {
+		portrait = event_target:curators
+		room = enclave_curator_room
+	}
+
+	immediate = {
+		set_country_flag = curator_enclave_diplomacy_engaged
+	}
+
+	after = {
+		hidden_effect = {
+			remove_country_flag = curator_enclave_diplomacy_engaged
+		}
+	}
+
+	option = {
+		name = leviathanexpanded.2.a
+		response_text = leviathanexpanded.2.a.reply
+		is_dialog_only = yes
+		custom_gui = "enclave_curator_option"
+	}
+	option = {
+		name = leviathanexpanded.2.b
+		response_text = leviathanexpanded.2.b.reply
+		trigger = {
+			NOT = { has_modifier = curator_buff_hatchling_two }
+		}
+		custom_gui = "enclave_curator_option"
+		allow = {
+			resource_stockpile_compare = { resource = energy value >= 1000 }
+		}
+		add_resource = { energy = -1000 }
+		add_modifier = {
+			modifier = curator_buff_hatchling_two
+			days = -1
+		}
+		custom_tooltip = opinion20
+		hidden_effect = {
+			event_target:curators = {
+				add_trust = {
+					who = root
+					amount = 20
+				}
+			}
+		}
+	}
+	option = { # Can we fight it? (No)
+		name = leviathans.506.f
+		trigger = { fleet_power < 5000	}
+		custom_gui = "enclave_curator_option"
+		response_text = leviathans.5106.f1.reply
+	}
+	option = { # Can we fight it? (Probably not)
+		name = leviathans.506.f
+		trigger = {
+			fleet_power > 5000
+			fleet_power < 15000
+		}
+		custom_gui = "enclave_curator_option"
+		response_text = leviathans.5106.f2.reply
+	}
+	option = { # Can we fight it? (Maybe)
+		name = leviathans.506.f
+		trigger = {
+			fleet_power > 15000
+			fleet_power < 30000
+		}
+		custom_gui = "enclave_curator_option"
+		response_text = leviathans.5106.f3.reply
+	}
+	option = { # Can we fight it? (Yes)
+		name = leviathans.506.f
+		trigger = { fleet_power > 30000 }
+		custom_gui = "enclave_curator_option"
+		response_text = leviathans.5106.f4.reply
+	}
+	option = { # Back
+		name = leviathans.506.d
+		custom_gui = "enclave_curator_option"
+		hidden_effect = {
+			country_event = { id = leviathans.505 }
+		}
+	}
+	option = { # Sign Off
+		name = leviathans.506.e
+		default_hide_option = yes
+		custom_gui = "enclave_curator_option"
+	}
+}
+
 ##################################
 # Curator - Services
 # Reserved 100 - 149

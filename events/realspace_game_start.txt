@@ -876,6 +876,18 @@ event = {
 				}
 			}
 			if = {
+				limit = { has_global_flag = 70_percent_world_reduced}
+				random_list = {
+					70 = {
+						change_pc = rl_unhabitable_planets
+						reset_planet = yes
+					}
+					30 = { 
+						#Null
+					}
+				}
+			}
+			if = {
 				limit = { has_global_flag = 80_percent_world_reduced}
 				random_list = {
 					80 = {
@@ -1569,6 +1581,16 @@ country_event = {
 	}
 	
 	option = {
+		name = "realspace.208.70_percent_reduction"
+		trigger = { NOT = { has_global_flag = 70_percent_world_reduced } }
+		hidden_effect = {
+			remove_world_reduced_setting = yes
+			set_global_flag = 60_percent_world_reduced
+			country_event = { id = realspace.219 }
+		}
+	}
+	
+	option = {
 		name = "realspace.208.80_percent_reduction"
 		trigger = { NOT = { has_global_flag = 80_percent_world_reduced } }
 		hidden_effect = {
@@ -1900,24 +1922,24 @@ country_event = {
 	
 	is_triggered_only = yes
 
-	option = {
-		name = "realspace.213.darkcluster_on"
-		trigger = {
-			has_global_flag = has_dark_cluster_mod
-		}
-		hidden_effect = {
-			country_event = { id = realspace.218 }
-		}
-	}
-	option = {
-		name = "realspace.213.darkcluster_off"
-		trigger = {
-			NOT = { has_global_flag = has_dark_cluster_mod }
-		}
-		hidden_effect = {
-			country_event = { id = realspace.218 }
-		}
-	}
+	#option = {
+	#	name = "realspace.213.darkcluster_on"
+	#	trigger = {
+	#		has_global_flag = has_dark_cluster_mod
+	#	}
+	#	hidden_effect = {
+	#		country_event = { id = realspace.218 }
+	#	}
+	#}
+	#option = {
+	#	name = "realspace.213.darkcluster_off"
+	#	trigger = {
+	#		NOT = { has_global_flag = has_dark_cluster_mod }
+	#	}
+	#	hidden_effect = {
+	#		country_event = { id = realspace.218 }
+	#	}
+	#}
 	option = {
 		name = "realspace.addons"
 		hidden_effect = {
@@ -1948,6 +1970,14 @@ country_event = {
 	location = ROOT
 	
 	is_triggered_only = yes
+
+	#Solar Storm Settings
+	option = {
+		name = "realspace.214.solarstorm_settings"
+		hidden_effect = {
+			country_event = { id = realspace.239 }
+		}
+	}
 
 	option = {
 		name = "realspace.addons"
@@ -2113,6 +2143,15 @@ country_event = {
 		}
 	}
 	
+	#Solar Storm Settings
+	option = {
+		name = "realspace.219.solarstorm_settings"
+		trigger = { has_global_flag = has_solarstorm_mod }
+		hidden_effect = {
+			country_event = { id = realspace.239 }
+		}
+	}
+	
 	#inhabitable worlds Settings
 	option = {
 		name = "realspace.219.inhabitable_worlds_no_reduced"
@@ -2159,6 +2198,13 @@ country_event = {
 	option = {
 		name = "realspace.219.60_percent_world_reduced"
 		trigger = { has_global_flag = 60_percent_world_reduced }
+		hidden_effect = {
+			country_event = { id = realspace.208 }
+		}
+	}
+	option = {
+		name = "realspace.219.70_percent_world_reduced"
+		trigger = { has_global_flag = 70_percent_world_reduced }
 		hidden_effect = {
 			country_event = { id = realspace.208 }
 		}
@@ -3397,6 +3443,256 @@ country_event = {
 		name = "realspace.newfrontiers_settings"
 		hidden_effect = {
 			country_event = { id = realspace.221 }
+		}
+	}
+	option = {
+		name = "realspace.realspace_menu"
+		hidden_effect = {
+			country_event = { id = realspace.206 }
+		}
+	}
+	option = {
+		name = "realspace.close"
+		hidden_effect = {
+			country_event = { id = realspace.1000 }
+		}
+	}
+}
+
+#Solar Storm Settings
+country_event = {
+	id = realspace.239
+	title = "realspace.239.name"
+	desc = "realspace.239.desc"
+	picture = GFX_evt_solar_storm_menu
+	show_sound = event_radio_chatter
+	location = ROOT
+	
+	is_triggered_only = yes
+	
+	#Hyperspace Storm
+	option = {
+		name = "realspace.239.hyperspace_storm_on"
+		trigger = { 
+			NOT = { has_global_flag = hyperspace_storm_disabled }
+		}
+		hidden_effect = {
+			country_event = { id = realspace.240 }
+		}
+	}
+	option = {
+		name = "realspace.239.hyperspace_storm_off"
+		trigger = { 
+			has_global_flag = hyperspace_storm_disabled
+		}
+		hidden_effect = {
+			country_event = { id = realspace.240 }
+		}
+	}
+	
+	#Solar Storm
+	option = {
+		name = "realspace.239.solar_storm_on"
+		trigger = { 
+			NOR = { 
+				has_global_flag = solar_storm_disabled
+				has_global_flag = solarstorm_hard_mod
+				has_global_flag = solarstorm_easy_mod
+			}
+		}
+		hidden_effect = {
+			country_event = { id = realspace.241 }
+		}
+	}
+	option = {
+		name = "realspace.239.solar_storm_hard"
+		trigger = { 
+			has_global_flag = solarstorm_hard_mod
+		}
+		hidden_effect = {
+			country_event = { id = realspace.241 }
+		}
+	}
+	option = {
+		name = "realspace.239.solar_storm_easy"
+		trigger = { 
+			has_global_flag = solarstorm_easy_mod
+		}
+		hidden_effect = {
+			country_event = { id = realspace.241 }
+		}
+	}
+	option = {
+		name = "realspace.239.solar_storm_off"
+		trigger = { 
+			has_global_flag = solar_storm_disabled
+		}
+		hidden_effect = {
+			country_event = { id = realspace.241 }
+		}
+	}
+	
+	option = {
+		name = "realspace.realspace_menu"
+		hidden_effect = {
+			country_event = { id = realspace.206 }
+		}
+	}
+	option = {
+		name = "realspace.close"
+		hidden_effect = {
+			country_event = { id = realspace.1000 }
+		}
+	}
+}
+
+#Solar Storm - Hyperspace Storm Settings
+country_event = {
+	id = realspace.240
+	title = "realspace.240.name"
+	desc = "realspace.240.desc"
+	picture = GFX_evt_solar_storm_menu
+	show_sound = event_radio_chatter
+	location = ROOT
+	
+	is_triggered_only = yes
+
+	option = {
+		name = "realspace.240.hyperspace_storm_on"
+		trigger = { 
+			has_global_flag = hyperspace_storm_disabled
+		}
+		hidden_effect = {
+			remove_global_flag = hyperspace_storm_disabled
+			country_event = { id = realspace.239 }
+		}
+	}
+	option = {
+		name = "realspace.240.hyperspace_storm_off"
+		trigger = { 
+			NOT = { has_global_flag = hyperspace_storm_disabled }
+		}
+		hidden_effect = {
+			set_global_flag = hyperspace_storm_disabled
+			country_event = { id = realspace.239 }
+		}
+	}
+	
+	option = {
+		name = "realspace.solarstorm_settings"
+		hidden_effect = {
+			country_event = { id = realspace.239 }
+		}
+	}
+	option = {
+		name = "realspace.realspace_menu"
+		hidden_effect = {
+			country_event = { id = realspace.206 }
+		}
+	}
+	option = {
+		name = "realspace.close"
+		hidden_effect = {
+			country_event = { id = realspace.1000 }
+		}
+	}
+}
+
+#Solar Storm - Solar Storm Settings
+country_event = {
+	id = realspace.241
+	title = "realspace.241.name"
+	desc = "realspace.241.desc"
+	picture = GFX_evt_solar_storm_menu
+	show_sound = event_radio_chatter
+	location = ROOT
+	
+	is_triggered_only = yes
+
+	option = {
+		name = "realspace.241.solar_storm_hard"
+		trigger = { 
+			NOT = { has_global_flag = solarstorm_hard_mod }
+		}
+		hidden_effect = {
+			if = {
+				limit = { has_global_flag = solar_storm_disabled }
+				remove_global_flag = solar_storm_disabled
+			}
+			if = {
+				limit = { has_global_flag = solarstorm_easy_mod }
+				remove_global_flag = solarstorm_easy_mod
+			}
+			set_global_flag = solarstorm_hard_mod
+			country_event = { id = realspace.239 }
+		}
+	}
+	option = {
+		name = "realspace.241.solar_storm_normal"
+		trigger = {
+			OR = {
+				has_global_flag = solar_storm_disabled
+				has_global_flag = solarstorm_hard_mod
+				has_global_flag = solarstorm_easy_mod
+			}
+		}
+		hidden_effect = {
+			if = {
+				limit = { has_global_flag = solar_storm_disabled }
+				remove_global_flag = solar_storm_disabled
+			}
+			if = {
+				limit = { has_global_flag = solarstorm_hard_mod }
+				remove_global_flag = solarstorm_hard_mod
+			}
+			if = {
+				limit = { has_global_flag = solarstorm_easy_mod }
+				remove_global_flag = solarstorm_easy_mod
+			}
+			country_event = { id = realspace.239 }
+		}
+	}
+	option = {
+		name = "realspace.241.solar_storm_easy"
+		trigger = { 
+			NOT = { has_global_flag = solarstorm_easy_mod }
+		}
+		hidden_effect = {
+			if = {
+				limit = { has_global_flag = solar_storm_disabled }
+				remove_global_flag = solar_storm_disabled
+			}
+			if = {
+				limit = { has_global_flag = solarstorm_hard_mod }
+				remove_global_flag = solarstorm_hard_mod
+			}
+			set_global_flag = solarstorm_easy_mod
+			country_event = { id = realspace.239 }
+		}
+	}
+	option = {
+		name = "realspace.241.solar_storm_off"
+		trigger = { 
+			NOT = { has_global_flag = solar_storm_disabled }
+		}
+		hidden_effect = {
+			if = {
+				limit = { has_global_flag = solarstorm_hard_mod }
+				remove_global_flag = solarstorm_hard_mod
+			}
+			if = {
+				limit = { has_global_flag = solarstorm_easy_mod }
+				remove_global_flag = solarstorm_easy_mod
+			}
+			set_global_flag = solar_storm_disabled
+			country_event = { id = realspace.239 }
+		}
+	}
+	
+	option = {
+		name = "realspace.solarstorm_settings"
+		hidden_effect = {
+			country_event = { id = realspace.239 }
 		}
 	}
 	option = {
