@@ -2,7 +2,7 @@
 #
 # Calvitix Check 3.2
 #
-# Last Update : 27.11.2021
+# Last Update : 13.12.2021
 #
 namespace = giga_aeternum
 
@@ -258,6 +258,12 @@ country_event = {
 		name = "giga_aeternum.2001.b"
 		response_text = "giga_aeternum.2001.b.response"
 		custom_gui = aeternum_event_option_entry
+		trigger = {
+			NOR = {
+				has_global_flag = aeternum_awakening_started
+				has_global_flag = aeternum_awakening_ongoing
+			}
+		}
 		hidden_effect = {
 			every_war = {
 				limit = {
@@ -459,6 +465,12 @@ event = {
 						value = 0
 					}
 				}
+				else = {
+					set_variable = {
+						which = years_until_awakening
+						value = 10
+					}
+				}
 			}
 		}
 	}
@@ -484,6 +496,42 @@ country_event = {
 		name = "giga_aeternum.3000.a"
 		custom_tooltip = "giga_aeternum.3000.a.tooltip"
 		hidden_effect = {
+			event_target:birch_aeternum = {
+				if = {
+					limit = { has_global_flag = giga_core_aeternum_1 }
+					set_variable = {
+						which = years_until_awakening
+						value = 10
+					}
+				}
+				if = {
+					limit = { has_global_flag = giga_core_aeternum_2 }
+					set_variable = {
+						which = years_until_awakening
+						value = 8
+					}
+				}
+				else_if = {
+					limit = { has_global_flag = giga_core_aeternum_3 }
+					set_variable = {
+						which = years_until_awakening
+						value = 3
+					}
+				}
+				else_if = {
+					limit = { has_global_flag = giga_core_aeternum_4 }
+					set_variable = {
+						which = years_until_awakening
+						value = 0
+					}
+				}
+				else = {
+					set_variable = {
+						which = years_until_awakening
+						value = 10
+					}
+				}
+			}
 			country_event = { id = giga_aeternum.3001 days = 360 }
 		}
 	}

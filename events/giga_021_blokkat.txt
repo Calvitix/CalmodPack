@@ -1,6 +1,6 @@
-﻿# Giga File
+# Giga File
 #
-# Last Update : 24.11.2021
+# Last Update : 15.12.2021
 #
 
 namespace = giga_blokkat
@@ -445,6 +445,7 @@ event = {
 
 	immediate = {
 		set_global_flag = blokkat_crisis_ongoing
+		set_global_flag = sbtg_blokkat_light_block
 		event_target:blokkat_spawn_system = {
 			set_star_class = sc_blokkat_stripmined
 			set_name = "[blokkat_spawn_system.GetName] Vide" #void Calvitix
@@ -714,7 +715,7 @@ event = {
 			auto_delete = no
 			flag = {
 				icon={
-					category="Blokchat"
+					category="Blokkat"
 					file="Blokkat_flag.dds"
 				}
 				background={
@@ -1568,22 +1569,22 @@ country_event = {
 					}
 				}
 			}
-			every_owned_fleet = {
-				limit = { has_fleet_flag = blokkat_scout_fleet }
-				random = {
-					chance = 75
-					clear_orders = yes
-				}
-				random_system = {
-					limit = {
-						NOT = { is_star_class = sc_blokkat_stripmined }
-					}
-					save_global_event_target_as = blokkat_scout_fleet_target
-				}
-				queue_actions = {
-					move_to = event_target:blokkat_scout_fleet_target
-				}
-			}
+			# every_owned_fleet = {
+			# 	limit = { has_fleet_flag = blokkat_scout_fleet }
+			# 	random = {
+			# 		chance = 75
+			# 		clear_orders = yes
+			# 	}
+			# 	random_system = {
+			# 		limit = {
+			# 			NOT = { is_star_class = sc_blokkat_stripmined }
+			# 		}
+			# 		save_global_event_target_as = blokkat_scout_fleet_target
+			# 	}
+			# 	queue_actions = {
+			# 		move_to = event_target:blokkat_scout_fleet_target
+			# 	}
+			# }
 		}
 		if = {
 			limit = { NOT = { has_global_flag = blokkat_mothership_shield_down } }
@@ -2746,6 +2747,7 @@ country_event = {
 
 	immediate = {
 		set_global_flag = blokkat_mothership_killed_legit
+		remove_global_flag = sbtg_blokkat_light_block
 		save_global_event_target_as = blokkat_vanquisher
 		remove_global_flag = blokkat_crisis_ongoing
 		set_global_flag = blokkat_crisis_defeated
@@ -4361,6 +4363,9 @@ country_event = {
 		}
 		hidden_effect = {
 			country_event = { id = giga_blokkat.3304 }
+			add_resource = {
+				energy = -800000
+			}
 		}
 		allow = {
 			resource_stockpile_compare = {
@@ -5018,7 +5023,7 @@ country_event = {
 		remove_country_flag = can_breach_paluushia_shield
 		event_target:paluushia = {
 			create_country = {
-				name = "Civilisation des Peluches"
+				name = "Civilisation des Peluchiens"
 				type = shroud_spirits
 				flag = {
 					icon = {
@@ -5041,7 +5046,7 @@ country_event = {
 				}
 			}
 			create_fleet = { #Oh no!
-				name = "Energies des Peluches"
+				name = "Energies des Peluchiens"
 				settings = {
 					spawn_debris = no
 					can_upgrade = no
@@ -5054,7 +5059,7 @@ country_event = {
 					while = {
 						count = 1
 						create_ship = {
-							name = "Energies des Peluches"
+							name = "Energies des Peluchiens"
 							design = NAME_Shroud_Manifestation
 							prefix = no
 							effect = {
@@ -7052,6 +7057,10 @@ country_event = {
 								days = 240
 							}
 						}
+						modifier = {
+							factor = 0
+							ROOT = { has_country_flag = recent_blokkat_sighting }
+						}
 					}
 				}
 			}
@@ -7302,6 +7311,7 @@ planet_event = { #colossus
 						uses_naval_capacity = no
 						can_change_composition = no
 						is_boss = no
+						garrison = yes
 					}
 					effect = {
 						set_owner = event_target:blokkat_country
@@ -7359,6 +7369,7 @@ country_event = {
 						uses_naval_capacity = no
 						can_change_composition = no
 						is_boss = no
+						garrison = yes
 					}
 					effect = {
 						set_owner = event_target:blokkat_country
@@ -7393,6 +7404,7 @@ country_event = {
 						uses_naval_capacity = no
 						can_change_composition = no
 						is_boss = no
+						garrison = yes
 					}
 					effect = {
 						set_owner = event_target:blokkat_country
@@ -7504,6 +7516,7 @@ country_event = {
 						uses_naval_capacity = no
 						can_change_composition = no
 						is_boss = no
+						garrison = yes
 					}
 					effect = {
 						set_owner = event_target:blokkat_country
@@ -7640,15 +7653,15 @@ planet_event = {
 				which = blokkat_containment_ec_cost
 				value = blokkat_containment_ec_cost_base
 			}
-			random_list = {
-				1 = { multiply_variable = { which = blokkat_containment_ec_cost value = 1.3 } }
-				1 = { multiply_variable = { which = blokkat_containment_ec_cost value = 1.2 } }
-				1 = { multiply_variable = { which = blokkat_containment_ec_cost value = 1.1 } }
-				1 = { multiply_variable = { which = blokkat_containment_ec_cost value = 1.0 } }
-				1 = { multiply_variable = { which = blokkat_containment_ec_cost value = 0.9 } }
-				1 = { multiply_variable = { which = blokkat_containment_ec_cost value = 0.8 } }
-				1 = { multiply_variable = { which = blokkat_containment_ec_cost value = 0.7 } }
-			}
+			# random_list = {
+			# 	1 = { multiply_variable = { which = blokkat_containment_ec_cost value = 1.3 } }
+			# 	1 = { multiply_variable = { which = blokkat_containment_ec_cost value = 1.2 } }
+			# 	1 = { multiply_variable = { which = blokkat_containment_ec_cost value = 1.1 } }
+			# 	1 = { multiply_variable = { which = blokkat_containment_ec_cost value = 1.0 } }
+			# 	1 = { multiply_variable = { which = blokkat_containment_ec_cost value = 0.9 } }
+			# 	1 = { multiply_variable = { which = blokkat_containment_ec_cost value = 0.8 } }
+			# 	1 = { multiply_variable = { which = blokkat_containment_ec_cost value = 0.7 } }
+			# }
 		}
 	}
 
@@ -8317,6 +8330,8 @@ country_event = {
 	picture = GFX_evt_analyzing_artifacts
 	show_sound = event_dyson_sphere_build_complete
 	
+	location = event_target:giga_system
+
 	is_triggered_only = yes
 
 	option = {
@@ -8454,7 +8469,7 @@ country_event = {
 				value >= 75000
 			}
 			resource_stockpile_compare = {
-				resource = energy
+				resource = influence
 				value >= 25
 			}
 		}
@@ -11581,6 +11596,194 @@ system_event = {
 		}
 	}
 }
+
+#is this a crossover episode?
+country_event = {
+	id = giga_blokkat.5500
+	title = "giga_blokkat.5500.name"
+	desc = "giga_blokkat.5500.desc"
+	is_triggered_only = yes
+	
+	picture_event_data = {
+		portrait = event_target:blokkat_sbtg_warning_species
+		room = blokkat_stellarborne_message_room
+	}
+	
+	is_triggered_only = yes
+	force_open = yes
+
+	diplomatic = yes
+
+	trigger = {
+		is_ai = no
+		has_global_flag = sbtg_blokkat_light_block
+		is_country_type = original_empire_active
+		NOT = { has_country_flag = sb_told_about_blokkats }
+	}
+
+	immediate = {
+		create_species = {
+			name = "hello"
+			class = PROGENITOR
+			portrait = progenitors
+			traits = {
+				trait = trait_pc_all_preference
+				trait = trait_bionic_implants
+				trait = trait_ancient_race
+				trait = trait_ancient_knowledge
+				trait = trait_master_mind
+			}
+			immortal = yes
+			effect = { save_global_event_target_as = blokkat_sbtg_warning_species }
+		}
+		create_country = {
+			name = "good day to you"
+			type = giga_t3_tech_dump
+			species = event_target:blokkat_sbtg_warning_species
+			name_list = "Stellarborne"
+			authority = auth_sofe_ancients
+			civics = { 						# Custom civics with bonuses against AEs here
+				civic = civic_eternal_fleet
+				civic = civic_know_everything
+				civic = civic_solar_empire
+			}
+			ignore_initial_colony_error = yes
+			flag = {
+				icon= {
+					category = "original"
+					file = "original_empire_flag.dds"
+				}
+				background= {
+					category = "backgrounds"
+					file = "00_solid.dds"
+				}
+				colors={
+					"black"
+					"beige"
+					"null"
+					"null"
+				}
+			}
+			effect = { save_global_event_target_as = blokkat_sbtg_warning_country }
+			# ROOT = { establish_communications_no_message = event_target:blokkat_sbtg_warning_country }
+			# establish_contact = {
+			# 	who = event_target:blokkat_sbtg_warning_country
+			# 	location = ROOT.capital_scope
+			# }
+		}
+		set_country_flag = sb_told_about_blokkats
+		every_owned_fleet = {
+			limit = { has_fleet_flag = sbtg_loc_created_fleet }
+			delete_fleet = THIS
+		}
+	}
+
+	option = { #wtf
+		name = "giga_blokkat.5500.a"
+		custom_tooltip = "giga_blokkat.5500.a.tooltip"
+		hidden_effect = {
+			event_target:blokkat_sbtg_warning_country = { destroy_country = THIS }
+		}
+	}
+}
+
+#blokks won (somehow)
+country_event = {
+	id = giga_blokkat.5501
+	title = "giga_blokkat.5501.name"
+	desc = "giga_blokkat.5501.desc"
+	is_triggered_only = yes
+	
+	picture_event_data = {
+		portrait = event_target:blokkat_sbtg_warning_species
+		room = blokkat_stellarborne_message_room
+	}
+	
+	is_triggered_only = yes
+	force_open = yes
+
+	diplomatic = yes
+
+	pre_triggers = {
+		is_ai = no
+		has_global_flag = sbtg_blokkat_light_block
+		is_country_type = original_empire_active
+		has_country_flag = sb_told_about_blokkats
+		NOT = { has_global_flag = blokkats_won_tournament }
+	}
+
+	trigger = {
+		any_country = { is_country_type = blokkat_stripminers }
+		NOT = {
+			any_galaxy_planet = {
+				is_colony = yes
+				owner = { is_country = ROOT }
+			}
+		}
+	}
+
+	immediate = {
+		set_global_flag = blokkats_won_tournament
+		create_species = {
+			name = "hello"
+			class = PROGENITOR
+			portrait = progenitors
+			traits = {
+				trait = trait_pc_all_preference
+				trait = trait_bionic_implants
+				trait = trait_ancient_race
+				trait = trait_ancient_knowledge
+				trait = trait_master_mind
+			}
+			immortal = yes
+			effect = { save_global_event_target_as = blokkat_sbtg_warning_species }
+		}
+		create_country = {
+			name = "good day to you"
+			type = giga_t3_tech_dump
+			species = event_target:blokkat_sbtg_warning_species
+			name_list = "Stellarborne"
+			authority = auth_sofe_ancients
+			civics = { 						# Custom civics with bonuses against AEs here
+				civic = civic_eternal_fleet
+				civic = civic_know_everything
+				civic = civic_solar_empire
+			}
+			ignore_initial_colony_error = yes
+			flag = {
+				icon= {
+					category = "original"
+					file = "original_empire_flag.dds"
+				}
+				background= {
+					category = "backgrounds"
+					file = "00_solid.dds"
+				}
+				colors={
+					"black"
+					"beige"
+					"null"
+					"null"
+				}
+			}
+			effect = { save_global_event_target_as = blokkat_sbtg_warning_country }
+			# ROOT = { establish_communications_no_message = event_target:blokkat_sbtg_warning_country }
+			# establish_contact = {
+			# 	who = event_target:blokkat_sbtg_warning_country
+			# 	location = ROOT.capital_scope
+			# }
+		}
+	}
+
+	option = { #wtf
+		name = "giga_blokkat.5501.a"
+		custom_tooltip = "giga_blokkat.5501.a.tooltip"
+		hidden_effect = {
+			ROOT = { every_owned_fleet = { destroy_fleet = THIS } }
+		}
+	}
+}
+
 
 #DEBUG
 
