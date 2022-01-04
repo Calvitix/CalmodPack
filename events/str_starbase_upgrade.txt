@@ -15,6 +15,23 @@ country_event = {
 				#is_at_war = no
                 resource_stockpile_compare = {
                     resource = alloys
+                    value > 20000
+                }
+                #used_naval_capacity_percent > 0.6 # 0.95
+                has_technology = tech_starbase_6
+                #any_owned_starbase = {
+                #    has_starbase_size = starbase_starfortress
+                #}
+			}
+			country_event = {
+				id = str_starbase_fix.32
+			}
+		}
+        if = {
+            limit = {
+				#is_at_war = no
+                resource_stockpile_compare = {
+                    resource = alloys
                     value > 4000
                 }
                 #used_naval_capacity_percent > 0.6 # 0.95
@@ -319,6 +336,23 @@ country_event = {
 		random_owned_starbase = {
 			limit = { 
 						has_starbase_size >= starbase_citadel
+						NOT = { has_starbase_module = xl_battery }
+					}
+			remove_starbase_module = { slot = 12 }
+			set_starbase_module = {
+				slot = 12
+				module = xl_battery
+			}		
+			owner = {
+				add_resource = {
+					alloys = -250
+				}
+			}			
+			if = { limit = { has_global_flag = edai_logging	} log = "STR: Starfix Adding xl_battery on slot 12 on planet [This.GetName] for [Owner.GetName]" }			
+		}
+		random_owned_starbase = {
+			limit = { 
+						has_starbase_size >= starbase_citadel
 						NOT = { has_starbase_module = large_battery }
 					}
 			remove_starbase_module = { slot = 13 }
@@ -354,7 +388,7 @@ country_event = {
 		random_owned_starbase = {
 			limit = { 
 						has_starbase_size >= starbase_citadel
-						NOT = { has_starbase_building = target_uplink_computer }
+						NOT = { has_starbase_building = nsc_nanite_field }
 					}
 			remove_starbase_building = { slot = 13 }				
 			set_starbase_building = {
@@ -387,6 +421,144 @@ country_event = {
 		}		
 	}
 }
+
+
+country_event = {
+	id = str_starbase_fix.32
+	hide_window = yes
+	is_triggered_only = yes
+	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "STR: Starfix 32.Try to find StarCitadelle to Upgrade" }
+		random_owned_starbase = {
+			limit = { has_starbase_size = starbase_citadel 
+						or = { #calvitix, AI should have construct Defenses
+							count_starbase_modules = {
+								type = gun_battery
+								count > 1
+							}
+							count_starbase_modules = {
+								type = pd_battery
+								count > 1
+							}
+							count_starbase_modules = {
+								type = large_battery
+								count > 0
+							}
+							count_starbase_modules = {
+								type = xl_battery
+								count > 0
+							}
+						}
+			}
+			set_starbase_size = starbase_stronghold
+			#remove_starbase_module = { slot = 5 }
+			#remove_starbase_module = { slot = 6 }
+			#set_starbase_module = {
+			#	slot = 5
+			#	module = gun_battery
+			#}			
+			#set_starbase_module = {
+			#	slot = 6
+			#	module = pd_battery
+			#}						
+			owner = {
+				add_resource = {
+					alloys = -9800
+				}
+			}
+			if = { limit = { has_global_flag = edai_logging	} log = "STR: Starfix Upgrading to StarStrongHold on planet [This.GetName] for [Owner.GetName]" }
+			
+		}
+		random_owned_starbase = {
+			limit = { 
+						has_starbase_size >= starbase_stronghold
+						NOT = { has_starbase_module = titanic_battery }
+					}
+			remove_starbase_module = { slot = 15 }
+			set_starbase_module = {
+				slot = 15
+				module = titanic_battery
+			}			
+			owner = {
+				add_resource = {
+					alloys = -750
+				}
+			}			
+			if = { limit = { has_global_flag = edai_logging	} log = "STR: Starfix Adding titanic_battery on slot 15 on planet [This.GetName] for [Owner.GetName]" }
+			
+		}
+		random_owned_starbase = {
+			limit = { 
+						has_starbase_size >= starbase_stronghold
+						count_starbase_modules = { count < 2 type = xl_battery }
+					}
+			remove_starbase_module = { slot = 16 }
+			set_starbase_module = {
+				slot = 16
+				module = xl_battery
+			}		
+			owner = {
+				add_resource = {
+					alloys = -250
+				}
+			}			
+			if = { limit = { has_global_flag = edai_logging	} log = "STR: Starfix Adding xl_battery on slot 16 on planet [This.GetName] for [Owner.GetName]" }			
+		}
+		random_owned_starbase = {
+			limit = { 
+						has_starbase_size >= starbase_stronghold
+						NOT = { has_starbase_module = missile_battery }
+					}
+			remove_starbase_module = { slot = 17 }
+			set_starbase_module = {
+				slot = 17
+				module = missile_battery
+			}		
+			owner = {
+				add_resource = {
+					alloys = -50
+				}
+			}			
+			if = { limit = { has_global_flag = edai_logging	} log = "STR: Starfix Adding missile_battery on slot 17 on planet [This.GetName] for [Owner.GetName]" }			
+		}
+		random_owned_starbase = {
+			limit = { 
+						has_starbase_size >= starbase_stronghold
+						NOT = { has_starbase_building = adv_starbase }
+					}
+			remove_starbase_building = { slot = 15 }				
+			set_starbase_building = {
+				slot = 15
+				building = adv_starbase
+			}					
+			owner = {
+				add_resource = {
+					alloys = -100
+				}
+			}			
+			if = { limit = { has_global_flag = edai_logging	} log = "STR: Starfix Adding nsc_nanite_field on slot 15 on planet [This.GetName] for [Owner.GetName]" }			
+		}	
+		random_owned_starbase = {
+			limit = { 
+						has_starbase_size >= starbase_stronghold
+						NOT = { has_starbase_building = communications_jammer }
+					}
+			remove_starbase_building = { slot = 16 }				
+			set_starbase_building = {
+				slot = 16
+				building = communications_jammer
+			}					
+			owner = {
+				add_resource = {
+					alloys = -50
+				}
+			}			
+			if = { limit = { has_global_flag = edai_logging	} log = "STR: Starfix Adding communications_jammer on slot 16 on planet [This.GetName] for [Owner.GetName]" }			
+		}		
+	}
+}
+
+
 
 
 country_event = {

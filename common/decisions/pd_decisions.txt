@@ -2,7 +2,7 @@
 #
 # Calvitix Check 3.2
 #
-# Update 29.11.2021
+# Update 03.01.2022
 #
 ##########################################################################
 # Decisions
@@ -154,6 +154,7 @@ decision_engineered_environment_gaia = {
 	
 	potential = {
 		is_artificial = no
+		is_pd_arcology = no
 		NOT = { is_planet_class = pc_pdshroud }
 		NOT = { is_planet_class = pc_gaia }
 		NOT = { is_planet_class = pc_city }
@@ -251,9 +252,9 @@ decision_removeocean = {
 	}
 	
 	potential = {
+		#NOT = { owner = { has_trait = trait_aquatic } }
 		NOT = { is_planet_class = pc_relic }
 		NOT = { is_planet_class = pc_milarc_relic }
-		NOT = { owner = { has_trait = trait_pc_aquatic_preference } }
 		NOT = { is_planet_class = pc_city }
 		NOT = { is_planet_class = pc_pdshroud }
 		NOT = { is_planet_class = pc_ecocity }
@@ -337,10 +338,7 @@ decision_removeocean = {
 	}
 	
 	ai_weight = {
-		weight = 1
-		modifier = {
-			factor = 0
-		}
+		weight = 0
 	}
 }
 
@@ -358,7 +356,7 @@ decision_oceancapital = {
 	}
 	
 	potential = {
-		owner = { has_trait = trait_pc_aquatic_preference }
+		owner = { has_trait = trait_aquatic }
 		NOT = { is_planet_class = pc_pdshroud }
 		NOT = { is_planet_class = pc_aquatic }
 		NOT = { has_planet_flag = pdaquapicture }
@@ -457,10 +455,7 @@ decision_oceancapital = {
 	}
 	
 	ai_weight = {
-		weight = 1
-		modifier = {
-			factor = 0
-		}
+		weight = 0
 	}
 }
 
@@ -1520,7 +1515,18 @@ decision_noexoitchabsnocolony = {
 	}
 
 	ai_weight = {
-		weight = 1
+		weight = 10
+		modifier = {
+			factor = 0
+			owner = { 
+				OR = {
+					has_trait = trait_pc_ash_preference
+					has_trait = trait_pc_methane_preference
+					has_trait = trait_pc_ammonia_preference
+					has_trait = trait_pc_sulfur_preference
+				}
+			}
+		}
 	}
 }
 
@@ -1654,7 +1660,18 @@ decision_noexoitchabs = {
 	}
 
 	ai_weight = {
-		weight = 1
+		weight = 10
+		modifier = {
+			factor = 0
+			owner = { 
+				OR = {
+					has_trait = trait_pc_ash_preference
+					has_trait = trait_pc_methane_preference
+					has_trait = trait_pc_ammonia_preference
+					has_trait = trait_pc_sulfur_preference
+				}
+			}
+		}
 	}
 }
 
@@ -1827,128 +1844,6 @@ decision_tolbarren_phab = {
 			factor = 0
 		}
 	}
-}
-
-# Storm Nice Transplant
-decision_d_pdstorm_nice_2 = {
-	owned_planets_only = yes
-
-	enactment_time = 1800
-	resources = {
-		category = decisions
-		cost = {
-			minerals = 1000
-			influence = 100
-		}
-	}
-		
-	prerequisites = { "tech_d_pdstorm_nice_2" }
-	
-	allow = {
-		free_district_slots >= 1
-	}
-	
-	potential = {
-		is_artificial = no
-		is_pd_unique = no
-		OR = {
-			is_wet = yes
-			is_cold = yes
-		}
-		NOT = { has_deposit = d_pdstorm_nice_2 }
-	}
-
-	effect = {
-		custom_tooltip = decision_d_pdstorm_nice_2_tooltip
-		hidden_effect = {
-			add_deposit = d_pdstorm_nice_2
-		}
-	}   
-	
-	ai_weight = {
-        weight = 3
-        modifier = {
-            factor = 0
-            or = {
-                num_pops < 20
-                and = {
-                  # By late game, AI will likely keep some open building slots
-                  # This is mostly harmless if there are still jobs available
-                  # Otherwise, don't let them take this over building a building
-                  free_building_slots > 0
-                  free_jobs <= 0
-                }
-                free_building_slots > 2
-                owner = {
-                    or = {
-                        resource_stockpile_compare = { resource = energy value < 10000 }
-                        resource_stockpile_compare = { resource = influence value < 150 }
-                    }
-                }
-            }
-        }
-  }
-}
-
-# Storm Greedy Transplant
-decision_d_pdstorm_greedy_2 = {
-	owned_planets_only = yes
-
-	enactment_time = 1800
-	resources = {
-		category = decisions
-		cost = {
-			energy = 1000
-			influence = 100
-		}
-	}
-		
-	prerequisites = { "tech_d_pdstorm_greedy_2" }
-	
-	#allow = {
-	#	free_district_slots >= 1
-	#}
-	
-	potential = {
-		is_artificial = no
-		is_pd_unique = no
-		OR = {
-			is_wet = yes
-			is_cold = yes
-		}
-		NOT = { has_deposit = d_pdstorm_greedy_2 }
-	}
-
-	effect = {
-		custom_tooltip = decision_d_pdstorm_greedy_2_tooltip
-		hidden_effect = {
-			add_deposit = d_pdstorm_greedy_2
-		}
-	}   
-	
-	ai_weight = {
-        weight = 3
-        modifier = {
-            factor = 0
-            or = {
-                num_pops < 20
-                and = {
-                  # By late game, AI will likely keep some open building slots
-                  # This is mostly harmless if there are still jobs available
-                  # Otherwise, don't let them take this over building a building
-                  free_building_slots > 0
-                  free_jobs <= 0
-                }
-                free_building_slots > 2
-                owner = {
-                    or = {
-                        resource_stockpile_compare = { resource = energy value < 10000 }
-                        resource_stockpile_compare = { resource = influence value < 150 }
-                    }
-                }
-            }
-        }
-  }
 }
 
 # Tiyanki Planet, Under New Managment
