@@ -226,7 +226,7 @@ blokkat_harvest_system = {
 	if = {
 		limit = { NOT = { has_star_flag = blokkat_system_name_set_to_void } }
 		set_star_flag = blokkat_system_name_set_to_void
-		set_name = " [PREV.GetName] - vide"
+		set_name = "[PREV.GetName] vide"
 	}
 	set_asteroid_belt = { radius = 0 }
 	every_fleet_in_system = {
@@ -400,7 +400,7 @@ blokkat_harvest_system_mothership = {
 	if = {
 		limit = { NOT = { has_star_flag = blokkat_system_name_set_to_void } }
 		set_star_flag = blokkat_system_name_set_to_void
-		set_name = " [current_blokkat_mothership_system.GetName] - vide" #void
+		set_name = "[current_blokkat_mothership_system.GetName] vide"
 	}
 	set_asteroid_belt = { radius = 0 }
 	random_fleet_in_system = {
@@ -532,7 +532,7 @@ set_blokkat_leader_data = {
 	random_list = {
 		1 = { set_name = "Blokchat" } #calvitix names
 		1 = { set_name = "Nerukchat" }
-		1 = { set_name = "Blokkitae Blokkérien" }
+		1 = { set_name = "Blokitae Blokkeriane" }
 		1 = { set_name = "BlokkGR" }
 		1 = { set_name = "Phenkk" }
 		1 = { set_name = "Blokruche" }
@@ -568,7 +568,7 @@ set_blokkat_leader_data = {
 		1 = { set_name = "Blokholl" }
 		1 = { set_name = "Blokkimous" }
 		1 = { set_name = "Philokk" }
-		1 = { set_name = "Blokképard" }
+		1 = { set_name = "Blokkepard" }
 		1 = { set_name = "Blokkarat" }
 		1 = { set_name = "Diym" }
 		1 = { set_name = "Blokkonio" }
@@ -654,7 +654,7 @@ set_blokkat_admiral_leader_data = {
 	random_list = {
 		1 = { set_name = "Blokmiral Blokchat" }
 		1 = { set_name = "Blokmiral Nerukchat" }
-		1 = { set_name = "Blokmiral Blokkérien" }
+		1 = { set_name = "Blokmiral Blokkeriane" }
 		1 = { set_name = "Blokmiral Blokkitae" }
 		1 = { set_name = "Blokmiral BlokkGR" }
 		1 = { set_name = "Blokmiral Phenkk" }
@@ -794,7 +794,7 @@ spawn_blokkat_combat_fleet = {
 		create_strong_blokkat_admiral = yes
 	}
 	create_fleet = { #Spawn some Escort ships
-		name = "Blok-Terminator"
+		name = "Terminator"
 		settings = {
 			spawn_debris = no
 			can_upgrade = no
@@ -807,8 +807,8 @@ spawn_blokkat_combat_fleet = {
 			while = {
 				count = 1
 				create_ship = {
-					name = "Blok-Terminator"
-					design = "Blok-Terminator"
+					name = "Blokchat"
+					design = "Blokk-Terminator"
 					prefix = no
 					effect = {
 						apply_blokkat_difficulty_modifier = yes
@@ -852,7 +852,7 @@ spawn_blokkat_mothership_fleet = {
 		}
 	}
 	create_fleet = { #Spawn the mothership
-		name = "Vaisseau-Mère des Blokchats"
+		name = "Blokkat-Vester"
 		settings = {
 			spawn_debris = no
 			can_upgrade = no
@@ -863,19 +863,16 @@ spawn_blokkat_mothership_fleet = {
 		}
 		effect = {
 			set_owner = ROOT
-			if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : spawn_effect - Create Ship for [Owner.GetName]" }
 			create_ship = {
-				name = "Moissonneur principal Blokchat"
-				design = "Blok-Vaisseau-Mere"
+				name = "Superviseur" #"Blokkat-Vester Harvesting Overseer"
+				design = "Blokkat-Vester"
 				prefix = no
 				effect = {
-					save_global_event_target_as = blokkat_mothership_ship
 					apply_blokkat_difficulty_modifier_bigship_damage = yes
 					set_disable_at_health = 0.05
+					save_global_event_target_as = blokkat_mothership_ship
 				}
 			}
-			if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : spawn_effect - Ship created OK, set location for [Owner.GetName]" }
-			
 			set_location = {
 				target = event_target:future_blokkat_mothership_system.star
 				distance = 5
@@ -886,8 +883,6 @@ spawn_blokkat_mothership_fleet = {
 			set_fleet_flag = blokkat_mothership_fleet
 			set_fleet_flag = blokkat_fleet
 			save_global_event_target_as = blokkat_mothership_fleet
-			if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : spawn_effect - Set location OK. All is Good for [Owner.GetName]" }
-			
 		}
 	}
 	if = {
@@ -900,8 +895,6 @@ spawn_blokkat_mothership_fleet = {
 		event_target:blokkat_country = {
 			create_strong_blokkat_admiral = yes
 		}
-		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : spawn_effect - if difficulty bismuth > spawn escort for [Owner.GetName]" }
-		
 		create_fleet = { #Spawn the escort fleet
 			name = "Blok-Escorte"
 			settings = {
@@ -918,8 +911,8 @@ spawn_blokkat_mothership_fleet = {
 					while = {
 						count = 2
 						create_ship = {
-							name = "Blok-Terminator"
-							design = "Blok-Terminator"
+							name = "Terminator"
+							design = "Blokk-Terminator"
 							prefix = no
 							effect = {
 								set_disable_at_health = 0.01
@@ -936,8 +929,8 @@ spawn_blokkat_mothership_fleet = {
 					while = {
 						count = 5
 						create_ship = {
-							name = "Blok-Terminator"
-							design = "Blok-Terminator"
+							name = "Terminator"
+							design = "Blokk-Terminator"
 							prefix = no
 							effect = {
 								set_disable_at_health = 0.01
@@ -951,8 +944,8 @@ spawn_blokkat_mothership_fleet = {
 					while = {
 						count = 50
 						create_ship = {
-							name = "Blok-Gardien"
-							design = "Blok-Gardien"
+							name = "Gardien"
+							design = "Blokk-Custodian"
 							prefix = no
 							effect = { apply_blokkat_difficulty_modifier = yes apply_blokkat_difficulty_modifier_damage = yes }
 						}
@@ -960,8 +953,8 @@ spawn_blokkat_mothership_fleet = {
 					while = {
 						count = 250
 						create_ship = {
-							name = "Blok-Éliminateur"
-							design = "Blok-Eliminateur"
+							name = "Tueur"
+							design = "Blokk-Evictor"
 							prefix = no
 							effect = { apply_blokkat_difficulty_modifier = yes apply_blokkat_difficulty_modifier_damage = yes }
 						}
@@ -995,7 +988,7 @@ spawn_blokkat_harvesting_fleet = {
 		create_blokkat_admiral = yes
 	}
 	create_fleet = { #Spawn some harvesting ships
-		name = "Blok-Démanteleur"
+		name = "Blokchat"
 		settings = {
 			spawn_debris = no
 			can_upgrade = no
@@ -1007,8 +1000,8 @@ spawn_blokkat_harvesting_fleet = {
 		effect = {
 			set_owner = ROOT
 			create_ship = {
-				name = "Blok-Démanteleur"
-				design = "Blok-Moissonneur"
+				name = "Blokchat"
+				design = "Blokk-Harvester"
 				prefix = no
 				effect = {
 					apply_blokkat_difficulty_modifier_bigship_damage = yes
@@ -1244,7 +1237,7 @@ spawn_blokkat_scout_fleet = {
 					count = 1
 					create_ship = {
 						name = "Blok-Gardien"
-						design = "Blok-Gardien"
+						design = "Blokk-Custodian"
 						prefix = no
 						effect = { apply_blokkat_difficulty_modifier = yes apply_blokkat_difficulty_modifier_damage = yes }
 					}
@@ -1252,8 +1245,8 @@ spawn_blokkat_scout_fleet = {
 				while = {
 					count = 10
 					create_ship = {
-						name = "Blok-Éliminateur"
-						design = "Blok-Eliminateur"
+						name = "Tueur"
+						design = "Blokk-Evictor"
 						prefix = no
 						effect = { apply_blokkat_difficulty_modifier = yes apply_blokkat_difficulty_modifier_damage = yes }
 					}
@@ -1263,8 +1256,8 @@ spawn_blokkat_scout_fleet = {
 					while = {
 						count = 2
 						create_ship = {
-							name = "Blok-Gardien"
-							design = "Blok-Gardien"
+							name = "Gardien"
+							design = "Blokk-Custodian"
 							prefix = no
 							effect = { apply_blokkat_difficulty_modifier = yes }
 						}
@@ -1272,8 +1265,8 @@ spawn_blokkat_scout_fleet = {
 					while = {
 						count = 20
 						create_ship = {
-							name = "Blok-Éliminateur"
-							design = "Blok-Eliminateur"
+							name = "Tueur"
+							design = "Blokk-Evictor"
 							prefix = no
 							effect = { apply_blokkat_difficulty_modifier = yes }
 						}
@@ -1311,8 +1304,8 @@ spawn_blokkat_scout_fleet = {
 				while = {
 					count = 1
 					create_ship = {
-						name = "Blok-Terminator"
-						design = "Blok-Terminator"
+						name = "Terminator"
+						design = "Blokk-Terminator"
 						prefix = no
 						effect = {
 							set_disable_at_health = 0.01
@@ -1367,8 +1360,8 @@ spawn_blokkat_escort_fleet = {
 			while = {
 				count = 5
 				create_ship = {
-					name = "Blok-Gardien"
-					design = "Blok-Gardien"
+					name = "Gardien"
+					design = "Blokk-Custodian"
 					prefix = no
 					effect = { apply_blokkat_difficulty_modifier = yes apply_blokkat_difficulty_modifier_damage = yes }
 				}
@@ -1376,8 +1369,8 @@ spawn_blokkat_escort_fleet = {
 			while = {
 				count = 25
 				create_ship = {
-					name = "Blok-Éliminateur"
-					design = "Blok-Eliminateur"
+					name = "Tueur"
+					design = "Blokk-Evictor"
 					prefix = no
 					effect = { apply_blokkat_difficulty_modifier = yes apply_blokkat_difficulty_modifier_damage = yes }
 				}
@@ -1387,8 +1380,8 @@ spawn_blokkat_escort_fleet = {
 				while = {
 					count = 10
 					create_ship = {
-						name = "Blok-Gardien"
-						design = "Blok-Gardien"
+						name = "Gardien"
+						design = "Blokk-Custodian"
 						prefix = no
 						effect = { apply_blokkat_difficulty_modifier = yes apply_blokkat_difficulty_modifier_damage = yes }
 					}
@@ -1396,8 +1389,8 @@ spawn_blokkat_escort_fleet = {
 				while = {
 					count = 50
 					create_ship = {
-						name = "Blok-Éliminateur"
-						design = "Blok-Eliminateur"
+						name = "Tueur"
+						design = "Blokk-Evictor"
 						prefix = no
 						effect = { apply_blokkat_difficulty_modifier = yes apply_blokkat_difficulty_modifier_damage = yes }
 					}
@@ -1408,8 +1401,8 @@ spawn_blokkat_escort_fleet = {
 				while = {
 					count = 2
 					create_ship = {
-						name = "Blok-Terminator"
-						design = "Blok-Terminator"
+						name = "Terminator"
+						design = "Blokk-Terminator"
 						prefix = no
 						effect = {
 							set_disable_at_health = 0.01
@@ -1423,8 +1416,8 @@ spawn_blokkat_escort_fleet = {
 				while = {
 					count = 25
 					create_ship = {
-						name = "Blok-Gardien"
-						design = "Blok-Gardien"
+						name = "Gardien"
+						design = "Blokk-Custodian"
 						prefix = no
 						effect = { apply_blokkat_difficulty_modifier = yes apply_blokkat_difficulty_modifier_damage = yes }
 					}
@@ -1432,8 +1425,8 @@ spawn_blokkat_escort_fleet = {
 				while = {
 					count = 125
 					create_ship = {
-						name = "Blok-Éliminateur"
-						design = "Blok-Eliminateur"
+						name = "Tueur"
+						design = "Blokk-Evictor"
 						prefix = no
 						effect = { apply_blokkat_difficulty_modifier = yes apply_blokkat_difficulty_modifier_damage = yes }
 					}
