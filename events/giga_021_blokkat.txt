@@ -21,6 +21,7 @@ event = {
 
 	immediate = {
 		#Check if we can begin the spawning protocols
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.1500 for [Owner.GetName]" }
 		event_target:global_event_country = {
 			if = {
 				limit = { 
@@ -145,6 +146,7 @@ event = {
 	is_triggered_only = yes
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.1000 for [Owner.GetName]" }
 		if = {
 			limit = { NOT = { has_global_flag = blokkats_managed_to_spawn } }
 			set_global_flag = blokkats_managed_to_spawn
@@ -170,6 +172,7 @@ country_event = {
 	is_triggered_only = yes
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.1003 for [Owner.GetName]" }
 		if = {
 			limit = {
 				check_variable = {
@@ -318,6 +321,7 @@ event = {
 	is_triggered_only = yes
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.1010 for [Owner.GetName]" }
 		random_country = {
 			limit = { is_ai = no }
 			capital_scope = {
@@ -444,11 +448,12 @@ event = {
 	is_triggered_only = yes
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.1011 for [Owner.GetName]" }
 		set_global_flag = blokkat_crisis_ongoing
 		set_global_flag = sbtg_blokkat_light_block
 		event_target:blokkat_spawn_system = {
 			set_star_class = sc_blokkat_stripmined
-			set_name = "[blokkat_spawn_system.GetName] Vide" #void Calvitix
+			set_name = " [blokkat_spawn_system.GetName] - vide" #void Calvitix
 			set_asteroid_belt = { radius = 0 }
 			set_star_flag = blokkat_stripmined_system
 			every_system_planet = {
@@ -712,6 +717,13 @@ event = {
 			type = blokkat_stripminers
 			name = "Récolteurs Blokchats"
 			species = event_target:blokkat_species
+			authority = auth_imperial
+			ethos = {
+				ethic = ethic_authoritarian
+				ethic = ethic_xenophobe
+				ethic = ethic_militarist
+			}	
+			civics = random
 			auto_delete = no
 			flag = {
 				icon={
@@ -785,6 +797,7 @@ country_event = {
 	is_triggered_only = yes
 	
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.1012 for [Owner.GetName]" }
 		event_target:blokkat_spawn_system = {
 			save_global_event_target_as = current_blokkat_mothership_system
 			save_global_event_target_as = future_blokkat_mothership_system
@@ -1003,8 +1016,9 @@ country_event = {
 				value = 1
 			}
 		}
-
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : Spawn mothership for [Owner.GetName]" }
 		spawn_blokkat_mothership_fleet = yes
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : Spawn mothership OK for [Owner.GetName]" }
 
 		set_variable = {
 			which = blokkat_max_scout_fleet_count
@@ -1039,6 +1053,7 @@ fleet_event = {
 	}
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.4000 for [Owner.GetName]" }
 		solar_system = { save_global_event_target_as = blokkat_scout_fleet_location }
 		set_timed_global_flag = {
 			flag = blokkat_scout_fleet_cooldown
@@ -1069,6 +1084,7 @@ country_event = {
 	hide_window = yes
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.6002 for [Owner.GetName]" }
 		if = {
 			limit = { NOT = { has_global_flag = blokkat_crisis_defeated } }
 			every_country = {
@@ -1143,6 +1159,7 @@ country_event = {
 	trigger = { NOT = { has_global_flag = blokkat_crisis_defeated } }
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.6003 for [Owner.GetName]" }
 		set_global_flag = blokkat_mothership_killed_legit
 		event_target:blokkat_country = {
 			every_owned_fleet = { delete_fleet = THIS }
@@ -1190,6 +1207,7 @@ country_event = {
 	hide_window = yes
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.5000 for [Owner.GetName]" }
 		if = {
 			limit = {
 				has_global_flag = blokkat_bureau_popup
@@ -1437,14 +1455,18 @@ country_event = {
 			}
 		}
 
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.5000 - Respawn ? for [Owner.GetName]" }
 		if = {
 			limit = { has_global_flag = gotta_respawn_blokkat_mothership }
 			remove_global_flag = gotta_respawn_blokkat_mothership
 			if = {
 				limit = { NOT = { has_global_flag = blokkats_respawned_to_unstuck } }
-			every_country = { country_event = { id = giga_blokkat.5004 } }
+				every_country = { country_event = { id = giga_blokkat.5004 } }
 			}
+			if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : Spawn mothership...after 5004 for [Owner.GetName]" }			
 			spawn_blokkat_mothership_fleet = yes
+			if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : Spawn mothership OK for [Owner.GetName]" }
+			
 		}
 		if = {
 			limit = {
@@ -1459,8 +1481,11 @@ country_event = {
 					}
 				}
 			}
+			if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.5000 - No respawn, but still problem (no kill legit) for [Owner.GetName]" }
+			
 			if = {
 				limit = {
+					exists = event_target:blokkat_mothership_ship
 					event_target:blokkat_mothership_ship = {
 						is_disabled = yes
 					}
@@ -1474,6 +1499,7 @@ country_event = {
 			if = {
 				limit = { NOT = { has_global_flag = blokkats_respawned_to_unstuck } }
 			every_country = {
+				if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.5000 - Send Killed message 50031 (no kill legit) for [Owner.GetName]" }
 				country_event = { id = giga_blokkat.50031 }
 			}
 			}
@@ -1582,14 +1608,16 @@ country_event = {
 			# }
 		}
 		if = {
-			limit = { NOT = { has_global_flag = blokkat_mothership_shield_down } }
+			limit = { NOT = { has_global_flag = blokkat_mothership_shield_down } }			
 			event_target:blokkat_mothership_ship = { repair_ship = yes }
 		}
-		#Readd Shield Modifier if it's somehow missing
+		#Read Shield Modifier if it's somehow missing
 		if = {
 			limit = {
 				NOT = { has_global_flag = blokkat_mothership_shield_down }
+				exists = event_target:blokkat_mothership_fleet
 				event_target:blokkat_mothership_fleet = {
+					exists = solar_system
 					solar_system = { NOT = { has_modifier = blokkat_mothership_shield } }
 				}
 			}
@@ -2204,6 +2232,7 @@ country_event = {
 	picture = GFX_evt_fleet_evil
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.1008 for [Owner.GetName]" }
 		set_variable = {
 			which = blokkat_knowledge_value #knowledge
 			value = 0
@@ -2283,6 +2312,7 @@ country_event = {
 	is_triggered_only = yes
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.10210 for [Owner.GetName]" }
 		set_global_flag = blokkat_bureau_fallback
 		every_country = {
 			limit = { is_ai = no }
@@ -2304,6 +2334,7 @@ country_event = {
 	picture = GFX_evt_physics_research
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.1021 for [Owner.GetName]" }
 		set_global_flag = blokkat_bureau_popup
 		set_country_flag = blokkat_bureau_unlocked
 		set_variable = {
@@ -2373,6 +2404,7 @@ planet_event = {
 	picture = GFX_evt_exploding_planet
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.1023 for [Owner.GetName]" }
 		owner = { save_event_target_as = blokkat_planet_owner }
 		set_variable = {
 			which = blokkat_planet_pop_count
@@ -2544,6 +2576,7 @@ country_event = {
 	}
 	
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.1026 for [Owner.GetName]" }
 		save_global_event_target_as = country_killed_by_blokkats
 		if = {
 			limit = { is_country_type = default }
@@ -2611,6 +2644,7 @@ ship_event = {
 	}
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.10310 for [Owner.GetName]" }
 		if = {
 			limit = {
 				check_variable = {
@@ -2679,6 +2713,7 @@ ship_event = {
 	}
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.10302 for [Owner.GetName]" }
 		repair_ship = yes
 		set_disabled = no
 		event_target:blokkat_country = {
@@ -2709,6 +2744,7 @@ ship_event = {
 	}
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.10303 for [Owner.GetName]" }
 		ROOT.solar_system = {
 			create_ambient_object = {
 				type = "star_explosion"
@@ -2751,6 +2787,7 @@ country_event = {
 	picture = GFX_evt_supernova
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.1030 for [Owner.GetName]" }
 		set_global_flag = blokkat_mothership_killed_legit
 		remove_global_flag = sbtg_blokkat_light_block
 		save_global_event_target_as = blokkat_vanquisher
@@ -2920,6 +2957,7 @@ country_event = {
 	picture = GFX_evt_megastructure_construction
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.1032 for [Owner.GetName]" }
 		country_event = { id = giga_blokkat.1034 days = 30} #CHANGE
 	}
 
@@ -3035,6 +3073,7 @@ country_event = {
 	picture = GFX_evt_surreal_visions
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.1034 for [Owner.GetName]" }
 		set_country_flag = giga_knows_about_destabilizer_scrap
 	}
 
@@ -3062,6 +3101,7 @@ country_event = {
 	}
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.1035 for [Owner.GetName]" }
 		change_variable = {
 			which = blokkat_scrap_value
 			value = 10
@@ -3102,6 +3142,7 @@ country_event = {
 	picture = GFX_evt_large_explosion
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.1040 for [Owner.GetName]" }
 		subtract_variable = {
 			which = blokkat_inquietude_value
 			value = 3
@@ -3259,6 +3300,7 @@ country_event = {
 	}
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.1042 for [Owner.GetName]" }
 		every_country = {
 			limit = { has_event_chain = blokkat_chain }
 			add_event_chain_counter = {
@@ -3284,6 +3326,7 @@ country_event = {
 	}
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.1043 for [Owner.GetName]" }
 		set_country_flag = blokkat_ship_sacrificed
 	}
 
@@ -3325,6 +3368,7 @@ country_event = {
 	}
 
 	immediate = {
+		#if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.3400 for [Owner.GetName]" }
 		if = {
 			limit = {
 				check_variable = {
@@ -3413,6 +3457,7 @@ country_event = {
 	}
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.3500 for [Owner.GetName]" }
 		FromFrom = {
 			solar_system = {
 				create_ambient_object = {
@@ -3460,6 +3505,7 @@ fleet_event = {
 	}
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.3501 for [Owner.GetName]" }
 		solar_system = {
 			create_ambient_object = {
 				type = blokk_terminator_explosion_object
@@ -4600,6 +4646,7 @@ fleet_event = {
 	}
 	
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.6500 for [Owner.GetName]" }
 		from = {
 			every_system_megastructure = {
 				limit = {
@@ -4644,6 +4691,7 @@ country_event = {
 	}
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.3080 for [Owner.GetName]" }
 		every_country = {
 			limit = { has_event_chain = blokkat_chain }
 			add_event_chain_counter = {
@@ -4802,6 +4850,7 @@ country_event = {
 	hide_window = yes
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.3084 for [Owner.GetName]" }
 		subtract_variable = {
 			which = blokkat_scrap_research_value
 			value = 100
@@ -4817,6 +4866,7 @@ country_event = {
 	hide_window = yes
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.3085 for [Owner.GetName]" }
 		subtract_variable = {
 			which = blokkat_scrap_damage_value
 			value = 75
@@ -4836,6 +4886,7 @@ country_event = {
 	}
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.3086 for [Owner.GetName]" }
 		remove_country_flag = researching_blokkat_scrap_research
 		change_variable = {
 			which = blokkat_scrap_research_value
@@ -4864,6 +4915,7 @@ country_event = {
 	}
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.3087 for [Owner.GetName]" }
 		remove_country_flag = researching_blokkat_scrap_damage
 		change_variable = {
 			which = blokkat_scrap_damage_value
@@ -4892,6 +4944,7 @@ country_event = {
 	picture = GFX_evt_mysterious_signal
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.3300 for [Owner.GetName]" }
 		set_country_flag = blokkat_paluush_analysis_started
 	}
 
@@ -4950,6 +5003,7 @@ country_event = {
 	picture = GFX_evt_medieval_alien_civilization
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.3302 for [Owner.GetName]" }
 		set_variable = {
 			which = blokkat_knowledge_earned_by_paluush
 			value = 0
@@ -5023,6 +5077,7 @@ country_event = {
 	picture = GFX_evt_zro_3
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.3304 for [Owner.GetName]" }
 		set_global_flag = waiting_to_kill_paluushia_manifestation
 		set_country_flag = paluushia_shield_breached
 		remove_country_flag = can_breach_paluushia_shield
@@ -5109,6 +5164,7 @@ country_event = {
 	picture = GFX_evt_large_explosion
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.3305 for [Owner.GetName]" }
 		remove_global_flag = waiting_to_kill_paluushia_manifestation
 	}
 
@@ -5136,6 +5192,7 @@ country_event = {
 	picture = GFX_evt_shrouded_planet
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.3306 for [Owner.GetName]" }
 		event_target:paluushia = {
 			create_species = {
 				name = "Grand Lapin"
@@ -5276,6 +5333,7 @@ country_event = {
 	picture = GFX_evt_surreal_visions
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.3309 for [Owner.GetName]" }
 		set_country_flag = established_contact_with_grandbunny
 		set_country_flag = grandbunny_waiting_for_answer
 	}
@@ -5849,6 +5907,7 @@ country_event = {
 	}
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.3324 for [Owner.GetName]" }
 		change_variable = {
 			which = blokkat_knowledge_value
 			value = 4
@@ -5912,6 +5971,7 @@ country_event = {
 	show_sound = event_mystic_reveal_light
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.3326 for [Owner.GetName]" }
 		remove_country_flag = blokkat_project_underway
 		set_country_flag = blokkat_temporal_discrepancy_solved
 	}
@@ -5935,6 +5995,7 @@ country_event = {
 	}
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.3327 for [Owner.GetName]" }
 		change_variable = {
 			which = blokkat_knowledge_value
 			value = 4
@@ -6003,6 +6064,7 @@ country_event = {
 	}
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.3330 for [Owner.GetName]" }
 		remove_country_flag = blokkat_project_underway
 		set_country_flag = blokkat_mega_stage_4_researched
 	}
@@ -6055,6 +6117,7 @@ country_event = {
 	show_sound = event_mystic_reveal
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.3332 for [Owner.GetName]" }
 		event_target:grandbunny_shielded_system = {
 			every_ambient_object = {
 				limit = { has_ambient_object_flag = grandbunny_shielding_system }
@@ -6150,6 +6213,7 @@ country_event = {
 	show_sound = event_mystic_reveal
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.3335 for [Owner.GetName]" }
 		remove_country_flag = established_contact_with_grandbunny
 		remove_country_flag = paluush_event_chain_ongoing
 	}
@@ -6188,6 +6252,7 @@ country_event = {
 	show_sound = event_mystic_reveal
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.3350 for [Owner.GetName]" }
 		set_country_flag = can_research_blokkat_star_repair
 	}
 
@@ -6893,6 +6958,7 @@ country_event = {
 	}
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.30900 for [Owner.GetName]" }
 		remove_country_flag = blokkat_project_underway
 		change_variable = {
 			which = blokkat_knowledge_value
@@ -6999,6 +7065,7 @@ country_event = {
 	}
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.3202 for [Owner.GetName]" }
 		set_variable = {
 			which = captured_blokkat_count
 			value = 0
@@ -7035,6 +7102,7 @@ country_event = {
 	}
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.3203 for [Owner.GetName]" }
 		if = {
 			limit = { 
 				any_owned_megastructure = { is_megastructure_type = blokkat_prison_1_empty }
@@ -7178,6 +7246,7 @@ country_event = {
 	}
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.3220 for [Owner.GetName]" }
 		set_global_flag = blokkat_breach_occurring
 		event_target:global_event_country = {
 			random_owned_leader = {
@@ -7267,6 +7336,7 @@ country_event = {
 	show_sound = event_ship_thrusters
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.3221 for [Owner.GetName]" }
 		remove_global_flag = blokkat_breach_occurring
 		set_country_flag = just_released_blokkat
 		event_target:blokkat_prison_with_breach = {
@@ -7304,6 +7374,7 @@ planet_event = { #colossus
 	is_triggered_only = yes
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.3222 for [Owner.GetName]" }
 		destroy_colony = yes
 		solar_system = {
 			while = {
@@ -7324,7 +7395,7 @@ planet_event = { #colossus
 							count = 1
 							create_ship = {
 								name = "Blokchat"
-								design = "Blokkat"
+								design = "Blokchat"
 								prefix = no
 							}
 						}
@@ -7357,6 +7428,7 @@ country_event = {
 	show_sound = event_air_raid_siren
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.3223 for [Owner.GetName]" }
 		remove_global_flag = blokkat_breach_occurring
 		set_country_flag = just_released_blokkat
 		event_target:blokkat_prison_with_breach = {
@@ -7382,7 +7454,7 @@ country_event = {
 							count = 1
 							create_ship = {
 								name = "Blokchat"
-								design = "Blokkat"
+								design = "Blokchat"
 								prefix = no
 							}
 						}
@@ -7417,7 +7489,7 @@ country_event = {
 							count = 2
 							create_ship = {
 								name = "Blokchat"
-								design = "Blokkat"
+								design = "Blokchat"
 								prefix = no
 							}
 						}
@@ -7458,6 +7530,7 @@ fleet_event = {
 	is_triggered_only = yes
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.3224 for [Owner.GetName]" }
 		fleet_event = { id = giga_blokkat.3224 days = 10 }
 		queue_actions = {
 			find_closest_system = {
@@ -7509,6 +7582,7 @@ country_event = {
 	show_sound = event_space_battle
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.3225 for [Owner.GetName]" }
 		country_event = { id = giga_blokkat.3226 days = 60 }
 		country_event = { id = giga_blokkat.3227 days = 60 }
 		event_target:blokkat_prison_with_breach = {
@@ -7529,7 +7603,7 @@ country_event = {
 							count = 1
 							create_ship = {
 								name = "Blokchat"
-								design = "Blokkat"
+								design = "Blokchat"
 								prefix = no
 							}
 						}
@@ -7575,6 +7649,7 @@ country_event = {
 	}
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.3226 for [Owner.GetName]" }
 		event_target:breaching_blokkat_fleet = { destroy_fleet = this }
 		remove_global_flag = blokkat_breach_occurring
 		set_country_flag = just_released_blokkat
@@ -7652,6 +7727,7 @@ planet_event = {
 	}
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.3204 for [Owner.GetName]" }
 		owner = {
 			set_country_flag = currently_fighting_blokkat
 			set_variable = {
@@ -7795,6 +7871,7 @@ country_event = {
 	}
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.3207 for [Owner.GetName]" }
 		remove_country_flag = currently_fighting_blokkat
 		fromfrom = { remove_planet_flag = planet_fighting_blokkat }
 		random_owned_megastructure = {
@@ -8022,6 +8099,7 @@ country_event = {
 	}
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.3209 for [Owner.GetName]" }
 		if = { #Delete those in empty space
 			limit = {
 				any_megastructure = { 
@@ -8159,6 +8237,7 @@ country_event = {
 	}
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.3232 for [Owner.GetName]" }
 		change_variable = {
 			which = blokkat_knowledge_earned_by_general_study
 			value = 1
@@ -8250,6 +8329,7 @@ country_event = {
 	}
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.3234 for [Owner.GetName]" }
 		set_global_flag = managing_blokkat_prison
 		random_megastructure = {
 			limit = {
@@ -8317,6 +8397,7 @@ country_event = { #Increment age
 	}
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.3235 for [Owner.GetName]" }
 		every_owned_leader = {
 			limit = { has_leader_flag = blokkat_leader }
 			change_variable = {
@@ -8437,6 +8518,7 @@ country_event = {
 	}
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.3210 for [Owner.GetName]" }
 		event_target:global_event_country = {
 			random_owned_leader = {
 				limit = {
@@ -8769,6 +8851,7 @@ country_event = {
 	}
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.3061 for [Owner.GetName]" }
 		remove_country_flag = blokkat_project_underway
 		set_country_flag = blokkat_mega_stage_0_researched
 		if = {
@@ -9020,6 +9103,7 @@ country_event = {
 	location = event_target:giga_blokkat_shieldkiller_system
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.30691 for [Owner.GetName]" }
 		set_variable = {
 			which = blokkat_shieldkiller_activation_cost
 			value = event_target:blokkat_country.blokkat_shieldkiller_activation_cost
@@ -9117,6 +9201,7 @@ country_event = {
 	picture = GFX_evt_vortex
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.30692 for [Owner.GetName]" }
 		set_global_flag = blokkat_mothership_shield_down
 		remove_global_flag = just_activated_blokkat_shieldkiller
 		every_system = {
@@ -9220,6 +9305,7 @@ country_event = {
 	hide_window = yes
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.30693 for [Owner.GetName]" }
 		remove_global_flag = blokkat_mothership_shield_down
 		event_target:blokkat_country = {
 			if = {
@@ -9282,6 +9368,7 @@ country_event = {
 	hide_window = yes
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.30695 for [Owner.GetName]" }
 		remove_global_flag = blokkat_shield_killer_activated
 		every_country = {
 			country_event = { id = giga_blokkat.30696 }
@@ -9495,6 +9582,7 @@ country_event = {
 	}
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.3040 for [Owner.GetName]" }
 		change_variable = {
 			which = blokkat_knowledge_value
 			value = 1
@@ -9537,6 +9625,7 @@ country_event = {
 	picture = GFX_evt_physics_research
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.3011 for [Owner.GetName]" }
 		remove_country_flag = blokkat_shield_being_researched
 		set_country_flag = blokkat_shield_researched
 		change_variable = {
@@ -9568,6 +9657,7 @@ event = {
 	}
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.6600 for [Owner.GetName]" }
 		every_country = {
 			limit = { is_ai = no }
 			country_event = { id = giga_blokkat.6607 days = 10 }
@@ -9690,6 +9780,7 @@ fleet_event = {
 	hide_window = yes
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.6601 for [Owner.GetName]" }
 		if = {
 			limit = { solar_system = { NOT = { has_star_flag = scourge_escape_system } } }
 			fleet_event = { id = giga_blokkat.6601 days = 10 }
@@ -9735,6 +9826,7 @@ fleet_event = {
 	}
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.6602 for [Owner.GetName]" }
 		delete_fleet = THIS
 	}
 }
@@ -9746,6 +9838,7 @@ country_event = {
 	is_triggered_only = yes
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.6603 for [Owner.GetName]" }
 		country_event = { id = giga_blokkat.6603 days = 30 }
 		every_owned_fleet = {
 			limit = { NOT = { has_fleet_flag = scourge_fleet_fleeing_from_blokkat } }
@@ -9774,6 +9867,7 @@ country_event = {
 	}
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.6604 for [Owner.GetName]" }
 		stop_crisis_sound = yes
 		end_crisis = yes
 		remove_global_flag = ongoing_prethoryn_invasion
@@ -9802,6 +9896,7 @@ country_event = {
 	is_triggered_only = yes
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.6605 for [Owner.GetName]" }
 		every_galaxy_planet = {
 			random = {
 				chance = 5
@@ -9818,6 +9913,7 @@ country_event = {
 	is_triggered_only = yes
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.6606 for [Owner.GetName]" }
 		if = {
 			limit = { 
 				OR = {
@@ -9940,6 +10036,7 @@ country_event = {
 	is_triggered_only = yes
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.7500 for [Owner.GetName]" }
 		every_owned_fleet = {
 			limit = {
 				has_fleet_flag = blokkat_stripmine_fleet
@@ -9985,6 +10082,7 @@ country_event = {
 	is_triggered_only = yes
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.7000 for [Owner.GetName]" }
 		every_owned_ship = {
 			limit = {
 				has_modifier = blokkat_stripminer_speed_debuff
@@ -10098,6 +10196,7 @@ fleet_event = {
 	is_triggered_only = yes
 
 	immediate = { #Pair them with a random stripmining fleet
+		#if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.7006 for [Owner.GetName]" }
 		fleet_event = { id = giga_blokkat.7006 days = 15 }
 		if = {
 			limit = { NOT = { has_fleet_flag = paired_with_stripminer } }
@@ -10134,6 +10233,7 @@ fleet_event = {
 	is_triggered_only = yes
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.7008 for [Owner.GetName]" }
 		fleet_event = { id = giga_blokkat.7008 days = 15 }
 		clear_fleet_actions = this
 		clear_orders = yes
@@ -10157,6 +10257,7 @@ fleet_event = {
 	}
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.7009 for [Owner.GetName]" }
 		FROM = { #give it a kick if stuck
 			system_event = { id = giga_blokkat.7010 days = 360 }
 		}
@@ -10173,6 +10274,7 @@ system_event = {
 	}
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.7010 for [Owner.GetName]" }
 		if = {
 			limit = { any_fleet_in_system = { has_fleet_flag = blokkat_stripmine_fleet } }
 			system_event = { id = giga_blokkat.7010 days = 60 }
@@ -10222,6 +10324,7 @@ fleet_event = {
 	}
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.7011 for [Owner.GetName]" }
 		FROM = { #give it a kick if stuck
 			system_event = { id = giga_blokkat.7012 days = 540 }
 		}
@@ -10238,6 +10341,7 @@ system_event = {
 	}
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.7012 for [Owner.GetName]" }
 		set_timed_global_flag = {
 			flag = blokkats_respawned_to_unstuck
 			days = 180
@@ -10262,6 +10366,7 @@ fleet_event = { #this event is ran monthly on the harvesting fleets
 	is_triggered_only = yes
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.7001 for [Owner.GetName]" }
 		if = {
 			limit = { #is vibing in the mothership system and hasn't stripmined anything, hasn't found a target system yet
 				NOT = { has_fleet_flag = blokkat_fleet_just_stripmined_system }
@@ -10474,12 +10579,12 @@ fleet_event = { #this event is ran monthly on the harvesting fleets
 			queue_actions = {
 				find_closest_system = {
 					trigger = {
-						id = giga_blokkat.7003.trigger.3
+						id = giga_blokkat.7003.trigger.5
 						is_same_value = event_target:future_blokkat_mothership_system
 					}
 					found_system = {
 						effect = {
-							id = giga_blokkat.7003.trigger.4
+							id = giga_blokkat.7003.trigger.6
 							THIS = {
 								if = {
 									limit = {
@@ -10510,6 +10615,7 @@ system_event = {
 	is_triggered_only = yes
 	
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.7002 for [Owner.GetName]" }
 		remove_star_flag = blokkat_system_being_stripmined
 		blokkat_increment_system_ships = yes
 		every_fleet_in_system = {
@@ -10559,6 +10665,7 @@ fleet_event = {
 	}
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.7007 for [Owner.GetName]" }
 		every_system = {
 			limit = { has_modifier = blokkat_mothership_shield }
 			remove_modifier = blokkat_mothership_shield
@@ -10580,6 +10687,7 @@ fleet_event = { #this event is ran monthly on the mothership fleet
 	is_triggered_only = yes
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.7003 for [Owner.GetName]" }
 		if = {
 			limit = {
 				solar_system = {
@@ -10842,6 +10950,7 @@ fleet_event = {
 	}
 	
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.7004 for [Owner.GetName]" }
 		remove_fleet_flag = blokkat_found_destination
 		remove_fleet_flag = blokkat_fleet_just_stripmined_system
 	}
@@ -10855,6 +10964,7 @@ system_event = {
 	is_triggered_only = yes
 	
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.7005 for [Owner.GetName]" }
 		every_ship_in_system = {
 			limit = { has_modifier = blokkat_stripminer_speed_debuff }
 			remove_modifier = blokkat_stripminer_speed_debuff
@@ -10896,6 +11006,7 @@ country_event = {
 	is_triggered_only = yes
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.8000 for [Owner.GetName]" }
 		every_owned_fleet = { #Assign IDs to Blokkat Stripminers
 			limit = {
 				has_fleet_flag = blokkat_stripmine_fleet
@@ -11289,6 +11400,7 @@ country_event = {
 	is_triggered_only = yes
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.9000 for [Owner.GetName]" }
 		set_global_flag = blokkat_stripmining_underway
 		event_target:blokkat_country = {
 			every_owned_fleet = {
@@ -11342,6 +11454,7 @@ fleet_event = {
 	}
 	
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.9001 for [Owner.GetName]" }
 		from = {
 			star = {
 				planet_event = { id = giga_blokkat.9002 days = 20 } #CHANGE TO 30
@@ -11357,6 +11470,7 @@ planet_event = {
 	is_triggered_only = yes
 	
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.9002 for [Owner.GetName]" }
 		solar_system = {
 			random_fleet_in_system = {
 				limit = { has_fleet_flag = blokkat_stripmine_fleet }
@@ -11381,6 +11495,7 @@ planet_event = {
 	is_triggered_only = yes
 	
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.9003 for [Owner.GetName]" }
 		solar_system = {
 			remove_star_flag = blokkat_system_being_stripmined
 			every_fleet_in_system = {
@@ -11428,6 +11543,7 @@ planet_event = {
 	is_triggered_only = yes
 	
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.90031 for [Owner.GetName]" }
 		solar_system = {
 			remove_star_flag = blokkat_system_being_stripmined
 			every_fleet_in_system = {
@@ -11489,6 +11605,7 @@ fleet_event = {
 	}
 	
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.9004 for [Owner.GetName]" }
 		remove_global_flag = blokkat_stripmining_underway
 		remove_global_flag = blokkat_return_fleet
 		event_target:current_blokkat_mothership_system = {
@@ -11565,6 +11682,7 @@ fleet_event = {
 	}
 	
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.9005 for [Owner.GetName]" }
 		owner = {
 			country_event = { id = giga_blokkat.9000 days = 5 } #And so it begins once more...
 		}
@@ -11584,6 +11702,7 @@ planet_event = {
 	is_triggered_only = yes
 	
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.9006 for [Owner.GetName]" }
 		solar_system = {
 			random_fleet_in_system = {
 				limit = { has_fleet_flag = blokkat_mothership_fleet }
@@ -11608,6 +11727,7 @@ planet_event = {
 	is_triggered_only = yes
 	
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.2001 for [Owner.GetName]" }
 		solar_system = {
 			blokkat_harvest_system = yes
 		}
@@ -11621,6 +11741,7 @@ planet_event = {
 	is_triggered_only = yes
 	
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.2002 for [Owner.GetName]" }
 		if = {
 			limit = {
 				solar_system = {
@@ -11671,6 +11792,7 @@ system_event = {
 	is_triggered_only = yes
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.2003 for [Owner.GetName]" }
 		blokkat_increment_system_ships = yes
 		every_fleet_in_system = {
 			limit = {
@@ -11712,6 +11834,7 @@ country_event = {
 	}
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.5500 for [Owner.GetName]" }
 		create_species = {
 			name = "hello"
 			class = PROGENITOR
@@ -11814,6 +11937,7 @@ country_event = {
 	}
 
 	immediate = {
+		if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.5501 for [Owner.GetName]" }
 		set_global_flag = blokkats_won_tournament
 		create_species = {
 			name = "hello"

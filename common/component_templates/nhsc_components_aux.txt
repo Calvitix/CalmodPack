@@ -114,7 +114,7 @@ utility_component_template = {
 	upgrades_to = "NHSC_REACTOR_BOOSTER_5"
 
 	ai_weight = {
-		weight = 5
+		weight = 15
 	}
 }
 
@@ -140,7 +140,7 @@ utility_component_template = {
 	component_set = "NHSC_REACTOR_BOOSTER_5"
 
 	ai_weight = {
-		weight = 10
+		weight = 20
 	}
 }
 
@@ -186,6 +186,18 @@ utility_component_template = {
 			factor = 0.0
 			no_resource_for_component = { RESOURCE = rare_crystals }
 		}
+		modifier = {
+			factor = 1.5
+			or = 
+			{
+				is_ai = no
+				is_warrior_with_honor = yes
+				is_dont_care = yes
+				is_peaceful_or_careful = yes
+			}
+		}
+		
+		
 	}
 }
 
@@ -219,7 +231,7 @@ utility_component_template = {
 	component_set = "NHSC_RED_CRYSTAL_CAPACITOR"
 
 	ai_weight = {
-		weight = 25
+		weight = 16
 		### AI shouldn't use this component if it can't afford at least some upgrades right away
 		modifier = {
 			factor = 0.0
@@ -230,6 +242,29 @@ utility_component_template = {
 			factor = 0.0
 			no_resource_for_component = { RESOURCE = rare_crystals }
 		}
+		modifier = {
+			factor = 1.5
+			or = 
+			{
+				is_ai = no
+				is_warrior_with_honor = yes
+				is_dont_care = yes
+				is_peaceful_or_careful = yes
+			}
+		}
+		modifier = {
+			factor = 1.5
+			NOR = {			
+				has_ai_personality = map_guerilla_fighters
+				has_ai_personality = map_savage_raiders
+				has_ai_personality = map_psychotic_hordes
+				has_ai_personality = map_totalitarian_patriots
+				has_ai_personality = map_enterprising_corsairs
+				has_ai_personality = map_slave_soldiers
+				has_ai_personality = map_lazy_managers
+				has_ai_personality = map_experts_in_xenocide
+			}
+		}		
 	}
 }
 
@@ -261,7 +296,7 @@ utility_component_template = {
 	component_set = "NHSC_ADV_SHIELD_RECHARGER"
 
 	ai_weight = {
-		weight = 10
+		weight = 8
 		modifier = {
 			factor = 2.0
 			is_preferred_weapons = weapon_type_energy
@@ -271,6 +306,15 @@ utility_component_template = {
 			factor = 0.0
 			no_resource_for_component = { RESOURCE = exotic_gases }
 		}
+		modifier = {
+			factor = 0.9
+			or = 
+			{
+				is_warrior_with_honor = yes
+				is_dont_care = yes
+				is_peaceful_or_careful = yes
+			}
+		}		
 	}
 }
 
@@ -308,6 +352,33 @@ utility_component_template = {
 			factor = 0.0
 			no_resource_for_component = { RESOURCE = volatile_motes }
 		}
+		modifier = {
+			factor = 2
+			OR = {
+				has_ai_personality = map_patronizing_colonizers
+				has_ai_personality = map_defenders_of_the_faith
+				has_ai_personality = map_carefree_hippies
+				has_ai_personality = map_studious_builders
+				has_ai_personality = map_hedonistic_visionaries
+				has_ai_personality = map_generous_philanthropists
+				has_ai_personality = map_adventure_seekers
+				has_ai_personality = map_civilized_nomads
+				has_ai_personality = map_naive_appeasers
+			}
+		}
+		modifier = {
+			factor = 0.2
+			OR = {			
+				has_ai_personality = map_guerilla_fighters
+				has_ai_personality = map_savage_raiders
+				has_ai_personality = map_psychotic_hordes
+				has_ai_personality = map_totalitarian_patriots
+				has_ai_personality = map_enterprising_corsairs
+				has_ai_personality = map_slave_soldiers
+				has_ai_personality = map_lazy_managers
+				has_ai_personality = map_experts_in_xenocide
+			}
+		}		
 	}
 }
 
@@ -385,7 +456,7 @@ utility_component_template = {
 	component_set = "NHSC_STELLARITE_POWER_CORE"
 
 	ai_weight = {
-		weight = 20
+		weight = 22
 		# only normal empires should use this component
 		modifier = {
 			factor = 0
@@ -399,6 +470,10 @@ utility_component_template = {
 		modifier = {	
 			factor = 0.5
 	    	OR = { is_preferred_weapons = weapon_type_strike_craft is_preferred_weapons = weapon_type_explosive }
+		}			
+		modifier = {	
+			factor = 1.5
+	    	OR = { is_preferred_weapons = weapon_type_energy is_preferred_weapons = weapon_type_kinetic }
 		}			
 		
 	}
@@ -435,11 +510,15 @@ utility_component_template = {
 	component_set = "NHSC_STANDARDIZED_WARHEADS"
 
 	ai_weight = {
-		weight = 15
+		weight = 26
 		modifier = {	
 			factor = 0.5
-	    	NOT = { is_preferred_weapons = weapon_type_strike_craft }
+	    	NOT = { is_preferred_weapons = weapon_type_explosive }
 		}
+		modifier = {	
+			factor = 0.5
+	    	is_ai = no
+		}			
 		
 	}
 	
@@ -472,7 +551,7 @@ utility_component_template = {
 	component_set = "NHSC_STRUCTURAL_REINFORCEMENT"
 
 	ai_weight = {
-		weight = 0.5
+		weight = 9
 		### AI shouldn't use this component if it can't afford at least some upgrades right away
 		modifier = {
 			factor = 0.0
@@ -509,7 +588,7 @@ utility_component_template = {
 	component_set = "NHSC_PRECURSOR_ARMS_ENHANCER"
 
 	ai_weight = {
-		weight = 10
+		weight = 15
 		# AI shouldn't use it if there is no dark matter income
 		modifier = {
 			factor = 0.0
