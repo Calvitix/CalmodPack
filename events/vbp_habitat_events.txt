@@ -43,12 +43,12 @@ country_event = {
 
     is_triggered_only = yes
 
-    location = FROM
+	location = FROMFROM
     picture = GFX_evt_satellite_in_orbit
     show_sound = event_celebration
 
     immediate = {
-        FROM = {
+		FROMFROM = {
             set_owner = root
             remove_all_buildings = yes
             add_modifier = { modifier = infiltration_happiness days = 7300 }
@@ -270,6 +270,31 @@ country_event = {
                         }
                     }
                 }
+				modifier = {
+					factor = 1.5
+					capital_scope = {
+						observation_outpost_owner = {
+							opposing_ethics_divergence = {
+								steps >= 3
+								who = root
+							}
+							OR = {
+								AND = {
+									is_authoritarian = yes
+									root = { is_egalitarian = yes }
+								}
+								AND = {
+									is_egalitarian = yes
+									root = { is_authoritarian = yes }
+								}
+								AND = {
+									is_spiritualist = yes
+									root = { is_materialist = yes }
+								}
+							}
+						}
+					}
+				}
                 modifier = {
                     factor = 1.5
                     capital_scope = {
