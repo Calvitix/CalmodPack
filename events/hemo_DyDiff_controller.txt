@@ -170,9 +170,9 @@ event = {
 					limit = { is_country_type = global_event }
 					country_event = { id = hemo_DyDiff_increase.1 days = 10 }		
 				}
-				if = { limit = { has_global_flag = hemo_DyDiff_logging	} log = "Hemo: Increase Difficulty : [This.GetName]" }					
+				if = { limit = { has_global_flag = hemo_DyDiff_logging	} log = "Hemo: No opponent - increase Difficulty : [This.GetName]" }					
 			}
-			else_if = { #if there is no Human Playaer
+			else_if = { #if there is no Human Player
 				limit = {
 					#NOT = { has_global_flag = hemo_DyDiff_worthy_opponent }
 					has_global_flag = hemo_DyDiff_no_player
@@ -189,7 +189,7 @@ event = {
 				}
 
 				country_event = { id = hemo_DyDiff_update.1 days = 20 }		# player-controlled empires				
-				#if = { limit = { has_global_flag = hemo_DyDiff_logging	} log = "Hemo: Update Diff for Player : [This.GetName]" }					
+				if = { limit = { has_global_flag = hemo_DyDiff_logging	} log = "Hemo: Update Diff for Player : [This.GetName]" }					
 
 			}
 			else = {
@@ -204,17 +204,25 @@ event = {
 				}
 				else_if = {
 					limit = {
-						NOT = {
+						NOR = {
 							is_country_type = global_event		# adding modifiers to these special
 							is_country_type = shroud		# countries would just be a waste
 							is_country_type = enclave		# of performance
 							is_country_type = primitive
 							is_country_type = adversary		
+							#Calvitix, add FE in exclusion list, and Giga empires
+							is_country_type = fallen_empire
+							is_country_type = awakened_fallen_empire
+							awaken_guardians_of_the_galaxy = yes
+							awaken_fallen_machine_empire = yes
+							has_modifier = giga_blokkat_balance
+							has_modifier = aeternum_balance
+							has_modifier = katzenartig_balance
 						}
 					}
 
 					country_event = { id = hemo_DyDiff_update.3 days = 20 }	# AI-controlled non-default-empires
-					#if = { limit = { has_global_flag = hemo_DyDiff_logging	} log = "Hemo: Update Diff for A.I. special : [This.GetName]" }					
+					if = { limit = { has_global_flag = hemo_DyDiff_logging	} log = "Hemo: Update Diff for A.I. special : [This.GetName]" }					
 					
 				
 				}

@@ -583,47 +583,7 @@ action_form_defensive_pact = {
 			}
 		}
 		# Shared Borders
-		# custom_tooltip = {
-			# fail_text = "no_shared_borders"
-			# OR = {
-				# any_system_within_border = {
-					# any_neighbor_system = {
-						# exists = owner
-						# owner = {
-							# OR = {
-								# is_same_value = from
-								# is_in_federation_with = from
-								# AND = {
-									# exists = overlord
-									# overlord = {
-										# is_same_value = from
-									# }
-								# }
-							# }
-						# } 
-					# }
-				# }
-				# from = {
-					# any_system_within_border = {
-						# any_neighbor_system = {
-							# exists = owner
-							# owner = {
-								# OR = {
-									# is_same_value = root
-									# is_in_federation_with = root
-									# AND = {
-										# exists = overlord
-										# overlord = {
-											# is_same_value = root
-										# }
-									# }
-								# }
-							# } 
-						# }
-					# }
-				# }
-			# }
-		# }		
+		#get_border_test_defense = yes  #Calvitix not necessary border
 	}
 }
 
@@ -1211,48 +1171,7 @@ action_guarantee_independence = {
 			}
 		}
 		# Shared Borders
-		# custom_tooltip = {
-			# fail_text = "no_shared_borders"
-			# OR = {
-				# any_system_within_border = {
-					# any_neighbor_system = {
-						# exists = owner
-						# owner = {
-							# OR = {
-								# is_same_value = from
-								# is_in_federation_with = from
-								# AND = {
-									# exists = overlord
-									# overlord = {
-										# is_same_value = from
-									# }
-								# }
-							# }
-						# } 
-					# }
-				# }
-				# from = {
-					# any_system_within_border = {
-						# any_neighbor_system = {
-							# exists = owner
-							# owner = {
-								# OR = {
-									# is_same_value = root
-									# is_in_federation_with = root
-									# AND = {
-										# exists = overlord
-										# overlord = {
-											# is_same_value = root
-										# }
-									# }
-								# }
-							# } 
-						# }
-					# }
-				# }
-			# }
-		# }
-		
+		get_border_test_defense = yes
 	}
 }
 
@@ -1773,19 +1692,16 @@ action_invite_to_federation = {
 			is_fallen_machine_empire = no
 			from = { is_fallen_machine_empire = no }
 		}
+		# Can't invite members to Empire Federation, must subjugate through war or diplo
+		NOT = {
+			root = {
+				has_federation = yes
+				federation = { has_federation_type = vf_ef_federation }
+			}
+		}
 	}
 
 	possible = {
-		if = {
-			limit = {
-				has_federation = no
-				is_country_type = default
-			}
-			custom_tooltip = {
-				fail_text = requires_tradition_the_federation
-				has_active_tradition = tr_diplomacy_the_federation
-			}
-		}
 		custom_tooltip = {
 			fail_text = "ACTION_RECIPIENT_NOT_YOURS"
 			FROM = {
@@ -1795,6 +1711,16 @@ action_invite_to_federation = {
 						NOT = { has_overlord = root }
 					}
 				}
+			}
+		}
+		if = {
+			limit = {
+				has_federation = no
+				is_country_type = default
+			}
+			custom_tooltip = {
+				fail_text = requires_tradition_the_federation
+				has_tradition = tr_diplomacy_the_federation
 			}
 		}
 		custom_tooltip = {
@@ -1920,47 +1846,7 @@ action_invite_to_federation = {
 			}
 		}
 		# Shared Borders
-		# custom_tooltip = {
-			# fail_text = "no_shared_borders"
-			# OR = {
-				# any_system_within_border = {
-					# any_neighbor_system = {
-						# exists = owner
-						# owner = {
-							# OR = {
-								# is_same_value = from
-								# is_in_federation_with = from
-								# AND = {
-									# exists = overlord
-									# overlord = {
-										# is_same_value = from
-									# }
-								# }
-							# }
-						# } 
-					# }
-				# }
-				# from = {
-					# any_system_within_border = {
-						# any_neighbor_system = {
-							# exists = owner
-							# owner = {
-								# OR = {
-									# is_same_value = root
-									# is_in_federation_with = root
-									# AND = {
-										# exists = overlord
-										# overlord = {
-											# is_same_value = root
-										# }
-									# }
-								# }
-							# } 
-						# }
-					# }
-				# }
-			# }
-		# }		
+		get_border_test = yes
 	}
 	
 }
@@ -2045,6 +1931,13 @@ action_ask_to_join_federation = {
 		hidden_trigger = {
 			is_fallen_machine_empire = no
 			from = { is_fallen_machine_empire = no }
+		}
+		# No one wants to join an Empire
+		NOT = {
+			from = {
+				has_federation = yes
+				federation = { has_federation_type = vf_ef_federation }
+			}
 		}
 	}
 
@@ -2146,7 +2039,10 @@ action_ask_to_join_federation = {
 				if = {
 					limit = {
 						federation = {
+							OR = {
 							has_federation_law = invite_members_president_vote_hegemony
+								has_federation_law = invite_members_president_vote_empire
+							}
 						}
 					}
 					is_federation_leader = yes
@@ -2154,190 +2050,7 @@ action_ask_to_join_federation = {
 			}
 		}
 		# Shared Borders
-		custom_tooltip = {
-			fail_text = "no_shared_borders"
-			OR = {
-				any_system_within_border = {
-					any_neighbor_system = {
-						exists = owner
-						owner = {
-							OR = {
-								is_same_value = from
-								is_in_federation_with = from
-								AND = {
-									exists = overlord
-									overlord = {
-										is_same_value = from
-									}
-								}
-							}
-						} 
-					}
-				}
-				from = {
-					any_system_within_border = {
-						any_neighbor_system = {
-							exists = owner
-							owner = {
-								OR = {
-									is_same_value = root
-									is_in_federation_with = root
-									AND = {
-										exists = overlord
-										overlord = {
-											is_same_value = root
-										}
-									}
-								}
-							} 
-						}
-					}
-				}
-			}
-		}
-		
-	}
-}
-
-# Leave a federation. Harms relations and sets a 10 year truce with whole federation.
-action_leave_federation = {
-	icon = "GFX_diplomacy_status_federation"
-	auto_accepted = yes
-	requires_actor_peace = yes
-	show_to_alliance_members = yes
-	should_notify_all_communications = yes
-	action_type = negative
-}
-
-action_ask_to_leave_federation = {
-	icon = "GFX_diplomacy_status_federation"
-	auto_accepted = no
-	requires_actor_peace = yes
-	show_to_alliance_members = yes
-	should_notify_all_communications = no
-	action_type = negative
-
-	potential = {
-		hidden_trigger = {
-			has_federation = yes
-			federation = {
-				has_federation_type = hegemony_federation
-			}
-		}
-	}
-
-	proposable = {
-		custom_tooltip = {
-			fail_text = "requires_actor_not_already_asked"
-			NOT = { has_country_flag = asked_to_leave_hegemony }
-		}
-		custom_tooltip = {
-			fail_text = "requires_actor_not_rebelled"
-			NOT = { has_country_flag = failed_hegemony_rebellion }
-		}
-	}
-}
-
-# Open borders towards another empire, allowing their ships to traverse your territory. Usable by and against regular empires only.
-action_open_borders = {
-	icon = "GFX_diplomacy_status_open_borders"
-	auto_accepted = yes
-	requires_actor_independence = no
-	requires_recipient_independence = no
-	should_show_auto_accept_message_recipient = yes
-	should_notify_all_communications = no
-	action_type = positive
-
-	possible = {
-		custom_tooltip = {
-			fail_text = "requires_actor_not_fanatic_purifiers"
-			OR = {
-				is_same_species = from
-				NOT = { has_valid_civic = civic_fanatic_purifiers	}
-			}
-		}
-		custom_tooltip = {
-			fail_text = "requires_recipient_not_fanatic_purifiers"
-			OR = {
-				is_same_species = from
-				from = { NOT = { has_valid_civic = civic_fanatic_purifiers } }
-			}
-		}
-		custom_tooltip = {
-			fail_text = "requires_actor_not_devouring_swarm"
-			NOT = { has_valid_civic = civic_hive_devouring_swarm	}
-		}
-		custom_tooltip = {
-			fail_text = "requires_recipient_not_devouring_swarm"
-			from = { NOT = { has_valid_civic = civic_hive_devouring_swarm } }
-		}
-		custom_tooltip = {
-			fail_text = "requires_actor_not_machine_terminator"
-			OR = {
-				is_same_species = from
-				NOT = { has_civic = civic_machine_terminator }
-				AND = {
-					has_civic = civic_machine_terminator
-					from = {
-						OR = {
-							has_country_flag = synthetic_empire
-							has_authority = auth_machine_intelligence
-						}
-					}
-				}
-			}
-		}
-		custom_tooltip = {
-			fail_text = "requires_recipient_not_machine_terminator"
-			OR = {
-				is_same_species = from
-				from = { NOT = { has_civic = civic_machine_terminator } }
-				AND = {
-					from = { has_civic = civic_machine_terminator }
-					OR = {
-						has_country_flag = synthetic_empire
-						has_authority = auth_machine_intelligence
-					}
-				}
-			}
-		}
-	}
-}
-
-# Close borders towards another empire, blocking their ships from entering your territory. Usable by and against regular empires only. Harms relations.
-action_close_borders = {
-	icon = "GFX_diplomacy_status_closed_borders"
-	auto_accepted = yes
-	requires_actor_independence = no
-	requires_recipient_independence = no
-	should_show_auto_accept_message_recipient = yes
-	should_notify_all_communications = no
-	action_type = negative
-
-	possible = {
-		can_control_access_for = from
-
-		if = {
-			limit = { from = { has_valid_civic = civic_pompous_purists } }
-			if = {
-				limit = {
-					has_intel = {
-						who = from
-						intel = civics
-					}
-				}
-				custom_tooltip = {
-					fail_text = requires_recipient_not_pompous_borders
-					always = no
-				}
-			}
-			else = {
-				custom_tooltip = {
-					fail_text = diplo_action_no_low_intel
-					always = no
-				}
-			}
-		}
+		get_border_test = yes
 	}
 }
 
@@ -2351,11 +2064,13 @@ action_demand_vassalization = {
 	diplo_view_acceptance_icon = yes
 	should_notify_all_communications = no
 	requires_recipient_independence = no
-	AI_acceptance_base_value = -50
+	AI_acceptance_base_value = -100
 	action_type = aggressive
 
 	potential = {
-		NOT = { has_authority = auth_corporate }
+		hidden_trigger = {
+			NOT = { is_megacorp = yes }
+		}
 #Startech
 		years_passed > @str_ai_will_not_declare_war_until
 		or = {
@@ -2443,47 +2158,7 @@ action_demand_vassalization = {
 			from = { has_been_declared_crisis = no }
 		}
 		# Shared Borders
-		custom_tooltip = {
-			fail_text = "no_shared_borders"
-			OR = {
-				any_system_within_border = {
-					any_neighbor_system = {
-						exists = owner
-						owner = {
-							OR = {
-								is_same_value = from
-								is_in_federation_with = from
-								AND = {
-									exists = overlord
-									overlord = {
-										is_same_value = from
-									}
-								}
-							}
-						} 
-					}
-				}
-				from = {
-					any_system_within_border = {
-						any_neighbor_system = {
-							exists = owner
-							owner = {
-								OR = {
-									is_same_value = root
-									is_in_federation_with = root
-									AND = {
-										exists = overlord
-										overlord = {
-											is_same_value = root
-										}
-									}
-								}
-							} 
-						}
-					}
-				}
-			}
-		}
+		get_border_test = yes
 	}
 
 	proposable = {
@@ -2492,6 +2167,18 @@ action_demand_vassalization = {
 				hidden_trigger = { from = { is_country_type = awakened_fallen_empire } }
 			}
 			hidden_trigger = { always = yes }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					has_valid_civic = civic_feudal_realm
+					AND = {
+						has_global_flag = has_exalted_domination_mod
+						has_ascension_perk = ap_shared_destiny
+					}
+				}
+			}
+			relative_power = { who = from value >= equivalent }
 		}
 		else = {
 			relative_power = { who = from value >= superior }
@@ -2518,17 +2205,19 @@ action_demand_protectorate = {
 	diplo_view_acceptance_icon = yes
 	should_notify_all_communications = no
 	requires_recipient_independence = no
-	AI_acceptance_base_value = -50
+	AI_acceptance_base_value = -100
 	action_type = aggressive
 
 	potential = {
-		NOT = { has_authority = auth_corporate }
+		hidden_trigger = {
+			NOT = { is_megacorp = yes }
 #Startech
 		or = {
 			is_ai = no
 			years_passed > @str_years_of_twilight
+			}
+###	    
 		}
-###
 	}
 
 	possible = {
@@ -2609,51 +2298,25 @@ action_demand_protectorate = {
 			from = { has_been_declared_crisis = no }
 		}
 		# Shared Borders
-		# custom_tooltip = {
-			# fail_text = "no_shared_borders"
-			# OR = {
-				# any_system_within_border = {
-					# any_neighbor_system = {
-						# exists = owner
-						# owner = {
-							# OR = {
-								# is_same_value = from
-								# is_in_federation_with = from
-								# AND = {
-									# exists = overlord
-									# overlord = {
-										# is_same_value = from
-									# }
-								# }
-							# }
-						# } 
-					# }
-				# }
-				# from = {
-					# any_system_within_border = {
-						# any_neighbor_system = {
-							# exists = owner
-							# owner = {
-								# OR = {
-									# is_same_value = root
-									# is_in_federation_with = root
-									# AND = {
-										# exists = overlord
-										# overlord = {
-											# is_same_value = root
-										# }
-									# }
-								# }
-							# } 
-						# }
-					# }
-				# }
-			# }
-		# }
+		#get_border_test = yes
 	}
 
 	proposable = {
-		relative_power = { who = from value >= superior }
+		if = {
+			limit = { 
+				OR = {
+					has_valid_civic = civic_feudal_realm
+					AND = {
+						has_global_flag = has_exalted_domination_mod
+						has_ascension_perk = ap_shared_destiny
+					}
+				}
+			}
+			relative_power = { who = from value >= equivalent }
+		}
+		else = {
+			relative_power = { who = from value >= superior }
+		}
 		custom_tooltip = grants_subjugation_cb
 	}
 
@@ -2676,17 +2339,19 @@ action_demand_tributary = {
 	diplo_view_acceptance_icon = yes
 	should_notify_all_communications = no
 	requires_recipient_independence = no
-	AI_acceptance_base_value = -50
+	AI_acceptance_base_value = -100
 	action_type = aggressive
 
 	potential = {
-		NOT = { has_authority = auth_corporate }
+		hidden_trigger = {
+			NOT = { is_megacorp = yes }
 #Starnet AI
 		or = {
 			is_ai = no
 			years_passed > @str_years_of_twilight
 		}
-###		
+###	
+		}	
 	}
 
 	possible = {
@@ -2746,7 +2411,6 @@ action_demand_tributary = {
 			fail_text = "requires_actor_not_inward_perfection"
 			NOT = { has_valid_civic = civic_inwards_perfection }
 		}
-
 		custom_tooltip = {
 			fail_text = "requires_recipient_not_in_galactic_empire"
 			NAND = {
@@ -2768,51 +2432,25 @@ action_demand_tributary = {
 			from = { has_been_declared_crisis = no }
 		}
 		# Shared Borders
-		# custom_tooltip = {
-			# fail_text = "no_shared_borders"
-			# OR = {
-				# any_system_within_border = {
-					# any_neighbor_system = {
-						# exists = owner
-						# owner = {
-							# OR = {
-								# is_same_value = from
-								# is_in_federation_with = from
-								# AND = {
-									# exists = overlord
-									# overlord = {
-										# is_same_value = from
-	# }
-								# }
-							# }
-						# } 
-					# }
-				# }
-				# from = {
-					# any_system_within_border = {
-						# any_neighbor_system = {
-							# exists = owner
-							# owner = {
-								# OR = {
-									# is_same_value = root
-									# is_in_federation_with = root
-									# AND = {
-										# exists = overlord
-										# overlord = {
-											# is_same_value = root
-										# }
-									# }
-								# }
-							# } 
-						# }
-					# }
-				# }
-			# }
-		# }
+		#get_border_test = yes #calvitix not needed
 	}
 
 	proposable = {
-		relative_power = { who = from value >= superior }
+		if = {
+			limit = {
+				OR = {
+					has_valid_civic = civic_feudal_realm
+					AND = {
+						has_global_flag = has_exalted_domination_mod
+						has_ascension_perk = ap_shared_destiny
+					}
+				}
+			}
+			relative_power = { who = from value >= equivalent }
+		}
+		else = {
+			relative_power = { who = from value >= superior }
+		}
 		custom_tooltip = grants_subjugation_cb
 	}
 
@@ -2831,7 +2469,7 @@ action_demand_tributary = {
 action_demand_thrall = {
 	icon = "GFX_diplomacy_status_has_vassal"
 	requires_actor_peace = no
-	requires_recipient_peace = yes
+	requires_recipient_peace = no
 	diplo_view_acceptance_icon = yes
 	should_notify_all_communications = no
 	requires_recipient_independence = no
@@ -2850,6 +2488,8 @@ action_demand_thrall = {
 			fail_text = "requires_recipient_not_btc"
 			from = { has_been_declared_crisis = no }
 		}
+		# Shared Borders
+		get_border_test = yes
 	}
 }
 
@@ -2859,7 +2499,7 @@ action_demand_thrall = {
 action_demand_dominion = {
 	icon = "GFX_diplomacy_status_has_vassal"
 	requires_actor_peace = no
-	requires_recipient_peace = yes
+	requires_recipient_peace = no
 	diplo_view_acceptance_icon = yes
 	should_notify_all_communications = no
 	requires_recipient_independence = no
@@ -2878,6 +2518,8 @@ action_demand_dominion = {
 			fail_text = "requires_recipient_not_btc"
 			from = { has_been_declared_crisis = no }
 		}
+		# Shared Borders
+		get_border_test = yes
 	}
 }
 
@@ -2887,7 +2529,7 @@ action_demand_dominion = {
 action_demand_satellite = {
 	icon = "GFX_diplomacy_status_has_vassal"
 	requires_actor_peace = no
-	requires_recipient_peace = yes
+	requires_recipient_peace = no
 	diplo_view_acceptance_icon = yes
 	should_notify_all_communications = no
 	requires_recipient_independence = no
@@ -2906,6 +2548,8 @@ action_demand_satellite = {
 			fail_text = "requires_recipient_not_btc"
 			from = { has_been_declared_crisis = no }
 		}
+		# Shared Borders
+		get_border_test = yes
 	}
 }
 
@@ -2915,7 +2559,7 @@ action_demand_satellite = {
 action_demand_signatory = {
 	icon = "GFX_diplomacy_status_has_vassal"
 	requires_actor_peace = no
-	requires_recipient_peace = yes
+	requires_recipient_peace = no
 	diplo_view_acceptance_icon = yes
 	should_notify_all_communications = no
 	requires_recipient_independence = no
@@ -2934,6 +2578,8 @@ action_demand_signatory = {
 			fail_text = "requires_recipient_not_btc"
 			from = { has_been_declared_crisis = no }
 		}
+		# Shared Borders
+		get_border_test = yes
 	}
 }
 
@@ -2941,22 +2587,24 @@ action_demand_signatory = {
 # Usable by Corporate Empires only.
 action_demand_subsidiary = {
 	icon = "GFX_diplomacy_status_has_vassal"
-	requires_actor_peace = yes
-	requires_recipient_peace = yes
+	requires_actor_peace = no
+	requires_recipient_peace = no
 	diplo_view_acceptance_icon = yes
 	should_notify_all_communications = no
 	requires_recipient_independence = no
-	AI_acceptance_base_value = -50
+	AI_acceptance_base_value = -100
 	action_type = aggressive
 
 	potential = {
-		has_authority = auth_corporate
+		hidden_trigger = {
+			is_megacorp = yes
 #Starnet AI
 		or = {
 			is_ai = no
 			years_passed > @str_years_of_twilight
 		}
 ###		
+		}
 	}
 	
 	possible = {
@@ -2981,47 +2629,7 @@ action_demand_subsidiary = {
 			from = { has_been_declared_crisis = no }
 		}
 		# Shared Borders
-		# custom_tooltip = {
-			# fail_text = "no_shared_borders"
-			# OR = {
-				# any_system_within_border = {
-					# any_neighbor_system = {
-						# exists = owner
-						# owner = {
-							# OR = {
-								# is_same_value = from
-								# is_in_federation_with = from
-								# AND = {
-									# exists = overlord
-									# overlord = {
-										# is_same_value = from
-									# }
-								# }
-							# }
-						# } 
-					# }
-				# }
-				# from = {
-					# any_system_within_border = {
-						# any_neighbor_system = {
-							# exists = owner
-							# owner = {
-								# OR = {
-									# is_same_value = root
-									# is_in_federation_with = root
-									# AND = {
-										# exists = overlord
-										# overlord = {
-											# is_same_value = root
-										# }
-									# }
-								# }
-							# } 
-						# }
-					# }
-				# }
-			# }
-		# }
+		get_border_test = yes
 	}
 
 	proposable = {
@@ -3057,10 +2665,12 @@ action_ask_to_become_vassalized = {
 	action_type = positive
 
 	potential = {
-		NOT = { from = { has_authority = auth_corporate } }
-		or = { 
-			is_ai = no
-			years_passed > @str_years_of_twilight
+		hidden_trigger = {
+			NOT = { from = { is_megacorp = yes } }
+			or = { 
+				is_ai = no
+				years_passed > @str_years_of_twilight
+			}
 		}
 	}
 
@@ -3188,47 +2798,7 @@ action_ask_to_become_vassalized = {
 			NOT = { has_valid_civic = civic_pompous_purists	}
 		}
 		# Shared Borders
-		# custom_tooltip = {
-			# fail_text = "no_shared_borders"
-			# OR = {
-				# any_system_within_border = {
-					# any_neighbor_system = {
-						# exists = owner
-						# owner = {
-							# OR = {
-								# is_same_value = from
-								# is_in_federation_with = from
-								# AND = {
-									# exists = overlord
-									# overlord = {
-										# is_same_value = from
-									# }
-								# }
-							# }
-						# } 
-					# }
-				# }
-				# from = {
-					# any_system_within_border = {
-						# any_neighbor_system = {
-							# exists = owner
-							# owner = {
-								# OR = {
-									# is_same_value = root
-									# is_in_federation_with = root
-									# AND = {
-										# exists = overlord
-										# overlord = {
-											# is_same_value = root
-										# }
-									# }
-								# }
-							# } 
-						# }
-					# }
-				# }
-			# }
-		# }
+		get_border_test = yes
 	}
 }
 
@@ -3243,10 +2813,12 @@ action_ask_to_become_protectorate = {
 	action_type = positive
 
 	potential = {
-		NOT = { from = { has_authority = auth_corporate } }
-		or = { 
-			is_ai = no
-			years_passed > @str_years_of_twilight
+		hidden_trigger = {
+			NOT = { from = { is_megacorp = yes } }
+			or = { 
+				is_ai = no
+				years_passed > @str_years_of_twilight
+			}
 		}
 	}
 
@@ -3380,47 +2952,7 @@ action_ask_to_become_protectorate = {
 			NOT = { has_valid_civic = civic_pompous_purists	}
 		}
 		# Shared Borders
-		# custom_tooltip = {
-			# fail_text = "no_shared_borders"
-			# OR = {
-				# any_system_within_border = {
-					# any_neighbor_system = {
-						# exists = owner
-						# owner = {
-							# OR = {
-								# is_same_value = from
-								# is_in_federation_with = from
-								# AND = {
-									# exists = overlord
-									# overlord = {
-										# is_same_value = from
-									# }
-								# }
-							# }
-						# } 
-					# }
-				# }
-				# from = {
-					# any_system_within_border = {
-						# any_neighbor_system = {
-							# exists = owner
-							# owner = {
-								# OR = {
-									# is_same_value = root
-									# is_in_federation_with = root
-									# AND = {
-										# exists = overlord
-										# overlord = {
-											# is_same_value = root
-										# }
-									# }
-								# }
-							# } 
-						# }
-					# }
-				# }
-			# }
-		# }
+		get_border_test = yes
 	}
 }
 
@@ -3435,10 +2967,12 @@ action_ask_to_become_tributary = {
 	action_type = positive
 
 	potential = {
-		NOT = { from = { has_authority = auth_corporate } }
-		or = { 
-			is_ai = no
-			years_passed > @str_years_of_twilight
+		hidden_trigger = {
+			NOT = { from = { is_megacorp = yes } }
+			or = { 
+				is_ai = no
+				years_passed > @str_years_of_twilight
+			}
 		}
 	}
 
@@ -3551,47 +3085,7 @@ action_ask_to_become_tributary = {
 			NOT = { has_valid_civic = civic_pompous_purists	}
 		}
 		# Shared Borders
-		# custom_tooltip = {
-			# fail_text = "no_shared_borders"
-			# OR = {
-				# any_system_within_border = {
-					# any_neighbor_system = {
-						# exists = owner
-						# owner = {
-							# OR = {
-								# is_same_value = from
-								# is_in_federation_with = from
-								# AND = {
-									# exists = overlord
-									# overlord = {
-										# is_same_value = from
-									# }
-								# }
-							# }
-						# } 
-					# }
-				# }
-				# from = {
-					# any_system_within_border = {
-						# any_neighbor_system = {
-							# exists = owner
-							# owner = {
-								# OR = {
-									# is_same_value = root
-									# is_in_federation_with = root
-									# AND = {
-										# exists = overlord
-										# overlord = {
-											# is_same_value = root
-										# }
-									# }
-								# }
-							# } 
-						# }
-					# }
-				# }
-			# }
-		# }
+		#get_border_test = yes
 	}
 }
 
@@ -3606,10 +3100,12 @@ action_ask_to_become_subsidiary = {
 	action_type = positive
 
 	potential = {
-		from = { has_authority = auth_corporate }
-		or = { 
-			is_ai = no
-			years_passed > @str_years_of_twilight
+		hidden_trigger = {
+			from = { is_megacorp = yes }
+			or = { 
+				is_ai = no
+				years_passed > @str_years_of_twilight
+			}
 		}
 	}
 
@@ -3737,47 +3233,7 @@ action_ask_to_become_subsidiary = {
 			NOT = { has_valid_civic = civic_pompous_purists	}
 		}
 		# Shared Borders
-		# custom_tooltip = {
-			# fail_text = "no_shared_borders"
-			# OR = {
-				# any_system_within_border = {
-					# any_neighbor_system = {
-						# exists = owner
-						# owner = {
-							# OR = {
-								# is_same_value = from
-								# is_in_federation_with = from
-								# AND = {
-									# exists = overlord
-									# overlord = {
-										# is_same_value = from
-									# }
-								# }
-							# }
-						# } 
-					# }
-				# }
-				# from = {
-					# any_system_within_border = {
-						# any_neighbor_system = {
-							# exists = owner
-							# owner = {
-								# OR = {
-									# is_same_value = root
-									# is_in_federation_with = root
-									# AND = {
-										# exists = overlord
-										# overlord = {
-											# is_same_value = root
-										# }
-									# }
-								# }
-							# } 
-						# }
-					# }
-				# }
-			# }
-		# }
+		get_border_test = yes
 	}
 }
 
@@ -3816,47 +3272,7 @@ action_ask_to_become_thrall = {
 			NOT = { has_valid_civic = civic_pompous_purists	}
 		}
 		# Shared Borders
-		# custom_tooltip = {
-			# fail_text = "no_shared_borders"
-			# OR = {
-				# any_system_within_border = {
-					# any_neighbor_system = {
-						# exists = owner
-						# owner = {
-							# OR = {
-								# is_same_value = from
-								# is_in_federation_with = from
-								# AND = {
-									# exists = overlord
-									# overlord = {
-										# is_same_value = from
-									# }
-								# }
-							# }
-						# } 
-					# }
-				# }
-				# from = {
-					# any_system_within_border = {
-						# any_neighbor_system = {
-							# exists = owner
-							# owner = {
-								# OR = {
-									# is_same_value = root
-									# is_in_federation_with = root
-									# AND = {
-										# exists = overlord
-										# overlord = {
-											# is_same_value = root
-										# }
-									# }
-								# }
-							# } 
-						# }
-					# }
-				# }
-			# }
-		# }
+		get_border_test = yes
 	}
 }
 
@@ -3895,47 +3311,7 @@ action_ask_to_become_dominion = {
 			NOT = { has_valid_civic = civic_pompous_purists	}
 		}
 		# Shared Borders
-		# custom_tooltip = {
-			# fail_text = "no_shared_borders"
-			# OR = {
-				# any_system_within_border = {
-					# any_neighbor_system = {
-						# exists = owner
-						# owner = {
-							# OR = {
-								# is_same_value = from
-								# is_in_federation_with = from
-								# AND = {
-									# exists = overlord
-									# overlord = {
-										# is_same_value = from
-									# }
-								# }
-							# }
-						# } 
-					# }
-				# }
-				# from = {
-					# any_system_within_border = {
-						# any_neighbor_system = {
-							# exists = owner
-							# owner = {
-								# OR = {
-									# is_same_value = root
-									# is_in_federation_with = root
-									# AND = {
-										# exists = overlord
-										# overlord = {
-											# is_same_value = root
-										# }
-									# }
-								# }
-							# } 
-						# }
-					# }
-				# }
-			# }
-		# }
+		get_border_test = yes
 	}
 }
 
@@ -3948,6 +3324,7 @@ action_ask_to_become_satellite = {
 	should_notify_all_communications = no
 	AI_acceptance_base_value = -50
 	action_type = positive
+
 	possible = {
 		custom_tooltip = {
 			fail_text = "requires_not_in_galactic_empire"
@@ -3973,47 +3350,7 @@ action_ask_to_become_satellite = {
 			NOT = { has_valid_civic = civic_pompous_purists	}
 		}
 		# Shared Borders
-		# custom_tooltip = {
-			# fail_text = "no_shared_borders"
-			# OR = {
-				# any_system_within_border = {
-					# any_neighbor_system = {
-						# exists = owner
-						# owner = {
-							# OR = {
-								# is_same_value = from
-								# is_in_federation_with = from
-								# AND = {
-									# exists = overlord
-									# overlord = {
-										# is_same_value = from
-									# }
-								# }
-							# }
-						# } 
-					# }
-				# }
-				# from = {
-					# any_system_within_border = {
-						# any_neighbor_system = {
-							# exists = owner
-							# owner = {
-								# OR = {
-									# is_same_value = root
-									# is_in_federation_with = root
-									# AND = {
-										# exists = overlord
-										# overlord = {
-											# is_same_value = root
-										# }
-									# }
-								# }
-							# } 
-						# }
-					# }
-				# }
-			# }
-		# }
+		get_border_test = yes
 	}
 }
 
@@ -4052,47 +3389,7 @@ action_ask_to_become_signatory = {
 			NOT = { has_valid_civic = civic_pompous_purists	}
 		}
 		# Shared Borders
-		# custom_tooltip = {
-			# fail_text = "no_shared_borders"
-			# OR = {
-				# any_system_within_border = {
-					# any_neighbor_system = {
-						# exists = owner
-						# owner = {
-							# OR = {
-								# is_same_value = from
-								# is_in_federation_with = from
-								# AND = {
-									# exists = overlord
-									# overlord = {
-										# is_same_value = from
-									# }
-								# }
-							# }
-						# } 
-					# }
-				# }
-				# from = {
-					# any_system_within_border = {
-						# any_neighbor_system = {
-							# exists = owner
-							# owner = {
-								# OR = {
-									# is_same_value = root
-									# is_in_federation_with = root
-									# AND = {
-										# exists = overlord
-										# overlord = {
-											# is_same_value = root
-										# }
-									# }
-								# }
-							# } 
-						# }
-					# }
-				# }
-			# }
-		# }
+		get_border_test = yes
 	}
 }
 

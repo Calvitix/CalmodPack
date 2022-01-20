@@ -1238,7 +1238,7 @@ country_event = {
 			limit = {
 				NOT = { has_global_flag = blokkat_crisis_defeated }
 				OR = {
-				NOT = { any_system = { NOT = { systems_blokkats_wont_stripmine = yes } } }
+					NOT = { any_system = { NOT = { systems_blokkats_wont_stripmine = yes } } }
 					has_global_flag = blokkats_ate_most_of_galaxy
 				}
 				NOT = { has_global_flag = blokkat_vester_gonna_destroy_galaxy }
@@ -1462,7 +1462,7 @@ country_event = {
 				NOT = { has_global_flag = blokkat_mothership_killed_legit }
 				NOT = { has_global_flag = blokkat_crisis_defeated }
 				OR = {
-					NOT = { any_owned_fleet = { has_fleet_flag = blokkat_mothership_fleet }  }
+					NOT = { any_owned_fleet = { has_fleet_flag = blokkat_mothership_fleet } }
 					event_target:blokkat_mothership_ship = {
 						is_disabled = yes
 					}
@@ -1482,10 +1482,10 @@ country_event = {
 			}
 			if = {
 				limit = { NOT = { has_global_flag = blokkats_respawned_to_unstuck } }
-			every_country = {
+				every_country = {
 				if = { limit = { has_global_flag = edai_logging	} log = "BLOKKAT : event.5000 - Send Killed message 50031 (no kill legit) for [Owner.GetName]" }
-				country_event = { id = giga_blokkat.50031 }
-			}
+					country_event = { id = giga_blokkat.50031 }
+				}
 			}
 			set_global_flag = gotta_respawn_blokkat_mothership
 		}
@@ -1592,7 +1592,7 @@ country_event = {
 			# }
 		}
 		if = {
-			limit = { NOT = { has_global_flag = blokkat_mothership_shield_down } }			
+			limit = { NOT = { has_global_flag = blokkat_mothership_shield_down } }
 			event_target:blokkat_mothership_ship = { repair_ship = yes }
 		}
 		#Readd Shield Modifier if it's somehow missing
@@ -2298,10 +2298,10 @@ country_event = {
 			limit = { is_ai = no }
 			if = {
 				limit = { NOT = { has_country_flag = blokkat_bureau_unlocked } }
-					set_country_flag = blokkat_bureau_unlocked
-				}
+				set_country_flag = blokkat_bureau_unlocked
 			}
 		}
+	}
 }
 
 #Blokkat Research Bureau
@@ -5610,7 +5610,12 @@ fleet_event = {
 	}
 	desc = { #Something is missing...
 		text = "giga_blokkat.3317.nokatzens.desc"
-		trigger = { has_global_flag = nice_gatzo_fe }
+		trigger = {
+			OR = { 
+				has_global_flag = nice_gatzo_fe 
+				has_global_flag = pouchkinn_gatzo_fe 
+			} 
+		}
 	}
 	desc = { #Something is missing...
 		text = "giga_blokkat.3317.evilmeopa.desc"
@@ -7316,13 +7321,13 @@ country_event = {
 		hidden_effect = {
 			if = {
 				limit = { has_country_flag = blokkat_inquietude_taught }
-			change_variable = {
-				which = blokkat_inquietude_value
-				value = 0.25
+				change_variable = {
+					which = blokkat_inquietude_value
+					value = 0.25
+				}
+				update_blokkat_inquietude_display = yes
 			}
-			update_blokkat_inquietude_display = yes
 		}
-	}
 	}
 }
 
@@ -7470,13 +7475,13 @@ country_event = {
 		hidden_effect = {
 			if = {
 				limit = { has_country_flag = blokkat_inquietude_taught }
-			change_variable = {
-				which = blokkat_inquietude_value
-				value = 2
+				change_variable = {
+					which = blokkat_inquietude_value
+					value = 2
+				}
+				update_blokkat_inquietude_display = yes
 			}
-			update_blokkat_inquietude_display = yes
 		}
-	}
 	}
 }
 
@@ -7625,13 +7630,13 @@ country_event = {
 		hidden_effect = {
 			if = {
 				limit = { has_country_flag = blokkat_inquietude_taught }
-			change_variable = {
-				which = blokkat_inquietude_value
-				value = 0.5
+				change_variable = {
+					which = blokkat_inquietude_value
+					value = 0.5
+				}
+				update_blokkat_inquietude_display = yes
 			}
-			update_blokkat_inquietude_display = yes
 		}
-	}
 	}
 }
 
@@ -7818,7 +7823,7 @@ country_event = {
 
 	trigger = {
 		from = { is_country_type = blokkat_stripminers }
-		fromfrom = {  has_planet_flag = planet_fighting_blokkat }
+		fromfrom = { has_planet_flag = planet_fighting_blokkat }
 		any_owned_megastructure = { is_megastructure_type = blokkat_prison_1_empty }
 	}
 
@@ -8722,13 +8727,13 @@ country_event = {
 				event_target:blokkat_prison_being_managed = {
 					NOT = { 
 						AND = { 
-					NOT = { has_megastructure_flag = boosting_blokkat_physics }
-					NOT = { has_megastructure_flag = boosting_blokkat_society }
-					NOT = { has_megastructure_flag = boosting_blokkat_engineering }
+							NOT = { has_megastructure_flag = boosting_blokkat_physics }
+							NOT = { has_megastructure_flag = boosting_blokkat_society }
+							NOT = { has_megastructure_flag = boosting_blokkat_engineering }
+						}
+					}
 				}
 			}
-		}
-	}
 		}
 	}
 
@@ -11824,13 +11829,13 @@ country_event = {
 
 	pre_triggers = {
 		is_ai = no
+	}
+
+	trigger = {
 		has_global_flag = sbtg_blokkat_light_block
 		is_country_type = original_empire_active
 		has_country_flag = sb_told_about_blokkats
 		NOT = { has_global_flag = blokkats_won_tournament }
-	}
-
-	trigger = {
 		any_country = { is_country_type = blokkat_stripminers }
 		NOT = {
 			any_galaxy_planet = {

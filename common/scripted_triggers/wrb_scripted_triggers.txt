@@ -13,8 +13,8 @@ get_border_test = {
 				OR = {
 					any_system_within_border = {
 						closest_system = {
-							exists = space_owner
 							limit = {
+							exists = space_owner
 								space_owner = {
 								OR = {
 									is_same_value = from
@@ -27,14 +27,14 @@ get_border_test = {
 								}
 							} 
 							use_bypasses = yes
-							max_steps = 1
+							max_steps = @wrb_max_distance
 						}
 					}
 					from = {
 						any_system_within_border = {
 							closest_system = {
-								exists = space_owner
 								limit = {
+								exists = space_owner
 									space_owner = {
 									OR = {
 										is_same_value = root
@@ -47,7 +47,69 @@ get_border_test = {
 									}
 								} 
 								use_bypasses = yes
-								max_steps = 1
+								max_steps = @wrb_max_distance
+							}
+						}
+					}
+				}
+			}
+		}
+		else = {
+			custom_tooltip = {
+				fail_text = no_shared_borders
+				always = no
+			}
+		}
+	}
+}
+
+get_border_test_defense = {
+	if = {
+		limit = {
+			has_global_flag = we_require_borders
+		}
+		if = {
+			limit = {
+				OR = {
+					any_system_within_border = {
+						closest_system = {
+							limit = {
+								exists = space_owner
+								space_owner = {
+									OR = {
+										is_same_value = from
+										is_in_federation_with = from
+										is_neighbor_of = from
+										AND = {
+											exists = overlord
+											overlord = { is_same_value = from }
+										}
+									}
+								}
+							}
+							use_bypasses = yes
+							max_steps = @wrb_max_distance
+						}
+					}
+					from = {
+						any_system_within_border = {
+							closest_system = {
+								limit = {
+									exists = space_owner
+									space_owner = {
+										OR = {
+											is_same_value = root
+											is_in_federation_with = root
+											is_neighbor_of = root
+											AND = {
+												exists = overlord
+												overlord = { is_same_value = root }
+											}
+										}
+									}
+								}
+								use_bypasses = yes
+								max_steps = @wrb_max_distance
 							}
 						}
 					}

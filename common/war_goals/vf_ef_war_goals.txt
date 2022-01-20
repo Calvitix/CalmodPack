@@ -10,7 +10,7 @@ wg_empire = {
 		demand_surrender
 	}
 
-	surrender_acceptance = -50
+	surrender_acceptance = -300
 
 	potential = {
 		has_total_war_cb = no
@@ -29,25 +29,6 @@ wg_empire = {
 					root = {
 						NOT = { has_claim = prev.solar_system }
 					}
-				}
-			}
-		}
-	}
-
-	on_wargoal_set = {
-		random_war = {
-			limit = {
-				using_war_goal = {
-					type = wg_empire
-					owner = root
-				}
-			}
-			every_war_participant = {
-				limit = {
-					has_country_flag = empire_fed_no_war_subject
-				}
-				prev = {
-					remove_war_participant = prev
 				}
 			}
 		}
@@ -173,60 +154,3 @@ wg_independence = {
 		weight = 100
 	}
 }
-
-wg_assert_overlordship = {
-	casus_belli = cb_event
-
-	cede_claims = occupied_only
-
-	allowed_peace_offers = {
-		status_quo
-		surrender
-		demand_surrender
-	}
-
-	potential = {
-		always = no # event only
-	}
-	possible = {
-		always = yes
-	}
-
-	on_wargoal_set = {
-		random_war = {
-			limit = {
-				using_war_goal = {
-					type = wg_assert_overlordship
-					owner = root
-				}
-			}
-			every_war_participant = {
-				limit = {
-					has_country_flag = empire_fed_no_war_subject
-				}
-				prev = {
-					remove_war_participant = prev
-				}
-			}
-		}
-	}
-
-	on_accept = {
-		custom_tooltip = wg_assert_overlordship_accept
-		hidden_effect = {
-			from = {
-				every_system_within_border = {
-					limit = {
-						root = { has_claim = prev }
-					}
-					remove_claims = { who = root }
-				}
-			}
-		}
-	}
-
-	ai_weight = {
-		weight = 100
-	}
-}
-

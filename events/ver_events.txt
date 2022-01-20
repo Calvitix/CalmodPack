@@ -1,6 +1,6 @@
 # Vassals Expanded and Reworked mod
 #
-# last update 12.12.2021
+# last update 13.01.2022
 #
 #
 namespace = ver
@@ -16,11 +16,6 @@ country_event = {
 	immediate = {
 		if = {
 			limit = {
-				OR = {
-					is_country_type = default
-					is_country_type = awakened_fallen_empire
-					is_country_type = ascended_empire
-				}
 				is_overlord = yes
 				any_subject = {
 					NOT = { is_country_type = iisc_space_corporation }
@@ -51,6 +46,13 @@ country_event = {
 	id = ver.11
 	hide_window = yes
 	is_triggered_only = yes
+
+	trigger = {
+		NOR = {
+			is_subject_type = devstate
+			is_subject_type = dummy_vassal
+		}
+	}
 
 	immediate = {
 		overlord = {
@@ -545,10 +547,33 @@ country_event = {
 		}
 	}
 
+	# Transform into Duchy (z Expanded Traits, Civics, Pops, and More)
+	#option = {  #only needed with expanded_pops
+	#	name = SUBJECT_duchy
+	#	custom_tooltip = SUBJECT_DESC_duchy
+	#	trigger = {
+	#		has_global_flag = expanded_pops_active
+	#		has_valid_civic = civic_feudal_realm
+	#	}
+	#	ai_chance = {
+	#		factor = 10
+	#	}
+	#	hidden_effect = {
+	#		from = {
+	#			set_subject_of = {
+	#				who = ROOT
+	#				subject_type = duchy
+	#			}
+	#		}
+	#	}
+	#}
+
 	# Set as vanilla tributary
 	option = {
 		name = choice_veru_tributary
 		custom_tooltip = SUBJECT_DESC_vertributary
+		trigger = {
+		}
 
 		hidden_effect = {
 			log = "veru.100: Setting as [Root.GetName] as Ver Tributary"
@@ -565,6 +590,8 @@ country_event = {
 	option = {
 		name = SUBJECT_vervassal
 		custom_tooltip = SUBJECT_DESC_vervassal
+		trigger = {
+		}
 
 		hidden_effect = {
 			log = "ver.100: Leaving [Root.GetName] as Ver Vassal"

@@ -2,7 +2,7 @@
 #
 # Calvitix Check 3.2  22.11.2021
 #
-# Merge with Banned
+# Merge with Banned  17.01.2022
 # Merged with Planetary Div. Exotic world 23.11.2021
 #
 ##############################
@@ -48,6 +48,10 @@ traditionalist = {
 
 	can_join_faction = {
 		NOT = { has_trait = trait_nerve_stapled }
+		OR = {
+			has_ethic = ethic_spiritualist
+			has_ethic = ethic_fanatic_spiritualist
+		}
 	}
 
 	attraction = {
@@ -338,11 +342,22 @@ traditionalist = {
 		unfulfilled_effect = -0.001
 
 		potential = {
-			support >= 0.1
+			exists = owner
+			owner = {
+				pop_percentage = {
+					percentage > 0.09
+					limit = { pop_has_ethic = ethic_spiritualist }
+				}
+			}			
 		}
 
 		trigger = {
-			support >= 0.25
+			owner = {
+				pop_percentage = {
+					percentage > 0.24
+					limit = { pop_has_ethic = ethic_spiritualist }
+				}
+			}
 		}
 	}
 
@@ -355,11 +370,22 @@ traditionalist = {
 		fulfilled_effect = 0.001
 
 		potential = {
-			support < 0.25
+			exists = owner
+			owner = {
+				pop_percentage = {
+					percentage < 0.25
+					limit = { pop_has_ethic = ethic_spiritualist }
+				}
+			}
 		}
 
 		trigger = {
-			support >= 0.1
+			owner = {
+				pop_percentage = {
+					percentage > 0.09
+					limit = { pop_has_ethic = ethic_spiritualist }
+				}
+			}
 		}
 	}
 
