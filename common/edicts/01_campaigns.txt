@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.2  22.11.2021
+# Calvitix Check 3.3b  21.01.2022
 #
 # Merge with Starnet AI 16.09.2021
 # 
@@ -10,22 +10,23 @@
 # shorter duration, cost energy
 #################
 
-@Edict1Cost = 100
-@Edict2Cost = 200
-@Edict3Cost = 300
+@Edict1Cost = 50
+@Edict2Cost = 100
+@Edict3Cost = 150
 
-@EdictDuration = 3600
+@EdictDuration = -1
 
 # Sets the cost for all campaigns with this variable
-@campaignCost = 1000
-@campaignDuration = 3600
+@campaignCost = 50
+@hiveFood = 50
+@campaignDuration = -1
 
 fear_campaign = {
 	length = @campaignDuration
 	icon = "GFX_edict_type_time"
 	resources = {
 		category = campaigns
-		cost = {
+		upkeep = {
 			energy = @campaignCost
 		}
 	}
@@ -55,7 +56,7 @@ education_campaign = {
 	icon = "GFX_edict_type_time"
 	resources = {
 		category = campaigns
-		cost = {
+		upkeep = {
 			energy = @campaignCost
 		}
 	}
@@ -79,15 +80,12 @@ education_campaign = {
 }
 
 recycling_campaign = {
-	#length = @campaignDuration
-	length = @EdictDuration
-
+	length = @campaignDuration
 	icon = "GFX_edict_type_time"
 	resources = {
 		category = campaigns
-		cost = {
-			#energy = @campaignCost
-			energy = 1000
+		upkeep = {
+			energy = @campaignCost
 		}
 	}
 
@@ -124,7 +122,7 @@ healthcare_campaign = {
 	icon = "GFX_edict_type_time"
 	resources = {
 		category = campaigns
-		cost = {
+		upkeep = {
 			energy = @campaignCost
 		}
 	}
@@ -151,7 +149,7 @@ robot_campaign = {
 	icon = "GFX_edict_type_time"
 	resources = {
 		category = campaigns
-		cost = {
+		upkeep = {
 			energy = @campaignCost
 		}
 	}
@@ -174,7 +172,7 @@ machine_learning_campaign = {
 	icon = "GFX_edict_type_time"
 	resources = {
 		category = campaigns
-		cost = {
+		upkeep = {
 			energy = @campaignCost
 		}
 	}
@@ -201,20 +199,18 @@ machine_learning_campaign = {
 # Hive Mind
 #################
 
-@hiveFood = 500
-
 drone_campaign = {
 	length = @campaignDuration
 	icon = "GFX_edict_type_time"
 	resources = {
 		category = campaigns
-		cost = {
+		upkeep = {
 			trigger = {
 				is_lithoid_empire = no
 			}
 			food = @hiveFood
 		}
-		cost = {
+		upkeep = {
 			trigger = {
 				is_lithoid_empire = yes
 			}
@@ -240,13 +236,13 @@ learning_campaign = {
 	icon = "GFX_edict_type_time"
 	resources = {
 		category = campaigns
-		cost = {
+		upkeep = {
 			trigger = {
 				is_lithoid_empire = no
 			}
 			food = @hiveFood
 		}
-		cost = {
+		upkeep = {
 			trigger = {
 				is_lithoid_empire = yes
 			}
@@ -277,13 +273,13 @@ war_drone_campaign = {
 	icon = "GFX_edict_type_time"
 	resources = {
 		category = campaigns
-		cost = {
+		upkeep = {
 			trigger = {
 				is_lithoid_empire = no
 			}
 			food = @hiveFood
 		}
-		cost = {
+		upkeep = {
 			trigger = {
 				is_lithoid_empire = yes
 			}
@@ -319,8 +315,8 @@ terraforming_gas = {
 	icon = "GFX_edict_type_time"
 	resources = {
 		category = rare_edicts
-		cost = {
-			exotic_gases = 25
+		upkeep = {
+			exotic_gases = 0.5
 		}
 	}
 
@@ -348,8 +344,8 @@ fuel_gases = {
 	icon = "GFX_edict_type_time"
 	resources = {
 		category = ship_edicts
-		cost = {
-			exotic_gases = 50
+		upkeep = {
+			exotic_gases = 1
 		}
 	}
 
@@ -378,8 +374,8 @@ shield_gases = {
 	icon = "GFX_edict_type_time"
 	resources = {
 		category = ship_edicts
-		cost = {
-			exotic_gases = 50
+		upkeep = {
+			exotic_gases = 1
 		}
 	}
 
@@ -408,8 +404,8 @@ clearing_motes  = {
 	icon = "GFX_edict_type_time"
 	resources = {
 		category = rare_edicts
-		cost = {
-			volatile_motes = 25
+		upkeep = {
+			volatile_motes = 0.5
 		}
 	}
 
@@ -425,8 +421,8 @@ clearing_motes  = {
 		planet_clear_blocker_speed_mult = 0.25
 	}
 
-	prerequisites = {
-		"tech_mine_rare_crystals"
+	prerequisites = { #calvitix requirement
+		"tech_mine_volatile_motes"
 	}
 
 	ai_weight = {
@@ -439,8 +435,8 @@ motes_kinetic = {
 	icon = "GFX_edict_type_time"
 	resources = {
 		category = ship_edicts
-		cost = {
-			volatile_motes = 50
+		upkeep = {
+			volatile_motes = 1
 		}
 	}
 
@@ -454,6 +450,11 @@ motes_kinetic = {
 	modifier = {
 		weapon_type_kinetic_weapon_damage_mult = 0.25
 	}
+
+	prerequisites = { #calvitix requirement
+		"tech_mine_volatile_motes"
+	}
+
 
 	ai_weight = {
 		weight = 0
@@ -469,8 +470,8 @@ motes_explosives = {
 	icon = "GFX_edict_type_time"
 	resources = {
 		category = ship_edicts
-		cost = {
-			volatile_motes = 50
+		upkeep = {
+			volatile_motes = 1
 		}
 	}
 
@@ -495,8 +496,8 @@ motes_armor = {
 	icon = "GFX_edict_type_time"
 	resources = {
 		category = ship_edicts
-		cost = {
-			volatile_motes = 50
+		upkeep = {
+			volatile_motes = 1
 		}
 	}
 
@@ -525,8 +526,8 @@ crystalline_sensors  = {
 	icon = "GFX_edict_type_time"
 	resources = {
 		category = rare_edicts
-		cost = {
-			rare_crystals = 25
+		upkeep = {
+			rare_crystals = 0.5
 		}
 	}
 
@@ -552,8 +553,8 @@ crystal_focus = {
 	icon = "GFX_edict_type_time"
 	resources = {
 		category = ship_edicts
-		cost = {
-			rare_crystals = 50
+		upkeep = {
+			rare_crystals = 1
 		}
 	}
 
@@ -582,8 +583,8 @@ living_metal_construction  = {
 	icon = "GFX_edict_type_time"
 	resources = {
 		category = rare_edicts
-		cost = {
-			sr_living_metal = 50
+		upkeep = {
+			sr_living_metal = 0.5
 		}
 	}
 
@@ -599,9 +600,9 @@ living_metal_construction  = {
 		weight = 0
 		modifier = {
 			weight = @EdictHighPrio
-			any_megastructure = {
+			count_owned_megastructure = {
 				count >= 1
-				is_upgrading = yes
+				limit = { is_upgrading = yes }
 			}
 		}
 	}
@@ -612,8 +613,8 @@ nanite_actuators  = {
 	icon = "GFX_edict_type_time"
 	resources = {
 		category = rare_edicts
-		cost = {
-			nanites = 50
+		upkeep = {
+			nanites = 0.5
 		}
 	}
 
@@ -641,8 +642,8 @@ masters_writings_politics = {
 	icon = "GFX_edict_type_time"
 	resources = {
 		category = edicts
-		cost = {
-			influence = @Edict1Cost
+		upkeep = {
+			unity = @Edict1Cost
 		}
 	}
 
@@ -660,7 +661,7 @@ masters_writings_politics = {
 	}
 
 	ai_weight = {
-		weight = 5
+		weight = 1
 	}
 }
 
@@ -669,8 +670,8 @@ masters_writings_diplomacy = {
 	icon = "GFX_edict_type_time"
 	resources = {
 		category = edicts
-		cost = {
-			influence = @Edict1Cost
+		upkeep = {
+			influence = 1
 		}
 	}
 
@@ -695,8 +696,8 @@ masters_writings_philosophy = {
 	icon = "GFX_edict_type_time"
 	resources = {
 		category = edicts
-		cost = {
-			influence = @Edict1Cost
+		upkeep = {
+			unity = @Edict1Cost
 		}
 	}
 
@@ -722,8 +723,8 @@ masters_writings_war = {
 	icon = "GFX_edict_type_time"
 	resources = {
 		category = edicts
-		cost = {
-			influence = @Edict1Cost
+		upkeep = {
+			influence = 1
 		}
 	}
 
@@ -753,8 +754,8 @@ improved_work_environment = {
 	icon = "GFX_edict_type_time"
 	resources = {
 		category = edicts
-		cost = {
-			influence = @Edict2Cost
+		upkeep = {
+			unity = @Edict2Cost
 		}
 	}
 
@@ -781,8 +782,8 @@ renewable_energy = {
 	icon = "GFX_edict_type_time"
 	resources = {
 		category = edicts
-		cost = {
-			influence = @Edict2Cost
+		upkeep = {
+			unity = @Edict2Cost
 		}
 	}
 
@@ -809,8 +810,8 @@ super_sensors = {
 	icon = "GFX_edict_type_time"
 	resources = {
 		category = edicts
-		cost = {
-			influence = @Edict2Cost
+		upkeep = {
+			unity = @Edict2Cost
 		}
 	}
 
@@ -837,8 +838,8 @@ nuumismatic_visualization = {
 
 	resources = {
 		category = edicts
-		cost = {
-			influence = @Edict2Cost
+		upkeep = {
+			unity = @Edict2Cost
 		}
 	}
 

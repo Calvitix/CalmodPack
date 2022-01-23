@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.2  22.11.2021
+# Calvitix Check 3.3b  21.01.2022
 #
 # Merge with Arisphaos Unofficial patch
 # Merge with Planetary Div. 03.01.2022
@@ -22,8 +22,22 @@ trait_hive_mind = {
 
 	initial = no
 	randomized = no
-	modification = no
 	forced_happiness = yes
+	species_potential_add = {
+		always = no
+	}
+	species_possible_remove = {
+		custom_tooltip = {
+			text = cannot_remove_this_trait
+			always = no
+		}
+	}
+	species_possible_merge_add = {
+		custom_tooltip = {
+			text = cannot_add_this_trait
+			always = no
+		}
+	}
 
 	modifier = {}
 
@@ -43,7 +57,21 @@ trait_machine_unit = {
 	sorting_priority = 20
 	initial = no
 	randomized = no
-	modification = no
+	species_potential_add = {
+		always = no
+	}
+	species_possible_remove = {
+		custom_tooltip = {
+			text = cannot_remove_this_trait
+			always = no
+		}
+	}
+	species_possible_merge_add = {
+		custom_tooltip = {
+			text = cannot_add_this_trait
+			always = no
+		}
+	}
 	immortal_leaders = yes
 	icon = "gfx/interface/icons/traits/trait_machine_unit.dds"
 	allowed_archetypes = { MACHINE }
@@ -60,7 +88,21 @@ trait_mechanical = {
 
 	initial = no
 	randomized = no
-	modification = no
+	species_potential_add = {
+		always = no
+	}
+	species_possible_remove = {
+		custom_tooltip = {
+			text = cannot_remove_this_trait
+			always = no
+		}
+	}
+	species_possible_merge_add = {
+		custom_tooltip = {
+			text = cannot_add_this_trait
+			always = no
+		}
+	}
 	immortal_leaders = yes
 
 	allowed_archetypes = { ROBOT }
@@ -75,7 +117,21 @@ trait_syncretic_proles = {
 	potential_crossbreeding_chance = 0.33
 	opposites = { "trait_intelligent" "trait_erudite" "trait_natural_engineers" "trait_natural_physicists" "trait_natural_sociologists" "trait_talented" "trait_quick_learners" "trait_decadent" }
 	initial = no
-	modification = yes
+	species_potential_add = {
+		always = no
+	}
+	species_possible_remove = {
+		custom_tooltip = {
+			text = cannot_remove_this_trait
+			always = no
+		}
+	}
+	species_possible_merge_add = {
+		custom_tooltip = {
+			text = cannot_add_this_trait
+			always = no
+		}
+	}
 	species_potential_add = { always = no }
 	icon = "gfx/interface/icons/traits/trait_primitive.dds"
 	allowed_archetypes = { BIOLOGICAL LITHOID }
@@ -95,7 +151,21 @@ trait_lithoid = {
 
 	initial = yes
 	randomized = no
-	modification = no
+	species_potential_add = {
+		always = no
+	}
+	species_possible_remove = {
+		custom_tooltip = {
+			text = cannot_remove_this_trait
+			always = no
+		}
+	}
+	species_possible_merge_add = {
+		custom_tooltip = {
+			text = cannot_add_this_trait
+			always = no
+		}
+	}
 	forced_happiness = no
 	immortal_leaders = no
 
@@ -203,6 +273,7 @@ trait_aquatic = {
 					is_planet_class = pc_desertislands
 					is_planet_class = pc_subarctic
 					is_planet_class = pc_storm
+					has_modifier = flooded_habitat					
 				}
 			}
 		}
@@ -217,6 +288,7 @@ trait_aquatic = {
 			planet = {
 				OR = {
 					is_planet_class = pc_ocean
+					has_modifier = flooded_habitat
 					is_planet_class = pc_aquatic
 					is_planet_class = pc_reef
 					is_planet_class = pc_desertislands
@@ -236,47 +308,58 @@ trait_aquatic = {
 		potential = {
 			exists = planet
 			planet = {
-				OR = {
-					is_ocean = yes
-					is_planet_class = pc_ocean
-					is_planet_class = pc_aquatic
-					is_planet_class = pc_reef
-					is_planet_class = pc_desertislands
-					is_planet_class = pc_subarctic
-					is_planet_class = pc_storm
+				NOR = {
+					has_climate = wet
+					has_modifier = flooded_habitat
 				}
-				exists = owner
-				owner = { has_ascension_perk = ap_hydrocentric }
-			}
-		}
-		pop_housing_usage_mult = -0.05
-		planet_jobs_food_produces_mult = 0.05
-		planet_jobs_minerals_produces_mult = 0.05
-		planet_jobs_energy_produces_mult = 0.05
-	}
-	triggered_pop_modifier = {
-		potential = {
-			exists = planet
-			planet = {
-				NOT = { has_climate = wet }
 				is_ideal = no
 			}
 		}
-		pop_environment_tolerance = -0.2
 		pop_housing_usage_mult = 0.3
 	}
 	triggered_pop_modifier = {
 		potential = {
 			exists = planet
 			planet = {
-				NOT = { has_climate = wet }
+				NOR = {
+					has_climate = wet
+					has_modifier = flooded_habitat
+				}
 				is_ideal = no
 				exists = owner
 				owner = { has_ascension_perk = ap_hydrocentric }
 			}
 		}
-		pop_environment_tolerance = -0.1
 		pop_housing_usage_mult = 0.15
+	}
+	# To make it be able to evaluate habitability of planet it has not settled yet. Only applies to this species
+	triggered_planet_growth_habitability_modifier = {
+		potential = {
+			NOR = {
+				has_climate = wet
+				has_modifier = flooded_habitat
+			}
+			is_ideal = no
+		}
+		pop_environment_tolerance = -0.2
+	}
+	triggered_planet_growth_habitability_modifier = {
+		potential = {
+			NOR = {
+				has_climate = wet
+				has_modifier = flooded_habitat
+			}
+			is_ideal = no
+			exists = owner
+			owner = { has_ascension_perk = ap_hydrocentric }
+		}
+		pop_environment_tolerance = -0.1
+	}
+	triggered_planet_growth_habitability_modifier = {
+		potential = {
+			has_modifier = flooded_habitat
+		}
+		pop_environment_tolerance = 0.2
 	}
 	modifier = {
 		pc_ocean_habitability = 0.2
@@ -295,7 +378,21 @@ trait_necrophage = {
 
 	initial = no
 	randomized = no
-	modification = no
+	species_potential_add = {
+		always = no
+	}
+	species_possible_remove = {
+		custom_tooltip = {
+			text = cannot_remove_this_trait
+			always = no
+		}
+	}
+	species_possible_merge_add = {
+		custom_tooltip = {
+			text = cannot_add_this_trait
+			always = no
+		}
+	}
 	forced_happiness = no
 	immortal_leaders = no
 
@@ -330,7 +427,21 @@ trait_clone_soldier_infertile = {
 	initial = no
 	randomized = no
 	improves_leaders = yes
-	modification = no
+	species_potential_add = {
+		always = no
+	}
+	species_possible_remove = {
+		custom_tooltip = {
+			text = cannot_remove_this_trait
+			always = no
+		}
+	}
+	species_possible_merge_add = {
+		custom_tooltip = {
+			text = cannot_add_this_trait
+			always = no
+		}
+	}
 	forced_happiness = no
 	immortal_leaders = no
 	infertile = yes
@@ -365,7 +476,21 @@ trait_clone_soldier_infertile_full_potential = {
 	initial = no
 	randomized = no
 	improves_leaders = yes
-	modification = no
+	species_potential_add = {
+		always = no
+	}
+	species_possible_remove = {
+		custom_tooltip = {
+			text = cannot_remove_this_trait
+			always = no
+		}
+	}
+	species_possible_merge_add = {
+		custom_tooltip = {
+			text = cannot_add_this_trait
+			always = no
+		}
+	}
 	forced_happiness = no
 	immortal_leaders = no
 	infertile = yes
@@ -401,7 +526,21 @@ trait_clone_soldier_fertile = {
 	initial = no
 	randomized = no
 	improves_leaders = yes
-	modification = no
+	species_potential_add = {
+		always = no
+	}
+	species_possible_remove = {
+		custom_tooltip = {
+			text = cannot_remove_this_trait
+			always = no
+		}
+	}
+	species_possible_merge_add = {
+		custom_tooltip = {
+			text = cannot_add_this_trait
+			always = no
+		}
+	}
 	forced_happiness = no
 	immortal_leaders = no
 	infertile = no

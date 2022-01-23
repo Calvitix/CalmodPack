@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.1.1  15.09.2021
+# Calvitix Check 3.3b  21.01.2022
 #
 # Merge with Arisphaos Unofficial patch
 # Merge with Starnet AI 24.11.2021
@@ -178,6 +178,10 @@ living_standard_organic_trophy = {
 		pop_happiness = 0.4
 	}
 
+	pop_modifier = {
+		pop_category_bio_trophy_consumer_goods_upkeep_add = @living_standard_luxuries_very_high
+	}
+
 	potential = {
 		host_has_dlc = "Synthetic Dawn Story Pack"
 		exists = from
@@ -217,9 +221,24 @@ living_standard_chemical_bliss = {
 		pop_happiness = 0.4
 	}
 
+	triggered_pop_modifier = {
+		potential = {
+			OR = {
+				is_pop_category = ruler
+				is_pop_category = specialist
+				is_pop_category = worker
+				is_pop_category = criminal
+			}
+		}
+		unemployment_resources_unity_produces_add = 1
+	}
+
 	pop_modifier = {
 		planet_jobs_produces_mult = -0.6
-		custom_tooltip = living_standard_chemical_bliss_happiness_tooltip
+		pop_category_rulers_consumer_goods_upkeep_add = @living_standard_luxuries_very_high
+		pop_category_specialists_consumer_goods_upkeep_add = @living_standard_luxuries_very_high
+		pop_category_workers_consumer_goods_upkeep_add = @living_standard_luxuries_very_high
+		pop_category_slave_consumer_goods_upkeep_add = @living_standard_luxuries_low
 	}
 
 	potential = {
@@ -300,9 +319,14 @@ living_standard_shared_burden = {
 		pop_demotion_time_mult = -0.45
 	}
 
+	pop_modifier = {
+		pop_category_rulers_consumer_goods_upkeep_add = @living_standard_luxuries_shared_burden
+		pop_category_specialists_consumer_goods_upkeep_add = @living_standard_luxuries_shared_burden
+		pop_category_workers_consumer_goods_upkeep_add = @living_standard_luxuries_shared_burden
+	}
+
 	allow = {
 		hidden_trigger = { exists = from }
-#megacorp mod
 		custom_tooltip = {
 			fail_text = is_slaves_tooltip
 			NOT = { has_citizenship_type = { country = from type = citizenship_slavery } }
@@ -318,7 +342,6 @@ living_standard_shared_burden = {
 				}
 				has_purge_type = { country = from type = purge_neutering }
 			}
-###
 		}
 		custom_tooltip = {
 			fail_text = SPECIES_MUST_NOT_BE_ASSIMILATING
@@ -332,7 +355,7 @@ living_standard_shared_burden = {
 	}
 
 	ai_will_do = {
-		factor = 10000	
+		factor = 10000	#1
 	}
 }
 
@@ -351,6 +374,37 @@ living_standard_utopian = {
 		pop_cat_ruler_happiness = 0.20
 		pop_cat_specialist_happiness = 0.20
 		pop_cat_worker_happiness = 0.20
+	}
+
+	triggered_pop_modifier = {
+		potential = {
+			OR = {
+				is_pop_category = ruler
+				is_pop_category = specialist
+				is_pop_category = worker
+			}
+		}
+		unemployment_resources_society_research_produces_add = 2
+		unemployment_resources_physics_research_produces_add = 2
+		unemployment_resources_engineering_research_produces_add = 2
+	}
+
+	triggered_pop_modifier = {
+		potential = {
+			OR = {
+				is_pop_category = ruler
+				is_pop_category = specialist
+				is_pop_category = worker
+				is_pop_category = criminal
+			}
+		}
+		unemployment_resources_unity_produces_add = 1
+	}
+
+	pop_modifier = {
+		pop_category_rulers_consumer_goods_upkeep_add = @living_standard_luxuries_very_high
+		pop_category_specialists_consumer_goods_upkeep_add = @living_standard_luxuries_very_high
+		pop_category_workers_consumer_goods_upkeep_add = @living_standard_luxuries_very_high
 	}
 
 	potential = {
@@ -402,19 +456,7 @@ living_standard_utopian = {
 	}
 
 	ai_will_do = {
-		factor = 0
-		modifier = {
-			factor = 0
-			is_multiplayer = yes
-			from = {
-				has_country_flag = str_recently_human
-			}
-			NOT = {
-				has_living_standard = {
-				type = living_standard_utopian
-				}
-			}
-		}
+		factor = 15
 		modifier = {
 			factor = 0
 			NOT = { has_citizenship_type = { country = from type = citizenship_full } }
@@ -480,6 +522,9 @@ living_standard_academic_privilege = {
 	}
 
 	pop_modifier = {
+		pop_category_rulers_consumer_goods_upkeep_add = @living_standard_luxuries_very_high
+		pop_category_specialists_consumer_goods_upkeep_add = @living_standard_luxuries_very_high
+		pop_category_workers_consumer_goods_upkeep_add = @living_standard_luxuries_normal
 		pop_cat_ruler_political_power = 9
 		pop_cat_specialist_political_power = 4
 	}
@@ -539,11 +584,12 @@ living_standard_academic_privilege = {
 	}
 
 	ai_will_do = {
-		factor = 0
+		factor = 10
 		modifier = {
 			factor = 0
 			NOT = { has_citizenship_type = { country = from type = citizenship_full } }
 		}
+#Starnet AI
 		modifier = {
 			factor = 0
 			is_multiplayer = yes
@@ -556,6 +602,7 @@ living_standard_academic_privilege = {
 				}
 			}
 		}
+###
 		modifier = {
 			factor = 0
 			NOT = { has_living_standard = { country = from type = living_standard_academic_privilege } }
@@ -620,7 +667,22 @@ living_standard_good = {
 		pop_cat_slave_happiness = 0.10
 	}
 
+	triggered_pop_modifier = {
+		potential = {
+			OR = {
+				is_pop_category = ruler
+				is_pop_category = specialist
+				is_pop_category = worker
+			}
+		}
+		unemployment_resources_unity_produces_add = 1
+	}
+
 	pop_modifier = {
+		pop_category_rulers_consumer_goods_upkeep_add = @living_standard_luxuries_very_high
+		pop_category_specialists_consumer_goods_upkeep_add = @living_standard_luxuries_high
+		pop_category_workers_consumer_goods_upkeep_add = @living_standard_luxuries_high
+		pop_category_slave_consumer_goods_upkeep_add = @living_standard_luxuries_low
 		pop_cat_ruler_political_power = 4
 		pop_cat_specialist_political_power = 1
 		pop_cat_worker_political_power = 0.5
@@ -654,7 +716,6 @@ living_standard_good = {
 					has_slavery_type = { country = from type = slavery_domestic }
 					}
 				}
-				#text = is_slaves_not_battle_thralls_or_livestock
 			}
 			custom_tooltip = {
 			fail_text = is_purged_not_neutered
@@ -763,6 +824,10 @@ living_standard_normal = {
 	}
 
 	pop_modifier = {
+		pop_category_rulers_consumer_goods_upkeep_add = @living_standard_luxuries_very_high
+		pop_category_specialists_consumer_goods_upkeep_add = @living_standard_luxuries_high
+		pop_category_workers_consumer_goods_upkeep_add = @living_standard_luxuries_normal
+		pop_category_slave_consumer_goods_upkeep_add = @living_standard_luxuries_very_low
 		pop_cat_ruler_political_power = 7
 		pop_cat_specialist_political_power = 1
 	}
@@ -836,6 +901,26 @@ living_standard_stratified = {
 		pop_cat_specialist_happiness = 0.05
 	}
 
+
+	triggered_pop_modifier = { # This hides these values from the auto-generated tooltip
+		potential = {
+			always = yes
+		}
+		pop_cat_worker_happiness = -0.10
+		pop_cat_slave_happiness = -0.10
+	}
+
+	triggered_pop_modifier = {
+		potential = {
+			OR = {
+				is_pop_category = ruler
+				is_pop_category = specialist
+				is_pop_category = worker
+			}
+		}
+		unemployment_resources_unity_produces_add = 1
+	}
+
 	in_breach_of = {
 		{
 			trigger = {
@@ -858,8 +943,10 @@ living_standard_stratified = {
 	}
 
 	pop_modifier = {
-		pop_cat_worker_happiness = -0.10
-		pop_cat_slave_happiness = -0.10
+		pop_category_rulers_consumer_goods_upkeep_add = @living_standard_luxuries_very_high
+		pop_category_specialists_consumer_goods_upkeep_add = @living_standard_luxuries_high
+		pop_category_workers_consumer_goods_upkeep_add = @living_standard_luxuries_low
+		pop_category_slave_consumer_goods_upkeep_add = @living_standard_luxuries_none
 		pop_cat_ruler_political_power = 9
 		pop_cat_specialist_political_power = 1
 		pop_cat_worker_political_power = -0.25
@@ -937,11 +1024,21 @@ living_standard_subsistence = {
 	token = living_standard_subsistence
 	name = living_standard_subsistence
 
-	pop_modifier = {
+	triggered_pop_modifier = { # This hides these values from the auto-generated tooltip
+		potential = {
+			always = yes
+		}
 		pop_cat_ruler_happiness = -0.05
 		pop_cat_specialist_happiness = -0.10
 		pop_cat_worker_happiness = -0.20
 		pop_cat_slave_happiness = -0.10
+	}
+
+	pop_modifier = {
+		pop_category_rulers_consumer_goods_upkeep_add = @living_standard_luxuries_high
+		pop_category_specialists_consumer_goods_upkeep_add = @living_standard_luxuries_normal
+		pop_category_workers_consumer_goods_upkeep_add = @living_standard_luxuries_very_low
+
 		pop_cat_ruler_political_power = 4
 		pop_cat_specialist_political_power = -0.25
 		pop_cat_worker_political_power = -0.5
@@ -1018,6 +1115,7 @@ living_standard_subsistence = {
 	}
 	ai_will_do = {
 		factor = 10
+#Starnet AI
 		modifier = {
 			factor = 0
 			is_multiplayer = yes
@@ -1030,6 +1128,7 @@ living_standard_subsistence = {
 				}
 			}
 		}
+###
 		modifier = {
 			factor = 0
 			from = {
@@ -1172,9 +1271,24 @@ living_standard_decadent = {
 		}
 	}
 
+	triggered_pop_modifier = {
+		potential = {
+			NAND = {
+				exists = owner
+				owner = { has_deficit = consumer_goods }
+			}
+		}
+		pop_cat_ruler_happiness = 0.20
+		pop_cat_specialist_happiness = 0.20
+		pop_cat_worker_happiness = 0.20
+	}
+
 	pop_modifier = {
-		pop_happiness = 0.20
-		planet_pops_consumer_goods_upkeep_mult = 0.10
+		pop_category_rulers_consumer_goods_upkeep_add = @living_standard_luxuries_very_high_decadent
+		pop_category_specialists_consumer_goods_upkeep_add = @living_standard_luxuries_high_decadent
+		pop_category_workers_consumer_goods_upkeep_add = @living_standard_luxuries_normal_decadent
+		pop_cat_ruler_political_power = 7
+		pop_cat_specialist_political_power = 1
 	}
 
 	ai_will_do = {

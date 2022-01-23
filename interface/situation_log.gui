@@ -1,4 +1,4 @@
-#UI OverHaul, Modif Calvitix, Check 3.2.2   08.01.2022
+#UI OverHaul, Modif Calvitix, Check 3.3 beta   22.01.2022
 #Calvitix font change + shortcut  
 guiTypes = {
 	containerWindowType = {
@@ -61,7 +61,7 @@ guiTypes = {
 			orientation = upper_right
 		}
 		########################
-		# log_window
+		# entries
 		containerWindowType = {
 			name = "log_window"
 			size = { width = 100% height = 100% }
@@ -376,6 +376,117 @@ guiTypes = {
 						shortcut = "RETURN"
 					}
 				}
+				### "SITUATIONS"
+				containerWindowType = {
+					name = "situation_info"
+					position = { x = 0 y = 0 }
+					size = { width = 0 height = 0 } # UIOD - hidden for now - { width = 100% height = 100% }
+					background = {
+						name = "situation_info"
+						spriteType = "GFX_invisible"
+					}
+					containerWindowType = { # progress/status bar
+						name = "situation_status_bar"
+						position = { x = 50 y = 330 }
+						size = { width = 100% height = 80 }
+						iconType = {
+							name = "progress_bar"
+							position = { x = 25 y = 10 }
+							spriteType = "GFX_PV_GB_progressbar" # TO DO: add new progress bar
+						}
+						containerWindowType = { # modifier number
+							name = "modifier"
+							position = { x = 470 y = 8 }
+							size = { width = 50 height = 50 }
+							iconType = {
+								name = "modifier_icon"
+								position = { x = 10 y = -2 }
+								spriteType = "GFX_situation_or_button" # TO DO: add new modifier icons, set in code
+							}
+							instantTextBoxType = {
+								name = "title"
+								text = "5" # number will be added in code
+								font = "cg_16b"
+								maxWidth = "80"
+								maxHeight = "80"
+								pdx_tooltip = "situation modifier, not implemented" #placeholder
+							}
+						}
+						gridBoxType = { # gridbox for future severity entries
+							name = "situation_severity_grid"
+							slotSize = { width = 50 height = 50 }
+							max_slots_horizontal = 5
+							max_slots_vertical = 1
+							format = "LOWER_LEFT"
+							add_horizontal = yes
+						}
+					}
+					containerWindowType = { # would be nice to rename this container
+						name = "situation_options"
+						size = { width = 100% height = 120 }
+						position = { x = 40 y = 380 }
+						instantTextBoxType = {
+							name = "title"
+							position = { x = 11 y = 0 }
+							font = "cg_16b"
+							text = "Approach" # placeholder
+						}
+						iconType = {
+							name = "divider"
+							position = { x = 7 y = 15 }
+							quadTextureSprite = "GFX_line"
+						}
+						gridBoxType = { # gridbox for the new "situation_approach_entry" containers
+							name = "situation_approach_grid"
+							position = { x = 0 y = 40 }
+							slotSize = { width = 120 height = 120 }
+							max_slots_horizontal = 4
+							max_slots_vertical = 1
+							format = "LOWER_LEFT"
+							add_horizontal = no
+						}
+						buttonType = { # TO DO: placeholder, will be removed after code implementation
+							name = "situation_action"
+							position = { x = 0 y = 40 }
+							size = { x = 100 y = 100 }
+							spriteType = "GFX_button_116_24"
+							font = "cg_16b"
+							text = "targetname"
+							format = center
+							multiline = yes
+						}
+						buttonType = { # TO DO: placeholder, will be removed after code implementation
+							name = "situation_action2"
+							position = { x = 120 y = 40 }
+							size = { x = 100 y = 100 }
+							spriteType = "GFX_button_116_24"
+							font = "cg_16b"
+							text = "targetname"
+							format = center
+							multiline = yes
+						}
+						buttonType = { # TO DO: placeholder, will be removed after code implementation
+							name = "situation_action3"
+							position = { x = 240 y = 40 }
+							size = { x = 100 y = 100 }
+							spriteType = "GFX_button_116_24"
+							font = "cg_16b"
+							text = "targetname"
+							format = center
+							multiline = yes
+						}
+						buttonType = { # TO DO: placeholder, will be removed after code implementation
+							name = "situation_action4"
+							position = { x = 360 y = 40 }
+							size = { x = 100 y = 100 }
+							spriteType = "GFX_button_116_24"
+							font = "cg_16b"
+							text = "targetname"
+							format = center
+							multiline = yes
+						}
+					}
+				}
 				buttonType = {
 					name = "track"
 					orientation = center_down
@@ -385,6 +496,124 @@ guiTypes = {
 					text = "PROJECT_TRACK"
 					format = center
 					actionshortcut = "track_on_map"
+				}
+			}
+			########################
+			# "SITUATIONS" SIDE PANEL
+			containerWindowType = {
+				name = "situation_details"
+				position = { x = 10 y = 9 }
+				size = { width = 0 height = 0 } # UIOD - hidden for now - size = { width = 280 height = 596 }
+				orientation = upper_right
+				background = {
+					name = "background"
+					quadTextureSprite = "GFX_invisible" # "GFX_plain_bg_tile" # placeholder
+				}
+				containerWindowType = {
+					name = "target_effects"
+					position = { x = 20 y = 20 }
+					size = { width = 240 height = 160 }
+					background = {
+						name = "background"
+						quadTextureSprite = "GFX_plain_bg_tile" # placeholder
+					}
+					iconType = {
+						name = "icon"
+						position = { x = 10 y = 10 }
+						spriteType = "GFX_alert" # will be set in code
+						alwaysTransparent = yes
+					}
+					instantTextBoxType = {
+						name = "name"
+						font = "cg_16b"
+						position = { x = 40 y = 20 }
+						maxWidth = 100
+						maxHeight = 34
+						fixedSize = yes
+						format = center
+						text = "planet name" # will be set in code
+						alwaysTransparent = yes
+					}
+					gridBoxType = { # gridbox for future effects entries
+						name = "target_effects_grid"
+						position = { x = 80 y = 40 }
+						max_slots_horizontal = 3
+						max_slots_vertical = 5
+						format = "LOWER_LEFT"
+					}
+				}
+				containerWindowType = {
+					name = "empire_effects"
+					position = { x = 20 y = 200 }
+					size = { width = 240 height = 180 }
+					background = {
+						name = "background"
+						quadTextureSprite = "GFX_plain_bg_tile" # placeholder
+					}
+					iconType = {
+						name = "icon"
+						position = { x = 10 y = 10 }
+						spriteType = "GFX_alert" # will be set in code
+						alwaysTransparent = yes
+					}
+					instantTextBoxType = {
+						name = "title"
+						font = "cg_16b"
+						position = { x = 40 y = 20 }
+						maxWidth = 100
+						maxHeight = 34
+						fixedSize = yes
+						format = center
+						text = "empire effects" # placeholder
+						alwaysTransparent = yes
+					}
+					gridBoxType = { # gridbox for future effects entries
+						name = "empire_effects_grid"
+						position = { x = 80 y = 40 }
+						max_slots_horizontal = 3
+						max_slots_vertical = 5
+						format = "LOWER_LEFT"
+					}
+				}
+				containerWindowType = {
+					name = "situation_event_pending"
+					position = { x = 20 y = 400 }
+					size = { width = 240 height = 176 }
+					background = {
+						name = "background"
+						quadTextureSprite = "GFX_plain_bg_tile" # placeholder
+					}
+					instantTextBoxType = {
+						name = "title"
+						font = "cg_16b"
+						position = { x = 20 y = 20 }
+						maxWidth = 100
+						maxHeight = 34
+						fixedSize = yes
+						format = center
+						text = "pending event" # placeholder
+						alwaysTransparent = yes
+					}
+					buttonType = {
+						name = "pending_event_image"
+						position = { x = 20 y = 60 }
+						spriteType = "GFX_evt_arctic" # will be set in code
+						scale = 0.45
+					}
+					iconType = {
+						name = "time_icon"
+						position = { x = 20 y = 140 }
+						spriteType = "GFX_resource_time"
+					}
+					instantTextBoxType = {
+						name = "time"
+						position = { x = 40 y = 140 }
+						font = "cg_16b"
+						text = "200" # time will be set in code
+						format = left
+						text_color_code = "Y"
+						pdx_tooltip = "event pending time, not implemented" # placeholder
+					}
 				}
 			}
 		}
@@ -1170,7 +1399,7 @@ guiTypes = {
 			quadTextureSprite = "GFX_entry_expand"
 			position = { x = -31 y = 10 }
 			orientation = upper_right
-			#alwaysTransparent = yes
+			alwaysTransparent = yes
 		}
 		iconType = {
 			name = "completed"
@@ -1273,6 +1502,69 @@ guiTypes = {
 			spriteType = "GFX_dot_orange_icon"
 			position = { x = 17 y = 8 }
 			tooltip = "SITUATION_LOG_TRACKED_TOOLTIP"
+		}
+	}
+	### SITUATION SEVERITY ENTRY
+	containerWindowType = {
+		name = "situation_severity_entry"
+		size = { width = 50 height = 50 }
+		iconType = {
+			name = "icon"
+			spriteType = "GFX_icon_randomize"  # icon set in code
+			pdx_tooltip = "severity #1" # tooltip set in code
+		}
+	}
+	### SITUATION APPROACH ENTRY
+	containerWindowType = {
+		name = "situation_approach_entry"
+		size = { width = 120 height = 120 }
+		buttonType = {
+			name = "button"
+			size = { x = 100 y = 100 }
+			spriteType = "GFX_resolution_details_button" # placeholder
+			scale = 3
+		}
+		iconType = {
+			name = "selected"
+			position = { x = 0 y = 0 }
+			spriteType = "GFX_long_button_selected"
+			alwaysTransparent = yes
+		}
+		iconType = {
+			name = "icon"
+			position = { x = 45 y = 24 }
+			spriteType = "GFX_alert_imminent_situation" # will be set in code
+			scale = 0.8
+			alwaysTransparent = yes
+		}
+		instantTextBoxType = {
+			name = "name"
+			position = { x = 8 y = 50 }
+			font = "cg_16b"
+			text = "Example: Observe it peacefully" # will be set in code
+			format = center
+			multiline = yes
+			maxWidth = 100
+			alwaysTransparent = yes
+		}
+	}
+	### SITUATION EFFECTS ENTRY
+	containerWindowType = {
+		name = "situation_effects_entry"
+		size = { width = 120 height = 120 }
+		iconType = {
+			name = "icon"
+			position = { x = 0 y = 0 }
+			spriteType = "GFX_resource_time" # will be set in code
+		}
+		instantTextBoxType = {
+			name = "value"
+			position = { x = 40 y = 0 }
+			font = "cg_16b"
+			text = "200" # time will be set in code
+			format = left
+			text_color_code = "Y"
+			pdx_tooltip = "effect tooltip" # will be added in code
 		}
 	}
 	###

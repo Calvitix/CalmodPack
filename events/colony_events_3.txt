@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.2  22.11.2021
+# Calvitix Check 3.3b  21.01.2022
 #
 # Merge with Arisphaos Unofficial patch
 # Merge with Expanded Events  22.05.2021
@@ -3652,9 +3652,7 @@ planet_event = {
 			is_planet_class = pc_ocean
 		}
 		NOR = {
-			any_country = {
-				NOT = { has_country_flag = turtle_world_spawned }
-			}
+			any_country = { has_country_flag = turtle_world_spawned }
 			has_planet_flag = colony_event
 		}
 	}
@@ -4107,3 +4105,448 @@ planet_event = {
 	}
 }
 
+############################
+#
+# Colony Events: "Insidious Ophidians"
+#
+# Designed by Brian Campbell
+#
+############################
+
+planet_event = {
+	id = colony.8099
+	title = colony.8099.name
+	desc = colony.8099.desc
+	picture = GFX_evt_alien_nature
+	show_sound = event_air_raid_siren
+	location = ROOT
+
+	pre_triggers = {
+		has_owner = yes
+		is_homeworld = no
+		original_owner = yes
+		is_ai = no
+		has_ground_combat = no
+		is_capital = no
+	}
+
+	trigger = {
+		habitable_planet = yes
+		owner = {
+			NOR = {
+				has_ethic = ethic_gestalt_consciousness
+				has_country_flag = snake_infestation
+			}
+		}
+		num_pops > 0
+	}
+
+	is_triggered_only = yes
+
+	immediate = {
+		owner = {
+			set_country_flag = snake_infestation
+		}
+		set_planet_flag = colony_event
+	}
+
+	option = {
+		name = colony.8099.a
+		hidden_effect = {
+			planet_event = {
+				id = colony.9100
+				days = 40
+				random = 20
+			}
+		}
+		add_modifier = {
+			modifier = "planet_forced_growth"
+			days = -1
+		}
+	}
+}
+
+planet_event = {
+	id = colony.9100
+	title = colony.9100.name
+	desc = colony.9100.desc
+	picture = GFX_evt_alien_nature
+	show_sound = event_air_raid_siren
+	location = ROOT
+
+	pre_triggers = {
+		has_owner = yes
+		is_homeworld = no
+		original_owner = yes
+		is_ai = no
+		has_ground_combat = no
+		is_capital = no
+	}
+
+	trigger = {
+		original_owner = yes
+	}
+
+	is_triggered_only = yes
+
+	immediate = {
+	}
+
+	option = {
+		name = colony.9100.a
+		# custom_tooltip = colony.9100.a.tooltip
+		enable_special_project = {
+			name = SNEK_SCIENCE_PROJECT
+			location = this
+			owner = root.owner
+		}
+	}
+
+	option = {
+		name = colony.9100.b
+		# custom_tooltip = colony.9100.b.tooltip
+		enable_special_project = {
+			name = SNEK_WAR_PROJECT
+			location = this
+			owner = root.owner
+		}
+	}
+}
+
+planet_event = {
+	id = colony.9101
+	title = "PROJECT_COMPLETE"
+	desc = "colony.9101.desc"
+	picture = GFX_evt_alien_nature
+	show_sound = event_alien_nature
+	location = ROOT
+
+	trigger = {
+		original_owner = yes
+	}
+
+	is_triggered_only = yes
+
+	immediate = {
+	}
+
+	option = {
+		name = EXCELLENT
+		add_modifier = {
+			modifier = energy_poor
+			months = 120
+		}
+		hidden_effect = {
+			planet_event = {
+				id = colony.9102
+				days = 40
+				random = 20
+			}
+		}
+	}
+}
+
+planet_event = {
+	id = colony.9102
+	title = "PROJECT_COMPLETE"
+	desc = "colony.9102.desc"
+	picture = GFX_evt_alien_planet
+	show_sound = event_alien_nature
+	location = ROOT
+
+	trigger = {
+		original_owner = yes
+	}
+
+	is_triggered_only = yes
+
+	immediate = {
+	}
+
+	option = {
+		name = EXCELLENT
+		add_modifier = {
+			modifier = snake_infestation
+			months = 120
+		}
+		hidden_effect = {
+			planet_event = {
+				id = colony.9103
+				days = 40
+				random = 20
+			}
+		}
+	}
+}
+
+planet_event = {
+	id = colony.9103
+	title = colony.9103.name
+	desc = colony.9103.desc
+	picture = GFX_evt_alien_nature
+	show_sound = event_air_raid_siren
+	location = ROOT
+
+	trigger = {
+		original_owner = yes
+	}
+
+	is_triggered_only = yes
+
+	immediate = {
+	}
+
+	option = {
+		name = colony.9103.a
+		# custom_tooltip = colony.9103.a.tooltip
+		add_deposit = d_submerged_ore_veins
+		add_modifier = {
+			modifier = energy_poor
+			days = 240
+		}
+		hidden_effect = {
+			planet_event = {
+				id = colony.9104
+				days = 40
+				random = 20
+			}
+		}
+	}
+
+	option = {
+		name = colony.9103.b
+		# custom_tooltip = colony.9103.b.tooltip
+		add_deposit = d_minerals_3
+		# if not science
+		add_modifier = {
+			modifier = snake_infestation
+			days = 240
+		}
+		hidden_effect = {
+			planet_event = {
+				id = colony.9104
+				days = 40
+				random = 20
+			}
+		}
+	}
+}
+
+planet_event = {
+	id = colony.9104
+	title = colony.9104.name
+	desc = colony.9104.desc
+	picture = GFX_evt_alien_nature
+	show_sound = event_swarm
+	location = ROOT
+	trackable = yes
+
+	trigger = {
+		original_owner = yes
+		num_pops > 0
+	}
+
+	is_triggered_only = yes
+
+	immediate = {
+	}
+
+	option = {
+		name = colony.9104.a
+		# custom_tooltip = colony.9104.a.tooltip
+		add_deposit = d_minerals_3
+		add_modifier = {
+			modifier = "mineral_poor"
+			days = 240
+		}
+		hidden_effect = {
+			planet_event = {
+				id = colony.9105
+				days = 40
+				random = 20
+			}
+		}
+	}
+
+	option = {
+		name = colony.9104.b
+		# custom_tooltip = colony.9104.b.tooltip
+		add_deposit = d_minerals_3
+		add_modifier = {
+			modifier = "snake_infestation"
+			days = 240
+		}
+		hidden_effect = {
+			planet_event = {
+			id = colony.9105
+			days = 40
+			random = 20
+			}
+		}
+	}
+}
+
+planet_event = {
+	id = colony.9105
+	title = colony.9105.name
+	desc = colony.9105.desc
+	picture = GFX_evt_alien_nature
+	show_sound = event_swarm
+	location = ROOT
+	trackable = yes
+
+	trigger = {
+		original_owner = yes
+		num_pops > 0
+	}
+
+	is_triggered_only = yes
+
+	immediate = {
+	}
+
+	option = {
+			name = UNFORTUNATE
+			# custom_tooltip = colony.9105.a.tooltip
+			add_modifier = {
+				modifier = "damaged_ecology"
+				days = 2400}
+		hidden_effect = {
+			planet_event = {
+				id = colony.9106
+				days = 40
+				random = 20
+			}
+		}
+	}
+}
+
+planet_event = {
+	id = colony.9106
+	title = colony.9106.name
+	desc = colony.9106.desc
+	picture = GFX_evt_alien_nature
+	show_sound = event_swarm
+	location = ROOT
+	trackable = yes
+
+	trigger = {
+    	original_owner = yes
+    }
+
+	is_triggered_only = yes
+
+	immediate = {
+    }
+
+	option = {
+		name = colony.9106.a
+		# custom_tooltip = colony.9016.a.tooltip
+		owner = {
+			add_monthly_resource_mult = {
+			resource = minerals
+			value = @tier1materialreward
+			min = @tier1materialmin
+			max = @tier1materialmax
+		}
+	}
+	hidden_effect = {
+		planet_event = {
+			id = colony.9107
+			days = 40
+			random = 20
+			}
+		}
+	}
+}
+
+planet_event = {
+	id = colony.9107
+	title = colony.9107.name
+	desc = colony.9107.desc
+	picture = GFX_evt_alien_nature
+	show_sound = event_swarm
+	location = ROOT
+	trackable = yes
+
+	trigger = {
+    	original_owner = yes
+	}
+
+	is_triggered_only = yes
+
+    immediate = {
+    }
+
+	option = {
+		name = colony.9107.a
+		custom_tooltip = colony.9107.a.tooltip
+		hidden_effect = {
+			planet_event = {
+				id = colony.9108
+				days = 40
+				random = 20
+			}
+		}
+	}
+
+	option = {
+		name = colony.9107.b
+		custom_tooltip = colony.9107.b.tooltip
+		hidden_effect = {
+			planet_event = {
+				id = colony.9109
+				days = 40
+				random = 20
+			}
+		}
+	}
+}
+
+planet_event = {
+	id = colony.9108
+	title = colony.9108.name
+	desc = colony.9108.desc
+	picture = GFX_evt_alien_nature
+	show_sound = event_swarm
+	location = ROOT
+	trackable = yes
+
+	trigger = {
+		original_owner = yes
+	}
+
+	is_triggered_only = yes
+
+    immediate = {
+    }
+
+	option = {
+		name = colony.9108.a
+		custom_tooltip = colony.9108.a.tooltip
+	}
+}
+
+planet_event = {
+	id = colony.9109
+	title = colony.9109.name
+	desc = colony.9109.desc
+	picture = GFX_evt_alien_nature
+	show_sound = event_swarm
+	location = ROOT
+	trackable = yes
+
+	trigger = {
+		original_owner = yes
+	}
+
+	is_triggered_only = yes
+
+    immediate = {
+    }
+
+	option = {
+		name = colony.9109.a
+		custom_tooltip = colony.9109.a.tooltip
+	}
+}

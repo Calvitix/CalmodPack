@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.2  22.11.2021
+# Calvitix Check 3.3b  21.01.2022
 #
 # Merge with Arisphaos Unofficial patch
 # Merge with Expanded Stellaris Ascension Perks 19.12.2021
@@ -41,6 +41,10 @@ trade_routes = {
 	parent = trade
 }
 
+situations = { #Ori3.3b
+	parent = country
+}
+
 resolutions = {
 	parent = country
 	use_for_ai_budget = yes
@@ -51,13 +55,14 @@ edicts = {
 	parent = country
 	generate_mult_modifiers = {
 		cost
+		upkeep
 	}
 }
 
 rare_edicts = {
 	use_for_ai_budget = yes
 	parent = edicts
-	generate_mult_modifiers = {
+	generate_mult_modifiers = { #Ori3.3b removed
 		cost
 	}
 }
@@ -70,7 +75,7 @@ ship_edicts = {
 campaigns = {
 	use_for_ai_budget = yes
 	parent = edicts
-	generate_mult_modifiers = {
+	generate_mult_modifiers = { #Ori3.3b removed
 		cost
 	}
 }
@@ -78,7 +83,7 @@ campaigns = {
 decisions = {
 	use_for_ai_budget = yes
 	parent = country
-	 generate_mult_modifiers = {
+	 generate_mult_modifiers = { #Ori3.3b removed
 		cost
 	}
 }
@@ -1823,50 +1828,78 @@ planet_technician = {
 	}
 }
 
-planet_executives = {
-	parent = planet_jobs
+planet_politicians = { #Ori3.3b
+	parent = planet_jobs_productive
+}
+
+#planet_executives = { #Ori3.3b see below
+#	parent = planet_jobs
+#	generate_add_modifiers = {
+#		produces
+#		upkeep
+#	}
+#	generate_mult_modifiers = {
+#		produces
+#		upkeep
+#	}
+#}
+
+#planet_managers = {
+#	parent = planet_jobs
+#	generate_add_modifiers = {
+#		produces
+#		upkeep
+#	}
+#	generate_mult_modifiers = {
+#		produces
+#		upkeep
+#	}
+#}
+
+planet_administrators = { #Ori3.3, administrators replace bureaucrats
+#	parent = planet_jobs
+#	generate_add_modifiers = {
+#		produces
+#		upkeep
+#	}
+#	generate_mult_modifiers = {
+#		produces
+#		upkeep
+#	}
+#}
+#
+#planet_bureaucrats = {
+	icon = "job_bureaucrat"
+	parent = planet_jobs_productive
+	generate_mult_modifiers = {
+		produces
+		upkeep
+	}
 	generate_add_modifiers = {
 		produces
 		upkeep
 	}
+}
+
+planet_executives = {
+	parent = planet_politicians
 	generate_mult_modifiers = {
+		produces
+		upkeep
+	}
+	generate_add_modifiers = {
 		produces
 		upkeep
 	}
 }
 
 planet_managers = {
-	parent = planet_jobs
-	generate_add_modifiers = {
-		produces
-		upkeep
-	}
+	parent = planet_administrators
 	generate_mult_modifiers = {
 		produces
 		upkeep
 	}
-}
-
-planet_administrators = {
-	parent = planet_jobs
 	generate_add_modifiers = {
-		produces
-		upkeep
-	}
-	generate_mult_modifiers = {
-		produces
-		upkeep
-	}
-}
-
-planet_bureaucrats = {
-	icon = "job_bureaucrat"
-	parent = planet_jobs
-	generate_add_modifiers = {
-		produces
-		upkeep
-	}
-	generate_mult_modifiers = {
 		produces
 		upkeep
 	}
@@ -1898,44 +1931,27 @@ planet_metallurgists = {
 	}
 }
 
-planet_culture_workers = {
+planet_culture_workers = { #Ori3.3, not used anymore
 	parent = planet_jobs_productive
-	generate_add_modifiers = {
-		produces
-		upkeep
-	}
 	generate_mult_modifiers = {
-		produces
-		upkeep
+
 	}
 }
 
 planet_evaluators = {
 	parent = planet_jobs_productive
-	generate_add_modifiers = {
-		produces
-        upkeep
-	}
 	generate_mult_modifiers = {
-		produces
-		upkeep
 	}
 }
 
 planet_synapse_drones = {
 	parent = planet_jobs_productive
-	generate_add_modifiers = {
-		produces
-        upkeep
-	}
 	generate_mult_modifiers = {
-		produces
-		upkeep
 	}
 }
 
 planet_nobles = {
-	parent = planet_jobs
+	parent = planet_politicians
 	generate_add_modifiers = {
 		produces
 		upkeep
@@ -2007,7 +2023,7 @@ planet_necromancers = {
 }
 
 planet_priests = {
-	parent = planet_jobs_productive
+	parent = planet_administrators
 	generate_add_modifiers = {
 		produces
 		upkeep
@@ -2146,6 +2162,7 @@ planet_pops = {
 unemployment_resources = {
 	parent = planet_pops
 	generate_add_modifiers = {
+		produces
 		upkeep
 	}
 	generate_mult_modifiers = {
@@ -2443,14 +2460,14 @@ country_container = {
 	parent = country
 }
 
-country_suppression = {
+country_suppression = { #Ori3.3b removed
 	parent = country_container
 	generate_add_modifiers = {
 		upkeep
 	}
 }
 
-country_promotion = {
+country_promotion = { #Ori3.3b removed
 	parent = country_container
 	generate_add_modifiers = {
 		upkeep
@@ -2573,6 +2590,16 @@ country_ruler = {
 country_ethic = {
 	parent = country_container
 	generate_add_modifiers = {
+		produces
+	}
+}
+
+country_power_projection = { #Ori3.3b
+	parent = country_container
+	generate_add_modifiers = {
+		produces
+	}
+	generate_mult_modifiers = {
 		produces
 	}
 }
@@ -2722,6 +2749,11 @@ sector = {
 }
 
 menace = {
+}
+
+traditions = { #Ori3.3b
+		use_for_ai_budget = yes
+		parent = country
 }
 
 operations = {

@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.2  2.11.2021
+# Calvitix Check 3.3b  20.01.2022
 #
 # Merge with Exp. Events 28.11.2021
 #
@@ -8,6 +8,7 @@
 
 @minor_artifact_decision_cost = 2
 @minor_artifact_decision_duration = 3600
+@minor_artifact_ai_threshold = 20 #Ori3.3B
 
 artifact_arcane_deciphering = {
 	resources = {
@@ -19,10 +20,11 @@ artifact_arcane_deciphering = {
 	
 	ai_weight = {
 		weight = 100
-		modifier = {
-			factor = 0
-			has_resource = { type = minor_artifacts amount < 105 }
-		}
+		#Ori3.3B removed
+		#modifier = {
+		#	factor = 0
+		#	has_resource = { type = minor_artifacts amount < 105 }
+		#}
 	}
 
 	potential = {
@@ -158,7 +160,7 @@ artifact_proclaim_religious_finding = {
 		}
 		modifier = {
 			factor = 0
-			has_resource = { type = minor_artifacts amount < 105 }
+			has_resource = { type = minor_artifacts amount < @minor_artifact_ai_threshold } #Ori3.3B
 		}
 	}
 
@@ -196,7 +198,7 @@ artifact_proclaim_superiority = {
 		weight = 100
 		modifier = {
 			factor = 0
-			has_resource = { type = minor_artifacts amount < 105 }
+			has_resource = { type = minor_artifacts amount < @minor_artifact_ai_threshold } #Ori3.3B
 		}
 	}
 
@@ -238,7 +240,7 @@ artifact_celebrate_diversity = {
 		}
 		modifier = {
 			factor = 0
-			has_resource = { type = minor_artifacts amount < 105 }
+			has_resource = { type = minor_artifacts amount < @minor_artifact_ai_threshold } #Ori3.3B
 		}
 	}
 
@@ -406,7 +408,7 @@ artifact_find_military_applications = {
 		}
 		modifier = {
 			factor = 0
-			has_resource = { type = minor_artifacts amount < 105 }
+			has_resource = { type = minor_artifacts amount < @minor_artifact_ai_threshold } #Ori3.3B
 		}
 	}
 
@@ -460,7 +462,7 @@ artifact_find_peaceful_applications = {
 		}
 		modifier = {
 			factor = 0
-			has_resource = { type = minor_artifacts amount < 105 }
+			has_resource = { type = minor_artifacts amount < @minor_artifact_ai_threshold } #Ori3.3B
 		}
 	}
 
@@ -507,20 +509,22 @@ artifact_sell_collector = {
 		}
 		modifier = {
 			factor = 0
-			has_resource = { type = minor_artifacts amount < 105 }
+			has_resource = { type = minor_artifacts amount < @minor_artifact_ai_threshold } #Ori3.3B
 		}
 	}
 
 	potential = { is_gestalt = no }
 
-	effect = {
-		add_monthly_resource_mult = {
-			resource = energy
-			value = @tier2materialreward
-			min = @tier2materialmin
-			max = @tier2materialmax
+	effect = { #Ori3.3B replacement
+		add_resource = { energy = 500 }
+		hidden_effect = {
+			add_modifier = {
+				modifier = "artifact_sell_cooldown"
+				days = 180
+			}
 		}
 	}
+	allow = { NOT = { has_modifier = artifact_sell_cooldown } }
 }
 
 artifact_arcane_deciphering_locked = {

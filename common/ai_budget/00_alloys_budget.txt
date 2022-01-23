@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.2  22.11.2021
+# Calvitix Check  3.3b  20.01.2022
 #
 # Merge with Skalla Ai's Overhaul
 # Merge with Starnet AI 30.11.2021
@@ -425,8 +425,13 @@ alloys_expenditure_planets = {
 	}
 
 	static_min = {
-		base = 4500
+		base = 4500 #150 in 3.3b
 	}
+	
+	#Ori 3.3b 
+	#static_max = {
+	#	base = 450
+	#}	
 }
 
 alloys_expenditure_starbases = {
@@ -458,6 +463,17 @@ alloys_expenditure_starbases = {
 
 	fraction = {
 		weight = 0.3
+		#Ori 3.3b spend more on starbase upgrades if at fleet cap
+		modifier = {
+			factor = 4
+			used_naval_capacity_percent >= 1.0
+		}
+
+		# Reduce spending on claiming new systems if we have unclaimed planets
+		modifier = {
+			factor = 0.25
+			ai_colonize_plans > 0
+		}
 	}
 	static_min = {
 		base = 120
@@ -546,11 +562,18 @@ alloys_expenditure_starbases_expand = {
 		highest_threat < 50
 		NOR = {
 			is_country_type = fallen_empire
+			is_country_type = awakened_fallen_empire
+			ai_colonize_plans > 0
 		}
+		has_resource = { type = influence amount > 75 }
 	}
 	
 	fraction = {
 		weight = 1.2  #0.2  #Calvitix
+	}	
+		
+	static_min = {  #3.3b
+		base = 150
 	}	
 }
 

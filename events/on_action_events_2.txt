@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.1.1 14.09.2021
+# Calvitix Check 3.3b 21.01.2022
 #
 # Merge with Aripath 19.11.2021
 #########################################
@@ -2180,6 +2180,81 @@ espionage_operation_event = {
 				days = 30
 				target = root.owner.capital_scope
 			}
+		}
+	}
+}
+
+# On research Planetary Unification
+country_event = {
+	id = action.400
+	hide_window = yes
+
+	is_triggered_only = yes
+
+	trigger = {
+		last_increased_tech = tech_planetary_unification
+	}
+
+	immediate = {
+		add_monthly_resource_mult = {
+			resource = unity
+			value = @tier2unityreward
+			min = @tier2unitymin
+			max = @tier2unitymax
+		}
+	}
+}
+
+country_event = {
+	id = action.405
+	hide_window = yes
+
+	is_triggered_only = yes
+
+	trigger = {
+		has_valid_civic = civic_citizen_service
+		from = {
+			OR = {
+				leader_class = admiral
+				leader_class = general
+			}
+		}
+	}
+
+	immediate = {
+		from = {
+			add_skill = 2
+		}
+	}
+}
+
+country_event = {
+	id = action.410
+	hide_window = yes
+
+	is_triggered_only = yes
+
+	trigger = {
+		has_valid_civic = civic_citizen_service
+		any_pool_leader = {
+			OR = {
+				leader_class = admiral
+				leader_class = general
+			}
+			has_skill = 1
+		}
+	}
+
+	immediate = {
+		every_pool_leader = {
+			limit = {
+				OR = {
+					leader_class = admiral
+					leader_class = general
+				}
+				has_skill = 1
+			}
+			add_skill = 2
 		}
 	}
 }

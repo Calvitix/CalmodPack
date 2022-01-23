@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.2  22.11.2021
+# Calvitix Check 3.3b  21.01.2022
 #
 # Merge with Arisphaos Unofficial patch
 # Merge with Starnet AI 24.11.2021
@@ -19,7 +19,7 @@ decision_prospect = {
 	resources = {
 		category = decisions
 		cost = {
-			influence = 25
+			unity = 250
 			energy = 500
 		}
 	}
@@ -81,7 +81,7 @@ decision_prospect_void = {
 	resources = {
 		category = decisions
 		cost = {
-			influence = 25
+			unity = 250
 			energy = 500
 		}
 	}
@@ -201,7 +201,7 @@ decision_penal_colony = {
 	resources = {
 		category = decisions
 		cost = {
-			influence = 100
+			unity = 1000
 		}
 	}
 
@@ -217,9 +217,6 @@ decision_penal_colony = {
 			owner = {
 				any_owned_planet = { has_modifier = penal_colony }
 			}
-		}
-		owner = { #mod ?
-			is_ai = no
 		}
 	}
 
@@ -247,7 +244,7 @@ decision_abolish_penal_colony = {
 	resources = {
 		category = decisions
 		cost = {
-			influence = 250
+			unity = 2500
 		}
 	}
 
@@ -276,7 +273,7 @@ decision_slave_colony = {
 	resources = {
 		category = decisions
 		cost = {
-			influence = 100
+			unity = 1000
 		}
 	}
 
@@ -291,9 +288,6 @@ decision_slave_colony = {
 			is_regular_empire = yes
 		}
 		is_artificial = no
-		owner = { #mod ?
-			is_ai = no
-		}
 	}
 
 	allow = {
@@ -331,7 +325,7 @@ decision_abolish_slave_colony = {
 	resources = {
 		category = decisions
 		cost = {
-			influence = 250
+			unity = 2500
 		}
 	}
 
@@ -360,7 +354,7 @@ decision_resort_colony = {
 	resources = {
 		category = decisions
 		cost = {
-			influence = 100
+			unity = 1000
 		}
 	}
 
@@ -431,7 +425,7 @@ decision_abolish_resort_colony = {
 	resources = {
 		category = decisions
 		cost = {
-			influence = 250
+			unity = 2500
 		}
 	}
 
@@ -461,7 +455,7 @@ decision_mastery_of_nature = {
 	resources = {
 		category = decisions
 		cost = {
-			influence = 100
+			unity = 1000
 			energy = 2000
 		}
 	}
@@ -486,7 +480,7 @@ decision_mastery_of_nature = {
 		modifier = {
 			factor = 0
 			free_district_slots > 0
-			num_pops < 50 #carrying capacity bonus always good at that stage #3.2
+			num_pops < 50 #carrying capacity bonus always good at that stage
 		}
 	}
 }
@@ -496,7 +490,7 @@ decision_consecrated_worlds = {
 	resources = {
 		category = decisions
 		cost = {
-			influence = 50
+			unity = 500
 		}
 	}
 
@@ -865,7 +859,7 @@ decision_unconsecrated_worlds = {
 	resources = {
 		category = decisions
 		cost = {
-			influence = 50
+			unity = 500
 		}
 	}
 
@@ -971,7 +965,7 @@ decision_arcology_project = {
 		category = decisions
 		cost = {
 #Calvitix ressource change 'based on PD)
-			influence = 200
+			unity = 2000
 			minerals = 20000
 			alloys = 20000
 			food = 20000
@@ -1015,17 +1009,17 @@ decision_arcology_project = {
 	}
 
 	allow = {
-		if = { #3.2
+		if = {
 			limit = { owner = { is_ai = no } }
 			custom_tooltip = {
 				fail_text = decision_arcology_project_requirements
 				free_district_slots < 1
-			OR = {
 				num_districts = { type = district_farming value < 1 }
-				num_districts = { type = district_farming_uncapped value < 1 }
-			}
 				num_districts = { type = district_mining value < 1 }
 				num_districts = { type = district_generator value < 1 }
+				num_districts = { type = district_farming_uncapped value < 1 }
+				num_districts = { type = district_mining_uncapped value < 1 }
+				num_districts = { type = district_generator_uncapped value < 1 }
 			}
 		}
 		num_uncleared_blockers < 1
@@ -1121,7 +1115,7 @@ decision_arcology_project = {
 
 	ai_weight = {
 		weight = 10 #1
-		modifier = { #3.2
+		modifier = {
 			factor = 100
 			exists = owner
 			OR = {
@@ -1155,7 +1149,7 @@ decision_arcology_project_relic = {
 	resources = {
 		category = decisions
 		cost = {
-			influence = 200
+			unity = 2000
 			minerals = 20000
 		}
 	}
@@ -1294,7 +1288,7 @@ decision_market_nomination = {
 		category = decisions
 		cost = {
 			energy = 1000
-			influence = 150
+			unity = 1500
 		}
 	}
 
@@ -1450,7 +1444,7 @@ decision_boost_market_nomination = {
 		category = decisions
 		cost = {
 			energy = 2000
-			influence = 300
+			unity = 3000
 		}
 	}
 
@@ -1570,7 +1564,7 @@ decision_revoke_market_nomination = {
 	resources = {
 		category = decisions
 		cost = {
-			influence = 10
+			unity = 100
 		}
 	}
 
@@ -1633,33 +1627,33 @@ decision_revoke_market_nomination = {
 }
 
 #Living Planet Study The Sea Decision
-decision_study_the_sea = {
-	icon = decision_aquaticliving
+# decision_study_the_sea = {
+#	icon = decision_aquaticliving
 
-	resources = {
-		category = decisions
-		cost = {
-			energy = 500
-		}
-	}
-	potential = {
-		has_modifier = living_sea
-		space_owner = { #from = decision enacter ie country
-			has_event_chain = "living_planet_chain"
-			NOT = { has_country_flag = completed_living_sea }
-		}
-	}
-	effect = {
-		add_modifier = {
-			modifier = pm_study_the_sea
-			days = -1
-		}
-		hidden_effect = {
-			space_owner = { country_event = { id = distar.191 } }
-		}
-		custom_tooltip = "decision_study_the_sea.tooltip"
-	}
-}
+# 	resources = {
+# 		category = decisions
+# 		cost = {
+# 			energy = 500
+# 		}
+# 	}
+# 	potential = {
+# 		has_modifier = living_sea
+# 		space_owner = { #from = decision enacter ie country
+# 			has_event_chain = "living_planet_chain"
+# 			NOT = { has_country_flag = completed_living_sea }
+# 		}
+# 	}
+# 	effect = {
+# 		add_modifier = {
+# 			modifier = pm_study_the_sea
+# 			days = -1
+# 		}
+# 		hidden_effect = {
+# 			space_owner = { country_event = { id = distar.191 } }
+# 		}
+# 		custom_tooltip = "decision_study_the_sea.tooltip"
+# 	}
+# }
 
 # Divine Algorithm
 decision_divine_algorithm  = {
@@ -1671,7 +1665,7 @@ decision_divine_algorithm  = {
 	resources = {
 		category = decisions
 		cost = {
-			influence = 50
+			unity = 500
 		}
 	}
 
@@ -2009,7 +2003,7 @@ decision_project_cornucopia = {
 	resources = {
 		category = decisions
 		cost = {
-			influence = 25
+			unity = 250
 			energy = 500
 		}
 	}
@@ -2066,8 +2060,25 @@ decision_upgrade_habitat = {
 	enactment_time = 720
 	resources = {
 		category = decisions
-		cost = {
+		cost = { #Ori3.3b
+			trigger = {
+				owner = {
+					NOT = {
+						has_active_tradition = tr_expansion_finish_void
+					}
+				}
+			}
+			unity = 250
 			alloys = 1000
+		}
+		cost = {
+			trigger = {
+				owner = {
+					has_active_tradition = tr_expansion_finish_void
+				}
+			}
+			unity = 200
+			alloys = 800
 		}
 	}
 
@@ -2120,8 +2131,25 @@ decision_upgrade_habitat_2 = {
 	enactment_time = 1440
 	resources = {
 		category = decisions
-		cost = {
+		cost = { #Ori3.3b
+			trigger = {
+				owner = {
+					NOT = {
+						has_active_tradition = tr_expansion_finish_void
+					}
+				}
+			}
+			unity = 500
 			alloys = 1500
+		}
+		cost = {
+			trigger = {
+				owner = {
+					has_active_tradition = tr_expansion_finish_void
+				}
+			}
+			unity = 400
+			alloys = 1200
 		}
 	}
 
@@ -2165,7 +2193,7 @@ decision_crystalline_refugees = {
 	resources = {
 		category = decisions
 		cost = {
-			influence = 10
+			unity = 100
 		}
 	}
 
@@ -2220,7 +2248,7 @@ decision_crystalline_architecture = {
 	resources = {
 		category = decisions
 		cost = {
-			influence = 10
+			unity = 100
 		}
 	}
 
@@ -2362,9 +2390,10 @@ decision_shattered_ring_project = {
 		weight = 100
 	}
 }
+
 @expand_planetary_sea_length = 720
 
-decision_expand_planetary_sea = { #3.2
+decision_expand_planetary_sea = {
 	owned_planets_only = yes
 	icon = decision_arctic_planet
 
@@ -2414,7 +2443,7 @@ decision_expand_planetary_sea = { #3.2
 	resources = {
 		category = decisions
 		cost = {
-			influence = 50
+			unity = 500
 			energy = 1000
 		}
 	}
@@ -2574,6 +2603,202 @@ decision_expand_planetary_sea = { #3.2
 	}
 }
 
+decision_flood_habitat = { #Ori3.3b
+	owned_planets_only = yes
+	icon = decision_satellite_in_orbit
+
+	enactment_time = @expand_planetary_sea_length
+
+	potential = {
+		is_planet_class = pc_habitat
+		exists = owner
+		owner = {
+			has_ascension_perk = ap_hydrocentric
+		}
+		NOT = {
+			has_modifier = flooded_habitat
+		}
+	}
+
+	allow = {
+		custom_tooltip = {
+			fail_text = requires_free_ice_mining_station
+			owner = {
+				any_owned_starbase = {
+					has_starbase_building = ice_mining_station
+					solar_system = {
+						NOT = { has_star_flag = ice_mining_in_progress }
+					}
+				}
+			}
+		}
+	}
+
+	resources = {
+		category = decisions
+		cost = {
+			unity = 500
+			energy = 1000
+		}
+	}
+
+	on_queued = {
+		set_variable = {
+			which = decision_length
+			value = @expand_planetary_sea_length
+		}
+		export_modifier_to_variable = {
+			modifier = planet_decision_enact_speed_mult
+			variable = decision_mult_var
+		}
+		change_variable = {
+			which = decision_mult_var
+			value = 1
+		}
+		divide_variable = {
+			which = decision_length
+			value = decision_mult_var
+		}
+		change_variable = { #ideally, may as well refer to this in the final effect
+			which = decision_length
+			value = 1
+		}
+
+		owner = {
+			random_owned_starbase = {
+				limit = {
+					has_starbase_building = ice_mining_station
+					solar_system = {
+						NOT = { has_star_flag = ice_mining_in_progress }
+					}
+				}
+				solar_system = {
+					set_timed_star_flag = {
+						flag = ice_mining_in_progress
+						days = root.decision_length
+					}
+					set_timed_star_flag = {
+						flag = ice_mining@root
+						days = root.decision_length
+					}
+				}
+			}
+		}
+		clear_variable = decision_length
+		clear_variable = decision_mult_var
+	}
+
+	abort_trigger = {
+		NOT = {
+			owner = {
+				any_owned_starbase = {
+					has_starbase_building = ice_mining_station
+				}
+			}
+		}
+	}
+
+	on_unqueued = {
+		owner = {
+			random_owned_starbase = {
+				limit = {
+					solar_system = {
+						has_star_flag = ice_mining@root
+					}
+				}
+				solar_system = {
+					remove_star_flag = ice_mining@root
+					remove_star_flag = ice_mining_in_progress
+				}
+			}
+		}
+	}
+
+	abort_effect = {
+		owner = {
+			random_owned_starbase = {
+				limit = {
+					solar_system = {
+						has_star_flag = ice_mining@root
+					}
+				}
+				solar_system = {
+					remove_star_flag = ice_mining@root
+					remove_star_flag = ice_mining_in_progress
+				}
+			}
+		}
+		create_message = {
+			type = ICE_MINING_INTERRUPTED
+			localization = ICE_MINING_INTERRUPTED_HABITAT_DESC
+			days = 20
+			target = root
+		}
+	}
+
+	effect = {
+		custom_tooltip = decision_flood_habitat_tooltip
+		hidden_effect = {
+			add_modifier = {
+				modifier = flooded_habitat
+				days = -1
+			}
+			ice_mining_depletion_effect = yes
+
+			if = {
+				limit = {
+					has_planet_flag = temp_ice_mine_exhausted_flag
+				}
+				event_target:mined_system.starbase = {
+					remove_starbase_building = {
+						building = ice_mining_station
+					}
+				}
+				create_message = {
+					type = ICE_MINING_HABITAT_SUCCESS
+					localization = ICE_MINING_HABITAT_SUCCESS_BUT_EXHAUSTED_DESC
+					days = 20
+					target = root
+					variable = {
+						type = name
+						localization = SYSTEM
+						scope = event_target:mined_system
+					}
+				}
+			}
+			else = {
+				create_message = {
+					type = ICE_MINING_HABITAT_SUCCESS
+					localization = ICE_MINING_HABITAT_SUCCESS_DESC
+					days = 20
+					target = root
+					variable = {
+						type = name
+						localization = SYSTEM
+						scope = event_target:mined_system
+					}
+				}
+			}
+			change_variable = {
+				which = ice_dumping_happened
+				value = 1
+			}
+		}
+	}
+
+	ai_weight = {
+		weight = 1
+		modifier = {
+			factor = 2
+			has_planet_flag = advanced_habitat 
+		}
+		modifier = {
+			factor = 3
+			has_planet_flag = advanced_habitat_2
+		}
+	}
+}
+
 decision_expand_dayside = {
 	owned_planets_only = yes
 	icon = decision_divine_algorithm
@@ -2627,3 +2852,35 @@ decision_introduce_chaos = {
 	}
 }
 
+incinerate_the_flagella = { #Ori3.3b
+	owned_planets_only = yes
+	icon = decision_luxuries
+
+	enactment_time = 60
+	resources = {
+		category = decisions
+	}
+	potential = {
+		has_planet_flag = matriarch_horror
+		exists = owner
+		owner = { is_xenophile = no }
+	}
+
+	effect = {
+		remove_modifier = tiyanki_trophy
+		add_modifier = { modifier = burnt_tiyanki_trophy }
+		remove_planet_flag = matriarch_horror
+	}
+	ai_weight = {
+		weight = 100
+		modifier = {
+			factor = 0
+			owner = { 
+				NOR = {
+					is_robot_empire = yes
+					is_xenophobe = yes
+				}
+			}
+		}
+	}
+}

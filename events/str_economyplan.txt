@@ -2,6 +2,8 @@
 #
 # Last update OK 30.10.2021
 #
+# Calvitix tweaks (original is removing too many districts)
+#
 namespace = str_economy_plan
 
 event = {
@@ -630,6 +632,9 @@ country_event = {
                     }
                     remove_district = district_hab_commercial
                     remove_district = district_hab_cultural
+					if = { limit = { has_global_flag = edai_logging	} log = "EDAI : STR_eco: Removing district_hab_comm et hab_cultural on planet [This.GetName] for [Owner.GetName]" }
+					add_modifier = { modifier = hc_commercial_removed days = 360 }										
+					add_modifier = { modifier = hc_cultural_removed days = 360 }										
                 }
                 if = {
                     limit = {
@@ -731,6 +736,7 @@ country_event = {
                             free_district_slots = 0
                         }
                         remove_building = building_bureaucratic_1
+					if = { limit = { has_global_flag = edai_logging	} log = "EDAI : STR_eco: Removing building_bureaucratic_1 on planet [This.GetName] for [Owner.GetName]" }
                     }
                     else_if = {
                         limit = {
@@ -738,6 +744,8 @@ country_event = {
                             free_district_slots = 0
                         }
                         remove_building = building_research_lab_1
+					if = { limit = { has_global_flag = edai_logging	} log = "EDAI : STR_eco: Removing building_research_lab_1 on planet [This.GetName] for [Owner.GetName]" }
+                        
                     }
                 }
 
@@ -875,6 +883,8 @@ country_event = {
                         }
                         remove_building = building_factory_1
                         remove_building = building_factory_2
+					if = { limit = { has_global_flag = edai_logging	} log = "EDAI : STR_eco: Removing building_factory_1 or 2 on planet [This.GetName] for [Owner.GetName]" }
+                        
                     }
                     else = {
 						owner = { set_country_flag = str_has_misplaced_factory }
@@ -896,6 +906,7 @@ country_event = {
                         }
                         remove_building = building_foundry_1
                         remove_building = building_foundry_2
+					if = { limit = { has_global_flag = edai_logging	} log = "EDAI : STR_eco: Removing building_foundry_1 or _2 on planet [This.GetName] for [Owner.GetName]" }
                     }
                     else = {
 						owner = { set_country_flag = str_has_misplaced_foundry }
@@ -918,7 +929,7 @@ country_event = {
                                 }
                                 or = {
                                     num_pops < 6
-                                    any_owned_pop = {
+                                    count_owned_pop = {
                                         count > 3
                                         is_sapient = yes
                                         is_being_purged = no
@@ -963,6 +974,9 @@ country_event = {
                     remove_planet_flag = str_acceptable_habitability
                     set_planet_flag = str_bad_habitability
                     remove_district = district_industrial
+					if = { limit = { has_global_flag = edai_logging	} log = "EDAI : STR_eco: Removing district_industrial on planet [This.GetName] for [Owner.GetName]" }
+					add_modifier = { modifier = hc_industrial_removed days = 360 }										
+					
                     if = {
                         limit = {
                             num_pops = 3
@@ -1037,11 +1051,11 @@ country_event = {
                     }
                     if = {
                         limit = {
-							str_num_districts_farming = { operator = > num = 1 }
+							str_num_districts_farming = { operator = > num = 2 } #Calvitix min 2 is ok
                             owner = {
                                 resource_stockpile_compare = {
                                     resource = food
-                                    value > 900
+                                    value > 1900 #900
                                 }
                                 resource_income_compare = {
                                     resource = food
@@ -1068,6 +1082,9 @@ country_event = {
 							}
                         }
                         remove_district = district_farming
+					if = { limit = { has_global_flag = edai_logging	} log = "EDAI : STR_eco: Removing district_farming on planet [This.GetName] for [Owner.GetName]" }
+						add_modifier = { modifier = hc_farming_removed days = 360 }										
+						
                         owner = {
                             set_timed_country_flag = {
                                 flag = str_country_just_removed_food
@@ -1081,11 +1098,11 @@ country_event = {
                     }
                     else_if = {
                         limit = {
-							str_num_districts_mining = { operator = > num = 1 }
+							str_num_districts_mining = { operator = > num = 2 } #1
                             owner = {
                                 resource_stockpile_compare = {
                                     resource = minerals
-                                    value > 2000
+                                    value > 4000 #2000
                                 }
                                 resource_income_compare = {
                                     resource = minerals
@@ -1103,6 +1120,9 @@ country_event = {
                             }
                         }
                         remove_district = district_mining
+					if = { limit = { has_global_flag = edai_logging	} log = "EDAI : STR_eco: Removing district_mining on planet [This.GetName] for [Owner.GetName]" }
+						add_modifier = { modifier = hc_mining_removed days = 360 }										
+						
                         set_timed_planet_flag = {
                             flag = str_just_removed_mineral_district
                             days = 600
@@ -1117,7 +1137,7 @@ country_event = {
 
                     else_if = {
                         limit = {
-							str_num_districts_generator = { operator = > num = 1 }
+							str_num_districts_generator = { operator = > num = 2 } #1
                             owner = {
                                 nor = {
                                     has_ascension_perk = ap_world_shaper
@@ -1126,7 +1146,7 @@ country_event = {
                                 }
                                 resource_stockpile_compare = {
                                     resource = energy
-                                    value > 800
+                                    value > 2800 #800
                                 }
                                 resource_income_compare = {
                                     resource = energy
@@ -1144,6 +1164,8 @@ country_event = {
                             }
                         }
                         remove_district = district_generator
+					if = { limit = { has_global_flag = edai_logging	} log = "EDAI : STR_eco: Removing district_generator on planet [This.GetName] for [Owner.GetName]" }
+						add_modifier = { modifier = hc_generator_removed days = 360 }										
                         set_timed_planet_flag = {
                             flag = str_just_removed_energy_district
                             days = 600
@@ -1159,12 +1181,12 @@ country_event = {
 
                 if = {
                     limit = {
-						str_num_districts_farming = { operator = > num = 1 }
+						str_num_districts_farming = { operator = > num = 2 } #1
 							has_designation = col_farming
                         owner = {
                             resource_stockpile_compare = {
                                 resource = food
-                                value > 900
+                                value > 1900 #900
                             }
                             resource_income_compare = {
                                 resource = food
@@ -1176,6 +1198,8 @@ country_event = {
                         }
                     }
                     remove_district = district_farming
+					if = { limit = { has_global_flag = edai_logging	} log = "EDAI : STR_eco: Removing district_farming on planet [This.GetName] for [Owner.GetName]" }
+					add_modifier = { modifier = hc_farming_removed days = 360 }															
                     owner = {
                         set_timed_country_flag = {
                             flag = str_country_just_removed_food
@@ -1193,7 +1217,7 @@ country_event = {
                         owner = {
                             resource_stockpile_compare = {
                                 resource = food
-                                value > 950
+                                value > 1950 #950
                             }
                             resource_income_compare = {
                                 resource = food
@@ -1205,6 +1229,8 @@ country_event = {
                         }
                     }
                     remove_district = district_farming
+					if = { limit = { has_global_flag = edai_logging	} log = "EDAI : STR_eco: Removing district_farming on planet [This.GetName] for [Owner.GetName]" }
+					add_modifier = { modifier = hc_farming_removed days = 360 }															
                     owner = {
                         set_timed_country_flag = {
                             flag = str_country_just_removed_food
@@ -1226,6 +1252,11 @@ country_event = {
                     remove_district = district_farming
                     remove_district = district_mining
                     remove_district = district_generator
+					if = { limit = { has_global_flag = edai_logging	} log = "EDAI : STR_eco: Removing district_farming,mining and generator on planet [This.GetName] for [Owner.GetName]" }
+					add_modifier = { modifier = hc_farming_removed days = 360 }															
+					add_modifier = { modifier = hc_mining_removed days = 360 }															
+					add_modifier = { modifier = hc_generator_removed days = 360 }															
+					
                 }
 
                 if = {
@@ -1241,6 +1272,7 @@ country_event = {
 						not = { has_active_building = ebh_slums_3 }
                     }
                     remove_building = building_precinct_house
+					if = { limit = { has_global_flag = edai_logging	} log = "EDAI : STR_eco: Removing building_precinct_house on planet [This.GetName] for [Owner.GetName]" }
                     set_timed_planet_flag = {
                         flag = str_just_removed_precinct
                         days = 300
@@ -1269,7 +1301,7 @@ country_event = {
                                     }
                                     resource_stockpile_compare = {
                                         resource = energy
-                                        value > 700
+                                        value > 2700 #700
                                     }
                                 }
                                 owner = {
@@ -1279,12 +1311,14 @@ country_event = {
                                     }
                                     resource_stockpile_compare = {
                                         resource = energy
-                                        value > 300
+                                        value > 1300 #300
                                     }
                                 }
                             }
                         }
                         remove_district = district_generator
+					if = { limit = { has_global_flag = edai_logging	} log = "EDAI : STR_eco: Removing district_generator on planet [This.GetName] for [Owner.GetName]" }
+						add_modifier = { modifier = hc_generator_removed days = 360 }						
                     }
                     if = {
                         limit = {
@@ -1296,13 +1330,13 @@ country_event = {
                                     }
                                     resource_stockpile_compare = {
                                         resource = minerals
-                                        value > 400
+                                        value > 3400 #1400
                                     }
                                 }
                                 owner = {
                                     resource_income_compare = {
                                         resource = minerals
-                                        value > 70
+                                        value > 80 #70
                                     }
                                 }
                                 owner = {
@@ -1312,12 +1346,14 @@ country_event = {
                                     }
                                     resource_stockpile_compare = {
                                         resource = minerals
-                                        value > 1500
+                                        value > 5000  #1500
                                     }
                                 }
                             }
                         }
                         remove_district = district_mining
+					if = { limit = { has_global_flag = edai_logging	} log = "EDAI : STR_eco: Removing district_mining on planet [This.GetName] for [Owner.GetName]" }
+						add_modifier = { modifier = hc_mining_removed days = 360 }															
                     }
                     if = {
                         limit = {
@@ -1329,7 +1365,7 @@ country_event = {
                                     }
                                     resource_stockpile_compare = {
                                         resource = food
-                                        value > 500
+                                        value > 2500 #500
                                     }
                                 }
                                 owner = {
@@ -1339,12 +1375,14 @@ country_event = {
                                     }
                                     resource_stockpile_compare = {
                                         resource = food
-                                        value > 300
+                                        value > 1300 #300
                                     }
                                 }
                             }
                         }
                         remove_district = district_farming
+					if = { limit = { has_global_flag = edai_logging	} log = "EDAI : STR_eco: Removing district_farming on planet [This.GetName] for [Owner.GetName]" }
+						add_modifier = { modifier = hc_farming_removed days = 360 }															
                     }
                 }
                 if = {
@@ -1383,6 +1421,9 @@ country_event = {
             }
             every_owned_planet = {
                 remove_district = district_industrial
+				if = { limit = { has_global_flag = edai_logging	} log = "EDAI : STR_eco: Removing district_industrial on planet [This.GetName] for [Owner.GetName]" }
+				add_modifier = { modifier = hc_industrial_removed days = 360 }															
+				
             }
             set_timed_country_flag = {
                 flag = str_demolish_industry_mineral_crisis
@@ -1449,7 +1490,7 @@ country_event = {
             remove_planet_flag = str_terraform_arid
             if = {
                 limit = {
-                    any_owned_pop = {
+                    count_owned_pop = {
                         count >= 5
                         is_organic_species = yes
                         is_sapient = yes
@@ -1463,7 +1504,7 @@ country_event = {
             }
             else_if = {
                 limit = {
-                    any_owned_pop = {
+                    count_owned_pop = {
                         count >= 5
                         is_organic_species = yes
                         is_sapient = yes
@@ -1477,7 +1518,7 @@ country_event = {
             }
             else_if = {
                 limit = {
-                    any_owned_pop = {
+                    count_owned_pop = {
                         count >= 5
                         is_organic_species = yes
                         is_sapient = yes
@@ -1491,7 +1532,7 @@ country_event = {
             }
             else_if = {
                 limit = {
-                    any_owned_pop = {
+                    count_owned_pop = {
                         count >= 5
                         is_organic_species = yes
                         is_sapient = yes
@@ -1505,7 +1546,7 @@ country_event = {
             }
             else_if = {
                 limit = {
-                    any_owned_pop = {
+                    count_owned_pop = {
                         count >= 5
                         is_organic_species = yes
                         is_sapient = yes
@@ -1519,7 +1560,7 @@ country_event = {
             }
             else_if = {
                 limit = {
-                    any_owned_pop = {
+                    count_owned_pop = {
                         count >= 5
                         is_organic_species = yes
                         is_sapient = yes
@@ -1533,7 +1574,7 @@ country_event = {
             }
             else_if = {
                 limit = {
-                    any_owned_pop = {
+                    count_owned_pop = {
                         count >= 5
                         is_organic_species = yes
                         is_sapient = yes
@@ -1547,7 +1588,7 @@ country_event = {
             }
             else_if = {
                 limit = {
-                    any_owned_pop = {
+                    count_owned_pop = {
                         count >= 5
                         is_organic_species = yes
                         is_sapient = yes
@@ -1561,7 +1602,7 @@ country_event = {
             }
             else_if = {
                 limit = {
-                    any_owned_pop = {
+                    count_owned_pop = {
                         count >= 5
                         is_organic_species = yes
                         is_sapient = yes

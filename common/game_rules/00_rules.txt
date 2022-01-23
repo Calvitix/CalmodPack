@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.2  22.11.2021
+# Calvitix Check 3.3b  21.01.2022
 #
 # Merge with Arisphaos Unofficial patch 19.11.2021
 # Merge with Expanded events 28.11.2021
@@ -955,6 +955,7 @@ can_generate_leader_from_pop = {
 	NOT = { has_trait = trait_syncretic_proles }
 	NOT = { has_trait = trait_tree_caretaker } #expanded event mod
 	NOT = { has_trait = trait_nerve_stapled }
+	NOT = { has_trait = trait_zombie } #ori3.3b
 	NOT = { has_trait = trait_plentiful_traditions_pt_cocoon } #Plentiful_perk
 	NOT = { has_trait = trait_memorex_comatos } #expanded event mod
 	NOT = { has_trait = trait_infested_basic } #expanded event mod
@@ -1068,6 +1069,7 @@ can_release_vassal_from_species = {
 			has_trait = trait_hive_mind
 			has_trait = trait_mechanical
 			has_trait = trait_nerve_stapled
+			has_trait = trait_zombie #Ori 3.3b
 			has_trait = trait_plentiful_traditions_pt_cocoon #Plentiful_perk
 		}
 	}
@@ -1410,6 +1412,7 @@ species_has_happiness = {
 		has_trait = trait_machine_unit
 		has_trait = trait_hive_mind
 		has_trait = trait_nerve_stapled
+		has_trait = trait_zombie #Ori3.3b
 		has_trait = trait_memorex_comatos #expanded event mod
 #Trait Diversity
         has_trait = trait_td_multi_hiveminded
@@ -1559,10 +1562,18 @@ can_species_be_assembled = {
 						check_variable = {
 							which = clone_pops_missing
 							value = 0
+						}
+					}
 				}
 			}
-		}
-	}
+			else_if = { #3.3b
+				limit = {
+					root.owner = { has_civic = civic_permanent_employment }
+				}
+				root = { 
+					has_building = building_posthumous_employment_center 
+				}
+			}
 			else = {
 				root = { has_building = building_clone_vats }
 			}
@@ -2359,8 +2370,8 @@ can_force_decline_on_planet = {
 		fail_text = FORCED_DECLINE_ALREADY_PURGING
 		NOT = {
 			any_owned_species = {
-				has_citizenship_type = { type = citizenship_purge country = from }
-				NOT = { has_purge_type = { country = from type = purge_neutering } }
+				has_citizenship_type = { type = citizenship_purge country = root }
+				NOT = { has_purge_type = { country = root type = purge_neutering } }
 			}
 		}
 	}
@@ -2710,7 +2721,7 @@ has_enough_pops_for_necrophage_on_planet = {
 		}
 	}
 	else = {
-		NOT = { any_owned_pop = { would_work_job = necro_apprentice } }
+		NOT = { any_owned_pop = { can_work_specific_job = necro_apprentice } }
 	}
 }
 
@@ -2919,33 +2930,7 @@ can_fill_worker_job = {
 
 #this/root = pop
 #checked if job's possible_precalc = can_fill_specialist_job
-can_fill_specialist_job = {
-	custom_tooltip = SPECIALIST_JOB_TRIGGER
-	hidden_trigger = {
-		NOT = { has_ethic = ethic_gestalt_consciousness }
-		exists = owner
-		OR = {
-			is_enslaved = no
-			has_slavery_type = { type = slavery_indentured }
-		}
-		is_being_purged = no
-		is_being_assimilated = no
-		NOT = { has_trait = trait_syncretic_proles }
-		NOT = { has_trait = trait_nerve_stapled }
-		OR = {
-			NOT = { has_trait = trait_mechanical }
-			owner = { has_technology = tech_droid_workers }
-		}
-		NOT = { has_citizenship_type = { type = citizenship_organic_trophy } }
-		if = {
-			limit = {
-				divinity_right_to_work_job_check_trigger_exempt = no
-			}
-			divinity_right_to_work_job_check_trigger_specialist = yes
-		}
-	}
-}
-
+can_fill_specialist_job = { can_fill_specialist_job = yes } #Ori3.3b
 #this/root = pop
 #checked if job's possible_precalc = can_fill_ruler_job
 can_fill_ruler_job = {
@@ -2975,6 +2960,7 @@ can_fill_ruler_job = {
 			is_being_assimilated = no
 			NOT = { has_trait = trait_syncretic_proles }
 			NOT = { has_trait = trait_nerve_stapled }
+			NOT = { has_trait = trait_zombie }
 			OR = {
 				NOT = { has_trait = trait_mechanical }
 				AND = {
@@ -3002,4 +2988,15 @@ should_planetary_automate = {
 		num_unemployed > 0
 	}
 	has_building_construction = no
+}
+
+# this = leader
+can_dismiss_leader = {
+	custom_tooltip = {
+		fail_text = "requires_actor_not_feudal_society"
+		exists = owner
+		owner = {
+			NOT = { has_valid_civic = civic_feudal_realm }
+		}
+	}
 }

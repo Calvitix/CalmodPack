@@ -2,85 +2,140 @@
 
 # Early ---------------------------------------
 
+@rare_resource_target = 3
+
 early_default_plan = {
+	income = {
+		energy = 25
+		minerals = 50
+	}
+
+	subplan = {
+		set_name = "food base"
+		potential = {
+			country_uses_food = yes
+		}
+
+		income = {
+			food = 20
+		}
+	}
+
+	subplan = {
+		set_name = "consumer goods base"
+		potential = {
+			country_uses_consumer_goods = yes
+			has_monthly_income = { resource = minerals value > 25 }
+			has_monthly_income = { resource = energy value > 25 }
+			if = {
+				limit = {
+					country_uses_food = yes
+				}
+
+				has_monthly_income = { resource = food value > 15 }
+			}		
+		}
+		income = {
+			consumer_goods = 20
+		}
+	}
+
+	subplan = {
+		set_name = "base alloys"
+		potential = {
+			has_monthly_income = { resource = energy value > 25 }			
+			has_monthly_income = { resource = minerals value > 25 }	
+		}
+
+		income = {
+			alloys = 20
+		}
+		pops = 9000
+	}
+
+	scaling_subplan = {
+		set_name = "general scaling"
+		potential = {
+			has_monthly_income = { resource = energy value > 25 }			
+			has_monthly_income = { resource = minerals value > 25 }			
+		}
 
 	income = {
-		energy = 50
-		minerals = 200
-		alloys = 100
-		unity = 50
-		esc_living_crystal = 15
-
-		physics_research = 500
-		society_research = 500
-		engineering_research = 500
-
-		esc_gravitic_anomaly = 1
-		esc_psionic_charge = 1
-		esc_enigmatic_energy = 1
-		esc_transdimensional_vortex = 1
-		exotic_gases = 1
-		volatile_motes = 1
-		rare_crystals = 1
-	}
-
-	focus = {
+			alloys = 20
+			minerals = 10
 		energy = 10
-		minerals = 30
-		alloys = 50
-		esc_living_crystal = 10
+			physics_research = 50
+			society_research = 50
+			engineering_research = 50
+			unity = 50
+		}
 	}
 
-	subplan = {
+	#### MILITARIST EXTRA ALLOYS ####
+	scaling_subplan = {
+		set_name = "Militarist alloys"
 		potential = {
-			country_uses_consumer_goods = yes
-			country_uses_food = yes
+			OR = {
+				is_militarist = yes
+				is_homicidal = yes
+		}
+
+			has_monthly_income = { resource = energy value > 25 }			
+			has_monthly_income = { resource = minerals value > 25 }		
+		}
+
+		# Adds a 25% extra alloy target
+		income = {
+			alloys = 5
+		}
+	}
+
+	#### MATERIALIST SCIENCE ####
+	scaling_subplan = {
+		set_name = "Materialist science"
+		potential = {
+			is_materialist = yes	
+			has_monthly_income = { resource = energy value > 25 }			
+			has_monthly_income = { resource = minerals value > 25 }	
+		}
+
+		# Adds a 25% extra science target
+		income = {
+			physics_research = 12
+			society_research = 12
+			engineering_research = 12
+		}
+	}
+
+	#### SPIRITUALIST UNITY ####
+	scaling_subplan = {
+		set_name = "Spiritualist unity"
+		potential = {
+			is_spiritualist = yes	
+			has_monthly_income = { resource = energy value > 25 }			
+			has_monthly_income = { resource = minerals value > 25 }	
+		}
+
+		# Adds a 25% extra unity target
+		income = {
+			unity = 12
+		}
+		}
+
+	optional_subplan = {
+		set_name = "Rare resources"
+		potential = {
+			always = yes
 		}
 
 		income = {
-			food = 50
-			consumer_goods = 50
-		}
-
-		focus = {
-			food = 10
-			consumer_goods = 20
+			exotic_gases = @rare_resource_target
+			volatile_motes = @rare_resource_target
+			rare_crystals = @rare_resource_target
 		}
 	}
 
-	subplan = {
-		potential = {
-			country_uses_consumer_goods = yes
-			country_uses_food = no
-		}
-
-		income = {
-			consumer_goods = 50
-		}
-
-		focus = {
-			consumer_goods = 20
-		}
-	}
-
-	# increased food goals for hiveminds
-	subplan = {
-		potential = {
-			country_uses_consumer_goods = no
-			country_uses_food = yes
-		}
-
-		income = {
-			food = 50 
-		}
-
-		focus = {
-			food = 10
-		}
-	}
-
-	pops = 500
-	empire_size = 1
+	empire_size = 1.1 #admin cap is fine with being 10% over limit
 
 	potential = {
 		not = { has_country_flag = str_reconsider_plans }
