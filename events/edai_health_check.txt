@@ -305,7 +305,7 @@ event = {
 						}
 						add_district = district_hab_energy
 						owner = { add_resource = { minerals = -500 } }
-						if = { limit = { has_global_flag = edai_logging	} log = "EDAI :ME: Energy Crisis <1 : Adding district_hab_generator on planet [This.GetName] for [Owner.GetName]" }					
+						if = { limit = { has_global_flag = edai_logging	} log = "EDAI :ME: Energy Crisis <1 : Adding district_hab_energy on planet [This.GetName] for [Owner.GetName]" }					
 						add_modifier = { modifier = hc_generator_added days = 360 }										
 						#remove_building = building_foundry_1
 					}				
@@ -1603,12 +1603,22 @@ event = {
 					}
 					if = {
 						limit = { 
-							not = { has_modifier = hc_building_added }						
+							#not = { has_modifier = hc_building_added }						
 							free_building_slots > 0
-							free_jobs < 1
+							#free_jobs < 1
 						}
 						add_building = building_precinct_house
 						if = { limit = { has_global_flag = edai_logging	} log = "EDAI :E : High Crime > 20 : adding building_precinct_house on planet [This.GetName] for [Owner.GetName]" }	
+						add_modifier = { modifier = hc_building_added days = 360 }		
+					}
+					else_if = {
+						limit = { 
+							has_building = building_research_lab_1 
+							not = { has_modifier = hc_building_added }						
+						}
+						remove_building = building_research_lab_1
+						add_building = building_precinct_house
+						if = { limit = { has_global_flag = edai_logging	} log = "EDAI :E : High Crime > 20 : adding building_precinct_house, removing building_research_lab_1 on planet [This.GetName] for [Owner.GetName]" }	
 						add_modifier = { modifier = hc_building_added days = 360 }		
 					}
 					else_if = {
@@ -1623,24 +1633,14 @@ event = {
 					}
 					else_if = {
 						limit = { 
-							has_building = building_research_lab_1 
 							not = { has_modifier = hc_building_added }						
-						}
-						remove_building = building_research_lab_1
-						add_building = building_precinct_house
-						if = { limit = { has_global_flag = edai_logging	} log = "EDAI :E : High Crime > 20 : adding building_precinct_house, removing building_research_lab_1 on planet [This.GetName] for [Owner.GetName]" }	
-						add_modifier = { modifier = hc_building_added days = 360 }		
-					}
-					else_if = {
-						limit = { 
-							not = { has_modifier = hc_building_added }						
-							#num_buildings = { type = building_foundry_1 value > 1 }
-							free_building_slots > 0
+							has_building = building_factory_1 
+							#free_building_slots > 0
 							#owner = { has_monthly_income = { resource = alloys value > 20 }}	
 						}
-						#remove_building = building_foundry_1
+						remove_building = building_factory_1
 						add_building = building_precinct_house
-						if = { limit = { has_global_flag = edai_logging	} log = "EDAI :E : High Crime > 20 : adding building_precinct_house on planet [This.GetName] for [Owner.GetName]" }	
+						if = { limit = { has_global_flag = edai_logging	} log = "EDAI :E : High Crime > 20 : adding building_precinct_house, removing building_factory_1 on planet [This.GetName] for [Owner.GetName]" }	
 						add_modifier = { modifier = hc_building_added days = 360 }		
 					}					
 				}
@@ -2174,6 +2174,8 @@ event = {
 						}
 						remove_district = district_generator
 						if = { limit = { has_global_flag = edai_logging	} log = "EDAI :E : Enough energy : Removing district_generator on planet [This.GetName] for [Owner.GetName]" }					
+						add_modifier = { modifier = hc_generator_removed days = 360 }										
+							
 						
 					}
 					if = {
@@ -2308,7 +2310,7 @@ event = {
 					}
 					if  = {
 						limit = {
-							free_amenities > 5
+							free_amenities > 9 #5
 							has_building = ebh_slums_1
 						}
 						if = { limit = { has_global_flag = edai_logging	} log = "EDAI :E : Too much Housing (> 30) : removing slum building on planet [This.GetName] for [Owner.GetName]" }							
@@ -2390,6 +2392,8 @@ event = {
 					add_district = district_farming
 					if = { limit = { has_global_flag = edai_logging	} log = "EDAI :E : Enough energy & low food : Adding district_farming and removing district_generator on planet [This.GetName] for [Owner.GetName]" }							
 					add_modifier = { modifier = hc_farming_added days = 360 }									
+					add_modifier = { modifier = hc_generator_removed days = 360 }										
+					
 				}
 				if = {
 					limit = {
@@ -3198,9 +3202,9 @@ event = {
 					}
 					if = {
 						limit = { 
-							not = { has_modifier = hc_building_added }						
+							#not = { has_modifier = hc_building_added }						
 							free_building_slots > 0
-							free_jobs < 1
+							#free_jobs < 1
 						}
 						add_building = building_sentinel_posts
 						if = { limit = { has_global_flag = edai_logging	} log = "EDAI :H: Crime crisis : adding building_sentinel_posts on planet [This.GetName] for [Owner.GetName]" }	
@@ -3229,11 +3233,11 @@ event = {
 					else_if = {
 						limit = { 
 							not = { has_modifier = hc_building_added }						
-							#has_building = building_foundry_1 
-							free_building_slots > 0
+							has_building = building_factory_1 
+							#free_building_slots > 0
 							#owner = { has_monthly_income = { resource = alloys value > 10 }}	
 						}
-						#remove_building = building_foundry_1
+						remove_building = building_factory_1
 						add_building = building_sentinel_posts
 						if = { limit = { has_global_flag = edai_logging	} log = "EDAI :H: Crime crisis : adding building_sentinel_posts on planet [This.GetName] for [Owner.GetName]" }	
 						add_modifier = { modifier = hc_building_added days = 360 }				
@@ -3687,6 +3691,8 @@ event = {
 						}
 						remove_district = district_generator
 						if = { limit = { has_global_flag = edai_logging	} log = "EDAI :H: Enough food : removing district_generator on planet [This.GetName] for [Owner.GetName]" }							
+						add_modifier = { modifier = hc_generator_removed days = 360 }										
+						
 						
 					}
 				}
@@ -3844,6 +3850,8 @@ event = {
 					add_district = district_farming
 					if = { limit = { has_global_flag = edai_logging	} log = "EDAI :H: low food : adding district_farming, removing district_generator on planet [This.GetName] for [Owner.GetName]" }	
 					add_modifier = { modifier = hc_farming_added days = 360 }				
+					add_modifier = { modifier = hc_generator_removed days = 360 }										
+					
 					
 				}
 				if = {
