@@ -103,6 +103,95 @@ planet_event = {
 			remove_modifier = ai_mdrone_neg8
 			remove_modifier = ai_mdrone_neg16
 		}
+		if = {
+			limit = { owner = { is_ai = yes is_gestalt = no is_machine_empire = no } }
+			if = {
+				limit = { 
+					free_amenities < 10 
+					free_jobs < 2
+				} #calvitix #0
+				if = {
+					limit = { has_modifier = ai_clerk_neg1 }
+					remove_modifier = ai_clerk_neg1
+				} else_if = {
+					limit = { has_modifier = ai_clerk_neg2 }
+					remove_modifier = ai_clerk_neg2 
+					add_modifier = { modifier = ai_clerk_neg1 }
+				} else_if = {
+					limit = { has_modifier = ai_clerk_neg4 }
+					remove_modifier = ai_clerk_neg4
+					add_modifier = { modifier = ai_clerk_neg2 }
+					add_modifier = { modifier = ai_clerk_neg1 }
+				} else_if = {
+					limit = { has_modifier = ai_clerk_neg8 }
+					remove_modifier = ai_clerk_neg8
+					add_modifier = { modifier = ai_clerk_neg4 }
+					add_modifier = { modifier = ai_clerk_neg2 }
+					add_modifier = { modifier = ai_clerk_neg1 }
+				} else_if = {
+					limit = { has_modifier = ai_clerk_neg16 }
+					remove_modifier = ai_clerk_neg16 
+					add_modifier = { modifier = ai_clerk_neg8 }
+					add_modifier = { modifier = ai_clerk_neg4 }
+					add_modifier = { modifier = ai_clerk_neg2 }
+					add_modifier = { modifier = ai_clerk_neg1 }
+				}
+			} 
+			else_if = {
+				limit = {
+					free_amenities > 18 # 7 #Calvitix
+					count_owned_pop = { limit = { has_job = clerk } count > 0 }
+					free_jobs > 5
+				}
+				if = {
+					limit = {
+						NOT = { has_modifier = ai_clerk_neg16 }
+						has_modifier = ai_clerk_neg8 
+						has_modifier = ai_clerk_neg4 
+						has_modifier = ai_clerk_neg2
+						has_modifier = ai_clerk_neg1
+					}
+					add_modifier = { modifier = ai_clerk_neg16 }
+					remove_modifier = ai_clerk_neg8 
+					remove_modifier = ai_clerk_neg4
+					remove_modifier = ai_clerk_neg2 
+					remove_modifier = ai_clerk_neg1 
+				} else_if = {
+					limit = {
+						has_modifier = ai_clerk_neg4 
+						has_modifier = ai_clerk_neg2
+						has_modifier = ai_clerk_neg1
+					}
+					add_modifier = { modifier = ai_clerk_neg8 }
+					remove_modifier = ai_clerk_neg4
+					remove_modifier = ai_clerk_neg2 
+					remove_modifier = ai_clerk_neg1 
+				} else_if = {
+					limit = {
+						has_modifier = ai_clerk_neg2
+						has_modifier = ai_clerk_neg1
+					}
+					add_modifier = { modifier = ai_clerk_neg4 }
+					remove_modifier = ai_clerk_neg2 
+					remove_modifier = ai_clerk_neg1 
+				} else_if = {
+					limit = {
+						has_modifier = ai_clerk_neg1
+					}
+					add_modifier = { modifier = ai_clerk_neg2 }
+					remove_modifier = ai_clerk_neg1 
+				} else = {
+					add_modifier = { modifier = ai_clerk_neg1 }
+				}
+			}
+		}
+		else = {
+			remove_modifier = ai_clerk_neg1
+			remove_modifier = ai_clerk_neg2
+			remove_modifier = ai_clerk_neg4
+			remove_modifier = ai_clerk_neg8
+			remove_modifier = ai_clerk_neg16
+		}
 	}
 }
 

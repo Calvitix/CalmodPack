@@ -231,6 +231,12 @@ building_food_processing_facility = {
 			}
 			is_planet_class = pc_machine
 			has_modifier = resort_colony
+			AND = {
+				owner = {
+					is_ai = yes
+				}	
+				has_any_farming_district = no
+			}
 		}
 	}
 
@@ -387,9 +393,17 @@ building_food_processing_center = {
 		OR = {
 			AND = {
 				exists = owner
+				OR = {
 				owner = {
 					is_ai = yes
 					country_uses_food = no
+				}
+					AND = {
+						owner = {
+							is_ai = yes
+						}
+						has_any_farming_district = no
+					}
 				}
 			}
 			is_planet_class = pc_machine
@@ -546,7 +560,15 @@ building_mineral_purification_plant = {
 	category = resource
 
 	destroy_trigger = {
+		OR = {
 		has_modifier = resort_colony
+			AND = {
+				owner = {
+					is_ai = yes
+				}	
+				has_any_mining_district = no
+			}
+		}	
 	}
 
 	potential = {
@@ -792,9 +814,18 @@ building_mineral_purification_hub = {
 
 	destroy_trigger = {
 		OR = {
+		OR = {
 			has_modifier = resort_colony
 			buildings_no_motes = yes
 		}
+
+			AND = {
+				owner = {
+					is_ai = yes
+				}	
+				has_any_mining_district = no
+			}
+		}	
 	}
 
 
@@ -998,9 +1029,15 @@ building_energy_grid = {
 	category = resource
 
 	destroy_trigger = {
-		or = {
+		OR = {
 			has_modifier = resort_colony
 			str_energy_grid_destroy = yes #Starnet AI
+			AND = {
+				owner = {			
+					is_ai = yes
+				}	
+				has_any_generator_district = no
+			}
 		}
 	}
 
@@ -1187,6 +1224,12 @@ building_energy_nexus = {
 		OR = {
 			has_modifier = resort_colony
 			buildings_no_exotic_gases = yes
+			AND = {
+				owner = {
+					is_ai = yes
+				}	
+				has_any_generator_district = no
+			}
 		}
 	}
 

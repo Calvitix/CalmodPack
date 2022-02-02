@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.3b  20.01.2022,  Major changes
+# Calvitix Check 3.3b2  31.01.2022,  Major changes
 #
 # Merge with Planet. Diversity
 # Merge with Starnet OK    
@@ -166,6 +166,7 @@ building_heritage_site = {
 	show_tech_unlock_if = {
 		is_gestalt = no
 		is_megacorp = no
+		is_memorialist_empire = no
 	}
 
 	upgrades = {
@@ -243,6 +244,7 @@ building_hypercomms_forum = {
 	show_tech_unlock_if = {
 		is_gestalt = no
 		is_megacorp = no
+		is_memorialist_empire = no
 	}
 }
 
@@ -816,12 +818,22 @@ building_uplink_node = {
 
 	potential = {
 		exists = owner
-		owner = { is_machine_empire = yes }
+		owner = {
+			is_machine_empire = yes
+			NOT = {
+				has_valid_civic = civic_machine_servitor
+			}
+		}
 	}
 
 	destroy_trigger = {
 		exists = owner
-		owner = { is_machine_empire = no }
+		owner = {
+			OR = {
+				is_machine_empire = no
+				has_valid_civic = civic_machine_servitor
+			}
+		}
 	}
 
 	convert_to = {
@@ -859,6 +871,9 @@ building_uplink_node = {
 
 	show_tech_unlock_if = {
 		is_machine_empire = yes
+		NOT = {
+			has_valid_civic = civic_machine_servitor
+		}
 	}
 }
 
@@ -871,7 +886,12 @@ building_network_junction = {
 
 	potential = {
 		exists = owner
-		owner = { is_machine_empire = yes }
+		owner = {
+			is_machine_empire = yes
+			NOT = {
+				has_valid_civic = civic_machine_servitor
+			}
+		}
 	}
 
 	allow = {
@@ -882,7 +902,12 @@ building_network_junction = {
 		exists = owner
 		OR = {
 			buildings_no_crystals = yes
-			owner = { is_machine_empire = no }
+			owner = {
+				OR = {
+					is_machine_empire = no
+					has_valid_civic = civic_machine_servitor
+				}
+			}
 		}
 	}
 
@@ -923,6 +948,9 @@ building_network_junction = {
 
 	show_tech_unlock_if = {
 		is_machine_empire = yes
+		NOT = {
+			has_valid_civic = civic_machine_servitor
+		}
 	}
 }
 
@@ -935,7 +963,12 @@ building_system_conflux = {
 
 	potential = {
 		exists = owner
-		owner = { is_machine_empire = yes }
+		owner = {
+			is_machine_empire = yes
+			NOT = {
+				has_valid_civic = civic_machine_servitor
+			}
+		}
 	}
 
 	allow = {
@@ -946,7 +979,12 @@ building_system_conflux = {
 		exists = owner
 		OR = {
 			buildings_no_crystals = yes
-			owner = { is_machine_empire = no }
+			owner = {
+				OR = {
+					is_machine_empire = no
+					has_valid_civic = civic_machine_servitor
+				}
+			}
 		}
 	}
 
@@ -983,6 +1021,9 @@ building_system_conflux = {
 
 	show_tech_unlock_if = {
 		is_machine_empire = yes
+		NOT = {
+			has_valid_civic = civic_machine_servitor
+		}
 	}
 }
 
@@ -991,6 +1032,8 @@ building_system_conflux = {
 ##################
 building_hive_node = {
 	base_buildtime = @b1_time
+
+	exempt_from_ai_planet_specialization = no
 
 	category = unity
 
@@ -1081,6 +1124,8 @@ building_hive_node = {
 building_hive_cluster = {
 	base_buildtime = @b2_time
 	can_build = no
+
+	exempt_from_ai_planet_specialization = no
 
 	category = unity
 
@@ -1937,9 +1982,6 @@ building_simulation_1 = {
 		NOT = { has_modifier = slave_colony }
 		owner = {
 			is_machine_empire = yes
-			NOT = {
-				has_valid_civic = civic_machine_servitor
-			}
 			is_memorialist_empire = no
 		}
 	}
@@ -1951,7 +1993,6 @@ building_simulation_1 = {
 			owner = {
 				OR = {
 					is_machine_empire = no
-					has_valid_civic = civic_machine_servitor
 					is_memorialist_empire = yes
 				}
 			}
@@ -1991,7 +2032,6 @@ building_simulation_1 = {
 
 	show_tech_unlock_if = {
 		is_machine_empire = yes
-		NOT = { has_valid_civic = civic_machine_servitor }
 		is_memorialist_empire = no
 	}
 
@@ -2012,9 +2052,6 @@ building_simulation_2 = {
 		NOT = { has_modifier = slave_colony }
 		owner = {
 			is_machine_empire = yes
-			NOT = {
-				has_valid_civic = civic_machine_servitor
-			}
 			is_memorialist_empire = no
 		}
 	}
@@ -2030,7 +2067,6 @@ building_simulation_2 = {
 			owner = {
 				OR = {
 					is_machine_empire = no
-					has_valid_civic = civic_machine_servitor
 					is_memorialist_empire = yes
 				}
 			}
@@ -2070,9 +2106,6 @@ building_simulation_2 = {
 
 	show_tech_unlock_if = {
 		is_machine_empire = yes
-		NOT = {
-			has_valid_civic = civic_machine_servitor
-		}
 		is_memorialist_empire = no
 	}
 
@@ -2093,9 +2126,6 @@ building_simulation_3 = {
 		NOT = { has_modifier = slave_colony }
 		owner = {
 			is_machine_empire = yes
-			NOT = {
-				has_valid_civic = civic_machine_servitor
-			}
 			is_memorialist_empire = no
 		}
 	}
@@ -2111,7 +2141,6 @@ building_simulation_3 = {
 			owner = {
 				OR = {
 					is_machine_empire = no
-					has_valid_civic = civic_machine_servitor
 					is_memorialist_empire = yes
 				}
 			}
@@ -2151,9 +2180,6 @@ building_simulation_3 = {
 
 	show_tech_unlock_if = {
 		is_machine_empire = yes
-		NOT = {
-			has_valid_civic = civic_machine_servitor
-		}
 		is_memorialist_empire = no
 	}
 }

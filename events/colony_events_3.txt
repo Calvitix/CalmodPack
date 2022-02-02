@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.3b  21.01.2022
+# Calvitix Check 3.3b2  31.01.2022
 #
 # Merge with Arisphaos Unofficial patch
 # Merge with Expanded Events  22.05.2021
@@ -3956,7 +3956,7 @@ planet_event = {
 			random_list = {
 				3 = {
 					planet_event = {
-						id = colony.9020 days = 10 random = 1
+						id = colony.9020 days = 3600 random = 100
 					}
 					change_variable = {
 						which = turtle_amount
@@ -3965,7 +3965,7 @@ planet_event = {
 				}
 				1 = {
 					planet_event = {
-						id = colony.9025 days = 10 random = 1
+						id = colony.9025 days = 3600 random = 100
 					}
 					modifier = {
 						factor = turtle_amount
@@ -4133,20 +4133,18 @@ planet_event = {
 	trigger = {
 		habitable_planet = yes
 		owner = {
-			NOR = {
+			NOT = {
 				has_ethic = ethic_gestalt_consciousness
-				has_country_flag = snake_infestation
 			}
 		}
+		NOT = { has_global_flag = snake_infestation_fired }
 		num_pops > 0
 	}
 
 	is_triggered_only = yes
 
 	immediate = {
-		owner = {
-			set_country_flag = snake_infestation
-		}
+		set_global_flag = snake_infestation_fired
 		set_planet_flag = colony_event
 	}
 
@@ -4155,13 +4153,13 @@ planet_event = {
 		hidden_effect = {
 			planet_event = {
 				id = colony.9100
-				days = 40
-				random = 20
+				days = 200
+				random = 200
 			}
 		}
 		add_modifier = {
 			modifier = "planet_forced_growth"
-			days = -1
+			days = 2400
 		}
 	}
 }
@@ -4239,8 +4237,8 @@ planet_event = {
 		hidden_effect = {
 			planet_event = {
 				id = colony.9102
-				days = 40
-				random = 20
+				days = 200
+				random = 200
 			}
 		}
 	}
@@ -4267,13 +4265,13 @@ planet_event = {
 		name = EXCELLENT
 		add_modifier = {
 			modifier = snake_infestation
-			months = 120
+			months = 60
 		}
 		hidden_effect = {
 			planet_event = {
 				id = colony.9103
-				days = 40
-				random = 20
+				days = 200
+				random = 200
 			}
 		}
 	}
@@ -4282,7 +4280,14 @@ planet_event = {
 planet_event = {
 	id = colony.9103
 	title = colony.9103.name
-	desc = colony.9103.desc
+	desc = { 
+		trigger = { has_planet_flag = snake_peace }
+		text = "colony.9103.desc.science"
+	}
+	desc = {
+		trigger = { has_planet_flag = snake_war }
+		text = "colony.9103.desc.soldier"
+	}
 	picture = GFX_evt_alien_nature
 	show_sound = event_air_raid_siren
 	location = ROOT
@@ -4298,35 +4303,30 @@ planet_event = {
 
 	option = {
 		name = colony.9103.a
-		# custom_tooltip = colony.9103.a.tooltip
-		add_deposit = d_submerged_ore_veins
 		add_modifier = {
 			modifier = energy_poor
-			days = 240
+			days = 100
 		}
 		hidden_effect = {
 			planet_event = {
 				id = colony.9104
-				days = 40
-				random = 20
+				days = 200
+				random = 200
 			}
 		}
 	}
 
 	option = {
 		name = colony.9103.b
-		# custom_tooltip = colony.9103.b.tooltip
-		add_deposit = d_minerals_3
-		# if not science
 		add_modifier = {
 			modifier = snake_infestation
-			days = 240
+			days = 100
 		}
 		hidden_effect = {
 			planet_event = {
 				id = colony.9104
-				days = 40
-				random = 20
+				days = 200
+				random = 200
 			}
 		}
 	}
@@ -4335,7 +4335,14 @@ planet_event = {
 planet_event = {
 	id = colony.9104
 	title = colony.9104.name
-	desc = colony.9104.desc
+	desc = { 
+		trigger = { has_planet_flag = snake_peace }
+		text = "colony.9104.desc.science" 
+	}
+	desc = {
+		trigger = { has_planet_flag = snake_war }
+		text = "colony.9104.desc.soldier"
+    }	
 	picture = GFX_evt_alien_nature
 	show_sound = event_swarm
 	location = ROOT
@@ -4353,7 +4360,6 @@ planet_event = {
 
 	option = {
 		name = colony.9104.a
-		# custom_tooltip = colony.9104.a.tooltip
 		add_deposit = d_minerals_3
 		add_modifier = {
 			modifier = "mineral_poor"
@@ -4362,16 +4368,14 @@ planet_event = {
 		hidden_effect = {
 			planet_event = {
 				id = colony.9105
-				days = 40
-				random = 20
+				days = 200
+				random = 200
 			}
 		}
 	}
 
 	option = {
 		name = colony.9104.b
-		# custom_tooltip = colony.9104.b.tooltip
-		add_deposit = d_minerals_3
 		add_modifier = {
 			modifier = "snake_infestation"
 			days = 240
@@ -4379,8 +4383,8 @@ planet_event = {
 		hidden_effect = {
 			planet_event = {
 			id = colony.9105
-			days = 40
-			random = 20
+			days = 200
+			random = 200
 			}
 		}
 	}
@@ -4407,15 +4411,15 @@ planet_event = {
 
 	option = {
 			name = UNFORTUNATE
-			# custom_tooltip = colony.9105.a.tooltip
 			add_modifier = {
 				modifier = "damaged_ecology"
-				days = 2400}
+				days = 1200
+			}
 		hidden_effect = {
 			planet_event = {
 				id = colony.9106
-				days = 40
-				random = 20
+				days = 200
+				random = 200
 			}
 		}
 	}
@@ -4424,7 +4428,15 @@ planet_event = {
 planet_event = {
 	id = colony.9106
 	title = colony.9106.name
+	desc = { 
+		trigger = { has_planet_flag = snake_war }
+		text = "colony.9106.desc" 
+	}
 	desc = colony.9106.desc
+    desc = { 
+		trigger = { has_planet_flag = snake_peace }
+		text = "colony.9106.desc.science" 
+	}
 	picture = GFX_evt_alien_nature
 	show_sound = event_swarm
 	location = ROOT
@@ -4453,8 +4465,8 @@ planet_event = {
 	hidden_effect = {
 		planet_event = {
 			id = colony.9107
-			days = 40
-			random = 20
+			days = 200
+			random = 200
 			}
 		}
 	}
@@ -4524,6 +4536,18 @@ planet_event = {
 	option = {
 		name = colony.9108.a
 		custom_tooltip = colony.9108.a.tooltip
+		if = {
+			limit = {
+				has_modifier = energy_poor
+			}
+			remove_modifier = energy_poor
+		}
+		if = {
+			limit = {
+				has_modifier = snake_infestation
+			}
+			remove_modifier = snake_infestation
+		}
 	}
 }
 
@@ -4548,5 +4572,17 @@ planet_event = {
 	option = {
 		name = colony.9109.a
 		custom_tooltip = colony.9109.a.tooltip
+		if = {
+			limit = {
+				has_modifier = energy_poor
+			}
+			remove_modifier = energy_poor 
+		}
+		if = {
+			limit = {
+				has_modifier = snake_infestation
+			}
+			remove_modifier = snake_infestation
+		}
 	}
 }

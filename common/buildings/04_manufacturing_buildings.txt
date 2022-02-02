@@ -18,6 +18,14 @@ building_foundry_1 = {
 	potential = {
 		NOT = { has_modifier = resort_colony }
 		NOT = { has_modifier = slave_colony }
+		NOT = {
+			AND = {
+				owner = {
+					is_ai = yes
+				}	
+				has_any_industry_district = no
+			}
+		}
 	}
 
 	allow = {
@@ -28,7 +36,13 @@ building_foundry_1 = {
 		OR = {
 			has_modifier = resort_colony
 			has_modifier = slave_colony
-#mod ?
+			AND = {
+				owner = {
+					is_ai = yes
+				}	
+				has_any_industry_district = no
+			}
+			#mod ?
 			and = {
 				is_capital = yes
 				owner = { 
@@ -336,6 +350,12 @@ building_foundry_2 = {
 			AND = {
 				exists = owner
 				buildings_no_motes = yes
+			}
+			AND = {
+				owner = {
+					is_ai = yes
+				}	
+				has_any_industry_district = no
 			}
 		}
 	}
@@ -663,6 +683,12 @@ building_foundry_3 = {
 				exists = owner
 				buildings_no_motes = yes
 			}
+			AND = {
+				owner = {
+					is_ai = yes
+				}	
+				has_any_industry_district = no
+			}
 		}
 	}
 
@@ -976,6 +1002,14 @@ building_factory_1 = {
 		str_factory_allow = yes #Starnet AI
 		NOT = { has_modifier = resort_colony }
 		NOT = { has_modifier = slave_colony }
+		NOT = {
+			AND = {
+				owner = {
+					is_ai = yes
+				}	
+				has_any_industry_district = no
+			}
+		}
 	}
 
 	destroy_trigger = {
@@ -1008,6 +1042,14 @@ building_factory_1 = {
 					is_ai = yes
 					country_uses_consumer_goods = no
 				}
+				AND = {
+					owner = {
+						is_ai = yes
+					}
+					NOT = { has_district = district_rw_industrial }
+					NOT = { has_district = district_hab_industrial }
+					NOT = { has_district = district_industrial }	
+				}				
 			}
 		}
 	}
@@ -1162,12 +1204,19 @@ building_factory_2 = {
 		OR = {
 			has_modifier = resort_colony
 			has_modifier = slave_colony
-
 			AND = {
 				exists = owner
+				OR = {
 				owner = {
 					is_ai = yes
 					country_uses_consumer_goods = no
+				}
+					AND = {
+						owner = {
+							is_ai = yes
+						}
+						has_any_industry_district = no		
+					}
 				}
 			}
 			buildings_no_crystals = yes
@@ -1339,9 +1388,17 @@ building_factory_3 = {
 
 			AND = {
 				exists = owner
+				OR = {
 				owner = {
 					is_ai = yes
 					country_uses_consumer_goods = no
+				}
+					AND = {
+						owner = {
+							is_ai = yes
+						}
+						has_any_industry_district = no	
+					}
 				}
 			}
 			buildings_no_crystals = yes
@@ -1486,6 +1543,7 @@ building_factory_3 = {
 building_refinery = {
 	base_buildtime = @b2_time
 
+	exempt_from_ai_planet_specialization = no
 	category = manufacturing
 
 	potential = {
@@ -1617,6 +1675,7 @@ building_refinery = {
 building_chemical_plant = {
 	base_buildtime = @b2_time
 
+	exempt_from_ai_planet_specialization = no
 	category = manufacturing
 
 	potential = {
@@ -1747,6 +1806,7 @@ building_chemical_plant = {
 building_crystal_plant = {
 	base_buildtime = @b2_time
 
+	exempt_from_ai_planet_specialization = no
 	category = manufacturing
 
 	potential = {
@@ -1987,6 +2047,12 @@ building_ministry_production = {
 			has_modifier = resort_colony
 			has_modifier = slave_colony
 			buildings_no_motes = yes
+			AND = {
+				owner = {
+					is_ai = yes
+				}	
+				has_any_industry_district = no
+			}
 		}
 	}
 
@@ -2109,6 +2175,7 @@ building_production_center = {
 		OR = {
 			owner = { is_gestalt = no }
 			buildings_no_motes = yes
+			has_any_industry_district = no
 		}
 	}
 

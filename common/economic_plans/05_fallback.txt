@@ -1,129 +1,239 @@
+# Original File
+#
+# Calvitix Check 3.3b2  31.01.2022
+#
+# Merge with Starnet AI 16.09.2021
+# Merge with ESC for new ressources
+#
+
 # Base AI economic plans
 
 # Early ---------------------------------------
 
 @rare_resource_target = 4
+@energy_target = 25
+@minerals_target = 30
+@alloy_target = 10
+@machine_empire_alloy_target = 15
+@pops_target = 9000
+@food_target = 10
+@food_target_extra = 20
+@consumer_goods_target = 10
+@research_target = 70
+@scaling_research_target = 25
+@scaling_consumer_goods_target = 1
 
 basic_economy_plan_fallback = {
 	income = {
-		energy = 25
-		minerals = 50
+		energy = @energy_target
+		minerals = @minerals_target
 	}
 
 	subplan = {
-		set_name = "food base"
+		set_name = "Mélange d'Epices de Starnet"
+		potential = { always = yes }
+		income = { starnet_spice_melange = 100000 }
+	}
+	
+	subplan = {
+		set_name = "base : Nourriture"
 		potential = {
 			country_uses_food = yes
 		}
 
 		income = {
-			food = 20
+			food = @food_target
 		}
 	}
 
 	subplan = {
-		set_name = "consumer goods base"
+		set_name = "base : science (organiques)"
 		potential = {
 			country_uses_consumer_goods = yes
-			has_monthly_income = { resource = minerals value > 25 }
-			has_monthly_income = { resource = energy value > 25 }
+			has_monthly_income = { resource = consumer_goods value > @consumer_goods_target }
+		}
+		income = {
+			physics_research = @research_target
+			society_research = @research_target
+			engineering_research = @research_target
+		}
+	}
+
+
+	subplan = {
+		set_name = "base : science (conscience coll.)"
+		potential = {
+			is_hive_empire = yes
+			has_monthly_income = { resource = minerals value > @minerals_target }
+		}
+		income = {
+			physics_research = @research_target
+			society_research = @research_target
+			engineering_research = @research_target
+		}
+	}
+
+	subplan = {
+		set_name = "base : science (machine empire)"
+		potential = {
+			is_machine_empire = yes
+			has_monthly_income = { resource = energy value > @energy_target }
+		}
+		income = {
+			physics_research = @research_target
+			society_research = @research_target
+			engineering_research = @research_target
+		}
+	}
+
+
+	subplan = {
+		set_name = "Nourriture : niv. 2"
+		potential = {
+			has_monthly_income = { resource = physics_research value > @research_target }
+			has_monthly_income = { resource = society_research value > @research_target }	
+			has_monthly_income = { resource = engineering_research value > @research_target }	
+			country_uses_food = yes
+		}
+
+		income = {
+			food = @food_target_extra
+		}
+	}
+
+	subplan = {
+		set_name = "base : Biens de conso."
+		potential = {
+			country_uses_consumer_goods = yes
+			has_monthly_income = { resource = minerals value > @minerals_target }
+			has_monthly_income = { resource = energy value > @energy_target }
 			if = {
 				limit = {
 					country_uses_food = yes
 				}
-
-				has_monthly_income = { resource = food value > 15 }
+				has_monthly_income = { resource = food value > @food_target }
 			}		
 		}
 		income = {
-			consumer_goods = 20
+			consumer_goods = @consumer_goods_target
+		}
+	}
+
+
+	subplan = {
+		set_name = "base : alliages (machine empire)"
+		potential = {
+			is_machine_empire = yes
+		}
+
+		income = {
+			alloys = @machine_empire_alloy_target
 		}
 	}
 
 	subplan = {
-		set_name = "base alloys"
+		set_name = "base : Pops"
 		potential = {
-			has_monthly_income = { resource = energy value > 25 }			
-			has_monthly_income = { resource = minerals value > 25 }	
+			has_monthly_income = { resource = energy value > @energy_target }			
+			has_monthly_income = { resource = minerals value > @minerals_target }
+			has_monthly_income = { resource = physics_research value > @research_target }
+			has_monthly_income = { resource = society_research value > @research_target }	
+			has_monthly_income = { resource = engineering_research value > @research_target }			
 		}
-
-		income = {
-			alloys = 20
-		}
-		pops = 9000
+		pops = @pops_target
 	}
 
+	#### SCALING SUBPLANS HERE ####
+	# Values in the scaling subplans are added to the base plan each time the AI reaches the target
+	# If base alloys = 10 and the AI reaches +12 per month, and it says alloys = 20 in the scaling subplan, the next target becomes alloys = 30
+	# All scaling subplans are cumulative
+
 	scaling_subplan = {
-		set_name = "general scaling"
+		set_name = "--Ressources de base échelonnées--"
 		potential = {
-			has_monthly_income = { resource = energy value > 25 }			
-			has_monthly_income = { resource = minerals value > 25 }			
+			OR = {
+			has_monthly_income = { resource = energy value > @energy_target }			
+				has_resource = { type = energy amount > 5000 }			
+			}
+			has_monthly_income = { resource = minerals value > @minerals_target }			
 		}
 
 	income = {
-			alloys = 20
+			alloys = 10
 			minerals = 10
 		energy = 10
-			physics_research = 50
-			society_research = 50
-			engineering_research = 50
-			unity = 50
+			physics_research = @scaling_research_target
+			society_research = @scaling_research_target
+			engineering_research = @scaling_research_target
+			unity = 10
+		}
+	}
+
+	scaling_subplan = {
+		set_name = "--Biens de Conso. échelonnés--"
+		potential = {
+			country_uses_consumer_goods = yes
+			has_monthly_income = { resource = energy value > @energy_target }			
+			has_monthly_income = { resource = minerals value > @minerals_target }			
+		}
+		income = {
+			consumer_goods = @scaling_consumer_goods_target
 		}
 	}
 
 	#### MILITARIST EXTRA ALLOYS ####
 	scaling_subplan = {
-		set_name = "Militarist alloys"
+		set_name = "--Alliages pour Militariste--"
 		potential = {
 			OR = {
 				is_militarist = yes
 				is_homicidal = yes
 		}
-
-			has_monthly_income = { resource = energy value > 25 }			
-			has_monthly_income = { resource = minerals value > 25 }		
+			OR = {
+			has_monthly_income = { resource = energy value > @energy_target }			
+				has_resource = { type = energy amount > 5000 }			
+			}
+			has_monthly_income = { resource = minerals value > @minerals_target }		
 		}
 
-		# Adds a 25% extra alloy target
 		income = {
-			alloys = 5
+			alloys = 15
 		}
 	}
 
 	#### MATERIALIST SCIENCE ####
 	scaling_subplan = {
-		set_name = "Materialist science"
+		set_name = "--Science pour Matérialistes--"
 		potential = {
 			is_materialist = yes	
-			has_monthly_income = { resource = energy value > 25 }			
-			has_monthly_income = { resource = minerals value > 25 }	
+			has_monthly_income = { resource = energy value > @energy_target }			
+			has_monthly_income = { resource = minerals value > @minerals_target }	
 		}
 
-		# Adds a 25% extra science target
 		income = {
-			physics_research = 12
-			society_research = 12
-			engineering_research = 12
+			physics_research = 15
+			society_research = 15
+			engineering_research = 15
 		}
 	}
 
 	#### SPIRITUALIST UNITY ####
 	scaling_subplan = {
-		set_name = "Spiritualist unity"
+		set_name = "--Unité pour Spiritualistes--"
 		potential = {
 			is_spiritualist = yes	
-			has_monthly_income = { resource = energy value > 25 }			
-			has_monthly_income = { resource = minerals value > 25 }	
+			has_monthly_income = { resource = energy value > @energy_target }			
+			has_monthly_income = { resource = minerals value > @minerals_target }	
 		}
 
-		# Adds a 25% extra unity target
 		income = {
-			unity = 12
+			unity = 15
 		}
 		}
 
+	# Optional subplans don't need to be fulfilled for the other scaling subplans to become active
 	optional_subplan = {
-		set_name = "Rare resources"
+		set_name = "--Ressources rares--"
 		potential = {
 			always = yes
 		}

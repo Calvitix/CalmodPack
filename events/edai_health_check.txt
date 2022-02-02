@@ -198,7 +198,10 @@ event = {
 						owner = { resource_stockpile_compare = { resource = energy value < 1000 } }
 						#owner = { has_monthly_income = { resource = alloys value > 20 }}						
 						#has_building = building_foundry_1
+						or = {
 						free_jobs < 10
+							owner = { has_monthly_income = { resource = energy value < -50 }}							
+						}
 					}					
 					if = {
 						limit = {
@@ -254,12 +257,20 @@ event = {
 								free_jobs < 10
 								num_unemployed > 0
 								has_unemployed = yes
+								owner = { has_monthly_income = { resource = energy value < -100 }}								
 								}
-							free_building_slots > 1
+							free_building_slots > 0
 						}
 						add_building = eb_energy #energy
+						if = {
+							limit = {
+								owner = { has_monthly_income = { resource = energy value < -100 }}								
+								num_buildings = { type = building_research_lab_1 value > 1 }
+							}
+							remove_building = building_research_lab_1
+						}
 						#owner = { add_resource = { minerals = -500 } }
-						if = { limit = { has_global_flag = edai_logging	} log = "EDAI :ME: Energy Crisis + Building : Adding building eb_energy on planet [This.GetName] for [Owner.GetName]" }	
+						if = { limit = { has_global_flag = edai_logging	} log = "EDAI :ME: Energy Crisis -20 + Building : Adding building eb_energy on planet [This.GetName] for [Owner.GetName]" }	
 						add_modifier = { modifier = hc_building_added days = 360 }		
 					}
 					
@@ -320,6 +331,28 @@ event = {
 						if = { limit = { has_global_flag = edai_logging	} log = "EDAI :ME: Energy Crisis <1 : Adding district_generator_uncapped on planet [This.GetName] for [Owner.GetName]" }					
 						add_modifier = { modifier = hc_generator_added days = 360 }										
 						
+					}					
+					if = {
+						limit = {
+							not = { has_modifier = hc_building_added }						
+							#free_housing > 0
+							or = {
+								free_jobs < 10
+								num_unemployed > 0
+								owner = { has_monthly_income = { resource = energy value < -100 }}																
+								}
+							free_building_slots > 0
+						}
+						add_building = eb_energy #energy
+						if = {
+							limit = {
+								owner = { has_monthly_income = { resource = energy value < -100 }}								
+								num_buildings = { type = building_research_lab_1 value > 1 }
+							}
+							remove_building = building_research_lab_1
+						}
+						if = { limit = { has_global_flag = edai_logging	} log = "EDAI :ME : Energy Crisis <1 + Building : Adding building eb_energy on planet [This.GetName] for [Owner.GetName]" }	
+						add_modifier = { modifier = hc_building_added days = 360 }		
 					}					
 				}
 				
@@ -929,6 +962,19 @@ event = {
 					limit = {
 						owner = {
 						has_resource = { type = minerals amount > 20000 }
+						has_resource = { type = energy amount < 5000 }
+						}
+					}
+					owner = {
+					if = { limit = { has_global_flag = edai_logging	} log = "EDAI Ressources Trade : Mach.Empire :  -5000 minerals, +2500 energy for [This.GetName]" }	
+					add_resource = { energy = 2500 }
+					add_resource = { minerals = -5000 }
+					}
+				}			
+				if = {
+					limit = {
+						owner = {
+						has_resource = { type = minerals amount > 20000 }
 						has_resource = { type = alloys amount < 5000 }
 						}
 					}
@@ -1307,7 +1353,10 @@ event = {
 						owner = { resource_stockpile_compare = { resource = energy value < 1000 } }
 						#owner = { has_monthly_income = { resource = alloys value > 20 }}						
 						#has_building = building_foundry_1
+						or = {
 						free_jobs < 10
+							owner = { has_monthly_income = { resource = energy value < -100 }}								
+						}
 					}					
 					if = {
 						limit = {
@@ -1320,7 +1369,7 @@ event = {
 						add_modifier = { modifier = hc_generator_added days = 360 }										
 						#remove_building = building_foundry_1
 					}
-					if = {
+					else_if = {
 						limit = {
 							free_district_slots > 0
 							not = { uses_district_set = ring_world }
@@ -1331,7 +1380,7 @@ event = {
 						add_modifier = { modifier = hc_generator_added days = 360 }										
 						#remove_building = building_foundry_1
 					}
-					if = {
+					else_if = {
 						limit = {
 							free_district_slots > 0
 							uses_district_set = ring_world
@@ -1342,7 +1391,7 @@ event = {
 						add_modifier = { modifier = hc_generator_added days = 360 }										
 						#remove_building = building_foundry_1
 					}	
-					if = {
+					else_if = {
 						limit = {
 							free_district_slots > 0
 							uses_district_set = habitat
@@ -1360,12 +1409,19 @@ event = {
 							or = {
 								free_jobs < 10
 								num_unemployed > 0
+								owner = { has_monthly_income = { resource = energy value < -100 }}																
 								}
-							free_building_slots > 1
+							free_building_slots > 0
 						}
 						add_building = eb_energy #energy
-						#owner = { add_resource = { minerals = -500 } }
-						if = { limit = { has_global_flag = edai_logging	} log = "EDAI :E : Energy Crisis + Building : Adding building eb_energy on planet [This.GetName] for [Owner.GetName]" }	
+						if = {
+							limit = {
+								owner = { has_monthly_income = { resource = energy value < -100 }}								
+								num_buildings = { type = building_research_lab_1 value > 1 }
+							}
+							remove_building = building_research_lab_1
+						}
+						if = { limit = { has_global_flag = edai_logging	} log = "EDAI :E : Energy Crisis -20 + Building : Adding building eb_energy on planet [This.GetName] for [Owner.GetName]" }	
 						add_modifier = { modifier = hc_building_added days = 360 }		
 					}
 					
@@ -1425,6 +1481,28 @@ event = {
 						if = { limit = { has_global_flag = edai_logging	} log = "EDAI :E : Energy Crisis < 1 : adding district_generator_uncapped on planet [This.GetName] for [Owner.GetName]" }	
 						add_modifier = { modifier = hc_generator_added days = 360 }										
 						
+					}					
+					if = {
+						limit = {
+							not = { has_modifier = hc_building_added }						
+							#free_housing > 0
+							or = {
+								free_jobs < 10
+								num_unemployed > 0
+								owner = { has_monthly_income = { resource = energy value < -100 }}																
+								}
+							free_building_slots > 0
+						}
+						add_building = eb_energy #energy
+						if = {
+							limit = {
+								owner = { has_monthly_income = { resource = energy value < -100 }}								
+								num_buildings = { type = building_research_lab_1 value > 1 }
+							}
+							remove_building = building_research_lab_1
+						}
+						if = { limit = { has_global_flag = edai_logging	} log = "EDAI :E : Energy Crisis < 1 + Building : Adding building eb_energy on planet [This.GetName] for [Owner.GetName]" }	
+						add_modifier = { modifier = hc_building_added days = 360 }		
 					}					
 				}
 
@@ -2573,6 +2651,19 @@ event = {
 					limit = {
 						owner = {
 						has_resource = { type = minerals amount > 20000 }
+						has_resource = { type = energy amount < 5000 }
+						}
+					}
+					owner = {
+					if = { limit = { has_global_flag = edai_logging	} log = "EDAI Ressources Trade : Empire :  -5000 minerals, +2500 energy for [This.GetName]" }	
+					add_resource = { energy = 2500 }
+					add_resource = { minerals = -5000 }
+					}
+				}			
+				if = {
+					limit = {
+						owner = {
+						has_resource = { type = minerals amount > 20000 }
 						has_resource = { type = alloys amount < 5000 }
 						}
 					}
@@ -3034,8 +3125,14 @@ event = {
 							free_building_slots > 1
 						}
 						add_building = eb_energy #energy
-						#owner = { add_resource = { minerals = -500 } }
-						if = { limit = { has_global_flag = edai_logging	} log = "EDAI :H: Energy Crisis + Building : Adding building eb_energy on planet [This.GetName] for [Owner.GetName]" }	
+						if = {
+							limit = {
+								owner = { has_monthly_income = { resource = energy value < -100 }}								
+								num_buildings = { type = building_research_lab_1 value > 1 }
+							}
+							remove_building = building_research_lab_1
+						}
+						if = { limit = { has_global_flag = edai_logging	} log = "EDAI :H: Energy Crisis < -20 + Building : Adding building eb_energy on planet [This.GetName] for [Owner.GetName]" }	
 						add_modifier = { modifier = hc_building_added days = 360 }		
 					}
 					
@@ -3097,6 +3194,23 @@ event = {
 						#remove_building = building_factory_1
 						add_modifier = { modifier = hc_generator_added days = 360 }																
 					}						
+					if = {
+						limit = {
+							not = { has_modifier = hc_building_added }						
+							#free_housing > 0
+							or = {
+								free_jobs < 10
+								num_unemployed > 0
+								has_unemployed = yes
+								owner = { has_monthly_income = { resource = energy value < -100 }}								
+								}
+							free_building_slots > 0
+						}
+						add_building = eb_energy #energy
+						owner = { add_resource = { minerals = -500 } }
+						if = { limit = { has_global_flag = edai_logging	} log = "EDAI :H: Energy Crisis < 1 + Building : Adding building eb_energy on planet [This.GetName] for [Owner.GetName]" }	
+						add_modifier = { modifier = hc_building_added days = 360 }		
+					}					
 				}
 
 
@@ -4019,6 +4133,19 @@ event = {
 				}
 				
 				###Calvitix Ressource Exchange
+				if = {
+					limit = {
+						owner = {
+						has_resource = { type = minerals amount > 20000 }
+						has_resource = { type = energy amount < 5000 }
+						}
+					}
+					owner = {
+					if = { limit = { has_global_flag = edai_logging	} log = "EDAI Ressources Trade : Hive :  -5000 minerals, +2500 energy for [This.GetName]" }	
+					add_resource = { energy = 2500 }
+					add_resource = { minerals = -5000 }
+					}
+				}			
 				if = {
 					limit = {
 						owner = {
