@@ -22,7 +22,7 @@
 @scaling_research_target = 25
 @scaling_consumer_goods_target = 1
 
-str_early_default_plan = {
+starnet_default_plan = {
 
 	income = {
 		energy = @energy_target
@@ -37,7 +37,7 @@ str_early_default_plan = {
 	}
 
 	subplan = {
-		set_name = "Minéraux 500, Première 10 années"
+		set_name = "Minéraux 500, Premières 10 années"
 		potential = {
 			years_passed < 10
 		}
@@ -47,7 +47,7 @@ str_early_default_plan = {
 	}
 
 	subplan = {
-		set_name = "After 10 years, energy 40"
+		set_name = "Après 10 années, Énergie 40"
 		potential = {
 			years_passed > 10
 		}
@@ -109,7 +109,7 @@ str_early_default_plan = {
 
 
 	subplan = {
-		set_name = "Nourriture : niv. 2"
+		set_name = "Nourriture : niv. 2, Rech. OK"
 		potential = {
 			has_monthly_income = { resource = physics_research value > @research_target }
 			has_monthly_income = { resource = society_research value > @research_target }	
@@ -172,8 +172,15 @@ str_early_default_plan = {
 	scaling_subplan = {
 		set_name = "--Ressources de base échelonnées--"
 		potential = {
+			OR = {
 			has_monthly_income = { resource = energy value > @energy_target }			
+				has_resource = { type = energy amount > 5000 }			
+			}
+			OR = {
 			has_monthly_income = { resource = minerals value > @minerals_target }			
+				has_resource = { type = minerals amount > 5000 }			
+			}
+				
 		}
 
 		income = {
@@ -207,8 +214,10 @@ str_early_default_plan = {
 				is_militarist = yes
 				is_homicidal = yes
 			}
-			
+			OR = {
 			has_monthly_income = { resource = energy value > @energy_target }			
+				has_resource = { type = energy amount > 5000 }			
+			}
 			has_monthly_income = { resource = minerals value > @minerals_target }		
 		}
 
@@ -249,7 +258,7 @@ str_early_default_plan = {
 
 	# Optional subplans don't need to be fulfilled for the other scaling subplans to become active
 	optional_subplan = {
-		set_name = "--ressources rares (4)--"
+		set_name = "--Ressources rares (4)--"
 		potential = {
 			always = yes
 		}
@@ -258,7 +267,7 @@ str_early_default_plan = {
 			exotic_gases = @rare_resource_target
 			volatile_motes = @rare_resource_target
 			rare_crystals = @rare_resource_target
-			esc_living_crystal = 25  #ESC			
+			esc_living_crystal = 5  #ESC			
 			#ESC (NHSC)
 			nanites = 1
 			esc_gravitic_anomaly = 1
@@ -271,7 +280,7 @@ str_early_default_plan = {
 
 	
 	subplan = {
-		set_name = "tree of life < 20"
+		set_name = "tree of life origin < 20"
 		potential = { has_origin = origin_tree_of_life years_passed < 20 }
 		income = { food = 50 }
 	}
@@ -279,26 +288,26 @@ str_early_default_plan = {
 
 
 	subplan = {
-		set_name = "Str food crisis niv.0"
+		set_name = "Str - crise Nourr. niv.0"
 		potential = { str_food_crisis_0 = yes }
-		income = { food = 500 }
+		income = { food = 100 }
 	}
 
 	subplan = {
-		set_name = "Str minerals crisis niv.0"
+		set_name = "Str - crise minéraux niv.0"
 		potential = { str_minerals_crisis_0 = yes }
-		income = { minerals = 500 }
+		income = { minerals = 100 }
 	}
 
 	subplan = {
-		set_name = "Str energy crisis niv.0"
+		set_name = "Str - crise énergie niv.0"
 		potential = { str_energy_crisis_0 = yes }
-		income = { energy = 500 }
+		income = { energy = 100 }
 	}
 
 ###StarTEch
 	subplan = {
-		set_name = "Energie 350 pour la flotte"
+		set_name = "Énergie 350 pour la flotte"
 		potential = {
 			years_passed > @str_ai_prioritise_energy_for_fleet_after
 			years_passed < @str_years_of_twilight
@@ -308,7 +317,7 @@ str_early_default_plan = {
 	}
 
 	subplan = {
-		set_name = "Research 50 raw_eco=no goods_crisis=no"
+		set_name = "Recherche 50 raw_eco=ok goods_crisis=no"
 		potential = {
 			str_raw_ecocrisis_level_0 = no
 			str_consumer_goods_crisis_0 = no
@@ -317,7 +326,7 @@ str_early_default_plan = {
 	}
 
 	subplan = {
-		set_name = "Research 75 turtler  raw=no goods_crisis=no"
+		set_name = "Recherche 75 turtler  raw_eco=ok goods_crisis=no"
 		potential = {
 			str_raw_ecocrisis_level_0 = no
 			str_consumer_goods_crisis_0 = no
@@ -327,7 +336,7 @@ str_early_default_plan = {
 	}
 
 	subplan = {
-		set_name = "Research 75 turtler2  raw=no goods_crisis=no"
+		set_name = "Recherche 75 turtler2  raw_eco=ok goods_crisis=no"
 		potential = {
 			str_raw_ecocrisis_level_0 = no
 			str_consumer_goods_crisis_0 = no
@@ -337,7 +346,7 @@ str_early_default_plan = {
 	}
 
 	subplan = {
-		set_name = "Research 75 turtler3  raw=no goods_crisis=no"
+		set_name = "Recherche 75 turtler3  raw_eco=ok goods_crisis=no"
 		potential = {
 			str_raw_ecocrisis_level_0 = no
 			str_consumer_goods_crisis_0 = no
@@ -347,7 +356,7 @@ str_early_default_plan = {
 	}
 
 	subplan = {
-		set_name = "alloys 10 rusher  raw=no goods_crisis=no"
+		set_name = "Alliages 10 rusher  raw_eco=ok goods_crisis=no"
 		potential = {
 			str_raw_ecocrisis_level_0 = no
 			str_consumer_goods_crisis_0 = no
@@ -358,7 +367,7 @@ str_early_default_plan = {
 	}
 
 	subplan = {
-		set_name = "alloys 10 rusher2  raw=no goods_crisis=no"
+		set_name = "Alliages 10 rusher2  raw_eco=ok goods_crisis=no"
 		potential = {
 			str_raw_ecocrisis_level_0 = no
 			str_consumer_goods_crisis_0 = no
@@ -368,7 +377,7 @@ str_early_default_plan = {
 	}
 
 	subplan = {
-		set_name = "alloys 10 rusher3  raw=no goods_crisis=no"
+		set_name = "Alliages 10 rusher3  raw_eco=ok goods_crisis=no"
 		potential = {
 			str_raw_ecocrisis_level_0 = no
 			str_consumer_goods_crisis_0 = no
@@ -378,7 +387,7 @@ str_early_default_plan = {
 	}
 
 	subplan = {
-		set_name = "Research 1000 year>40 raw=no goods_crisis=no"
+		set_name = "Recherche 1000 années>40 raw_eco=ok goods_crisis=no"
 		potential = {
 			str_raw_ecocrisis_level_0 = no
 			str_consumer_goods_crisis_0 = no
@@ -392,11 +401,11 @@ str_early_default_plan = {
 	}
 
 	subplan = {
-		set_name = "Research 2000 year>40 raw=no goods_crisis=no"
+		set_name = "Recherche 2000 années>80 raw_eco=ok goods_crisis=no"
 		potential = {
 			str_raw_ecocrisis_level_0 = no
 			str_consumer_goods_crisis_0 = no
-			years_passed > 40
+			years_passed > 80
 			minilategame = no
 			resource_income_compare = {
 				resource = physics_research
@@ -407,13 +416,13 @@ str_early_default_plan = {
 	}
 
 	subplan = {
-		set_name = "Energy 2000 str_lets_terraform"
+		set_name = "Énergie 2000 str_lets_terraform"
 		potential = { has_country_flag = str_lets_terraform }
 		income = { energy = 2000 }
 	}
 
 	subplan = {
-		set_name = "Alloys 100 Res>150 Min>2000+50"
+		set_name = "Alliages 100 Rech.>150 Min.>2000+50"
 		potential = { 
 		str_raw_ecocrisis_level_0 = no 
 		resource_income_compare = {
@@ -433,7 +442,7 @@ str_early_default_plan = {
 	}
 
 	subplan = {
-		set_name = "Energy 400  ap_world_shaper"
+		set_name = "Énergie 400  ap_world_shaper"
 		potential = {
 		or = {
 		has_ascension_perk = ap_world_shaper
@@ -445,7 +454,7 @@ str_early_default_plan = {
 	}
 
 	subplan = {
-		set_name = "Energy 2000 str_has_terraformables"
+		set_name = "Énergie 2000 str_has_terraformables"
 		potential = { 
 		has_ascension_perk = ap_world_shaper
 		has_country_flag = str_has_terraformables
@@ -458,7 +467,7 @@ str_early_default_plan = {
 	}
 
 	subplan = {
-		set_name = "Energy 2000 str_has_terraformables and ap_world_shaper"
+		set_name = "Énergie 2000 str_has_terraformables et ap_world_shaper"
 		potential = { 
 			has_ascension_perk = ap_world_shaper
 			has_country_flag = str_has_terraformables
@@ -471,7 +480,7 @@ str_early_default_plan = {
 	}
 
 	subplan = {
-		set_name = "Energy 30 if energy<2"
+		set_name = "Énergie 30 si energie<2"
 			potential = {
 				resource_income_compare = {
 					resource = energy 
@@ -484,7 +493,7 @@ str_early_default_plan = {
 	}
 
 	subplan = {
-		set_name = "minerals 100 if <1500+60"
+		set_name = "minéraux 100 Si <1500+60"
 		potential = {
 			resource_stockpile_compare = {
 				resource = minerals 
@@ -499,11 +508,11 @@ str_early_default_plan = {
 	}
 
 	subplan = {
-		set_name = "minerals 250 if <1000"
+		set_name = "minéraux 250 Si <800"
 		potential = {
 			resource_stockpile_compare = {
 				resource = minerals
-				value < 1000
+				value < 800 # 1000
 			}
 		}
 		income = {
@@ -512,7 +521,7 @@ str_early_default_plan = {
 	}		
 	
 	subplan = {
-		set_name = "alloys 70 Res250 used_naval_capacity_percent < 0.75"
+		set_name = "Alliages 70 Rech.250 used_naval_capacity_percent < 0.75"
 		potential = {
 			nand = {
 				used_naval_capacity_percent  > 0.75
@@ -545,7 +554,7 @@ str_early_default_plan = {
 	
 
 	subplan = {
-		set_name = "Res 250, No crisis, Alloys ok capa > 0.75"
+		set_name = "Rech. 250, Pas de crise, Alliages ok, capa > 0.75"
 		potential = {
 			used_naval_capacity_percent > 0.75
 			resource_income_compare = {
@@ -586,143 +595,31 @@ str_early_default_plan = {
 		}
 	}
 
-	subplan = {
-		set_name = "Res 150"
-		potential = {
-			used_naval_capacity_percent  > 0.7
-			resource_income_compare = {
-				resource = alloys
-				value > 20
-				}
-			resource_stockpile_compare = {
-				resource = alloys 
-				value > 1500
-			}	
-		country_uses_consumer_goods = yes
-		str_consumer_goods_crisis_0 = yes
 
-			resource_income_compare = {
-			resource = energy
-			value > 20
-			}
-			resource_income_compare = {
-			resource = minerals
-			value > 50
-			}
-			or = {
-				and = {
-					country_uses_food = yes
-				resource_income_compare = {
-					resource = food
-						value > 10
-				}
-				}
-				country_uses_food = no 
-			}
-		}
-		income = {
-		physics_research = 150
-		society_research = 150
-		engineering_research = 150
-		}
-	}
-
-	subplan = {
-		set_name = "Alloys 30 Goods 12"
-		potential = {
-			resource_income_compare = {
-			resource = energy
-			value > 20
-			}
-			resource_income_compare = {
-			resource = minerals
-			value > 50
-			}
-			or = {
-				and = {
-					country_uses_food = yes
-					resource_income_compare = {
-						resource = food
-						value > 10
-					}
-				}
-			country_uses_food = no 
-			}
-			or = {
-				and = {
-					country_uses_consumer_goods = yes
-				resource_income_compare = {
-					resource = consumer_goods
-						value > 10
-				}
-				}
-			country_uses_consumer_goods = no 
-			}
-			resource_stockpile_compare = {
-				resource = alloys
-				value < 1000
-			}
-			used_naval_capacity_percent  < 0.7
-			years_passed > @str_ai_prioritise_research_until #Startech
-		}
-		income = { alloys = 30 consumer_goods = 10 }
-	}
-
-
-	subplan = {
-		set_name = "Goods 30"
-		potential = {
-			country_uses_consumer_goods = yes
-			resource_income_compare = {
-				resource = consumer_goods
-				value < 3
-			}
-			resource_stockpile_compare = {
-				resource = consumer_goods
-				value < 1000
-			}
-		}
-		income = { consumer_goods =  30 }
-	}
-	subplan = {
-		set_name = "Food 30"
-		potential = {
-			country_uses_food = yes
-			resource_income_compare = {
-				resource = food
-				value < 5
-			}
-			resource_stockpile_compare = {
-				resource = food
-				value < 400
-			}
-		}
-		income = { food =  30 }
-	}
 
 	
 	subplan = {
-		set_name = "Energy 100 emergency"
+		set_name = "Énergie à surveiller -> 100"
 		potential = { energy_emergency = yes }
 		income = { energy = 100 }
 	}
 	subplan = {
-		set_name = "Food 100 emergency"
+		set_name = "Nourr. à surveiller -> 100"
 		potential = { food_emergency = yes }
 		income = { food = 100 }
 	}
 	subplan = {
-		set_name = "Minerals 100 emergency"
+		set_name = "Minéraux à surveiller -> 100"
 		potential = { minerals_emergency = yes }
 		income = { minerals = 100 }
 	}
 	subplan = {
-		set_name = "Consumer 100 emergency"
+		set_name = "Biens de c. à surveiller -> 100"
 		potential = { consumer_emergency = yes }
 		income = { consumer_goods = 100 }
 	}
 	subplan = {
-		set_name = "Res 400 science prio"
+		set_name = "Rech. 400, prio science"
 		potential = { no_emergency = yes science_priority = yes }
 		income = {
 			physics_research = 400
@@ -731,7 +628,7 @@ str_early_default_plan = {
 		}
 	}
 	subplan = {
-		set_name = "Alloy 40 alloy prio"
+		set_name = "Alliages 40, prio alliages"
 		potential = { no_emergency = yes alloy_priority = yes }
 		income = {
 			alloys = 40
@@ -739,7 +636,7 @@ str_early_default_plan = {
 	}
 
 	subplan = {
-		set_name = "Res 400 no_emergency"
+		set_name = "Rech. 400, Pas d'urgences"
 		potential = {
 			no_emergency = yes
 			science_priority = no
@@ -755,7 +652,7 @@ str_early_default_plan = {
 	}
 	
 	subplan = {
-		set_name = "Research 1000+5 consu uto_eco"
+		set_name = "Recherche 1000,Biens 5, éco. utopique"
 		potential = {
 			utopic_economy = yes
 			science_priority = yes
@@ -770,7 +667,7 @@ str_early_default_plan = {
 	}
 
 	subplan = {
-		set_name = "Research 1000 uto_eco"
+		set_name = "Recherche 1000, éco. utopique"
 		potential = {
 			utopic_economy = yes
 			science_priority = yes
@@ -784,7 +681,7 @@ str_early_default_plan = {
 	}
 
 	subplan = {
-		set_name = "alloys cons 100 uto_eco"
+		set_name = "Alliages 100 et Biens 10, éco. utopique"
 		potential = {
 			utopic_economy = yes
 			alloy_priority = yes
@@ -797,7 +694,7 @@ str_early_default_plan = {
 	}
 
 	subplan = {
-		set_name = "alloys 100 uto_eco"
+		set_name = "Alliages 100, éco. utopique"
 		potential = {
 			utopic_economy = yes
 			alloy_priority = yes
@@ -809,7 +706,7 @@ str_early_default_plan = {
 	}
 
 	subplan = {
-		set_name = "Res 1000 alloys 50 uto_eco"
+		set_name = "Rech. 1000 alloys 50, éco. utopique"
 		potential = {
 			utopic_economy = yes
 			science_priority = no
@@ -824,7 +721,7 @@ str_early_default_plan = {
 	}
 
 	subplan = {
-		set_name = "Res 1000 alloys 50 uto_eco"
+		set_name = "Rech. 1000, alliages 50, éco. utopique"
 		potential = {
 			utopic_economy = yes
 			science_priority = no
@@ -841,7 +738,7 @@ str_early_default_plan = {
 	}
 
 	subplan = {
-		set_name = "exotic gas 10"
+		set_name = "Gaz exot. 10"
 		potential = {
 			resource_income_compare = {
 				resource = exotic_gases
@@ -858,7 +755,7 @@ str_early_default_plan = {
 	}
 
 	subplan = {
-		set_name = "volatile motes 10"
+		set_name = "Part. volatiles 10"
 		potential = {
 			resource_income_compare = {
 				resource = volatile_motes
@@ -875,7 +772,7 @@ str_early_default_plan = {
 	}
 
 	subplan = {
-		set_name = "rare crystal 10"
+		set_name = "Cristaux rares 10"
 		potential = {
 			resource_income_compare = {
 				resource = rare_crystals
@@ -910,21 +807,25 @@ str_early_default_plan = {
 	}
 }
 
-str_early_boom_plan = {
+
+
+
+str_boom_plan = {
+
 	income = {
-		energy = 60
-		minerals = 150 
+		energy = @energy_target
+		minerals = @minerals_target
 	}
 
 
 	subplan = {
-		set_name = "spice melange Starnet"
+		set_name = "Mélange d'Epices de Starnet"
 		potential = { always = yes }
 		income = { starnet_spice_melange = 100000 }
 	}
 
 	subplan = {
-		set_name = "First 10 years"
+		set_name = "Minéraux 500, Premières 10 années"
 		potential = {
 			years_passed < 10
 		}
@@ -934,7 +835,7 @@ str_early_boom_plan = {
 	}
 
 	subplan = {
-		set_name = "After 10 years"
+		set_name = "Après 10 années, énergie 40"
 		potential = {
 			years_passed > 10
 		}
@@ -943,134 +844,209 @@ str_early_boom_plan = {
 		}
 	}
 
-	# countrytype specific basic plan changes
 	subplan = {
-		set_name = "Food 45(base) no goods"
-		potential = {
-			country_uses_consumer_goods = no
-			country_uses_food = yes
-		}
-
-		income = {
-			food = 45 
-		}
-
-	}
-
-	subplan = {
-		set_name = "food base"
+		set_name = "base : nourriture 20"
 		potential = {
 			country_uses_food = yes
 		}
 
 		income = {
-			food = 20
+			food = @food_target
 		}
 	}
 
 	subplan = {
-		set_name = "consumer goods base"
+		set_name = "base : science (organiques)"
 		potential = {
 			country_uses_consumer_goods = yes
-			has_monthly_income = { resource = minerals value > 25 }
-			has_monthly_income = { resource = energy value > 25 }
+			has_monthly_income = { resource = consumer_goods value > @consumer_goods_target }
+		}
+		income = {
+			physics_research = @research_target
+			society_research = @research_target
+			engineering_research = @research_target
+		}
+	}
+
+
+	subplan = {
+		set_name = "base : science (conscience coll.)"
+		potential = {
+			is_hive_empire = yes
+			has_monthly_income = { resource = minerals value > @minerals_target }
+		}
+		income = {
+			physics_research = @research_target
+			society_research = @research_target
+			engineering_research = @research_target
+	}
+	}
+
+	subplan = {
+		set_name = "base : science (machine empire)"
+		potential = {
+			is_machine_empire = yes
+			has_monthly_income = { resource = energy value > @energy_target }
+		}
+		income = {
+			physics_research = @research_target
+			society_research = @research_target
+			engineering_research = @research_target
+		}
+	}
+
+
+	subplan = {
+		set_name = "Nourriture : niv. 2, car Rech. ok"
+		potential = {
+			has_monthly_income = { resource = physics_research value > @research_target }
+			has_monthly_income = { resource = society_research value > @research_target }	
+			has_monthly_income = { resource = engineering_research value > @research_target }	
+			country_uses_food = yes
+		}
+
+		income = {
+			food = @food_target_extra
+		}
+	}
+
+	subplan = {
+		set_name = "base : Biens de conso."
+		potential = {
+			country_uses_consumer_goods = yes
+			has_monthly_income = { resource = minerals value > @minerals_target }
+			has_monthly_income = { resource = energy value > @energy_target }
 			if = {
 				limit = {
 					country_uses_food = yes
 				}
-
-				has_monthly_income = { resource = food value > 15 }
+				has_monthly_income = { resource = food value > @food_target }
 			}		
 		}
 		income = {
-			consumer_goods = 20
+			consumer_goods = @consumer_goods_target
+		}
+	}
+
+
+	subplan = {
+		set_name = "base : alliages (machine empire)"
+		potential = {
+			is_machine_empire = yes
+		}
+
+		income = {
+			alloys = @machine_empire_alloy_target
 		}
 	}
 
 	subplan = {
-		set_name = "base alloys"
+		set_name = "base : Pops"
 		potential = {
-			has_monthly_income = { resource = energy value > 25 }			
-			has_monthly_income = { resource = minerals value > 25 }	
+			has_monthly_income = { resource = energy value > @energy_target }			
+			has_monthly_income = { resource = minerals value > @minerals_target }
+			has_monthly_income = { resource = physics_research value > @research_target }
+			has_monthly_income = { resource = society_research value > @research_target }	
+			has_monthly_income = { resource = engineering_research value > @research_target }			
+		}
+		pops = @pops_target
+	}	
+
+	#### SCALING SUBPLANS HERE ####
+	# Values in the scaling subplans are added to the base plan each time the AI reaches the target
+	# If base alloys = 10 and the AI reaches +12 per month, and it says alloys = 20 in the scaling subplan, the next target becomes alloys = 30
+	# All scaling subplans are cumulative
+
+	scaling_subplan = {
+		set_name = "--Ressources de base échelonnées--"
+		potential = {
+			OR = {
+			has_monthly_income = { resource = energy value > @energy_target }			
+				has_resource = { type = energy amount > 5000 }			
+			}
+			OR = {
+			has_monthly_income = { resource = minerals value > @minerals_target }			
+				has_resource = { type = minerals amount > 5000 }			
+			}
+				
 		}
 
 		income = {
-			alloys = 20
+			alloys = 10
+			minerals = 10
+			energy = 10
+			physics_research = @scaling_research_target
+			society_research = @scaling_research_target
+			engineering_research = @scaling_research_target
+			unity = 10
 		}
-		pops = 9000
 	}
 
 	scaling_subplan = {
-		set_name = "--general scaling--"
+		set_name = "--Biens de Conso. échelonnés--"
 		potential = {
-			has_monthly_income = { resource = energy value > 25 }			
-			has_monthly_income = { resource = minerals value > 25 }			
+			country_uses_consumer_goods = yes
+			has_monthly_income = { resource = energy value > @energy_target }			
+			has_monthly_income = { resource = minerals value > @minerals_target }			
 		}
-
 		income = {
-			alloys = 20
-			minerals = 10
-			energy = 10
-			physics_research = 50
-			society_research = 50
-			engineering_research = 50
-			unity = 50
+			consumer_goods = @scaling_consumer_goods_target
 		}
-	}
+	}	
 
 	#### MILITARIST EXTRA ALLOYS ####
 	scaling_subplan = {
-		set_name = "--Militarist alloys--"
+		set_name = "--Alliages pour Militariste--"
 		potential = {
 			OR = {
 				is_militarist = yes
 				is_homicidal = yes
 			}
-			
-			has_monthly_income = { resource = energy value > 25 }			
-			has_monthly_income = { resource = minerals value > 25 }		
+			OR = {
+			has_monthly_income = { resource = energy value > @energy_target }			
+				has_resource = { type = energy amount > 5000 }			
+			}
+			has_monthly_income = { resource = minerals value > @minerals_target }		
 		}
 
-		# Adds a 25% extra alloy target
 		income = {
-			alloys = 5
+			alloys = 15
 		}
 	}
 
 	#### MATERIALIST SCIENCE ####
 	scaling_subplan = {
-		set_name = "--Materialist science--"
+		set_name = "--Science pour Matérialistes--"
 		potential = {
 			is_materialist = yes	
-			has_monthly_income = { resource = energy value > 25 }			
-			has_monthly_income = { resource = minerals value > 25 }	
+			has_monthly_income = { resource = energy value > @energy_target }			
+			has_monthly_income = { resource = minerals value > @minerals_target }	
 		}
 
-		# Adds a 25% extra science target
 		income = {
-			physics_research = 12
-			society_research = 12
-			engineering_research = 12
+			physics_research = 15
+			society_research = 15
+			engineering_research = 15
 		}
 	}	
 
 	#### SPIRITUALIST UNITY ####
 	scaling_subplan = {
-		set_name = "--Spiritualist unity--"
+		set_name = "--Unité pour Spiritualistes--"
 		potential = {
 			is_spiritualist = yes	
-			has_monthly_income = { resource = energy value > 25 }			
-			has_monthly_income = { resource = minerals value > 25 }	
+			has_monthly_income = { resource = energy value > @energy_target }			
+			has_monthly_income = { resource = minerals value > @minerals_target }	
 		}
 
-		# Adds a 25% extra unity target
 		income = {
-			unity = 12
+			unity = 15
 		}
 	}	
 
+	# Optional subplans don't need to be fulfilled for the other scaling subplans to become active
 	optional_subplan = {
-		set_name = "--Rare resources (4)--"
+		set_name = "--Ressources rares (4)--"
 		potential = {
 			always = yes
 		}
@@ -1079,7 +1055,7 @@ str_early_boom_plan = {
 			exotic_gases = @rare_resource_target
 			volatile_motes = @rare_resource_target
 			rare_crystals = @rare_resource_target
-			esc_living_crystal = 25  #ESC			
+			esc_living_crystal = 5  #ESC			
 			#ESC (NHSC)
 			nanites = 1
 			esc_gravitic_anomaly = 1
@@ -1090,7 +1066,7 @@ str_early_boom_plan = {
 	}
 
 	subplan = {
-		set_name = "--Food 500 no catalytic--"
+		set_name = "--Nourriture 500, pas catalytique--"
 		potential = {
 			is_catalytic_empire = no
 			has_monthly_income = { resource = food value < 5 }
@@ -1100,29 +1076,32 @@ str_early_boom_plan = {
 			food = 500
 		}
 	}
+	
 	subplan = {
-		set_name = "Unity 50"
+		set_name = "Unité 50"
 		potential = { always = yes }
 		income = { unity = 50 }
 	}
 
 	subplan = {
-		set_name = "Spice melange"
+		set_name = "mélange d'Epices Starnet"
 		potential = { always = yes }
 		income = { starnet_spice_melange = 100000 }
 	}
 
 	subplan = {
-		set_name = "Food 50 tree of life"
+		set_name = "tree of life origin < 20"
 		potential = {
 			has_origin = origin_tree_of_life
 			years_passed < 20
 		}
 		income = { food = 50 }
 	}
+####################
+
 
 	subplan = {
-		set_name = "Energy 2000 for Terraform"
+		set_name = "Énergie 2000 pour Terraform."
 		potential = {
 			has_country_flag = str_lets_terraform
 			resource_stockpile_compare = {
@@ -1138,7 +1117,7 @@ str_early_boom_plan = {
 	}
 	
 	subplan = {
-		set_name = "Energy 400 for shaper"
+		set_name = "Énergie 400 pour shaper"
 		potential = { 
 			or = {
 			has_ascension_perk = ap_world_shaper
@@ -1150,7 +1129,7 @@ str_early_boom_plan = {
 	}
 	
 	subplan = {
-		set_name = "Energy 2000 for shaper and terraform"
+		set_name = "Énergie 2000 pour shaper et terraform"
 		potential = { 
 			has_ascension_perk = ap_world_shaper
 			has_country_flag = str_has_terraformables
@@ -1163,7 +1142,7 @@ str_early_boom_plan = {
 	}
 #Startech	
 	subplan = {
-		set_name = "Energy 350 for fleet"
+		set_name = "Énergie 350 pour la flotte"
 		potential = {
 			years_passed > @str_ai_prioritise_energy_for_fleet_after
 			years_passed < @str_years_of_twilight
@@ -1173,7 +1152,7 @@ str_early_boom_plan = {
 	}
 
 	subplan = {
-		set_name = "Res 1000 science prio, consu5"
+		set_name = "Rech. 1000 science prio, Biens 5"
 		potential = {
 			science_priority = yes
 			country_uses_consumer_goods = yes
@@ -1187,7 +1166,7 @@ str_early_boom_plan = {
 	}
 
 	subplan = {
-		set_name = "Res 1000 science prio, no consu"
+		set_name = "Rech. 1000 science prio, pas de Biens"
 		potential = {
 			science_priority = yes
 			country_uses_consumer_goods = no
@@ -1201,7 +1180,7 @@ str_early_boom_plan = {
 
 
 	subplan = {
-		set_name = "Alloys 100, alloys prio, consu 5"
+		set_name = "Alliages 100, Biens 5, Prio Alliages"
 		potential = {
 			alloy_priority = yes
 			country_uses_consumer_goods = yes
@@ -1213,7 +1192,7 @@ str_early_boom_plan = {
 	}
 
 	subplan = {
-		set_name = "Res 500, Alloys 50, Consu 5"
+		set_name = "Rech. 500, Alliages 50, Biens 5"
 		potential = {
 			science_priority = no
 			alloy_priority = no
@@ -1229,7 +1208,7 @@ str_early_boom_plan = {
 	}
 
 	subplan = {
-		set_name = "Res 300, Alloys 100"
+		set_name = "Rech. 300, Alliages 100, All eco OK"
 		potential = {
 			or = {
 		resource_income_compare = { resource = consumer_goods value > -5 }
@@ -1252,7 +1231,7 @@ str_early_boom_plan = {
 	}
 
 	subplan = {
-		set_name = "Focus High Alloys and Research"
+		set_name = "Focus Niv.Haut 10000, Alliages et Rech."
 		potential = {
 			or = {
 				resource_income_compare = { resource = consumer_goods value > -5 }

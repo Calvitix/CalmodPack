@@ -1,81 +1,89 @@
 # starnet AI File
 #
-# Calvitix Check 3.1.1  16.09.2021
+# Calvitix Check 3.3b2  31.01.2022
 #
+# Merge with STARNET AI 16.09.2021
 # Merge with Starnet OK   16.09.2021
+# #Change by Calvitix, merge with Basic econonmy
+# Base AI economic plans Copy, with Crisis subplan
+
+# Early ---------------------------------------
+
+@rare_resource_target = 4
+@energy_target = 25
+@minerals_target = 30
+@alloy_target = 10
+@machine_empire_alloy_target = 15
+@pops_target = 9000
+@food_target = 10
+@food_target_extra = 20
+@consumer_goods_target = 10
+@research_target = 70
+@scaling_research_target = 25
+@scaling_consumer_goods_target = 1
 
 early_crisis_plan = {
 	income = {
-		energy = 25
-		minerals = 50
+		energy = @energy_target
+		minerals = @minerals_target
 	}
 
 	subplan = {
-		set_name = "Spice melange 100"
+		set_name = "Mélange d'Epices de Starnet 100"
 		potential = { always = yes }
 		income = { starnet_spice_melange = 100}
 	}
 
 	subplan = {
-		set_name = "Food 50 Goods 50"
+		set_name = "base : nourriture 50"
 		potential = {
-			country_uses_consumer_goods = yes
 			country_uses_food = yes
 		}
 
 		income = {
 			food = 50
-			consumer_goods = 50
 		}
-
 	}
 
 	subplan = {
-		set_name = "Goods 50 no_food"
+		set_name = "base : Biens de conso."
 		potential = {
 			country_uses_consumer_goods = yes
-			country_uses_food = no
+			has_monthly_income = { resource = minerals value > @minerals_target }
+			has_monthly_income = { resource = energy value > @energy_target }
+			if = {
+				limit = {
+					country_uses_food = yes
 		}
-
+				has_monthly_income = { resource = food value > @food_target }
+			}		
+		}
 		income = {
 			consumer_goods = 50
 		}
-
-	}
-
-	subplan = {
-		set_name = "Food 50 no_goods"
-		potential = {
-			country_uses_consumer_goods = no
-			country_uses_food = yes
 		}
 
-		income = {
-			food = 50 
-		}
-
-	}
 
 	subplan = {
-		set_name = "Food 1000, str_food_crisis_1"
+		set_name = "Nourr. 1000, str_food_crisis_1"
 		potential = { str_food_crisis_1 = yes }
 		income = { food = 1000 }
 	}
 
 	subplan = {
-		set_name = "minerals 1000, str_minerals_crisis_1"
+		set_name = "Minéraux 1000, str_minerals_crisis_1"
 		potential = { str_minerals_crisis_1 = yes }
 		income = { minerals = 1000 }
 	}
 
 	subplan = {
-		set_name = "energy 1000, str_energy_crisis_1"
+		set_name = "Énergie 1000, str_energy_crisis_1"
 		potential = { str_energy_crisis_1 = yes }
 		income = { energy = 1000 }
 	}
 
 	subplan = {
-		set_name = "goods 500, str_consumer_goods_crisis_1"
+		set_name = "Biens de c. 500, str_consumer_goods_crisis_1"
 		potential = { str_consumer_goods_crisis_1 = yes }
 		income = { consumer_goods = 500 }
 	}
@@ -121,12 +129,12 @@ middle_crisis_plan = {
 	}
 
 	subplan = {
-		set_name = "Spice melange 100"
+		set_name = "Mélange d'Epices Starnet 100"
 		potential = { always = yes }
 		income = { starnet_spice_melange = 100}
 	}
 	subplan = {
-		set_name = "Foods 100, Goods 50 - normal"
+		set_name = "Nourr. 100, Biens 50 - normal"
 		potential = {
 			country_uses_consumer_goods = yes
 			country_uses_food = yes
@@ -140,7 +148,7 @@ middle_crisis_plan = {
 	}
 
 	subplan = {
-		set_name = "Goods 50, no Food"
+		set_name = "Biens de c. 50, pas de Nourr."
 		potential = {
 			country_uses_consumer_goods = yes
 			country_uses_food = no
@@ -154,7 +162,7 @@ middle_crisis_plan = {
 
 	# increased food goals for hiveminds
 	subplan = {
-		set_name = "Food 100, no Goods"
+		set_name = "Nourr. 100, pas de Biens de c."
 		potential = {
 			country_uses_consumer_goods = no
 			country_uses_food = yes
@@ -166,25 +174,25 @@ middle_crisis_plan = {
 	}
 
 	subplan = {
-		set_name = "Food 1000, str_food_crisis_1"
+		set_name = "Nourr. 1000, str_food_crisis_1"
 		potential = { str_food_crisis_1 = yes }
 		income = { food = 1000 }
 	}
 
 	subplan = {
-		set_name = "Minerals 1000, str_minerals_crisis_1"
+		set_name = "Minéraux 1000, str_minerals_crisis_1"
 		potential = { str_minerals_crisis_1 = yes }
 		income = { minerals = 1000 }
 	}
 
 	subplan = {
-		set_name = "Energy 1000, str_energy_crisis_1"
+		set_name = "Énergie 1000, str_energy_crisis_1"
 		potential = { str_energy_crisis_1 = yes }
 		income = { energy = 1000 }
 	}
 
 	subplan = {
-		set_name = "Goods 500, str_consumer_goods_crisis_1"
+		set_name = "Biens de c. 500, str_consumer_goods_crisis_1"
 		potential = { str_consumer_goods_crisis_1 = yes }
 		income = { consumer_goods = 500 }
 	}
@@ -235,7 +243,7 @@ end_crisis_plan = {
 	}
 
 	subplan = {
-		set_name = "Food 100, Goods 50"
+		set_name = "Nourr. 100, Goods 50"
 		potential = {
 			country_uses_consumer_goods = yes
 			country_uses_food = yes
@@ -250,7 +258,7 @@ end_crisis_plan = {
 	}
 
 	subplan = {
-		set_name = "Goods 50, no Food"
+		set_name = "Biens de c. 50, pas de Nourr."
 		potential = {
 			country_uses_consumer_goods = yes
 			country_uses_food = no
@@ -264,7 +272,7 @@ end_crisis_plan = {
 
 	# increased food goals for hiveminds
 	subplan = {
-		set_name = "Food 100 no goods"
+		set_name = "Nourr. 100 no goods"
 		potential = {
 			country_uses_consumer_goods = no
 			country_uses_food = yes
@@ -277,25 +285,25 @@ end_crisis_plan = {
 	}
 
 	subplan = {
-		set_name = "Food 1000, str_food_crisis_1"
+		set_name = "Nourr. 1000, str_food_crisis_1"
 		potential = { str_food_crisis_1 = yes }
 		income = { food = 1000 }
 	}
 
 	subplan = {
-		set_name = "Minerals 1000, str_minerals_crisis_1"
+		set_name = "Minéraux 1000, str_minerals_crisis_1"
 		potential = { str_minerals_crisis_1 = yes }
 		income = { minerals = 1000 }
 	}
 
 	subplan = {
-		set_name = "Energy 1000, str_energy_crisis_1"
+		set_name = "Énergie 1000, str_energy_crisis_1"
 		potential = { str_energy_crisis_1 = yes }
 		income = { energy = 1000 }
 	}
 
 	subplan = {
-		set_name = "Goods 500, str_consumer_goods_crisis_1"
+		set_name = "Biens de c. 500, str_consumer_goods_crisis_1"
 		potential = { str_consumer_goods_crisis_1 = yes }
 		income = { consumer_goods = 500 }
 	}
@@ -360,7 +368,7 @@ ultimate_crisis_plan = {
 
 
 	subplan = {
-		set_name = "Goods 200, no food"
+		set_name = "Biens de c. 200, no food"
 		potential = {
 			country_uses_consumer_goods = yes
 			country_uses_food = no
@@ -373,7 +381,7 @@ ultimate_crisis_plan = {
 
 	# increased food goals for hiveminds
 	subplan = {
-		set_name = "food 200, no Goods"
+		set_name = "food 200, pas de Biens de c."
 		potential = {
 			country_uses_consumer_goods = no
 			country_uses_food = yes
@@ -391,19 +399,19 @@ ultimate_crisis_plan = {
 	}
 
 	subplan = {
-		set_name = "minerals 1000, str_minerals_crisis_1"
+		set_name = "Minéraux 1000, str_minerals_crisis_1"
 		potential = { str_minerals_crisis_1 = yes }
 		income = { minerals = 1000 }
 	}
 
 	subplan = {
-		set_name = "Energy 1000, str_energy_crisis_1"
+		set_name = "Énergie 1000, str_energy_crisis_1"
 		potential = { str_energy_crisis_1 = yes }
 		income = { energy = 1000 }
 	}
 
 	subplan = {
-		set_name = "Goods 500, str_consumer_goods_crisis_1"
+		set_name = "Biens de c. 500, str_consumer_goods_crisis_1"
 		potential = { str_consumer_goods_crisis_1 = yes }
 		income = { consumer_goods = 500 }
 	}
@@ -414,6 +422,7 @@ ultimate_crisis_plan = {
 			str_raw_ecocrisis_level_1 = yes
 			str_consumer_goods_crisis_1 = yes
 		}
+		lategame = yes
 	}
 	empire_size = 1
 

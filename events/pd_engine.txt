@@ -2,7 +2,7 @@
 #
 # Calvitix Check 3.2
 #
-# Last update 03.01.2022
+# Last update 02.02.2022
 #
 #Calvitix Warning : if change in pdengine.00, Have to Change D:\Documents\Paradox Interactive\Stellaris\mod\Calmodpack\events\!!_z_pd_engine_overwrite.txt too
 #
@@ -356,6 +356,10 @@ country_event = {
 		every_galaxy_planet = { limit = { is_planet_class = pc_megaflorahive is_homeworld = yes } generate_pd_start_deposits_and_blockers = yes }
 		#Gaia
 		every_galaxy_planet = { limit = { is_planet_class = pc_gaia } add_deposit = d_pdgaia }
+		#Hot Gaia
+		every_galaxy_planet = { limit = { is_planet_class = pc_hot_gaia } add_deposit = d_pdgaia }
+		#Cold Gaia
+		every_galaxy_planet = { limit = { is_planet_class = pc_cold_gaia } add_deposit = d_pdgaia }
 	}
 }
 
@@ -1490,7 +1494,7 @@ country_event = {
 	}
 }
 
-# City Worlds Remove EE Levels
+# Check Planet Class for Deposits + Modifiers
 planet_event = {
 	id = pdengine.13
 	hide_window = yes
@@ -1502,6 +1506,8 @@ planet_event = {
 				OR = {
 					is_planet_class = pc_machine
 					is_planet_class = pc_gaia
+					is_planet_class = pc_cold_gaia
+					is_planet_class = pc_hot_gaia
 					is_planet_class = pc_hive
 					is_planet_class = pc_aquatic
 				}
@@ -1688,7 +1694,7 @@ planet_event = {
 		remove_building = building_subsurface_assembly
 		}
 		if = { 
-		limit = { NOT = { is_planet_class = pc_gaia } }
+		limit = { NOT = { OR = { is_planet_class = pc_gaia is_planet_class = pc_cold_gaia is_planet_class = pc_hot_gaia } } }
 		remove_deposit = d_pdgaia
 		}
 		if = { 
@@ -1717,21 +1723,47 @@ planet_event = {
 						is_planet_class = pc_hothouse 
 						is_planet_class = pc_toxic 
 						is_planet_class = pc_gas_giant 
+						is_planet_class = pc_pd_hothouse_hab 
+						is_planet_class = pc_pd_toxic_hab
+						is_planet_class = pc_pd_gas_giant_hab 
 					}
 				} 
 			}
 		remove_modifier = pdhabcalmwinds
 		}
 		if = { 
-		limit = { NOT = { is_planet_class = pc_barren } }
+			limit = { 
+				NOT = { 
+					OR = {
+						is_planet_class = pc_barren 
+						is_planet_class = pc_barren_cold
+						is_planet_class = pc_pd_barren_hab 
+						is_planet_class = pc_pd_barren_cold_hab
+					}
+				} 
+			}
 		remove_modifier = pdhabcavesystem
 		}
 		if = { 
-		limit = { NOT = { is_planet_class = pc_frozen } }
+			limit = { 
+				NOT = { 
+					OR = {
+						is_planet_class = pc_frozen 
+						is_planet_class = pc_pd_frozen_hab
+					}
+				} 
+			}
 		remove_modifier = pdhabsubglacialocean
 		}
 		if = { 
-		limit = { NOT = { is_planet_class = pc_molten } }
+			limit = { 
+				NOT = { 
+					OR = {
+						is_planet_class = pc_molten 
+						is_planet_class = pc_pd_molten_hab
+					}
+				} 
+			}
 		remove_modifier = pdhabvolcanicminerals
 		}
 		if = { 
@@ -1955,7 +1987,8 @@ planet_event = {
 		add_modifier = { modifier = "radiotrophic" days = -1 }
 		}
 		if = { 
-		limit = { is_planet_class = pc_gaia }
+		limit = { OR = { is_planet_class = pc_gaia is_planet_class = pc_cold_gaia is_planet_class = pc_hot_gaia } 
+		}
 		if = { limit = { not = { has_deposit = d_pdgaia } } add_deposit = d_pdgaia }
 		remove_modifier = engineered_environment
 		remove_modifier = engineered_environment_gaia
@@ -1997,15 +2030,16 @@ country_event = {
 	fire_only_once = yes
 	immediate = {
 		every_galaxy_planet = {
-			limit = { 
-				is_planet_class = pc_aquatic
-				is_homeworld = no 
-				is_colony = no
+			limit = { is_planet_class = pc_aquatic is_homeworld = no is_colony = no	}
+			random_list = {
+				40 = { set_planet_entity = { picture = pc_aquatic_surface } }
+				30 = { set_planet_entity = { entity = "aquatichot_planet_01_entity" picture = pc_aquatichot } set_planet_flag = hotaquatic }
+				30 = { set_planet_entity = { entity = "aquaticcold_planet_01_entity" picture = pc_aquaticcold } set_planet_flag = coldaquatic }
 				}
-				random_list = {
-					50 = { set_planet_entity = { picture = pc_aquatic_surface } }
-					25 = { set_planet_entity = { entity = "aquatichot_planet_01_entity" picture = pc_aquatichot } set_planet_flag = hotaquatic }
-					25 = { set_planet_entity = { entity = "aquaticcold_planet_01_entity" picture = pc_aquaticcold } set_planet_flag = coldaquatic }
+			while = {
+				limit = { has_deposit = d_dense_jungle }
+				remove_deposit = d_dense_jungle
+				set_deposit = d_toxic_kelp
 			}
 		}
 	}
@@ -2041,6 +2075,8 @@ planet_event = {
 			is_planet_class = pc_hajungle
 			is_planet_class = pc_cenote
 			is_planet_class = pc_gaia
+			is_planet_class = pc_hot_gaia
+			is_planet_class = pc_cold_gaia
 			is_planet_class = pc_prairie
 			is_planet_class = pc_steppe
 			is_planet_class = pc_veld
@@ -2125,6 +2161,7 @@ planet_event = {
 			IF = { limit = { is_planet_class = pc_snow } set_planet_entity = { picture = pc_aquaticcold_uw } set_planet_flag = pdaquapicture set_planet_flag = coldaquatic }
 			IF = { limit = { is_planet_class = pc_tundra } set_planet_entity = { picture = pc_aquaticcold_uw } set_planet_flag = pdaquapicture set_planet_flag = coldaquatic }
 			IF = { limit = { is_planet_class = pc_frozen_desert } set_planet_entity = { picture = pc_aquaticcold_uw } set_planet_flag = pdaquapicture set_planet_flag = coldaquatic }
+			IF = { limit = { is_planet_class = pc_cold_gaia } set_planet_entity = { picture = pc_aquaticcold_uw } set_planet_flag = pdaquapicture set_planet_flag = coldaquatic }
 			#Tropical
 			IF = { limit = { is_planet_class = pc_desertislands } set_planet_entity = { picture = pc_aquatichot_uw } set_planet_flag = pdaquapicture set_planet_flag = hotaquatic }
 			IF = { limit = { is_planet_class = pc_tropical } set_planet_entity = { picture = pc_aquatichot_uw } set_planet_flag = pdaquapicture set_planet_flag = hotaquatic }
@@ -2135,6 +2172,7 @@ planet_event = {
 			IF = { limit = { is_planet_class = pc_med } set_planet_entity = { picture = pc_aquatichot_uw } set_planet_flag = pdaquapicture set_planet_flag = hotaquatic }
 			IF = { limit = { is_planet_class = pc_savannah } set_planet_entity = { picture = pc_aquatichot_uw } set_planet_flag = pdaquapicture set_planet_flag = hotaquatic }
 			IF = { limit = { is_planet_class = pc_gaia } set_planet_entity = { picture = pc_aquatichot_uw } set_planet_flag = pdaquapicture set_planet_flag = hotaquatic }
+			IF = { limit = { is_planet_class = pc_hot_gaia } set_planet_entity = { picture = pc_aquatichot_uw } set_planet_flag = pdaquapicture set_planet_flag = hotaquatic }
 			IF = { limit = { is_planet_class = pc_ringworld_habitable } set_planet_entity = { picture = pc_aquatichot_uw } set_planet_flag = pdaquapicture set_planet_flag = hotaquatic }
 			IF = { limit = { is_planet_class = pc_mesa } set_planet_entity = { picture = pc_aquatichot_uw } set_planet_flag = pdaquapicture set_planet_flag = hotaquatic }
 			IF = { limit = { is_planet_class = pc_badlands } set_planet_entity = { picture = pc_aquatichot_uw } set_planet_flag = pdaquapicture set_planet_flag = hotaquatic }
@@ -2205,6 +2243,8 @@ planet_event = {
 				NOT = { is_planet_class = pc_alpine }
 				NOT = { is_planet_class = pc_savannah }
 				NOT = { is_planet_class = pc_gaia }
+				NOT = { is_planet_class = pc_hot_gaia }
+				NOT = { is_planet_class = pc_cold_gaia }
 				NOT = { is_planet_class = pc_relic }
 				NOT = { is_planet_class = pc_milarc_relic }
 				NOT = { is_planet_class = pc_archive }
@@ -6942,406 +6982,6 @@ country_event = {
 		IF = { 
 			limit = { 
 				OR = {
-					galaxy_size = medium
-					galaxy_size = large 
-				}
-			}
-			while = {
-				count = 4
-				random_galaxy_planet = { 		
-					limit = { 
-						is_planet_class = pc_barren 
-						planet_size > 11 
-						planet_size < 26 
-						is_moon = no 
-						is_homeworld = no
-						solar_system = { any_system_planet = { is_planet_class = pc_m_star } } 
-						NOR = { 
-							has_moon = yes  
-							has_planet_flag = pd_ignore 
-							solar_system = { has_star_flag = empire_cluster } } 
-					}
-					change_pc = pc_tidallylocked_barren 
-					clear_planet_modifiers = yes 
-					remove_modifier = terraforming_candidate
-					clear_deposits = yes  
-					add_deposit = d_physics_5 
-					add_modifier = { modifier = pdterra_tidallocked }
-				}
-			}
-			while = {
-				count = 2
-				random_galaxy_planet = { 		
-					limit = { 
-						OR = {
-							is_planet_class = pc_barren_cold 
-							is_planet_class = pc_broken
-						}
-						planet_size > 11 
-						planet_size < 26 
-						is_moon = no
-						is_homeworld = no 
-						solar_system = { any_system_planet = { is_planet_class = pc_black_hole } } 
-						NOR = { 
-							has_moon = yes  
-							has_planet_flag = pd_ignore 
-							solar_system = { has_star_flag = empire_cluster } } 
-					}
-					change_pc = pc_rogue_barren 
-					clear_planet_modifiers = yes 
-					clear_deposits = yes  
-					add_deposit = d_physics_5 
-					add_modifier = { modifier = pdterra_rogue }
-				}
-			}
-			while = {
-				count = 2
-				random_galaxy_planet = { 		
-					limit = { 
-						is_planet_class = pc_barren_cold 
-						planet_size > 11 
-						planet_size < 26 
-						is_homeworld = no 
-						NOR = { 
-							has_planet_flag = pd_ignore 
-							solar_system = { has_star_flag = empire_cluster } } 
-						}
-					clear_planet_modifiers = yes 
-					clear_deposits = yes  
-					add_deposit = d_minerals_5 
-					add_modifier = { modifier = pdterra_lanthanide }
-				}
-			}
-			while = {
-				count = 2
-				random_galaxy_planet = { 		
-					limit = { 
-						is_planet_class = pc_barren_cold 
-						planet_size > 11 
-						planet_size < 26 
-						is_homeworld = no 
-						NOR = { 
-							has_planet_flag = pd_ignore 
-							solar_system = { has_star_flag = empire_cluster } } 
-						}
-					clear_planet_modifiers = yes 
-					clear_deposits = yes  
-					add_deposit = d_minerals_5 
-					add_modifier = { modifier = pdterra_karst }
-				}
-			}
-			while = {
-				count = 2
-				random_galaxy_planet = { 		
-					limit = { 
-						is_planet_class = pc_frozen 
-						planet_size > 11 
-						planet_size < 26 
-						is_homeworld = no 
-						NOR = { 
-							has_planet_flag = pd_ignore 
-							solar_system = { has_star_flag = empire_cluster } } 
-						}
-					clear_planet_modifiers = yes 
-					clear_deposits = yes  
-					add_deposit = d_alloys_5 
-					add_modifier = { modifier = pdterra_geothermal }
-				}
-			}
-			while = {
-				count = 2
-				random_galaxy_planet = { 		
-					limit = { 
-						is_planet_class = pc_barren 
-						planet_size > 25 
-						planet_size < 31
-						is_homeworld = no 
-						NOR = { 
-							has_planet_flag = pd_ignore 
-							solar_system = { has_star_flag = empire_cluster } } 
-						}
-					clear_planet_modifiers = yes 
-					clear_deposits = yes  
-					add_deposit = d_minerals_5 
-					add_modifier = { modifier = pdterra_superhabitable }
-				}
-			}
-			while = {
-				count = 2
-				random_galaxy_planet = { 		
-					limit = { 
-						is_planet_class = pc_barren 
-						planet_size > 10 
-						planet_size < 26
-						is_homeworld = no 
-						NOR = { 
-							has_planet_flag = pd_ignore 
-							solar_system = { has_star_flag = empire_cluster } } 
-						}
-					clear_planet_modifiers = yes 
-					clear_deposits = yes  
-					add_deposit = d_minerals_5 
-					add_modifier = { modifier = pdterra_salt }
-				}
-			}
-			while = {
-				count = 2
-				random_galaxy_planet = { 		
-					limit = { 
-						is_planet_class = pc_molten 
-						planet_size > 10 
-						planet_size < 26
-						is_homeworld = no 
-						NOR = { 
-							has_planet_flag = pd_ignore 
-							solar_system = { has_star_flag = empire_cluster } } 
-						}
-					clear_planet_modifiers = yes 
-					clear_deposits = yes  
-					add_deposit = d_alloys_5 
-					add_modifier = { modifier = pdterra_primal }
-				}
-			}
-			while = {
-				count = 3
-				random_galaxy_planet = { 		
-					limit = { 
-						is_planet_class = pc_frozen 
-						planet_size > 10 
-						planet_size < 26
-						is_homeworld = no 
-						NOR = { 
-							has_planet_flag = pd_ignore 
-							solar_system = { has_star_flag = empire_cluster } } 
-						}
-					clear_planet_modifiers = yes 
-					clear_deposits = yes  
-					add_deposit = d_society_5 
-					add_modifier = { modifier = pdterra_aquatic }
-				}
-			}
-			while = {
-				count = 2
-				random_galaxy_planet = { 		
-					limit = { 
-						OR = {
-							is_planet_class = pc_glacial 
-							is_planet_class = pc_arctic 
-							is_planet_class = pc_frozen_desert
-							is_planet_class = pc_aeolian 
-							is_planet_class = pc_antarctic 
-						}
-						is_homeworld = no  
-						NOR = { 
-							has_planet_flag = pd_ignore 
-							solar_system = { has_star_flag = empire_cluster } 
-							has_modifier = pdterra_storm
-						}
-					}
-					change_pc = pc_glacial
-					set_planet_flag = pd_ignore
-					clear_planet_modifiers = yes 
-					add_modifier = { modifier = pdterra_storm }
-				}
-			}
-			while = {
-				count = 2
-				random_galaxy_planet = { 		
-					limit = { 
-						OR = {
-							is_planet_class = pc_tundra 
-							is_planet_class = pc_mushroom 
-							is_planet_class = pc_mud
-							is_planet_class = pc_swamp
-							is_planet_class = pc_basalt 
-						}
-						is_homeworld = no 
-						NOR = { 
-							has_planet_flag = pd_ignore 
-							solar_system = { has_star_flag = empire_cluster } 
-							has_modifier = pdterra_storm
-						}
-					}
-					change_pc = pc_tundra
-					set_planet_flag = pd_ignore
-					clear_planet_modifiers = yes 
-					add_modifier = { modifier = pdterra_lichen }
-				}
-			}
-			while = {
-				count = 2
-				random_galaxy_planet = { 		
-					limit = { 
-						OR = {
-							is_planet_class = pc_alpine 
-							is_planet_class = pc_boreal 
-							is_planet_class = pc_highland
-							is_planet_class = pc_duneforest
-							is_planet_class = pc_snow 
-						}
-						is_homeworld = no 
-						NOR = { 
-							has_planet_flag = pd_ignore 
-							solar_system = { has_star_flag = empire_cluster } 
-							has_modifier = pdterra_storm
-						}
-					}
-					change_pc = pc_alpine
-					set_planet_flag = pd_ignore
-					clear_planet_modifiers = yes 
-					add_modifier = { modifier = pdterra_glacio }
-				}
-			}
-			while = {
-				count = 2
-				random_galaxy_planet = { 		
-					limit = { 
-						OR = {
-							is_planet_class = pc_continental 
-							is_planet_class = pc_forest 
-							is_planet_class = pc_retinal
-							is_planet_class = pc_tepid
-							is_planet_class = pc_lake 
-						}
-						is_homeworld = no
-						NOR = { 
-							has_planet_flag = pd_ignore 
-							solar_system = { has_star_flag = empire_cluster } 
-							has_modifier = pdterra_storm
-						}
-					}
-					change_pc = pc_forest
-					set_planet_flag = pd_ignore
-					clear_planet_modifiers = yes 
-					add_modifier = { modifier = pdterra_megaflora }
-				}
-			}
-			while = {
-				count = 2
-				random_galaxy_planet = { 		
-					limit = { 
-						OR = {
-							is_planet_class = pc_tropical 
-							is_planet_class = pc_mangrove 
-							is_planet_class = pc_hajungle
-							is_planet_class = pc_cenote
-							is_planet_class = pc_desertislands
-						}
-						is_homeworld = no
-						NOR = { 
-							has_planet_flag = pd_ignore 
-							solar_system = { has_star_flag = empire_cluster } 
-							has_modifier = pdterra_storm
-						}
-					}
-					change_pc = pc_tropical
-					set_planet_flag = pd_ignore
-					clear_planet_modifiers = yes 
-					add_modifier = { modifier = pdterra_biolumen }
-				}
-			}
-			while = {
-				count = 2
-				random_galaxy_planet = { 		
-					limit = { 
-						OR = {
-							is_planet_class = pc_ocean 
-							is_planet_class = pc_fog 
-							is_planet_class = pc_cascadian
-							is_planet_class = pc_subarctic
-							is_planet_class = pc_wetswamp
-						}
-						is_homeworld = no
-						NOR = { 
-							has_planet_flag = pd_ignore 
-							has_planet_flag = living_planet
-							solar_system = { has_star_flag = empire_cluster } 
-							has_modifier = pdterra_reef
-						}
-					}
-					change_pc = pc_ocean
-					set_planet_flag = pd_ignore
-					clear_planet_modifiers = yes 
-					add_modifier = { modifier = pdterra_reef }
-				}
-			}
-			while = {
-				count = 2
-				random_galaxy_planet = { 		
-					limit = { 
-						OR = {
-							is_planet_class = pc_sandsea 
-							is_planet_class = pc_desert 
-							is_planet_class = pc_oasis
-							is_planet_class = pc_outback
-							is_planet_class = pc_coastal
-						}
-						is_homeworld = no
-						NOR = { 
-							has_planet_flag = pd_ignore 
-							solar_system = { has_star_flag = empire_cluster } 
-							has_modifier = pdterra_aquifer
-						}
-					}
-					change_pc = pc_sandsea
-					set_planet_flag = pd_ignore
-					clear_planet_modifiers = yes 
-					add_modifier = { modifier = pdterra_aquifer }
-				}
-			}
-			while = {
-				count = 2
-				random_galaxy_planet = { 		
-					limit = { 
-						OR = {
-							is_planet_class = pc_arid 
-							is_planet_class = pc_mesa
-							is_planet_class = pc_med
-							is_planet_class = pc_hadesert
-							is_planet_class = pc_badlands
-						}
-						is_homeworld = no
-						NOR = { 
-							has_planet_flag = pd_ignore 
-							solar_system = { has_star_flag = empire_cluster } 
-							has_modifier = pdterra_coral
-						}
-					}
-					change_pc = pc_arid
-					set_planet_flag = pd_ignore
-					clear_planet_modifiers = yes 
-					add_modifier = { modifier = pdterra_coral }
-				}
-			}
-			while = {
-				count = 2
-				random_galaxy_planet = { 		
-					limit = { 
-						OR = {
-							is_planet_class = pc_savannah 
-							is_planet_class = pc_semiarid 
-							is_planet_class = pc_steppe
-							is_planet_class = pc_prairie
-							is_planet_class = pc_veld
-						}
-						is_homeworld = no
-						NOR = { 
-							has_planet_flag = pd_ignore 
-							solar_system = { has_star_flag = empire_cluster } 
-							has_modifier = pdterra_supercon
-						}
-					}
-					change_pc = pc_savannah
-					set_planet_flag = pd_ignore
-					clear_planet_modifiers = yes 
-					add_modifier = { modifier = pdterra_supercon }
-				}
-			}
-		}
-		IF = { 
-			limit = { 
-				OR = {
-					galaxy_size = small
 					galaxy_size = tiny 
 				}
 			}
@@ -7740,7 +7380,803 @@ country_event = {
 		IF = { 
 			limit = { 
 				OR = {
-					galaxy_size = huge
+					galaxy_size = small
+				}
+			}
+			while = {
+				count = 4
+				random_galaxy_planet = { 		
+					limit = { 
+						is_planet_class = pc_barren 
+						planet_size > 11 
+						planet_size < 26 
+						is_moon = no 
+						is_homeworld = no
+						solar_system = { any_system_planet = { is_planet_class = pc_m_star } } 
+						NOR = { 
+							has_moon = yes  
+							has_planet_flag = pd_ignore 
+							solar_system = { has_star_flag = empire_cluster } } 
+					}
+					change_pc = pc_tidallylocked_barren 
+					clear_planet_modifiers = yes 
+					remove_modifier = terraforming_candidate
+					clear_deposits = yes  
+					add_deposit = d_physics_5 
+					add_modifier = { modifier = pdterra_tidallocked }
+				}
+			}
+			while = {
+				count = 2
+				random_galaxy_planet = { 		
+					limit = { 
+						OR = {
+							is_planet_class = pc_barren_cold 
+							is_planet_class = pc_broken
+						}
+						planet_size > 11 
+						planet_size < 26 
+						is_moon = no
+						is_homeworld = no 
+						solar_system = { any_system_planet = { is_planet_class = pc_black_hole } } 
+						NOR = { 
+							has_moon = yes  
+							has_planet_flag = pd_ignore 
+							solar_system = { has_star_flag = empire_cluster } } 
+					}
+					change_pc = pc_rogue_barren 
+					clear_planet_modifiers = yes 
+					clear_deposits = yes  
+					add_deposit = d_physics_5 
+					add_modifier = { modifier = pdterra_rogue }
+				}
+			}
+			while = {
+				count = 2
+				random_galaxy_planet = { 		
+					limit = { 
+						is_planet_class = pc_barren_cold 
+						planet_size > 11 
+						planet_size < 26 
+						is_homeworld = no 
+						NOR = { 
+							has_planet_flag = pd_ignore 
+							solar_system = { has_star_flag = empire_cluster } } 
+						}
+					clear_planet_modifiers = yes 
+					clear_deposits = yes  
+					add_deposit = d_minerals_5 
+					add_modifier = { modifier = pdterra_lanthanide }
+				}
+			}
+			while = {
+				count = 2
+				random_galaxy_planet = { 		
+					limit = { 
+						is_planet_class = pc_barren_cold 
+						planet_size > 11 
+						planet_size < 26 
+						is_homeworld = no 
+						NOR = { 
+							has_planet_flag = pd_ignore 
+							solar_system = { has_star_flag = empire_cluster } } 
+						}
+					clear_planet_modifiers = yes 
+					clear_deposits = yes  
+					add_deposit = d_minerals_5 
+					add_modifier = { modifier = pdterra_karst }
+				}
+			}
+			while = {
+				count = 2
+				random_galaxy_planet = { 		
+					limit = { 
+						is_planet_class = pc_frozen 
+						planet_size > 11 
+						planet_size < 26 
+						is_homeworld = no 
+						NOR = { 
+							has_planet_flag = pd_ignore 
+							solar_system = { has_star_flag = empire_cluster } } 
+						}
+					clear_planet_modifiers = yes 
+					clear_deposits = yes  
+					add_deposit = d_alloys_5 
+					add_modifier = { modifier = pdterra_geothermal }
+				}
+			}
+			while = {
+				count = 2
+				random_galaxy_planet = { 		
+					limit = { 
+						is_planet_class = pc_barren 
+						planet_size > 25 
+						planet_size < 31
+						is_homeworld = no 
+						NOR = { 
+							has_planet_flag = pd_ignore 
+							solar_system = { has_star_flag = empire_cluster } } 
+						}
+					clear_planet_modifiers = yes 
+					clear_deposits = yes  
+					add_deposit = d_minerals_5 
+					add_modifier = { modifier = pdterra_superhabitable }
+				}
+			}
+			while = {
+				count = 2
+				random_galaxy_planet = { 		
+					limit = { 
+						is_planet_class = pc_barren 
+						planet_size > 10 
+						planet_size < 26
+						is_homeworld = no 
+						NOR = { 
+							has_planet_flag = pd_ignore 
+							solar_system = { has_star_flag = empire_cluster } } 
+						}
+					clear_planet_modifiers = yes 
+					clear_deposits = yes  
+					add_deposit = d_minerals_5 
+					add_modifier = { modifier = pdterra_salt }
+				}
+			}
+			while = {
+				count = 2
+				random_galaxy_planet = { 		
+					limit = { 
+						is_planet_class = pc_molten 
+						planet_size > 10 
+						planet_size < 26
+						is_homeworld = no 
+						NOR = { 
+							has_planet_flag = pd_ignore 
+							solar_system = { has_star_flag = empire_cluster } } 
+						}
+					clear_planet_modifiers = yes 
+					clear_deposits = yes  
+					add_deposit = d_alloys_5 
+					add_modifier = { modifier = pdterra_primal }
+				}
+			}
+			while = {
+				count = 4
+				random_galaxy_planet = { 		
+					limit = { 
+						is_planet_class = pc_frozen 
+						planet_size > 10 
+						planet_size < 26
+						is_homeworld = no 
+						NOR = { 
+							has_planet_flag = pd_ignore 
+							solar_system = { has_star_flag = empire_cluster } } 
+						}
+					clear_planet_modifiers = yes 
+					clear_deposits = yes  
+					add_deposit = d_society_5 
+					add_modifier = { modifier = pdterra_aquatic }
+				}
+			}
+			while = {
+				count = 2
+				random_galaxy_planet = { 		
+					limit = { 
+						OR = {
+							is_planet_class = pc_glacial 
+							is_planet_class = pc_arctic 
+							is_planet_class = pc_frozen_desert
+							is_planet_class = pc_aeolian 
+							is_planet_class = pc_antarctic 
+						}
+						is_homeworld = no  
+						NOR = { 
+							has_planet_flag = pd_ignore 
+							solar_system = { has_star_flag = empire_cluster } 
+							has_modifier = pdterra_storm
+						}
+					}
+					change_pc = pc_glacial
+					set_planet_flag = pd_ignore
+					clear_planet_modifiers = yes 
+					add_modifier = { modifier = pdterra_storm }
+				}
+			}
+			while = {
+				count = 2
+				random_galaxy_planet = { 		
+					limit = { 
+						OR = {
+							is_planet_class = pc_tundra 
+							is_planet_class = pc_mushroom 
+							is_planet_class = pc_mud
+							is_planet_class = pc_swamp
+							is_planet_class = pc_basalt 
+						}
+						is_homeworld = no 
+						NOR = { 
+							has_planet_flag = pd_ignore 
+							solar_system = { has_star_flag = empire_cluster } 
+							has_modifier = pdterra_storm
+						}
+					}
+					change_pc = pc_tundra
+					set_planet_flag = pd_ignore
+					clear_planet_modifiers = yes 
+					add_modifier = { modifier = pdterra_lichen }
+				}
+			}
+			while = {
+				count = 2
+				random_galaxy_planet = { 		
+					limit = { 
+						OR = {
+							is_planet_class = pc_alpine 
+							is_planet_class = pc_boreal 
+							is_planet_class = pc_highland
+							is_planet_class = pc_duneforest
+							is_planet_class = pc_snow 
+						}
+						is_homeworld = no 
+						NOR = { 
+							has_planet_flag = pd_ignore 
+							solar_system = { has_star_flag = empire_cluster } 
+							has_modifier = pdterra_storm
+						}
+					}
+					change_pc = pc_alpine
+					set_planet_flag = pd_ignore
+					clear_planet_modifiers = yes 
+					add_modifier = { modifier = pdterra_glacio }
+				}
+			}
+			while = {
+				count = 2
+				random_galaxy_planet = { 		
+					limit = { 
+						OR = {
+							is_planet_class = pc_continental 
+							is_planet_class = pc_forest 
+							is_planet_class = pc_retinal
+							is_planet_class = pc_tepid
+							is_planet_class = pc_lake 
+						}
+						is_homeworld = no
+						NOR = { 
+							has_planet_flag = pd_ignore 
+							solar_system = { has_star_flag = empire_cluster } 
+							has_modifier = pdterra_storm
+						}
+					}
+					change_pc = pc_forest
+					set_planet_flag = pd_ignore
+					clear_planet_modifiers = yes 
+					add_modifier = { modifier = pdterra_megaflora }
+				}
+			}
+			while = {
+				count = 2
+				random_galaxy_planet = { 		
+					limit = { 
+						OR = {
+							is_planet_class = pc_tropical 
+							is_planet_class = pc_mangrove 
+							is_planet_class = pc_hajungle
+							is_planet_class = pc_cenote
+							is_planet_class = pc_desertislands
+						}
+						is_homeworld = no
+						NOR = { 
+							has_planet_flag = pd_ignore 
+							solar_system = { has_star_flag = empire_cluster } 
+							has_modifier = pdterra_storm
+						}
+					}
+					change_pc = pc_tropical
+					set_planet_flag = pd_ignore
+					clear_planet_modifiers = yes 
+					add_modifier = { modifier = pdterra_biolumen }
+				}
+			}
+			while = {
+				count = 2
+				random_galaxy_planet = { 		
+					limit = { 
+						OR = {
+							is_planet_class = pc_ocean 
+							is_planet_class = pc_fog 
+							is_planet_class = pc_cascadian
+							is_planet_class = pc_subarctic
+							is_planet_class = pc_wetswamp
+						}
+						is_homeworld = no
+						NOR = { 
+							has_planet_flag = pd_ignore 
+							has_planet_flag = living_planet
+							solar_system = { has_star_flag = empire_cluster } 
+							has_modifier = pdterra_reef
+						}
+					}
+					change_pc = pc_ocean
+					set_planet_flag = pd_ignore
+					clear_planet_modifiers = yes 
+					add_modifier = { modifier = pdterra_reef }
+				}
+			}
+			while = {
+				count = 2
+				random_galaxy_planet = { 		
+					limit = { 
+						OR = {
+							is_planet_class = pc_sandsea 
+							is_planet_class = pc_desert 
+							is_planet_class = pc_oasis
+							is_planet_class = pc_outback
+							is_planet_class = pc_coastal
+						}
+						is_homeworld = no
+						NOR = { 
+							has_planet_flag = pd_ignore 
+							solar_system = { has_star_flag = empire_cluster } 
+							has_modifier = pdterra_aquifer
+						}
+					}
+					change_pc = pc_sandsea
+					set_planet_flag = pd_ignore
+					clear_planet_modifiers = yes 
+					add_modifier = { modifier = pdterra_aquifer }
+				}
+			}
+			while = {
+				count = 2
+				random_galaxy_planet = { 		
+					limit = { 
+						OR = {
+							is_planet_class = pc_arid 
+							is_planet_class = pc_mesa
+							is_planet_class = pc_med
+							is_planet_class = pc_hadesert
+							is_planet_class = pc_badlands
+						}
+						is_homeworld = no
+						NOR = { 
+							has_planet_flag = pd_ignore 
+							solar_system = { has_star_flag = empire_cluster } 
+							has_modifier = pdterra_coral
+						}
+					}
+					change_pc = pc_arid
+					set_planet_flag = pd_ignore
+					clear_planet_modifiers = yes 
+					add_modifier = { modifier = pdterra_coral }
+				}
+			}
+			while = {
+				count = 2
+				random_galaxy_planet = { 		
+					limit = { 
+						OR = {
+							is_planet_class = pc_savannah 
+							is_planet_class = pc_semiarid 
+							is_planet_class = pc_steppe
+							is_planet_class = pc_prairie
+							is_planet_class = pc_veld
+						}
+						is_homeworld = no
+						NOR = { 
+							has_planet_flag = pd_ignore 
+							solar_system = { has_star_flag = empire_cluster } 
+							has_modifier = pdterra_supercon
+						}
+					}
+					change_pc = pc_savannah
+					set_planet_flag = pd_ignore
+					clear_planet_modifiers = yes 
+					add_modifier = { modifier = pdterra_supercon }
+				}
+			}
+		}
+		IF = { 
+			limit = { 
+				OR = {
+					galaxy_size = medium
+				}
+			}
+			while = {
+				count = 6
+				random_galaxy_planet = { 		
+					limit = { 
+						is_planet_class = pc_barren 
+						planet_size > 11 
+						planet_size < 26 
+						is_moon = no 
+						is_homeworld = no
+						solar_system = { any_system_planet = { is_planet_class = pc_m_star } } 
+						NOR = { 
+							has_moon = yes  
+							has_planet_flag = pd_ignore 
+							solar_system = { has_star_flag = empire_cluster } } 
+					}
+					change_pc = pc_tidallylocked_barren 
+					clear_planet_modifiers = yes 
+					remove_modifier = terraforming_candidate
+					clear_deposits = yes  
+					add_deposit = d_physics_5 
+					add_modifier = { modifier = pdterra_tidallocked }
+				}
+			}
+			while = {
+				count = 3
+				random_galaxy_planet = { 		
+					limit = { 
+						OR = {
+							is_planet_class = pc_barren_cold 
+							is_planet_class = pc_broken
+						}
+						planet_size > 11 
+						planet_size < 26 
+						is_moon = no
+						is_homeworld = no 
+						solar_system = { any_system_planet = { is_planet_class = pc_black_hole } } 
+						NOR = { 
+							has_moon = yes  
+							has_planet_flag = pd_ignore 
+							solar_system = { has_star_flag = empire_cluster } } 
+					}
+					change_pc = pc_rogue_barren 
+					clear_planet_modifiers = yes 
+					clear_deposits = yes  
+					add_deposit = d_physics_5 
+					add_modifier = { modifier = pdterra_rogue }
+				}
+			}
+			while = {
+				count = 3
+				random_galaxy_planet = { 		
+					limit = { 
+						is_planet_class = pc_barren_cold 
+						planet_size > 11 
+						planet_size < 26 
+						is_homeworld = no 
+						NOR = { 
+							has_planet_flag = pd_ignore 
+							solar_system = { has_star_flag = empire_cluster } } 
+						}
+					clear_planet_modifiers = yes 
+					clear_deposits = yes  
+					add_deposit = d_minerals_5 
+					add_modifier = { modifier = pdterra_lanthanide }
+				}
+			}
+			while = {
+				count = 3
+				random_galaxy_planet = { 		
+					limit = { 
+						is_planet_class = pc_barren_cold 
+						planet_size > 11 
+						planet_size < 26 
+						is_homeworld = no 
+						NOR = { 
+							has_planet_flag = pd_ignore 
+							solar_system = { has_star_flag = empire_cluster } } 
+						}
+					clear_planet_modifiers = yes 
+					clear_deposits = yes  
+					add_deposit = d_minerals_5 
+					add_modifier = { modifier = pdterra_karst }
+				}
+			}
+			while = {
+				count = 3
+				random_galaxy_planet = { 		
+					limit = { 
+						is_planet_class = pc_frozen 
+						planet_size > 11 
+						planet_size < 26 
+						is_homeworld = no 
+						NOR = { 
+							has_planet_flag = pd_ignore 
+							solar_system = { has_star_flag = empire_cluster } } 
+						}
+					clear_planet_modifiers = yes 
+					clear_deposits = yes  
+					add_deposit = d_alloys_5 
+					add_modifier = { modifier = pdterra_geothermal }
+				}
+			}
+			while = {
+				count = 3
+				random_galaxy_planet = { 		
+					limit = { 
+						is_planet_class = pc_barren 
+						planet_size > 25 
+						planet_size < 31
+						is_homeworld = no 
+						NOR = { 
+							has_planet_flag = pd_ignore 
+							solar_system = { has_star_flag = empire_cluster } } 
+						}
+					clear_planet_modifiers = yes 
+					clear_deposits = yes  
+					add_deposit = d_minerals_5 
+					add_modifier = { modifier = pdterra_superhabitable }
+				}
+			}
+			while = {
+				count = 3
+				random_galaxy_planet = { 		
+					limit = { 
+						is_planet_class = pc_barren 
+						planet_size > 10 
+						planet_size < 26
+						is_homeworld = no 
+						NOR = { 
+							has_planet_flag = pd_ignore 
+							solar_system = { has_star_flag = empire_cluster } } 
+						}
+					clear_planet_modifiers = yes 
+					clear_deposits = yes  
+					add_deposit = d_minerals_5 
+					add_modifier = { modifier = pdterra_salt }
+				}
+			}
+			while = {
+				count = 3
+				random_galaxy_planet = { 		
+					limit = { 
+						is_planet_class = pc_molten 
+						planet_size > 10 
+						planet_size < 26
+						is_homeworld = no 
+						NOR = { 
+							has_planet_flag = pd_ignore 
+							solar_system = { has_star_flag = empire_cluster } } 
+						}
+					clear_planet_modifiers = yes 
+					clear_deposits = yes  
+					add_deposit = d_alloys_5 
+					add_modifier = { modifier = pdterra_primal }
+				}
+			}
+			while = {
+				count = 6
+				random_galaxy_planet = { 		
+					limit = { 
+						is_planet_class = pc_frozen 
+						planet_size > 10 
+						planet_size < 26
+						is_homeworld = no 
+						NOR = { 
+							has_planet_flag = pd_ignore 
+							solar_system = { has_star_flag = empire_cluster } } 
+						}
+					clear_planet_modifiers = yes 
+					clear_deposits = yes  
+					add_deposit = d_society_5 
+					add_modifier = { modifier = pdterra_aquatic }
+				}
+			}
+			while = {
+				count = 3
+				random_galaxy_planet = { 		
+					limit = { 
+						OR = {
+							is_planet_class = pc_glacial 
+							is_planet_class = pc_arctic 
+							is_planet_class = pc_frozen_desert
+							is_planet_class = pc_aeolian 
+							is_planet_class = pc_antarctic 
+						}
+						is_homeworld = no  
+						NOR = { 
+							has_planet_flag = pd_ignore 
+							solar_system = { has_star_flag = empire_cluster } 
+							has_modifier = pdterra_storm
+						}
+					}
+					change_pc = pc_glacial
+					set_planet_flag = pd_ignore
+					clear_planet_modifiers = yes 
+					add_modifier = { modifier = pdterra_storm }
+				}
+			}
+			while = {
+				count = 3
+				random_galaxy_planet = { 		
+					limit = { 
+						OR = {
+							is_planet_class = pc_tundra 
+							is_planet_class = pc_mushroom 
+							is_planet_class = pc_mud
+							is_planet_class = pc_swamp
+							is_planet_class = pc_basalt 
+						}
+						is_homeworld = no 
+						NOR = { 
+							has_planet_flag = pd_ignore 
+							solar_system = { has_star_flag = empire_cluster } 
+							has_modifier = pdterra_storm
+						}
+					}
+					change_pc = pc_tundra
+					set_planet_flag = pd_ignore
+					clear_planet_modifiers = yes 
+					add_modifier = { modifier = pdterra_lichen }
+				}
+			}
+			while = {
+				count = 3
+				random_galaxy_planet = { 		
+					limit = { 
+						OR = {
+							is_planet_class = pc_alpine 
+							is_planet_class = pc_boreal 
+							is_planet_class = pc_highland
+							is_planet_class = pc_duneforest
+							is_planet_class = pc_snow 
+						}
+						is_homeworld = no 
+						NOR = { 
+							has_planet_flag = pd_ignore 
+							solar_system = { has_star_flag = empire_cluster } 
+							has_modifier = pdterra_storm
+						}
+					}
+					change_pc = pc_alpine
+					set_planet_flag = pd_ignore
+					clear_planet_modifiers = yes 
+					add_modifier = { modifier = pdterra_glacio }
+				}
+			}
+			while = {
+				count = 3
+				random_galaxy_planet = { 		
+					limit = { 
+						OR = {
+							is_planet_class = pc_continental 
+							is_planet_class = pc_forest 
+							is_planet_class = pc_retinal
+							is_planet_class = pc_tepid
+							is_planet_class = pc_lake 
+						}
+						is_homeworld = no
+						NOR = { 
+							has_planet_flag = pd_ignore 
+							solar_system = { has_star_flag = empire_cluster } 
+							has_modifier = pdterra_storm
+						}
+					}
+					change_pc = pc_forest
+					set_planet_flag = pd_ignore
+					clear_planet_modifiers = yes 
+					add_modifier = { modifier = pdterra_megaflora }
+				}
+			}
+			while = {
+				count = 3
+				random_galaxy_planet = { 		
+					limit = { 
+						OR = {
+							is_planet_class = pc_tropical 
+							is_planet_class = pc_mangrove 
+							is_planet_class = pc_hajungle
+							is_planet_class = pc_cenote
+							is_planet_class = pc_desertislands
+						}
+						is_homeworld = no
+						NOR = { 
+							has_planet_flag = pd_ignore 
+							solar_system = { has_star_flag = empire_cluster } 
+							has_modifier = pdterra_storm
+						}
+					}
+					change_pc = pc_tropical
+					set_planet_flag = pd_ignore
+					clear_planet_modifiers = yes 
+					add_modifier = { modifier = pdterra_biolumen }
+				}
+			}
+			while = {
+				count = 3
+				random_galaxy_planet = { 		
+					limit = { 
+						OR = {
+							is_planet_class = pc_ocean 
+							is_planet_class = pc_fog 
+							is_planet_class = pc_cascadian
+							is_planet_class = pc_subarctic
+							is_planet_class = pc_wetswamp
+						}
+						is_homeworld = no
+						NOR = { 
+							has_planet_flag = pd_ignore 
+							has_planet_flag = living_planet
+							solar_system = { has_star_flag = empire_cluster } 
+							has_modifier = pdterra_reef
+						}
+					}
+					change_pc = pc_ocean
+					set_planet_flag = pd_ignore
+					clear_planet_modifiers = yes 
+					add_modifier = { modifier = pdterra_reef }
+				}
+			}
+			while = {
+				count = 3
+				random_galaxy_planet = { 		
+					limit = { 
+						OR = {
+							is_planet_class = pc_sandsea 
+							is_planet_class = pc_desert 
+							is_planet_class = pc_oasis
+							is_planet_class = pc_outback
+							is_planet_class = pc_coastal
+						}
+						is_homeworld = no
+						NOR = { 
+							has_planet_flag = pd_ignore 
+							solar_system = { has_star_flag = empire_cluster } 
+							has_modifier = pdterra_aquifer
+						}
+					}
+					change_pc = pc_sandsea
+					set_planet_flag = pd_ignore
+					clear_planet_modifiers = yes 
+					add_modifier = { modifier = pdterra_aquifer }
+				}
+			}
+			while = {
+				count = 3
+				random_galaxy_planet = { 		
+					limit = { 
+						OR = {
+							is_planet_class = pc_arid 
+							is_planet_class = pc_mesa
+							is_planet_class = pc_med
+							is_planet_class = pc_hadesert
+							is_planet_class = pc_badlands
+						}
+						is_homeworld = no
+						NOR = { 
+							has_planet_flag = pd_ignore 
+							solar_system = { has_star_flag = empire_cluster } 
+							has_modifier = pdterra_coral
+						}
+					}
+					change_pc = pc_arid
+					set_planet_flag = pd_ignore
+					clear_planet_modifiers = yes 
+					add_modifier = { modifier = pdterra_coral }
+				}
+			}
+			while = {
+				count = 3
+				random_galaxy_planet = { 		
+					limit = { 
+						OR = {
+							is_planet_class = pc_savannah 
+							is_planet_class = pc_semiarid 
+							is_planet_class = pc_steppe
+							is_planet_class = pc_prairie
+							is_planet_class = pc_veld
+						}
+						is_homeworld = no
+						NOR = { 
+							has_planet_flag = pd_ignore 
+							solar_system = { has_star_flag = empire_cluster } 
+							has_modifier = pdterra_supercon
+						}
+					}
+					change_pc = pc_savannah
+					set_planet_flag = pd_ignore
+					clear_planet_modifiers = yes 
+					add_modifier = { modifier = pdterra_supercon }
+				}
+			}
+		}
+		IF = { 
+			limit = { 
+				OR = {
+					galaxy_size = large 
 				}
 			}
 			while = {
@@ -8050,8 +8486,8 @@ country_event = {
 						}
 						is_homeworld = no
 						NOR = { 
-							has_planet_flag = living_planet
 							has_planet_flag = pd_ignore 
+							has_planet_flag = living_planet
 							solar_system = { has_star_flag = empire_cluster } 
 							has_modifier = pdterra_reef
 						}
@@ -8112,6 +8548,404 @@ country_event = {
 			}
 			while = {
 				count = 4
+				random_galaxy_planet = { 		
+					limit = { 
+						OR = {
+							is_planet_class = pc_savannah 
+							is_planet_class = pc_semiarid 
+							is_planet_class = pc_steppe
+							is_planet_class = pc_prairie
+							is_planet_class = pc_veld
+						}
+						is_homeworld = no
+						NOR = { 
+							has_planet_flag = pd_ignore 
+							solar_system = { has_star_flag = empire_cluster } 
+							has_modifier = pdterra_supercon
+						}
+					}
+					change_pc = pc_savannah
+					set_planet_flag = pd_ignore
+					clear_planet_modifiers = yes 
+					add_modifier = { modifier = pdterra_supercon }
+				}
+			}
+		}
+		IF = { 
+			limit = { 
+				OR = {
+					galaxy_size = huge
+				}
+			}
+			while = {
+				count = 10
+				random_galaxy_planet = { 		
+					limit = { 
+						is_planet_class = pc_barren 
+						planet_size > 11 
+						planet_size < 26 
+						is_moon = no 
+						is_homeworld = no
+						solar_system = { any_system_planet = { is_planet_class = pc_m_star } } 
+						NOR = { 
+							has_moon = yes  
+							has_planet_flag = pd_ignore 
+							solar_system = { has_star_flag = empire_cluster } } 
+					}
+					change_pc = pc_tidallylocked_barren 
+					clear_planet_modifiers = yes 
+					remove_modifier = terraforming_candidate
+					clear_deposits = yes  
+					add_deposit = d_physics_5 
+					add_modifier = { modifier = pdterra_tidallocked }
+				}
+			}
+			while = {
+				count = 4
+				random_galaxy_planet = { 		
+					limit = { 
+						OR = {
+							is_planet_class = pc_barren_cold 
+							is_planet_class = pc_broken
+						}
+						planet_size > 11 
+						planet_size < 26 
+						is_moon = no
+						is_homeworld = no 
+						solar_system = { any_system_planet = { is_planet_class = pc_black_hole } } 
+						NOR = { 
+							has_moon = yes  
+							has_planet_flag = pd_ignore 
+							solar_system = { has_star_flag = empire_cluster } } 
+					}
+					change_pc = pc_rogue_barren 
+					clear_planet_modifiers = yes 
+					clear_deposits = yes  
+					add_deposit = d_physics_5 
+					add_modifier = { modifier = pdterra_rogue }
+				}
+			}
+			while = {
+				count = 5
+				random_galaxy_planet = { 		
+					limit = { 
+						is_planet_class = pc_barren_cold 
+						planet_size > 11 
+						planet_size < 26 
+						is_homeworld = no 
+						NOR = { 
+							has_planet_flag = pd_ignore 
+							solar_system = { has_star_flag = empire_cluster } } 
+						}
+					clear_planet_modifiers = yes 
+					clear_deposits = yes  
+					add_deposit = d_minerals_5 
+					add_modifier = { modifier = pdterra_lanthanide }
+				}
+			}
+			while = {
+				count = 5
+				random_galaxy_planet = { 		
+					limit = { 
+						is_planet_class = pc_barren_cold 
+						planet_size > 11 
+						planet_size < 26 
+						is_homeworld = no 
+						NOR = { 
+							has_planet_flag = pd_ignore 
+							solar_system = { has_star_flag = empire_cluster } } 
+						}
+					clear_planet_modifiers = yes 
+					clear_deposits = yes  
+					add_deposit = d_minerals_5 
+					add_modifier = { modifier = pdterra_karst }
+				}
+			}
+			while = {
+				count = 5
+				random_galaxy_planet = { 		
+					limit = { 
+						is_planet_class = pc_frozen 
+						planet_size > 11 
+						planet_size < 26 
+						is_homeworld = no 
+						NOR = { 
+							has_planet_flag = pd_ignore 
+							solar_system = { has_star_flag = empire_cluster } } 
+						}
+					clear_planet_modifiers = yes 
+					clear_deposits = yes  
+					add_deposit = d_alloys_5 
+					add_modifier = { modifier = pdterra_geothermal }
+				}
+			}
+			while = {
+				count = 5
+				random_galaxy_planet = { 		
+					limit = { 
+						is_planet_class = pc_barren 
+						planet_size > 25 
+						planet_size < 31
+						is_homeworld = no 
+						NOR = { 
+							has_planet_flag = pd_ignore 
+							solar_system = { has_star_flag = empire_cluster } } 
+						}
+					clear_planet_modifiers = yes 
+					clear_deposits = yes  
+					add_deposit = d_minerals_5 
+					add_modifier = { modifier = pdterra_superhabitable }
+				}
+			}
+			while = {
+				count = 5
+				random_galaxy_planet = { 		
+					limit = { 
+						is_planet_class = pc_barren 
+						planet_size > 10 
+						planet_size < 26
+						is_homeworld = no 
+						NOR = { 
+							has_planet_flag = pd_ignore 
+							solar_system = { has_star_flag = empire_cluster } } 
+						}
+					clear_planet_modifiers = yes 
+					clear_deposits = yes  
+					add_deposit = d_minerals_5 
+					add_modifier = { modifier = pdterra_salt }
+				}
+			}
+			while = {
+				count = 5
+				random_galaxy_planet = { 		
+					limit = { 
+						is_planet_class = pc_molten 
+						planet_size > 10 
+						planet_size < 26
+						is_homeworld = no 
+						NOR = { 
+							has_planet_flag = pd_ignore 
+							solar_system = { has_star_flag = empire_cluster } } 
+						}
+					clear_planet_modifiers = yes 
+					clear_deposits = yes  
+					add_deposit = d_alloys_5 
+					add_modifier = { modifier = pdterra_primal }
+				}
+			}
+			while = {
+				count = 10
+				random_galaxy_planet = { 		
+					limit = { 
+						is_planet_class = pc_frozen 
+						planet_size > 10 
+						planet_size < 26
+						is_homeworld = no 
+						NOR = { 
+							has_planet_flag = pd_ignore 
+							solar_system = { has_star_flag = empire_cluster } } 
+						}
+					clear_planet_modifiers = yes 
+					clear_deposits = yes  
+					add_deposit = d_society_5 
+					add_modifier = { modifier = pdterra_aquatic }
+				}
+			}
+			while = {
+				count = 5
+				random_galaxy_planet = { 		
+					limit = { 
+						OR = {
+							is_planet_class = pc_glacial 
+							is_planet_class = pc_arctic 
+							is_planet_class = pc_frozen_desert
+							is_planet_class = pc_aeolian 
+							is_planet_class = pc_antarctic 
+						}
+						is_homeworld = no  
+						NOR = { 
+							has_planet_flag = pd_ignore 
+							solar_system = { has_star_flag = empire_cluster } 
+							has_modifier = pdterra_storm
+						}
+					}
+					change_pc = pc_glacial
+					set_planet_flag = pd_ignore
+					clear_planet_modifiers = yes 
+					add_modifier = { modifier = pdterra_storm }
+				}
+			}
+			while = {
+				count = 5
+				random_galaxy_planet = { 		
+					limit = { 
+						OR = {
+							is_planet_class = pc_tundra 
+							is_planet_class = pc_mushroom 
+							is_planet_class = pc_mud
+							is_planet_class = pc_swamp
+							is_planet_class = pc_basalt 
+						}
+						is_homeworld = no 
+						NOR = { 
+							has_planet_flag = pd_ignore 
+							solar_system = { has_star_flag = empire_cluster } 
+							has_modifier = pdterra_storm
+						}
+					}
+					change_pc = pc_tundra
+					set_planet_flag = pd_ignore
+					clear_planet_modifiers = yes 
+					add_modifier = { modifier = pdterra_lichen }
+				}
+			}
+			while = {
+				count = 5
+				random_galaxy_planet = { 		
+					limit = { 
+						OR = {
+							is_planet_class = pc_alpine 
+							is_planet_class = pc_boreal 
+							is_planet_class = pc_highland
+							is_planet_class = pc_duneforest
+							is_planet_class = pc_snow 
+						}
+						is_homeworld = no 
+						NOR = { 
+							has_planet_flag = pd_ignore 
+							solar_system = { has_star_flag = empire_cluster } 
+							has_modifier = pdterra_storm
+						}
+					}
+					change_pc = pc_alpine
+					set_planet_flag = pd_ignore
+					clear_planet_modifiers = yes 
+					add_modifier = { modifier = pdterra_glacio }
+				}
+			}
+			while = {
+				count = 5
+				random_galaxy_planet = { 		
+					limit = { 
+						OR = {
+							is_planet_class = pc_continental 
+							is_planet_class = pc_forest 
+							is_planet_class = pc_retinal
+							is_planet_class = pc_tepid
+							is_planet_class = pc_lake 
+						}
+						is_homeworld = no
+						NOR = { 
+							has_planet_flag = pd_ignore 
+							solar_system = { has_star_flag = empire_cluster } 
+							has_modifier = pdterra_storm
+						}
+					}
+					change_pc = pc_forest
+					set_planet_flag = pd_ignore
+					clear_planet_modifiers = yes 
+					add_modifier = { modifier = pdterra_megaflora }
+				}
+			}
+			while = {
+				count = 5
+				random_galaxy_planet = { 		
+					limit = { 
+						OR = {
+							is_planet_class = pc_tropical 
+							is_planet_class = pc_mangrove 
+							is_planet_class = pc_hajungle
+							is_planet_class = pc_cenote
+							is_planet_class = pc_desertislands
+						}
+						is_homeworld = no
+						NOR = { 
+							has_planet_flag = pd_ignore 
+							solar_system = { has_star_flag = empire_cluster } 
+							has_modifier = pdterra_storm
+						}
+					}
+					change_pc = pc_tropical
+					set_planet_flag = pd_ignore
+					clear_planet_modifiers = yes 
+					add_modifier = { modifier = pdterra_biolumen }
+				}
+			}
+			while = {
+				count = 5
+				random_galaxy_planet = { 		
+					limit = { 
+						OR = {
+							is_planet_class = pc_ocean 
+							is_planet_class = pc_fog 
+							is_planet_class = pc_cascadian
+							is_planet_class = pc_subarctic
+							is_planet_class = pc_wetswamp
+						}
+						is_homeworld = no
+						NOR = { 
+							has_planet_flag = living_planet
+							has_planet_flag = pd_ignore 
+							solar_system = { has_star_flag = empire_cluster } 
+							has_modifier = pdterra_reef
+						}
+					}
+					change_pc = pc_ocean
+					set_planet_flag = pd_ignore
+					clear_planet_modifiers = yes 
+					add_modifier = { modifier = pdterra_reef }
+				}
+			}
+			while = {
+				count = 5
+				random_galaxy_planet = { 		
+					limit = { 
+						OR = {
+							is_planet_class = pc_sandsea 
+							is_planet_class = pc_desert 
+							is_planet_class = pc_oasis
+							is_planet_class = pc_outback
+							is_planet_class = pc_coastal
+						}
+						is_homeworld = no
+						NOR = { 
+							has_planet_flag = pd_ignore 
+							solar_system = { has_star_flag = empire_cluster } 
+							has_modifier = pdterra_aquifer
+						}
+					}
+					change_pc = pc_sandsea
+					set_planet_flag = pd_ignore
+					clear_planet_modifiers = yes 
+					add_modifier = { modifier = pdterra_aquifer }
+				}
+			}
+			while = {
+				count = 5
+				random_galaxy_planet = { 		
+					limit = { 
+						OR = {
+							is_planet_class = pc_arid 
+							is_planet_class = pc_mesa
+							is_planet_class = pc_med
+							is_planet_class = pc_hadesert
+							is_planet_class = pc_badlands
+						}
+						is_homeworld = no
+						NOR = { 
+							has_planet_flag = pd_ignore 
+							solar_system = { has_star_flag = empire_cluster } 
+							has_modifier = pdterra_coral
+						}
+					}
+					change_pc = pc_arid
+					set_planet_flag = pd_ignore
+					clear_planet_modifiers = yes 
+					add_modifier = { modifier = pdterra_coral }
+				}
+			}
+			while = {
+				count = 5
 				random_galaxy_planet = { 		
 					limit = { 
 						OR = {

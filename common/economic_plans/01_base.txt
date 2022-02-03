@@ -149,10 +149,17 @@ basic_economy_plan = {
 	# All scaling subplans are cumulative
 
 	scaling_subplan = {
-		set_name = "--Ressources de base échelonnée--"
+		set_name = "--Ressources de base échelonnées--"
 		potential = {
+			OR = {
 			has_monthly_income = { resource = energy value > @energy_target }			
+				has_resource = { type = energy amount > 5000 }			
+			}
+			OR = {
 			has_monthly_income = { resource = minerals value > @minerals_target }			
+				has_resource = { type = minerals amount > 5000 }			
+			}
+				
 		}
 
 		income = {
@@ -167,7 +174,7 @@ basic_economy_plan = {
 	}
 
 	scaling_subplan = {
-		set_name = "--Biens de Conso. échelonnée--"
+		set_name = "--Biens de Conso. échelonnés--"
 		potential = {
 			country_uses_consumer_goods = yes
 			has_monthly_income = { resource = energy value > @energy_target }			
@@ -186,8 +193,10 @@ basic_economy_plan = {
 				is_militarist = yes
 				is_homicidal = yes
 			}
-			
+			OR = {
 			has_monthly_income = { resource = energy value > @energy_target }			
+				has_resource = { type = energy amount > 5000 }			
+			}
 			has_monthly_income = { resource = minerals value > @minerals_target }		
 		}
 
@@ -228,7 +237,7 @@ basic_economy_plan = {
 
 	# Optional subplans don't need to be fulfilled for the other scaling subplans to become active
 	optional_subplan = {
-		set_name = "--ressources rares--"
+		set_name = "--Ressources rares--"
 		potential = {
 			always = yes
 		}
@@ -237,7 +246,7 @@ basic_economy_plan = {
 			exotic_gases = @rare_resource_target
 			volatile_motes = @rare_resource_target
 			rare_crystals = @rare_resource_target
-			esc_living_crystal = 25  #ESC			
+			esc_living_crystal = 5  #ESC			
 			#ESC (NHSC)
 			nanites = 1
 			esc_gravitic_anomaly = 1
