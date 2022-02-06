@@ -285,6 +285,7 @@ minerals_expenditure_armies = {
 	category = armies
 	
 	potential = {
+		is_lithoid_empire = yes
 		or = {
 			resource_stockpile_compare = {
 				resource = minerals
@@ -758,5 +759,47 @@ minerals_upkeep_ships = {
 
 	fraction = {
 		weight = 0.6
+	}
+}
+
+#Mod Armies Food&Alloys Upkeep (only for Lithoid)
+minerals_expenditure_armies_threatened = {
+	resource = minerals
+	type = expenditure
+	category = armies
+
+	potential = {
+		is_lithoid_empire = yes
+		highest_threat > 20
+	}
+
+	fraction = {
+		weight = 0.10
+	}
+}
+
+minerals_upkeep_armies = {
+	resource = minerals
+	type = upkeep
+	category = armies
+
+	potential = {
+		OR = {
+			is_lithoid_empire = yes
+			count_owned_army = {
+				count >= 1
+				limit = { 
+					OR = {
+						army_type = assault_army_lithoids
+						army_type = slave_army_lithoids
+						army_type = clone_army_lithoids
+					}
+				}
+			}
+		}
+	}
+
+	fraction = {
+		weight = 0.25
 	}
 }

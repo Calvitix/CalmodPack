@@ -231,7 +231,7 @@ col_mining = {
 			num_free_districts = { type = district_hive value <= @small_planet_threshold }
 		}
 		modifier = {
-			add = 3
+			add = 2
 			has_designation = col_mining
 		}
 		modifier = {
@@ -250,16 +250,6 @@ col_mining = {
 				has_modifier = gpm_rugged_terrain
 				has_modifier = gpm_colossal_cliffs
 				has_modifier = gpm_titanic_geo_form
-				has_modifier = asteroid_impacts
-			}
-		}
-		modifier = {
-			add = 3
-			OR = {
-				has_modifier = asteroid_belt
-				has_modifier = mineral_rich
-				has_modifier = ultra_rich
-				has_modifier = extensive_moon_system
 				has_modifier = asteroid_impacts
 			}
 		}
@@ -385,7 +375,7 @@ col_farming = {
 			num_free_districts = { type = district_hive value <= @small_planet_threshold }
 		}
 		modifier = {
-			add = 2
+			add = 3
 			num_free_districts = { type = district_mining value < @free_districts_low_threshold }
 			num_free_districts = { type = district_farming value > @free_districts_medium_threshold }
 			num_free_districts = { type = district_generator value < @free_districts_low_threshold }
@@ -465,8 +455,40 @@ col_farming = {
 			num_districts = { type = district_farming value >= 6 }
 		}
 		modifier = {
+			add = 3
+			num_buildings = { type = building_hydroponics_farm value >= 1 }
+		}
+		modifier = {
+			add = 3
+			num_buildings = { type = building_hydroponics_farm value >= 2 }
+		}
+		modifier = {
+			add = 3
+			num_buildings = { type = building_hydroponics_farm value >= 3 }
+		}
+		modifier = {
+			add = 6
+			num_buildings = { type = eb_hydrofarm2 value >= 1 }
+		}
+		modifier = {
+			add = 6
+			num_buildings = { type = eb_hydrofarm2 value >= 2 }
+		}
+		modifier = {
+			add = 6
+			num_buildings = { type = eb_hydrofarm3 value >= 1 }
+		}
+		modifier = {
+			add = 6
+			num_buildings = { type = eb_hydrofarm3 value >= 2 }
+		}
+		
+		modifier = {
 			factor = 0
 			num_districts = { type = district_farming value = 0 }
+			num_buildings = { type = building_hydroponics_farm value = 0 }
+			num_buildings = { type = eb_hydrofarm2 value = 0 }
+			num_buildings = { type = eb_hydrofarm3 value = 0 }
 		}
 		modifier = {
 			factor = 1.5
@@ -625,8 +647,39 @@ col_generator = {
 			num_districts = { type = district_generator value >= 6 }
 		}
 		modifier = {
+			add = 3
+			num_buildings = { type = eb_energy value >= 1 }
+		}
+		modifier = {
+			add = 3
+			num_buildings = { type = eb_energy value >= 2 }
+		}
+		modifier = {
+			add = 3
+			num_buildings = { type = eb_energy value >= 3 }
+		}
+		modifier = {
+			add = 6
+			num_buildings = { type = eb_energy2 value >= 1 }
+		}
+		modifier = {
+			add = 6
+			num_buildings = { type = eb_energy2 value >= 2 }
+		}
+		modifier = {
+			add = 6
+			num_buildings = { type = eb_energy3 value >= 1 }
+		}
+		modifier = {
+			add = 6
+			num_buildings = { type = eb_energy3 value >= 2 }
+		}
+		modifier = {
 			factor = 0
 			num_districts = { type = district_generator value = 0 }
+			num_buildings = { type = eb_energy value = 0 }
+			num_buildings = { type = eb_energy2 value = 0 }
+			num_buildings = { type = eb_energy3 value = 0 }
 		}
 		modifier = {
 			factor = 1.5
@@ -873,8 +926,8 @@ col_foundry = {
 		trigger = {
 			owner = {
 				is_gestalt = no
+			}
 		}
-	}
 	}
 
 	ai_resource_current_conversion = {
@@ -884,8 +937,8 @@ col_foundry = {
 		trigger = {
 			owner = {
 				is_gestalt = no
+			}
 		}
-	}
 	}
 
 	potential = {
@@ -938,12 +991,19 @@ col_foundry = {
 
 	weight_modifier = {
 		modifier = {
-			add = 3
+			add = 5
+			owner = {
+				OR = {
+					country_uses_consumer_goods = no
+					has_monthly_income = { resource = consumer_goods value >= 0 }
+				}
+			}
 			OR = {
 				num_free_districts = { type = district_city value = @free_districts_high_threshold }
 				num_free_districts = { type = district_nexus value = @free_districts_high_threshold }
 				num_free_districts = { type = district_hive value = @free_districts_high_threshold }
 			}
+			
 			OR = {
 				AND = {
 					owner = {
@@ -967,8 +1027,8 @@ col_foundry = {
 				}
 				AND = {
 					owner = {
-						has_monthly_income = { resource = alloys value < 50 }
-					years_passed > 75
+						has_monthly_income = { resource = alloys value < 60 }
+						years_passed > 75
 						years_passed < 100
 					}
 				}
@@ -980,11 +1040,11 @@ col_foundry = {
 			has_designation = col_foundry
 		}
 
-		modifier = {
-			add = 20
-			years_passed < 15
-			has_planet_flag = str_designated_alloy_guaranteed
-		}
+		# modifier = {
+			# add = 20
+			# years_passed < 15
+			# has_planet_flag = str_designated_alloy_guaranteed
+		# }
 
 		modifier = {
 			add = 0
@@ -992,165 +1052,128 @@ col_foundry = {
 			str_industrial_switcher = no
 		}
 
-		modifier = {
-			add = 50 #20
-			has_designation = col_factory
-			str_factory_to_foundry_switcher = yes
-			or = { 
-				owner = {
-					resource_stockpile_compare = {
-						resource = consumer_goods
-						value > 950
-					}
-					resource_income_compare = {
-						resource = consumer_goods
-						value > 10
-					}
-				}
-				owner = {
-					resource_stockpile_compare = {
-						resource = consumer_goods
-						value > 750
-					}
-					resource_income_compare = {
-						resource = consumer_goods
-						value > 15
-					}
-				}
-				owner = {
-					resource_stockpile_compare = {
-						resource = consumer_goods
-						value > 550
-					}
-					resource_income_compare = {
-						resource = consumer_goods
-						value > 20
-					}
-				}
-			}
-		}
-		modifier = {
-			add = 50
-			has_designation = col_factory
-			str_foundry_to_factory_switcher = yes
-			or = { 
-				owner = {
-					resource_stockpile_compare = {
-						resource = consumer_goods
-						value > 850
-					}
-					resource_income_compare = {
-						resource = consumer_goods
-						value > 10
-					}
-				}
-				owner = {
-					resource_stockpile_compare = {
-						resource = consumer_goods
-						value > 650
-					}
-					resource_income_compare = {
-						resource = consumer_goods
-						value > 15
-					}
-				}
-				owner = {
-					resource_stockpile_compare = {
-						resource = consumer_goods
-						value > 450
-					}
-					resource_income_compare = {
-						resource = consumer_goods
-						value > 20
-					}
-				}
-			}
-		}
-		modifier = {
-			add = 50
-			has_designation = col_factory
-			str_extra_switcher = yes
-			or = { 
-				owner = {
-					resource_stockpile_compare = {
-						resource = consumer_goods
-						value > 750
-					}
-					resource_income_compare = {
-						resource = consumer_goods
-						value > 10
-					}
-				}
-				owner = {
-					resource_stockpile_compare = {
-						resource = consumer_goods
-						value > 550
-					}
-					resource_income_compare = {
-						resource = consumer_goods
-						value > 15
-					}
-				}
-				owner = {
-					resource_stockpile_compare = {
-						resource = consumer_goods
-						value > 350
-					}
-					resource_income_compare = {
-						resource = consumer_goods
-						value > 20
-					}
-				}
-			}
-		}
+		# modifier = {
+			# add = 20
+			# has_designation = col_factory
+			# str_factory_to_foundry_switcher = yes
+			# or = { 
+				# owner = {
+					# resource_stockpile_compare = {
+						# resource = consumer_goods
+						# value > 950
+					# }
+					# resource_income_compare = {
+						# resource = consumer_goods
+						# value > 10
+					# }
+				# }
+				# owner = {
+					# resource_stockpile_compare = {
+						# resource = consumer_goods
+						# value > 750
+					# }
+					# resource_income_compare = {
+						# resource = consumer_goods
+						# value > 15
+					# }
+				# }
+				# owner = {
+					# resource_stockpile_compare = {
+						# resource = consumer_goods
+						# value > 550
+					# }
+					# resource_income_compare = {
+						# resource = consumer_goods
+						# value > 20
+					# }
+				# }
+			# }
+		# }
+		# modifier = {
+			# add = 20
+			# has_designation = col_factory
+			# str_extra_switcher = yes
+			# or = { 
+				# owner = {
+					# resource_stockpile_compare = {
+						# resource = consumer_goods
+						# value > 750
+					# }
+					# resource_income_compare = {
+						# resource = consumer_goods
+						# value > 10
+					# }
+				# }
+				# owner = {
+					# resource_stockpile_compare = {
+						# resource = consumer_goods
+						# value > 550
+					# }
+					# resource_income_compare = {
+						# resource = consumer_goods
+						# value > 15
+					# }
+				# }
+				# owner = {
+					# resource_stockpile_compare = {
+						# resource = consumer_goods
+						# value > 350
+					# }
+					# resource_income_compare = {
+						# resource = consumer_goods
+						# value > 20
+					# }
+				# }
+			# }
+		# }
 
-		modifier = {
-			add = 5
-			str_foundry_to_factory_switcher = yes
-		}
+		# modifier = {
+			# add = 5
+			# str_foundry_to_factory_switcher = yes
+		# }
 	
-		modifier = {
-			add = 50
-			owner = {
-			has_deficit = consumer_goods
-			resource_stockpile_compare = {
-				resource = food
-				value < 300
-			}
-			resource_income_compare = {
-				resource = food
-				value < -12
-			}
-			resource_income_compare = {
-				resource = energy
-				value < 10
-			}
-			resource_stockpile_compare = {
-				resource = energy
-				value < 1000
-				}
-			}
-		}
+		# modifier = {
+			# add = 50
+			# owner = {
+			# has_deficit = consumer_goods
+			# resource_stockpile_compare = {
+				# resource = food
+				# value < 300
+			# }
+			# resource_income_compare = {
+				# resource = food
+				# value < -12
+			# }
+			# resource_income_compare = {
+				# resource = energy
+				# value < 10
+			# }
+			# resource_stockpile_compare = {
+				# resource = energy
+				# value < 1000
+				# }
+			# }
+		# }
 
 
 		modifier = {
-			add = 5
+			add = 2
 			num_districts = { type = district_industrial value >= 3 }
 		}
 		modifier = {
-			add = 5
+			add = 2
 			num_districts = { type = district_industrial value >= 4 }
 		}
 		modifier = {
-			add = 5
+			add = 3
 			num_districts = { type = district_industrial value >= 5 }
 		}
 		modifier = {
-			add = 10
+			add = 4
 			num_districts = { type = district_industrial value >= 6 }
 		}
 		modifier = {
-			add = 10
+			add = 5
 			num_districts = { type = district_industrial value >= 6 }
 		}
 		modifier = {
@@ -1282,8 +1305,8 @@ col_factory = {
 		trigger = {
 			owner = {
 				is_gestalt = no
+			}
 		}
-	}
 	}
 
 	# Used by AI to estimate the current effects of this designation
@@ -1294,8 +1317,8 @@ col_factory = {
 		trigger = {
 			owner = {
 				is_gestalt = no
+			}
 		}
-	}
 	}
 
 	potential = {
@@ -1361,8 +1384,8 @@ col_factory = {
 		modifier = {
 			add = 100
 			or = {
-			has_designation = col_factory
-			has_designation = col_foundry
+				has_designation = col_factory
+				has_designation = col_foundry
 			}
 			owner = { 
 			resource_income_compare = {
@@ -1433,34 +1456,6 @@ col_factory = {
 					resource_stockpile_compare = {
 						resource = consumer_goods
 						value < 190
-					}
-					resource_income_compare = {
-						resource = consumer_goods
-						value < -20
-					}
-				}
-			}
-		}
-
-		modifier = {
-			add = 50
-			has_designation = col_foundry
-			str_factory_to_foundry_switcher = yes
-			or = { 
-				owner = {
-					resource_stockpile_compare = {
-						resource = consumer_goods
-						value < 160
-					}
-					resource_income_compare = {
-						resource = consumer_goods
-						value < 0
-					}
-				}
-				owner = {
-					resource_stockpile_compare = {
-						resource = consumer_goods
-						value < 250
 					}
 					resource_income_compare = {
 						resource = consumer_goods
@@ -1546,23 +1541,23 @@ col_factory = {
 			}
 		}
 		modifier = {
-			add = 5
+			add = 2
 			num_districts = { type = district_industrial value >= 3 }
 		}
 		modifier = {
-			add = 5
+			add = 2
 			num_districts = { type = district_industrial value >= 4 }
 		}
 		modifier = {
-			add = 5
+			add = 3
 			num_districts = { type = district_industrial value >= 5 }
 		}
 		modifier = {
-			add = 10
+			add = 4
 			num_districts = { type = district_industrial value >= 6 }
 		}
 		modifier = {
-			add = 10
+			add = 5
 			num_districts = { type = district_industrial value >= 6 }
 		}
 ###
@@ -1912,7 +1907,7 @@ col_research = {
 			num_buildings = { type = building_research_lab_2 value >= 2 }
 		}
 		modifier = {
-			add = 8
+			add = 10
 			num_buildings = { type = building_research_lab_3 value >= 1 }
 		}
 		modifier = {
@@ -2556,8 +2551,8 @@ col_habitat_foundry = {
 		trigger = {
 			owner = {
 				is_gestalt = no
+			}
 		}
-	}
 	}
 
 	ai_resource_current_conversion = {
@@ -2567,8 +2562,8 @@ col_habitat_foundry = {
 		trigger = {
 			owner = {
 				is_gestalt = no
+			}
 		}
-	}
 	}
 
 	potential = {
@@ -2661,8 +2656,8 @@ col_habitat_factory = {
 		trigger = {
 			owner = {
 				is_gestalt = no
+			}
 		}
-	}
 	}
 
 	# Used by AI to estimate the current effects of this designation
@@ -2673,8 +2668,8 @@ col_habitat_factory = {
 		trigger = {
 			owner = {
 				is_gestalt = no
+			}
 		}
-	}
 	}
 
 	potential = {
@@ -3747,8 +3742,8 @@ col_ecu_factory = {
 		trigger = {
 			owner = {
 				is_gestalt = no
+			}
 		}
-	}
 	}
 
 	# Used by AI to estimate the current effects of this designation
@@ -3759,14 +3754,14 @@ col_ecu_factory = {
 		trigger = {
 			owner = {
 				is_gestalt = no
+			}
 		}
-	}
 	}
 
 	potential = {
 		OR = {
-		uses_district_set = city_world
-		uses_district_set = pdcorpoarc
+			uses_district_set = city_world
+			uses_district_set = pdcorpoarc
 		}
 		exists = owner
 		owner = { country_uses_consumer_goods = yes }

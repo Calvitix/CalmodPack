@@ -134,7 +134,43 @@ alloys_expenditure_ships = {
 	}
 
 	fraction = {
-		weight = 0.3  #Startech
+		weight = 0.6
+
+		# spend more alloys building ships while at war
+		modifier = {
+			factor = 2
+			OR = {
+				recently_lost_war = yes
+				is_at_war = yes
+			}
+		}
+		# If we want to colonize and are at peace then prio that
+		modifier = {
+			factor = 0.25
+			AND = {
+				ai_colonize_plans > 0
+				is_at_war = no
+			}
+		}
+
+		# spend less alloys on ships if over capacity
+		modifier = {
+			factor = 0.5
+			used_naval_capacity_percent >= 1.0
+		}
+
+		modifier = {
+			factor = 5
+			used_naval_capacity_percent < 1.0
+			OR = {
+				any_neighbor_country = {
+					has_ascension_perk = ap_become_the_crisis
+				}
+				any_country = {
+					is_crisis_faction = yes
+				}
+			}
+		}		
 	}	
 
 	static_min = {
@@ -374,8 +410,15 @@ alloys_expenditure_ship_upgrades = {
 	}
 
 	fraction = {
-		weight = 0
+		weight = 0.2
+
+		# spend more on ship upgrades if at capacity
+		modifier = {
+			factor = 4
+			used_naval_capacity_percent >= 1.0
 	}	
+	}	
+	
 	static_min = {
 		base = 0
 		modifier = {
@@ -421,17 +464,17 @@ alloys_expenditure_planets = {
 	}
 
 	fraction = {
-		weight = 0.5
+		weight = 0.1  #0.5 in Starnet
 	}
 
 	static_min = {
-		base = 4500 #150 in 3.3b
+		base = 150 # 4500 #150 in 3.3b
 	}
 	
 	#Ori 3.3b 
-	#static_max = {
-	#	base = 450
-	#}	
+	static_max = {
+		base = 450
+	}	
 }
 
 alloys_expenditure_starbases = {
@@ -667,7 +710,77 @@ alloys_expenditure_colonies = {
 	}
 
 	static_min = {
-		base = 3500
+		base = 400
+	}
+
+	static_max = {
+		base = 450
+	}
+}
+
+alloys_expenditure_colonies_expand = {
+	resource = alloys
+	type = expenditure
+	category = colonies
+
+	potential = {
+		is_machine_empire = no
+		is_at_war = no
+		ai_colonize_plans > 0
+		OR = {
+			AND = {
+				is_lithoid_empire = no
+				has_resource = { type = food amount > 400 }
+				has_monthly_income = {
+					resource = food
+					value > 0
+				}
+			}
+			AND = {
+				is_lithoid_empire = yes
+				has_resource = { type = minerals amount > 400 }
+				has_monthly_income = {
+					resource = minerals
+					value > 0
+				}
+			}
+		}
+	}
+
+	fraction = {
+		weight = 0.5
+	}
+
+	static_min = {
+		base = 200
+	}
+
+	static_max = {
+		base = 250
+	}
+}
+
+alloys_expenditure_colonies_expand_machine = {
+	resource = alloys
+	type = expenditure
+	category = colonies
+
+	potential = {
+		is_machine_empire = yes
+		is_at_war = no
+		ai_colonize_plans > 0
+	}
+
+	fraction = {
+		weight = 0.5
+	}
+
+	static_min = {
+		base = 400
+	}
+
+	static_max = {
+		base = 450
 	}
 }
 
@@ -679,6 +792,7 @@ alloys_expenditure_megastructures = {
 	potential = {
 		is_country_type = default
 		is_at_war = no
+		can_build_megastructures = yes
 		or = {
 			has_galactic_wonders = yes
 			has_technology = tech_strategic_coordination
@@ -689,10 +803,35 @@ alloys_expenditure_megastructures = {
 
 	fraction = {
 		weight = 0.4
+		# increase budget if megastructures are unfinished		
+		modifier = {
+			factor = 3
+			any_owned_megastructure = {
+				NOR = {
+					is_megastructure_type = dyson_sphere_5
+					is_megastructure_type = dyson_sphere_restored
+					is_megastructure_type = spy_orb_4
+					is_megastructure_type = spy_orb_restored
+					is_megastructure_type = think_tank_4
+					is_megastructure_type = think_tank_restored
+					is_megastructure_type = gateway_final
+					is_megastructure_type = gateway_restored
+					is_megastructure_type = matter_decompressor_4
+					is_megastructure_type = matter_decompressor_restored
+					is_megastructure_type = strategic_coordination_center_3
+					is_megastructure_type = strategic_coordination_center_restored
+					is_megastructure_type = mega_art_installation_3
+					is_megastructure_type = mega_art_installation_restored
+					is_megastructure_type = interstellar_assembly_4
+					is_megastructure_type = interstellar_assembly_restored
+					is_megastructure_type = lgate_base
+				}
+			}
+		}
 	}
 
-	static_min = {
-		base = 30000 # current max alloy cost for a stage
+	static_max = {
+		base = 20000 # current max alloy cost for a stage
 	}
 }
 
@@ -701,10 +840,23 @@ alloys_expenditure_decisions = {
 	type = expenditure
 	category = decisions
 	potential = {
+		OR = {
 			has_technology = tech_habitat_2
+			has_technology = tech_mega_engineering
+		}
 		any_owned_planet = {
+			OR = {
+				AND = {
 			is_planet_class = pc_habitat
 			NOT = { has_planet_flag = advanced_habitat_2 }
+					root = { has_technology = tech_habitat_2 }
+				}
+				AND = {
+					is_planet_class = pc_shattered_ring_habitable
+					num_uncleared_blockers < 1
+					root = { has_technology = tech_mega_engineering }
+				}
+			}
 		}
 		# only consider these kinds of decisions when "wealthy"
 		has_resource = {
@@ -715,7 +867,7 @@ alloys_expenditure_decisions = {
 	fraction = {
 		weight = 0.20
 	}
-	# based on mastery of nature decision
+	# based on habitat / restore ring
 	static_max = {
 		base = 2000
 		modifier = {
@@ -724,6 +876,14 @@ alloys_expenditure_decisions = {
 			any_owned_planet = {
 				has_planet_flag = advanced_habitat
 				NOT = { has_planet_flag = advanced_habitat_2 }
+			}
+		}
+		modifier = {
+			add = 8000
+			has_technology = tech_mega_engineering
+			any_owned_planet = {
+				is_planet_class = pc_shattered_ring_habitable
+				num_uncleared_blockers < 1
 			}
 		}
 	}
@@ -758,7 +918,7 @@ alloys_upkeep_ships = {
 		is_at_war = yes
 			resource_stockpile_compare = {
 				resource = alloys
-				value > 12000
+				value > 5000 #12000
 			}
 		} 
 	}
@@ -779,5 +939,85 @@ alloys_upkeep_planets = {
 
 	fraction = {
 		weight = 0.30
+	}
+}
+
+alloys_upkeep_armies = {
+	resource = alloys
+	type = upkeep
+	category = armies_for_alloys_and_food
+
+	potential = {
+		OR = {
+			is_machine_empire = yes
+			count_owned_army = {
+				count >= 1
+				limit = { 
+					OR = {
+						army_type = robotic_army
+						army_type = machine_assault_1
+						army_type = machine_assault_2
+						army_type = machine_assault_3
+					}
+				}
+			}
+		}
+	}
+
+	fraction = {
+		weight = 0.25
+	}
+}
+
+alloys_expenditure_armies = {
+	resource = alloys
+	type = expenditure
+	category = armies_for_alloys_and_food
+
+	potential = {
+		is_lithoid_empire = no
+	}
+
+	fraction = {
+		weight = 0.01
+
+		modifier = {
+			factor = 10
+			NOT = {
+				count_owned_army = {
+					count >= @armies_for_declaring_war
+					limit = {
+						is_defensive_army = no
+					}
+				}
+			}
+		}
+
+		modifier = {
+			factor = 2
+			OR = {
+				any_neighbor_country = {
+					has_ascension_perk = ap_become_the_crisis
+				}
+				any_country = {
+					is_crisis_faction = yes
+				}
+			}
+		}
+	}
+}
+
+alloys_expenditure_armies_threatened = {
+	resource = alloys
+	type = expenditure
+	category = armies_for_alloys_and_food
+
+	potential = {
+		highest_threat > 20
+		is_lithoid_empire = no
+	}
+
+	fraction = {
+		weight = 0.10
 	}
 }

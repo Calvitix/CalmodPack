@@ -190,6 +190,7 @@ country_event = {
 	immediate = {
 		random_owned_planet = {
 			limit = {
+				is_colony = yes
 				colony_age > 44
 				num_assigned_jobs = {
 					job = unemployed
@@ -239,6 +240,12 @@ country_event = {
 
 	immediate = {
 		#if = { limit = { has_global_flag = edai_logging	} log = "FIX_Fleet: Check for Corvettes for [This.GetName]" }
+		
+		if = {
+		    limit = { 				has_global_flag = str_fleet_add_flag
+			}
+		
+		
 		random_owned_fleet = {
 			limit = {
 				is_in_combat = no
@@ -435,6 +442,7 @@ country_event = {
 			}
 		}
 
+		#Battlecruiser
 		if = {
             limit = {
 					resource_stockpile_compare = {
@@ -757,6 +765,72 @@ country_event = {
 			}
 		}
 
+		#Science / Constructor, mini 4 (Recreate if lost and not created by I.A.)
+		if = {
+			limit = {
+				years_passed > 15
+				count_owned_ship = {
+					limit = {
+					is_ship_size = science
+					}
+					count < 4
+				}						
+			}		
+			if = { limit = { has_global_flag = edai_logging	} log = "FIX_Fleet: Add 1 Scienceship for [Owner.GetName]" }
+			create_fleet = {
+				effect = {
+					set_owner = root
+
+					create_ship = {
+						name = random
+						random_existing_design = science
+					}
+
+					set_fleet_stance = evasive				
+					set_location = root.capital_scope
+					
+					owner = {
+						create_leader = {
+							class = scientist
+							sub_type = survey
+							name = random
+							species = owner_main_species
+						}
+					}
+					set_leader = last_created_leader
+				}			
+			}
+		
+		}
+			#constructor
+		if = {
+			limit = {
+				years_passed > 15
+				count_owned_ship = {
+					limit = {
+					is_ship_size = constructor
+					}
+					count < 4
+				}							
+			}		
+			if = { limit = { has_global_flag = edai_logging	} log = "FIX_Fleet: Add 1 Constructor for [Owner.GetName]" }
+			create_fleet = {
+				effect = {
+					set_owner = root
+					
+					create_ship = {
+						name = random
+						random_existing_design = constructor
+					}
+					
+					set_fleet_stance = evasive
+					set_location = root.capital_scope
+				}
+			}
+		}
+
+
+
 
 		if = {
 		    limit = { 
@@ -764,6 +838,8 @@ country_event = {
 			}					
 			remove_country_flag = fix_added_fleet 
 		}		
+		
+		}
 	}
 }
 country_event = {

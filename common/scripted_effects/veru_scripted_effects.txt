@@ -657,14 +657,8 @@ get_scientists = {
 get_ethics_check_egal_auth = {
 	if = {
 		limit = {
-			event_target:chosen_subject = {
-				OR = {
-					has_ethic = ethic_egalitarian
-					has_ethic = ethic_fanatic_egalitarian
+			is_egalitarian = yes
 				}
-			}
-		}
-		event_target:chosen_subject = {
 			if = {
 				limit = {
 					has_ethic = ethic_egalitarian
@@ -677,34 +671,20 @@ get_ethics_check_egal_auth = {
 				country_add_ethic = ethic_fanatic_authoritarian
 			}
 		}
-	}
 	if = {
 		limit = {
-			event_target:chosen_subject = {
-				NOR = {
-					has_ethic = ethic_authoritarian
-					has_ethic = ethic_fanatic_authoritarian
+			is_authoritarian = no
 				}
-			}
-		}
-		event_target:chosen_subject = {
 			shift_ethic = ethic_authoritarian
 		}
-	}
 }
 
 # Remove Authoritarian and add Egalitarian 
 get_ethics_check_auth_egal = {
 	if = {
 		limit = {
-			event_target:chosen_subject = {
-				OR = {
-					has_ethic = ethic_authoritarian
-					has_ethic = ethic_fanatic_authoritarian
+			is_authoritarian = yes
 				}
-			}
-		}
-		event_target:chosen_subject = {
 			if = {
 				limit = {
 					has_ethic = ethic_authoritarian
@@ -717,34 +697,23 @@ get_ethics_check_auth_egal = {
 				country_add_ethic = ethic_fanatic_egalitarian
 			}
 		}
-	}
 	if = {
 		limit = {
-			event_target:chosen_subject = {
-				NOR = {
-					has_ethic = ethic_egalitarian
-					has_ethic = ethic_fanatic_egalitarian
+			is_egalitarian = no
 				}
-			}
-		}
-		event_target:chosen_subject = {
 			shift_ethic = ethic_egalitarian
 		}
-	}
 }
 
 # Remove Socialism and Capitalism 
 get_ethics_check_soc_cap = {
 	if = {
 		limit = {
-			event_target:chosen_subject = {
 				OR = {
 					has_ethic = ethic_socialism
 					has_ethic = ethic_fanatic_socialism
 				}
 			}
-		}
-		event_target:chosen_subject = {
 			if = {
 				limit = {
 					has_ethic = ethic_socialism
@@ -757,34 +726,26 @@ get_ethics_check_soc_cap = {
 				country_add_ethic = ethic_fanatic_capitalism
 			}
 		}
-	}
 	if = {
 		limit = {
-			event_target:chosen_subject = {
 				NOR = {
 					has_ethic = ethic_capitalism
 					has_ethic = ethic_fanatic_capitalism
 				}
 			}
-		}
-		event_target:chosen_subject = {
 			shift_ethic = ethic_capitalism
 		}
-	}
 }
 
 # Remove Fanatic Authoritarian and Fanatic Egalitarian
 get_ethics_check_fan = {
 	if = {
 		limit = {
-			event_target:chosen_subject = {
 				OR = {
 					has_ethic = ethic_fanatic_egalitarian
 					has_ethic = ethic_fanatic_authoritarian
 				}
 			}
-		}
-		event_target:chosen_subject = {
 			if = {
 				limit = {
 					has_ethic = ethic_fanatic_egalitarian
@@ -795,22 +756,16 @@ get_ethics_check_fan = {
 				shift_ethic = ethic_fanatic_egalitarian
 			}
 		}
-	}
 }
 
 # Get New Government
 get_new_autocratic_gov = {
 	get_intervention_effect_leader = yes
+	event_target:chosen_subject = {
 	if = {
 		limit = {
-			event_target:chosen_subject = {
-				OR = {
-					has_ethic = ethic_egalitarian
-					has_ethic = ethic_fanatic_egalitarian
+				is_egalitarian = yes
 				}
-			}
-		}
-		event_target:chosen_subject = {
 			if = {
 				limit = {
 					has_ethic = ethic_egalitarian
@@ -823,10 +778,8 @@ get_new_autocratic_gov = {
 				country_add_ethic = ethic_fanatic_authoritarian
 			}
 		}
-	}
 	if = {
 		limit = {
-			event_target:chosen_subject = {
 				is_authoritarian = yes
 				NOR = {
 					has_authority = auth_dictatorial
@@ -835,8 +788,6 @@ get_new_autocratic_gov = {
 					has_authority = auth_democratic_dictatorship
 				}
 			}
-		}
-		event_target:chosen_subject = {
 			random_list = {
 				50 = {
 					change_government = {
@@ -854,22 +805,16 @@ get_new_autocratic_gov = {
 				}
 			}
 		}
-	}
 	if = {
 		limit = {
-			event_target:chosen_subject = {
 				is_authoritarian = no
 			}
-		}
-		event_target:chosen_subject = {
 			change_government = {
 				authority = auth_dictatorial
 				remove_invalid_civics = yes
 				cooldown = no
 			}
 		}
-	}
-	event_target:chosen_subject = {
 		ruler = { set_leader_flag = grateful_installed_vassal_leader_@this }
 		add_opinion_modifier = {
 			who = prev

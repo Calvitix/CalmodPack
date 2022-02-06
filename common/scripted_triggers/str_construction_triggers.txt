@@ -50,6 +50,7 @@ str_bureaucratic_allow = {
             or = {
                 is_ai = no
                 lategame = no
+				not = { has_planet_flag = str_planet_economic_modul_flag }                				
             }
         }
         owner = {
@@ -69,6 +70,7 @@ str_bureaucratic_allow = {
             owner = {
                 is_ai = no
             }
+            owner = { not = { has_global_flag = str_planet_economic_modul_flag } }           
         }
 
 		owner = {
@@ -78,9 +80,12 @@ str_bureaucratic_allow = {
                     str_raw_ecocrisis_level_1 = no
                     str_consumer_goods_crisis_1 = no
                 }
+				not = { has_planet_flag = str_planet_economic_modul_flag }                
             }
         }
-
+		or = {
+           owner = { not = { has_global_flag = str_planet_economic_modul_flag } }
+		and = {
         nand = {
             exists = owner
 			owner = { is_ai = yes }
@@ -106,10 +111,13 @@ str_bureaucratic_allow = {
             }
         }
     }
+        }
+    }
 }
 
 str_bureaucratic_destroy = {
     exists = owner
+	free_building_slots < 1 #Calvitix 
     or = {
         and = { #calvitix debug
 			owner = {
@@ -139,6 +147,7 @@ str_foundry_allow = {
         owner = {
             is_ai = no
         }
+       owner = { not = { has_global_flag = str_planet_economic_modul_flag } }
         and = { #Calvitix condition
             exists = owner
             owner = {
@@ -209,20 +218,22 @@ str_foundry_allow = {
 
 str_factory_allow = {
 	str_vanilla_buildings_allow_compatibility = yes
+    exists = owner
     or = {
+       owner = { not = { has_global_flag = str_planet_economic_modul_flag } }
         owner = {
             is_ai = no
         }
-        and = { #Calvitix condition
+        nand = { #Calvitix condition
             exists = owner
             owner = {
                 resource_stockpile_compare = {
                     resource = consumer_goods
-                    value < 500
+                    value > 5000
                 }
                 resource_income_compare = {
                     resource = consumer_goods
-                    value < 5
+                    value > 35
                 }
             }
         }         
@@ -249,6 +260,7 @@ str_research_allow = {
 	str_vanilla_buildings_allow_compatibility = yes
     owner = {
         or = {
+			not = { has_global_flag = str_planet_economic_modul_flag }
             is_ai = no
             str_bad_raw_economy_trigger = no
         }
@@ -256,6 +268,7 @@ str_research_allow = {
     owner = {
         or = {
             is_ai = no
+			not = { has_global_flag = str_planet_economic_modul_flag }
             lategame = no
             nor = {
 				not = { has_ascension_perk = ap_become_the_crisis }
@@ -271,6 +284,7 @@ str_research_allow = {
     owner = {
         or = {
             is_ai = no
+            not = { has_global_flag = str_planet_economic_modul_flag }
             and = {
                 str_raw_ecocrisis_level_1 = no
                 str_consumer_goods_crisis_1 = no
@@ -279,6 +293,7 @@ str_research_allow = {
     }
     or = {
 		owner = { is_ai = no }
+        owner = { not = { has_global_flag = str_planet_economic_modul_flag } }
         has_planet_flag = prescripted_ideal
         is_capital = yes
         years_passed > 20
@@ -291,15 +306,17 @@ str_research_allow = {
             has_planet_flag = str_acceptable_habitability
         }
 		owner = { is_ai = no }
+        owner = { not = { has_global_flag = str_planet_economic_modul_flag } }
     }
     or = {
 		owner = { is_ai = no }
+        owner = { not = { has_global_flag = str_planet_economic_modul_flag } }
 		str_is_col_bureau = no
     }
 }
 
 str_research_destroy = {
-    or = {
+    and = { #or ?
         free_building_slots < 2
         free_jobs > 1 #Calvitix, why destroy only if free jobs ?
     }
@@ -324,6 +341,9 @@ str_research_destroy = {
 
 str_industrial_district_allow = {
 	str_industry_allow_compatibility = yes
+	or = {
+    owner = { not = { has_global_flag = str_planet_economic_modul_flag } }
+	and = {
 	nand = {
 		exists = owner 
 		owner = { is_ai = yes }
@@ -353,8 +373,7 @@ str_industrial_district_allow = {
 		owner = { is_ai = yes }
         has_planet_flag = str_bad_habitability
     }
-
-    or = {
+	}
         #Calvitix added
         and = {
             exists = owner
@@ -551,6 +570,9 @@ str_industrial_district_allow = {
 
 str_energy_district_allow = {
 	str_energy_allow_compatibility = yes
+	or = {
+    owner = { not = { has_global_flag = str_planet_economic_modul_flag } }
+	and = {
 	nand = {
 		exists = owner
 		owner = { is_ai = yes }
@@ -568,7 +590,7 @@ str_energy_district_allow = {
         }
 		owner = { str_energy_crisis_1 = no }
     }
-    or = {
+		}
         and = {
             num_unemployed >= 2
         }
@@ -613,7 +635,7 @@ str_energy_district_allow = {
 		                }
 		                resource_stockpile_compare = {
 		                    resource = energy
-		                    value > 900
+						value > 9000
 		                }
 		            }
 		            or = {
@@ -652,18 +674,20 @@ str_energy_district_allow = {
 	    }
 }
 
+
 str_food_district_allow = {
 	or = {
-	    and = { #calvitix added, food emergency
+		owner = { not = { has_global_flag = str_planet_economic_modul_flag } }
+	    nand = { #calvitix added, food emergency
 	        exists = owner
 	        owner = {
 	            resource_stockpile_compare = {
 	                resource = food
-	                value < 800
+	                value > 8000
 	            }
 	            resource_income_compare = {
 	                resource = food
-	                value < 0
+	                value > 30
 	            }
 	        }
 	    }
@@ -683,11 +707,11 @@ str_food_district_allow = {
 	            owner = {
 	                resource_income_compare = {
 	                    resource = food
-	                    value > -5
+	                    value > 25 #-5
 	                }
 	                resource_stockpile_compare = {
 	                    resource = food
-	                    value > 200
+	                    value > 4000 #200
 	                }
 	            }
 	        }
@@ -728,24 +752,25 @@ str_food_district_allow = {
 	            owner = {
 	                is_ai = yes
 	            }
-	            free_jobs > 2 #Calvitix(2 is too restrictiv, but otherwise AI is building/destroying district)
+	            free_jobs > 10 #Calvitix(2 is too restrictiv, but otherwise AI is building/destroying district)
 	        }
-	        or = {
+	    }
 	            str_force_district_farming = yes
 	            #Calvitix added
-	            and = {
+		nand = {
 	                exists = owner
 	                owner = {
 	                    is_catalytic_empire = yes
 	                    resource_stockpile_compare = {
 	                        resource = food
-	                        value < 500
+					value > 1500
 	                    }
 	                    resource_income_compare = {
 	                        resource = food
-	                        value < 10
+					value > 50
 	                    }
 	                }
+			str_is_col_farming = yes
 	            }
 	            and = {
 	                nand = {
@@ -775,11 +800,11 @@ str_food_district_allow = {
 	                        is_ai = yes
 	                        resource_income_compare = {
 	                            resource = food
-	                            value > 2
+						value > 20
 	                        }
 	                        resource_stockpile_compare = {
 	                            resource = food
-	                            value > 600
+						value > 4600
 	                        }
 	                    }
 	                    or = {
@@ -796,54 +821,55 @@ str_food_district_allow = {
 	                    }
 	                    resettlement_cheesy_disable = yes
 	                }
-	                nand = {
-	                    exists = owner
-	                    owner = {
-	                        is_ai = yes
-	                    }
-	                    or = {
-	                        free_jobs > 3
-	                        and = {
-	                            free_jobs > 2
-	                            owner = {
-	                                resource_income_compare = {
-	                                    resource = food
-	                                    value > -5
-	                                }
-	                            }
-	                        }
-	                        and = {
-	                            free_jobs > 1
-	                            owner = {
-	                                resource_income_compare = {
-	                                    resource = food
-	                                    value > 5
-	                                }
-	                            }
-	                        }
-	                    }
-	                    years_passed > 9
-	                }
-	                NAND = {
-	                    exists = owner
-	                    owner = {
-	                        is_ai = yes
-	                    }
-	                    owner = {
-	                        resource_income_compare = {
-	                            resource = food
-	                            value > 5
-	                        }
-	                    }
-	                }
+			# nand = {
+				# exists = owner
+				# owner = {
+					# is_ai = yes
+				# }
+				# or = {
+					# free_jobs > 3
+					# and = {
+						# free_jobs > 2
+						# owner = {
+							# resource_income_compare = {
+								# resource = food
+								# value > -5
+							# }
+						# }
+					# }
+					# and = {
+						# free_jobs > 1
+						# owner = {
+							# resource_income_compare = {
+								# resource = food
+								# value > 5
+							# }
+						# }
+					# }
+				# }
+				# years_passed > 9
+			# }
+			# NAND = {
+				# exists = owner
+				# owner = {
+					# is_ai = yes
+				# }
+				# owner = {
+					# resource_income_compare = {
+						# resource = food
+						# value > 5
+					# }
+				# }
+			# }
 	            }
 	        }
-	    }
-	}
 }
 
 str_mineral_district_allow = {
 	str_minerals_allow_compatibility = yes
+	or = {
+    owner = { not = { has_global_flag = str_planet_economic_modul_flag } }
+	and = {
     nand = {
         exists = owner
 		owner = { is_ai = yes }
@@ -895,7 +921,7 @@ str_mineral_district_allow = {
         }
 		owner = { str_minerals_crisis_1 = no }
     }
-    or = {
+    }
         and = { #Calvitix condition
             exists = owner
             owner = {
@@ -1018,6 +1044,7 @@ str_nexus_district_allow = {
     exists = owner
 	str_city_allow_compatibility = yes
     or = {
+       owner = { not = { has_global_flag = str_planet_economic_modul_flag } }
         owner = {
             is_ai = no
         }
@@ -1113,6 +1140,9 @@ str_nexus_district_allow = {
 
 str_city_district_allow = {
 	str_city_allow_compatibility = yes
+	or = {
+		owner = { not = { has_global_flag = str_planet_economic_modul_flag } }
+		and = {
     NAND = {
         exists = owner
 		owner = { is_ai = yes }
@@ -1130,7 +1160,7 @@ str_city_district_allow = {
         free_housing > 2
         free_building_slots > 1
     }
-    or = {
+    }
         and = {
             exists = owner
             num_unemployed >= 2
@@ -1199,6 +1229,7 @@ resettlement_cheesy_disable = {
 str_hydroponics_allow = {
 	str_vanilla_buildings_allow_compatibility = yes
         or = {
+		owner = { not = { has_global_flag = str_planet_economic_modul_flag } }
 		owner = { is_ai = no }
 		owner = { has_origin = origin_void_dwellers }
 			and = { #Calvitix
@@ -1209,27 +1240,30 @@ str_hydroponics_allow = {
 			}
 		and = {
 			owner = { is_ai = yes }
-			free_jobs < 4
+			free_jobs < 6
         }
     }
 }
 
 str_hydroponics_destroy = {
     exists = owner
+	free_building_slots < 1 #Calvitix 
     owner = {
         is_ai = yes
 		not = { has_origin = origin_void_dwellers }
-        resource_stockpile_compare = { resource = food value > 2000 }  #calvitix added
+        resource_stockpile_compare = { resource = food value > 5000 }  #calvitix added
         has_monthly_income = {
             resource = food
-            value > 30  #20
+            value > 150  #20
         }
     }
+	has_global_flag = str_planet_economic_modul_flag    
 }
 
 str_food_processing_allow = {
 	str_vanilla_buildings_allow_compatibility = yes
     or = {
+		owner = { not = { has_global_flag = str_planet_economic_modul_flag } }
 		str_is_col_farming = yes
         owner = {
 			is_ai=no
@@ -1240,6 +1274,7 @@ str_food_processing_allow = {
 str_food_processing_destroy = {
     exists = owner
 	owner = { is_ai = yes }
+	free_building_slots < 1 #Calvitix 
     or = {
 		str_is_col_foundry = yes
 		str_is_col_factory = yes
@@ -1247,12 +1282,14 @@ str_food_processing_destroy = {
 		str_is_col_generator = yes
 		str_is_col_mining = yes
     }
+	has_global_flag = str_planet_economic_modul_flag    
 }
 
 
 str_mineral_purification_allow = {
 	str_vanilla_buildings_allow_compatibility = yes
     or = {
+		owner = { not = { has_global_flag = str_planet_economic_modul_flag } }
 		str_is_col_mining = yes
         owner = {
 			is_ai=no
@@ -1263,6 +1300,7 @@ str_mineral_purification_allow = {
 str_mineral_purification_destroy = {
     exists = owner
 	owner = { is_ai = yes }
+	free_building_slots < 1 #Calvitix 
     or = {
 		str_is_col_foundry = yes
 		str_is_col_factory = yes
@@ -1270,12 +1308,14 @@ str_mineral_purification_destroy = {
 		str_is_col_generator = yes
 		str_is_col_farming = yes
     }
+	has_global_flag = str_planet_economic_modul_flag    
 }
 
 
 str_energy_grid_allow = {
 	str_vanilla_buildings_allow_compatibility = yes
     or = {
+		owner = { not = { has_global_flag = str_planet_economic_modul_flag } }
 		str_is_col_generator = yes
         owner = {
 			is_ai=no
@@ -1286,6 +1326,8 @@ str_energy_grid_allow = {
 str_energy_grid_destroy = {
     exists = owner
 	owner = { is_ai = yes }
+	free_building_slots < 1 #Calvitix 
+	has_global_flag = str_planet_economic_modul_flag
     or = {
 		str_is_col_foundry = yes
 		str_is_col_factory = yes
@@ -1355,6 +1397,7 @@ str_food_district_potential = {
 str_stronghold_potential = {
 	str_vanilla_buildings_allow_compatibility = yes
     or = {
+		owner = { not = { has_global_flag = str_planet_economic_modul_flag } }
 		owner = { is_ai = no }
         and = {
             owner = {
@@ -1411,6 +1454,8 @@ str_stronghold_potential = {
 str_stronghold_destroy = {
     exists = owner
 	owner = { is_ai = yes }
+	free_building_slots < 1 #Calvitix 
+	#has_global_flag = str_planet_economic_modul_flag	
     or = {
         AND = {
 			owner = { is_ai = yes }
@@ -1435,7 +1480,9 @@ str_stronghold_destroy = {
 
 
 str_habitat_housing_allow = {
-    
+	or = {
+    owner = { not = { has_global_flag = str_planet_economic_modul_flag } }
+	and = {
 	nand = {
 	    exists = owner
 	    owner = { is_ai = yes }
@@ -1468,6 +1515,8 @@ str_habitat_housing_allow = {
 	    owner = { is_ai = yes }
 		num_pops < 7
 	}
+	}
+	}
 }
     
 str_habitat_housing_destroy = {
@@ -1476,6 +1525,9 @@ str_habitat_housing_destroy = {
     
     
 str_habitat_industry_allow = {
+	or = {
+    owner = { not = { has_global_flag = str_planet_economic_modul_flag } }
+	and = {
 	nand = {
 	    exists = owner
 	    owner = { is_ai = yes }
@@ -1497,6 +1549,8 @@ str_habitat_industry_allow = {
 	    has_planet_flag = mining_habitat
 	    years_passed > 20
 	}
+	}
+	}
 }
     
 str_habitat_industry_destroy = {
@@ -1514,25 +1568,38 @@ str_habitat_trade_destroy = {
 	exists = owner
 	owner = { is_ai = yes }
 	years_passed > 50
+	has_global_flag = str_planet_economic_modul_flag	
 }
     
     
 str_habitat_culture_allow = {
+	or = {
 	nand = { 
 	    exists = owner 
 	    owner = { is_ai = yes }
 	 }
+	owner = { not = { has_global_flag = str_planet_economic_modul_flag } }
+	}
 }
     
 str_habitat_culture_destroy = {
 	exists = owner
+	and = {
 	owner = { is_ai = yes }
 	years_passed > 50
+	}
+	has_global_flag = str_planet_economic_modul_flag			
 }
 
 str_uses_comzones = {
+	exists = owner
+	or = {
+    owner = { not = { has_global_flag = str_planet_economic_modul_flag } }
+    and = {
 	owner = {
 		has_tradition = tr_mercantile_commercial_enterprise
 	}
 	has_planet_flag = str_should_use_merchants
+	}
+	}
 }

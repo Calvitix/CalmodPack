@@ -2,42 +2,11 @@
 #
 # Calvitix Check 3.2
 #
-# Last Update : 02.01.2022
+# Last Update : 06.02.2022
 #
 ###############################################
 ################### Phase 1 ###################
 ###############################################
-# Condensed Quantum Electrodynamics
-tech_condensed_qe = { #Old, not used in 3.19
-	area = physics
-	cost = @tier2cost2 #calvitix
-	weight = @tier2weight1
-	tier = 1
-    category = { field_manipulation }
-    prerequisites = {
-		"tech_physics_1"
-		"tech_power_plant_2"
-	}
-
-	modifier = {
-		all_technology_research_speed = 0.05
-	}
-
-	weight_modifier = {
-		modifier = { factor = 0		has_global_flag = ehof_ai_disabled	is_ai = yes }
-		modifier = { factor = 0		has_global_flag = ehof_disabled }
-		modifier = { factor = 0.1	years_passed < 10 }
-		modifier = { factor = 2		years_passed > 20 }
-		modifier = { factor = 3		years_passed > 30 }
-		modifier = { factor = 4		years_passed > 40 }
-		modifier = { factor = 1.5	research_leader = { area = physics has_trait = "leader_trait_expertise_field_manipulation" } }
-	}
-
-	ai_weight = {
-		factor = @ehof_t1_weight
-		modifier = { factor = 1.5	research_leader = { area = physics has_trait = "leader_trait_expertise_field_manipulation" } }
-	}
-}
 
 # Abstract Physics Theory
 tech_abstract_1 = {
@@ -47,6 +16,9 @@ tech_abstract_1 = {
 	tier = 2
 	is_rare = yes
     category = { particles }
+
+	gateway = ehof
+
 	modifier = {
 		planet_researchers_physics_research_produces_mult = 0.05
 	}
@@ -76,7 +48,7 @@ tech_abstract_1 = {
 	}
 
 	ai_weight = {
-		factor = @giga_aiweight_multiplier
+		#factor = @giga_aiweight_multiplier
 		factor = @ehof_t1_weight
 		modifier = { factor = 1.5	research_leader = { area = physics has_trait = "leader_trait_expertise_particles" } }
 	}
@@ -91,16 +63,17 @@ tech_ehof_phase_01 = {
 	is_dangerous = yes
 	category = { voidcraft }
     prerequisites = {
-		"tech_condensed_qe"
 		"tech_abstract_1"
 		"tech_wormhole_stabilization"
 		"tech_habitat_1" #calvitix
 		"tech_starbase_4" #calvitix
 	}
 
-	#potential = { #giga 3.19
-	#	has_country_flag = has_arcane_generator
-	#}
+	potential = {
+		has_country_flag = has_arcane_generator
+	}
+
+	gateway = ehof
 
 	modifier = {
 		country_influence_produces_mult = 0.1
@@ -116,7 +89,7 @@ tech_ehof_phase_01 = {
 	}
 
 	ai_weight = {
-		factor = @giga_aiweight_multiplier
+		#factor = @giga_aiweight_multiplier
 		factor = @ehof_t1_weight
 		modifier = { factor = 1.25	research_leader = { area = engineering has_trait = "leader_trait_expertise_voidcraft" } }
 	}
@@ -136,17 +109,19 @@ tech_ehof_phase_01 = {
 # Applied Abstract Physics
 tech_abstract_2 = {
 	area = physics
-	cost = @tier3cost3
+	cost = @tier3cost3  #cost2 calvitix
 	weight = @tier3weight2
 	tier = 3
     category = { particles }
     is_rare = yes
     prerequisites = {
-		"tech_abstract_1"
-		"tech_physics_2"
-		"tech_power_plant_4"
+		tech_abstract_1
+		tech_physics_2
+		tech_power_plant_4
 		# "tech_ehof_phase_01" 3.19
 	}
+
+	gateway = ehof
 
 	modifier = {
 		planet_researchers_physics_research_produces_mult = 0.05
@@ -163,7 +138,7 @@ tech_abstract_2 = {
 	}
 
 	ai_weight = {
-		factor = @giga_aiweight_multiplier
+		#factor = @giga_aiweight_multiplier
 		factor = @ehof_t1_weight
 		modifier = { factor = 1.25	research_leader = { area = physics has_trait = "leader_trait_expertise_particles" } }
 	}
@@ -180,6 +155,8 @@ tech_photonic_m = {
 		"tech_abstract_2"
 	}
 
+	gateway = ehof
+
 	weight_modifier = {
 		modifier = { factor = 0.1	years_passed < 30 }
 		modifier = { factor = 2		years_passed > 40 }
@@ -189,7 +166,7 @@ tech_photonic_m = {
 	}
 
 	ai_weight = {
-		factor = @giga_aiweight_multiplier
+		#factor = @giga_aiweight_multiplier
 		factor = @ehof_t1_weight
 		modifier = { factor = 1.5	research_leader = { area = physics has_trait = "leader_trait_expertise_field_manipulation" } }
 	}
@@ -204,14 +181,12 @@ tech_negative_pressure = {
     category = { field_manipulation }
     prerequisites = {
 		"tech_abstract_2"
-		"tech_physics_2" #pre-3.19
+		"tech_physics_2" #pre-3.19, keep by Calvitix
 		"tech_power_plant_3" #pre-3.19
 		"tech_ehof_phase_01" #pre-3.19
 	}
 
-	#modifier = {
-	#	all_technology_research_speed = 0.05
-	#}
+	gateway = ehof
 
 	weight_modifier = {
 		modifier = { factor = 0.1	years_passed < 30 }
@@ -222,7 +197,7 @@ tech_negative_pressure = {
 	}
 
 	ai_weight = {
-		factor = @giga_aiweight_multiplier
+		#factor = @giga_aiweight_multiplier
 		factor = @ehof_t1_weight
 		modifier = { factor = 1.5	research_leader = { area = physics has_trait = "leader_trait_expertise_field_manipulation" } }
 	}
@@ -244,6 +219,8 @@ tech_ehof_phase_02 = {
 	}
 	potential = { check_variable = { which = ehof_phase value >= 1 } }
 
+	gateway = ehof
+
 	modifier = {
 		country_influence_produces_mult = 0.05
 	}
@@ -257,7 +234,7 @@ tech_ehof_phase_02 = {
 	}
 
 	ai_weight = {
-		factor = @giga_aiweight_multiplier
+		#factor = @giga_aiweight_multiplier
 		factor = @ehof_t1_weight
 		modifier = { factor = 1.25	research_leader = { area = engineering has_trait = "leader_trait_expertise_voidcraft" } }
 	}
@@ -381,6 +358,8 @@ tech_abstract_3 = {
 		"tech_abstract_2"
 	}
 
+	gateway = ehof
+
 	modifier = {
 		planet_researchers_physics_research_produces_mult = 0.075
 	}
@@ -396,7 +375,7 @@ tech_abstract_3 = {
 	}
 
 	ai_weight = {
-		factor = @giga_aiweight_multiplier
+		#factor = @giga_aiweight_multiplier
 		factor = @ehof_t1_weight
 		modifier = { factor = 1.25	research_leader = { area = physics has_trait = "leader_trait_expertise_particles" } }
 	}
@@ -407,7 +386,7 @@ tech_u_r_e_t = {
 	area = physics
 	cost = @tier5cost3
 	weight = @tier5weight3
-	tier = 6
+	tier = 5
     category = { computing }
     prerequisites = {
 		"tech_abstract_3"
@@ -415,6 +394,8 @@ tech_u_r_e_t = {
 		"tech_global_research_initiative"
 		"tech_space_science_5"
 	}
+
+	gateway = ehof
 
 	weight_modifier = {
 		modifier = { factor = 0.1	years_passed < 30 }
@@ -425,7 +406,7 @@ tech_u_r_e_t = {
 	}
 
 	ai_weight = {
-		factor = @giga_aiweight_multiplier
+		#factor = @giga_aiweight_multiplier
 		factor = @ehof_t1_weight
 		modifier = { factor = 1.5	research_leader = { area = physics has_trait = "leader_trait_expertise_field_manipulation" } }
 	}
@@ -443,33 +424,35 @@ tech_negative_e_s = {
 		"tech_u_r_e_t"
 	}
 
-	weight_modifier = {
+	gateway = ehof
 
-		modifier = {
-			factor = 0
-			NOR = {
-				has_country_flag = negative_mass_found
+	weight_modifier = {
+	modifier = {
+		factor = 0
+		NOR = {
+			has_country_flag = negative_mass_found
 				any_system_within_border = { any_system_planet = { has_resource = { type = ehof_sr_negative_mass amount > 0 } } }
-				any_relation = {
-					AND = {
-						is_country_type = default
-						has_communications = ROOT
-						has_technology = tech_tech_negative_e_s
-					}
+			any_relation = {
+				AND = {
+					is_country_type = default
+					has_communications = ROOT
+						has_technology = tech_negative_e_s
 				}
 			}
 		}
+	}
+
 		modifier = { factor = 0.1	years_passed < 50 }
 		modifier = { factor = 2		years_passed > 60 }
 		modifier = { factor = 3		years_passed > 70 }
 		modifier = { factor = 4		years_passed > 80 }
 		modifier = { factor = 1.5	research_leader = { area = physics has_trait = "leader_trait_expertise_field_manipulation" } }
 		modifier = { factor = 1.5	has_ascension_perk = ap_technological_ascendancy }
-		modifier = { factor = 2		has_federation = yes	federation = { has_federation_perk = rare_tech_boost any_member = { has_technology = tech_grav_control } } }
+		modifier = { factor = 2		has_federation = yes	federation = { has_federation_perk = rare_tech_boost any_member = { has_technology = tech_negative_e_s } } }
 	}
 
 	ai_weight = {
-		factor = @giga_aiweight_multiplier
+		#factor = @giga_aiweight_multiplier
 		factor = @ehof_t1_weight
 		modifier = { factor = 1.5	research_leader = { area = physics has_trait = "leader_trait_expertise_field_manipulation" } }
 	}
@@ -488,6 +471,8 @@ tech_ssn_det = {
 		"tech_mine_dark_matter"
 	}
 
+	gateway = ehof
+
 	weight_modifier = {
 		modifier = { factor = 0.1	years_passed < 50 }
 		modifier = { factor = 2		years_passed > 60 }
@@ -497,7 +482,7 @@ tech_ssn_det = {
 	}
 
 	ai_weight = {
-		factor = @giga_aiweight_multiplier
+		#factor = @giga_aiweight_multiplier
 		factor = @ehof_t1_weight
 		modifier = { factor = 1.25	research_leader = { area = physics has_trait = "leader_trait_expertise_particles" } }
 	}
@@ -514,6 +499,8 @@ tech_hardlight_c_u = {
 		"tech_u_r_e_t"
 	}
 
+	gateway = ehof
+
 	modifier = {
 		planet_building_build_speed_mult = 0.20
 		starbase_upgrade_speed_mult = 0.20
@@ -529,7 +516,7 @@ tech_hardlight_c_u = {
 	}
 
 	ai_weight = {
-		factor = @giga_aiweight_multiplier
+		#factor = @giga_aiweight_multiplier
 		factor = @ehof_t1_weight
 		modifier = { factor = 1.5	research_leader = { area = physics has_trait = "leader_trait_expertise_field_manipulation" } }
 	}
@@ -540,7 +527,7 @@ tech_nm_utilization_1 = {
 	area = physics
 	cost = @tier6cost1
 	weight = @gigatier6weight3
-	tier = 6
+	tier = 5
 	is_rare = yes
     category = { particles }
     prerequisites = {
@@ -549,6 +536,8 @@ tech_nm_utilization_1 = {
 		"tech_negative_e_s"
 	}
 
+	gateway = ehof
+
 	weight_modifier = {
 		modifier = { factor = 0.1	years_passed < 50 }
 		modifier = { factor = 2		years_passed > 60 }
@@ -556,11 +545,11 @@ tech_nm_utilization_1 = {
 		modifier = { factor = 4		years_passed > 80 }
 		modifier = { factor = 1.5	research_leader = { area = physics has_trait = "leader_trait_expertise_field_manipulation" } }
 		modifier = { factor = 1.5	has_ascension_perk = ap_technological_ascendancy }
-		modifier = { factor = 2		has_federation = yes	federation = { has_federation_perk = rare_tech_boost any_member = { has_technology = tech_grav_control } } }
+		modifier = { factor = 2		has_federation = yes	federation = { has_federation_perk = rare_tech_boost any_member = { has_technology = tech_nm_utilization_1 } } }
 	}
 
 	ai_weight = {
-		factor = @giga_aiweight_multiplier
+		#factor = @giga_aiweight_multiplier
 		factor = @ehof_t1_weight
 		modifier = { factor = 1.5	research_leader = { area = physics has_trait = "leader_trait_expertise_field_manipulation" } }
 	}
@@ -571,19 +560,18 @@ tech_ehof_phase_03 = {
 	area = engineering
 	cost = @tier6cost2
 	weight = @gigatier6weight3
-	tier = 6
+	tier = 5
 	is_dangerous = yes
     category = { voidcraft }
     prerequisites = {
 		"tech_ssn_det"
 		"tech_hardlight_c_u"
 		"tech_nm_utilization_1"
-		"tech_dm_injection" #pre3.19
-		"tech_negative_mass_enrichment" #pre3.19
-		"tech_grav_control" #pre3.19
 		"tech_mega_engineering"
 	}
 	potential = { check_variable = { which = ehof_phase value >= 2 } }
+
+	gateway = ehof
 
 	modifier = {
 		country_influence_produces_mult = 0.1
@@ -598,7 +586,7 @@ tech_ehof_phase_03 = {
 	}
 
 	ai_weight = {
-		factor = @giga_aiweight_multiplier
+		#factor = @giga_aiweight_multiplier
 		factor = @ehof_t1_weight
 		modifier = { factor = 1.25	research_leader = { area = engineering has_trait = "leader_trait_expertise_voidcraft" } }
 	}
@@ -620,7 +608,7 @@ tech_abstract_4 = {
 	area = physics
 	cost = @tier6cost3
 	weight = @gigatier6weight3
-	tier = 7
+	tier = 5
 	is_rare = yes
     category = { particles }
     prerequisites = {
@@ -629,12 +617,14 @@ tech_abstract_4 = {
 		"tech_hardlight_c_u"
 	}
 
+	gateway = ehof
+
 	modifier = {
 		planet_researchers_physics_research_produces_mult = 0.075
 	}
 
 	ai_weight = {
-		factor = @giga_aiweight_multiplier
+		#factor = @giga_aiweight_multiplier
 		factor = @ehof_t1_weight
 		modifier = { factor = 1.25	research_leader = { area = physics has_trait = "leader_trait_expertise_particles" } }
 	}
@@ -645,14 +635,15 @@ tech_non_local_r_i = {
 	area = physics
 	cost = @tier7cost2
 	weight = @gigatier6weight3
-	tier = 7
+	tier = 5
     category = { computing }
     prerequisites = {
 		"tech_abstract_4"
+		"tech_negative_e_s"
 	}
 
 	ai_weight = {
-		factor = @giga_aiweight_multiplier
+		#factor = @giga_aiweight_multiplier
 		factor = @ehof_t1_weight
 		modifier = { factor = 1.5	research_leader = { area = physics has_trait = "leader_trait_expertise_field_manipulation" } }
 	}
@@ -661,9 +652,9 @@ tech_non_local_r_i = {
 # Advanced Negative Mass Utilities
 tech_nm_utilization_2 = {
 	area = physics
-	cost = @gigatier7cost1
+	cost = @tier7cost1
 	weight = @gigatier6weight3
-	tier = 6
+	tier = 5
 	is_rare = yes
     category = { particles }
     prerequisites = {
@@ -673,45 +664,54 @@ tech_nm_utilization_2 = {
 	}
 
 	ai_weight = {
-		factor = @giga_aiweight_multiplier
+		#factor = @giga_aiweight_multiplier
 		factor = @ehof_t1_weight
 		modifier = { factor = 1.5	research_leader = { area = physics has_trait = "leader_trait_expertise_field_manipulation" } }
 	}
 }
 
-# Prototype Sentient Metal Utilities
-tech_sentient_m_u_1 = {
-	area = engineering
-	cost = @gigatier7cost1
-	weight = 0
-	tier = 7
-	is_rare = yes
-	is_reverse_engineerable = no
-    category = { materials }
+## Prototype Sentient Metal Utilities
+#tech_sentient_m_u_1 = {
+#	area = engineering
+#	cost = @gigatier7cost1
+#	weight = 0
+#	tier = 7
+#	is_rare = yes
+#	is_reverse_engineerable = no
+#   category = { materials }
+#
+#	modifier = {
+#		all_technology_research_speed = 0.05
+#	}
+#
+#	ai_weight = {
+#		factor = @giga_aiweight_multiplier
+#		factor = @ehof_t1_weight
+#		modifier = { factor = 1.5	research_leader = { area = physics has_trait = "leader_trait_expertise_field_manipulation" } }
+#	}
+#}
 
-	modifier = {
-		all_technology_research_speed = 0.025
-	}
-
-	ai_weight = {
-		factor = @giga_aiweight_multiplier
-		factor = @ehof_t1_weight
-		modifier = { factor = 1.5	research_leader = { area = physics has_trait = "leader_trait_expertise_field_manipulation" } }
-	}
-}
-
-# Micro-wormhole Destination Precognition
+# Micro-wormhole Destination Precognition^
 tech_prob_c = {
 	area = physics
-	cost = @gigatier7cost1
+	cost = @tier7cost1
 	weight = 0
-	tier = 7
+	tier = 5
 	is_rare = yes
 	is_reverse_engineerable = no
     category = { computing }
 
+	gateway = ehof
+
+	prereqfor_desc = {
+		custom = {
+			title = "tech_ehof_phase_04_partial_custom"
+			desc = "tech_ehof_phase_04_partial_custom_desc"
+		}
+	}
+
 	ai_weight = {
-		factor = @giga_aiweight_multiplier
+		#factor = @giga_aiweight_multiplier
 		factor = @ehof_t1_weight
 		modifier = { factor = 1.5	research_leader = { area = physics has_trait = "leader_trait_expertise_field_manipulation" } }
 	}
@@ -720,44 +720,49 @@ tech_prob_c = {
 # Electroweak Quasi-Field Materialization
 tech_condensed_ews = {
 	area = physics
-	cost = @gigatier7cost1
+	cost = @tier7cost1
 	weight = 0
-	tier = 7
+	tier = 5
 	is_rare = yes
 	is_reverse_engineerable = no
     category = { field_manipulation }
 
-	modifier = {
-		all_technology_research_speed = 0.025
+	gateway = ehof
+
+	prereqfor_desc = {
+		custom = {
+			title = "tech_ehof_phase_04_partial_custom"
+			desc = "tech_ehof_phase_04_partial_custom_desc"
+		}
 	}
 
 	ai_weight = {
-		factor = @giga_aiweight_multiplier
+		#factor = @giga_aiweight_multiplier
 		factor = @ehof_t1_weight
 		modifier = { factor = 1.5	research_leader = { area = physics has_trait = "leader_trait_expertise_field_manipulation" } }
 	}
 }
 
 # Arcane Rift Generator Restoration
-tech_arcane_g_r = {
-	area = physics
-	cost = @gigatier7cost1
-	weight = 0
-	tier = 7
-	is_dangerous = yes
-    category = { particles }
-
-	modifier = {
-		country_influence_produces_mult = 0.25
-		all_technology_research_speed = 0.025
-	}
-
-	ai_weight = {
-		factor = @giga_aiweight_multiplier
-		factor = @ehof_t1_weight
-		modifier = { factor = 1.25	research_leader = { area = engineering has_trait = "leader_trait_expertise_voidcraft" } }
-	}
-}
+#tech_arcane_g_r = {
+#	area = physics
+#	cost = @gigatier7cost1
+#	weight = 0
+#	tier = 7
+#	is_dangerous = yes
+#   category = { particles }
+#
+#	modifier = {
+#		country_influence_produces_mult = 0.25
+#		all_technology_research_speed = 0.025
+#	}
+#
+#	ai_weight = {
+#		factor = @giga_aiweight_multiplier
+#		factor = @ehof_t1_weight
+#		modifier = { factor = 1.25	research_leader = { area = engineering has_trait = "leader_trait_expertise_voidcraft" } }
+#	}
+#}
 
 # Vacuum Energy Density Resonance Stimulation
 tech_vedrs = { #pre 3.19
@@ -782,8 +787,8 @@ tech_vedrs = { #pre 3.19
 # EHOF Ultima
 tech_ehof_phase_04 = {
 	area = engineering
-	cost = @gigatier7cost2
-	tier = 7
+	cost = @tier7cost2
+	tier = 5
 	is_dangerous = yes
     category = { voidcraft }
     prerequisites = {
@@ -792,7 +797,6 @@ tech_ehof_phase_04 = {
 		"tech_prob_c"
 		"tech_vedrs" #pre 3.19
 		"tech_condensed_ews"
-		"tech_arcane_g_r"
 	}
 	potential = { check_variable = { which = ehof_phase value >= 3 } }
 
@@ -806,7 +810,7 @@ tech_ehof_phase_04 = {
 	}
 
 	ai_weight = {
-		factor = @giga_aiweight_multiplier
+		#factor = @giga_aiweight_multiplier
 		factor = @ehof_t1_weight
 		modifier = { factor = 1.25	research_leader = { area = engineering has_trait = "leader_trait_expertise_voidcraft" } }
 	}
@@ -823,32 +827,32 @@ tech_ehof_phase_04 = {
 ################## SM Forge ###################
 ###############################################
 
-# Advanced Sentient Metal Utilities
-tech_sentient_m_u_2 = {
-	area = engineering
-	cost = @gigatier7cost3
-	weight = 0
-	tier = 7
-	is_rare = yes
-	is_reverse_engineerable = no
-    category = { materials }
-
-	modifier = {
-		all_technology_research_speed = 0.025
-	}
-
-	ai_weight = {
-		factor = @giga_aiweight_multiplier
-		factor = @ehof_t1_weight
-		modifier = { factor = 1.5	research_leader = { area = physics has_trait = "leader_trait_expertise_field_manipulation" } }
-	}
-}
+## Advanced Sentient Metal Utilities
+#tech_sentient_m_u_2 = {
+#	area = engineering
+#	cost = @gigatier7cost3
+#	weight = 0
+#	tier = 7
+#	is_rare = yes
+#	is_reverse_engineerable = no
+#   category = { materials }
+#
+#	modifier = {
+#		all_technology_research_speed = 0.025
+#	}
+#
+#	ai_weight = {
+#		factor = @giga_aiweight_multiplier
+#		factor = @ehof_t1_weight
+#		modifier = { factor = 1.5	research_leader = { area = physics has_trait = "leader_trait_expertise_field_manipulation" } }
+#	}
+#}
 
 tech_sm_megastructure = {
 	area = engineering
 	cost = @tier8cost1
 	weight = @tier8weight1
-	tier = 7
+	tier = 5
 	category = { voidcraft }
 	is_rare = yes
 	ai_update_type = all
@@ -869,7 +873,7 @@ tech_sm_megastructure = {
 	}
 
 	ai_weight = {
-		factor = @giga_aiweight_multiplier
+		#factor = @giga_aiweight_multiplier
 		factor = @ehof_t1_weight
 		modifier = { factor = 1.25	research_leader = { area = engineering has_trait = "leader_trait_expertise_voidcraft" } }
 	}
@@ -893,7 +897,7 @@ tech_giga_power_plant_1 = {
 	tier = 4
 	category = { field_manipulation }
 	prerequisites = { "tech_power_plant_4"
-					  #"tech_reactor_4"
+					  "tech_antimatter_power"
 					  "tech_abstract_2"
 				}
 	weight = @tier4weight1
@@ -936,7 +940,7 @@ tech_giga_power_plant_2 = {
 	tier = 5
 	category = { field_manipulation }
 	prerequisites = { "tech_giga_power_plant_1"
-					  #"tech_reactor_5"
+					  "tech_zero_point_power"
 					  "tech_abstract_3"
 				}
 	weight = @tier5weight1
@@ -976,7 +980,7 @@ tech_giga_power_plant_2 = {
 tech_giga_power_plant_3 = {
 	cost = @tier6cost1
 	area = physics
-	tier = 6
+	tier = 5
 	category = { field_manipulation }
 	prerequisites = { "tech_giga_power_plant_2"
 					  "tech_abstract_4"
@@ -1094,13 +1098,14 @@ tech_hyperlane_p_t = {
 tech_field_e_e_t = {
 	cost = @tier7cost1
 	area = physics
-	tier = 7
+	tier = 5
 	category = { field_manipulation }
 	prerequisites = {
  		"tech_abstract_4"
  		"tech_hyperlane_p_t"
-}
-	weight = @gigatier7cost1
+		"tech_negative_e_s"
+	}
+	weight = @tier7weight1
 
 	weight_modifier = {
 		factor = 2

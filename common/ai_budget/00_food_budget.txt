@@ -167,3 +167,76 @@ food_upkeep_ships = { #3.2
 		weight = 5
 	}
 }
+
+####AFA
+food_upkeep_armies = {
+	resource = food
+	type = upkeep
+	category = armies_for_alloys_and_food
+
+	potential = {
+		is_machine_empire = no
+		is_lithoid_empire = no
+	}
+
+	fraction = {
+		weight = 0.25
+	}
+}
+
+
+food_expenditure_armies = {
+	resource = food
+	type = expenditure
+	category = armies_for_alloys_and_food
+
+	potential = {
+		is_machine_empire = no
+		is_lithoid_empire = no
+	}
+
+	fraction = {
+		weight = 0.01
+
+		modifier = {
+			factor = 10
+			NOT = {
+				count_owned_army = {
+					count >= @armies_for_declaring_war
+					limit = {
+						is_defensive_army = no
+					}
+				}
+			}
+		}
+
+		modifier = {
+			factor = 2
+			OR = {
+				any_neighbor_country = {
+					has_ascension_perk = ap_become_the_crisis
+				}
+				any_country = {
+					is_crisis_faction = yes
+				}
+			}
+		}
+	}
+}
+
+
+food_expenditure_armies_threatened = {
+	resource = food
+	type = expenditure
+	category = armies_for_alloys_and_food
+
+	potential = {
+		highest_threat > 20
+		is_machine_empire = no
+		is_lithoid_empire = no
+	}
+
+	fraction = {
+		weight = 0.10
+	}
+}
