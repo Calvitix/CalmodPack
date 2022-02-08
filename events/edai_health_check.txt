@@ -1714,20 +1714,21 @@ event = {
 						add_modifier = { modifier = hc_farming_added days = 360 }										
 						#remove_building = building_foundry_1
 					}
-					# else_if = {
-						# limit = {
-							# free_district_slots > 0
-							# nor = { 
-								# uses_district_set = ring_world 
-								# uses_district_set = habitat
-							# }
-							# num_free_districts = { type = district_farming_uncapped value > 0 }
-						# }
-						# add_district = district_farming_uncapped
-						# if = { limit = { has_global_flag = edai_logging	} log = "EDAI :E : Food Crisis -20 : adding district_generator_uncapped on planet [This.GetName] for [Owner.GetName]" }	
-						# add_modifier = { modifier = hc_farming_added days = 360 }										
-						# #remove_building = building_foundry_1
-					# }
+					else_if = {
+						limit = {
+							free_district_slots > 0
+							nor = { 
+								uses_district_set = ring_world 
+								uses_district_set = habitat
+							}
+							owner = { is_anglers_empire = yes }
+							num_free_districts = { type = district_farming_uncapped value > 0 }
+						}
+						add_district = district_farming_uncapped
+						if = { limit = { has_global_flag = edai_logging	} log = "EDAI :E : Food Crisis -20 : adding district_farming_uncapped on planet [This.GetName] for [Owner.GetName]" }	
+						add_modifier = { modifier = hc_farming_added days = 360 }										
+						#remove_building = building_foundry_1
+					}
 					else_if = {
 						limit = {
 							free_district_slots > 0
@@ -2018,7 +2019,7 @@ event = {
 					else_if = {
 						limit = {
 							not = { has_modifier = hc_building_added }						
-							num_buildings = { type = building_research_lab_1 value < 4 }
+							num_buildings = { type = building_research_lab_1 value < 10 }
 							free_jobs < 10
 							owner = { resource_stockpile_compare = { resource = minerals value > 800 }}
 							owner = { has_monthly_income = { resource = energy value > 20 }}
@@ -2303,7 +2304,7 @@ event = {
 							
 						}
 						if = {
-							limit = { num_buildings = { type = building_research_lab_1 value < 4 } }
+							limit = { num_buildings = { type = building_research_lab_1 value < 10 } }
 							add_building = building_research_lab_1	
 							owner = { add_resource = { minerals = -500 } }
 							owner = { has_monthly_income = { resource = energy value > 50 }}
@@ -3943,7 +3944,7 @@ event = {
 						else_if = {
 							limit = { 
 								not = { has_modifier = hc_building_added }						
-								num_buildings = { type = building_research_lab_1 value < 4 }
+								num_buildings = { type = building_research_lab_1 value < 10 }
 								owner = { has_monthly_income = { resource = energy value > 20 }}
 								owner = { resource_stockpile_compare = { resource = minerals value > 800 }}
 							}

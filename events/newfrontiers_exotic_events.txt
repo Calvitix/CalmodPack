@@ -30,7 +30,7 @@ event = {
 	immediate = {
 
 		random_list = {
-			5 = {
+			5 = { #Calvitix reduce proba
 				random_galaxy_planet = {
 					limit = {
 						OR = {
@@ -39,6 +39,11 @@ event = {
 							has_modifier = "harmful_mold_2"
 							has_modifier = "harmful_mold_3"
 						}
+						#Calvitix
+						has_owner = yes
+						owner = {
+							is_ai = no
+						}						
 					}
 					save_event_target_as = infected_planet
 				}
@@ -101,6 +106,7 @@ planet_event = {
 	
 	trigger = {
 		owner = { NOT = { has_origin = origin_exomycosis } }
+		owner = { is_ai = no }
 		NOR = {
 			has_modifier = "mycelium_world" 
 			has_modifier = "harmful_mold_1"
@@ -163,6 +169,7 @@ planet_event = {
 		}
 		has_modifier = "harmful_mold_1"
 		owner = { NOT = { has_origin = origin_exomycosis } }
+		owner = { is_ai = no }		
 	}
 	
 	immediate = {
@@ -243,6 +250,7 @@ planet_event = {
 		}
 		has_modifier = "harmful_mold_2"
 		owner = { NOT = { has_origin = origin_exomycosis } }
+		owner = { is_ai = no }		
 	}
 	
 	immediate = {
@@ -290,6 +298,7 @@ planet_event = {
 		has_modifier = "harmful_mold_3"
 		owner = { NOT = { has_origin = origin_exomycosis } }
 		is_wet = yes
+		owner = { is_ai = no }		
 	}
 	
 	immediate = {
@@ -437,7 +446,7 @@ event = {
 						}
 					}
 				}
-				20 = {
+				60 = { #calvitix reduce propagation
 					modifier = {
 						factor = 2
 						has_modifier = protective_equipment
@@ -447,6 +456,7 @@ event = {
 			}
 			if = {
 				limit = {
+					owner = { is_ai = no } #Calvitix
 					owner = { NOT = { has_origin = origin_exomycosis } }
 					NOR = {
 						has_modifier = "harmful_mold_1"
@@ -474,6 +484,7 @@ planet_event = {
 			has_modifier = "harmful_mold_2"
 			has_modifier = "harmful_mold_3"
 		}
+		owner = { is_ai = no }							
 	}
 	
 	immediate = {
@@ -809,7 +820,12 @@ planet_event = {
 				starbase = { set_owner = event_target:mold_country }
 			}
 		}
+		if = {
+			limit = {
+				exists = event_target:mold_country
+			}
 		event_target:mold_country = { country_event = { id = newfrontiers_exotic_event.23 days = 1 } }
+	}
 	}
 }
 
