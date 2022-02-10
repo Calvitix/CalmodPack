@@ -596,9 +596,12 @@ event = {
 						owner = { 
 							or = { 
 								has_monthly_income = { resource = alloys value < 30 }
+								and = {
+									country_uses_consumer_goods = yes
 								has_monthly_income = { resource = consumer_goods value < 10}
 							}
 						}
+					}
 					}
 					if = {
 						limit = {
@@ -796,7 +799,12 @@ event = {
 						owner = { str_energy_crisis_1 = no }
 						owner = { has_monthly_income = { resource = minerals value > 50 }}
 						owner = { resource_stockpile_compare = { resource = minerals value > 800 } }												
-						owner = { has_monthly_income = { resource = consumer_goods value < 5 }}
+						owner = { 								
+							and = {
+								country_uses_consumer_goods = yes
+								has_monthly_income = { resource = consumer_goods value < 5 }
+					}
+						}
 					}
 					add_building = building_factory_1
 					owner = { add_resource = { minerals = -500 } }
@@ -939,7 +947,12 @@ event = {
 							num_free_districts = { type = district_industrial value > 0 }
 							owner = { has_monthly_income = { resource = energy value > 20 }}
 							owner = { has_monthly_income = { resource = minerals value > 50 }}
-							owner = { has_monthly_income = { resource = consumer_goods value < 20 }}
+							owner = { 								
+								and = {
+									country_uses_consumer_goods = yes
+									has_monthly_income = { resource = consumer_goods value < 20 }
+								}
+							}
 							owner = { resource_stockpile_compare = { resource = minerals value > 800 }}							
 						}
 						add_district = district_industrial					
@@ -950,7 +963,7 @@ event = {
 					else_if = {
 						limit = {
 							not = { has_modifier = hc_building_added }						
-							not = { has_building = building_research_lab_1 }
+							num_buildings = { type = building_research_lab_1 value < 10 }
 							free_building_slots > 2
 							owner = { resource_stockpile_compare = { resource = minerals value > 800 }}
 							owner = { has_monthly_income = { resource = energy value > 50 }}
@@ -2033,7 +2046,7 @@ event = {
 					else_if = {
 						limit = {
 							not = { has_modifier = hc_building_added }						
-							not = { has_building = building_research_lab_1 }
+							num_buildings = { type = building_research_lab_1 value < 10 }
 							free_building_slots > 2
 							owner = { resource_stockpile_compare = { resource = minerals value > 800 }}
 							owner = { has_monthly_income = { resource = energy value > 50 }}
@@ -3799,7 +3812,15 @@ event = {
 							num_free_districts = { type = district_industrial value > 0 }
 							owner = { has_monthly_income = { resource = minerals value > 50 }}
 							owner = { resource_stockpile_compare = { resource = minerals value > 800 }}
-							owner = { has_monthly_income = { resource = consumer_goods value < 10 }}
+							owner = { 
+								or = {
+									country_uses_consumer_goods = no
+									and = { 
+										country_uses_consumer_goods = yes
+										has_monthly_income = { resource = consumer_goods value < 10 }
+						}
+								}
+							}
 						}
 						add_district = district_industrial
 						owner = { add_resource = { minerals = -500 } }
@@ -3809,7 +3830,7 @@ event = {
 					else_if = {
 						limit = {
 							not = { has_modifier = hc_building_added }						
-							not = { has_building = building_research_lab_1 }
+							num_buildings = { type = building_research_lab_1 value < 10 }
 							free_building_slots > 1
 							owner = { resource_stockpile_compare = { resource = minerals value > 800 }}
 						}
@@ -3995,7 +4016,12 @@ event = {
 								free_district_slots > 0
 								num_free_districts = { type = district_industrial value > 0 }
 								owner = { resource_stockpile_compare = { resource = minerals value > 800 }}
-								owner = { has_monthly_income = { resource = consumer_goods value < 25 }}
+								owner = { 								
+									and = {
+										country_uses_consumer_goods = yes
+										has_monthly_income = { resource = consumer_goods value < 25 }
+							}
+								}
 							}
 							add_district = district_industrial
 							owner = { add_resource = { minerals = -500 } }

@@ -17,7 +17,7 @@ influence_expenditure_buffer = { # Buffer, will not be spent
 	category = buffer
 	
 	potential = {
-		always = yes
+		always = no
 	}
 	
 	fraction = {
@@ -115,51 +115,6 @@ influence_expenditure_resolutions = {
 	}
 }
 
-influence_expenditure_edicts_initial = {
-	resource = influence 
-	type = expenditure
-	category = edicts
-	
-	potential = {
-		years_passed > 8
-		not = {
-			has_edict = capacity_subsidies
-		}
-	}
-	
-	fraction = {
-		weight = 0.2
-	}	
-
-	static_min = {
-		base = 800
-	}
-}
-
-influence_expenditure_important_edicts = {
-	resource = influence 
-	type = expenditure
-	category = edicts
-	
-	potential = {
-		years_passed > 10
-		nand = {
-			has_edict = capacity_subsidies
-			has_edict = mining_subsidies
-			has_edict = fortify_the_border
-		}
-	}
-	
-	fraction = {
-		weight = 0.2
-	}	
-
-	static_min = {
-		base = 800
-	}
-}
-
-
 influence_expenditure_edicts = {
 	resource = influence 
 	type = expenditure
@@ -172,11 +127,16 @@ influence_expenditure_edicts = {
 		value > 250
 		}
 ###Starnet AI end
+		NOT = {
+			has_crisis_level = crisis_level_2
+		}
+		always = yes
 	}
 	
 	fraction = {
 		weight = 0.9 #0.5
 	}	
+
 	static_min = {
 		base = 800 #100
 	}
@@ -193,6 +153,9 @@ influence_expenditure_stations = {
 	category = stations
 	
 	potential = {
+	or = {
+		has_ai_expansion_plan = yes
+		and = {
 ###Starnet AI
 		str_is_allowed_to_build_outposts = yes
 		not = { has_country_flag = saving_influence_arcology }
@@ -219,12 +182,16 @@ influence_expenditure_stations = {
 			not = { has_edict = capacity_subsidies }
 			has_technology = tech_power_hub_1
 		}
-###Starnet AI end
+	###Starnet AI end
+		}		
+	}
 	}
 	
 	fraction = {
 		weight = 0.2 #0.5
 	}	
+
+	# min is 1 jump away
 	static_min = {
 		base = 0 #75
 ###Starnet AI
@@ -329,6 +296,7 @@ influence_expenditure_claims_late = {
 			OR = {
   	 			has_ethic = ethic_fanatic_pacifist
    				has_ethic = ethic_pacifist
+				has_crisis_level = crisis_level_2
     		}	
 		}
 		resource_stockpile_compare = {
@@ -376,6 +344,21 @@ influence_expenditure_claims_while_preparing = {
 ### Starnet AI end
 
 
+influence_expenditure_claims_fanatic_militarist = {
+	resource = influence
+	type = expenditure
+	category = claims
+
+	potential = {
+		has_ethic = ethic_fanatic_militarist
+		has_potential_claims = yes
+	}
+
+	fraction = {
+		weight = 0.10
+	}
+}
+
 influence_expenditure_megastructures = {
 	resource = influence
 	type = expenditure
@@ -383,13 +366,23 @@ influence_expenditure_megastructures = {
 	
 	potential = {
 		is_at_war = no
+		has_galactic_wonders = yes
+
+		has_resource = {
+			type = influence
+			amount > 500
+		}
 	}
 	
 	fraction = {
 		weight = 0.1
 	}
 
+	# only used by construction sites, base cost is 300
 	static_min = {
-		base = 300 # only used by construction sites
+		base = 300
+	}
+	static_max = {
+		base = 350
 	}
 }
