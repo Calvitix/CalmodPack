@@ -1,8 +1,8 @@
 # Giga File
 #
-# Calvitix Check 3.1.2  08.10.2021
+# Calvitix Check 3.3.1  23.02.2022
 #
-# Last Update : 13.10.2021
+# Last Update : 24.02.2022
 #
 namespace = maginot_destruction
 
@@ -98,6 +98,7 @@ planet_event = {
 
 		## clean up flags and modifiers from subspace disruption system
 		remove_modifier = maginot_anti_jump_on
+		remove_deposit = d_maginot_subspace_disruptor
 		solar_system = {
 			# Prevents jump drives
 			remove_star_flag = maginot_anti_jump_star
@@ -107,6 +108,7 @@ planet_event = {
 			# Prevents NDB & QSO
 			every_system_planet = {
 				remove_modifier = maginot_anti_jump_on # in case there are others in system, so player knows to re-enable
+				remove_deposit = d_maginot_subspace_disruptor
 				remove_planet_flag = cant_build_here
 				remove_planet_flag = cant_target_this_planet
 			}
@@ -158,6 +160,7 @@ planet_event = {
 		
 		## clean up flags and modifiers from subspace disruption system
 		remove_modifier = maginot_anti_jump_on
+		remove_deposit = d_maginot_subspace_disruptor
 		solar_system = {
 			# Prevents jump drives
 			remove_star_flag = maginot_anti_jump_star
@@ -167,6 +170,7 @@ planet_event = {
 			# Prevents NDB & QSO
 			every_system_planet = {
 				remove_modifier = maginot_anti_jump_on # in case there are others in system, so player knows to re-enable
+				remove_deposit = d_maginot_subspace_disruptor
 				remove_planet_flag = cant_build_here
 				remove_planet_flag = cant_target_this_planet
 			}
@@ -207,7 +211,10 @@ planet_event = {
 		if = {
 			limit = {
 				has_planet_flag = giga_maginot_world
+				OR = {
 				is_planet_class = pc_shattered
+					is_planet_class = pc_ringworld_habitable_damaged
+				}
 			}
 			planet_event = { id = maginot_destruction.1011 } # destroy fleets in orbit
 			# clean up just in case
@@ -614,9 +621,15 @@ planet_event = {
 			kill_pop = yes
 		}
 		remove_all_buildings = yes
+		if = {
+			limit = { is_ringworld = no }
 		change_pc = pc_shattered
 		remove_planet_flag = megastructure
 		remove_planet_flag = has_megastructure
+		}
+		else = {
+			change_pc = pc_ringworld_habitable_damaged
+		}
 		clear_deposits = yes
 		remove_planet_flag = giga_maginot_world
 		remove_planet_flag = colony_event

@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.3b2  31.01.2022
+# Calvitix Check 3.3.1  23.02.2022
 #
 # Merge with Arisphaos Unofficial patch 19.11.2021
 # Merge with Expanded events 28.11.2021
@@ -9,6 +9,8 @@
 # Merge with Planetary Diversity 24.11.2021
 # Merge with Plentiful Perks 26.11.2021
 # Merge with Real Space New Frontiers 03.12.2021
+# Merge with More Event Mod 23.02.2022
+#
 #
 #Tooltips will be generated from these rules when they fail. Use of custom_tooltip is recommended
 #There are still multiple hard-coded rules that apply in addition to these.
@@ -1228,6 +1230,17 @@ can_take_hostile_actions = {
 			always = no
 		}
 	}
+	else_if = {
+		limit = {
+			exists = overlord
+			overlord = { is_same_value = root }
+			is_subject_type = satrapy
+		}
+		custom_tooltip = {
+			text = "CAN_TAKE_HOSTILE_ACTION_OVERLORD"
+			always = no
+		}
+	}
 	else = {
 		always = yes
 	}
@@ -1671,7 +1684,8 @@ can_orbital_bombard = {
                 is_country_type = ruined_marauders
                 is_country_type = gray_goo
                 is_country_type = vol
-                is_country_type = compound_empire #Giga
+				has_country_flag = mem_severance_harvesting_country  #MEM
+				is_country_type = compound_empire #Giga
 				#is_country_type = original_empire #Giga
 				#is_country_type = void_lifeforms_1 #Giga
 				#is_country_type = void_lifeforms_2 #Giga
@@ -2119,7 +2133,8 @@ system_blocks_sensors = {
 # Overwritten to add isolated systems
 can_enter_system_by_jump = {
 	custom_tooltip = {
-		success_text = "debug: can jump"
+		#success_text = "debug: can jump"
+		# is commented out in vanilla, doesn't seem to do anything either way
 		fail_text = cannot_jump_to_system
 
 		# Sealed system
@@ -2140,12 +2155,9 @@ can_enter_system_by_jump = {
 			urmazin_system = yes
 			everchanging_system = yes
 			katzen_jump_blocked_system = yes
-		}
-		# Maginot World, Giga
-		NOT = {
-			has_star_flag = maginot_anti_jump_star
-		}
-		
+			has_star_flag = maginot_anti_jump_star # Maginot World subspace disruption
+			has_star_flag = siegfried_anti_jump_star # Katzen version
+		}		
 	}
 }
 

@@ -1,8 +1,8 @@
 # Ecology Mod File
 #
-# Calvitix Check 3.1.1  18.09.2021
+# Calvitix Check 3.3.1  23.02.2022
 #
-# Last update 26.09.2021
+# Last update 23.02.2022
 #
 #
 # Garbage World
@@ -297,6 +297,106 @@ eco_decision_environmental_engineering = {
 	}
 }
 
+# City World Park
+eco_decision_city_world_park = {
+	owned_planets_only = yes
+	icon = eco_decision_city_park
+	
+	enactment_time = 180
+	resources = {
+		category = decisions
+		cost = {
+			unity = 100
+		}
+	}
+	
+	potential = {
+		
+		owner = {
+			OR = { 
+				NOT = { has_authority = auth_machine_intelligence }
+				has_civic = civic_machine_servitor
+			}
+		}
+		NOT = { has_deposit = d_eco_city_world_park }
+		NOt = { has_deposit = d_eco_city_world_park_hive }
+	}
+	
+	allow = {
+		NOR ={
+			has_modifier = eco_heavy
+			has_modifier = eco_extreme
+			has_modifier = eco_catastrophic
+		}
+		free_district_slots > 0
+	}
+	
+	effect = {
+		set_planet_flag = eco_city_park_decision
+		if = {
+			limit = { owner = { is_regular_empire = yes } }
+			add_deposit = d_eco_city_world_park
+		} else_if = {
+			limit = {
+				owner = { 
+					OR = { 
+						is_hive_empire = yes
+						has_civic = civic_machine_servitor
+					}
+				}
+			}
+			add_deposit = d_eco_city_world_park_hive
+		}
+	}
+	
+	ai_weight = {
+		weight = 0
+	}
+}
+
+# Close City World Park
+eco_decision_close_city_world_park = {
+	owned_planets_only = yes
+	icon = eco_decision_close_city_park
+	
+	resources = {
+		category = decisions
+		cost = {
+			unity = 50
+		}
+	}
+	
+	potential = {
+		OR = {
+			has_deposit = d_eco_city_world_park
+			has_deposit = d_eco_city_world_park_hive
+		}
+	}
+	
+	effect = {
+		remove_planet_flag = eco_city_park_decision
+		if = {
+			limit = { owner = { is_regular_empire = yes } }
+			remove_deposit = d_eco_city_world_park
+			custom_tooltip = eco_city_world_park_tooltip
+		} else_if = {
+			limit = {
+				owner = { 
+					OR = { 
+						is_hive_empire = yes
+						has_civic = civic_machine_servitor
+					}
+				}
+			}
+			remove_deposit = d_eco_city_world_park_hive
+		}
+	}
+	
+	ai_weight = {
+		weight = 0
+	}
+}
+
 # City Park
 eco_decision_city_park = {
 	owned_planets_only = yes
@@ -305,7 +405,7 @@ eco_decision_city_park = {
 	resources = {
 		category = decisions
 		cost = {
-			unity = 250
+			unity = 50
 		}
 	}
 	
@@ -371,7 +471,7 @@ eco_decision_close_city_park = {
 	resources = {
 		category = decisions
 		cost = {
-			unity = 100
+			unity = 25
 		}
 	}
 	
@@ -419,7 +519,7 @@ eco_decision_national_park = {
 	resources = {
 		category = decisions
 		cost = {
-			unity = 500
+			unity = 100
 		}
 	}
 	
@@ -497,7 +597,7 @@ eco_decision_close_national_park = {
 	resources = {
 		category = decisions
 		cost = {
-			unity = 250
+			unity = 50
 		}
 	}
 	
@@ -545,7 +645,7 @@ eco_decision_wildlife_preserve = {
 	resources = {
 		category = decisions
 		cost = {
-			unity = 500
+			unity = 100
 		}
 	}
 	
@@ -618,7 +718,7 @@ eco_decision_close_wildlife_preserve = {
 	resources = {
 		category = decisions
 		cost = {
-			unity = 250
+			unity = 50
 		}
 	}
 	
@@ -661,7 +761,7 @@ eco_decision_wildlife_habitat = {
 	resources = {
 		category = decisions
 		cost = {
-			unity = 1000
+			unity = 200
 		}
 	}
 	
@@ -714,7 +814,7 @@ eco_decision_close_wildlife_habitat = {
 	resources = {
 		category = decisions
 		cost = {
-			unity = 500
+			unity = 100
 		}
 	}
 	
@@ -757,7 +857,7 @@ eco_decision_close_wildlife_habitat = {
 #	resources = {
 #		category = decisions
 #		cost = {
-#			unity = 250
+#			influence = 25
 #		}
 #	}
 #	
@@ -785,7 +885,7 @@ eco_decision_close_wildlife_habitat = {
 	resources = {
 		category = decisions
 		cost = {
-			unity = 100
+			unity = 25
 		}
 	}
 	

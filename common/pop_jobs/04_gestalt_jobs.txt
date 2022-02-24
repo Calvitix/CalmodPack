@@ -1,7 +1,7 @@
 
 # Original File
 #
-# Calvitix Check 3.3b2  31.01.2022
+# Calvitix Check 3.3.1  23.02.2022
 #
 # Merge with Plentiful traditions 26.11.2021
 # Merge with Starnet AI 24.11.2021
@@ -1667,9 +1667,9 @@ chronicle_drone = {
 	possible = { NOT = { has_trait = trait_nerve_stapled } }
 
 	resources = {
-		category = planet_researchers
+		category = planet_administrators
 		produces = {
-			unity = 4
+			unity = 2
 			society_research = 2
 		}
 		upkeep = {
@@ -1678,14 +1678,55 @@ chronicle_drone = {
 			energy = 2
 		}
 		upkeep = {
-			trigger = { species = { is_archetype = BIOLOGICAL } }
+			trigger = {
+				is_organic_species = yes
+				is_phototrophic = no
+				is_lithoid = no
+			}
 			energy = 1
 			food = 2
 		}
 		upkeep = {
-			trigger = { species = { is_archetype = LITHOID } }
+			trigger = {
+				is_phototrophic = yes
+			}
+			energy = 1
+			food = 1
+		}
+		upkeep = {
+			trigger = {
+				has_phototrophic_energy_upkeep = yes
+			}
+			energy = 1
+		}
+		upkeep = {
+			trigger = {
+				is_lithoid = yes
+			}
 			energy = 1
 			minerals = 2
+		}
+	}
+
+	planet_modifier = {
+		planet_amenities_add = 2
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			OR = {
+				has_trait = trait_robot_domestic_protocols
+				has_trait = trait_charismatic
+			}
+		}
+		modifier = {
+			planet_amenities_add = 0.4
+		}
+	}
+	triggered_planet_modifier = {
+		potential = { has_trait = trait_repugnant }
+		modifier = {
+			planet_amenities_add = -0.4
 		}
 	}
 

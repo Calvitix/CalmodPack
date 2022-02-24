@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.3b2  31.01.2022
+# Calvitix Check 3.3.1  23.02.2022
 #
 # Merge with Starnet AI 30.10.2021
 # Merge with PDiv.
@@ -21,9 +21,11 @@ building_robot_assembly_plant = {
 		exists = owner
 		OR = {
 			owner = { is_ai = no }
+			NOT = { exists = assembling_species }
+			assembling_species = { is_robotic_species = yes }
 ##STARNET AI
 			and = { 
-				free_building_slots > 0
+				exists = owner
 				owner = { num_pops < 1000 }
 			or = {
 				AND = {
@@ -56,18 +58,11 @@ building_robot_assembly_plant = {
 		hidden_trigger = {
 			OR = {
 				owner = { is_ai = no }
-				AND = {
-					num_buildings = { type = any value <= 14 }
-					NOT = { is_planet_class = pc_habitat }
-					###PD
-					NOT = { is_planet_class = pc_pd_barren_cold_hab }
-					NOT = { is_planet_class = pc_pd_barren_hab }
-					NOT = { is_planet_class = pc_pd_frozen_hab }
-					NOT = { is_planet_class = pc_pd_gas_giant_hab }
-					NOT = { is_planet_class = pc_pd_hothouse_hab }
-					NOT = { is_planet_class = pc_pd_toxic_hab }
-					NOT = { is_planet_class = pc_pd_molten_hab }					
-					###
+				NAND = {
+					free_district_slots = 0
+					free_building_slots <= 1
+					free_housing <= 0
+					free_jobs <= 0
 				}
 			}
 		}
@@ -88,7 +83,6 @@ building_robot_assembly_plant = {
 	}
 ###
 	destroy_trigger = {
-		free_building_slots < 1 #Calvitix 
 		exists = owner
 		OR = {
 			owner = {
@@ -100,23 +94,10 @@ building_robot_assembly_plant = {
 			has_modifier = slave_colony
 			AND = {
 				owner = { is_ai = yes }
-				free_jobs < 1
-				OR = {
-					num_buildings = {
-						type = any
-						value = 16
-					}
-					is_planet_class = pc_habitat
-###PD
-					is_planet_class = pc_pd_barren_cold_hab
-					is_planet_class = pc_pd_barren_hab
-					is_planet_class = pc_pd_frozen_hab
-					is_planet_class = pc_pd_gas_giant_hab
-					is_planet_class = pc_pd_hothouse_hab
-					is_planet_class = pc_pd_toxic_hab
-					is_planet_class = pc_pd_molten_hab
-###
-				}
+				free_district_slots = 0
+				free_building_slots = 0
+				free_housing <= 0
+				free_jobs <= 0		
 			}
 			owner = {
 				is_ai = yes
@@ -166,10 +147,14 @@ building_robot_assembly_plant = {
 	}
 	triggered_desc = {
 		trigger = {
-			OR = { #Ori3.3b
+			OR = {
 				has_building = building_clone_vats
 				has_building = building_clone_army_clone_vat
 				has_building = building_posthumous_employment_center
+				AND = {
+					exists = assembling_species
+					assembling_species = { is_organic_species = yes }
+				}
 			}
 		}
 		text = tooltip_organic_and_artificial_assembly_warning
@@ -219,18 +204,11 @@ building_machine_assembly_plant = {
 		hidden_trigger = {
 			OR = {
 				owner = { is_ai = no }
-				AND = {
-					num_buildings = { type = any value <= 14 }
-					NOT = { is_planet_class = pc_habitat }
-### PD
-					NOT = { is_planet_class = pc_pd_barren_cold_hab }
-					NOT = { is_planet_class = pc_pd_barren_hab }
-					NOT = { is_planet_class = pc_pd_frozen_hab }
-					NOT = { is_planet_class = pc_pd_gas_giant_hab }
-					NOT = { is_planet_class = pc_pd_hothouse_hab }
-					NOT = { is_planet_class = pc_pd_toxic_hab }
-					NOT = { is_planet_class = pc_pd_molten_hab }				
-###
+				NAND = {
+					free_district_slots = 0
+					free_building_slots <= 1
+					free_housing <= 0
+					free_jobs <= 0
 				}
 			}
 		}
@@ -239,24 +217,13 @@ building_machine_assembly_plant = {
 	destroy_trigger = {
 		exists = owner
 		OR = {
-			owner = {
-				is_robot_empire = no
-			}
+			owner = { is_robot_empire = no }
 			AND = {
 				owner = { is_ai = yes }
-				free_jobs < 1
-				free_building_slots < 1 #Calvitix 
-				OR = {
-					#num_buildings = { type = any value = 16 }
-					is_planet_class = pc_habitat
-					is_planet_class = pc_pd_barren_cold_hab
-					is_planet_class = pc_pd_barren_hab
-					is_planet_class = pc_pd_frozen_hab
-					is_planet_class = pc_pd_gas_giant_hab
-					is_planet_class = pc_pd_hothouse_hab
-					is_planet_class = pc_pd_toxic_hab
-					is_planet_class = pc_pd_molten_hab
-				}
+				free_district_slots = 0
+				free_building_slots = 0
+				free_housing <= 0
+				free_jobs <= 0
 			}
 		}
 	}
@@ -332,26 +299,6 @@ building_machine_assembly_complex = {
 	}
 ###
 	
-	allow = {
-		hidden_trigger = {
-			OR = {
-				owner = { is_ai = no }
-				AND = {
-					num_buildings = { type = any value <= 14 }
-					NOT = { is_planet_class = pc_habitat }
-### PD
-					NOT = { is_planet_class = pc_pd_barren_cold_hab }
-					NOT = { is_planet_class = pc_pd_barren_hab }
-					NOT = { is_planet_class = pc_pd_frozen_hab }
-					NOT = { is_planet_class = pc_pd_gas_giant_hab }
-					NOT = { is_planet_class = pc_pd_hothouse_hab }
-					NOT = { is_planet_class = pc_pd_toxic_hab }
-					NOT = { is_planet_class = pc_pd_molten_hab }
-###
-				}
-			}
-		}
-	}
 
 	destroy_trigger = {
 		free_building_slots < 1 #Calvitix 
@@ -363,20 +310,10 @@ building_machine_assembly_complex = {
 			}
 			AND = {
 				owner = { is_ai = yes }
-				free_jobs < 1
-				OR = {
-					#num_buildings = { type = any value = 16 }
-					is_planet_class = pc_habitat
-###
-					is_planet_class = pc_pd_barren_cold_hab
-					is_planet_class = pc_pd_barren_hab
-					is_planet_class = pc_pd_frozen_hab
-					is_planet_class = pc_pd_gas_giant_hab
-					is_planet_class = pc_pd_hothouse_hab
-					is_planet_class = pc_pd_toxic_hab
-					is_planet_class = pc_pd_molten_hab
-###
-				}
+				free_district_slots = 0
+				free_building_slots = 0
+				free_housing <= 0
+				free_jobs <= 0
 			}
 		}
 	}
@@ -798,11 +735,17 @@ building_clone_army_clone_vat = {
 				has_country_flag = clone_army_fertility_unlocked
 			}
 		}
-		if = { #Ori3.3b
+		if = {
 			limit = {
 				owner = { is_ai = yes }
 			}
-			NOT = { has_building = building_clone_army_clone_vat }
+			NOR = {
+				has_building = building_clone_army_clone_vat
+				AND = {
+					exists = assembling_species
+					assembling_species = { is_robotic_species = yes }
+				}
+			}
 		}
 	}
 
@@ -885,11 +828,22 @@ building_clone_army_clone_vat = {
 	triggered_desc = {
 		text = building_clone_army_clone_vat_effect_desc
 	}
+	triggered_desc = {
+		trigger = {
+			OR = {
+				has_building = building_robot_assembly_plant
+				AND = {
+					exists = assembling_species
+					assembling_species = { is_robotic_species = yes }
+				}
+			}
+		}
+		text = tooltip_organic_and_artificial_assembly_warning
+	}
 
-	is_essential = yes #Ori3.3b
+	is_essential = yes
 }
 
-##Ori3.3b addition : 
 ### Permanent Employment Building
 
 building_posthumous_employment_center = {
@@ -902,7 +856,17 @@ building_posthumous_employment_center = {
 		exists = owner
 		OR = {
 			owner = { is_ai = no }
-			free_building_slots > 0
+			NOT = { exists = assembling_species }
+			assembling_species = { is_organic_species = yes }
+		}
+		OR = {
+			owner = { is_ai = no }
+			NAND = {
+				free_district_slots = 0
+				free_building_slots <= 1
+				free_housing <= 0
+				free_jobs <= 0
+			}
 		}
 		owner = {
 			is_regular_empire = yes
@@ -916,8 +880,17 @@ building_posthumous_employment_center = {
 
 	destroy_trigger = {
 		exists = owner
-		owner = {
-			NOT = { has_valid_civic = civic_permanent_employment }	
+		OR = {
+			owner = {
+				NOT = { has_valid_civic = civic_permanent_employment }	
+			}
+			AND = {
+				owner = { is_ai = yes }
+				free_district_slots = 0
+				free_building_slots = 0
+				free_housing <= 0
+				free_jobs <= 0
+			}
 		}
 	}
 
@@ -940,7 +913,13 @@ building_posthumous_employment_center = {
 	}
 	triggered_desc = {
 		trigger = {
-			has_building = building_robot_assembly_plant
+			OR = {
+				has_building = building_robot_assembly_plant
+				AND = {
+					exists = assembling_species
+					assembling_species = { is_robotic_species = yes }
+				}
+			}
 		}
 		text = tooltip_organic_and_artificial_assembly_warning
 	}

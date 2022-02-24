@@ -1,8 +1,8 @@
 # Planetary Diversity
 #
-# Calvitix Check 3.2
+# Calvitix Check 3.3.1
 #
-# Last update 02.02.2022
+# Last update 23.02.2022
 #
 #Calvitix Warning : if change in pdengine.00, Have to Change D:\Documents\Paradox Interactive\Stellaris\mod\Calmodpack\events\!!_z_pd_engine_overwrite.txt too
 #
@@ -355,11 +355,11 @@ country_event = {
 		#MegafloraHive
 		every_galaxy_planet = { limit = { is_planet_class = pc_megaflorahive is_homeworld = yes } generate_pd_start_deposits_and_blockers = yes }
 		#Gaia
-		every_galaxy_planet = { limit = { is_planet_class = pc_gaia } add_deposit = d_pdgaia }
+		every_galaxy_planet = { limit = { is_planet_class = pc_gaia NOT = { has_deposit = d_pdgaia } } add_deposit = d_pdgaia }
 		#Hot Gaia
-		every_galaxy_planet = { limit = { is_planet_class = pc_hot_gaia } add_deposit = d_pdgaia }
+		every_galaxy_planet = { limit = { is_planet_class = pc_hot_gaia NOT = { has_deposit = d_pdgaia } } add_deposit = d_pdgaia }
 		#Cold Gaia
-		every_galaxy_planet = { limit = { is_planet_class = pc_cold_gaia } add_deposit = d_pdgaia }
+		every_galaxy_planet = { limit = { is_planet_class = pc_cold_gaia NOT = { has_deposit = d_pdgaia } } add_deposit = d_pdgaia }
 	}
 }
 
@@ -1839,7 +1839,15 @@ planet_event = {
 		remove_modifier = pdterra_reef
 		}
 		if = { 
-		limit = { NOT = { is_planet_class = pc_pdshroud } }
+		limit = { 
+			NOT = { 
+				is_planet_class = pc_pdshroud 
+				is_planet_class = pc_city 
+				is_planet_class = pc_ecocity 
+				is_planet_class = pc_milarc 
+				is_planet_class = pc_corpoarc 
+			} 
+		}
 		remove_modifier = pdcomposer
 		remove_deposit = d_pdshroud_composer
 		remove_modifier = pdeater
@@ -1848,6 +1856,16 @@ planet_event = {
 		remove_deposit = d_pdshroud_desire
 		remove_modifier = pdwhispers
 		remove_deposit = d_pdshroud_whispers
+		}
+		if = { 
+		limit = { 
+			NOT = { 
+				is_planet_class = pc_habitat 
+				is_pd_habitat = yes
+			} 
+		}
+		remove_modifier = hab_terraforming_candidate
+		remove_modifier = flooded_habitat
 		}
 	}
 }
@@ -2389,11 +2407,11 @@ country_event = {
 		every_system = {
 			IF = {
 				limit = { has_star_flag = crucible_notorigin }
-			}
-			remove_star_flag = crucible_notorigin
-			remove_star_flag = crucible_system
+				remove_star_flag = crucible_notorigin
+				remove_star_flag = crucible_system
 			} 
 		}
+	}
 	}
 }
 
@@ -4496,6 +4514,26 @@ planet_event = {
 				entity = "gaiamars_planet_entity"
 			}
 		}
+		if = {
+			limit = { 
+				has_planet_flag = pdmars
+				is_planet_class = pc_cold_gaia
+			}
+			set_planet_entity = {
+				picture = pc_cold_mars
+				entity = "coldmars_planet_entity"
+			}
+		}
+		if = {
+			limit = { 
+				has_planet_flag = pdmars
+				is_planet_class = pc_hot_gaia
+			}
+			set_planet_entity = {
+				picture = pc_dry_mars
+				entity = "drymars_planet_entity"
+			}
+		}
 		#Venus
 		if = {
 			limit = { 
@@ -4584,6 +4622,26 @@ planet_event = {
 			set_planet_entity = {
 				picture = pc_wetvenus
 				entity = "gaiavenus_planet_entity"
+			}
+		}
+		if = {
+			limit = { 
+				has_planet_flag = pdvenus
+				is_planet_class = pc_hot_gaia
+			}
+			set_planet_entity = {
+				picture = pc_dryvenus
+				entity = "dryvenus_planet_entity"
+			}
+		}
+		if = {
+			limit = { 
+				has_planet_flag = pdvenus
+				is_planet_class = pc_cold_gaia
+			}
+			set_planet_entity = {
+				picture = pc_coldvenus
+				entity = "coldvenus_planet_entity"
 			}
 		}
 	}
@@ -9053,4 +9111,52 @@ planet_event = {
 		}	
 	}
 	immediate = { pd_generate_start_pops = yes }
+}
+
+# Check Planet Class for Deposits + Modifiers
+planet_event = {
+	id = pdengine.72
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = { 
+		limit = { is_capital = no }
+			remove_deposit = d_pd_capital_arc
+			remove_deposit = d_pd_palace_arc
+			remove_deposit = d_pd_boardroom_arc
+			remove_deposit = d_pd_biohivecap_arc
+			remove_deposit = d_pd_machinecap_arc
+			pd_remove_special_arc_deposits = yes
+		}
+		if = { 
+		limit = { 
+			has_deposit = d_pd_necro_arc
+			owner = { 
+				OR = {
+					NOT = { has_civic = civic_memorialist }
+					NOT = { has_civic = civic_death_cult }
+					NOT = { has_civic = civic_death_cult_corporate }
+					NOT = { has_civic = civic_hive_memorialist }
+					NOT = { has_civic = civic_machine_memorialist }
+					NOT = { has_civic = civic_death_cult_corporate }
+					NOT = { has_origin = origin_necrophage }
+				}
+			}
+		}
+			remove_deposit = d_pd_necro_arc
+			pd_remove_special_arc_deposits = yes
+		}
+		if = { 
+		limit = { 
+			has_deposit = d_pd_shroud_arc
+			OR = {
+				NOT = { owner = { has_ascension_perk = ap_transcendence } }
+				NOT = { owner = { has_origin =  origin_pd_shroud } }
+			}
+		}
+			remove_deposit = d_pd_shroud_arc
+			pd_remove_special_arc_deposits = yes
+		}
+	}
 }

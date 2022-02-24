@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check  3.3b  20.01.2022
+# Calvitix Check  3.3.1  23.02.2022
 #
 # Merge with Skalla Ai's Overhaul
 # Merge with Starnet AI 30.11.2021
@@ -170,8 +170,8 @@ alloys_expenditure_ships = {
 					is_crisis_faction = yes
 				}
 			}
-		}		
-	}	
+		}
+	}
 
 	static_min = {
 		base = 0
@@ -416,8 +416,8 @@ alloys_expenditure_ship_upgrades = {
 		modifier = {
 			factor = 4
 			used_naval_capacity_percent >= 1.0
-	}	
-	}	
+		}
+	}
 	
 	static_min = {
 		base = 0
@@ -470,11 +470,11 @@ alloys_expenditure_planets = {
 	static_min = {
 		base = 150 # 4500 #150 in 3.3b
 	}
-	
+
 	#Ori 3.3b 
 	static_max = {
 		base = 450
-	}	
+	}
 }
 
 alloys_expenditure_starbases = {
@@ -610,14 +610,14 @@ alloys_expenditure_starbases_expand = {
 		}
 		has_resource = { type = influence amount > 75 }
 	}
-	
+
 	fraction = {
 		weight = 1.2  #0.2  #Calvitix
-	}	
-		
+	}
+
 	static_min = {  #3.3b
 		base = 150
-	}	
+	}
 }
 
 alloys_expenditure_starbases_excess = {
@@ -803,7 +803,7 @@ alloys_expenditure_megastructures = {
 
 	fraction = {
 		weight = 0.4
-		# increase budget if megastructures are unfinished		
+		# increase budget if megastructures are unfinished
 		modifier = {
 			factor = 3
 			any_owned_megastructure = {
@@ -824,6 +824,8 @@ alloys_expenditure_megastructures = {
 					is_megastructure_type = mega_art_installation_restored
 					is_megastructure_type = interstellar_assembly_4
 					is_megastructure_type = interstellar_assembly_restored
+					is_megastructure_type = mega_shipyard_3
+					is_megastructure_type = mega_shipyard_restored
 					is_megastructure_type = lgate_base
 				}
 			}
@@ -832,6 +834,45 @@ alloys_expenditure_megastructures = {
 
 	static_max = {
 		base = 20000 # current max alloy cost for a stage
+	}
+}
+
+alloys_expenditure_habitats = {
+	resource = alloys
+	type = expenditure
+	category = megastructures_habitat
+
+	potential = { ai_should_build_habitats = yes }
+
+	fraction = {
+		weight = 0.2
+		modifier = {
+			factor = 2.5
+			has_origin = origin_void_dwellers
+		}
+		modifier = {
+			factor = 2
+			has_origin = origin_void_dwellers
+			count_owned_planet = {
+				limit = { is_planet_class = pc_habitat }
+				count < 4
+			}
+		}
+		modifier = {
+			factor = 2
+			has_origin = origin_void_dwellers
+			count_owned_planet = {
+				limit = { is_planet_class = pc_habitat }
+				count < 6
+			}
+		}
+	}
+
+	static_min = {
+		base = 1000
+	}
+	static_max = {
+		base = 1500
 	}
 }
 
@@ -847,8 +888,8 @@ alloys_expenditure_decisions = {
 		any_owned_planet = {
 			OR = {
 				AND = {
-			is_planet_class = pc_habitat
-			NOT = { has_planet_flag = advanced_habitat_2 }
+					is_planet_class = pc_habitat
+					NOT = { has_planet_flag = advanced_habitat_2 }
 					root = { has_technology = tech_habitat_2 }
 				}
 				AND = {

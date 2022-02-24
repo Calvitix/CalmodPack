@@ -1,8 +1,8 @@
 # Planetary Diversity File
 #
-# Calvitix Check 3.2
+# Calvitix Check 3.3.1
 #
-# Update 03.01.2022
+# Update 23.02.2022
 #
 ##########################################################################
 # Decisions
@@ -36,6 +36,8 @@ decision_engineered_environment = {
 		is_pd_rare = no
 		NOT = { is_planet_class = pc_pdshroud }
 		NOT = { is_planet_class = pc_gaia }
+		NOT = { is_planet_class = pc_cold_gaia }
+		NOT = { is_planet_class = pc_hot_gaia }
 		NOT = { is_planet_class = pc_relic }
 		NOT = { is_planet_class = pc_milarc_relic }
 		NOT = { is_planet_class = pc_hive }
@@ -45,10 +47,15 @@ decision_engineered_environment = {
 		NOT = { is_planet_class = pc_hive }
 		NOT = { has_modifier = engineered_environment }
 		NOT = { has_modifier = engineered_environment_gaia }
+		NOT = { owner = { has_origin = origin_pd_tree_of_life } }
 	}
 
 	effect = {
-		if = { limit = { NOT = { is_planet_class = pc_gaia } }
+		if = { limit = { 
+			NOT = { is_planet_class = pc_gaia } 
+			NOT = { is_planet_class = pc_cold_gaia }
+			NOT = { is_planet_class = pc_hot_gaia }
+		}
 			add_modifier = {
 				modifier = engineered_environment
 				days = -1
@@ -150,6 +157,8 @@ decision_engineered_environment_gaia = {
 
 	allow = {
 		NOT = { is_planet_class = pc_gaia }
+		NOT = { is_planet_class = pc_cold_gaia }
+		NOT = { is_planet_class = pc_hot_gaia }
 	}
 	
 	potential = {
@@ -157,6 +166,8 @@ decision_engineered_environment_gaia = {
 		is_pd_arcology = no
 		NOT = { is_planet_class = pc_pdshroud }
 		NOT = { is_planet_class = pc_gaia }
+		NOT = { is_planet_class = pc_cold_gaia }
+		NOT = { is_planet_class = pc_hot_gaia }
 		NOT = { is_planet_class = pc_city }
 		NOT = { is_planet_class = pc_ecocity }
 		NOT = { is_planet_class = pc_corpoarc }
@@ -202,7 +213,11 @@ decision_engineered_environment_gaia = {
 	}
 
 	effect = {
-		if = { limit = { NOT = { is_planet_class = pc_gaia } }
+		if = { limit = { 
+			NOT = { is_planet_class = pc_gaia } 
+			NOT = { is_planet_class = pc_cold_gaia }
+			NOT = { is_planet_class = pc_hot_gaia }
+		}
 			add_modifier = {
 				modifier = engineered_environment_gaia
 				days = -1
@@ -247,7 +262,7 @@ decision_removeocean = {
 	resources = {
 		category = decisions
 		cost = {
-			unity = 250
+			unity = 100
 		}
 	}
 	
@@ -303,6 +318,8 @@ decision_removeocean = {
 			IF = { limit = { is_planet_class = pc_hajungle } set_planet_entity = { picture = pc_hajungle } }
 			IF = { limit = { is_planet_class = pc_cenote } set_planet_entity = { picture = pc_cenote } }
 			IF = { limit = { is_planet_class = pc_gaia } set_planet_entity = { picture = pc_gaia } }
+			IF = { limit = { is_planet_class = pc_hot_gaia } set_planet_entity = { picture = pc_hot_gaia } }
+			IF = { limit = { is_planet_class = pc_cold_gaia } set_planet_entity = { picture = pc_cold_gaia } }
 			IF = { limit = { is_planet_class = pc_prairie } set_planet_entity = { picture = pc_prairie } }
 			IF = { limit = { is_planet_class = pc_veld } set_planet_entity = { picture = pc_veld } }
 			IF = { limit = { is_planet_class = pc_semiarid } set_planet_entity = { picture = pc_semiarid } }
@@ -351,7 +368,7 @@ decision_oceancapital = {
 	resources = {
 		category = decisions
 		cost = {
-			unity = 250
+			unity = 100
 		}
 	}
 	
@@ -408,6 +425,7 @@ decision_oceancapital = {
 			IF = { limit = { is_planet_class = pc_supercon } set_planet_entity = { picture = pc_aquatic } set_planet_flag = pdaquapicture }
 			IF = { limit = { is_planet_class = pc_karst } set_planet_entity = { picture = pc_aquatickarst_uw } set_planet_flag = pdaquapicture }
 			IF = { limit = { is_planet_class = pc_reef } set_planet_entity = { picture = pc_aquatic } set_planet_flag = pdaquapicture }
+			IF = { limit = { is_planet_class = pc_cold_gaia } set_planet_entity = { picture = pc_aquatic } set_planet_flag = pdaquapicture }
 			#Cold
 			IF = { limit = { is_planet_class = pc_subarctic } set_planet_entity = { picture = pc_aquaticcold_uw } set_planet_flag = pdaquapicture }
 			IF = { limit = { is_planet_class = pc_swamp } set_planet_entity = { picture = pc_aquaticcold_uw } set_planet_flag = pdaquapicture }
@@ -437,6 +455,7 @@ decision_oceancapital = {
 			IF = { limit = { is_planet_class = pc_med } set_planet_entity = { picture = pc_aquatichot_uw } set_planet_flag = pdaquapicture }
 			IF = { limit = { is_planet_class = pc_savannah } set_planet_entity = { picture = pc_aquatichot_uw } set_planet_flag = pdaquapicture }
 			IF = { limit = { is_planet_class = pc_gaia } set_planet_entity = { picture = pc_aquatichot_uw } set_planet_flag = pdaquapicture }
+			IF = { limit = { is_planet_class = pc_hot_gaia } set_planet_entity = { picture = pc_aquatichot_uw } set_planet_flag = pdaquapicture }
 			IF = { limit = { is_planet_class = pc_ringworld_habitable } set_planet_entity = { picture = pc_aquatichot_uw } set_planet_flag = pdaquapicture }
 			IF = { limit = { is_planet_class = pc_mesa } set_planet_entity = { picture = pc_aquatichot_uw } set_planet_flag = pdaquapicture }
 			IF = { limit = { is_planet_class = pc_badlands } set_planet_entity = { picture = pc_aquatichot_uw } set_planet_flag = pdaquapicture }
@@ -1687,7 +1706,7 @@ decision_armbombownplanet = {
 		category = decisions
 		cost = {
 			energy = 1000
-			unity = 500
+			unity = 100
 		}
 	}
 
@@ -1854,7 +1873,7 @@ decision_change_tiyanki_choice = {
 	resources = {
 		category = decisions
 		cost = {
-			unity = 1000
+			unity = 100
 		}
 	}
 	
@@ -1925,7 +1944,7 @@ decision_shroud_crucible = {
 	resources = {
 		category = decisions
 		cost = {
-			unity = 1000
+			unity = 100
 			sr_zro = 2500
 		}
 	}

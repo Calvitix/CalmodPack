@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.3b  21.01.2022
+# Calvitix Check 3.3.1  23.02.2022
 #
 # Merge with Starnet AI 22.08.2021
 # Merge with RS Planetary Exploration 02.05.2021
@@ -374,10 +374,6 @@ priest = {
 			}
 		}
 		modifier = {
-			factor = 1.15
-			has_trait = trait_erudite
-		}
-		modifier = {
 			factor = 1.05
 			OR = {
 				has_trait = trait_robot_logic_engines
@@ -526,11 +522,11 @@ death_priest = {
 		modifier = {
 			factor = 0.1
 			has_ethic = ethic_materialist
-			NOT = { has_job = priest }
+			NOT = { has_job = death_priest }
 		}
 		modifier = {
 			factor = 1.5
-			has_job = priest
+			has_job = death_priest
 		}
 		modifier = {
 			factor = 1.5
@@ -546,10 +542,6 @@ death_priest = {
 				has_trait = trait_robust
 				has_trait = trait_robot_efficient_processors
 			}
-		}
-		modifier = {
-			factor = 1.15
-			has_trait = trait_erudite
 		}
 		modifier = {
 			factor = 1.05
@@ -823,6 +815,7 @@ telepath = {
 
 	planet_modifier = {
 		planet_crime_add = -35
+		planet_jobs_produces_mult = 0.05
 	}
 
 	triggered_planet_modifier = {
@@ -1281,10 +1274,6 @@ culture_worker = {
 		modifier = {
 			factor = 2
 			has_trait = trait_presapient_natural_intellectuals
-		}
-		modifier = {
-			factor = 2
-			has_trait = trait_erudite
 		}
 		modifier = {
 			factor = 1.5
@@ -1962,10 +1951,6 @@ manager = {
 			has_trait = trait_presapient_natural_intellectuals
 		}
 		modifier = {
-			factor = 2
-			has_trait = trait_erudite
-		}
-		modifier = {
 			factor = 1.5
 			OR = {
 				has_trait = trait_robust
@@ -2265,11 +2250,11 @@ bluelotus_technician = {
 		}
 		modifier = {
 			factor = 5
-			has_job = foundry
+			has_job = bluelotus_technician
 		}
 		modifier = {
 			factor = 15
-			has_job = foundry
+			has_job = bluelotus_technician
 			OR = {
 				has_trait = trait_robust
 				has_trait = trait_robot_efficient_processors
@@ -2322,12 +2307,14 @@ death_chronicler = {
 			society_research = 2
 		}
 		upkeep = {
+			consumer_goods = 2
+		}
+		upkeep = {
 			trigger = {
 				is_organic_species = yes
 				is_phototrophic = no
 				is_lithoid = no
 			}
-			consumer_goods = 2
 			food = @living_standard_food_normal
 		}
 		upkeep = {
@@ -2340,14 +2327,12 @@ death_chronicler = {
 			trigger = {
 				is_phototrophic = yes
 			}
-			consumer_goods = 2
 			food = @living_standard_phototrophic_normal
 		}
 		upkeep = {
 			trigger = {
 				is_lithoid = yes
 			}
-			consumer_goods = 2
 			minerals = @living_standard_food_normal
 		}
 	}
@@ -2389,10 +2374,7 @@ death_chronicler = {
 		}
 		modifier = {
 			factor = 2
-			OR = {
 				has_trait = trait_traditional
-				has_trait = trait_erudite
-			}
 		}
 		modifier = {
 			factor = 1.5
@@ -2400,7 +2382,7 @@ death_chronicler = {
 				has_trait = trait_robot_propaganda_machines
 				has_trait = trait_traditional
 				has_trait = trait_natural_sociologists
-				has_job = culture_worker
+				has_job = death_chronicler
 				has_trait = trait_intelligent
 				has_trait = trait_psionic
 			}
@@ -2774,11 +2756,11 @@ catalytic_technician = {
 		}
 		modifier = {
 			factor = 5
-			has_job = foundry
+			has_job = catalytic_technician
 		}
 		modifier = {
 			factor = 15
-			has_job = foundry
+			has_job = catalytic_technician
 			OR = {
 				has_trait = trait_robust
 				has_trait = trait_robot_efficient_processors
@@ -3063,6 +3045,14 @@ pearl_diver = {
 			}
 		}
 		modifier = {
+			factor = 1.5
+			has_trait = trait_thrifty
+		}
+		modifier = {
+			factor = 1.5
+			has_trait = trait_nuumismatic_administration
+		}
+		modifier = {
 			factor = 5
 			has_job = pearl_diver
 		}
@@ -3077,7 +3067,7 @@ pearl_diver = {
 	}
 }
 
-reassigner = { #Ori3.3b
+reassigner = { #3.3.1
 	category = specialist
 	condition_string = SPECIALIST_JOB_TRIGGER
 	building_icon = building_posthumous_employment_center

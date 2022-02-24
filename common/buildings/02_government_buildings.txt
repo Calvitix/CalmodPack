@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.2  22.11.2021
+# Calvitix Check 3.3.1  23.02.2022
 #
 # Merge with Plentiful traditions 21.10.2021
 # Merge with Starnet OK 30.10.2021
@@ -421,7 +421,14 @@ building_clone_vats = {
 		NOT = { has_modifier = resort_colony }
 		OR = {
 			owner = { is_ai = no }
-			NOT = { has_building = building_robot_assembly_plant }
+			NOT = { exists = assembling_species }
+			assembling_species = { is_organic_species = yes }
+			NAND = {
+				free_district_slots = 0
+				free_building_slots <= 1
+				free_housing <= 0
+				free_jobs <= 0
+			}
 		}
 	}
 	
@@ -430,10 +437,10 @@ building_clone_vats = {
 		OR = {
 			AND = {
 				owner = { is_ai = yes }
-				planet = {
-					free_district_slots = 0
-					free_building_slots = 0
-				}
+				free_district_slots = 0
+				free_building_slots = 0
+				free_housing <= 0
+				free_jobs <= 0
 			}
 			NOT = { owner = { has_ascension_perk = ap_engineered_evolution } }
 ###STARNET AI
@@ -576,7 +583,13 @@ building_clone_vats = {
 
 	triggered_desc = {
 		trigger = {
-			has_building = building_robot_assembly_plant
+			OR = {
+				has_building = building_robot_assembly_plant
+				AND = {
+					exists = assembling_species
+					assembling_species = { is_robotic_species = yes }
+				}
+			}
 		}
 		text = tooltip_organic_and_artificial_assembly_warning
 	}
@@ -717,6 +730,8 @@ building_gaiaseeders_1 = {
 		}
 		NOR = {
 			is_planet_class = pc_gaia
+			is_planet_class = pc_cold_gaia
+			is_planet_class = pc_hot_gaia
 			is_planet_class = pc_city
 			is_planet_class = pc_hive
 			is_planet_class = pc_machine
@@ -947,6 +962,8 @@ building_gaiaseeders_1 = {
 	destroy_trigger = {
 		OR = {
 			is_planet_class = pc_gaia	# No double bonuses if player uses other tools to turn it into a Gaia world.
+			is_planet_class = pc_cold_gaia
+			is_planet_class = pc_hot_gaia
 			is_planet_class = pc_city
 			is_planet_class = pc_hive
 			is_planet_class = pc_machine
@@ -1000,6 +1017,8 @@ building_gaiaseeders_2 = {
 	destroy_trigger = {
 		OR = {
 			is_planet_class = pc_gaia
+			is_planet_class = pc_cold_gaia
+			is_planet_class = pc_hot_gaia
 			is_planet_class = pc_city
 			is_planet_class = pc_hive
 			is_planet_class = pc_machine
@@ -1263,6 +1282,8 @@ building_gaiaseeders_3 = {
 	destroy_trigger = {
 		OR = {
 			is_planet_class = pc_gaia
+			is_planet_class = pc_cold_gaia
+			is_planet_class = pc_hot_gaia
 			is_planet_class = pc_city
 			is_planet_class = pc_hive
 			is_planet_class = pc_machine

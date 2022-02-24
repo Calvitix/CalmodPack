@@ -1,8 +1,8 @@
 # Giga File
 #
-# Calvitix Check 3.2
+# Calvitix Check 3.3.1
 #
-# Last Update : 06.02.2022
+# Last Update : 24.02.2022
 #
 giga_interstellar_researcher = {
 	category = specialist
@@ -256,7 +256,7 @@ giga_preserver = {
 		category = planet_researchers
 		produces = {
 			society_research = 2
-			unity = 2
+			unity = 3
 		}
 		upkeep = { food = 1 }
 	}
@@ -313,7 +313,7 @@ giga_preserver_drone = {
 		category = planet_researchers
 		produces = {
 			society_research = 2
-			unity = 2
+			unity = 3
 		}
 		upkeep = { 
 			food = 1 
@@ -610,13 +610,9 @@ virtual_admin_cap = {
 	possible_precalc = can_fill_specialist_job
 
 	resources = {
-		category = planet_bureaucrats
+		category = planet_administrators
 		produces = {
-			trigger = {
-				exists = owner
-				owner = { has_valid_civic = civic_byzantine_bureaucracy }
-			}
-			unity = 1
+			unity = 4
 		}
 		upkeep = {
 			consumer_goods = 1
@@ -630,36 +626,6 @@ virtual_admin_cap = {
 		}
 		modifier = {
 			planet_stability_add = 1
-		}
-	}
-
-	country_modifier = {
-		country_admin_cap_add = 20
-	}
-
-	triggered_country_modifier = {
-		potential = {
-			exists = planet
-			planet = {
-				exists = sector
-				sector = {
-					exists = leader
-					leader = { has_trait = leader_trait_bureaucrat }
-				}
-			}
-		}
-		modifier = {
-			country_admin_cap_add = 2
-		}
-	}
-
-	triggered_country_modifier = {
-		potential = {
-			exists = planet
-			planet = { has_designation = col_bureau }
-		}
-		modifier = {
-			country_admin_cap_add = 4
 		}
 	}
 
@@ -731,22 +697,22 @@ virtual_admin_cap_hive = {
 	possible_precalc = can_fill_drone_job
 
 	resources = {
-		category = planet_synapse_drones
+		category = planet_administrators
 		produces = {
-			unity = 3
+			unity = 4
 		}
 		upkeep = {
 			trigger = {
 				is_lithoid = no
 			}
-			food = 2
+			#food = 2 # food upkeep? While virtual? Better balanced and flavoured without
 			energy = 2
 		}
 		upkeep = {
 			trigger = {
 				is_lithoid = yes
 			}
-			minerals = 2
+			#minerals = 2
 			energy = 2
 		}
 	}
@@ -771,26 +737,6 @@ virtual_admin_cap_hive = {
 		}
 	}
 
-	country_modifier = {
-		country_admin_cap_add = 10
-	}
-
-	triggered_country_modifier = {
-		potential = {
-			exists = planet
-			planet = {
-				exists = sector
-				sector = {
-					exists = leader
-					leader = { has_trait = leader_trait_mindfulness }
-				}
-			}
-		}
-		modifier = {
-			country_admin_cap_add = 2
-		}
-	}
-
 	weight = {
 		weight = @synapse_drone_job_weight
 		modifier = {
@@ -799,6 +745,10 @@ virtual_admin_cap_hive = {
 				has_trait = trait_traditional
 				has_trait = trait_robot_propaganda_machines
 			}
+		}
+		modifier = {
+			factor = 1.5
+			has_trait = trait_necrophage
 		}
 	}
 }
@@ -818,7 +768,10 @@ virtual_admin_cap_machine = {
 	possible_precalc = can_fill_drone_job
 
 	resources = {
-		category = planet_bureaucrats
+		category = planet_administrators
+		produces = {
+			unity = 4
+		}
 		upkeep = {
 			energy = 4
 		}
@@ -834,18 +787,6 @@ virtual_admin_cap_machine = {
 		}
 	}
 
-	triggered_country_modifier = {
-		potential = {
-			exists = owner
-			owner = {
-				has_active_tradition = tr_synchronicity_integrated_preservation
-			}
-		}
-		modifier = {
-			country_admin_cap_add = 6
-		}
-	}
-
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
@@ -855,26 +796,6 @@ virtual_admin_cap_machine = {
 		}
 		modifier = {
 			planet_crime_no_happiness_add = -2
-		}
-	}
-
-	country_modifier = {
-		country_admin_cap_add = 30
-	}
-
-	triggered_country_modifier = {
-		potential = {
-			exists = planet
-			planet = {
-				exists = sector
-				sector = {
-					exists = leader
-					leader = { has_trait = leader_trait_amplifier }
-				}
-			}
-		}
-		modifier = {
-			country_admin_cap_add = 2
 		}
 	}
 
@@ -940,6 +861,7 @@ ehof_cultivator = {
 	condition_string = SPECIALIST_JOB_TRIGGER
 	building_icon = building_ehof_sm_forge_1
 	clothes_texture_index = 3
+
 	possible_precalc = can_fill_specialist_job
 
 	possible_pre_triggers = {
@@ -1000,6 +922,7 @@ ehof_cultivation_drone = {
 	category = complex_drone
 	condition_string = DRONE_JOB_TRIGGER
 	building_icon = building_ehof_sm_forge_1
+	
 	possible_precalc = can_fill_drone_job
 
 	possible_pre_triggers = {

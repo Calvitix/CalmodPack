@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.3b2  31.01.2022
+# Calvitix Check 3.3.1  23.02.2022
 #
 # Merge with Arisphaos Unofficial patch
 # Merge with STARNET AI 21.05.2021
@@ -888,6 +888,11 @@ has_any_megastructure_in_empire = {
 			has_megastructure = mega_shipyard_3
 			has_megastructure = mega_shipyard_ruined
 			has_megastructure = mega_shipyard_restored
+			has_megastructure = crisis_sphere_0
+			has_megastructure = crisis_sphere_1
+			has_megastructure = crisis_sphere_2
+			has_megastructure = crisis_sphere_3
+			has_megastructure = crisis_sphere_4
 		}
 	}
 }
@@ -1573,6 +1578,12 @@ has_no_non_gate_megastructure = {
 					is_megastructure_type = mega_shipyard_3
 					is_megastructure_type = mega_shipyard_ruined
 					is_megastructure_type = mega_shipyard_restored
+
+					is_megastructure_type = crisis_sphere_0
+					is_megastructure_type = crisis_sphere_1
+					is_megastructure_type = crisis_sphere_2
+					is_megastructure_type = crisis_sphere_3
+					is_megastructure_type = crisis_sphere_4
 				}
 			}
 		}
@@ -1932,15 +1943,22 @@ has_galactic_wonders = {
 
 can_build_megastructures = {
 	OR = {
+		has_technology = tech_gateway_construction
+		has_technology = tech_ring_world
+		can_build_unity_megastructures = yes
+	}
+}
+
+can_build_unity_megastructures = {
+	OR = {
 		has_technology = tech_science_nexus
 		has_technology = tech_sentry_array
 		has_technology = tech_strategic_coordination
 		has_technology = tech_interstellar_assembly
 		has_technology = tech_mega_art
-		has_technology = tech_gateway_construction
 		has_technology = tech_dyson_sphere
 		has_technology = tech_matter_decompressor
-		has_technology = tech_ring_world
+		has_technology = tech_mega_shipyard
 	}
 }
 
@@ -3051,6 +3069,30 @@ is_memorialist_empire = {
 	}
 }
 
+ai_should_build_habitats = {
+	is_country_type = default
+	is_at_war = no
+	has_technology = tech_habitat_1
+	if = {
+		limit = {
+			NOT = { has_origin = origin_void_dwellers } #VDs should build habitats even if there are other planets available
+		}
+		ai_colonize_plans <= 0
+		NOT = { has_trait = trait_aquatic }
+	}
+	NOT = {
+		any_planet_within_border = {
+			is_planet_class = pc_habitat
+			is_colony = no
+		}
+	}
+	NOT = {
+		any_neighbor_country = {
+			is_crisis_faction = yes
+		}
+	}
+}
+
 has_any_industry_district = {
 	OR = {
 		has_district = district_industrial
@@ -3092,14 +3134,138 @@ has_unity_times_empire_size = {
 	resource_stockpile_compare = { resource = unity value >= $VALUE$ mult = trigger:empire_size }
 }
 
-## mod ?
+## PDiversity 
 has_phototrophic_energy_upkeep = {
 	OR = {
 		has_trait = trait_plantoid_phototrophic
 		AND = {
-			has_trait = trait_plantoid_radiotrophic
+			OR = {
+				has_trait = trait_plantoid_radiotrophic
+				has_trait = trait_harvested_radiotrophic
+			}
 			NOT = { planet = { is_planet_class = pc_nuked } }
 			NOT = { planet = { is_planet_class = pc_irradiated } }
 		}
+	}
+}
+
+is_pd_planet_class_all = {
+	OR = {
+	is_planet_class = pc_acid
+	is_planet_class = pc_aeolian
+	is_planet_class = pc_ammonia
+	is_planet_class = pc_antarctic
+	is_planet_class = pc_aquatic
+	is_planet_class = pc_aquifer
+	is_planet_class = pc_ash
+	is_planet_class = pc_badlands
+	is_planet_class = pc_basalt
+	is_planet_class = pc_biocapital
+	is_planet_class = pc_bioforge
+	is_planet_class = pc_biofort
+	is_planet_class = pc_biolumen
+	is_planet_class = pc_boreal
+	is_planet_class = pc_capitalarc
+	is_planet_class = pc_cascadian
+	is_planet_class = pc_cenote
+	is_planet_class = pc_clean_crucible
+	is_planet_class = pc_coastal
+	is_planet_class = pc_cold_gaia
+	is_planet_class = pc_coral
+	is_planet_class = pc_corpoarc
+	is_planet_class = pc_crucible
+	is_planet_class = pc_crystal
+	is_planet_class = pc_desertislands
+	is_planet_class = pc_duneforest
+	is_planet_class = pc_ecocity
+	is_planet_class = pc_eyeball
+	is_planet_class = pc_floating
+	is_planet_class = pc_fog
+	is_planet_class = pc_forest
+	is_planet_class = pc_frozen_desert
+	is_planet_class = pc_geothermal
+	is_planet_class = pc_glacial
+	is_planet_class = pc_glacio
+	is_planet_class = pc_graveyard
+	is_planet_class = pc_hadesert
+	is_planet_class = pc_hajungle
+	is_planet_class = pc_highland
+	is_planet_class = pc_hot_gaia
+	is_planet_class = pc_hothouse
+	is_planet_class = pc_irradiated
+	is_planet_class = pc_karst
+	is_planet_class = pc_lake
+	is_planet_class = pc_lanthanide
+	is_planet_class = pc_lichen
+	is_planet_class = pc_machine_capital
+	is_planet_class = pc_machine_factory
+	is_planet_class = pc_machine_fort
+	is_planet_class = pc_mangrove
+	is_planet_class = pc_med
+	is_planet_class = pc_megaflora
+	is_planet_class = pc_megafloracapital
+	is_planet_class = pc_megafloraforge
+	is_planet_class = pc_megaflorafort
+	is_planet_class = pc_megaflorahive
+	is_planet_class = pc_megafloratol
+	is_planet_class = pc_mesa
+	is_planet_class = pc_methane
+	is_planet_class = pc_milarc
+	is_planet_class = pc_mud
+	is_planet_class = pc_mushroom
+	is_planet_class = pc_necropolis
+	is_planet_class = pc_oasis
+	is_planet_class = pc_outback
+	is_planet_class = pc_palacearc
+	is_planet_class = pc_pd_asteroid_hab
+	is_planet_class = pc_pd_barren_cold_hab
+	is_planet_class = pc_pd_barren_hab
+	is_planet_class = pc_pd_frozen_hab
+	is_planet_class = pc_pd_gas_giant_hab
+	is_planet_class = pc_pd_hothouse_hab
+	is_planet_class = pc_pd_molten_hab
+	is_planet_class = pc_pd_toxic_hab
+	is_planet_class = pc_pdhive1
+	is_planet_class = pc_pdhive2
+	is_planet_class = pc_pdshroud
+	is_planet_class = pc_prairie
+	is_planet_class = pc_primal
+	is_planet_class = pc_reef
+	is_planet_class = pc_retinal
+	is_planet_class = pc_rogue
+	is_planet_class = pc_salt
+	is_planet_class = pc_sandsea
+	is_planet_class = pc_semiarid
+	is_planet_class = pc_shroud_crucible
+	is_planet_class = pc_shroudcapitalarc
+	is_planet_class = pc_shroudcity
+	is_planet_class = pc_shroudcorpoarc
+	is_planet_class = pc_shroudecocity
+	is_planet_class = pc_shroudmilarc
+	is_planet_class = pc_shroudpalacearc
+	is_planet_class = pc_snow
+	is_planet_class = pc_steppe
+	is_planet_class = pc_storm
+	is_planet_class = pc_subarctic
+	is_planet_class = pc_sulfur
+	is_planet_class = pc_supercon
+	is_planet_class = pc_superhabitable
+	is_planet_class = pc_swamp
+	is_planet_class = pc_technoorganic
+	is_planet_class = pc_tepid
+	is_planet_class = pc_tidallyaquatic
+	is_planet_class = pc_tidallygaia
+	is_planet_class = pc_tidallylocked
+	is_planet_class = pc_veld
+	is_planet_class = pc_wetswamp
+	}
+}
+
+is_planetary_diversity_ringworld = {
+	OR = {
+		is_planet_class = pc_ashring
+		is_planet_class = pc_methanering
+		is_planet_class = pc_sulfurring
+		is_planet_class = pc_ammoniaring
 	}
 }

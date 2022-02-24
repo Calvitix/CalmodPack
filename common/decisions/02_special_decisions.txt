@@ -1032,6 +1032,7 @@ decision_arcology_project = {
 			clear_deposits = yes
 			remove_modifier = industrialized_planet #megacorp
 			remove_modifier = urban_idyll_colony #megacorp
+			add_deposit = d_pd_industrial_sector #PD
 			set_industrial_focus_flags = yes
 			change_pc = pc_city
 ###PD
@@ -1084,6 +1085,11 @@ decision_arcology_project = {
 					picture = pc_ashcity 
 					entity = ash_arc_planet_01_entity
 				}
+			}
+			IF = {
+				limit = { owner = { has_origin = origin_pd_shroud has_ascension_perk = ap_transcendence } }
+				set_planet_entity = { picture = pc_shroudcity entity = pdshroudcity_planet_01_entity }
+				add_deposit = d_pd_shroud_arc
 			}
 			owner = {
 				country_event = { id = distar.201 } # port for living planet distar.197, triggers in event
@@ -1179,6 +1185,7 @@ decision_arcology_project_relic = {
 			clear_deposits = yes
 			remove_modifier = industrialized_planet #megacorp
 			remove_modifier = urban_idyll_colony #megacorp
+			add_deposit = d_pd_industrial_sector #PD
 			set_industrial_focus_flags = yes
 			change_pc = pc_city
 			relic_world_conversion_effect = {
@@ -1241,7 +1248,12 @@ decision_arcology_project_relic = {
 					entity = ash_arc_planet_01_entity
 				}
 			}
-###
+			IF = {
+				limit = { owner = { has_origin = origin_pd_shroud has_ascension_perk = ap_transcendence } }
+				set_planet_entity = { picture = pc_shroudcity entity = pdshroudcity_planet_01_entity }
+				add_deposit = d_pd_shroud_arc
+			}
+			###
 			add_deposit = d_former_relic_world
 			planet_event = { id =  mega.201 }
 			while = {
@@ -1267,14 +1279,9 @@ decision_arcology_project_relic = {
 		}
 	}
 
-	ai_weight = { #PD
-		weight = 10 #100
-		modifier = { 
-			factor = 0	
-			owner = { any_owned_planet = { is_planet_class = pc_city } }
-		}
+	ai_weight = {
+		weight = 100
 	}
-
 }
 
 # Market Candidate Nomination

@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.3b  20.01.2022
+# Calvitix Check 3.3.1  23.02.2022
 #
 # Merge with STARNET AI    24.11.2021
 #
@@ -25,7 +25,7 @@ energy_expenditure_buffer = { # Buffer, will not be spent
 	}
 }
 
-energy_expenditure_planets_gaia_seeder = {  #Ori3.3b
+energy_expenditure_planets_gaia_seeder = {
 	resource = energy
 	type = expenditure
 	category = planets
@@ -50,6 +50,10 @@ energy_expenditure_planets_gaia_seeder = {  #Ori3.3b
 
 	fraction = {
 		weight = 1.0
+	}
+
+	static_max = {
+		base = 1350
 	}
 }
 
@@ -190,10 +194,10 @@ energy_expenditure_privatecolonies = {
 	resource = energy
 	type = expenditure
 	category = colonies
-	
+
 	potential = {
 		always = yes
-	}
+		}
 	
 	fraction = {
 		weight = 0.8
@@ -244,10 +248,10 @@ energy_expenditure_ringworld_blockers = {
 }
 
 energy_expenditure_deposit_blockers = {
-	resource = energy 
+	resource = energy
 	type = expenditure
 	category = deposit_blockers
-	
+
 	potential = {
 		any_owned_planet = {
 			num_uncleared_blockers > 0
@@ -269,7 +273,7 @@ energy_expenditure_deposit_blockers = {
 			value > 1000
 		}
 	}
-	
+
 	fraction = {
 		weight = 0.7
 	}
@@ -294,8 +298,8 @@ energy_expenditure_deposit_blockers = {
 				or = {
 				num_free_districts = { type = any value < 1 }
 				num_pops > 14	
-				}
 			}
+		}
 			years_passed > 20
 		}
 	}
@@ -315,15 +319,15 @@ energy_expenditure_decisions = {
    
     fraction = {
         weight = 0
-    }  
-   
+	}
+
 	# base remove blocker cost
-    static_min = {
+	static_min = {
 		base = 500
-    }
+	}
 	static_max = {
         base = 30000
-    }
+	}
 }
 
 #Ori3.3b removed
@@ -367,18 +371,28 @@ energy_expenditure_decisions = {
 # }
 
 energy_expenditure_megastructures = {
-	resource = energy 
+	resource = energy
 	type = expenditure
 	category = megastructures
-	
+
 	potential = {
 		is_country_type = default
+		has_technology = tech_gateway_activation
 		is_at_war = no
-		has_galactic_wonders = yes
+		any_owned_megastructure = {
+			OR = {
+				is_megastructure_type = gateway_0
+				is_megastructure_type = gateway_ruined
+			}
+		}
+		has_resource = {
+			type = energy
+			amount > 6000
+		}
 	}
-	
+
 	fraction = {
-		weight = 0.3
+		weight = 0.5
 	}
 
 	static_max = {
@@ -507,31 +521,6 @@ energy_expenditure_operations = {
 	}
 }
 
-energy_expenditure_campaigns = {
-	resource = energy
-	type = expenditure
-	category = campaigns
-
-	potential = {
-		# only consider campaigns when we can actually afford them
-		has_resource = {
-			type = energy
-			amount > 3000
-		}
-	}
-
-	fraction = {
-		weight = 0.30
-	}
-
-	static_min = {
-		base = 1000
-	}
-	static_max = {
-		base = 3000
-	}
-}
-
 ############
 ## Upkeep ##
 ############
@@ -564,10 +553,10 @@ energy_upkeep_buffer = {	# Buffer, will not be spent
 # }
 
 energy_expenditure_armies = {
-	resource = energy 
+	resource = energy
 	type = expenditure
 	category = armies
-	
+
 	potential = {
 		has_valid_civic = civic_reanimated_armies
 		or = {
@@ -960,6 +949,20 @@ energy_upkeep_lategame = {
 				value < 8000
 			}
 		}
+	}
+
+	fraction = {
+		weight = 0.1
+	}
+}
+
+energy_upkeep_campaigns = { #3.3.1
+	resource = energy
+	type = upkeep
+	category = campaigns
+
+	potential = {
+		has_technology = tech_planetary_unification
 	}
 
 	fraction = {

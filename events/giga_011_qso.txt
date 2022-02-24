@@ -1,8 +1,8 @@
 # Giga File
 #
-# Calvitix Check 3.1.1  14.09.2021
+# Calvitix Check 3.3.1
 #
-# Last Update : 29.09.2021
+# Last Update : 24.02.2022
 #
 namespace = giga_qso
 
@@ -614,6 +614,16 @@ country_event = { #blast
 					limit = { is_planet_class = pc_infested }
 					planet_event = { id = giga_qso.115 } # Infested world
 				}
+
+				if = {
+					limit = {
+						has_planet_flag = gigaflusion
+						has_global_flag = katzenartig_imperium_happened
+						NOT = { has_global_flag = katzenartig_imperium_defeated }
+						any_country = { is_country_type = katzen_submarines } 
+					}
+					ROOT = { set_country_flag = player_country_cracked_flusion }
+				}	
 
 				if = {
 					limit = {
@@ -1392,6 +1402,15 @@ country_event = {
 				solar_system = {
 					set_name = "[PREV.GetName] - vide"
 					set_star_class = sc_empty_space
+					if = {
+						limit = {
+							any_system_planet = { has_planet_flag = gigaflusion }
+							has_global_flag = katzenartig_imperium_happened
+							NOT = { has_global_flag = katzenartig_imperium_defeated }
+							any_country = { is_country_type = katzen_submarines } 
+						}
+						ROOT = { set_country_flag = player_country_cracked_flusion }
+					}
 					every_system_planet = {
 						limit = { is_star = yes }
 						if = {
@@ -1402,7 +1421,7 @@ country_event = {
 							add_modifier = {
 								modifier = blokkat_can_repair_system
 								days = -1
-						}
+							}
 						}
 						planet_event = { id = giga_o_star.2001 }
 						create_ambient_object = {
@@ -2183,7 +2202,7 @@ country_event = {
 			random_list = {
 				50 = { #big federation
 					modifier = { 
-						factor = 0 						
+						factor = 0 				
 						OR = {
 							has_global_flag = galcom_anti_aeternite_league_formed
 							has_global_flag = giga_galactic_fed_disabled
@@ -2346,7 +2365,7 @@ country_event = { #at this point, the hyperweapon is actually being constructed,
 				random_list = {
 					50 = { #big federation
 						modifier = { 
-							factor = 0 						
+							factor = 0			
 							OR = {
 								has_global_flag = galcom_anti_aeternite_league_formed
 								has_global_flag = giga_galactic_fed_disabled
@@ -2732,8 +2751,8 @@ country_event = {
 
 	trigger = {
 		#has_country_flag = giga_galactic_pact_member
-			is_gestalt = no
-		}
+		is_gestalt = no
+	}
 
 	immediate = {
 		every_owned_fleet = {	set_owner = event_target:pangalactic_federation_country }

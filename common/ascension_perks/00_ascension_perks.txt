@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.2  22.11.2021
+# Calvitix Check 3.3.1  23.02.2022
 #
 # Merge with Arisphaos Unofficial patch
 # Merge with NSC   28.11.2021
@@ -618,7 +618,7 @@ ap_evolutionary_mastery = {
 	}
 	
 	ai_weight = {
-		factor = 1000 #100 Starnet = 10000
+		factor = 10000
 	}
 }
 
@@ -811,8 +811,8 @@ ap_synthetic_evolution = {
 	}
 
 	ai_weight = {
-		factor = 200 #100, 5000 too much ?  Starnet AI
-		modifier = {  #mod ? Ori ?
+		factor = 10000  Starnet AI
+		modifier = {  #mod ? Ori ? #Calvitix, seems coherent for RP
 			factor = 0
 			has_origin = origin_necrophage
 		}
@@ -918,9 +918,9 @@ ap_mind_over_matter = {
 		}
 		modifier = {
 			factor = 0
-			num_owned_planets < 6 #3.2
+			num_owned_planets < 6
 		}
-		modifier = { #3.2
+		modifier = {
 			factor = 10
 			has_ascension_perk = ap_become_the_crisis
 		}
@@ -987,7 +987,7 @@ ap_transcendence = {
 	}
 
 	ai_weight = {
-		factor = 1000 #100
+		factor = 10000
 	}
 }
 
@@ -1035,8 +1035,27 @@ ap_world_shaper = {
 				has_origin = origin_void_dwellers
 				has_origin = origin_shattered_ring
 				has_trait = trait_aquatic
+				has_ethic = ethic_gestalt_consciousness
 			}
 		}
+		modifier = {
+			factor = 2
+			OR = {
+				has_ethic = ethic_pacifist
+				has_ethic = ethic_xenophobe
+			}
+		}
+		modifier = {
+			factor = 3
+			OR = {
+				has_ethic = ethic_fanatic_pacifist
+				has_ethic = ethic_fanatic_xenophobe
+			}
+		}
+		modifier = { #only way to get more nice planets
+			factor = 100
+			has_origin = origin_life_seeded
+		}		
 ##Starnet AI		
 		modifier = {
 			factor = 0
@@ -1197,6 +1216,13 @@ ap_defender_of_the_galaxy = {
 				}
 			}
 		}
+		modifier = {
+			factor = 100
+			OR = {
+				is_galactic_custodian = yes
+				is_galactic_emperor = yes
+			}
+		}		
 #Starnet AI
 		modifier = {
 			factor = 100
@@ -1422,6 +1448,14 @@ ap_eternal_vigilance = {
 			factor = 1.5
 			is_xenophobe = yes
 		}
+		modifier = {
+			factor = 1.5
+			any_neighbor_country = {
+				is_country_type = default
+				opinion_level = { who = root level <= poor }
+				relative_power = { who = root value >= superior }
+			}
+		}
 	}
 }
 
@@ -1490,7 +1524,7 @@ ap_technological_ascendancy = {
 	}
 
 	ai_weight = {
-		factor = 30 #it's better than average #3.2
+		factor = 40 #it's better than average
 #Starnet AI
 		modifier = {
 			factor = 0
@@ -1598,27 +1632,28 @@ ap_mastery_of_nature = {
 	ai_weight = {
 		factor = 10
 		modifier = {
-			factor = 0.5
-			num_ascension_perks > 0
-		}
-		modifier = {
-			factor = 0.1
-			num_ascension_perks > 1
-		}
-		modifier = { #3.2
 			factor = 0
+			OR = {
 			has_origin = origin_void_dwellers
+				has_origin = origin_shattered_ring
+			}
 		}
 		modifier = {
 			factor = 2
-			num_owned_planets < 8
+			years_passed > 40
+			num_owned_planets < 5
+		}
+		modifier = {
+			factor = 2
+			years_passed > 80
+			num_owned_planets < 10
 		}
 	}
 }
 
 ap_imperial_prerogative = {
 	modifier = {
-		empire_size_colonies_mult = -0.50 #Ori3.3B replacement
+		empire_size_colonies_mult = -0.50
 	}
 
 	potential = {
@@ -1629,7 +1664,7 @@ ap_imperial_prerogative = {
 	}
 
 	ai_weight = {
-		factor = 2 # 10
+		factor = 3 # 15
 		modifier = {
 			factor = 5
 			years_passed > 80
@@ -1652,7 +1687,7 @@ ap_imperial_prerogative = {
 
 ap_executive_vigor = {
 	modifier = {
-		country_edict_fund_add = 100 #Ori3.3B replacement
+		country_edict_fund_add = 100
 	}
 
 	potential = {
@@ -1830,39 +1865,28 @@ ap_voidborn = {
 	}
 
 	ai_weight = {
-		factor = 1
-		modifier = {
-			factor = 0
-			not = {
-				has_ascension_perk = ap_executive_vigor
+		base = 10
+		complex_trigger_modifier = {
+			trigger = count_owned_planet
+			parameters = {
+				limit = { is_planet_class = pc_habitat }
 			}
-			OR = {
-				has_ethic = ethic_pacifist
-				has_ethic = ethic_fanatic_pacifist
-				has_origin = origin_void_dwellers
-			}
+			mode = add
+			mult = 2
 		}
 		modifier = {
 			factor = 20
 			has_ethic = ethic_pacifist
 		}
 		modifier = {
-			factor = 1000
-			OR = {
+			factor = 3
 				has_ethic = ethic_fanatic_pacifist
+		}
+		modifier = {
+			factor = 1000
 				has_origin = origin_void_dwellers
 			}
 		}
-		modifier = { #3.2
-			factor = 2
-			count_owned_planet = {
-				count > 2
-				limit = {
-					is_planet_class = pc_habitat
-				}
-			}
-		}
-	}
 }
 
 ap_master_builders = {
@@ -1909,6 +1933,10 @@ ap_master_builders = {
 			factor = 3
 			has_ethic = ethic_fanatic_pacifist
 		}
+		modifier = {
+			factor = 2
+			has_galactic_wonders = yes
+		}
 	}
 }
 
@@ -1951,7 +1979,7 @@ ap_galactic_wonders_utopia = {
 	}
 
 	ai_weight = {
-		factor = 100 #20
+		factor = 20
 		modifier = {
 			factor = 2
 			has_ethic = ethic_pacifist
@@ -1959,6 +1987,14 @@ ap_galactic_wonders_utopia = {
 		modifier = {
 			factor = 3
 			has_ethic = ethic_fanatic_pacifist
+		}
+		modifier = {
+			factor = 2
+			has_ethic = ethic_materialist
+		}
+		modifier = {
+			factor = 3
+			has_ethic = ethic_fanatic_materialist
 		}
 		modifier = { #Starnet AI
 			factor = 100
@@ -2001,7 +2037,7 @@ ap_galactic_wonders_megacorp = {
 	}
 
 	ai_weight = {
-		factor = 200
+		factor = 20 #10
 		modifier = {
 			factor = 2
 			has_ethic = ethic_pacifist
@@ -2009,6 +2045,14 @@ ap_galactic_wonders_megacorp = {
 		modifier = {
 			factor = 3
 			has_ethic = ethic_fanatic_pacifist
+		}
+		modifier = {
+			factor = 2
+			has_ethic = ethic_materialist
+		}
+		modifier = {
+			factor = 3
+			has_ethic = ethic_fanatic_materialist
 		}
 		modifier = { #Starnet AI
 			factor = 100
@@ -2066,7 +2110,7 @@ ap_galactic_wonders_utopia_and_megacorp = {
 	}
 
 	ai_weight = {
-		factor = 200
+		factor = 20
 		modifier = {
 			factor = 2
 			has_ethic = ethic_pacifist
@@ -2074,6 +2118,14 @@ ap_galactic_wonders_utopia_and_megacorp = {
 		modifier = {
 			factor = 3
 			has_ethic = ethic_fanatic_pacifist
+		}
+		modifier = {
+			factor = 2
+			has_ethic = ethic_materialist
+		}
+		modifier = {
+			factor = 3
+			has_ethic = ethic_fanatic_materialist
 		}
 	}
 }
@@ -2111,7 +2163,7 @@ ap_synthetic_age = {
 	}
 
 	ai_weight = {
-		factor = 50 #20
+		factor = 50 #30
 	}
 }
 
@@ -2148,7 +2200,7 @@ ap_machine_worlds = {
 	}
 
 	ai_weight = {
-		factor = 20 #starnet 0
+		factor = 50 #starnet 0 #100
 		modifier = {
 			factor = 0
 			has_valid_civic = civic_machine_servitor
@@ -2194,7 +2246,7 @@ ap_hive_worlds = {
 	}
 
 	ai_weight = {
-		factor = 20
+		factor = 100
 		modifier = {
 			factor = 0
 			has_ascension_perk = ap_world_shaper
@@ -2278,6 +2330,14 @@ ap_arcology_project = {
 		#	factor = 3
 		#	has_ethic = ethic_fanatic_pacifist
 		#}
+		modifier = {
+			factor = 2
+			has_ethic = ethic_materialist
+		}
+		modifier = {
+			factor = 3
+			has_ethic = ethic_fanatic_materialist
+		}		
 	}
 }
 
@@ -2449,6 +2509,6 @@ ap_universal_transactions = {
 	}
 
 	ai_weight = {
-		factor = 8 # 10
+		factor = 20
 	}
 }
