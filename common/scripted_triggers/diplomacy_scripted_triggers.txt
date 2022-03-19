@@ -1,6 +1,6 @@
 #Expanded Events File
 #
-# Last update  03.01.2022
+# Last update  19.03.2022
 #
 #	Example:
 #
@@ -117,16 +117,13 @@ is_civic_efficient_bureaucracy = {
 is_civic_environmentalist = {
 	OR = {
 		is_anglers_empire = yes
+		is_memorialist_empire = yes
 		has_valid_civic = civic_environmentalist
 		has_valid_civic = civic_hive_ascetic
 		has_valid_civic = civic_hive_empath
 		has_valid_civic = eco_civic_scavenger
 		has_valid_civic = civic_machine_zero_waste_protocols
 		has_valid_civic = eco_civic_recycler
-		has_valid_civic = civic_memorialist
-		has_valid_civic = civic_memorialist_corp
-		has_valid_civic = civic_hive_memorialist
-		has_valid_civic = civic_machine_memorialist
 		has_valid_civic = civic_idyllic_bloom
 		has_valid_civic = civic_hive_idyllic_bloom
 		has_origin = origin_life_seeded
@@ -355,7 +352,7 @@ is_civic_militarist = {
 		has_valid_civic = civic_distinguished_admiralty
 		has_valid_civic = civic_warrior_culture
 		has_valid_civic = civic_nationalistic_zeal
-		is_civic_reanimated_armies = yes
+		is_reanimator = yes
 		has_valid_civic = civic_private_military_companies
 		has_valid_civic = civic_naval_contractors
 		has_valid_civic = civic_barbaric_despoilers
@@ -401,9 +398,7 @@ is_civic_spiritualist = {
 		has_valid_civic = civic_last_journey
 		has_valid_civic = civic_seekers
 		# non-spiritualist civics
-		has_valid_civic = civic_memorialist
-		has_valid_civic = civic_hive_memorialist
-		has_valid_civic = civic_machine_memorialist
+		is_memorialist_empire = yes
 		has_origin = origin_tree_of_life
 		has_origin = origin_sacred_tree
 		has_origin = civic_hive_idyllic_bloom
@@ -719,6 +714,24 @@ is_necroid_empire = {
 	owner_species = { is_necroid = yes }
 }
 
+is_psionic_teacher = {
+	is_galactic_community_member = yes
+	has_ascension_perk = ap_transcendence
+	NOT = { has_policy_flag = psionic_no_teaching }
+}
+
+is_cyborg_teacher = {
+	is_galactic_community_member = yes
+	has_ascension_perk = ap_the_flesh_is_weak
+	NOT = { has_policy_flag = cyborg_no_teaching }
+}
+
+is_gene_teacher = {
+	is_galactic_community_member = yes
+	has_technology = tech_genetic_resequencing
+	NOT = { has_policy_flag = genetic_no_teaching }
+}
+
 # pops
 is_psionic_candidate = {
 	NOT = { has_trait = trait_latent_psionic }
@@ -726,6 +739,7 @@ is_psionic_candidate = {
 	NOT = { has_trait = trait_cybernetic }
 	NOT = { has_trait = trait_primitive_cybernetic }
 	NOT = { has_trait = trait_hive_mind }
+	NOT = { has_trait = trait_zombie }
 	NOT = { pop_has_ethic = ethic_materialist }
 	NOT = { pop_has_ethic = ethic_xenophobe }
 	is_enslaved = no
@@ -739,6 +753,7 @@ is_cyborg_candidate = {
 	NOT = { has_trait = trait_cybernetic }
 	NOT = { has_trait = trait_primitive_cybernetic }
 	NOT = { has_trait = trait_hive_mind }
+	NOT = { has_trait = trait_zombie }
 	NOT = { pop_has_ethic = ethic_spiritualist }
 	NOT = { pop_has_ethic = ethic_xenophobe }
 	is_enslaved = no
@@ -763,6 +778,7 @@ is_gene_candidate = {
 	NOT = { has_trait = trait_genetic_memory }
 	NOT = { has_trait = trait_sleepless }
 	NOT = { has_trait = trait_complex_genetic_code }
+	NOT = { has_trait = trait_zombie }
 	NOT = { pop_has_ethic = ethic_xenophobe }
 	is_enslaved = no
 	is_being_purged = no
@@ -770,24 +786,25 @@ is_gene_candidate = {
 }
 
 is_erudite_candidate = {
+	has_citizenship_rights = yes
+	NOT = { has_trait = trait_syncretic_proles }
+	NOT = { has_trait = trait_nerve_stapled }
+	NOT = { has_trait = trait_zombie }
+	NOT = { has_trait = trait_memorex_comatos }
+	NOT = { has_trait = trait_infested_basic }
 	OR = {
-		has_job = head_researcher
-		has_job = researcher
-		has_job = brain_drone
-		has_job = dimensional_portal_researcher
-		has_job = dimensional_portal_researcher_gestalt
-		has_job = researcher_gestalt
+		is_trait_intelligent = yes
+		has_trait = trait_natural_engineers
+		has_trait = trait_natural_physicists
+		has_trait = trait_natural_sociologists
 	}
 }
 
 is_pheremones_candidate = {
 	OR = {
-		has_trait = trait_charismatic
-		is_pop_category = ruler
-		has_job = entertainer
-		has_job = duelist
-		has_job = spawning_drone
-		has_job = maintenance_drone
+		is_trait_charismatic = yes
+		is_trait_thrifty = yes
+		is_trait_traditional = yes
 	}
 }
 

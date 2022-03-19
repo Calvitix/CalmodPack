@@ -1,9 +1,9 @@
 # Expanded Events File
 #
-# Calvitix Check 3.2
+# Calvitix Check 3.3.4
 #
 #
-# Update Expanded Events  10.12.2021
+# Update Expanded Events  19.03.2022
 # 
 #
 ############################
@@ -8465,11 +8465,11 @@ ship_event = {
 	id = anomalymod.257
 	title = "anomaly.300.name"
 	desc = {
-		trigger = { NOT = { has_country_flag = new_baldarak_settled } }
+		trigger = { owner = { NOT = { has_country_flag = new_baldarak_settled } } }
 		text = "anomalymod.257.desc"
 	}
 	desc = {
-		trigger = { has_country_flag = new_baldarak_settled }
+		trigger = { owner = { has_country_flag = new_baldarak_settled } }
 		text = "anomalymod.257.desc.alt"
 	}
 	picture = GFX_evt_atmospheric_flight
@@ -8703,6 +8703,282 @@ ship_event = {
 }
 
 ##################################
+# Pre-Sapient Events
+# Reserved 190 - 199
+##################################
+
+### Uplifting Necroids
+ship_event = {
+	id = anomalymod.290
+	title = anomalymod.290.name
+	desc = anomalymod.290.desc
+	picture = GFX_evt_ship_in_orbit
+	location = from
+
+	is_triggered_only = yes
+
+	immediate = {
+		owner = {
+			set_country_flag = found_presapients
+			country_event = { id = tutorial.57 days = 5 }
+			country_event = { id = story.4 days = 30 }
+		}
+		from = {
+			uplift_planet_mod_clear = yes
+			if = {
+				limit = { has_necroids = yes }
+				create_species = {
+					name = random
+					class = PRE_NECROID
+					portrait = pre_nec15
+					traits = { trait = trait_presapient_irradiated }
+					homeworld = from
+					sapient = no
+					effect = { save_event_target_as = latest_presapient }
+				}
+			}
+			else = {
+				create_generic_presapient_species = { UPLIFT_TO = MAM }
+			}
+			while = {
+				count = 3
+				create_pop = { species = event_target:latest_presapient }
+			}
+			set_planet_flag = roachoid_planet
+		}
+	}
+	option = {
+		name = uplift.6000.a
+		trigger = { owner = { has_technology = tech_epigenetic_triggers } }
+	}
+
+	option = {
+		name = uplift.6000.b
+		trigger = { owner = { NOT = { has_technology = tech_epigenetic_triggers } } }
+	}
+}
+
+### Uplifting Generic Ocean 3 - Aquatic
+ship_event = {
+	id = anomalymod.291
+	title = "uplift.6010.name"
+	desc = "anomalymod.291.desc"
+	picture = GFX_evt_ship_in_orbit
+	location = FROM
+	show_sound = event_default
+
+	is_triggered_only = yes
+
+	trigger = {
+		FROM = { is_ocean = yes }
+	}
+
+	immediate = {
+		owner = { set_country_flag = found_presapients }
+		owner = { country_event = { id = tutorial.57 days = 5 } }
+		owner = { country_event = { id = story.4 days = 30 } }
+		FROM = {
+			uplift_planet_mod_clear = yes
+			if = {
+				limit = { has_aquatics = yes }
+				create_species = {
+					name = random
+					class = "PRE_AQUATIC"
+					portrait = pre_aqu9
+					traits = {
+						trait = trait_aquatic
+						trait = random_presapient_trait
+					}
+					homeworld = FROM
+					sapient = no
+				}
+			}
+			else = {
+				create_generic_presapient_species = { UPLIFT_TO = MAM }
+			}
+			while = {
+				limit = {
+					count_owned_pop = {
+						limit = { is_sapient = no }
+						count < 3
+					}
+				}
+				create_pop = { species = last_created_species }
+			}
+		}
+	}
+
+	option = {
+		name = uplift.6000.a
+		trigger = {
+			owner = { has_technology = "tech_epigenetic_triggers" }
+		}
+	}
+
+	option = {
+		name = uplift.6000.b
+		trigger = {
+			owner = { NOT = { has_technology = "tech_epigenetic_triggers" } }
+		}
+	}
+}
+
+### Uplifting Generic Tropical 3 - Plantoid
+ship_event = {
+	id = anomalymod.292
+	title = "uplift.6040.name"
+	desc = "uplift.6040.desc"
+	picture = GFX_evt_alien_nature
+	location = FROM
+	show_sound = event_default
+
+	is_triggered_only = yes
+
+	trigger = {
+		FROM = { is_tropical = yes }
+	}
+
+	immediate = {
+		owner = { set_country_flag = found_presapients }
+		owner = { country_event = { id = tutorial.57 days = 5 } }
+		owner = { country_event = { id = story.4 days = 30 } }
+		FROM = {
+			uplift_planet_mod_clear = yes
+			if = {
+				limit = { has_plantoids = yes }
+				create_generic_presapient_species = { UPLIFT_TO = PLANT }
+			}
+			else = {
+				create_generic_presapient_species = { UPLIFT_TO = FUN }
+			}
+		}
+	}
+
+	option = {
+		name = uplift.6000.a
+		trigger = {
+			owner = { has_technology = "tech_epigenetic_triggers" }
+		}
+	}
+
+	option = {
+		name = uplift.6000.b
+		trigger = {
+			owner = { NOT = { has_technology = "tech_epigenetic_triggers" } }
+		}
+	}
+}
+
+### Uplifting Generic Alpine 1 - Plantoid
+ship_event = {
+	id = anomalymod.293
+	title = "uplift.6050.nam"
+	desc = "anomalymod.293.desc"
+	picture = GFX_evt_alien_nature
+	location = FROM
+	show_sound = event_default
+
+	is_triggered_only = yes
+
+	trigger = {
+		FROM = { is_alpine = yes }
+	}
+
+	immediate = {
+		owner = { set_country_flag = found_presapients }
+		owner = { country_event = { id = tutorial.57 days = 5 } }
+		owner = { country_event = { id = story.4 days = 30 } }
+		FROM = {
+			uplift_planet_mod_clear = yes
+			create_generic_presapient_species = { UPLIFT_TO = PLANT }
+		}
+	}
+
+	option = {
+		name = uplift.6000.a
+		trigger = {
+			owner = { has_technology = "tech_epigenetic_triggers" }
+		}
+	}
+
+	option = {
+		name = uplift.6000.b
+		trigger = {
+			owner = { NOT = { has_technology = "tech_epigenetic_triggers" } }
+		}
+	}
+}
+
+### Uplifting Generic Arid 1 - Lithoid
+ship_event = {
+	id = anomalymod.294
+	title = "uplift.6020.name"
+	desc = "uplift.6020.desc"
+	picture = GFX_evt_underground_civilization
+	location = FROM
+	show_sound = event_default
+
+	is_triggered_only = yes
+
+	trigger = {
+		FROM = { is_arid = yes }
+	}
+
+	immediate = {
+		owner = { set_country_flag = found_presapients }
+		owner = { country_event = { id = tutorial.57 days = 5 } }
+		owner = { country_event = { id = story.4 days = 30 } }
+		FROM = {
+			uplift_planet_mod_clear = yes
+			if = {
+				limit = { has_lithoids = yes }
+				create_generic_presapient_species = { UPLIFT_TO = LITHOID }
+			}
+			else = {
+				create_generic_presapient_species = { UPLIFT_TO = REP }
+			}
+		}
+	}
+
+	option = {
+		name = uplift.6000.a
+		trigger = {
+			owner = { has_technology = "tech_epigenetic_triggers" }
+		}
+	}
+
+	option = {
+		name = uplift.6000.b
+		trigger = {
+			owner = { NOT = { has_technology = "tech_epigenetic_triggers" } }
+		}
+	}
+}
+
+### Uplifting Alpine Success
+planet_event = {
+	id = anomalymod.294
+	title = "uplift.6051.name"
+	desc = "anomalymod.294.desc"
+	picture = GFX_evt_society_research
+	location = root
+	show_sound = notification_uplift
+
+	is_triggered_only = yes
+
+	trigger = {
+		NOT = { has_planet_flag = upl_ongoing_planet }
+		is_alpine = yes
+	}
+
+	option = {
+		name = uplift.6011.a
+		hidden_effect = { owner = { country_event = { id = tutorial.58 days = 5 } } }
+		hidden_effect = { planet_event = { id = uplift.7199 } }
+	}
+}
+
+##################################
 # New Anomaly Category Events
 # Reserved 400 - 499
 ##################################
@@ -8929,10 +9205,10 @@ ship_event = {
 	option = {
 		name = anomalymod.402.b
 		trigger = {
-			owner = { is_ai = yes }
+			owner = { is_ai = no }
 		}
 		owner = {
-			add_resource = { influence = 200 }
+			add_resource = { unity = 2000 }
 		}
 	}
 }

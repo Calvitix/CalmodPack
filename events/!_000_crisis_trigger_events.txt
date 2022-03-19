@@ -1,9 +1,9 @@
 # Expanded Events File
 #
-# Calvitix Check 3.0.2  25.04.2021
+# Calvitix Check 3.3.4  25.04.2021
 #
 #
-# Merge with Expanded Events  03.05.2021
+# Merge with Expanded Events  19.03.2022
 # 
 #
 ######################################
@@ -26,7 +26,6 @@ event = {
 		OR = {
 			end_game_years_passed >= 50
 			default_endgame_early_start_triggers = yes
-			is_active_resolution = "resolution_galacticstudies_extradimensional_experimentation"
 			any_country = {
 				OR = {
 					is_country_type = default
@@ -36,6 +35,11 @@ event = {
 				OR = {
 					has_technology = tech_jump_drive_1
 					has_technology = tech_psi_jump_drive_1
+					# Possible class-30 singularity?
+					has_megastructure = crisis_sphere_0
+					has_megastructure = crisis_sphere_1
+					has_megastructure = crisis_sphere_2
+					has_megastructure = crisis_sphere_3
 				}
 			}
 			is_active_resolution = resolution_galacticstudies_extradimensional_experimentation
@@ -53,18 +57,54 @@ event = {
 					default_endgame_early_start_triggers = no
 				}
 				set_timed_country_flag = {
+					flag = no_prethoryn_this_time
+					days = 5
+				}
+				if = {
+					limit = {
+						NOT = {
+							any_country = {
+								OR = {
+									# Possible class-30 singularity?
+									has_megastructure = crisis_sphere_0
+									has_megastructure = crisis_sphere_1
+									has_megastructure = crisis_sphere_2
+									has_megastructure = crisis_sphere_3
+								}
+							}
+						}
+					}
+				set_timed_country_flag = {
 					flag = only_unbidden_this_time
 					days = 5
 				}
 			}
-
+				else_if = {
+					limit = {
+						NOR = {
+							any_country = {
+								OR = { is_country_type = default is_country_type = ascended_empire is_country_type = lost_empire }
+								OR = {
+									has_technology = tech_jump_drive_1
+									has_technology = tech_psi_jump_drive_1
+								}
+							}
+							is_active_resolution = resolution_galacticstudies_extradimensional_experimentation
+						}
+					}
+					set_timed_country_flag = {
+						flag = only_contingency_this_time
+						days = 5
+					}
+				}
+			}
 			random_list = {
 
 				### Prethoryn Scourge (Swarm)
 				10 = {
 					modifier = {
 						factor = 0
-						has_country_flag = only_unbidden_this_time
+						has_country_flag = no_prethoryn_this_time
 					}
 					modifier = {
 						factor = 3
@@ -143,10 +183,14 @@ event = {
 				}
 
 				### Unbidden (Extradimensionals)
-				10 = {
+				8 = {
 					modifier = {
-						factor = 2
+						factor = 3.75
 						has_country_flag = only_unbidden_this_time
+					}
+					modifier = {
+						factor = 0
+						has_country_flag = only_contingency_this_time
 					}
 					modifier = {
 						factor = 3
@@ -194,15 +238,15 @@ event = {
 						end_game_years_passed >= 100
 					}
 					modifier = {
-						factor = 2
+						factor = 2.5
 						has_global_flag = atomic_clock_invader
 					}
 					modifier = {
-						factor = 1.5
+						factor = 1.9
 						has_global_flag = warp_breach_researched_global
 					}
 					modifier = {
-						factor = 1.5
+						factor = 1.9
 						has_global_flag = fumongus_active
 					}
 					modifier = {
@@ -228,7 +272,7 @@ event = {
 						}
 					}				
 					modifier = {
-						factor = 2
+						factor = 2.5
 						is_active_resolution = "resolution_galacticstudies_extradimensional_experimentation"
 					}
 					country_event = { id = crisis.1000 days = 200 random = 800 }
@@ -238,6 +282,10 @@ event = {
 
 				### Contingency (AI)
 				10 = {
+					modifier = {
+						factor = 3
+						has_country_flag = only_contingency_this_time
+					}
 					modifier = {
 						factor = 0
 						has_country_flag = only_unbidden_this_time
@@ -291,17 +339,29 @@ event = {
 						factor = 2
 						has_global_flag = atomic_clock_synth
 					}
-					modifier = {
-						factor = 10
-						any_country = {
 							# Possible class-30 singularity?
-							OR = {
+					modifier = {
+						factor = 2
+						any_country = {
 								has_megastructure = crisis_sphere_0
+						}
+					}
+					modifier = {
+						factor = 3
+						any_country = {
 								has_megastructure = crisis_sphere_1
+						}
+					}
+					modifier = {
+						factor = 4
+						any_country = {
 								has_megastructure = crisis_sphere_2
+						}
+					}
+					modifier = {
+						factor = 8
+						any_country = {
 								has_megastructure = crisis_sphere_3
-								#No point in listing the last upgrade, as that destroys the galaxy
-							}
 						}
 					}
 					modifier = {
@@ -338,14 +398,9 @@ event = {
 							has_global_flag = graveyard_nexus_contingency
 							any_country = {
 								OR = { is_country_type = default is_country_type = ascended_empire is_country_type = lost_empire }
-								OR = {
-									AND = {
 										has_technology = tech_synthetic_workers
 										any_owned_pop = { has_trait = trait_mechanical }
 									}
-									is_machine_empire = yes
-								}
-							}
 							any_country = {
 								is_country_type = fallen_empire
 								has_authority = auth_machine_intelligence

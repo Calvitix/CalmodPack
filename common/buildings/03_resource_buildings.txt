@@ -1,8 +1,8 @@
 # Original File
 #
-# Calvitix Check 3.3.1  23.02.2022
+# Calvitix Check 3.3.4  19.09.2022
 #
-# Merge with Starnet AI 24.11.2021
+# Merge with Starnet AI 05.03.2022
 # Merge with Planetary Div.
 #
 #############
@@ -59,7 +59,7 @@ building_hydroponics_farm = {
 					is_ai = yes
 					has_monthly_income = {
 						resource = food
-						value > 200
+						value > 200 #100
 					}
 				}
 			}
@@ -205,12 +205,12 @@ building_hydroponics_farm = {
 		"eb_hydrofarm2"
 	}
 
-	#ai_resource_production = {  #Removed in #Ori3.3b ?
-	#	food = 1
-	#	trigger = {
-	#		always = yes
-	#	}
-	#}
+	ai_resource_production = {
+		food = 1
+		trigger = {
+			always = yes
+		}
+	}
 }
 
 building_food_processing_facility = {
@@ -224,7 +224,15 @@ building_food_processing_facility = {
 			is_planet_class = pc_machine
 			has_modifier = resort_colony
 		}
+
+		OR = {
+			owner = {
+				is_ai = no
 	}
+			has_any_farming_district_or_buildings = yes
+		}
+	}
+
 	destroy_trigger = {
 		exists = owner
 		OR = {
@@ -242,7 +250,7 @@ building_food_processing_facility = {
 				owner = {
 					is_ai = yes
 				}	
-				has_any_farming_district = no
+				has_any_farming_district_or_buildings = no
 			}
 		}
 	}
@@ -407,15 +415,15 @@ building_food_processing_center = {
 			AND = {
 				exists = owner
 				OR = {
-				owner = {
-					is_ai = yes
-					country_uses_food = no
-				}
+					owner = {
+						is_ai = yes
+						country_uses_food = no
+					}
 					AND = {
 						owner = {
 							is_ai = yes
 						}
-						has_any_farming_district = no
+						has_any_farming_district_or_buildings = no
 					}
 				}
 			}
@@ -536,24 +544,24 @@ building_food_processing_center = {
 		"tech_food_processing_2"
 	}
 
-	#ai_resource_production = { #Ori3.3b removed ?
-	#	food = 6
-	#	trigger = {
-	#		always = yes
-	#	}
-	#}
-	#ai_resource_production = { #Ori3.3b removed ?
-	#	food = 15 #10
-	#	trigger = {
-	#		str_num_districts_farming = { operator = > num = 3 }
-	#	}
-	#}
-	#ai_resource_production = { #Ori3.3b removed ?
-	#	food = 30 #6
-	#	trigger = {
-	#		str_num_districts_farming = { operator = > num = 5 }
-	#	}
-	#}
+	ai_resource_production = {
+		food = 6
+		trigger = {
+			always = yes
+		}
+	}
+	ai_resource_production = {
+		food = 15
+		trigger = {
+			str_num_districts_farming = { operator = > num = 3 }
+		}
+	}
+	ai_resource_production = {
+		food = 30
+		trigger = {
+			str_num_districts_farming = { operator = > num = 5 }
+		}
+	}
 }
 
 building_mineral_purification_plant = {
@@ -603,6 +611,12 @@ building_mineral_purification_plant = {
 			NOT = { is_planet_class = pc_pd_molten_hab }
 ###
 			has_planet_flag = mining_habitat
+		}
+		OR = {
+			owner = {
+				is_ai = no
+			}
+			has_any_mining_district = yes
 		}
 	}
 
@@ -1049,7 +1063,7 @@ building_energy_grid = {
 				owner = {			
 					is_ai = yes
 				}	
-				has_any_generator_district = no
+				has_any_generator_district_or_building = no
 			}
 		}
 	}
@@ -1245,7 +1259,7 @@ building_energy_nexus = {
 				owner = {
 					is_ai = yes
 				}	
-				has_any_generator_district = no
+				has_any_generator_district_or_building = no
 			}
 		}
 	}
@@ -1496,6 +1510,33 @@ building_bio_reactor = {
 				owner = { is_ai = no }
 				owner = { country_uses_food = no }
 			}
+		}
+	}
+
+
+	allow = {
+		owner = {
+			OR = {
+				is_ai = no
+				AND = {
+					is_ai = yes
+					NOT = {
+						has_deficit = food
+						has_country_flag = buildings_new_reactor_building
+					}
+					resource_stockpile_compare = {
+						resource = food
+						value = 5000
+					}
+				}
+			}
+		}
+	}
+
+	destroy_trigger = {
+		owner = {
+			is_ai = yes
+			has_deficit = food
 		}
 	}
 

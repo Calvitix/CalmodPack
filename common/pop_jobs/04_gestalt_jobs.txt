@@ -1,9 +1,9 @@
 
 # Original File
 #
-# Calvitix Check 3.3.1  23.02.2022
+# Calvitix Check 3.3.4  19.03.2022
 #
-# Merge with Plentiful traditions 26.11.2021
+# Merge with Plentiful traditions 19.03.2022
 # Merge with Starnet AI 24.11.2021
 #
 ###################
@@ -267,8 +267,24 @@ evaluator = {
 	}
 
 	weight = {
-		weight = 0
+#Starnet AI
+		weight = @synapse_drone_job_weight
+		modifier = {
+			factor = 0.9
+			exists = owner
+			years_passed < 1
+			owner = { has_valid_civic = civic_machine_assimilator }
+			has_trait = trait_cybernetic
+		}
+		modifier = {
+			factor = 1.25
+			OR = {
+				has_trait = trait_traditional
+				has_trait = trait_robot_propaganda_machines
+			}
+		}
 	}
+###
 }
 
 synapse_drone = {
@@ -920,11 +936,6 @@ patrol_drone = {
 			factor = 50
 			planet = { planet_crime > 22 }
 		}
-		modifier = { #Starnet AI
-			weight = 20
-			exists = owner
-			owner = { is_ai = yes }
-		}
 		modifier = {
 			weight = 20
 			exists = owner
@@ -1406,9 +1417,23 @@ maintenance_drone = {
 	}
 
 	weight = {
-		weight = @maintenance_drone_job
+		weight = @clerk_job_weight
 		modifier = {
-			factor = 1.1
+			add = @maintenance_drone_job
+			exists = owner
+			owner = {
+				is_ai = no
+			}
+		}
+		modifier = {
+			add = -2.2
+			exists = owner
+			owner = {
+				is_ai = no
+			}
+		}
+		modifier = {
+			factor = 2
 			OR = {
 				has_trait = trait_robot_emotion_emulators
 				has_trait = trait_charismatic
@@ -1430,15 +1455,90 @@ maintenance_drone = {
 		}
 #Starnet AI
 		modifier = {
+			factor = 1.1
+			OR = {
+				has_trait = trait_traditional
+				has_trait = trait_robot_propaganda_machines
+			}
+			exists = owner
+			owner = {
+				has_valid_civic = civic_machine_maintenance_protocols
+			}
+		}
+		modifier = {
+			factor = 0.85
+			has_trait = trait_necrophage
+		}
+
+		modifier = {
+			factor = 1000 # <- hive mind amenities jobs are non specialist so they have base weight 1 instead of 1000 but we still want them
+			exists = owner
+			owner = {
+				is_ai = no
+			}
+			NOT = { has_job = maintenance_drone }
+			planet = {
+				free_amenities < 3
+			}
+		}
+
+		modifier = {
+			factor = 1000 # <- hive mind amenities jobs are non specialist so they have base weight 1 instead of 1000 but we still want them
+			exists = owner
+			owner = {
+				is_ai = no
+			}
+			has_job = maintenance_drone
+			planet = {
+				free_amenities < 8
+			}
+		}
+		modifier = {
+			factor = 0.1
+			exists = owner
+			owner = {
+				is_ai = no
+			}
+			NOT = { has_job = maintenance_drone }
+			planet = {
+				free_amenities > 5
+			}
+		}	
+		modifier = {
 			factor = 0
+			exists = owner
+			owner = {
+				is_ai = yes
+			}
 			planet = { habitability = { who = root value < 0.4 } } 
 			planet = { num_pops > 1 num_pops < 8 }
 			owner = { num_pops < 100 }
 		}
 		modifier = {
 			factor = 10000 #1000
+			exists = owner
+			owner = {
+				is_ai = yes
+			}
 			years_passed > 2
-			owner = { is_ai = yes }
+		}
+		modifier = {
+			factor = 2
+			planet = {
+				free_amenities <= -1
+			}
+		}
+		modifier = {
+			factor = 1.5
+			planet = {
+				free_amenities <= -5
+			}
+		}
+		modifier = {
+			factor = 1.5
+			planet = {
+				free_amenities <= -10
+			}
 		}
 ###
 		modifier = {
@@ -1709,7 +1809,8 @@ chronicle_drone = {
 	}
 
 	planet_modifier = {
-		planet_amenities_add = 2
+		planet_stability_add = 2
+		planet_amenities_no_happiness_add = 2
 	}
 
 	triggered_planet_modifier = {
@@ -1728,10 +1829,6 @@ chronicle_drone = {
 		modifier = {
 			planet_amenities_add = -0.4
 		}
-	}
-
-	planet_modifier = {
-		planet_stability_add = 2
 	}
 
 	weight = {

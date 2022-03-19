@@ -2,7 +2,7 @@
 #
 # Calvitix Check 3.2  & trad names
 #
-# Last Update : 09.01.2022
+# Last Update : 05.03.2022
 #
 #################################
 ### Planet Effects ##############
@@ -97,8 +97,19 @@ katzenland_clear_districts = {
 	}
 }
 
+# since 3.3 removing a planet which has a colony on it causes a crash
+# so here's a little effect to shorten stuff - TTFTCUTS
+giga_remove_planet = {
+	if = { 
+		limit = { is_colony = yes }
+		every_owned_pop = { kill_pop = yes }
+		destroy_colony = yes	
+	}
+	planet_event = { id = giga_mega.8500 days = 1 }
+}
+
 #################################
-### Create Ship Effects #########	
+### Create Ship Effects #########
 #################################
 giga_moon_cold_barren = {	create_fleet = { name = "Lune de combat" settings = { spawn_debris = no } effect = { set_owner = prev create_ship = { name = "Lune de combat froide et désolée" design = "Cold Barren Planetoid"	effect = { set_ship_flag = giga_moon_cold_barren } } } } }
 giga_moon_frozen = {		create_fleet = { name = "Lune de combat" settings = { spawn_debris = no } effect = { set_owner = prev create_ship = { name = "Lune de combat gelée"		design = "Frozen Planetoid"			effect = { set_ship_flag = giga_moon_frozen } } } } }

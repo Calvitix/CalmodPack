@@ -36,6 +36,7 @@ ship_event = {
 		}
 		from = {
 			uplift_planet_mod_clear = yes
+			set_planet_flag = snakeoid_planet
 			create_species = {
 				name = NAME_Snakeoid
 				class = PRE_REP
@@ -173,7 +174,7 @@ planet_event = {
 
 	trigger = {
 		NOT = { has_planet_flag = upl_ongoing_planet }
-		is_planet_class = pc_ocean
+		is_ocean = yes
 	}
 
 	option = {
@@ -197,7 +198,9 @@ ship_event = {
 
 	is_triggered_only = yes
 
-	trigger = { from = { is_planet_class = pc_arid } }
+	trigger = {
+		FROM = { is_arid = yes }
+	}
 
 	immediate = {
 		owner = {
@@ -233,7 +236,9 @@ ship_event = {
 
 	is_triggered_only = yes
 
-	trigger = { from = { is_planet_class = pc_arid } }
+	trigger = {
+		FROM = { is_arid = yes }
+	}
 
 	immediate = {
 		owner = {
@@ -271,7 +276,7 @@ planet_event = {
 
 	trigger = {
 		NOT = { has_planet_flag = upl_ongoing_planet }
-		is_planet_class = pc_arid
+		is_arid = yes
 	}
 
 	option = {
@@ -294,7 +299,9 @@ ship_event = {
 
 	is_triggered_only = yes
 
-	trigger = { from = { is_planet_class = pc_continental } }
+	trigger = {
+		FROM = { is_continental = yes }
+	}
 
 	immediate = {
 		owner = {
@@ -330,7 +337,9 @@ ship_event = {
 
 	is_triggered_only = yes
 
-	trigger = { from = { is_planet_class = pc_continental } }
+	trigger = {
+		FROM = { is_continental = yes }
+	}
 
 	immediate = {
 		owner = {
@@ -368,7 +377,7 @@ planet_event = {
 
 	trigger = {
 		NOT = { has_planet_flag = upl_ongoing_planet }
-		is_planet_class = pc_continental
+		is_continental = yes
 	}
 
 	option = {
@@ -391,7 +400,9 @@ ship_event = {
 
 	is_triggered_only = yes
 
-	trigger = { from = { is_planet_class = pc_tropical } }
+	trigger = {
+		FROM = { is_tropical = yes }
+	}
 
 	immediate = {
 		owner = {
@@ -427,7 +438,9 @@ ship_event = {
 
 	is_triggered_only = yes
 
-	trigger = { from = { is_planet_class = pc_tropical } }
+	trigger = {
+		FROM = { is_tropical = yes }
+	}
 
 	immediate = {
 		owner = {
@@ -467,7 +480,7 @@ planet_event = {
 
 	trigger = {
 		NOT = { has_planet_flag = upl_ongoing_planet }
-		is_planet_class = pc_tropical
+		is_tropical = yes
 	}
 
 	option = {
@@ -490,7 +503,9 @@ ship_event = {
 
 	is_triggered_only = yes
 
-	trigger = { from = { is_planet_class = pc_tundra } }
+	trigger = {
+		FROM = { is_tundra = yes }
+	}
 
 	immediate = {
 		owner = {
@@ -526,7 +541,9 @@ ship_event = {
 
 	is_triggered_only = yes
 
-	trigger = { from = { is_planet_class = pc_tundra } }
+	trigger = {
+		FROM = { is_tundra = yes }
+	}
 
 	immediate = {
 		owner = {
@@ -564,7 +581,7 @@ planet_event = {
 
 	trigger = {
 		NOT = { has_planet_flag = upl_ongoing_planet }
-		is_planet_class = pc_tundra
+		is_tundra = yes
 	}
 
 	option = {
@@ -587,7 +604,9 @@ ship_event = {
 
 	is_triggered_only = yes
 
-	trigger = { from = { is_planet_class = pc_arctic } }
+	trigger = {
+		FROM = { is_arctic = yes }
+	}
 
 	immediate = {
 		owner = {
@@ -623,7 +642,9 @@ ship_event = {
 
 	is_triggered_only = yes
 
-	trigger = { from = { is_planet_class = pc_arctic } }
+	trigger = {
+		FROM = { is_arctic = yes }
+	}
 
 	immediate = {
 		owner = {
@@ -661,7 +682,7 @@ planet_event = {
 
 	trigger = {
 		NOT = { has_planet_flag = upl_ongoing_planet }
-		is_planet_class = pc_arctic
+		is_arctic = yes
 	}
 
 	option = {
@@ -684,7 +705,9 @@ ship_event = {
 
 	is_triggered_only = yes
 
-	trigger = { from = { is_planet_class = pc_desert } }
+	trigger = {
+		FROM = { is_desert = yes }
+	}
 
 	immediate = {
 		owner = {
@@ -720,7 +743,9 @@ ship_event = {
 
 	is_triggered_only = yes
 
-	trigger = { from = { is_planet_class = pc_desert } }
+	trigger = {
+		FROM = { is_desert = yes }
+	}
 
 	immediate = {
 		owner = {
@@ -757,7 +782,7 @@ planet_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		is_planet_class = pc_desert
+		is_desert = yes
 		NOR = {
 			has_planet_flag = snakeoid_planet
 			has_planet_flag = upl_ongoing_planet
@@ -817,6 +842,16 @@ ship_event = {
 					modifier = { factor = 0 has_aquatics = no }
 					create_generic_presapient_species = { UPLIFT_TO = AQUATIC }
 						}
+			}
+			
+			while = {
+				limit = {
+					count_owned_pop = {
+						limit = { is_sapient = no }
+						count < 3
+					}
+				}
+				create_pop = { species = last_created_species }
 			}
 		}
 	}
@@ -1375,6 +1410,21 @@ planet_event = {
 				value = @tier1researchreward
 				min = @tier1researchmin
 				max = @tier1researchmax
+			}
+		}
+	}
+}
+
+#Exp. events
+planet_event = {
+	id = uplift.2222
+	hide_window = yes
+	trigger = { always = no }
+
+	immediate = {
+		owner = {
+			random_owned_ship = {
+				ship_event = { id = uplift.6090 }
 			}
 		}
 	}

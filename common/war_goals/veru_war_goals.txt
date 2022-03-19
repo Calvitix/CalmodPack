@@ -1,3 +1,8 @@
+# Vassals Expanded and Reworked mod
+#
+# last update 25.02.2022
+#
+#
 wg_claim_subject = {
 	casus_belli = cb_buffer_zone
 
@@ -19,11 +24,35 @@ wg_claim_subject = {
 		always = yes
 	}
 
+	on_status_quo = {
+		custom_tooltip = wg_independence_status_quo
+		hidden_effect = {
+			save_global_event_target_as = buffer_zone_loser
+			from = {
+				country_event = { id = veru.6210 days = 1 }
+			}
+		}
+	}
+
 	on_accept = {
-		event_target:chosen_border_subject = {
+		custom_tooltip = chosen_subject_text
+		hidden_effect = {
+			save_global_event_target_as = buffer_zone_winner
+			from = {
+				country_event = { id = veru.6200 days = 1 }
+			}
+		}
+	}
+
+	on_surrender = {
+		random_subject = {
+			limit = {
+				has_country_flag = chosen_border_subject@event_target:buffer_zone_winner
+			}
+			remove_country_flag = chosen_border_subject@event_target:buffer_zone_winner
 			set_subject_of = {
-				who = root
-				subject_type = vassal
+				who = event_target:buffer_zone_winner
+				subject_type = vervassal
 			}
 		}
 	}
@@ -38,7 +67,6 @@ wg_claim_subject = {
 				country_event = { id = veru.6000 }
 			}
 		}
-		country_event = { id = veru.6200 days = 5 }
 	}
 
 	ai_weight = {

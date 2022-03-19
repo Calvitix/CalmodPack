@@ -3,7 +3,7 @@
 # Calvitix Check 3.3.1  23.02.2022
 #
 # Merge with Planet. Diversity
-# Merge with Starnet OK    
+# Merge with Starnet OK  05/03/2022    
 # Merge with Plentiful Trad 
 ##################
 # Unity buildings
@@ -300,6 +300,21 @@ building_bureaucratic_1 = {
 		}
 	}
 
+#Plentiful Trad
+	triggered_planet_modifier = {
+		potential = {
+		exists = owner
+			owner = { is_regular_empire = yes }
+			owner = {
+				has_tradition = tr_plentiful_aspiration_3
+			}
+		}
+		modifier = {
+			job_bureaucrat_add = @b1_jobs
+		}
+	}
+#Plentiful Trad
+
 	triggered_desc = {
 		trigger = {
 			exists = owner
@@ -390,9 +405,24 @@ building_bureaucratic_2 = {
 			owner = { is_megacorp = no }
 		}
 		modifier = {
+			job_bureaucrat_add = 3
+		}
+	}
+	
+#Plentiful Trad
+	triggered_planet_modifier = {
+		potential = {
+		exists = owner
+			owner = { is_regular_empire = yes }
+			owner = {
+				has_tradition = tr_plentiful_aspiration_3
+			}
+		}
+		modifier = {
 			job_bureaucrat_add = @b2_jobs
 		}
 	}
+###
 
 	triggered_desc = {
 		trigger = {
@@ -487,6 +517,22 @@ building_bureaucratic_3 = {
 			job_bureaucrat_add = @b3_jobs
 		}
 	}
+
+#Plentiful Trad
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_regular_empire = yes }
+			owner = {
+				has_tradition = tr_plentiful_aspiration_3
+			}
+		}
+		modifier = {
+			job_bureaucrat_add = 4
+		}
+	}
+### Plentiful Trad end
+
 
 	triggered_desc = {
 		trigger = {
@@ -853,6 +899,21 @@ building_uplink_node = {
 		}
 	}
 
+#Plentiful Trad
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_machine_empire = yes }
+			owner = {
+				has_tradition = tr_plentiful_aspiration_3
+			}
+		}
+		modifier = {
+			job_coordinator_add = 2
+		}
+	}
+#Plentiful Trad end
+
 	planet_modifier = {
 		job_coordinator_add = @b1_jobs
 	}
@@ -930,6 +991,21 @@ building_network_junction = {
 		}
 	}
 
+#Plentiful Trad
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_machine_empire = yes }
+			owner = {
+				has_tradition = tr_plentiful_aspiration_3
+			}
+		}
+		modifier = {
+			job_coordinator_add = 3
+		}
+	}
+###
+
 	planet_modifier = {
 		job_coordinator_add = @b2_jobs
 	}
@@ -1006,6 +1082,21 @@ building_system_conflux = {
 			rare_crystals = @b3_rare_upkeep
 		}
 	}
+
+#Plentiful Trad
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_machine_empire = yes }
+			owner = {
+				has_tradition = tr_plentiful_aspiration_3
+			}
+		}
+		modifier = {
+			job_coordinator_add = 4
+		}
+	}
+###
 
 	planet_modifier = {
 		job_coordinator_add = @b3_jobs
@@ -1289,6 +1380,21 @@ building_hive_confluence = {
 			planet_housing_add = 2
 		}
 	}
+
+#Plentiful Mod
+		triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_hive_empire = yes }
+			owner = {
+				has_tradition = tr_plentiful_aspiration_3
+			}
+		}
+		modifier = {
+			job_synapse_drone_add = 4
+		}
+	}
+###
 
 	triggered_planet_modifier = {
 		potential = {
@@ -1882,7 +1988,7 @@ building_galactic_memorial_3 = {
 		category = planet_buildings
 		produces = {
 			trigger = { exists = owner }
-			unity = 2
+			unity = 3
 			multiplier = owner.trigger:num_ascension_perks
 		}
 		cost = {
@@ -3051,5 +3157,55 @@ building_organic_paradise = {
 
 	show_tech_unlock_if = {
 		owner = { has_valid_civic = civic_machine_servitor }
+	}
+
+	# Here we try to adress the second issue that the AI cant evaluate the pop job output of the bio trophy given the happiness trigger that was put inplace to guard against players exploiting bio trophies
+
+	#science
+	ai_resource_production = {
+		unity = 20
+		physics_research = 20
+
+		trigger = {
+			has_unemployed_pop_of_category = bio_trophy
+
+			planet_resource_compare = {
+				resource = physics_research
+				value >= 100
+				type = produces
+			}
+		}
+	}
+
+	#alloys
+	ai_resource_production = {
+		unity = 20
+		alloys = 20
+
+		trigger = {
+			has_unemployed_pop_of_category = bio_trophy
+
+			planet_resource_compare = {
+				resource = alloys
+				value >= 100
+				type = produces
+			}
+		}
+	}
+
+	#cgs
+	ai_resource_production = {
+		unity = 20
+		consumer_goods = 20
+
+		trigger = {
+			has_unemployed_pop_of_category = bio_trophy
+
+			planet_resource_compare = {
+				resource = consumer_goods
+				value >= 100
+				type = produces
+			}
+		}
 	}
 }

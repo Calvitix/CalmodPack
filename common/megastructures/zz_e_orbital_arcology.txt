@@ -2,7 +2,7 @@
 #
 # Calvitix Check 3.3.1
 #
-# Last Update : 24.02.2022
+# Last Update : 05.03.2022
 #
 orbital_arcology_0 = {
 	entity = "construction_platform_entity"
@@ -156,11 +156,14 @@ orbital_arcology_0 = {
 			planet = fromfrom.planet 
 		} 
 		remove_megastructure = fromfrom
+		if = {
+			limit = { exists = from }
 		from = {
 			set_timed_country_flag = { flag = has_recently_built_orbital_arcology years = 20 }
 			country_event = { id = giga_dialog.901 }	# Notification
 			change_variable = { which = giga_current_orbital_arcologies value = 1 }
 		}
+	}
 	}
 }
 
@@ -192,9 +195,12 @@ orbital_arcology_0_upgrade = {
 		fromfrom = { save_event_target_as = orbital_arcology_being_upgraded }
 		fromfrom.planet = { save_event_target_as = orbital_arcology_planet }
 		if = {
+			limit = { exists = from }
+		if = {
 			limit = { from = { NOT = { is_country_type = fallen_empire } } }
 			from = { country_event = { id = giga_mega.600 } }
 		}
+	}
 	}
 }
 
@@ -225,6 +231,8 @@ orbital_arcology_1 = {
 			set_megastructure_flag = completed_mega 
 		}
 		save_event_target_as = giga_system
+		if = {
+			limit = { exists = fromfrom.planet }
 		fromfrom.planet = {
 			save_event_target_as = giga_planet
 			add_modifier = {
@@ -240,6 +248,9 @@ orbital_arcology_1 = {
 				entity_face_object = THIS
 			}
 		}
+		}
+		if = {
+			limit = { exists = from }
 		from = {
 			country_event = { id = giga_dialog.902 }	# Notification
 			if = {
@@ -254,6 +265,7 @@ orbital_arcology_1 = {
 				giga_achievement_sound = yes
 			}
 		}
+	}
 	}
 }
 
@@ -280,6 +292,8 @@ orbital_arcology_1_l = {
 	ai_weight = { factor = 10 } # If we can build it, we will build it
 	on_build_complete = {
 		save_event_target_as = giga_system
+		if = {
+			limit = { exists = fromfrom.planet }
 		fromfrom.planet = {
 			save_event_target_as = giga_planet
 			add_modifier = { modifier = "orbital_arcology_modifier_3" days = -1 }
@@ -290,6 +304,9 @@ orbital_arcology_1_l = {
 				entity_scale_to_size = no
 			}
 		}
+		}
+		if = {
+			limit = { exists = from }
 		from = {
 			country_event = { id = giga_dialog.902 }	# Notification
 			if = {
@@ -304,6 +321,7 @@ orbital_arcology_1_l = {
 				giga_achievement_sound = yes
 			}
 		}
+	}
 	}
 }
 
@@ -330,11 +348,16 @@ orbital_arcology_1_m = {
 	ai_weight = { factor = 10 } # If we can build it, we will build it
 	on_build_complete = {
 		save_event_target_as = giga_system
+		if = {
+			limit = { exists = fromfrom.planet }
 		fromfrom.planet = {
 			save_event_target_as = giga_planet
 			add_modifier = { modifier = "orbital_arcology_modifier_2" days = -1 }
 			create_ambient_object = { type = "giga_size_21_ring" use_3d_location = yes location = this }
 		}
+		}
+		if = {
+			limit = { exists = from }
 		from = {
 			country_event = { id = giga_dialog.902 }	# Notification
 			if = {
@@ -349,5 +372,6 @@ orbital_arcology_1_m = {
 				giga_achievement_sound = yes
 			}
 		}
+	}
 	}
 }

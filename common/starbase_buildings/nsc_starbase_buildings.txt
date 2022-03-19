@@ -2,7 +2,7 @@
 ### VANILLA STARBASE BUILDING OVERWRITES ###
 ############################################
 # NSC2 File, 
-# Calvitix 3.2 Check OK, 28.11.2021
+# Calvitix 3.2 Check OK, 07.03.2022
 #
 # Calvitix AI_weight Adjustements
 # First part Merged in D:\Documents\Paradox Interactive\Stellaris\mod\Calmodpack\common\starbase_buildings\00_starbase_buildings.txt
@@ -259,11 +259,19 @@ drydock = {
 	possible = { #calvitix addition
 		exists = owner
 		owner = { has_technology = tech_drydock_1 }
-		has_starbase_module = shipyard
+		custom_tooltip = {
+			fail_text = "requires_starport"
+			has_starbase_size >= starbase_starport
+		}
+		OR = {
+				has_starbase_module = shipyard
+			starbase_buildable_is_in_queue_before = {
+				first = shipyard
+				second = drydock
+			}
+		}	
 	}
 	
-	station_modifier = { starbase_shipyard_capacity_add = 5 }
-
 	resources = {
 		category = starbase_buildings
 #Calvitix ressource balance
@@ -285,8 +293,9 @@ drydock = {
 		upkeep = { energy = 2 }
 	}
 	
-	ai_build_at_chokepoint = yes
+	ai_build_at_chokepoint = no
 	ai_build_outside_chokepoint = yes
+	custom_tooltip = sm_drydock_desc_modifier
 
 	show_in_tech = "tech_drydock_1"
 	
@@ -1384,53 +1393,6 @@ advanced_military_program = {
 	show_in_tech = "tech_interstellar_fleet_traditions"
 }
 
-administration_office = {
-	icon = "GFX_starbase_administration_office"
-	construction_days = 480
-	resources = {
-		category = starbase_buildings
-#Calvitix ressource balance
-		cost = { 
-					trigger = {
-				from = {
-					is_ai = no
-				}
-			}
-		alloys = 50 energy = 200 minerals = 20 influence = 25}
-		cost = {
-			trigger = {
-				from = {
-					is_ai = yes
-				}
-			}
-			alloys = 200
-		}
-		upkeep = {
-			trigger = {
-				exists = owner
-				owner = { is_regular_empire = yes }
-			}
-			consumer_goods = 10
-		}
-		upkeep = {
-			trigger = {
-				exists = owner
-				owner = { is_gestalt = yes }
-			}
-			energy = 20
-		}
-	}
-	potential = {
-		has_starbase_size >= starbase_starfortress
-		exists = owner owner = { has_technology = tech_galactic_administration } 
-	}
-	country_modifier = { country_admin_cap_add = 10 }
-	ai_build_at_chokepoint = no
-	ai_build_outside_chokepoint = yes	
-	ai_weight = { weight = 2 }
-	show_in_tech = "tech_galactic_administration"
-}
-
 synthetic_crystal_fabricator = {
 	icon = "GFX_starbase_synthetic_crystal_fabricator"
 	construction_days = 500
@@ -1637,55 +1599,6 @@ chain_manufacturing = {
 		modifier = { factor = 0.01 has_starbase_size < starbase_starhold }
 		modifier = { factor = 0.01 NAND = { exists = owner owner = { OR = { has_technology = tech_alloys_2 has_technology = tech_luxuries_2 } } } }
 	}
-}
-
-construction_planificator = {
-	icon = "GFX_starbase_construction_planificator"
-	construction_days = 360
-	resources = {
-		category = starbase_buildings
-#Calvitix ressource balance
-		cost = { 
-					trigger = {
-				from = {
-					is_ai = no
-				}
-			}
-		alloys = 50 energy = 200 minerals = 50 influence = 10}
-		cost = {
-			trigger = {
-				from = {
-					is_ai = yes
-				}
-			}
-			alloys = 200
-		}
-		upkeep = { energy = 2 }
-	}
-	possible = {
-		custom_tooltip = {
-			fail_text = "requires_colonized_planet"
-			solar_system = { any_system_planet = { is_owned_by = from } }
-		}
-	}
-	potential = { 
-		has_starbase_size >= starbase_starhold
-		exists = owner owner = { has_technology = tech_construction_templates }
-		solar_system = { any_system_planet = { is_owned_by = from } }
-	}
-	system_modifier = { 
-		planet_building_build_speed_mult = 0.5
-		planet_decision_enact_speed_mult = 0.5
-	}
-	ai_build_at_chokepoint = no
-	ai_build_outside_chokepoint = yes
-	ai_weight = {
-		weight = 100
-		modifier = { factor = 0.01 has_starbase_size < starbase_starhold }
-		modifier = { factor = 0.01 NAND = { exists = owner owner = { has_technology = tech_construction_templates } } }
-		modifier = { factor = 0.01 solar_system = { NOT = { any_system_planet = { is_owned_by = from } } } }
-	}
-	show_in_tech = "tech_construction_templates"
 }
 
 financial_space_center = {
@@ -2006,55 +1919,4 @@ market_computers = {
 		modifier = { factor = 0.01 has_starbase_size < starbase_starhold }
 		modifier = { factor = 0.01 solar_system = { NOT = { any_system_planet = { is_owned_by = from } } } }
 	}
-}
-
-research_computers = {
-	icon = "GFX_starbase_research_computers"
-	construction_days = 500
-	resources = {
-		category = starbase_buildings
-#Calvitix ressource balance
-		cost = { 
-					trigger = {
-				from = {
-					is_ai = no
-				}
-			}
-		alloys = 100 energy = 200 minerals = 50}
-		cost = {
-			trigger = {
-				from = {
-					is_ai = yes
-				}
-			}
-			alloys = 250
-		}
-		upkeep = { energy = 4 }
-	}
-	possible = {
-		custom_tooltip = {
-			fail_text = "requires_colonized_planet"
-			solar_system = { any_system_planet = { is_owned_by = from } }
-		}
-	}
-	potential = { 
-		has_starbase_size >= starbase_starhold
-		exists = owner 
-		owner = { has_technology = tech_basic_science_lab_3 }
-	}
-	system_modifier = { 
-		planet_researchers_society_research_produces_add = 0.1
-		planet_researchers_physics_research_produces_add = 0.1
-		planet_researchers_engineering_research_produces_add = 0.1
-	}
-
-	ai_build_at_chokepoint = no
-	ai_build_outside_chokepoint = yes
-	ai_weight = {
-		weight = 100
-		modifier = { factor = 0.01 has_starbase_size < starbase_starhold }
-		modifier = { factor = 0.01 NAND = { exists = owner owner = { has_technology = tech_basic_science_lab_3 } } }
-		modifier = { factor = 0.01 solar_system = { NOT = { any_system_planet = { is_owned_by = from } } } }
-	}
-	show_in_tech = "tech_basic_science_lab_3"
 }

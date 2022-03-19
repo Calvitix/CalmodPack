@@ -2,7 +2,7 @@
 #
 # Calvitix Check 3.3.1  23.02.2022
 #
-# Merge with Starnet AI 30.10.2021
+# Merge with Starnet AI 05.03.2022
 # Merge with PDiv.
 # Calvitix ressources balances
 #
@@ -21,12 +21,18 @@ building_robot_assembly_plant = {
 		exists = owner
 		OR = {
 			owner = { is_ai = no }
-			NOT = { exists = assembling_species }
-			assembling_species = { is_robotic_species = yes }
 ##STARNET AI
-			and = { 
-				exists = owner
-				owner = { num_pops < 1000 }
+			AND = {
+				OR = {			
+					NOT = {
+						exists = assembling_species
+					}
+					AND = {
+						exists = assembling_species
+			assembling_species = { is_robotic_species = yes }
+					}
+				}
+				#	owner = { num_pops < 1000 }
 			or = {
 				AND = {
 						str_is_col_factory = no
@@ -105,10 +111,10 @@ building_robot_assembly_plant = {
 				is_materialist = no
 			}
 ###STARNET AI
-			owner = {
-				is_ai = yes 
-				num_pops > 1500
-			}
+			#	owner = {
+			#		is_ai = yes
+			#		num_pops > 1500
+			#	}
 ###
 		}
 	}
@@ -856,8 +862,15 @@ building_posthumous_employment_center = {
 		exists = owner
 		OR = {
 			owner = { is_ai = no }
-			NOT = { exists = assembling_species }
+			OR = {			
+				NOT = {
+					exists = assembling_species
+				}
+				AND = {
+					exists = assembling_species
 			assembling_species = { is_organic_species = yes }
+		}
+			}
 		}
 		OR = {
 			owner = { is_ai = no }

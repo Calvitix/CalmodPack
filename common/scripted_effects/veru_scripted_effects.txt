@@ -1,4 +1,8 @@
-
+# Vassals Expanded and Reworked mod
+#
+# last update 25.02.2022
+#
+#
 ###############################
 ### FunEFork by MrFunEGUY ###
 ###############################
@@ -278,7 +282,7 @@ get_governors = {
 			leader_class = governor
 		}
 		set_leader_flag = governor_leader
-		root = { change_variable = { which = total_governors value = 1 } }
+		prev = { change_variable = { which = total_governors value = 1 } }
 	}
 
 	# Next, we save each subject as an Event Target
@@ -374,7 +378,7 @@ get_admirals = {
 			leader_class = admiral
 		}
 		set_leader_flag = admiral_leader
-		root = { change_variable = { which = total_admirals value = 1 } }
+		prev = { change_variable = { which = total_admirals value = 1 } }
 	}
 
 	# Next, we save each subject as an Event Target
@@ -470,7 +474,7 @@ get_generals = {
 			leader_class = general
 		}
 		set_leader_flag = general_leader
-		root = { change_variable = { which = total_generals value = 1 } }
+		prev = { change_variable = { which = total_generals value = 1 } }
 	}
 
 	# Next, we save each subject as an Event Target
@@ -566,7 +570,7 @@ get_scientists = {
 			leader_class = scientist
 		}
 		set_leader_flag = scientist_leader
-		root = { change_variable = { which = total_scientists value = 1 } }
+		prev = { change_variable = { which = total_scientists value = 1 } }
 	}
 
 	# Next, we save each subject as an Event Target
@@ -808,11 +812,26 @@ get_new_autocratic_gov = {
 	if = {
 		limit = {
 				is_authoritarian = no
+				NOR = {
+					has_authority = auth_dictatorial
+					has_authority = auth_imperial
+					has_authority = auth_corporate_imperial
+					has_authority = auth_democratic_dictatorship
+				}
 			}
 			change_government = {
 				authority = auth_dictatorial
 				remove_invalid_civics = yes
 				cooldown = no
+			}
+		}
+		if = {
+			limit = {
+				exists = heir
+			}
+			heir = {
+				set_leader_flag = dead_ruler
+				kill_leader = { show_notification = no }
 			}
 		}
 		ruler = { set_leader_flag = grateful_installed_vassal_leader_@this }
@@ -822,4 +841,78 @@ get_new_autocratic_gov = {
 		}
 	}
 	set_country_flag = vassal_installer_country_@event_target:chosen_subject.ruler
+}
+
+# Get New Government
+get_new_autocratic_gov_no_penalty = {
+	event_target:chosen_subject = {
+		if = {
+			limit = {
+				is_egalitarian = yes
+			}
+			if = {
+				limit = {
+					has_ethic = ethic_egalitarian
+				}
+				country_remove_ethic = ethic_egalitarian
+				country_add_ethic = ethic_authoritarian
+			}
+			else = {
+				country_remove_ethic = ethic_fanatic_egalitarian
+				country_add_ethic = ethic_fanatic_authoritarian
+			}
+		}
+		if = {
+			limit = {
+				is_authoritarian = yes
+				NOR = {
+					has_authority = auth_dictatorial
+					has_authority = auth_imperial
+					has_authority = auth_corporate_imperial
+					has_authority = auth_democratic_dictatorship
+				}
+			}
+			random_list = {
+				50 = {
+					change_government = {
+						authority = auth_imperial
+						remove_invalid_civics = yes
+						cooldown = no
+					}
+				}
+				50 = {
+					change_government = {
+						authority = auth_dictatorial
+						remove_invalid_civics = yes
+						cooldown = no
+					}
+				}
+			}
+		}
+		if = {
+			limit = {
+				is_authoritarian = no
+				NOR = {
+					has_authority = auth_dictatorial
+					has_authority = auth_imperial
+					has_authority = auth_corporate_imperial
+					has_authority = auth_democratic_dictatorship
+				}
+			}
+			change_government = {
+				authority = auth_dictatorial
+				remove_invalid_civics = yes
+				cooldown = no
+			}
+		}
+		if = {
+			limit = {
+				exists = heir
+			}
+			heir = {
+				set_leader_flag = dead_ruler
+				kill_leader = { show_notification = no }
+			}
+		}
+	}
 }

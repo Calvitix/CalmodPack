@@ -1,10 +1,12 @@
 #Giga File
-#Giga File
 #
-# Last update 24.11.2021
+# Last update 05.03.2022
 #
 # Calvitix Names Trad.
 #
+namespace = giga_flusionoperations_debug
+
+
 country_event = {
 	id = giga_flusionoperations_debug.1
 
@@ -2281,6 +2283,12 @@ country_event = {
 	hide_window = yes
 
 	immediate = {
+		event_target:giga_storming_pyramid_country = {
+			change_variable = {
+				which = solakian_willingness
+				value = 2.5
+			}
+		}
 		set_timed_global_flag = {
 			flag = giga_storming_pyramid_ability_cooldown
 			days = 15
@@ -2457,9 +2465,18 @@ country_event = {
 	show_sound = event_ghost_town
 	location = event_target:gigaflusion
 
+	trigger = {
+		has_global_flag = katzenartig_imperium_happened
+		NOT = { has_global_flag = katzenartig_imperium_defeated }
+		fromfrom = { has_planet_flag = gigaflusion }
+		has_global_flag = giga_storming_pyramid
+	}
+	
 	immediate = {
 		remove_global_flag = giga_storming_pyramid
 		remove_global_flag = giga_storming_pyramid_prep
+		remove_global_flag = flusion_resistance_operation_ongoing
+		remove_global_flag = flusion_special_resistance_operation_ongoing
 		set_timed_global_flag = {
 			flag = giga_storming_pyramid_cooldown
 			days = 1800

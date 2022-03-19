@@ -388,3 +388,55 @@ ship_event = {
 		name = "EXCELLENT"
 	}
 }
+
+# Called when a Starbase changes owner
+# THIS = Ship (Starbase)
+# FROM = Former Owner (Country)
+ship_event = {
+	id = nsc_events.35
+	hide_window = yes
+
+	is_triggered_only = yes
+
+	trigger = {
+		exists = starbase
+	}
+
+	immediate = {
+		starbase = {
+			if = {
+				limit = {
+					owner = {
+						is_hive_empire = yes
+					}
+				}
+				remove_starbase_building = {
+					building = starbase_management
+					building = starbase_management_machine
+				}
+			}
+			if = {
+				limit = {
+					owner = {
+						is_machine_empire = yes
+					}
+				}
+				remove_starbase_building = {
+					building = starbase_management
+					building = starbase_management_hive
+				}
+			}
+			if = {
+				limit = {
+					owner = {
+						is_gestalt = no
+					}
+				}
+				remove_starbase_building = {
+					building = starbase_management_machine
+					building = starbase_management_hive
+				}
+			}
+		}
+	}
+}

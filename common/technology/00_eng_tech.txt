@@ -2,7 +2,7 @@
 # Merge with STARNET AI 
 # Calvitix 3.3b Check OK, 21.01.2022
 #
-# Merge with NSC OK   19.09.2021
+# Merge with NSC OK   07.03.2022
 # Merge with STARNET AI OK  16.09.2021
 # Merge with Megacorp   19.09.2021
 
@@ -216,7 +216,7 @@ tech_battleships = {
 	area = engineering
 	tier = 4
 	category = { voidcraft }
-	prerequisites = { "tech_cruisers" }
+	prerequisites = { "tech_Battlecruiser_1" }  #NSC # ori : tech_cruisers
 	weight = @tier4weight1
 
 	## unlock battleships
@@ -285,7 +285,7 @@ tech_titans = {
 	area = engineering
 	tier = 5
 	category = { voidcraft }
-	prerequisites = { "tech_battleships" }
+	prerequisites = { "tech_Dreadnought_1" }  #NSC # ori : tech_battleships
 	weight = @tier5weight1
 	ai_update_type = military
 
@@ -313,7 +313,7 @@ tech_titans = {
 	weight_modifier = {
 		modifier = {
 			factor = 0.1
-			NOT = { years_passed > 120 }
+			NOT = { years_passed > 100 }
 		}
 		modifier = {
 			factor = 10
@@ -365,7 +365,7 @@ tech_juggernaut = {
 	area = engineering
 	category = { voidcraft }
 	tier = 5
-	prerequisites = { "tech_starbase_5" "tech_titans" }
+	prerequisites = { "tech_starbase_5" "tech_battleships" } #ori : tech_titans
 	weight = @tier5weight3
 	is_rare = yes
 
@@ -502,7 +502,7 @@ tech_corvette_hull_1 = {
 #STARNET NSC START
 		weight = 10 
 		modifier ={
-			factor = 0
+			factor = 0.1
 			or = {
 			has_technology = tech_energy_torpedoes_1
 			has_technology = tech_cruisers
@@ -1343,7 +1343,7 @@ tech_starbase_4 = {
 		}
 		modifier = {
 			factor = 1.25
-			has_tradition = tr_supremacy_adopt #mod ?
+			has_tradition = tr_unyielding_adopt
 		}
 		modifier = {
 			factor = value:tech_weight_likelihood
@@ -1441,7 +1441,7 @@ tech_starbase_5 = {
 		}
 		modifier = {
 			factor = 1.25
-			has_tradition = tr_supremacy_adopt
+			has_tradition = tr_unyielding_adopt
 		}
 		modifier = {
 			factor = value:tech_weight_likelihood
@@ -2064,7 +2064,7 @@ tech_ship_armor_3 = {
 	weight_modifier = {
 		factor = 1.25
 		modifier = {
-			factor = 1.25
+			factor = value:tech_weight_likelihood
 			research_leader = {
 				area = engineering
 				has_trait = "leader_trait_expertise_materials"
@@ -2788,8 +2788,8 @@ tech_mining_2 = {
 	}
 
 	ai_weight = {
+		factor = @ai_mining_factor
 #STARTNET START
-		weight = 50
 		modifier = {
 			factor = 200
 			has_technology = tech_energy_torpedoes_2
@@ -2830,8 +2830,8 @@ tech_mining_3 = {
 	}
 
 	ai_weight = {
+		factor = @ai_mining_factor
 #STARTNET START
-		weight = 50
 		factor = 25 #scaling factor
 		modifier = {
 			factor = 100

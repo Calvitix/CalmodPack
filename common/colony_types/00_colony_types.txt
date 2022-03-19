@@ -1,10 +1,10 @@
 # Original File
 #
-# Calvitix Check 3.3.1  23.02.2022
+# Calvitix Check 3.3.4  19.03.2022
 #
-# Merge with Planetary Diversity 23.02.2022
+# Merge with Planetary Diversity 26.02.2022
 # Merge with GPM 24.04.2021
-# Merge with STARNET AI   24.11.2021
+# Merge with STARNET AI   19.03.2022
 # Merge with Megacordp mod 21.05.2021
 #
 #root = planet
@@ -222,7 +222,7 @@ col_mining = {
 			num_free_districts = { type = district_hive value <= @small_planet_threshold }
 		}
 		modifier = {
-			add = 2
+			add = 3
 			num_free_districts = { type = district_mining value > @free_districts_medium_threshold }
 			num_free_districts = { type = district_farming value < @free_districts_low_threshold }
 			num_free_districts = { type = district_generator value < @free_districts_low_threshold }
@@ -253,6 +253,10 @@ col_mining = {
 				has_modifier = asteroid_impacts
 			}
 		}
+		#modifier = {
+		#	add = 5
+		#	num_districts = { type = district_mining value >= @built_districts_medium_threshold }
+		#}
 		modifier = {
 			# add = 5
 			add = 40
@@ -968,7 +972,7 @@ col_foundry = {
 		is_special_colony_type = no
 	}
 
-	custom_tooltip = col_foundry_custom #Ori3.3b
+	custom_tooltip = col_foundry_custom #Ori3.3.2
 	planet_modifier = {
 		planet_district_industrial_build_speed_mult = 0.25
 		planet_metallurgists_upkeep_mult = -0.20
@@ -1197,12 +1201,20 @@ col_foundry = {
 		}
 ###
 		modifier = {
-			add = 2
+			add = 2 #5
 			has_building = building_foundry_1
 		}
 		modifier = {
-			add = 4
+			add = 4 #10
 			has_building = building_foundry_2
+		}
+		modifier = {
+			add = 10
+			has_building = building_foundry_3
+		}
+		modifier = {
+			factor = 0
+			num_districts = { type = district_industrial value = 0 }
 		}
 		modifier = {
 			add = 2
@@ -1278,6 +1290,11 @@ col_foundry = {
 		}
 		}
 		modifier = {
+			factor = 0
+			has_designation = col_factory
+			str_industrial_switcher = no
+		}
+		modifier = {
 			add = 2
 			owner = {
 			resource_income_compare = {
@@ -1347,6 +1364,10 @@ col_factory = {
 ###
 		}
 		is_special_colony_type = no
+		OR = {
+			str_can_be_factory_pretrigger = yes
+			str_can_be_foundry_pretrigger = no
+		}
 	}
 
 	custom_tooltip = col_factory_custom #Ori3.3b
@@ -1592,6 +1613,10 @@ col_factory = {
 		modifier = {
 			add = 10
 			has_building = building_factory_3
+		}
+		modifier = {
+			factor = 0
+			num_districts = { type = district_industrial value = 0 }
 		}
 		modifier = {
 			add = 2
@@ -2038,7 +2063,7 @@ col_capital_hive = {
 		planet_stability_add = 5
 		planet_amenities_no_happiness_add = 10
 		planet_crime_no_happiness_add = -20
-		planet_jobs_produces_mult = 0.1
+		planet_jobs_productive_produces_mult = 0.1
 	}
 
 	weight_modifier = {
@@ -2063,7 +2088,7 @@ col_capital_machine = {
 		planet_stability_add = 5
 		planet_amenities_no_happiness_add = 10
 		planet_crime_no_happiness_add = -20
-		planet_jobs_produces_mult = 0.15
+		planet_jobs_productive_produces_mult = 0.15
 	}
 
 	weight_modifier = {
@@ -2208,9 +2233,7 @@ col_habitat_leisure = {
 			}
 		}
 		modifier = {
-			planet_culture_workers_produces_mult = 0.2
-			planet_priests_produces_mult = 0.2
-			planet_managers_produces_mult = 0.2
+			planet_administrators_produces_mult = 0.2
 		}
 	}
 	triggered_planet_modifier = {
@@ -4506,6 +4529,10 @@ col_bureau_spiritualist = {
 				num_districts = { type = district_arcology_religious value = 0 }
 			}
 		}
+		modifier = {
+			factor = 1.3
+			has_planet_flag = str_acceptable_habitability
+		}
 	}
 }
 
@@ -4571,6 +4598,10 @@ col_bureau_hive = {
 				num_buildings = { type = building_hive_cluster value = 0 }
 				num_buildings = { type = building_hive_confluence value = 0 }
 			}
+		}
+		modifier = {
+			factor = 1.3
+			has_planet_flag = str_acceptable_habitability
 		}
 	}
 }
@@ -4638,6 +4669,10 @@ col_bureau_machine = {
 				num_buildings = { type = building_system_conflux value = 0 }
 			}
 		}
+		#	modifier = {
+		#		factor = 1.3
+		#		has_planet_flag = str_acceptable_habitability
+		#	}
 	}
 }
 
@@ -4661,10 +4696,6 @@ col_habitat_bureau = {
 
 	weight_modifier = {
 		base = 10
-		#modifier = { #Ori3.3b removed
-		#	add = 5
-		#	owner = { empire_sprawl_over_cap > 40 }
-		#}
 		modifier = {
 			add = 5
 			has_designation = col_habitat_bureau
@@ -4935,10 +4966,9 @@ col_habitat_bureau_machine = {
 	}
 }
 
-
 # PD Complex Hive Planets
 col_pd_hive = {
-	icon = 1
+	icon = GFX_colony_type_urban
 
 	potential = {
 		OR = {
@@ -4963,14 +4993,12 @@ col_pd_hive = {
 		modifier = {
 			add = 1
 			num_free_districts = { type = district_bioforge_maintenance value < @free_districts_low_threshold }
-			num_free_districts = { type = district_pdhivefort_synapse value < @free_districts_low_threshold }
-			num_free_districts = { type = district_pdhive value >= @free_districts_medium_threshold }
+			num_free_districts = { type = district_hive value >= @free_districts_medium_threshold }
 		}
 		modifier = {
 			add = 3
 			num_free_districts = { type = district_bioforge_maintenance value < @free_districts_low_threshold }
-			num_free_districts = { type = district_pdhivefort_synapse value < @free_districts_low_threshold }
-			num_free_districts = { type = district_pdhive value >= @free_districts_high_threshold }
+			num_free_districts = { type = district_hive value >= @free_districts_medium_threshold }
 		}
 		modifier = {
 			add = 5
@@ -4983,10 +5011,9 @@ col_pd_hive = {
 	}
 }
 
-
 # PD Special Nexus Planet
 col_pd_nexus = {
-	icon = 1
+	icon = GFX_colony_type_urban
 
 	potential = {
 		OR = {
@@ -5010,14 +5037,14 @@ col_pd_nexus = {
 			num_free_districts = { type = district_mf_replicator value < @free_districts_low_threshold }
 			num_free_districts = { type = district_pdmachinefort_naval value < @free_districts_low_threshold }
 			num_free_districts = { type = district_pdmachinefort_synapse value < @free_districts_low_threshold }
-			num_free_districts = { type = district_pdnexus value >= @free_districts_medium_threshold }
+			num_free_districts = { type = district_nexus value >= @free_districts_medium_threshold }
 		}
 		modifier = {
 			add = 3
 			num_free_districts = { type = district_mf_replicator value < @free_districts_low_threshold }
 			num_free_districts = { type = district_pdmachinefort_naval value < @free_districts_low_threshold }
 			num_free_districts = { type = district_pdmachinefort_synapse value < @free_districts_low_threshold }
-			num_free_districts = { type = district_pdnexus value >= @free_districts_high_threshold }
+			num_free_districts = { type = district_nexus value >= @free_districts_high_threshold }
 		}
 		modifier = {
 			add = 5
@@ -5025,15 +5052,14 @@ col_pd_nexus = {
 		}
 		modifier = {
 			add = 5
-			num_districts = { type = district_pdnexus value >= @built_districts_high_threshold }
+			num_districts = { type = district_nexus value >= @built_districts_high_threshold }
 		}
 	}
 }
 
-
 # PD Fortress Planet
 col_pd_fortress = {
-	icon = 9
+	icon = GFX_colony_type_fortress
 
 	potential = {
 		is_planet_class = pc_milarc
@@ -5042,7 +5068,7 @@ col_pd_fortress = {
 	}
 	
 	planet_modifier = {
-		planet_jobs_productive_upkeep_mult = -0.05
+		planet_jobs_upkeep_mult = -0.05
 		planet_districts_cost_mult = -0.1
 	}
 
@@ -5075,5 +5101,24 @@ col_pd_fortress = {
 			add = 10
 			is_planet_class = pc_milarc
 		}
+	}
+}
+
+# Ecumenpolis Refinery
+col_ecu_refinery = {
+	icon = GFX_colony_type_refinery
+
+	potential = {
+		uses_district_set = city_world
+	}
+
+	planet_modifier = {
+		planet_refiners_produces_mult = 0.05
+		planet_translucers_produces_mult = 0.05
+		planet_chemists_produces_mult = 0.05
+	}
+
+	weight_modifier = {
+		base = 10
 	}
 }
