@@ -255,11 +255,12 @@ est_greed_2_negotiations = {
 	
 	option = {
 		name = "est_greed_2_negotiations_0"	
-		AI_weight = {
-		}		
 		policy_flags = {
 			est_greed_2_negotiations_0
 		}			
+		AI_weight = {
+			factor = 1 # AI otherwise risks screwing itself over
+		}		
 	}
 	
 	option = {
@@ -270,7 +271,9 @@ est_greed_2_negotiations = {
 		modifier = {
 			country_trade_attractiveness = 0.05
 		}		
-		AI_weight = { }			
+		AI_weight = { 
+			factor = 0
+		}			
 	}
 	
 	option = {
@@ -281,7 +284,9 @@ est_greed_2_negotiations = {
 		modifier = {
 			country_trade_attractiveness = 0.10
 		}		
-		AI_weight = { }	
+		AI_weight = { 
+			factor = 0
+		}	
 	}
 	
 	option = {
@@ -292,7 +297,9 @@ est_greed_2_negotiations = {
 		modifier = {
 			country_trade_attractiveness = 0.15
 		}			
-		AI_weight = { }	
+		AI_weight = { 
+			factor = 0
+		}	
 	}
 }
 
@@ -305,11 +312,12 @@ est_greed_4_extortion = {
 	
 	option = {
 		name = "est_greed_4_extortion_0"	
-		AI_weight = {
-		}		
 		policy_flags = {
 			est_greed_4_extortion_0
 		}			
+		AI_weight = {
+			factor = 1 # AI otherwise risks screwing itself over
+		}		
 	}
 	
 	option = {
@@ -319,9 +327,11 @@ est_greed_4_extortion = {
 		}		
 		modifier = {
 			country_energy_produces_mult = 0.15
-			biological_pop_happiness = -0.10
+			biological_pop_happiness = -0.05
 		}		
-		AI_weight = { }			
+		AI_weight = { 
+			factor = 0
+		}			
 	}
 	
 	option = {
@@ -331,9 +341,11 @@ est_greed_4_extortion = {
 		}		
 		modifier = {
 			country_energy_produces_mult = 0.30
-			biological_pop_happiness = -0.20
+			biological_pop_happiness = -0.10
 		}		
-		AI_weight = { }			
+		AI_weight = { 
+			factor = 0
+		}			
 	}
 	
 	option = {
@@ -343,9 +355,11 @@ est_greed_4_extortion = {
 		}		
 		modifier = {
 			country_energy_produces_mult = 0.45
-			biological_pop_happiness = -0.30
+			biological_pop_happiness = -0.20
 		}		
-		AI_weight = { }			
+		AI_weight = { 
+			factor = 0
+		}			
 	}
 }
 
@@ -394,7 +408,16 @@ est_subminds_3 = {
 				}
 			}
 		}	
-		AI_weight = { }		
+		AI_weight = { 
+			modifier = {
+				factor = 1
+				has_deficit = energy
+			}
+			modifier = {
+				factor = 0
+				NOT = { has_deficit = energy }
+			}
+		}		
 	}
 	
 	option = {
@@ -431,7 +454,16 @@ est_subminds_3 = {
 				}
 			}
 		}	
-		AI_weight = { }		
+		AI_weight = {
+			modifier = {
+				factor = 1
+				has_deficit = food
+			}
+			modifier = {
+				factor = 0
+				NOT = { has_deficit = food }
+			}
+		}		
 	}
 	
 	option = {
@@ -468,7 +500,16 @@ est_subminds_3 = {
 				}
 			}
 		}	
-		AI_weight = { }		
+		AI_weight = {
+			modifier = {
+				factor = 1
+				has_deficit = minerals
+			}
+			modifier = {
+				factor = 0
+				NOT = { has_deficit = minerals }
+			}
+		}		
 	}
 	
 	option = {
@@ -505,7 +546,26 @@ est_subminds_3 = {
 				}
 			}
 		}	
-		AI_weight = { }		
+		AI_weight = {
+			modifier = {
+				factor = 1
+				NOT = {
+					OR = {
+						has_deficit = minerals
+						has_deficit = food
+						has_deficit = energy
+					}
+				}
+			}
+			modifier = {
+				factor = 0
+				OR = {
+					has_deficit = minerals
+					has_deficit = food
+					has_deficit = energy
+				}
+			}
+		}		
 	}
 	
 	option = {
@@ -542,7 +602,26 @@ est_subminds_3 = {
 				}
 			}
 		}	
-		AI_weight = { }		
+		AI_weight = {
+			modifier = {
+				factor = 1
+				NOT = {
+					OR = {
+						has_deficit = minerals
+						has_deficit = food
+						has_deficit = energy
+					}
+				}
+			}
+			modifier = {
+				factor = 0
+				OR = {
+					has_deficit = minerals
+					has_deficit = food
+					has_deficit = energy
+				}
+			}
+		}		
 	}
 }
 
@@ -781,6 +860,8 @@ est_piracy_2_raiding = {
 	potential = {
 		has_tradition = tr_est_piracy_2
 	}
+	# AI can try light raiding, but no more
+	# might change to allow criminal corps and purifiers to go higher
 	
 	option = {
 		name = "est_piracy_2_raiding_0"			
@@ -788,6 +869,7 @@ est_piracy_2_raiding = {
 			est_piracy_2_raiding_0
 		}	
 		AI_weight = {
+			factor = 0.5
 		}
 	}
 	
@@ -800,6 +882,7 @@ est_piracy_2_raiding = {
 			trade_value_mult = 0.10
 		}		
 		AI_weight = {
+			factor = 0.5
 		}
 	}
 	
@@ -812,6 +895,7 @@ est_piracy_2_raiding = {
 			trade_value_mult = 0.20
 		}		
 		AI_weight = {
+			factor = 0
 		}
 	}
 	
@@ -824,6 +908,7 @@ est_piracy_2_raiding = {
 			trade_value_mult = 0.30
 		}		
 		AI_weight = {
+			factor = 0
 		}
 	}
 }

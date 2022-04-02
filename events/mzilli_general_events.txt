@@ -10,12 +10,22 @@ event = {
 	is_triggered_only = yes
 	
 	immediate = {
+		# Multiplanetary Primitives
+		every_country = {
+			limit = { has_country_flag = multiplanetary_primitives }
+			set_name = random
+			set_name = "[This.GetRealName] of [This.Capital.GetName]"
+		}
 		# Binary planets
 		every_galaxy_planet = {
 			limit = {
 				has_moon = yes
 				num_moons = 1
-				NOT = { any_moon = { is_planet_class = pc_habitat } }
+				NOR = {
+					any_moon = { is_planet_class = pc_habitat }
+					is_planet_class = pc_t_planet
+					has_modifier = tidal_locked
+				}
 				OR = {
 					NOR = {
 						is_star = yes
@@ -894,11 +904,19 @@ ship_event = {
 					species_portrait = pla8
 				}
 			}
-			solar_system = { NOT = { has_star_flag = old_foes_system } }
+			solar_system = {
+				NOR = {
+					has_star_flag = old_foes_system
+					has_star_flag = suppress_archaeological_sites 
+				}
+			}
 			NOR = {
 				is_artificial = yes
 				has_modifier = dead_god_planet_hidden
 				has_modifier = dead_god_planet
+				is_planet_class = pc_subterranean_wet
+				is_planet_class = pc_subterranean_dry
+				is_planet_class = pc_subterranean_cold
 			}
 		}
 	}
@@ -992,5 +1010,66 @@ event = {
 			remove_star_flag = storm_system
 			remove_modifier = space_storm
 		}
+	}
+}
+
+### Checks if any starbases have a Subspace Deccelerator
+event = {
+	id = mzilli_general_events.13
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		any_country = {
+			is_country_type = default
+			has_technology = tech_mzilli_black_domain
+		}
+		any_system = {
+			exists = starbase
+			starbase = { has_starbase_building = mzilli_black_domain_building }
+		}
+	}
+	
+	immediate = {
+		every_system = {
+			limit = {
+				exists = starbase
+				starbase = { has_starbase_building = mzilli_black_domain_building }
+			}
+			starbase = { starbase_event = { id = mzilli_general_events.14 } }
+		}
+	}
+}
+
+### Activate Subspace Deccelerator?
+starbase_event = {
+	id = mzilli_general_events.14
+	title = mzilli_general_events.14.name
+	desc = mzilli_general_events.14.desc
+	picture = GFX_evt_surreal_visions
+	show_sound = event_mystic_reveal
+	is_triggered_only = yes
+	location = ROOT.solar_system
+
+	immediate = { remove_starbase_building = { building = mzilli_black_domain_building } }
+
+	option = {
+		name = story.219.a
+		solar_system = {
+			add_modifier = { modifier = mzilli_black_domain_mod }
+			if = {
+				limit = { NOT = { is_inside_nebula = yes } }
+				create_nebula = {
+					name = "[This.GetName] Lightspeed Veil"
+					radius = 1
+				}
+			}
+			hidden_effect = { create_nebula_1 = yes }
+		}
+		custom_tooltip = mzilli_general_events.14.tooltip
+	}
+	option = {
+		name = anomaly.76.a
+		custom_tooltip = mzilli_general_events.14.tooltip
 	}
 }

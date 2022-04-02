@@ -30,22 +30,15 @@ MZILLI_SUPERVOLCANO = {
 		modifier = {
 			add = 100
 			FROM = { owner = { NOT = { is_ai = yes } } }
-			OR = {
-				is_planet_class = pc_continental
-				is_planet_class = pc_tropical
-				is_planet_class = pc_ocean
-				is_planet_class = pc_arctic
-				is_planet_class = pc_alpine
-				is_planet_class = pc_tundra
-				is_planet_class = pc_arid
-				is_planet_class = pc_desert
-				is_planet_class = pc_savannah
-				is_planet_class = pc_gaia
-				is_planet_class = pc_relic
-			}
+			is_colonizable = yes
 			NOR = {
 				exists = owner
 				has_planet_flag = prescripted_ideal
+				is_artificial = yes
+				is_planet_class = pc_nuked
+				is_planet_class = pc_machine
+				is_planet_class = pc_hive
+				is_planet_class = pc_bespin
 				has_modifier = bleak_planet
 				has_modifier = holy_planet
 			}
@@ -62,7 +55,7 @@ MZILLI_SUPERVOLCANO = {
 	on_spawn = {
 		save_global_event_target_as = supervolcano_planet
 		set_planet_flag = colony_event
-		add_modifier = { modifier = mzilli_supervolcano_1 days = -1 }
+		add_modifier = { modifier = mzilli_supervolcano_1 }
 	}
 	on_success = mzilli_anomaly_events.2
 }
@@ -114,20 +107,18 @@ MZILLI_REVERSE_AGING = {
 	spawn_chance = {
 		modifier = {
 			add = 1
-			planet_size > 9
-			planet_size < 26
+			planet_size > 12
+			planet_size < 31
 			has_deposit = no
 			OR = {
 				is_planet_class = pc_barren
 				is_planet_class = pc_barren_cold
 				is_planet_class = pc_toxic
 			}
-			solar_system = {
 				NOR = {
-					is_star_class = sc_black_hole
-					is_star_class = sc_pulsar
-					is_star_class = sc_neutron_star
-				}
+				orbit = { is_planet_class = pc_black_hole }
+				orbit = { orbit = { is_planet_class = pc_black_hole } }
+				solar_system = { is_star_class = sc_black_hole }
 			}
 		}
 	}
@@ -281,6 +272,7 @@ MZILLI_RETROGRADE_ORBIT = {
 				is_artificial = yes
 				is_planet_class = pc_gas_giant
 				is_planet_class = pc_ice_giant
+				is_planet_class = pc_t_planet
 				is_planet_class = pc_bespin
 			}
 			OR = {
@@ -291,6 +283,7 @@ MZILLI_RETROGRADE_ORBIT = {
 							OR = {
 								is_planet_class = pc_gas_giant
 								is_planet_class = pc_ice_giant
+								is_planet_class = pc_t_planet
 								is_planet_class = pc_bespin
 							}
 						}
@@ -304,6 +297,7 @@ MZILLI_RETROGRADE_ORBIT = {
 							OR = {
 								is_planet_class = pc_gas_giant
 								is_planet_class = pc_ice_giant
+								is_planet_class = pc_t_planet
 								is_planet_class = pc_bespin
 							}
 						}
@@ -314,10 +308,7 @@ MZILLI_RETROGRADE_ORBIT = {
 	}
 
 	on_spawn = {
-		add_modifier = {
-			modifier = "mzilli_events_retrograde_orbit"
-			days = -1
-		}
+		add_modifier = { modifier = "mzilli_events_retrograde_orbit" }
 		if = {
 			limit = { exists = orbit }
 			orbit = {
@@ -326,6 +317,7 @@ MZILLI_RETROGRADE_ORBIT = {
 						OR = {
 							is_planet_class = pc_gas_giant
 							is_planet_class = pc_ice_giant
+							is_planet_class = pc_t_planet
 							is_planet_class = pc_bespin
 						}
 					}
@@ -341,6 +333,7 @@ MZILLI_RETROGRADE_ORBIT = {
 						OR = {
 							is_planet_class = pc_gas_giant
 							is_planet_class = pc_ice_giant
+							is_planet_class = pc_t_planet
 							is_planet_class = pc_bespin
 						}
 					}
@@ -395,7 +388,12 @@ MZILLI_TOXIC_OCEAN = {
 		}
 	}
 
-	on_spawn = { set_planet_entity = { entity = "ocean_planet_sea_of_conciousness_entity" } }
+	on_spawn = {
+		set_planet_entity = {
+			entity = "ocean_planet_sea_of_conciousness_entity"
+			picture = pc_shrouded
+		}
+	}
 	on_success = mzilli_anomaly_events.26
 }
 
@@ -425,10 +423,7 @@ MZILLI_CELESTIAL_PEAKS = {
 	on_spawn = {
 		if = {
 			limit = { NOT = { has_modifier = low_gravity } }
-			add_modifier = {
-				modifier = low_gravity
-				days = -1
-			}
+			add_modifier = { modifier = low_gravity }
 		}
 	}
 	on_success = mzilli_anomaly_events.27
@@ -536,7 +531,6 @@ MZILLI_DECAYING_MOON = {
 		}
 		modifier = {
 			factor = 3
-			exists = orbit
 			orbit = {
 				exists = owner
 				owner = { is_country_type = primitive }
@@ -554,16 +548,10 @@ MZILLI_DECAYING_MOON = {
 
 	on_spawn = {
 		solar_system = { set_star_flag = decaying_moon }
-		add_modifier = {
-			modifier = mzilli_decaying_moon_1
-			days = -1
-		}
+		add_modifier = { modifier = mzilli_decaying_moon_1 }
 		if = {
 			limit = { NOT = { has_modifier = unstable_tectonics } }
-			add_modifier = {
-				modifier = unstable_tectonics
-				days = -1
-			}
+			add_modifier = { modifier = unstable_tectonics }
 		}
 		orbit = {
 			prevent_anomaly = yes
@@ -572,13 +560,11 @@ MZILLI_DECAYING_MOON = {
 					NOR = {
 						is_planet_class = pc_gas_giant
 						is_planet_class = pc_ice_giant
+						is_planet_class = pc_t_planet
 						is_planet_class = pc_bespin
 					}
 				}
-				add_modifier = {
-					modifier = mzilli_decaying_moon_planet_1
-					days = -1
-				}
+				add_modifier = { modifier = mzilli_decaying_moon_planet_1 }
 				if = {
 					limit = {
 						NOR = {
@@ -622,20 +608,7 @@ MZILLI_BINARY_SUNSET = {
 		modifier = {
 			add = 40
 			from = { owner = { NOT = { has_ethic = ethic_gestalt_consciousness } } }
-			OR = { 
-				is_planet_class = pc_continental
-				is_planet_class = pc_tropical
-				is_planet_class = pc_ocean
-				is_planet_class = pc_arid
-				is_planet_class = pc_desert
-				is_planet_class = pc_savannah
-				is_planet_class = pc_arctic
-				is_planet_class = pc_alpine
-				is_planet_class = pc_tundra
-				is_planet_class = pc_gaia
-				is_planet_class = pc_nuked
-				is_planet_class = pc_relic
-			}
+			is_colonizable = yes
 			OR = {
 				has_planet_flag = ab_planet
 				has_planet_flag = abc_planet
@@ -736,15 +709,13 @@ MZILLI_YOUNG_STAR = {
 	}
 
 	on_spawn = {
-		add_modifier = {
-			modifier = mzilli_t_tauri_star
-			days = -1
-		}
+		add_modifier = { modifier = mzilli_t_tauri_star }
 		if = {
 			limit = { has_deposit_for = shipclass_mining_station }
 			clear_deposits = yes
 		}
 		solar_system = {
+			set_star_flag = suppress_archaeological_sites
 			every_system_planet = {
 				limit = { NOT = { has_anomaly = yes } }
 				prevent_anomaly = yes
@@ -770,8 +741,7 @@ MZILLI_CUTE_PLANET = {
 				exists = owner
 				is_planet_class = pc_nuked
 				is_planet_class = pc_relic
-				is_planet_class = pc_ringworld_habitable
-				is_planet_class = pc_habitat
+				is_artificial = yes
 				is_planet_class = pc_bespin
 			}
 			from = {
@@ -802,16 +772,15 @@ MZILLI_RINGED_MOON = {
 			add = 10
 			is_moon = yes
 			is_colonizable = yes
-			exists = orbit
 			orbit = { NOT = { has_ring = yes } }
 		}
 		modifier = {
 			factor = 3
-			exists = orbit
 			orbit = {
 				OR = {
 					is_planet_class = pc_gas_giant
 					is_planet_class = pc_ice_giant
+					is_planet_class = pc_t_planet
 					is_planet_class = pc_bespin
 				}
 			}
@@ -840,10 +809,7 @@ MZILLI_ROCKY_SNOWBALL = {
 	on_spawn = {
 		if = {
 			limit = { NOT = { has_modifier = high_gravity } }
-			add_modifier = {
-				modifier = high_gravity
-				days = -1
-			}
+			add_modifier = { modifier = high_gravity }
 		}
 	}
 	on_success = mzilli_anomaly_events.45
@@ -859,17 +825,15 @@ MZILLI_GREENHOUSE_EFFECT = {
 	spawn_chance = {
 		modifier = {
 			add = 30
-			OR = {
-				is_planet_class = pc_barren
-				is_planet_class = pc_relic
-				is_planet_class = pc_nuked
-			}
+			is_planet_class = pc_toxic
 			planet_size > 13
 			planet_size < 26
 			NOR = {
 				has_deposit = yes
 				has_modifier = terraforming_candidate
+				has_modifier = mzilli_paraterraforming_candidate
 				has_planet_flag = machine_world_1
+				has_planet_flag = machine_world_4
 				has_planet_flag = utopian_planet
 				#solar_system = { any_system_planet = { has_modifier = mzilli_t_tauri_star } }
 			}
@@ -879,6 +843,7 @@ MZILLI_GREENHOUSE_EFFECT = {
 					is_star_class = sc_neutron_star
 					is_star_class = sc_pulsar
 					is_star_class = sc_t
+					is_star_class = sc_l
 					is_star_class = sc_d
 				}
 				OR = {
@@ -896,6 +861,7 @@ MZILLI_GREENHOUSE_EFFECT = {
 						}
 						NOR = {
 							is_planet_class = pc_t_star
+							is_planet_class = pc_l_star
 							is_planet_class = pc_d_star
 							is_planet_class = pc_neutron_star
 							is_planet_class = pc_pulsar
@@ -908,10 +874,7 @@ MZILLI_GREENHOUSE_EFFECT = {
 	}
 
 	on_spawn = {
-		add_modifier = {
-			modifier = mzilli_greenhouse_effect
-			days = -1
-		}
+		add_modifier = { modifier = mzilli_greenhouse_effect }
 		set_planet_flag = greenhouse_planet
 		solar_system = {
 			if = {
@@ -1043,13 +1006,11 @@ MZILLI_CROOKED = {
 				}
 			}
 			if = {
-				limit = { has_ring = no }
-				set_planet_entity = { entity = "gas_giant_mzilli_tilted_entity" }
-			}
-			else = {
-				set_ring = no
+				limit = { has_ring = yes }
 				set_planet_entity = { entity = "gas_giant_mzilli_tilted_ringed_entity" }
+				set_ring = no
 			}
+			else = { set_planet_entity = { entity = "gas_giant_mzilli_tilted_entity" } }
 		}
 		else = {
 			set_ring = no
@@ -1102,7 +1063,7 @@ MZILLI_CROOKED = {
 				set_planet_entity = { entity = "nuked_planet_mzilli_tilted_entity" }
 			}
 		}
-		add_modifier = { modifier = mzilli_crooked_planet days = -1 }
+		add_modifier = { modifier = mzilli_crooked_planet }
 		if = {
 			limit = { NOT = { any_galaxy_planet = { has_planet_flag = planet_uranus } } }
 			random_galaxy_planet = {
@@ -1120,7 +1081,7 @@ MZILLI_CROOKED = {
 				set_planet_flag = planet_uranus
 				if = {
 					limit = { NOT = { has_modifier = mzilli_crooked_planet } }
-					add_modifier = { modifier = mzilli_crooked_planet days = -1 }
+					add_modifier = { modifier = mzilli_crooked_planet }
 				}
 				set_planet_entity = { entity = "gas_giant_uranus_entity" }
 			}
@@ -1147,7 +1108,7 @@ MZILLI_SUPERNOVA_REMNANT = {
 			FROM = { owner = { NOT = { has_ethic = ethic_gestalt_consciousness } } }
 			solar_system = {
 				NOR = {
-					#is_star_class = sc_binary_cygnus_x1
+					is_star_class = sc_binary_cygnus_x1
 					has_star_flag = sagittarius_a
 					has_star_flag = mzilli_supernova_system
 					has_star_flag = lgate
@@ -1323,6 +1284,7 @@ MZILLI_TIDALLY_LOCKED = {
 				is_planet_class = pc_city
 				is_planet_class = pc_machine
 				is_planet_class = pc_bespin
+				has_planet_flag = mzilli_binary_planet
 			}
 			solar_system = {
 				OR = {
@@ -1349,9 +1311,14 @@ MZILLI_TIDALLY_LOCKED = {
 			factor = 3
 			OR = {
 				solar_system = { is_star_class = sc_m }
+				solar_system = { is_star_class = sc_l }
 				AND = {
 					exists = orbit
 					orbit = { is_planet_class = pc_m_star }
+				}
+				AND = {
+					exists = orbit
+					orbit = { is_planet_class = pc_l_star }
 				}
 			}
 		}
@@ -1366,10 +1333,7 @@ MZILLI_TIDALLY_LOCKED = {
 					is_planet_class = pc_tidallylocked
 				}
 			}
-			add_modifier = {
-				modifier = tidal_locked
-				days = -1
-			}
+			add_modifier = { modifier = tidal_locked }
 		}
 		if = {
 			limit = { exists = orbit }
@@ -1454,10 +1418,7 @@ MZILLI_LOW_GRAVITY = {
 	on_spawn = {
 		if = {
 			limit = { NOT = { has_modifier = low_gravity } }
-			add_modifier = {
-				modifier = low_gravity
-				days = -1
-			}
+			add_modifier = { modifier = low_gravity }
 		}
 	}
 	on_success = mzilli_anomaly_events.59
@@ -1537,10 +1498,7 @@ MZILLI_SICK_PLANTS = {
 	on_spawn = {
 		if = {
 			limit = { NOT = { has_modifier = bleak_planet } }
-			add_modifier = {
-				modifier = bleak_planet
-				days = -1
-			}
+			add_modifier = { modifier = bleak_planet }
 		}
 		set_planet_flag = sick_plants
 		if = {
@@ -1671,6 +1629,7 @@ MZILLI_EGG_PLANET = {
 			OR = {
 				is_planet_class = pc_gas_giant
 				is_planet_class = pc_ice_giant
+				is_planet_class = pc_t_planet
 			}
 			solar_system = { NOT = { has_star_flag = sol } }
 		}
@@ -1678,10 +1637,7 @@ MZILLI_EGG_PLANET = {
 	on_spawn = {
 		if = {
 			limit = { NOT = { has_modifier = strong_magnetic_field } }
-			add_modifier = {
-				modifier = strong_magnetic_field
-				days = -1
-			}
+			add_modifier = { modifier = strong_magnetic_field }
 		}
 	}
 	on_success = mzilli_anomaly_events.63
@@ -1839,7 +1795,6 @@ MZILLI_ROGUE_PLANET = {
 					is_star_class = sc_black_hole
 					is_star_class = sc_neutron_star
 					is_star_class = sc_pulsar
-					is_star_class = sc_t
 					is_star_class = sc_o
 					any_system_planet = { is_colonizable = yes }
 					any_system_planet = { exists = owner }
@@ -1878,16 +1833,12 @@ MZILLI_DEXTRO_PLANET = {
 				is_planet_class = pc_dormant_cold
 				is_planet_class = pc_dormant_toxic
 				is_planet_class = pc_dormant_frozen
+				is_planet_class = pc_dormant_molten
 			}
 		}
 	}
 
-	on_spawn = {
-		add_modifier = {
-			modifier = "mzilli_dextro_protein"
-			days = -1
-		}
-	}
+	on_spawn = { add_modifier = { modifier = "mzilli_dextro_protein" } }
 	on_success = mzilli_anomaly_events.71
 }
 
@@ -1930,6 +1881,7 @@ MZILLI_DAMAGED_RAILGUN = {
 				is_planet_class = pc_neutron_star
 				is_planet_class = pc_pulsar
 				is_planet_class = pc_t_star
+				is_planet_class = pc_l_star
 				is_planet_class = pc_d_star
 			}
 		}
@@ -1956,6 +1908,10 @@ MZILLI_POST_APOCALYPSE = {
 				solar_system = { has_star_flag = planet_with_too_many_moons_system }
 			}
 		}
+		modifier = {
+			factor = 3
+			is_moon = yes
+		}
 	}
 
 	on_success = mzilli_anomaly_events.74
@@ -1971,11 +1927,7 @@ MZILLI_RED_GIANT_PLANET = {
 	spawn_chance = {
 		modifier = {
 			add = 100
-			OR = {
-				is_planet_class = pc_arid
-				is_planet_class = pc_desert
-				is_planet_class = pc_savannah
-			}
+			is_dry = yes
 			solar_system = {
 				OR = {
 					is_star_class = sc_m_giant
@@ -2091,17 +2043,11 @@ MZILLI_HIGH_GRAVITY = {
 	on_spawn = {
 		if = {
 			limit = { NOT = { has_modifier = high_gravity } }
-			add_modifier = {
-				modifier = high_gravity
-				days = -1
-			}
+			add_modifier = { modifier = high_gravity }
 		}
 		if = {
 			limit = { NOT = { has_modifier = mineral_poor } }
-			add_modifier = {
-				modifier = mineral_poor
-				days = -1
-			}
+			add_modifier = { modifier = mineral_poor }
 		}
 	}
 	on_success = mzilli_anomaly_events.78
@@ -2195,15 +2141,9 @@ MZILLI_VEILED_PLANET = {
 		}
 		if = {
 			limit = { NOT = { has_modifier = hazardous_weather } }
-			add_modifier = {
-				modifier = hazardous_weather
-				days = -1
-			}
+			add_modifier = { modifier = hazardous_weather }
 		}
-		add_modifier = {
-			modifier = mzilli_veiled
-			days = -1
-		}
+		add_modifier = { modifier = mzilli_veiled }
 		if = {
 			limit = { is_planet_class = pc_ocean }
 			set_planet_entity = { entity = "ocean_planet_veiled_entity" }
@@ -2225,6 +2165,7 @@ MZILLI_STARCHIP = {
 			OR = {
 				is_planet_class = pc_gas_giant
 				is_planet_class = pc_ice_giant
+				is_planet_class = pc_t_planet
 				is_planet_class = pc_bespin
 				is_planet_class = pc_t_star
 			}
@@ -2281,6 +2222,7 @@ MZILLI_BIG_MOON = {
 				NOR = {
 					is_planet_class = pc_gas_giant
 					is_planet_class = pc_ice_giant
+					is_planet_class = pc_t_planet
 					is_planet_class = pc_bespin
 				}
 			}
@@ -2321,17 +2263,11 @@ MZILLI_BIG_MOON = {
 	on_spawn = {
 		if = {
 			limit = { NOT = { has_modifier = low_gravity } }
-			add_modifier = {
-				modifier = low_gravity
-				days = -1
-			}
+			add_modifier = { modifier = low_gravity }
 		}
 		if = {
 			limit = { NOT = { has_modifier = mineral_poor } }
-			add_modifier = {
-				modifier = mineral_poor
-				days = -1
-			}
+			add_modifier = { modifier = mineral_poor }
 		}
 	}
 
@@ -2368,17 +2304,11 @@ MZILLI_UNSTABLE_TECTONICS = {
 	on_spawn = {
 		if = {
 			limit = { NOT = { has_modifier = unstable_tectonics } }
-			add_modifier = {
-				modifier = unstable_tectonics
-				days = -1
-			}
+			add_modifier = { modifier = unstable_tectonics }
 		}
 		if = {
 			limit = { NOT = { has_modifier = ultra_rich } }
-			add_modifier = {
-				modifier = ultra_rich
-				days = -1
-			}
+			add_modifier = { modifier = ultra_rich }
 		}
 	}
 
@@ -2407,11 +2337,64 @@ MZILLI_OLD_STAR = {
 		}
 	}
 
-	on_spawn = {
-		add_modifier = {
-			modifier = mzilli_ancient_star
-			days = -1
+	on_spawn = { add_modifier = { modifier = mzilli_ancient_star } }
+	on_success = mzilli_anomaly_events.86
+}
+
+MZILLI_BLACK_DOMAIN = {
+	desc = "MZILLI_BLACK_DOMAIN_DESC"
+	picture = "GFX_evt_black_hole"
+	level = 7
+
+	spawn_chance = {
+		modifier = {
+			add = 5
+			is_planet_class = pc_black_hole
+			NOT = { exists = archaeological_site }
+			solar_system = {
+				is_star_class = sc_black_hole
+				NOR = {
+					any_system_planet = { NOT = { is_primary_star = yes } }
+					has_star_flag = lgate
+					has_any_megastructure = yes
+				}
+			}
 		}
 	}
-	on_success = mzilli_anomaly_events.86
+
+	on_spawn = {
+		solar_system = { set_star_flag = suppress_archaeological_sites }
+		if = {
+			limit = { has_global_flag = mzilli_black_holes }
+			set_planet_entity = { entity = "black_hole_02_entity" }
+		}
+	}
+
+	on_success = mzilli_anomaly_events.87
+}
+
+MZILLI_NEUTRON_TO_BLACK_HOLE = {
+	desc = "MZILLI_NEUTRON_TO_BLACK_HOLE_DESC"
+	picture = "GFX_evt_star_pulsar"
+	level = 8
+
+	max_once = yes
+	
+	spawn_chance = {
+		modifier = {
+			add = 1
+			is_star = yes
+			solar_system = {
+				OR = {
+					is_star_class = sc_neutron_star
+					is_star_class = sc_pulsar
+				}
+				NOR = {
+					any_system_planet = { is_colonizable = yes }
+					any_system_planet = { exists = owner }
+				}
+			}
+		}
+	}
+	on_success = mzilli_anomaly_events.89
 }

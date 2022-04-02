@@ -1,6 +1,6 @@
 # Vassals Expanded and Reworked mod
 #
-# last update 25.02.2022
+# last update 30.03.2022
 #
 #
 namespace = ver
@@ -561,7 +561,7 @@ country_event = {
 		trigger = {
 			has_global_flag = gf_regentmaker_active
 			has_ascension_perk = ap_decentralization
-			event_target:chosen_subject = { NOT = { has_authority = auth_machine_intelligence } }
+			from = { NOT = { has_authority = auth_machine_intelligence } }
 			OR = {
 				has_valid_civic = civic_feudal_realm
 				is_egalitarian = yes
@@ -579,7 +579,7 @@ country_event = {
 			}
 		}
 		hidden_effect = {
-			event_target:chosen_subject = {
+			from = {
 				set_subject_of = {
 					who = ROOT
 					subject_type = member_state
@@ -619,10 +619,10 @@ country_event = {
 		trigger = {
 			has_global_flag = lrsk_government_variety_pack_mod_active
 			has_valid_civic = lrsk_gov_var_civic_imperial_economy
-			event_target:chosen_subject = { NOT = { has_authority = auth_machine_intelligence } }
+			from = { NOT = { has_authority = auth_machine_intelligence } }
 		}
 		hidden_effect = {
-			event_target:chosen_subject = {
+			from = {
 				set_subject_of = {
 					who = ROOT
 					subject_type = lrsk_gvp_vassal_foundry
@@ -641,10 +641,10 @@ country_event = {
 		trigger = {
 			has_global_flag = lrsk_government_variety_pack_mod_active
 			has_valid_civic = lrsk_gov_var_civic_imperial_economy
-			event_target:chosen_subject = { NOT = { has_authority = auth_machine_intelligence } }
+			from = { NOT = { has_authority = auth_machine_intelligence } }
 		}
 		hidden_effect = {
-			event_target:chosen_subject = {
+			from = {
 				set_subject_of = {
 					who = ROOT
 					subject_type = lrsk_gvp_vassal_market
@@ -663,10 +663,10 @@ country_event = {
 		trigger = {
 			has_global_flag = lrsk_government_variety_pack_mod_active
 			has_valid_civic = lrsk_gov_var_civic_imperial_economy
-			event_target:chosen_subject = { NOT = { has_authority = auth_machine_intelligence } }
+			from = { NOT = { has_authority = auth_machine_intelligence } }
 		}
 		hidden_effect = {
-			event_target:chosen_subject = {
+			from = {
 				set_subject_of = {
 					who = ROOT
 					subject_type = lrsk_gvp_vassal_trophy
@@ -685,10 +685,10 @@ country_event = {
 		trigger = {
 			has_global_flag = lrsk_government_variety_pack_mod_active
 			has_valid_civic = lrsk_gov_var_civic_imperial_economy
-			event_target:chosen_subject = { NOT = { has_authority = auth_machine_intelligence } }
+			from = { NOT = { has_authority = auth_machine_intelligence } }
 		}
 		hidden_effect = {
-			event_target:chosen_subject = {
+			from = {
 				set_subject_of = {
 					who = ROOT
 					subject_type = lrsk_gvp_vassal_prospector
@@ -728,6 +728,23 @@ country_event = {
 					subject_type = vervassal
 				}
 			}
+		}
+	}
+
+	# Leave as they are
+	option = {
+		name = as_they_are
+		trigger = {
+			from = {
+				NOR = {
+					is_subject_type = vassal
+					is_subject_type = tributary
+				}
+			}
+		}
+
+		hidden_effect = {
+			log = "ver.100: Leaving [Root.GetName] as they were"
 		}
 	}
 }
@@ -1016,6 +1033,20 @@ country_event = {
 					subject_type = versubsidiary
 				}
 			}
+		}
+	}
+
+	# Leave as they are
+	option = {
+		name = as_they_are
+		trigger = {
+			from = {
+				NOT = { is_subject_type = subsidiary }
+			}
+		}
+
+		hidden_effect = {
+			log = "ver.100: Leaving [Root.GetName] as they were"
 		}
 	}
 }

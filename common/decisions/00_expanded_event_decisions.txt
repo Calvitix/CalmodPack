@@ -90,8 +90,8 @@ decision_restore_climate_systems = {
 	resources = {
 		category = decisions
 		cost = {
-			unity = 500
 			energy = 5000
+			unity = 1000
 		}
 	}
 	
@@ -401,6 +401,7 @@ decision_friendly_wildlife = {
 		category = decisions
 		cost = {
 			food = 2000
+			unity = 1000
 		}
 	}
 
@@ -441,6 +442,55 @@ decision_friendly_wildlife = {
 			factor = 0
 			exists = owner
 			owner = { has_origin = origin_natural_hunters }
+		}
+	}
+}
+
+decision_cloned_wildlife = {
+	owned_planets_only = yes
+	sound = event_administrative_work
+	icon = decision_animal_wildlife
+	
+	enactment_time = 180
+
+	resources = {
+		category = decisions
+		cost = {
+			food = 1000
+			unity = 500
+		}
+	}
+
+	potential = {
+		can_have_habitable_deposits = yes
+		owner = {
+			has_country_flag = unlock_cloned_wildlife_decision
+		}
+	}
+	
+	allow = {
+		NOT = { has_deposit = d_alien_pets_deposit }
+	}
+
+	effect = {
+		hidden_effect = {
+			owner = { remove_country_flag = unlock_cloned_wildlife_decision }
+		}
+		add_deposit = d_alien_pets_deposit
+		custom_tooltip = decision_cloned_wildlife_effects
+		hidden_effect = {
+			random_list = {
+				1 = { add_deposit = d_dangerous_wildlife_blocker }
+				1 = { }
+			}
+		}
+	}
+	
+	ai_weight = {
+		weight = 1
+		modifier = {
+			factor = 0
+			free_district_slots < 2
 		}
 	}
 }

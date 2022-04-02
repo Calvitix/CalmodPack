@@ -1,8 +1,8 @@
 # Giga File
 #
-# Calvitix Check 3.3.1
+# Calvitix Check 3.3.4
 #
-# Last Update : 28.02.2022
+# Last Update : 30.03.2022
 #
 #Calvitix Trad Names
 namespace = giga_katzen
@@ -1370,9 +1370,9 @@ country_event = {
 		country_event = { id = giga_katzen.041 days = 540 random = 60 } #Kaiser demands stuff, runs every 1.5 years
 		country_event = { id = giga_katzen.070 days = 180 random = 30 } #Warforges
 		country_event = { id = giga_katzen.030 days = 30 }
-		country_event = { id = giga_katzen.080 days = 3600 } #First flusion expansion
-		country_event = { id = giga_katzen.082 days = 7200 } #Second flusion expansion
-		country_event = { id = giga_katzen.083 days = 10800 } #Third flusion expansion
+		country_event = { id = giga_katzen.080 days = 360 } #Flusion expansion
+		# country_event = { id = giga_katzen.082 days = 7200 } #Second flusion expansion
+		# country_event = { id = giga_katzen.083 days = 10800 } #Third flusion expansion
 		country_event = { id = giga_katzen.9999 days = 5 } #Crisis counter
 		country_event = { id = giga_katzenai.010 days = 60 } #Give the AI a little kick to ensure they actually move troops
 		country_event = { id = giga_katzen.04003 days = 3600 } #Declare war on random nations
@@ -6549,6 +6549,7 @@ country_event = {
 	hide_window = yes
 
 	trigger = {
+		exists = event_target:sonya_leader
 		any_owned_leader = {
 			is_same_value = event_target:sonya_leader
 		}
@@ -8022,7 +8023,7 @@ country_event = { #Clear out hostiles in nearby systems
 }
 
 ###WAR FORGES###
-country_event = { #Every 6 months, warforges will randomly create a fleet
+country_event = { #Every 6 months, ship-producing structures will randomly create a fleet provided sufficient resources.
 	id = giga_katzen.070
 
 	is_triggered_only = yes
@@ -8060,6 +8061,7 @@ planet_event = { #Every 6 months, warforges will randomly create a fleet
 	hide_window = yes
 
 	trigger = {
+		has_planet_flag = has_katzen_warform
 		any_country = {
 			is_country_type = katzenartig_imperium
 		}
@@ -8067,10 +8069,9 @@ planet_event = { #Every 6 months, warforges will randomly create a fleet
 
 	immediate = {
 		save_event_target_as = katzen_war_forge
-		solar_system = {
-			event_target:flusion_primitives_country = {
 				if = {
 					limit = {
+				event_target:flusion_primitives_country = {
 						check_variable = {
 							which = kaiser_resource_stockpile
 							value > min_kaiser_ship_cost
@@ -8080,6 +8081,7 @@ planet_event = { #Every 6 months, warforges will randomly create a fleet
 							value > min_kaiser_ship_upkeep
 						}
 					}
+			}
 		change_planet_size = -1
 		if = {
 			limit = { planet_size < 2 }
@@ -8097,7 +8099,7 @@ planet_event = { #Every 6 months, warforges will randomly create a fleet
 					remove_planet_flag = has_katzen_warform
 				}
 			}
-			remove_planet = yes
+				giga_remove_planet = yes
 		}
 				random_list = {
 						60 = {
@@ -8142,8 +8144,6 @@ planet_event = { #Every 6 months, warforges will randomly create a fleet
 					}
 				}
 			}
-		}
-	}
 }
 
 ###FLUSION EXPANSION###
@@ -12934,8 +12934,14 @@ country_event = {
 		every_system = { #remove captured systems
 			limit = {
 				has_star_flag = katzen_already_counted
+				OR = {
+					AND = {
+						exists = owner
 				owner = {
 					NOT = { is_country_type = katzenartig_imperium }
+				}
+					has_owner = no # something killed the starbase, removing the system from the kaiser
+					}
 				}
 			}
 			remove_star_flag = katzen_already_counted

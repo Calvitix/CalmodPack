@@ -82,27 +82,24 @@ special_project = {
 	}
 	
 	on_success = {
+		FROM = {
 		reset_planet = yes
 		random_list = {
 			20 = {
-				FROM = {
 					change_pc = pc_shattered
 					set_ring = no
-				}
-				ship_event = { id = mzilli_anomaly_events.6 }
+					prev = { ship_event = { id = mzilli_anomaly_events.6 } }
 			}
 			80 = {
-				FROM = {
 					add_modifier = { modifier = mzilli_tachyon_core }
 					random_list = {
-						20 = { change_pc = pc_molten }
-						10 = {
-							modifier = {
-								factor = 0
-								is_planet_class = pc_toxic
-							}
-							change_pc = pc_toxic
-						}
+						#10 = {
+						#	modifier = {
+						#		factor = 0
+						#		is_planet_class = pc_toxic
+						#	}
+						#	change_pc = pc_toxic
+						#}
 						40 = { change_pc = rl_habitable_normal }
 						10 = { change_pc = pc_nuked }
 						10 = { change_pc = pc_relic }
@@ -113,6 +110,7 @@ special_project = {
 							}
 							change_pc = pc_gaia
 						}
+						#20 = { change_pc = pc_molten }
 					}
 					reroll_planet = yes
 					if = {
@@ -179,8 +177,8 @@ special_project = {
 							}
 						}
 					}
+					prev = { ship_event = { id = mzilli_anomaly_events.7 } }
 				}
-				ship_event = { id = mzilli_anomaly_events.7 }
 			}
 		}
 	}
@@ -583,5 +581,27 @@ special_project = {
 			}
 			country_event = { id = mzilli_anomaly_events.69 }
 		}
+	}
+}
+
+special_project = {
+	key = "NEUTRON_TO_BLACK_HOLE_PROJECT"
+	cost = 2000
+	#days_to_research = 60
+	tech_department = physics_technology
+	picture = GFX_evt_star_neutron
+
+	event_scope = ship_event
+
+	requirements = {
+		shipclass_science_ship = 1
+	}
+	
+	on_success = {
+		FROM = { solar_system = { set_star_class = sc_black_hole } }
+		ship_event = { id = mzilli_anomaly_events.90 }
+	}
+	
+	on_fail = {
 	}
 }

@@ -2,7 +2,8 @@
 #
 # Calvitix Check 3.3.1  23.02.2022
 #
-# Update 23.02.2022
+# Merge with PD Unique 30.03.2022
+# Update 30.03.2022
 #
 ##########################################################################
 # PD Edicts
@@ -12,7 +13,7 @@
 @Edict2Cost = 200
 @Edict3Cost = 300
 
-@EdictDuration = 3600
+@EdictDuration = -1
 
 #Eludium
 eludium_research = {
@@ -20,8 +21,9 @@ eludium_research = {
 	icon = "GFX_edict_type_time"
 	resources = {
 		category = rare_edicts
-		cost = {
+		upkeep = {
 			sr_eludium = 0.5
+			multiplier = value:edict_size_effect
 		}
 	}
 	
@@ -46,8 +48,9 @@ eludium_energy = {
 	icon = "GFX_edict_type_time"
 	resources = {
 		category = rare_edicts
-		cost = {
+		upkeep = {
 			sr_eludium = 0.5
+			multiplier = value:edict_size_effect
 		}
 	}
 	
@@ -73,8 +76,9 @@ eludium_weapons = {
 	icon = "GFX_edict_type_time"
 	resources = {
 		category = rare_edicts
-		cost = {
+		upkeep = {
 			sr_eludium = 0.5
+			multiplier = value:edict_size_effect
 		}
 	}
 	
@@ -102,8 +106,9 @@ cyrstal_growth = {
 	icon = "GFX_edict_type_time"
 	resources = {
 		category = rare_edicts
-		cost = {
+		upkeep = {
 			sr_acean = 0.5
+			multiplier = value:edict_size_effect
 		}
 	}
 	
@@ -129,8 +134,9 @@ cyrstal_food = {
 	icon = "GFX_edict_type_time"
 	resources = {
 		category = rare_edicts
-		cost = {
+		upkeep = {
 			sr_acean = 0.5
+			multiplier = value:edict_size_effect
 		}
 	}
 	
@@ -156,8 +162,9 @@ cyrstal_minerals = {
 	icon = "GFX_edict_type_time"
 	resources = {
 		category = rare_edicts
-		cost = {
+		upkeep = {
 			sr_acean = 0.5
+			multiplier = value:edict_size_effect
 		}
 	}
 	
@@ -183,8 +190,9 @@ rad_armies = {
 	icon = "GFX_edict_type_time"
 	resources = {
 		category = rare_edicts
-		cost = {
+		upkeep = {
 			sr_rad_bloom = 0.5
+			multiplier = value:edict_size_effect
 		}
 	}
 	
@@ -219,8 +227,9 @@ tiyanki_parts_trade = {
 	icon = "GFX_edict_type_time"
 	resources = {
 		category = rare_edicts
-		cost = {
+		upkeep = {
 			sr_tiyanki_parts = 0.5
+			multiplier = value:edict_size_effect
 		}
 	}
 	
@@ -246,8 +255,9 @@ tiyanki_parts_energy = {
 	icon = "GFX_edict_type_time"
 	resources = {
 		category = rare_edicts
-		cost = {
+		upkeep = {
 			sr_tiyanki_parts = 0.5
+			multiplier = value:edict_size_effect
 		}
 	}
 	
@@ -273,8 +283,9 @@ tiyanki_parts_armor = {
 	icon = "GFX_edict_type_time"
 	resources = {
 		category = rare_edicts
-		cost = {
+		upkeep = {
 			sr_tiyanki_parts = 0.5
+			multiplier = value:edict_size_effect
 		}
 	}
 	
@@ -300,8 +311,9 @@ tiyanki_parts_unity = {
 	icon = "GFX_edict_type_time"
 	resources = {
 		category = rare_edicts
-		cost = {
+		upkeep = {
 			sr_tiyanki_parts = 0.5
+			multiplier = value:edict_size_effect
 		}
 	}
 	
@@ -318,6 +330,106 @@ tiyanki_parts_unity = {
 		modifier = {
 			factor = 0
 			resource_stockpile_compare = { resource = sr_tiyanki_parts value < 500 }
+		}
+	}
+}
+
+#Techno Living Metal
+pd_techno_lm_shiprepair = {
+	length = @EdictDuration
+	icon = "GFX_edict_type_time"
+	resources = {
+		category = rare_edicts
+		upkeep = {
+			sr_living_metal = 0.5
+			multiplier = value:edict_size_effect
+		}
+	}
+	
+	potential = {
+		AND = {
+			has_resource = { type = sr_living_metal amount > 0 }
+			any_owned_planet = {
+				is_planet_class = pc_technoorganic
+			}
+		}
+	}
+
+	modifier = {
+		ship_armor_regen_add_perc = 0.1
+		ship_hull_regen_add_perc = 0.1
+	}
+	
+	ai_weight = {
+		weight = @EdictMedPrio
+		modifier = {
+			factor = 0
+			resource_stockpile_compare = { resource = sr_living_metal value < 500 }
+		}
+	}
+}
+pd_techno_lm_shipbuild = {
+	length = @EdictDuration
+	icon = "GFX_edict_type_time"
+	resources = {
+		category = rare_edicts
+		upkeep = {
+			sr_living_metal = 0.5
+			multiplier = value:edict_size_effect
+		}
+	}
+	
+	potential = {
+		AND = {
+			has_resource = { type = sr_living_metal amount > 0 }
+			any_owned_planet = {
+				is_planet_class = pc_technoorganic
+			}
+		}
+	}
+
+	modifier = {
+		starbase_shipyard_build_speed_mult = 0.2
+	}
+	
+	ai_weight = {
+		weight = @EdictMedPrio
+		modifier = {
+			factor = 0
+			resource_stockpile_compare = { resource = sr_living_metal value < 500 }
+		}
+	}
+}
+pd_techno_lm_building_speed = {
+	length = @EdictDuration
+	icon = "GFX_edict_type_time"
+	resources = {
+		category = rare_edicts
+		upkeep = {
+			sr_living_metal = 0.5
+			multiplier = value:edict_size_effect
+		}
+	}
+	
+	potential = {
+		AND = {
+			has_resource = { type = sr_living_metal amount > 0 }
+			any_owned_planet = {
+				is_planet_class = pc_technoorganic
+			}
+		}
+	}
+
+	modifier = {
+		planet_building_build_speed_mult = 0.2
+		planet_buildings_upkeep_mult = -0.2
+	}
+	
+	ai_weight = {
+		weight = @EdictMedPrio
+		modifier = {
+			factor = 0
+			resource_stockpile_compare = { resource = sr_living_metal value < 500 }
 		}
 	}
 }

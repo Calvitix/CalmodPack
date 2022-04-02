@@ -73,21 +73,6 @@ init_giga_maginot_variables = {
 		which = maginot_orbital_defence_trg_cost
 		value = 1000
 	}
-	# set up alloy value storage
-	set_variable = {
-		which = giga_current_alloy_stockpile
-		value = 0
-	}
-	planet_owner = {
-		export_resource_stockpile_to_variable = {
-			resource = alloys
-			variable = giga_current_alloy_stockpile
-		}
-	}
-	set_variable = {
-		which = giga_current_alloy_stockpile
-		value = planet_owner.giga_current_alloy_stockpile
-	}
 	# display values
 	set_variable = {
 		which = maginot_orbital_defence_hp_display
@@ -321,23 +306,6 @@ maginot_check_upgrade_points = {
 		which = maginot_defensive_upgrade_points_current
 		value = maginot_defensive_upgrade_points_used
 	}
-
-	## available resources
-	set_variable = {
-		which = giga_current_alloy_stockpile
-		value = 0
-	}
-	planet_owner = {
-		export_resource_stockpile_to_variable = {
-			resource = alloys
-			variable = giga_current_alloy_stockpile
-		}
-	}
-	set_variable = {
-		which = giga_current_alloy_stockpile
-		value = planet_owner.giga_current_alloy_stockpile
-	}
-	round_variable = giga_current_alloy_stockpile
 }
 
 # Reapplies modifiers according to current upgrades bought on the Maginot World
@@ -458,12 +426,7 @@ maginot_refresh_ground_armies = {
 			}
 			remove_army = yes
 		}
-		export_trigger_value_to_variable = {
-			trigger = num_districts
-			parameters = { type = district_maginot_world_planetary_cannons }
-			variable = maginot_artillery_army_count
-		}
-		while = { count = maginot_artillery_army_count	create_army = { name = "Artillerie Planétaire"	owner = planet_owner type = "maginot_artillery_army" } }
+		while = { count = value:maginot_artillery_army_count	create_army = { name = "Artillerie Planétaire"	owner = planet_owner type = "maginot_artillery_army" } }
 	}
 	if = {
 		limit = { exists = planet_owner }
@@ -473,12 +436,7 @@ maginot_refresh_ground_armies = {
 			}
 			remove_army = yes
 		}
-		export_trigger_value_to_variable = {
-			trigger = num_districts
-			parameters = { type = district_maginot_world_shield_generators }
-			variable = maginot_shield_army_count
-		}
-		while = { count = maginot_shield_army_count	create_army = { name = "Batterie de Bouclier"	owner = planet_owner type = "maginot_shield_army" } }
+		while = { count = value:maginot_shield_army_count	create_army = { name = "Batterie de Bouclier"	owner = planet_owner type = "maginot_shield_army" } }
 	}
 	if = {
 		limit = { exists = planet_owner }
@@ -488,11 +446,6 @@ maginot_refresh_ground_armies = {
 			}
 			remove_army = yes
 		}
-		export_trigger_value_to_variable = {
-			trigger = num_districts
-			parameters = { type = district_maginot_world_bunkers }
-			variable = maginot_bunker_army_count
-		}
-		while = { count = maginot_bunker_army_count	create_army = { name = "Réseau de Fortifications"	owner = planet_owner type = "maginot_bunker_army" } }
+		while = { count = value:maginot_bunker_army_count	create_army = { name = "Réseau de Fortifications"	owner = planet_owner type = "maginot_bunker_army" } }
 	}
 }

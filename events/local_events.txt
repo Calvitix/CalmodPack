@@ -1,0 +1,72 @@
+namespace = local
+
+#On Gamestart
+event = {
+	id = local.0
+	hide_window = yes	
+	is_triggered_only = yes
+	trigger = {
+		NOT = { has_global_flag = LocalProduction_active }
+	}
+	immediate = {
+		set_global_flag = LocalProduction_active
+		every_galaxy_planet = {
+			limit = {
+				has_owner = yes
+			}
+			planet_event = {
+				id = local.1
+				days = 2
+			}
+		}
+	}
+}
+
+#Add Local Deposit, Triggered on_colonized
+planet_event = {
+	id = local.1
+	hide_window = yes	
+	is_triggered_only = yes
+
+	pre_triggers = {
+		has_owner = yes
+	}
+
+	trigger = {	
+		NOT = { has_deposit = d_local_production }
+		NOT = { is_planet_class = pc_habitat }
+		NOT = { is_planet_class = pc_ringworld_habitable }
+	}
+	
+	immediate = {
+		add_deposit = d_local_production
+	}
+}
+
+#Yearly Backup
+event = {
+	id = local.2
+	hide_window = yes	
+	is_triggered_only = yes
+	trigger = {
+	}
+	immediate = {
+		if = {
+			limit = {
+				NOT = { has_global_flag = LocalProduction_active }
+			}
+			set_global_flag = LocalProduction_active
+		}
+		every_galaxy_planet = {
+			limit = {
+				has_owner = yes
+				NOT = { has_deposit = d_local_production }
+				NOT = { is_planet_class = pc_habitat }
+				NOT = { is_planet_class = pc_ringworld_habitable }
+			}
+			planet_event = {
+				id = local.1
+			}
+		}
+	}
+}

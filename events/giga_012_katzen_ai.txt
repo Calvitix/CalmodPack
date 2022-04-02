@@ -1,4 +1,11 @@
- namespace = giga_katzenai
+# Giga File
+#
+# Calvitix Check 3.3.4
+#
+# Last Update : 29.03.2022
+#
+
+namespace = giga_katzenai
 
 
 country_event = { #Fetch a transport fleet and throw it at an enemy planet in a system with NO enemy ships.
@@ -28,6 +35,7 @@ country_event = { #Fetch a transport fleet and throw it at an enemy planet in a 
 					has_planet_flag = paluushia #duh
 					has_planet_flag = corrona #2spooky
 				}
+				exists = owner # this should never not be true but, better check anyway...
 				owner = {
 					OR = {
 						is_at_war_with = event_target:flusion_primitives_country
@@ -59,20 +67,27 @@ country_event = { #Fetch a transport fleet and throw it at an enemy planet in a 
 			set_planet_flag = katzen_invasion_target
 			save_global_event_target_as = katzen_invasion_target
 		}
-		every_galaxy_planet = {
+		# clear flag on planets Kaiser now owns
+		event_target:flusion_primitives_country = {
+			every_owned_planet = {
 			limit = {
 				has_planet_flag = katzen_invasion_target
-				owner = { is_country_type = katzenartig_imperium }
 			}
 			remove_planet_flag = katzen_invasion_target
 		}
+		}
+		# do stuff on invasion target
 		if = {
 			limit = {
 				any_galaxy_planet = { has_planet_flag = katzen_invasion_target }
 			}
 			event_target:katzen_invasion_target = {
+				# only owned planets can be invaded
 				if = {
-					limit = { #anger primitives
+					limit = { exists = owner }
+					# anger primitives
+					if = {
+						limit = {
 						owner = {
 							is_country_type = primitive
 						}
@@ -84,8 +99,9 @@ country_event = { #Fetch a transport fleet and throw it at an enemy planet in a 
 						}
 					}
 				}
+					# fleet stuff
 				solar_system = {
-					closest_system = { #fetch a fleet to invade it
+						closest_system = { # fetch a fleet to invade it
 						limit = {
 							any_fleet_in_system = {
 								owner = { is_country_type = katzenartig_imperium }
@@ -108,6 +124,11 @@ country_event = { #Fetch a transport fleet and throw it at an enemy planet in a 
 							}
 						}
 					}
+				}
+			}
+				# if nobody owns planet clear flag, it's a dud
+				else = {
+					remove_planet_flag = katzen_invasion_target
 				}
 			}
 		}

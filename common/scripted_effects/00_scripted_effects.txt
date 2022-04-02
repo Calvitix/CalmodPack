@@ -2,7 +2,7 @@
 #
 # Calvitix Check 3.3.1  23.02.2022
 #
-# Merge with Arisphaos Unofficial patch
+# Merge with Arisphaos Unofficial patch 02.04.2022
 # Merge with JL PICARD 04.05.2021
 #
 #
@@ -4344,7 +4344,7 @@ create_ai_constructors = {
 			event_target:AI_crisis = {
 				count_owned_ship = {
 					limit = { is_ship_size = construction_ship_ai }
-					count < 5
+					count < 8
 				}
 			}
 		}
@@ -8979,10 +8979,17 @@ start_lcluster_chain = {
 liquidate_clues = {
 	hidden_effect = {
 		if = {
-			limit = { has_event_chain = l_cluster_chain }
-			end_event_chain = l_cluster_chain
+			limit = {
+				has_special_project = LCLUSTER_PROJECT
 		}
-		if = {
+			custom_tooltip = liquidated_7
+			add_resource = {
+				engineering_research = 3500
+				energy = 3500
+			}
+			abort_special_project = { type = LCLUSTER_PROJECT }
+		}
+		else_if = {
 			limit = {
 				check_variable = {
 					which = num_lcluster_clues
@@ -9075,6 +9082,10 @@ liquidate_clues = {
 		}
 		else = {
 			custom_tooltip = liquidated_0
+		}
+		if = {
+			limit = { has_event_chain = l_cluster_chain }
+			end_event_chain = l_cluster_chain
 		}
 	}
 }
@@ -9604,6 +9615,7 @@ give_tech_option_or_progress_effect = {
 #Use in war scope. War is deleted.
 end_war_effect = {
 	every_war_participant = {
+		limit = { NOT = { is_same_value = prevprev } } # don't break the loop
 		prev = { remove_war_participant = prev }
 	}
 }
@@ -11559,6 +11571,9 @@ add_extra_hyperlane_to_spawned_system_effect = {
 							max_distance <= 10
 						}
 						NOT = { has_hyperlane_to = prev }
+						NOT = {
+							has_star_flag = sealed_system
+						}
 					}
 				}
 				random_system = {
@@ -11570,6 +11585,9 @@ add_extra_hyperlane_to_spawned_system_effect = {
 							max_distance <= 10
 						}
 						NOT = { has_hyperlane_to = prev }
+						NOT = {
+							has_star_flag = sealed_system
+						}
 					}
 					add_hyperlane = {
 						from = this
@@ -11587,6 +11605,9 @@ add_extra_hyperlane_to_spawned_system_effect = {
 							max_distance <= 15
 						}
 						NOT = { has_hyperlane_to = prev }
+						NOT = {
+							has_star_flag = sealed_system
+						}
 					}
 				}
 				random_system = {
@@ -11598,6 +11619,9 @@ add_extra_hyperlane_to_spawned_system_effect = {
 							max_distance <= 15
 						}
 						NOT = { has_hyperlane_to = prev }
+						NOT = {
+							has_star_flag = sealed_system
+						}
 					}
 					add_hyperlane = {
 						from = this
@@ -11615,6 +11639,9 @@ add_extra_hyperlane_to_spawned_system_effect = {
 							max_distance <= 25
 						}
 						NOT = { has_hyperlane_to = prev }
+						NOT = {
+							has_star_flag = sealed_system
+						}
 					}
 				}
 				random_system = {
@@ -11626,6 +11653,9 @@ add_extra_hyperlane_to_spawned_system_effect = {
 							max_distance <= 25
 						}
 						NOT = { has_hyperlane_to = prev }
+						NOT = {
+							has_star_flag = sealed_system
+						}
 					}
 					add_hyperlane = {
 						from = this
@@ -11643,6 +11673,9 @@ add_extra_hyperlane_to_spawned_system_effect = {
 							max_distance <= 40
 						}
 						NOT = { has_hyperlane_to = prev }
+						NOT = {
+							has_star_flag = sealed_system
+						}
 					}
 				}
 				random_system = {
@@ -11654,6 +11687,9 @@ add_extra_hyperlane_to_spawned_system_effect = {
 							max_distance <= 40
 						}
 						NOT = { has_hyperlane_to = prev }
+						NOT = {
+							has_star_flag = sealed_system
+						}
 					}
 					add_hyperlane = {
 						from = this
