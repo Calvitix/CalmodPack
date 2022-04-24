@@ -1,9 +1,16 @@
 giga_amb_stockpile_calc = {
 	base = 0
 
+	# start with twice our income
 	weight = giga_amb_income
 	multiply = 2
 
+	# make sure it's not negative
+	min = 0
+
+	# cap to current stockpile
+	# this calculates how much should be drained from the stockpile at month start
+	# (whichver is less, income*2 or stockpile)
 	complex_trigger_modifier = {
 		trigger = resource_stockpile_compare
 		parameters = {
@@ -11,17 +18,24 @@ giga_amb_stockpile_calc = {
 		}
 		mode = max
 	}
-
-	min = 0
 }
 
 giga_amb_total_progress_calc = {
 	base = 0
 
-	add = giga_amb_stockpile
-	mult = @giga_amb_ratio # speed per income
+	add = giga_amb_total_income
+	multiply = giga_amb_ratio
 
 	min = 0.01
+}
+giga_amb_progress_divisor_calc = {
+	base = 0
+
+	weight = value:giga_empire_size_mult
+	multiply = @giga_amb_empire_size_ratio_penalty
+	add = 1
+
+	multiply = @giga_amb_ratio
 }
 
 giga_amb_building_megas_calc = {
