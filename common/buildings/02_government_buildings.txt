@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.3.1  23.02.2022
+# Calvitix Check 3.4.2  15.05.2022
 #
 # Merge with Plentiful traditions 19.03.2022
 # Merge with Starnet OK 05.03.2022
@@ -361,7 +361,13 @@ building_psi_corps = {
 	base_cap_amount = 1
 
 	potential = {
-		owner = { has_ascension_perk = ap_mind_over_matter }
+		host_has_dlc = "Utopia"
+		owner = { 
+			OR = {
+				has_ascension_perk = ap_mind_over_matter
+				has_origin = origin_shroudwalker_apprentice
+			}
+		}
 		NOT = { has_modifier = resort_colony }
 		NOT = { has_modifier = slave_colony }
 	}
@@ -374,7 +380,12 @@ building_psi_corps = {
 	destroy_trigger = {
 		exists = owner
 		NOT = {
-			owner = { has_ascension_perk = ap_mind_over_matter }
+			owner = { 
+				OR = {
+					has_ascension_perk = ap_mind_over_matter 
+					has_origin = origin_shroudwalker_apprentice
+				}
+			}
 		}
 	}
 
@@ -423,6 +434,9 @@ building_clone_vats = {
 			owner = { is_ai = no }
 			NOT = { exists = assembling_species }
 			assembling_species = { is_organic_species = yes }
+		}
+		OR = {
+			owner = { is_ai = no }
 			NAND = {
 				free_district_slots = 0
 				free_building_slots <= 1
@@ -735,6 +749,7 @@ building_gaiaseeders_1 = {
 			is_planet_class = pc_city
 			is_planet_class = pc_hive
 			is_planet_class = pc_machine
+			is_planet_class = pc_relic
 		}
 		is_artificial = no
 	}
@@ -967,6 +982,7 @@ building_gaiaseeders_1 = {
 			is_planet_class = pc_city
 			is_planet_class = pc_hive
 			is_planet_class = pc_machine
+			is_planet_class = pc_relic
 			NOT = { exists = owner }
 			owner = {
 				NOR = {
@@ -987,6 +1003,7 @@ building_gaiaseeders_1 = {
 		}
 		upkeep = {
 			energy = 20
+			multiplier = value:gaiaseeder_upkeep
 		}
 	}
 
@@ -1011,6 +1028,7 @@ building_gaiaseeders_2 = {
 		upkeep = {
 			energy = 20
 			exotic_gases = @b2_rare_upkeep
+			multiplier = value:gaiaseeder_upkeep
 		}
 	}
 
@@ -1036,222 +1054,7 @@ building_gaiaseeders_2 = {
 	}
 
 	allow = {
-		if = { 
-			limit = {
-				owner = { 
-					OR = {
-						ideal_planet_class = pc_continental 
-						ideal_planet_class = pc_retinal 
-						ideal_planet_class = pc_tepid 
-						ideal_planet_class = pc_forest
-						ideal_planet_class = pc_lake
-						ideal_planet_class = pc_superhabitable
-						ideal_planet_class = pc_megaflora
-					}
-				}
-			}
-			OR = {
-				is_planet_class = pc_continental 
-				is_planet_class = pc_retinal 
-				is_planet_class = pc_tepid 
-				is_planet_class = pc_forest
-				is_planet_class = pc_lake
-				is_planet_class = pc_superhabitable
-				is_planet_class = pc_megaflora
-			}
-		}
-		if = { 
-			limit = {
-				owner = { 
-					OR = {
-						ideal_planet_class = pc_tropical 
-						ideal_planet_class = pc_hajungle 
-						ideal_planet_class = pc_desertislands 
-						ideal_planet_class = pc_mangrove
-						ideal_planet_class = pc_cenote
-						ideal_planet_class = pc_biolumen
-						ideal_planet_class = pc_geothermal
-					}
-				}
-			}
-			OR = {
-				is_planet_class = pc_tropical 
-				is_planet_class = pc_hajungle 
-				is_planet_class = pc_desertislands 
-				is_planet_class = pc_mangrove
-				is_planet_class = pc_cenote
-				is_planet_class = pc_biolumen
-				is_planet_class = pc_geothermal
-			}
-		}
-		if = { 
-			limit = {
-				owner = { 
-					OR = {
-						ideal_planet_class = pc_ocean 
-						ideal_planet_class = pc_cascadian 
-						ideal_planet_class = pc_wetswamp 
-						ideal_planet_class = pc_subarctic
-						ideal_planet_class = pc_fog
-						ideal_planet_class = pc_karst
-						ideal_planet_class = pc_reef
-					}
-				}
-			}
-			OR = {
-				is_planet_class = pc_ocean 
-				is_planet_class = pc_cascadian 
-				is_planet_class = pc_wetswamp 
-				is_planet_class = pc_subarctic
-				is_planet_class = pc_fog
-				is_planet_class = pc_karst
-				is_planet_class = pc_reef
-			}
-		}
-		if = { 
-			limit = {
-				owner = { 
-					OR = {
-						ideal_planet_class = pc_desert 
-						ideal_planet_class = pc_sandsea 
-						ideal_planet_class = pc_oasis 
-						ideal_planet_class = pc_outback
-						ideal_planet_class = pc_coastal
-						ideal_planet_class = pc_salt
-						ideal_planet_class = pc_aquifer
-					}
-				}
-			}
-			OR = {
-				is_planet_class = pc_desert 
-				is_planet_class = pc_sandsea 
-				is_planet_class = pc_oasis 
-				is_planet_class = pc_outback
-				is_planet_class = pc_coastal
-				is_planet_class = pc_salt
-				is_planet_class = pc_aquifer
-			}
-		}
-		if = { 
-			limit = {
-				owner = { 
-					OR = {
-						ideal_planet_class = pc_arid 
-						ideal_planet_class = pc_mesa 
-						ideal_planet_class = pc_hadesert 
-						ideal_planet_class = pc_med
-						ideal_planet_class = pc_badlands
-						ideal_planet_class = pc_coral
-						ideal_planet_class = pc_primal
-					}
-				}
-			}
-			OR = {
-				is_planet_class = pc_arid 
-				is_planet_class = pc_mesa 
-				is_planet_class = pc_hadesert 
-				is_planet_class = pc_med
-				is_planet_class = pc_badlands
-				is_planet_class = pc_coral
-				is_planet_class = pc_primal
-			}
-		}
-		if = { 
-			limit = {
-				owner = { 
-					OR = {
-						ideal_planet_class = pc_savannah 
-						ideal_planet_class = pc_steppe 
-						ideal_planet_class = pc_prairie 
-						ideal_planet_class = pc_veld
-						ideal_planet_class = pc_semiarid
-						ideal_planet_class = pc_tidallylocked
-						ideal_planet_class = pc_supercon
-					}
-				}
-			}
-			OR = {
-				is_planet_class = pc_savannah 
-				is_planet_class = pc_steppe 
-				is_planet_class = pc_prairie 
-				is_planet_class = pc_veld
-				is_planet_class = pc_semiarid
-				is_planet_class = pc_tidallylocked
-				is_planet_class = pc_supercon
-			}
-		}
-		if = { 
-			limit = {
-				owner = { 
-					OR = {
-						ideal_planet_class = pc_arctic 
-						ideal_planet_class = pc_frozen_desert 
-						ideal_planet_class = pc_glacial 
-						ideal_planet_class = pc_antarctic
-						ideal_planet_class = pc_aeolian
-						ideal_planet_class = pc_storm
-						ideal_planet_class = pc_eyeball
-					}
-				}
-			}
-			OR = {
-				is_planet_class = pc_arctic 
-				is_planet_class = pc_frozen_desert 
-				is_planet_class = pc_glacial 
-				is_planet_class = pc_antarctic
-				is_planet_class = pc_aeolian
-				is_planet_class = pc_storm
-				is_planet_class = pc_eyeball
-			}
-		}
-		if = { 
-			limit = {
-				owner = { 
-					OR = {
-						ideal_planet_class = pc_alpine 
-						ideal_planet_class = pc_boreal 
-						ideal_planet_class = pc_snow 
-						ideal_planet_class = pc_highland
-						ideal_planet_class = pc_duneforest
-						ideal_planet_class = pc_glacio
-						ideal_planet_class = pc_lanthanide
-					}
-				}
-			}
-			OR = {
-				is_planet_class = pc_alpine 
-				is_planet_class = pc_boreal 
-				is_planet_class = pc_snow 
-				is_planet_class = pc_highland
-				is_planet_class = pc_duneforest
-				is_planet_class = pc_glacio
-				is_planet_class = pc_lanthanide
-			}
-		}
-		if = { 
-			limit = {
-				owner = { 
-					OR = {
-						ideal_planet_class = pc_tundra 
-						ideal_planet_class = pc_swamp 
-						ideal_planet_class = pc_mushroom 
-						ideal_planet_class = pc_mud
-						ideal_planet_class = pc_basalt
-						ideal_planet_class = pc_rogue
-						ideal_planet_class = pc_lichen
-					}
-				}
-			}
-			OR = {
-				is_planet_class = pc_tundra 
-				is_planet_class = pc_swamp 
-				is_planet_class = pc_mushroom 
-				is_planet_class = pc_mud
-				is_planet_class = pc_basalt
-				is_planet_class = pc_rogue
-				is_planet_class = pc_lichen
-			}
-		}
+		can_build_gaiaseeder = yes
 	}
 
 	planet_modifier = {
@@ -1276,6 +1079,7 @@ building_gaiaseeders_3 = {
 		upkeep = {
 			energy = 20
 			exotic_gases = @b3_rare_upkeep
+			multiplier = value:gaiaseeder_upkeep
 		}
 	}
 
@@ -1301,222 +1105,7 @@ building_gaiaseeders_3 = {
 	}
 
 	allow = {
-		if = { 
-			limit = {
-				owner = { 
-					OR = {
-						ideal_planet_class = pc_continental 
-						ideal_planet_class = pc_retinal 
-						ideal_planet_class = pc_tepid 
-						ideal_planet_class = pc_forest
-						ideal_planet_class = pc_lake
-						ideal_planet_class = pc_superhabitable
-						ideal_planet_class = pc_megaflora
-					}
-				}
-			}
-			OR = {
-				is_planet_class = pc_continental 
-				is_planet_class = pc_retinal 
-				is_planet_class = pc_tepid 
-				is_planet_class = pc_forest
-				is_planet_class = pc_lake
-				is_planet_class = pc_superhabitable
-				is_planet_class = pc_megaflora
-			}
-		}
-		if = { 
-			limit = {
-				owner = { 
-					OR = {
-						ideal_planet_class = pc_tropical 
-						ideal_planet_class = pc_hajungle 
-						ideal_planet_class = pc_desertislands 
-						ideal_planet_class = pc_mangrove
-						ideal_planet_class = pc_cenote
-						ideal_planet_class = pc_biolumen
-						ideal_planet_class = pc_geothermal
-					}
-				}
-			}
-			OR = {
-				is_planet_class = pc_tropical 
-				is_planet_class = pc_hajungle 
-				is_planet_class = pc_desertislands 
-				is_planet_class = pc_mangrove
-				is_planet_class = pc_cenote
-				is_planet_class = pc_biolumen
-				is_planet_class = pc_geothermal
-			}
-		}
-		if = { 
-			limit = {
-				owner = { 
-					OR = {
-						ideal_planet_class = pc_ocean 
-						ideal_planet_class = pc_cascadian 
-						ideal_planet_class = pc_wetswamp 
-						ideal_planet_class = pc_subarctic
-						ideal_planet_class = pc_fog
-						ideal_planet_class = pc_karst
-						ideal_planet_class = pc_reef
-					}
-				}
-			}
-			OR = {
-				is_planet_class = pc_ocean 
-				is_planet_class = pc_cascadian 
-				is_planet_class = pc_wetswamp 
-				is_planet_class = pc_subarctic
-				is_planet_class = pc_fog
-				is_planet_class = pc_karst
-				is_planet_class = pc_reef
-			}
-		}
-		if = { 
-			limit = {
-				owner = { 
-					OR = {
-						ideal_planet_class = pc_desert 
-						ideal_planet_class = pc_sandsea 
-						ideal_planet_class = pc_oasis 
-						ideal_planet_class = pc_outback
-						ideal_planet_class = pc_coastal
-						ideal_planet_class = pc_salt
-						ideal_planet_class = pc_aquifer
-					}
-				}
-			}
-			OR = {
-				is_planet_class = pc_desert 
-				is_planet_class = pc_sandsea 
-				is_planet_class = pc_oasis 
-				is_planet_class = pc_outback
-				is_planet_class = pc_coastal
-				is_planet_class = pc_salt
-				is_planet_class = pc_aquifer
-			}
-		}
-		if = { 
-			limit = {
-				owner = { 
-					OR = {
-						ideal_planet_class = pc_arid 
-						ideal_planet_class = pc_mesa 
-						ideal_planet_class = pc_hadesert 
-						ideal_planet_class = pc_med
-						ideal_planet_class = pc_badlands
-						ideal_planet_class = pc_coral
-						ideal_planet_class = pc_primal
-					}
-				}
-			}
-			OR = {
-				is_planet_class = pc_arid 
-				is_planet_class = pc_mesa 
-				is_planet_class = pc_hadesert 
-				is_planet_class = pc_med
-				is_planet_class = pc_badlands
-				is_planet_class = pc_coral
-				is_planet_class = pc_primal
-			}
-		}
-		if = { 
-			limit = {
-				owner = { 
-					OR = {
-						ideal_planet_class = pc_savannah 
-						ideal_planet_class = pc_steppe 
-						ideal_planet_class = pc_prairie 
-						ideal_planet_class = pc_veld
-						ideal_planet_class = pc_semiarid
-						ideal_planet_class = pc_tidallylocked
-						ideal_planet_class = pc_supercon
-					}
-				}
-			}
-			OR = {
-				is_planet_class = pc_savannah 
-				is_planet_class = pc_steppe 
-				is_planet_class = pc_prairie 
-				is_planet_class = pc_veld
-				is_planet_class = pc_semiarid
-				is_planet_class = pc_tidallylocked
-				is_planet_class = pc_supercon
-			}
-		}
-		if = { 
-			limit = {
-				owner = { 
-					OR = {
-						ideal_planet_class = pc_arctic 
-						ideal_planet_class = pc_frozen_desert 
-						ideal_planet_class = pc_glacial 
-						ideal_planet_class = pc_antarctic
-						ideal_planet_class = pc_aeolian
-						ideal_planet_class = pc_storm
-						ideal_planet_class = pc_eyeball
-					}
-				}
-			}
-			OR = {
-				is_planet_class = pc_arctic 
-				is_planet_class = pc_frozen_desert 
-				is_planet_class = pc_glacial 
-				is_planet_class = pc_antarctic
-				is_planet_class = pc_aeolian
-				is_planet_class = pc_storm
-				is_planet_class = pc_eyeball
-			}
-		}
-		if = { 
-			limit = {
-				owner = { 
-					OR = {
-						ideal_planet_class = pc_alpine 
-						ideal_planet_class = pc_boreal 
-						ideal_planet_class = pc_snow 
-						ideal_planet_class = pc_highland
-						ideal_planet_class = pc_duneforest
-						ideal_planet_class = pc_glacio
-						ideal_planet_class = pc_lanthanide
-					}
-				}
-			}
-			OR = {
-				is_planet_class = pc_alpine 
-				is_planet_class = pc_boreal 
-				is_planet_class = pc_snow 
-				is_planet_class = pc_highland
-				is_planet_class = pc_duneforest
-				is_planet_class = pc_glacio
-				is_planet_class = pc_lanthanide
-			}
-		}
-		if = { 
-			limit = {
-				owner = { 
-					OR = {
-						ideal_planet_class = pc_tundra 
-						ideal_planet_class = pc_swamp 
-						ideal_planet_class = pc_mushroom 
-						ideal_planet_class = pc_mud
-						ideal_planet_class = pc_basalt
-						ideal_planet_class = pc_rogue
-						ideal_planet_class = pc_lichen
-					}
-				}
-			}
-			OR = {
-				is_planet_class = pc_tundra 
-				is_planet_class = pc_swamp 
-				is_planet_class = pc_mushroom 
-				is_planet_class = pc_mud
-				is_planet_class = pc_basalt
-				is_planet_class = pc_rogue
-				is_planet_class = pc_lichen
-			}
-		}
+		can_build_gaiaseeder = yes
 	}
 
 	planet_modifier = {
@@ -1557,222 +1146,7 @@ building_gaiaseeders_4 = {
 	}
 
 	allow = {
-		if = { 
-			limit = {
-				owner = { 
-					OR = {
-						ideal_planet_class = pc_continental 
-						ideal_planet_class = pc_retinal 
-						ideal_planet_class = pc_tepid 
-						ideal_planet_class = pc_forest
-						ideal_planet_class = pc_lake
-						ideal_planet_class = pc_superhabitable
-						ideal_planet_class = pc_megaflora
-					}
-				}
-			}
-			OR = {
-				is_planet_class = pc_continental 
-				is_planet_class = pc_retinal 
-				is_planet_class = pc_tepid 
-				is_planet_class = pc_forest
-				is_planet_class = pc_lake
-				is_planet_class = pc_superhabitable
-				is_planet_class = pc_megaflora
-			}
-		}
-		if = { 
-			limit = {
-				owner = { 
-					OR = {
-						ideal_planet_class = pc_tropical 
-						ideal_planet_class = pc_hajungle 
-						ideal_planet_class = pc_desertislands 
-						ideal_planet_class = pc_mangrove
-						ideal_planet_class = pc_cenote
-						ideal_planet_class = pc_biolumen
-						ideal_planet_class = pc_geothermal
-					}
-				}
-			}
-			OR = {
-				is_planet_class = pc_tropical 
-				is_planet_class = pc_hajungle 
-				is_planet_class = pc_desertislands 
-				is_planet_class = pc_mangrove
-				is_planet_class = pc_cenote
-				is_planet_class = pc_biolumen
-				is_planet_class = pc_geothermal
-			}
-		}
-		if = { 
-			limit = {
-				owner = { 
-					OR = {
-						ideal_planet_class = pc_ocean 
-						ideal_planet_class = pc_cascadian 
-						ideal_planet_class = pc_wetswamp 
-						ideal_planet_class = pc_subarctic
-						ideal_planet_class = pc_fog
-						ideal_planet_class = pc_karst
-						ideal_planet_class = pc_reef
-					}
-				}
-			}
-			OR = {
-				is_planet_class = pc_ocean 
-				is_planet_class = pc_cascadian 
-				is_planet_class = pc_wetswamp 
-				is_planet_class = pc_subarctic
-				is_planet_class = pc_fog
-				is_planet_class = pc_karst
-				is_planet_class = pc_reef
-			}
-		}
-		if = { 
-			limit = {
-				owner = { 
-					OR = {
-						ideal_planet_class = pc_desert 
-						ideal_planet_class = pc_sandsea 
-						ideal_planet_class = pc_oasis 
-						ideal_planet_class = pc_outback
-						ideal_planet_class = pc_coastal
-						ideal_planet_class = pc_salt
-						ideal_planet_class = pc_aquifer
-					}
-				}
-			}
-			OR = {
-				is_planet_class = pc_desert 
-				is_planet_class = pc_sandsea 
-				is_planet_class = pc_oasis 
-				is_planet_class = pc_outback
-				is_planet_class = pc_coastal
-				is_planet_class = pc_salt
-				is_planet_class = pc_aquifer
-			}
-		}
-		if = { 
-			limit = {
-				owner = { 
-					OR = {
-						ideal_planet_class = pc_arid 
-						ideal_planet_class = pc_mesa 
-						ideal_planet_class = pc_hadesert 
-						ideal_planet_class = pc_med
-						ideal_planet_class = pc_badlands
-						ideal_planet_class = pc_coral
-						ideal_planet_class = pc_primal
-					}
-				}
-			}
-			OR = {
-				is_planet_class = pc_arid 
-				is_planet_class = pc_mesa 
-				is_planet_class = pc_hadesert 
-				is_planet_class = pc_med
-				is_planet_class = pc_badlands
-				is_planet_class = pc_coral
-				is_planet_class = pc_primal
-			}
-		}
-		if = { 
-			limit = {
-				owner = { 
-					OR = {
-						ideal_planet_class = pc_savannah 
-						ideal_planet_class = pc_steppe 
-						ideal_planet_class = pc_prairie 
-						ideal_planet_class = pc_veld
-						ideal_planet_class = pc_semiarid
-						ideal_planet_class = pc_tidallylocked
-						ideal_planet_class = pc_supercon
-					}
-				}
-			}
-			OR = {
-				is_planet_class = pc_savannah 
-				is_planet_class = pc_steppe 
-				is_planet_class = pc_prairie 
-				is_planet_class = pc_veld
-				is_planet_class = pc_semiarid
-				is_planet_class = pc_tidallylocked
-				is_planet_class = pc_supercon
-			}
-		}
-		if = { 
-			limit = {
-				owner = { 
-					OR = {
-						ideal_planet_class = pc_arctic 
-						ideal_planet_class = pc_frozen_desert 
-						ideal_planet_class = pc_glacial 
-						ideal_planet_class = pc_antarctic
-						ideal_planet_class = pc_aeolian
-						ideal_planet_class = pc_storm
-						ideal_planet_class = pc_eyeball
-					}
-				}
-			}
-			OR = {
-				is_planet_class = pc_arctic 
-				is_planet_class = pc_frozen_desert 
-				is_planet_class = pc_glacial 
-				is_planet_class = pc_antarctic
-				is_planet_class = pc_aeolian
-				is_planet_class = pc_storm
-				is_planet_class = pc_eyeball
-			}
-		}
-		if = { 
-			limit = {
-				owner = { 
-					OR = {
-						ideal_planet_class = pc_alpine 
-						ideal_planet_class = pc_boreal 
-						ideal_planet_class = pc_snow 
-						ideal_planet_class = pc_highland
-						ideal_planet_class = pc_duneforest
-						ideal_planet_class = pc_glacio
-						ideal_planet_class = pc_lanthanide
-					}
-				}
-			}
-			OR = {
-				is_planet_class = pc_alpine 
-				is_planet_class = pc_boreal 
-				is_planet_class = pc_snow 
-				is_planet_class = pc_highland
-				is_planet_class = pc_duneforest
-				is_planet_class = pc_glacio
-				is_planet_class = pc_lanthanide
-			}
-		}
-		if = { 
-			limit = {
-				owner = { 
-					OR = {
-						ideal_planet_class = pc_tundra 
-						ideal_planet_class = pc_swamp 
-						ideal_planet_class = pc_mushroom 
-						ideal_planet_class = pc_mud
-						ideal_planet_class = pc_basalt
-						ideal_planet_class = pc_rogue
-						ideal_planet_class = pc_lichen
-					}
-				}
-			}
-			OR = {
-				is_planet_class = pc_tundra 
-				is_planet_class = pc_swamp 
-				is_planet_class = pc_mushroom 
-				is_planet_class = pc_mud
-				is_planet_class = pc_basalt
-				is_planet_class = pc_rogue
-				is_planet_class = pc_lichen
-			}
-		}
+		can_build_gaiaseeder = yes
 	}
 
 	triggered_desc = {

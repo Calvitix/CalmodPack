@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.3.1  23.02.2022
+# Calvitix Check 3.4.2  15.05.2022
 #
 # Merge with Giga 21.04.2021
 # Merge wit Starnet AI 05.03.2022
@@ -1816,21 +1816,6 @@ building_refinery = {
 		NOT = { has_modifier = slave_colony }
 	}
 
-	allow = {
-		has_upgraded_capital = yes
-	}
-
-	destroy_trigger = {
-		free_building_slots = 0
-		exists = owner
-		owner = {
-			is_ai = yes
-			has_monthly_income = {
-				resource = exotic_gases
-				value > 11
-			}
-		}
-	}
 
 #Starnet AI
 	triggered_planet_modifier = {
@@ -1948,20 +1933,6 @@ building_chemical_plant = {
 		NOT = { has_modifier = slave_colony }
 	}
 
-	allow = {
-		has_upgraded_capital = yes
-	}
-	destroy_trigger = {
-		free_building_slots = 0
-		exists = owner
-		owner = {
-			is_ai = yes
-			has_monthly_income = {
-				resource = volatile_motes
-				value > 9
-			}
-		}
-	}
 
 #Starnet AI
 	triggered_planet_modifier = {
@@ -2079,21 +2050,6 @@ building_crystal_plant = {
 		NOT = { has_modifier = slave_colony }
 	}
 
-	allow = {
-		has_upgraded_capital = yes
-	}
-
-	destroy_trigger = {
-		free_building_slots = 0
-		exists = owner
-		owner = {
-			is_ai = yes
-			has_monthly_income = {
-				resource = rare_crystals
-				value > 9
-			}
-		}
-	}
 
 ###Starnet AI
 	triggered_planet_modifier = {
@@ -2434,6 +2390,10 @@ building_production_center = {
 	potential = {
 		exists = owner
 		owner = { is_gestalt = yes }
+		OR = {
+			owner = { is_ai = no }
+			has_any_industry_district = yes
+		}
 	}
 
 	destroy_trigger = {
@@ -2441,7 +2401,8 @@ building_production_center = {
 		OR = {
 			owner = { is_gestalt = no }
 			buildings_no_motes = yes
-			and = {
+			AND = {
+				owner = { is_ai = yes }
 				has_any_industry_district = no
 				free_building_slots = 0 #Calvitix
 			}

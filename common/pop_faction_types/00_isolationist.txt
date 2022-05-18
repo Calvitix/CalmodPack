@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.3b  21.01.2022
+# Calvitix Check 3.4.2  15.05.2022
 #
 # Merge with Banned  17.01.2022
 #
@@ -24,11 +24,25 @@ isolationist = {
 	}
 
 	is_potential = {
-		years_passed > 10
-		has_encountered_other_species = yes
-		NOT = { has_ethic = ethic_gestalt_consciousness }
-		NOT = { has_country_flag = suppress_vanilla_factions }
-		NOT = { has_modifier = banned_xenophobe }																
+		is_faction_allowed = yes
+		
+		if = {
+			limit = {
+				has_faction = isolationist
+				any_pop_faction = {
+					is_pop_faction_type = isolationist
+					num_pops >= 5
+				}
+			}
+		}
+		else = {
+			count_owned_pop = {
+				count >= 5
+				limit = {
+					has_ethic = ethic_xenophobe
+				}
+			}
+		}
 	}
 	
 	parameters = {
@@ -47,10 +61,7 @@ isolationist = {
 
 	can_join_faction = {
 		is_shackled_robot = no
-		NOR = { 
-			has_trait = trait_nerve_stapled
-			has_trait = trait_zombie
-		}
+		can_think = yes
 		OR = {
 			has_ethic = ethic_xenophobe
 			has_ethic = ethic_fanatic_xenophobe
@@ -242,7 +253,7 @@ isolationist = {
 		trigger = {
 			owner = {
 				NOR = {
-					num_migration_pacts > 0
+					num_migration_pacts > 0 #doesn't check all the stuff below, but early exclude if it is true
 					any_relation = {
 						has_communications = root.owner
 						OR = {
@@ -286,15 +297,13 @@ isolationist = {
 		
 		trigger = {
 			owner = {
-				any_country = {
 					OR = {
-						has_non_aggression_pact = root.owner
-						has_association_status = root.owner
+					num_non_aggression_pacts > 0
+					exists = associated_federation
 					}
 				}
 			}
 		}
-	}
 
 	demand = {
 		title = "ISOLATIONIST_NON_AGGRESSION2"
@@ -543,7 +552,7 @@ isolationist = {
 				owner = {
 					OR = {
 						is_subject = no
-						NOT = { is_subject_type = dominion }
+						NOT = { any_agreement = { agreement_preset = preset_dominion } }
 					}
 				}
 			}

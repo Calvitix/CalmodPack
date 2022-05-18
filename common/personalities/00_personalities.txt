@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.3.2  28.02.2022
+# Calvitix Check 3.4.2  15.05.2022
 #
 # Merge with Starnet AI 16.09.2021
 # Merge with New frontiers 28.02.2022
@@ -18,8 +18,6 @@
 # robot_exploiter -> Will they use robots for menial labor?
 # robot_liberator -> Will they give rights to robots?
 # propagator -> Will they only get aggressive once boxed in?
-# multispecies -> Will they give rights to aliens?
-# species_mod_priority = {}		define weights for how much the AI should try to modify a given species (root=country, this=species)
 # multispecies -> Will they give rights to aliens?
 # species_mod_priority = {}		define weights for how much the AI should try to modify a given species (root=country, this=species)
 # crisis_leader -> Will they fight the crisis and invite others to do so (Fallen Empires special behviour. Emperor/Custodian will behave the same way regardless of this flag.)
@@ -103,24 +101,28 @@ honorbound_warriors = {
 
 	allow = {
 		OR = {
-			is_country_type = default
-			is_country_type = ark
-		}
-		OR = {
+			is_country_type = enclave_mercenary
 			AND = {
-				has_ethic = "ethic_fanatic_militarist"
 				OR = {
-					has_ethic = "ethic_spiritualist"
-					has_ethic = "ethic_egalitarian"
-					has_ethic = "ethic_xenophile"
-				}			
-			}
-			AND = {
-				has_ethic = "ethic_fanatic_xenophile"
-				has_ethic = "ethic_militarist"
+					is_country_type = default
+					is_country_type = ark
+				}
+				OR = {
+					AND = {
+						has_ethic = "ethic_fanatic_militarist"
+						OR = {
+							has_ethic = "ethic_spiritualist"
+							has_ethic = "ethic_egalitarian"
+							has_ethic = "ethic_xenophile"
+						}			
+					}
+					AND = {
+						has_ethic = "ethic_fanatic_xenophile"
+						has_ethic = "ethic_militarist"
+					}
+				}
 			}
 		}
-
 	}
 
 	weight_modifier = {
@@ -1929,6 +1931,44 @@ galactic_defense_force = {
 
 	allow = {
 		is_country_type = gdf
+	}
+
+	weight_modifier = {
+		weight = 10000
+	}
+}
+
+imperial_origin_overlord_ai = {
+	aggressiveness = 0.1
+	trade_willingness = 0.25
+	bravery = 0.5
+	combat_bravery = 0.5
+
+	military_spending = 1.0
+	colony_spending = 0.5
+
+	behaviour = {
+		conqueror = no
+		subjugator = no
+		liberator = no
+		opportunist = no
+		slaver = no
+		uplifter = no
+		purger = no
+		displacer = no
+		dominator = no
+		infiltrator = no
+		robot_exploiter = no
+		robot_liberator = no
+		propagator = no
+		multispecies = no
+		crisis_fighter = yes
+		crisis_leader = no
+		attack_neutrals = no
+	}
+
+	allow = {
+		has_origin = origin_imperial_vassal_overlord
 	}
 
 	weight_modifier = {

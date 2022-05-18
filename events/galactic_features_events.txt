@@ -1,7 +1,7 @@
 
 # Original File
 #
-# Calvitix Check 3.3b  21.01.2022
+# Calvitix Check 3.4.2  18.05.2022
 #
 # Merge with JLPicard
 # Merge with MEM 
@@ -189,7 +189,7 @@ planet_event = {
 
 	immediate = {
 		from = {
-			random_owned_ship = {
+			random_controlled_ship = {
 				ship_event = { id = galactic_features.300 }
 			}
 		}
@@ -270,6 +270,7 @@ ship_event = {
 			owner = {
 				create_fleet = {
 					effect = {
+						set_owner = root.owner
 						while = {
 							count = 4
 							create_ship = {
@@ -286,7 +287,6 @@ ship_event = {
 								graphical_culture = "fallen_empire_01"
 							}
 						}
-						set_owner = root.owner
 						set_location = FROMFROM
 					}
 				}
@@ -2851,8 +2851,14 @@ country_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		is_country_type = tiyanki_garrison
-		num_ships = 0
+		fromfrom.solar_system = {
+			has_star_flag = tiyanki_spawn_system
+			NOT = {
+				any_fleet_in_system = {
+					has_fleet_flag = tiyanki_home_system_fleet
+				}
+			}
+		}
 	}
 
 	immediate = {
@@ -2908,8 +2914,8 @@ country_event = {
 		}
 		text = "galactic_features.367.c.desc"
 	}
-	picture = GFX_evt_binary_stars
-	show_sound = event_space_cloud
+	picture = GFX_evt_tiyanki_family
+	show_sound = evn_ove_tiyanki_family
 
 	is_triggered_only = yes
 
@@ -3040,8 +3046,8 @@ ship_event = {
 		}
 		text = "galactic_features.368.alt.desc"
 	}
-	picture = GFX_evt_binary_stars
-	show_sound = event_scanner
+	picture = GFX_evt_tiyanki_family
+	show_sound = evn_ove_tiyanki_family
 	location = from
 
 	is_triggered_only = yes
@@ -3132,8 +3138,8 @@ country_event = {
 		}
 		text = "galactic_features.370.b.desc"
 	}
-	picture = GFX_evt_binary_stars
-	show_sound = event_space_cloud
+	picture = GFX_evt_tiyanki_family
+	show_sound = evn_ove_tiyanki_family
 
 	is_triggered_only = yes
 
@@ -3377,7 +3383,7 @@ country_event = {
 	id = galactic_features.385
 	title = "galactic_features.385"
 	desc = "galactic_features.385.desc"
-	picture = GFX_evt_unknown_ships
+	picture = GFX_evt_tiyanki_family
 	show_sound = event_energy_field
 	location = event_target:tiyanki_kill_system
 
@@ -3419,6 +3425,7 @@ country_event = {
 			clear_variable = tiyanki_bull_kills
 			clear_variable = tiyanki_calf_kills
 			clear_variable = tiyanki_hatchling_kills
+			clear_variable = tiyanki_ox_kills
 			 # Return to neutral so other Tiyanki aren't hostile
 			set_faction_hostility = {
 				target = event_target:tiyanki_country
@@ -3474,6 +3481,17 @@ country_event = {
 				energy = 150
 				exotic_gases = 15
 				mult = tiyanki_hatchling_kills
+			}
+		}
+		if = {
+			limit = {
+				check_variable = { which = tiyanki_ox_kills value > 0 }
+			}
+			custom_tooltip = harvested_oxes
+			add_resource = {
+				energy = 1000
+				exotic_gases = 50
+				mult = tiyanki_ox_kills
 			}
 		}
 	}

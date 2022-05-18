@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.3.1  23.02.2022
+# Calvitix Check 3.4.2  15.05.2022
 #
 # Merge with Arisphaos Unofficial patch 19.11.2021
 # Merge with Expanded events 28.11.2021
@@ -963,9 +963,8 @@ can_vote_in_democratic_election = {
 can_generate_leader_from_pop = {
 	has_citizenship_rights = yes
 	NOT = { has_trait = trait_syncretic_proles }
+	can_think = yes
 	NOT = { has_trait = trait_tree_caretaker } #expanded event mod
-	NOT = { has_trait = trait_nerve_stapled }
-	NOT = { has_trait = trait_zombie } #ori3.3b
 	NOT = { has_trait = trait_plentiful_traditions_pt_cocoon } #Plentiful_perk
 	NOT = { has_trait = trait_memorex_comatos } #expanded event mod
 	NOT = { has_trait = trait_infested_basic } #expanded event mod
@@ -1076,10 +1075,16 @@ can_release_vassal_from_species = {
 		is_sapient = yes
 		NOR = {
 			has_trait = trait_machine_unit
-			has_trait = trait_hive_mind
+			AND = {
+				has_trait = trait_hive_mind
+				NOT = { prev.this = { has_origin = origin_progenitor_hive } }
+			}
+			AND = {
+				NOT = { has_trait = trait_hive_mind }
+				prev.this = { has_authority = auth_hive_mind }
+			}
 			has_trait = trait_mechanical
-			has_trait = trait_nerve_stapled
-			has_trait = trait_zombie #Ori 3.3b
+			can_think = no
 			has_trait = trait_plentiful_traditions_pt_cocoon #Plentiful_perk
 		}
 	}
@@ -1132,6 +1137,13 @@ can_modify_species = {
 #This rule is a condition for when subjects that normally cannot colonize outside their borders are allowed to
 subject_can_expand = {
 	root = { has_valid_civic = civic_feudal_realm }
+	NAND = {
+		is_ai = yes
+		AND = {
+			exists = overlord
+			overlord = { has_origin = origin_imperial_vassal_overlord }
+		}
+	}
 }
 
 #Root = country, attacker
@@ -1205,7 +1217,7 @@ can_take_hostile_actions = {
 	}
 	else_if = {
 		limit = {
-			ROOT = { is_subject_type = satrapy }
+			ROOT = { any_agreement = { agreement_preset = preset_satrapy } }
 			is_country_type = faction
 			root = {
 				any_owned_planet = {
@@ -1223,7 +1235,7 @@ can_take_hostile_actions = {
 	}
 	else_if = {
 		limit = {
-			ROOT = { is_subject_type = satrapy }
+			ROOT = { any_agreement = { agreement_preset = preset_satrapy } }
 		}
 		custom_tooltip = {
 			text = "CAN_TAKE_HOSTILE_ACTION_SATRAPY"
@@ -1234,7 +1246,7 @@ can_take_hostile_actions = {
 		limit = {
 			exists = overlord
 			overlord = { is_same_value = root }
-			is_subject_type = satrapy
+			ROOT = { any_agreement = { agreement_preset = preset_satrapy } }
 		}
 		custom_tooltip = {
 			text = "CAN_TAKE_HOSTILE_ACTION_OVERLORD"
@@ -1253,16 +1265,7 @@ can_declare_war = {
 	custom_tooltip = {
 		fail_text = "ACTION_DECLARE_WAR_OVERLORD_ON_SUBJECT"
 		NOT = {
-			AND = {
-				OR = {
-					is_subject_type = "vassal"
-					is_subject_type = "protectorate"
-					is_subject_type = "signatory"
-				}
-				overlord = {
-					is_same_value = root
-				}
-			}
+			has_overlord = ROOT
 		}
 	}
 	if = {
@@ -1435,8 +1438,7 @@ species_has_happiness = {
 	NOR = {
 		has_trait = trait_machine_unit
 		has_trait = trait_hive_mind
-		has_trait = trait_nerve_stapled
-		has_trait = trait_zombie #Ori3.3b
+		can_think = no
 		has_trait = trait_memorex_comatos #expanded event mod
 #Trait Diversity
         has_trait = trait_td_multi_hiveminded
@@ -1598,6 +1600,11 @@ can_species_be_assembled = {
 					has_building = building_posthumous_employment_center 
 				}
 			}
+			else_if = {
+				limit = {
+					root = { has_modifier = tiyanki_trophy }
+				}
+			}
 			else = {
 				root = { has_building = building_clone_vats }
 			}
@@ -1613,46 +1620,35 @@ can_species_be_assembled = {
 #Root = fleet, potential attacker
 #From = planet, potential target
 can_orbital_bombard = {
-    exists = from.owner
+	exists = FROM.OWNER
     NOT = {
-        any_owned_ship = {
+        any_controlled_ship = {
             is_ship_size = colossus
         }
     }
     OR = {
         AND = {
-            ROOT.OWNER = {
-                NOT = {
-                    has_communications = FROM.OWNER
+			ROOT.CONTROLLER = {
+				NOT = { has_communications = FROM.OWNER }
                 }
-            }
             FROM.OWNER = {
-                NOT = {
-                    is_country_type = primitive
+				NOT = { is_country_type = primitive }
                 }
             }
-        }
         AND = {
-            ROOT.OWNER = {
+			ROOT.CONTROLLER = {
                 NOR = {
                     has_policy_flag = interference_passive
                     has_policy_flag = interference_active
                 }
             }
-            FROM.OWNER = {
-                is_country_type = primitive
+			FROM.OWNER = { is_country_type = primitive }
             }
         }
 		# Risa fix.
-		ROOT.OWNER = {
-            is_hostile = FROM.CONTROLLER
-        }
-        ROOT.OWNER = {
-            is_at_war_with = FROM.CONTROLLER
-        }
-        FROM = {
-            is_planet_class = pc_infested
-        }
+		ROOT.CONTROLLER = { is_hostile = FROM.CONTROLLER }
+		ROOT.CONTROLLER = { is_at_war_with = FROM.CONTROLLER }
+        FROM = { is_planet_class = pc_infested }
         FROM.CONTROLLER = {
             OR = {
                 is_country_type = swarm
@@ -1665,13 +1661,11 @@ can_orbital_bombard = {
                 is_country_type = katzenartig_imperium #Giga
                 AND = {
                     is_country_type = awakened_marauders
-                    ROOT.OWNER = {
-                        is_hostile = prev
-                    }
+					ROOT.CONTROLLER = { is_hostile = prev }
                 }
             }
         }
-        ROOT.OWNER = {
+		ROOT.CONTROLLER = {
             OR = {
                 is_country_type = extradimensional
                 is_country_type = extradimensional_2
@@ -1707,16 +1701,14 @@ can_orbital_bombard = {
         AND = {
             from.controller = {
                 is_country_type = faction
-                NOT = {
-                    is_same_value = root.owner
-                }
+				NOT = { is_same_value = ROOT.CONTROLLER }
             }
             from.owner = {
-                is_same_value = root.owner
+				is_same_value = ROOT.CONTROLLER
             }
         }
         AND = { #Mem
-            exists = ROOT.OWNER
+            exists = ROOT.CONTROLLER
             exists = FROM.CONTROLLER
             ROOT.OWNER = {
                 OR = {
@@ -1764,16 +1756,12 @@ has_full_sensor_range = {
 # from: winner
 # root: loser
 show_notification_for_ground_combat = {
-	NOR = {
-		has_planet_flag = slave_revolt
-		has_planet_flag = revolt_in_progress
-	}
+	NOT = { has_planet_flag = slave_revolt }
 }
 
 # Determines if the "per_neighbor_rival" static modifier should be applied to an empire
 # this: country
 should_apply_neighbor_rival_modifier = {
-	# 3.1.1
 	#has_tradition = tr_supremacy_great_game
 	always = no
 }
@@ -1799,15 +1787,15 @@ is_extradimensional_portal = { # is this portal mine
 		OR = {
 			AND = { # portal is unbidden and I am unbidden
 				root = { is_country_type = extradimensional }
-				any_owned_ship = { has_ship_flag = unbidden_portal }
+				any_controlled_ship = { has_ship_flag = unbidden_portal }
 			}
 			AND = { # portal is aberrant and I am aberrant
 				root = { is_country_type = extradimensional_2 }
-				any_owned_ship = { has_ship_flag = aberrant_portal }
+				any_controlled_ship = { has_ship_flag = aberrant_portal }
 			}
 			AND = { # portal is vehement and I am vehement
 				root = { is_country_type = extradimensional_3 }
-				any_owned_ship = { has_ship_flag = vehement_portal }
+				any_controlled_ship = { has_ship_flag = vehement_portal }
 			}
 		}
 	}
@@ -1824,7 +1812,7 @@ is_extradimensional_anchor = {
 			is_country_type = extradimensional_3
 		}
 	}
-	any_owned_ship = { is_ship_size = starbase_exd }
+	any_controlled_ship = { is_ship_size = starbase_exd }
 	owner = { is_same_empire = root }
 }
 
@@ -1921,6 +1909,7 @@ can_orbitable_repair_ships = {
 			OR = {
 				has_starbase_size >= starbase_starport
 				has_starbase_size = juggernaut
+				has_starbase_size = enclave_mercenary_station
 			}
 			fleet = {
 				is_disabled = no
@@ -2496,26 +2485,91 @@ can_build_branch_office_on_planet = {
 			owner = { has_commercial_pact = root }
 			owner = { is_in_federation_with = root }
 
-			# allow branch offices in subsidiaries and vice versa
-			# Disabled by Ver exp.
+			# allow branch offices in subsidiaries and vice versa (and fellow subjects)
+			# Disabled by Ver exp., reenabled with 3.4.2
 			root = {
 				is_subject = yes
-				#is_subject_type = subsidiary
-				overlord = { is_same_value = owner }
+				OR = {
+					has_authority = auth_corporate
+					has_civic = civic_galactic_sovereign_megacorp
+				}
+				overlord = {
+					OR = {
+						is_same_value = prevprev.owner
+						is_same_value = prevprev.owner.overlord
+					}
+				}
 			}
 			owner = {
 				is_subject = yes
-				#is_subject_type = subsidiary
-				overlord = { is_same_value = root }
+				overlord = {
+					OR = {
+						is_same_value = root
+						is_same_value = root.overlord
+					}
+					OR = {
+						has_authority = auth_corporate
+						has_civic = civic_galactic_sovereign_megacorp
+					}
+				}
 			}
-			#AND = {
-			#	root = { has_civic = civic_galactic_sovereign_megacorp }
-			#	owner = { is_galactic_community_member = yes }
-			#}
-			#AND = {
-			#	root = { has_modifier = imperial_charter }
-			#	owner = { is_galactic_community_member = yes }
-			#}
+			AND = {
+				root = { has_civic = civic_galactic_sovereign_megacorp }
+				owner = { is_galactic_community_member = yes }
+			}
+			AND = {
+				root = { has_modifier = imperial_charter }
+				owner = { is_galactic_community_member = yes }
+			}
+		}
+	}
+	custom_tooltip = {
+		fail_text = BRANCH_OFFICE_MEGACORP_OVERLORD
+		exists = owner
+		# failure message for having a corporate overlord
+
+		if = {
+			limit = {
+				OR = {
+					# Not valid if you aren't a subject.
+					root = {
+						is_subject = no
+					}
+					# Or if your overlord isn't a megacorp.
+					root = {
+						is_subject = yes
+						overlord = {
+							NOR = {
+								has_authority = auth_corporate
+								has_civic = civic_galactic_sovereign_megacorp
+							}
+						}
+					}
+				}
+			}
+			always = yes
+		}
+		else = {
+			AND = {
+				root = {
+					is_subject = yes
+					overlord = {
+						OR = {
+							has_authority = auth_corporate
+							has_civic = civic_galactic_sovereign_megacorp
+						}
+					}
+				}
+				owner = {
+					OR = {
+						is_subject = no
+						AND = {
+							is_subject = yes
+							overlord = { NOT = { is_same_value = root.overlord } }
+						}
+					}
+				}
+			}
 		}
 	}
 	custom_tooltip = {
@@ -2756,15 +2810,21 @@ has_enough_pops_for_necrophage_on_planet = {
 # This = pop
 # Purge, Sapience, Migration Controls policy (ignored by Gestalts and Synths), and target habitability are checked in code.
 can_pop_auto_migrate = {
-	is_unemployed = yes
+	hidden_trigger = { is_unemployed = yes } #this is always true where this tooltip is called
+	custom_tooltip = {
+		fail_text = AUTO_MIGRATE_ASSIMILATED
 	is_being_assimilated = no
-	OR = {
-		AND = {
-			is_shackled_robot = no
-			is_enslaved = no
+	}
+	if = {
+		limit = {
+			OR = {
+				is_shackled_robot = yes
+				is_enslaved = yes
+			}
 		}
-	planet = {
-			has_building = building_slave_processing
+		custom_tooltip = {
+			fail_text = AUTO_MIGRATE_SLAVE_PROCESSING
+			planet = { has_building = building_slave_processing }
 		}
 	}
 }
@@ -2772,19 +2832,26 @@ can_pop_auto_migrate = {
 # This = planet
 # Checked before can_pop_auto_migrate to save performance
 can_planet_auto_migrate = {
+	custom_tooltip = {
+		fail_text = AUTO_MIGRATE_CULTURE_SHOCK
 		NOT = { has_modifier = planet_culture_shock }
-		is_colony = yes		
-	OR = {
+	}
+	custom_tooltip = {
+		fail_text = AUTO_MIGRATE_COLONY_TOO_NEW
+		OR = {			
 			colony_age > 60
 			is_capital = yes # Don't break Doomsday!
 			has_planet_flag = pd_habitat_start_luna #PD ?
 			has_planet_flag = pd_habitat_start_mars #PD ?
+		}
 	}
-	exists = owner
-	owner = {
-		OR = {
-			is_country_type = default
-			is_country_type = awakened_fallen_empire
+	hidden_trigger = {
+		exists = owner
+		owner = {
+			OR = {
+				is_country_type = default
+				is_country_type = awakened_fallen_empire
+			}
 		}
 	}
 }
@@ -2987,8 +3054,7 @@ can_fill_ruler_job = {
 			is_being_purged = no
 			is_being_assimilated = no
 			NOT = { has_trait = trait_syncretic_proles }
-			NOT = { has_trait = trait_nerve_stapled }
-			NOT = { has_trait = trait_zombie }
+			can_think = yes
 			OR = {
 				NOT = { has_trait = trait_mechanical }
 				AND = {
@@ -3008,14 +3074,10 @@ can_fill_ruler_job = {
 }
 
 # Checks whether the game should try and build a building or district on a planet via scripts in common/colony_automation
-# Does not apply to "crisis building" (colony_automation_exceptions) or sector automation (sector_focuses)
+# Does not apply to "emergency building" (colony_automation_exceptions) 
 # this = planet
 should_planetary_automate = {
-	OR = {
-		free_jobs < 3
-		num_unemployed > 0
-	}
-	has_building_construction = no
+	always = yes
 }
 
 # this = leader
@@ -3025,6 +3087,79 @@ can_dismiss_leader = {
 		exists = owner
 		owner = {
 			NOT = { has_valid_civic = civic_feudal_realm }
+		}
+	}
+}
+
+# From = country, country that tries to connect using relay network
+# ROOT/This = country, target country to connect to using relay network
+can_country_connect_to_relay_network = {
+	AND = {
+		is_primitive = no
+		OR = {
+			is_country_type = default
+			is_subject = yes
+			is_overlord = yes
+		}
+	}
+}
+
+# This = leader, leader we'd like to trade
+# Root = country, country that owns the leader currently
+# From = country, country that would receive the leader
+can_trade_leader = {
+	# The leader must have a trait from a specialist subject type.
+	this = { has_specialist_subject_leader_trait = yes }
+	# The subject and overlord must both be regular empires, machine intelligences or hive-minds.
+	OR = {
+		AND = {
+			ROOT = {
+				is_regular_empire = yes
+			}
+			FROM = {
+				is_regular_empire = yes
+			}
+		}
+		AND = {
+			ROOT = {
+				has_authority = auth_machine_intelligence
+			}
+			FROM = {
+				has_authority = auth_machine_intelligence
+			}
+		}
+		AND = {
+			ROOT = {
+				has_authority = auth_hive_mind
+			}
+			FROM = {
+				has_authority = auth_hive_mind
+			}
+		}
+	}
+	# The overlord can't be a fallen or awakened empire.
+	ROOT = {
+		NAND = {
+			is_overlord = yes
+			OR = {
+				is_country_type = fallen_empire
+				is_country_type = awakened_fallen_empire
+			}
+		}
+	}
+}
+
+# This = fleet, fleet we'd like to trade
+# Root = country, country that owns the fleet currently
+# From = country, country that would receive the fleet
+can_trade_fleet = {
+	ROOT = {
+		NAND = {
+			is_overlord = yes
+			OR = {
+				is_country_type = fallen_empire
+				is_country_type = awakened_fallen_empire
+			}
 		}
 	}
 }

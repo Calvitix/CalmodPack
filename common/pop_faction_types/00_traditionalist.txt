@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.3.1  21.01.2022
+# Calvitix Check 3.4.2  15.05.2022
 #
 # Merge with Banned  17.01.2022
 # Merged with Planetary Div. Exotic world 24.02.2022
@@ -24,11 +24,25 @@ traditionalist = {
 	}
 
 	is_potential = {
-		years_passed > 10
-		has_encountered_other_species = yes
-		NOT = { has_ethic = ethic_gestalt_consciousness }
-		NOT = { has_country_flag = suppress_vanilla_factions }
-		NOT = { has_modifier = banned_spiritualist } #Banned mod
+		is_faction_allowed = yes
+
+		if = {
+			limit = {
+				has_faction = traditionalist
+				any_pop_faction = {
+					is_pop_faction_type = traditionalist
+					num_pops >= 5
+				}
+			}
+		}
+		else = {
+			count_owned_pop = {
+				count >= 5
+				limit = {
+					has_ethic = ethic_spiritualist
+				}
+			}
+		}
 	}
 
 	parameters = {
@@ -47,10 +61,7 @@ traditionalist = {
 	}
 
 	can_join_faction = {
-		NOR = { 
-			has_trait = trait_nerve_stapled	
-			has_trait = trait_zombie 
-		}
+		can_think = yes
 		OR = {
 			has_ethic = ethic_spiritualist
 			has_ethic = ethic_fanatic_spiritualist
@@ -302,6 +313,7 @@ traditionalist = {
 			host_has_dlc = "Utopia"
 			exists = owner
 			owner = {
+				NOT = { has_origin = origin_shroudwalker_apprentice }
 				OR = {
 					num_ascension_perks > 0
 					num_ascension_perk_slots > 0
@@ -349,22 +361,11 @@ traditionalist = {
 		unfulfilled_effect = -0.001
 
 		potential = {
-			exists = owner
-			owner = {
-				pop_percentage = {
-					percentage > 0.09
-					limit = { pop_has_ethic = ethic_spiritualist }
-				}
-			}			
+			support >= 0.1
 		}
 
 		trigger = {
-			owner = {
-				pop_percentage = {
-					percentage > 0.24
-					limit = { pop_has_ethic = ethic_spiritualist }
-				}
-			}
+			support >= 0.25
 		}
 	}
 
@@ -377,22 +378,11 @@ traditionalist = {
 		fulfilled_effect = 0.001
 
 		potential = {
-			exists = owner
-			owner = {
-				pop_percentage = {
-					percentage < 0.25
-					limit = { pop_has_ethic = ethic_spiritualist }
-				}
-			}
+			support < 0.25
 		}
 
 		trigger = {
-			owner = {
-				pop_percentage = {
-					percentage > 0.09
-					limit = { pop_has_ethic = ethic_spiritualist }
-				}
-			}
+			support >= 0.1
 		}
 	}
 
@@ -495,7 +485,7 @@ traditionalist = {
 				owner = {
 					OR = {
 						is_subject = no
-						NOT = { is_subject_type = dominion }
+						NOT = { any_agreement = { agreement_preset = preset_dominion } }
 					}
 				}
 			}

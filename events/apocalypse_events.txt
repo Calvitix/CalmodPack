@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.1.1  15.09.2021
+# Calvitix Check 3.4.2  18.05.2022
 #
 # Merge with Arisphaos Unofficial patch
 #
@@ -110,6 +110,7 @@ ship_event = {
 }
 
 # Encountered Natural Wormhole
+# Via on_entering_system_first_time | this = Ship; from = System; fromfrom = Country
 ship_event = {
 	id = apoc.5
 	title = apoc.5.name
@@ -122,10 +123,16 @@ ship_event = {
 	
 	trigger = {
 		owner = {
-			NOT = { has_country_flag = encountered_first_wormhole }
+			NOT = {
+				has_country_flag = encountered_first_wormhole 
+			}
 		}
 		FROM = {
 			has_natural_wormhole = yes
+			NOR = {
+				has_star_flag = shroud_tunnel_nexus
+				has_star_flag = shroud_tunnel_node
+			}
 		}
 	}
 	
@@ -491,7 +498,10 @@ country_event = {
 					}
 					AND = {
 						host_has_dlc = "Utopia"
+						OR = {
 						has_ascension_perk = ap_mind_over_matter
+							has_origin = origin_shroudwalker_apprentice
+						}
 					}		
 				}	
 			}
@@ -514,7 +524,10 @@ country_event = {
 				}
 				AND = {
 					host_has_dlc = "Utopia"
+					OR = {
 					has_ascension_perk = ap_mind_over_matter
+						has_origin = origin_shroudwalker_apprentice
+					}
 				}
 			}
 		}

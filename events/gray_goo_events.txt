@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.2  19.11.2021
+# Calvitix Check 3.4.2  18.05.2022
 #
 # Merge with Arisphaos Unofficial patch 19.11.2021
 # Merge with JL PICARD 04.05.2021
@@ -401,7 +401,7 @@ country_event = {
 	is_triggered_only = yes
 
 	immediate = {
-		random_owned_ship = {
+		random_controlled_ship = {
 			limit = { is_ship_size = graygoo_factory }
 			save_event_target_as = graygoo_factory
 		}
@@ -492,7 +492,7 @@ country_event = {
 				days = -1
 			}
 		}
-		every_owned_fleet = { destroy_fleet = this }
+		every_controlled_fleet = { destroy_fleet = this }
 		destroy_country = yes
 ###Expanded events
 		if = {
@@ -2056,7 +2056,7 @@ country_event = {
 				days = -1
 			}
 		}
-		every_owned_fleet = { destroy_fleet = this }
+		every_controlled_fleet = { destroy_fleet = this }
 		destroy_country = yes
 	}
 }
@@ -2529,12 +2529,14 @@ country_event = {
 		if = {
 			limit = {
 				any_owned_planet = {
-					leader = { is_same_value = event_target:gray_governor }
+					exists = sector.leader
+					sector.leader = { is_same_value = event_target:gray_governor }
 				}
 			}
 			random_owned_planet = {
 				limit = {
-					leader = { is_same_value = event_target:gray_governor }
+					exists = sector.leader
+					sector.leader = { is_same_value = event_target:gray_governor }
 				}
 				save_event_target_as = gray_governor_planet
 			}
@@ -2598,7 +2600,7 @@ country_event = {
 		NOT = { has_country_flag = gray_reforming }
 		NOT = { has_country_flag = gray_diplomacy_engaged }
 		exists = event_target:gray_warship
-		any_owned_fleet = { is_same_value = event_target:gray_warship }
+		any_controlled_fleet = { is_same_value = event_target:gray_warship }
 		event_target:gray_warship = { num_ships > 0 }
 	}
 

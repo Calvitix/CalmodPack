@@ -1,3 +1,8 @@
+# Original File
+#
+# Check 3.4.2   18.05.2022
+#
+#
 wg_imperial_crusade = {
 	casus_belli = cb_event
 
@@ -47,6 +52,41 @@ wg_imperial_crusade = {
 
 			last_created_country = {
 				add_to_galactic_community = yes
+			}
+
+			if = {
+				limit = {
+					root = { has_authority = auth_corporate }
+					last_created_country = { has_authority = auth_corporate }
+				}
+				last_created_country = {
+					if = {
+						limit = {
+							has_technology = tech_galactic_administration
+						}
+						change_government = {
+							authority = auth_oligarchic
+							cooldown = no
+							remove_invalid_civics = yes
+							civics = {
+								civic = civic_merchant_guilds
+								civic = random
+								civic = random
+							}
+						}
+					}
+					else = {
+						change_government = {
+							authority = auth_oligarchic
+							cooldown = no
+							remove_invalid_civics = yes
+							civics = {
+								civic = civic_merchant_guilds
+								civic = random
+							}
+						}
+					}
+				}
 			}
 		}
 	}
@@ -279,7 +319,10 @@ wg_imperial_rebuke = {
 		from = { is_galactic_community_member = yes }
 	}
 	possible = {
-		always = yes
+		custom_tooltip = {
+			fail_text = pax_galactica_active
+			NOT = { is_active_resolution = resolution_emperor_pax_galactica }
+		}
 	}
 	on_accept = {
 		custom_tooltip = wg_humiliation_accept
@@ -397,6 +440,10 @@ wg_take_galatron_imperium = {
 				is_galactic_community_member = no
 			}
 		}
+		custom_tooltip = {
+			fail_text = pax_galactica_active
+			NOT = { is_active_resolution = resolution_emperor_pax_galactica }
+		}
 	}
 	on_accept = {
 		hidden_effect = {
@@ -473,11 +520,15 @@ wg_expel_corp_imperium = {
 				is_galactic_community_member = no
 			}
 		}
+		custom_tooltip = {
+			fail_text = pax_galactica_active
+			NOT = { is_active_resolution = resolution_emperor_pax_galactica }
+		}
 	}
 	on_status_quo = {
 		every_owned_planet = {
 			limit = { has_branch_office = from }
-			hidden_effect = { branch_office_owner = { add_resource = { energy = 1000 } } }
+			hidden_effect = { branch_office_owner = { add_resource = { energy = 1000 } } } #debug
 			close_branch_office = yes
 		}
 		custom_tooltip = wg_expel_corp_status_quo_effects
@@ -534,6 +585,10 @@ wg_hostile_takeover_imperium = {
 				from = { is_galactic_emperor = no }
 				is_galactic_community_member = no
 			}
+		}
+		custom_tooltip = {
+			fail_text = pax_galactica_active
+			NOT = { is_active_resolution = resolution_emperor_pax_galactica }
 		}
 	}
 	on_accept = {
@@ -600,6 +655,10 @@ wg_steal_galatron_imperium = {
 				from = { is_galactic_emperor = no }
 				is_galactic_community_member = no
 			}
+		}
+		custom_tooltip = {
+			fail_text = pax_galactica_active
+			NOT = { is_active_resolution = resolution_emperor_pax_galactica }
 		}
 	}
 	on_accept = {

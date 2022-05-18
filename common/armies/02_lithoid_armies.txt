@@ -1,32 +1,42 @@
+#
+# Armies with food fiel
+# Check 2.4.2,    15.05.2022
+#
+# 
+#
 
 # Assault Armies
 assault_army_lithoids = {
 	damage = 0.75
-	health = 2
-	morale = 2
-	morale_damage = 1
+	health = 2.00
+	morale = 2.00
+	morale_damage = 1.00
 	collateral_damage = 1.25
 	war_exhaustion = 1
 	time = 90
 	icon = GFX_army_type_lithoid
-	prerequisites = {
-		"tech_assault_armies"
-	}
+	prerequisites = { "tech_assault_armies" }
 	resources = {
 		category = armies
 		cost = {
 			minerals = 100
 		}
+
 		upkeep = {
 			energy = 1
 			minerals = 0.5
 		}
 	}
+
 	show_tech_unlock_if = {
 		OR = {
-			NOT = {
-				has_authority = auth_machine_intelligence
-			}
+			NOT = { has_authority = auth_machine_intelligence }
+			has_valid_civic = civic_machine_assimilator
+		}
+	}
+	potential_country = {
+		OR = {
+			NOT = { has_authority = auth_machine_intelligence }
 			has_valid_civic = civic_machine_assimilator
 		}
 	}
@@ -34,25 +44,50 @@ assault_army_lithoids = {
 		from = {
 			has_trait = "trait_lithoid"
 		}
-		owner = {
+
+	}
+	ai_weight = {
+		base = 100
+		modifier = {
+			set = 0
 			OR = {
-				NOT = {
-					has_authority = auth_machine_intelligence
+				is_fallen_empire = yes
+				has_technology = tech_telepathy
+				has_technology = tech_gene_seed_purification
+				AND = {
+					OR = {
+						has_ethic = ethic_militarist
+						has_ethic = ethic_fanatic_militarist
+					}
+					has_technology = tech_gene_banks
 				}
-				has_valid_civic = civic_machine_assimilator
 			}
 		}
-	}
+		modifier = {
+			factor = 0.01 #cannot guarantee that they actually have slaves/robots to get armies from
+			OR = {
+				AND = {
+					has_ai_personality_behaviour = slaver
+					has_technology = tech_neural_implants
+				}
+				AND = {
+					has_ai_personality_behaviour = robot_liberator
+					has_technology = tech_droid_workers
+				}
+				has_valid_civic = civic_reanimated_armies
+			}
+		}
+	}		
 }
 
 # Slave Armies
 slave_army_lithoids = {
 	damage = 0.75
-	health = 2
+	health = 2.00
 	morale = 0.75
 	morale_damage = 0.75
-	collateral_damage = 1.5
-	war_exhaustion = 0.5
+	collateral_damage = 1.50
+	war_exhaustion = 0.50
 	time = 60
 	icon = GFX_army_type_lithoid
 	resources = {
@@ -65,40 +100,58 @@ slave_army_lithoids = {
 			minerals = 0.25
 		}
 	}
-	prerequisites = {
-		"tech_neural_implants"
-	}
+
+	prerequisites = { "tech_neural_implants" }
+
 	allow = {
 		has_building = building_slave_processing
+		any_owned_pop = { is_pop_category = slave }
+		}
+	potential_country = {
+		has_policy_flag = slavery_allowed
+		NOT = { has_authority = auth_machine_intelligence }
 		any_owned_pop = {
 			is_pop_category = slave
+			is_same_species = from
 		}
 	}
 	potential = {
-		owner = {
-			any_owned_pop = {
-				is_pop_category = slave
-				is_same_species = from
-			}
-		}
 		from = {
 			has_trait = "trait_lithoid"
 		}
-		owner = {
-			has_policy_flag = slavery_allowed
-			NOT = {
-				has_authority = auth_machine_intelligence
+	}	
+	
+	ai_weight = {
+		base = 100
+		modifier = {
+			set = 0
+			OR = {
+				is_fallen_empire = yes
+				NOT = { has_ai_personality_behaviour = slaver }
+				has_technology = tech_telepathy
+				has_technology = tech_gene_seed_purification
+				AND = {
+					OR = {
+						has_ethic = ethic_militarist
+						has_ethic = ethic_fanatic_militarist
+					}
+					has_technology = tech_gene_banks
+				}
+				AND = {
+					has_ai_personality_behaviour = robot_liberator
+					has_technology = tech_droid_workers
+				}
 			}
 		}
-	}
+	}	
 }
 
 # Clone Armies
 clone_army_lithoids = {
 	damage = 0.75
 	health = 2.25
-	morale = 1
-	collateral_damage = 1.5
+	morale = 1.00
+	collateral_damage = 1.5 # 1.25
 	war_exhaustion = 0.5
 	time = 40
 	icon = GFX_army_type_lithoid
@@ -126,17 +179,17 @@ clone_army_lithoids = {
 			has_civic = civic_machine_assimilator
 		}
 	}
+	potential_country = {
+		OR = {
+			NOT = {
+				has_authority = auth_machine_intelligence
+			}
+			has_civic = civic_machine_assimilator
+		}
+	}
 	potential = {
 		from = {
 			has_trait = "trait_lithoid"
-		}
-		owner = {
-			OR = {
-				NOT = {
-					has_authority = auth_machine_intelligence
-				}
-				has_civic = civic_machine_assimilator
-			}
 		}
 	}
 }

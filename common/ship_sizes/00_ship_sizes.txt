@@ -149,6 +149,20 @@ corvette = {
 			}
 	}
 ###
+
+	ai_ship_data = {
+		fraction = {
+			base = 0
+			modifier = {
+				add = 25
+				uses_standard_ship_sizes = yes
+			}
+			modifier = {
+				factor = 1.5
+				is_hive_empire = yes
+			}
+		}
+	}
 }
 
 destroyer = {
@@ -211,6 +225,15 @@ destroyer = {
 			}
 		}
 	}
+	ai_ship_data = {
+		fraction = {
+			base = 0
+			modifier = {
+				add = 25
+				uses_standard_ship_sizes = yes
+			}
+		}
+	}	
 }
 
 cruiser = {
@@ -262,6 +285,21 @@ cruiser = {
 	required_component_set = "ai_behaviour"
 	required_component_set = "special_ship_slot"
 	required_component_set = "nsc_supportship_aura"
+	
+	ai_ship_data = {
+		fraction = {
+			base = 0
+			modifier = {
+				add = 25
+				uses_standard_ship_sizes = yes
+			}
+			modifier = {
+				factor = 1.5
+				is_preferred_weapons = weapon_type_strike_craft
+			}
+		}
+	}
+	
 }
 
 StrikeCruiser = {
@@ -313,6 +351,21 @@ StrikeCruiser = {
 	required_component_set = "ai_behaviour"
 	required_component_set = "special_ship_slot"
 	required_component_set = "nsc_strike_cruiser_aura"
+	
+	ai_ship_data = {
+		fraction = {
+			base = 0
+			modifier = {
+				add = 25
+				uses_standard_ship_sizes = yes
+			}
+			modifier = {
+				factor = 1.5
+				is_preferred_weapons = weapon_type_strike_craft
+			}
+		}
+	}
+	
 }
 
 escortcarrier = {
@@ -464,6 +517,20 @@ battleship = {
 	required_component_set = "ai_behaviour"
 	required_component_set = "special_ship_slot"
 	required_component_set = "special_ship_slot"
+	
+	ai_ship_data = {
+		fraction = {
+			base = 0
+			modifier = {
+				add = 25
+				uses_standard_ship_sizes = yes
+			}
+			modifier = {
+				factor = 1.5
+				is_preferred_weapons = weapon_type_strike_craft
+			}
+		}
+	}	
 }
 
 Carrier = {
@@ -568,6 +635,20 @@ Dreadnought = {
 	required_component_set = "ai_behaviour"
 	required_component_set = "special_ship_slot"
 	required_component_set = "special_ship_slot"
+	
+	ai_ship_data = {
+		fraction = {
+			base = 0
+			modifier = {
+				add = 25
+				uses_standard_ship_sizes = yes
+			}
+			modifier = {
+				factor = 1.5
+				is_preferred_weapons = weapon_type_strike_craft
+			}
+		}
+	}
 }
 
 titan = {
@@ -651,16 +732,6 @@ titan = {
 	class = shipclass_military
 	construction_type = starbase_shipyard
 	
-	empire_limit = {
-		base = 1
-		max = 999
-		naval_cap_div = 100
-		show = {
-			is_scope_valid = yes
-			has_technology = tech_titans
-		}		
-	}
-
 	resources = {
 		category = ships
 		upkeep = {
@@ -680,6 +751,13 @@ titan = {
 	required_component_set = "special_ship_slot"
 	required_component_set = "special_ship_slot"
 	required_component_set = "nsc_titan_aura"
+	
+	ai_ship_data = {
+		min = 1
+		max = 3
+		planet_mult = 0.1
+	}
+	
 }
 
 Flagship = {
@@ -821,6 +899,18 @@ science = {
 	required_component_set = "ftl_components"
 	required_component_set = "thruster_components"
 	required_component_set = "sensor_components"
+
+	potential_country = {
+		NOT = {
+			is_country_type = enclave_mercenary
+		}
+	}
+	
+	ai_ship_data = {
+		min = value:desired_science_ships
+		system_mult = value:desired_science_ships_system_mult
+		max = 5
+	}	
 }
 
 explorationship = {
@@ -879,6 +969,12 @@ explorationship = {
 	required_component_set = "exploration_ship_slot"
 	required_component_set = "exploration_ship_slot"
 	required_component_set = "exploration_ship_slot"
+	
+	ai_ship_data = {
+		min = value:desired_science_ships
+		system_mult = value:desired_science_ships_system_mult
+		max = 5
+	}	
 }
 
 constructor = {
@@ -940,6 +1036,13 @@ constructor = {
 	required_component_set = "ftl_components"
 	required_component_set = "thruster_components"
 	required_component_set = "sensor_components"
+	
+	ai_ship_data = {
+		min = value:desired_constructors_min
+		system_mult = 0.15
+		max = value:desired_constructors_max
+	}
+	
 }
 
 colonizer = {
@@ -1056,6 +1159,10 @@ colonizer = {
 	required_component_set = "ftl_components"
 	required_component_set = "thruster_components"
 	required_component_set = "sensor_components"
+	
+	ai_ship_data = {
+		min = value:desired_colonizers
+	}	
 }
 
 sponsored_colonizer = {
@@ -1081,6 +1188,7 @@ sponsored_colonizer = {
 	components_add_to_cost = no
 	valid_target_aggressive_stance = no
 	auto_upgrade = yes
+	use_shipnames_from = colonizer
 	
 	potential_country = {
 		OR = {
@@ -1106,6 +1214,11 @@ sponsored_colonizer = {
 	required_component_set = "ftl_components"
 	required_component_set = "thruster_components"
 	required_component_set = "sensor_components"
+	
+	ai_ship_data = {
+		min = value:desired_colonizers_base
+	}	
+	
 }
 
 lithoid_colonizer = {
@@ -1150,6 +1263,12 @@ lithoid_colonizer = {
 	required_component_set = "ftl_components"
 	required_component_set = "thruster_components"
 	required_component_set = "sensor_components"
+	valid_target_aggressive_stance = no
+	auto_upgrade = yes
+	use_shipnames_from = colonizer
+	ai_ship_data = {
+		min = value:desired_colonizers_base
+	}
 }
 
 transport = {
@@ -1215,7 +1334,10 @@ military_station_small = {
 	
 	potential_construction = {
 		is_scope_type = starbase
-		has_starbase_size >= starbase_outpost
+		OR = {
+			has_starbase_size >= starbase_outpost
+			has_starbase_size >= orbital_ring_tier_1
+		}
 	}
 	
 	resources = { category = ships }

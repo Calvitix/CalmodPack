@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.3.1  23.02.2022
+# Calvitix Check 3.4.2  13.05.2022
 #
 # Merge with STARNET AI    05.03.2022
 #
@@ -112,6 +112,21 @@ influence_expenditure_resolutions = {
 
 	static_max = {
 		base = 300
+	}
+}
+
+influence_expenditure_agreement_proposals = {
+	resource = influence
+	type = expenditure
+	category = agreement_proposals
+
+	potential = {
+		is_overlord = yes
+		ai_wants_to_negotiate_agreement = yes
+	}
+
+	fraction = {
+		weight = 1000
 	}
 }
 
@@ -443,5 +458,68 @@ influence_expenditure_habitats = {
 	}
 	static_max = {
 		base = 350 #150
+	}
+}
+
+influence_expenditure_operations = {
+	resource = influence
+	type = expenditure
+	category = operations
+
+	potential = {
+		# only allocate influence for operations if we can afford them
+		has_resource = {
+			type = influence
+			amount > 250
+		}
+
+		# and if we have a spy network to use them in!
+		any_spynetwork = {
+			owner = { is_same_value = root }
+			is_spynetwork_level >= 20
+		}
+	}
+
+	fraction = {
+		weight = 0.05
+
+		modifier = {
+			factor = 2
+			has_tradition = tr_subterfuge_finish
+		}
+
+		modifier = {
+			factor = 2
+			any_spynetwork = {
+				owner = { is_same_value = root }
+				is_spynetwork_level >= 40
+			}
+		}
+
+		modifier = {
+			factor = 1.5
+			any_spynetwork = {
+				owner = { is_same_value = root }
+				is_spynetwork_level >= 60
+			}
+		}
+
+		modifier = {
+			factor = 1.5
+			any_spynetwork = {
+				owner = { is_same_value = root }
+				is_spynetwork_level >= 80
+			}
+		}
+	}
+
+	# based on gather information op
+	static_min = {
+		base = 20
+	}
+
+	# based on crisis beacon op
+	static_max = {
+		base = 320
 	}
 }

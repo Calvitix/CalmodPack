@@ -1,3 +1,8 @@
+# Original File
+#
+# Check 3.4.2   18.05.2022
+#
+#
 wg_bring_into_the_fold = {
 	casus_belli = cb_imposed_inclusion
 
@@ -67,7 +72,10 @@ wg_bring_into_the_fold = {
 			from = {
 				set_subject_of = {
 					who = root
-					subject_type = vassal
+				}
+				add_modifier = {
+					modifier = newly_subjugated_loyalty
+					years = 5
 				}
 			}
 		}
@@ -85,7 +93,45 @@ wg_bring_into_the_fold = {
 			last_created_country = {
 				set_subject_of = {
 					who = root
-					subject_type = vassal
+				}
+				add_modifier = {
+					modifier = newly_subjugated_loyalty
+					years = 5
+				}
+			}
+
+			if = {
+				limit = {
+					root = { has_authority = auth_corporate }
+					last_created_country = { has_authority = auth_corporate }
+				}
+				last_created_country = {
+					if = {
+						limit = {
+							has_technology = tech_galactic_administration
+						}
+						change_government = {
+							authority = auth_oligarchic
+							cooldown = no
+							remove_invalid_civics = yes
+							civics = {
+								civic = civic_merchant_guilds
+								civic = random
+								civic = random
+							}
+						}
+					}
+					else = {
+						change_government = {
+							authority = auth_oligarchic
+							cooldown = no
+							remove_invalid_civics = yes
+							civics = {
+								civic = civic_merchant_guilds
+								civic = random
+							}
+						}
+					}
 				}
 			}
 		}

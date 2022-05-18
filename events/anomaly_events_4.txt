@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.3b  21.01.2022
+# Calvitix Check 3.4.2  18.05.2022
 #
 # Merge with Arisphaos Unofficial patch  24.11.2021
 # Merge with Expanded events  02.06.2021
@@ -1546,6 +1546,12 @@ ship_event = {
 
 	is_triggered_only = yes
 
+	immediate = {
+		owner = {
+			set_country_flag = colorscience_divination_flag
+		}
+	}
+
 	option = {
 		trigger = {
 			owner = {
@@ -1755,10 +1761,10 @@ ship_event = {
 		name = anomaly.6755.c
 		owner = {
 			add_monthly_resource_mult = {
-				resource = influence
-				value = @tier1influencereward
-				min = @tier1influencemin
-				max = @tier1influencemax
+				resource = unity
+				value = @tier1unityreward
+				min = @tier1unitymin
+				max = @tier1unitymax
 			}
 		}
 	}
@@ -2043,8 +2049,8 @@ ship_event = {
 	id = "anomaly.6791"
 	title = "anomaly.6791.name"
 	desc = "anomaly.6791.desc"
-	picture = GFX_evt_ship_in_orbit
-	show_sound = event_default
+	picture = GFX_evt_ghost_ship
+	show_sound = evn_ove_ghost_ships
 	location = FROM
 	trackable = yes
 
@@ -2066,8 +2072,8 @@ ship_event = {
 	id = "anomaly.6792"
 	title = "anomaly.6792.name"
 	desc = "anomaly.6792.desc"
-	picture = GFX_evt_ship_in_orbit
-	show_sound = event_default
+	picture = GFX_evt_ghost_ship
+	show_sound = evn_ove_ghost_ships
 	location = FROM
 	trackable = yes
 
@@ -3417,19 +3423,48 @@ country_event = {
 	}
 }
 
+# space shanty anomaly trigger
+
+ship_event = {
+	id = anomaly.7020
+	title = anomaly.7020.name
+	desc = anomaly.7020.desc
+	picture = GFX_evt_star_neutron
+	show_sound = event_ship_bridge
+	location = FROM
+	trackable = yes
+
+	is_triggered_only = yes
+
+	immediate = {
+		from = { clear_deposits = yes }
+	}
+
+	option = {
+		name = anomaly.7020.a
+		if = {
+			limit = {
+				owner = { is_regular_empire = yes }
+			}
+			from = { create_archaeological_site = site_space_shanty_dig }
+		}
+	}
+}
+
 # rage sage anomaly trigger 
 
 ship_event = {
 	id = anomaly.7030
 	title = anomaly.7030.name
 	desc = anomaly.7030.desc
-	picture = GFX_evt_star_neutron
+	picture = GFX_evt_physics_cache
 	show_sound = event_ship_bridge
 	location = FROM
 	trackable = yes
 	
 	is_triggered_only = yes
    
+
 	immediate = {
 		from = { clear_deposits = yes }
 	}

@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.2  22.11.2021
+# Calvitix Check 3.4.2  15.05.2022
 #
 # Merge with Arisphaos Unofficial patch
 # Merge with Skalla Ai's Overhaul
@@ -136,11 +136,23 @@ indiscriminate = {
 
 armageddon = {
 	trigger = {
+		OR = {
 		owner = {
 			OR = {
 				has_policy_flag = orbital_bombardment_armageddon
 				is_crisis_faction = yes
 				has_menace_perk = menp_death_from_above		# Menace Perk: Death From Above
+			}
+		}
+			AND = {
+				owner = { is_country_type = enclave_mercenary }
+				controller = {
+					OR = {
+						has_policy_flag = orbital_bombardment_armageddon
+						is_crisis_faction = yes
+						has_menace_perk = menp_death_from_above		# Menace Perk: Death From Above
+					}
+				}
 			}
 		}
 	}
@@ -177,6 +189,7 @@ armageddon = {
 
 pox = {
 	trigger = {
+		OR = {
 		owner = {
 			has_modifier = javorian_pox
 			OR = {
@@ -185,6 +198,18 @@ pox = {
 				has_policy_flag = orbital_bombardment_armageddon
 			}
 		}
+			AND = {
+				owner = { is_country_type = enclave_mercenary }
+				controller = {
+					has_modifier = javorian_pox
+					OR = {
+						NOT = { is_country_type = default }
+						has_policy_flag = orbital_bombardment_indiscriminate
+						has_policy_flag = orbital_bombardment_armageddon
+					}
+				}
+			}
+		}	
 	}
 
 	default = no
@@ -226,6 +251,15 @@ raiding = {
 		OR = {
 			owner = { has_ascension_perk = ap_nihilistic_acquisition }
 			owner = { has_valid_civic = civic_barbaric_despoilers }
+			AND = {
+				owner = { is_country_type = enclave_mercenary }
+				controller = {
+					OR = {
+						has_ascension_perk = ap_nihilistic_acquisition
+						has_valid_civic = civic_barbaric_despoilers
+					}
+				}
+			}
 		}
 	}
 

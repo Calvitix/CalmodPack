@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.3.4  19.03.2022
+# Calvitix Check 3.4.2  15.05.2022
 #
 # Merge with Starnet AI 30.10.2021
 # #Calvitix, re-enable all edicts for more diversity
@@ -19,6 +19,7 @@
 #################
 # Toggle Edicts
 #################
+
 evacuation_protocols = {
 	length = @EdictPerpetual
 	icon = "GFX_edict_type_policy"
@@ -1172,5 +1173,160 @@ greater_than_ourselves = {
 
 	ai_weight = {
 		weight = @EdictHighPrio
+	}
+}
+
+relay_network_movement = {
+	length = @EdictPerpetual
+	icon = "GFX_edict_type_policy"
+
+	resources = {
+		category = edicts
+		upkeep = {
+			unity = @Edict1Cost
+			multiplier = value:edict_size_effect
+		}
+	}
+
+	potential = {
+		has_overlord_dlc = yes
+		has_technology = tech_hyper_relays
+	}
+
+	allow = {
+		NOT = { has_deficit = volatile_motes }
+		exists = capital_scope
+		capital_scope = {
+			solar_system = {
+				has_megastructure = hyper_relay
+			}
+		}
+
+	}
+
+	prerequisites = {
+		"tech_hyper_drive_3"
+	}
+
+	modifier = {
+		megastructures_hyper_relay_volatile_motes_upkeep_add = 0.1
+	}
+
+	relay_network_modifier = {
+		relay_network_movement_edict_modifier = 1
+	}
+
+	ai_weight = {
+		weight = 0
+		modifier = {
+			weight = @EdictMedPrio
+			has_monthly_income = { resource = volatile_motes value > 5 }
+		}
+	}
+}
+
+relay_network_amenities = {
+	length = @EdictPerpetual
+	icon = "GFX_edict_type_policy"
+
+	resources = {
+		category = edicts
+		upkeep = {
+			unity = @Edict1Cost
+			multiplier = value:edict_size_effect
+		}
+	}
+
+	potential = {
+		has_overlord_dlc = yes
+		is_gestalt = no
+		has_technology = tech_hyper_relays
+	}
+
+	allow = {
+		NOT = { has_deficit = rare_crystals }
+		exists = capital_scope
+		capital_scope = {
+			solar_system = {
+				has_megastructure = hyper_relay
+			}
+		}
+	}
+
+	prerequisites = {
+		"tech_artificial_moral_codes"
+	}
+
+	show_tech_unlock_if = {
+		is_gestalt = no
+	}
+
+	modifier = {
+		megastructures_hyper_relay_rare_crystals_upkeep_add = 0.1
+	}
+
+	relay_network_modifier = {
+		relay_network_amenities_edict_modifier = 1
+	}
+
+	ai_weight = {
+		weight = 0
+		modifier = {
+			weight = @EdictMedPrio
+			has_monthly_income = { resource = rare_crystals value > 5 }
+		}
+	}
+}
+
+relay_network_amenities_gestalt = {
+	length = @EdictPerpetual
+	icon = "GFX_edict_type_policy"
+
+	resources = {
+		category = edicts
+		upkeep = {
+			unity = @Edict1Cost
+			multiplier = value:edict_size_effect
+		}
+	}
+
+	potential = {
+		has_overlord_dlc = yes
+		is_gestalt = yes
+		has_technology = tech_hyper_relays
+	}
+
+	allow = {
+		NOT = { has_deficit = rare_crystals }
+		exists = capital_scope
+		capital_scope = {
+			solar_system = {
+				has_megastructure = hyper_relay
+			}
+		}
+	}
+
+	prerequisites = {
+		"tech_unity_of_purpose"
+	}
+
+	show_tech_unlock_if = {
+		is_gestalt = yes
+	}
+
+	modifier = {
+		megastructures_hyper_relay_rare_crystals_upkeep_add = 0.1
+	}
+
+	relay_network_modifier = {
+		relay_network_amenities_gestalt_edict_modifier = 1
+	}
+
+	ai_weight = {
+		weight = 0
+		modifier = {
+			weight = @EdictMedPrio
+			has_monthly_income = { resource = rare_crystals value > 5 }
+		}
 	}
 }

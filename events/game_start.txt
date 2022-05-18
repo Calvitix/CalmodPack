@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.3b  21.01.2022
+# Calvitix Check 3.4.2  18.05.2022
 #
 # Merge with Arisphaos Unofficial patch
 #
@@ -170,6 +170,12 @@ event = {
 			country_event = { id = origin.60 }
 		}
 
+		# Slingshot to the Stars
+		every_playable_country = {
+			limit = { has_origin = origin_star_slingshot }
+			country_event = { id = origin.3500 }
+		}
+
 		## Lost Colony
 		# if advanced starts are enabled or a player has picked it, let it ride
 		if = {
@@ -226,6 +232,27 @@ event = {
 		every_playable_country = {
 			limit = { has_origin = origin_ocean_paradise }
 			country_event = { id = aquatics.1000 }
+		}
+
+		# Teachers of the Shroud
+		every_playable_country = {
+			limit = { has_origin = origin_shroudwalker_apprentice }
+			country_event = { id = origin.5600 }
+		}
+		#Subterranean
+		every_playable_country = {
+			limit = { has_origin = origin_subterranean }
+			country_event = { id = origin.3105}
+		}
+
+		# Imperial Vassal
+		if = {
+			limit = {
+				any_playable_country = {
+					has_origin = origin_imperial_vassal
+				}
+			}
+			imperial_origin_start_effect = yes
 		}
 	}
 }
@@ -530,21 +557,36 @@ country_event = {
 			}
 		}
 
-		#military
-		create_fleet = {
-			set_take_point = yes
-			effect = {
-				set_owner = prev
-
-				while = {
-					count = 3
-					create_ship = {
-						name = random
-						random_existing_design = corvette
+		if = {
+			create_fleet = {
+				set_take_point = yes
+				effect = {
+					set_owner = prev
+	
+					while = {
+							count = 2
+						create_ship = {
+							name = random
+							random_existing_design = corvette
+						}
 					}
+						if = { 
+							limit = {
+								root = { has_origin = origin_progenitor_hive }
+							}
+							create_ship = {
+								name = random
+								random_existing_design = offspring_corvette
+							}
+						}
+						else = {
+							create_ship = {
+								name = random
+								random_existing_design = corvette
+							}
+						}
+					set_location = prev.capital_star
 				}
-
-				set_location = prev.capital_star
 			}
 		}
 	}
@@ -782,6 +824,13 @@ planet_event = {
 				limit = { owner = { is_gestalt = no } }
 				add_building = building_factory_1
 				add_building = building_commercial_zone
+			}
+			if = {
+				limit = {
+					owner = { is_subterranean_empire = yes } 
+				}
+				add_district_and_planet_size_if_needed_effect = { district = district_mining_uncapped }
+				add_district_and_planet_size_if_needed_effect = { district = district_mining_uncapped }
 			}
 		}
 		else_if = {
@@ -1316,26 +1365,29 @@ country_event = {
 			}
 			add_research_option = tech_planetary_unification
 		}
-		every_planet_within_border = {
-			limit = {
-				has_deposit_for = shipclass_mining_station
-				has_planet_flag = starting_mining_target
-				has_mining_station = no
+		if = {
+			every_planet_within_border = {
+				limit = {
+					has_deposit_for = shipclass_mining_station
+					has_planet_flag = starting_mining_target
+					has_mining_station = no
+				}
+				create_mining_station = {
+					owner = ROOT
+				}
 			}
-			create_mining_station = {
-				owner = ROOT
+			every_planet_within_border = {
+				limit = {
+					has_deposit_for = shipclass_research_station
+					has_planet_flag = starting_research_target
+					has_research_station = no
+				}
+				create_research_station = {
+					owner = ROOT
+				}
 			}
 		}
-		every_planet_within_border = {
-			limit = {
-				has_deposit_for = shipclass_research_station
-				has_planet_flag = starting_research_target
-				has_research_station = no
-			}
-			create_research_station = {
-				owner = ROOT
-			}
-		}
+
 		if = {
 			limit = {
 				has_origin = origin_necrophage
