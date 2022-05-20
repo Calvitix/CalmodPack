@@ -1,8 +1,8 @@
 # Giga File
 #
-# Calvitix Check 3.2
+# Calvitix Check 3.4.2
 #
-# Last Update : 15.04.2022
+# Last Update : 19.05.2022
 #
 namespace = giga_flavor_systems
 
@@ -89,6 +89,7 @@ country_event = {
 					}
 					change_pc = pc_giga_planetary_computer
 					set_planet_size = 16
+					set_planet_flag = orbital_arcology
 					set_planet_flag = giga_planetary_computer
 					set_planet_flag = giga_rogue_ai_planetary_computer
 					add_modifier = {
@@ -119,7 +120,7 @@ country_event = {
 						set_star_flag = rogue_pc_system
 						set_star_flag = giga_special_ruined_system
 						spawn_megastructure = {
-							type = orbital_arcology_1_m
+							type = orbital_arcology_1
 							planet = PREV
 						}
 						spawn_megastructure = {
@@ -193,6 +194,7 @@ planet_event = {
 		add_deposit = d_giga_rogue_ai_corrupt_code
 		add_deposit = d_giga_rogue_ai_corrupt_code
 		add_deposit = d_giga_rogue_ai_corrupt_code
+		hidden_effect = { giga_update_rogue_ai_computer_build_speed = yes }
 	}
 
 	option = {
@@ -209,6 +211,7 @@ planet_event = {
 		add_deposit = d_giga_rogue_ai_corrupt_code
 		add_deposit = d_giga_rogue_ai_corrupt_code
 		add_deposit = d_giga_rogue_ai_corrupt_code
+		hidden_effect = { giga_update_rogue_ai_computer_build_speed = yes }
 	}
 }
 
@@ -232,6 +235,7 @@ planet_event = {
 				value = 4
 			}
 		}
+		hidden_effect = { giga_update_rogue_ai_computer_build_speed = yes }
 	}
 }
 
@@ -252,6 +256,21 @@ planet_event = {
 					has_deposit = d_giga_rogue_ai_relay_servers
 				}
 			}
+			# clean up if the attack was interrupted
+			if = {
+				limit = {
+					exists = controller
+					controller = {
+						has_country_flag = giga_rogue_ai_pcc_army_country
+					}
+				}
+				every_planet_army = {
+					limit = { army_type = pcc_rogue_ai_army }
+					remove_army = yes
+				}
+				set_controller = owner
+			}
+			# resume checks
 			planet_event = { id = giga_flavor_systems.1106 days = 30 }
 		}
 		if = {
@@ -374,9 +393,40 @@ country_event = {
             set_controller = ROOT
             add_deposit = d_giga_rogue_ai_corrupt_code
             add_deposit = d_giga_rogue_ai_relay_servers
+			hidden_effect = { giga_update_rogue_ai_computer_build_speed = yes }
             add_planet_devastation = 75
         }
     }
+}
+
+# PCC blocker cleared
+planet_event = {
+	id = giga_flavor_systems.1107
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_modifier = giga_rogue_ai_computer
+	}
+
+	immediate = {
+		# firing another event to hopefully calculate *after* the blocker is removed
+		planet_event = {
+			id = giga_flavor_systems.1108
+			days = 1
+		}
+	}
+}
+
+# PCC blocker cleared 2
+planet_event = {
+	id = giga_flavor_systems.1108
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		giga_update_rogue_ai_computer_build_speed = yes
+	}
 }
 
 namespace = giga_wrecked_ships
@@ -835,7 +885,7 @@ ship_event = {
 
 	option = { 
 		name = "giga_wrecked_ships.1010.a"
-		owner = {
+		controller = {
 		add_resource = {
 				engineering_research = 500
 		}
@@ -905,7 +955,7 @@ ship_event = {
 
 	option = { 
 		name = "giga_wrecked_ships.1020.a"
-		owner = {
+		controller = {
 			add_resource = {
 				engineering_research = 1000
 			}
@@ -975,7 +1025,7 @@ ship_event = {
 
 	option = { 
 		name = "giga_wrecked_ships.1030.a"
-		owner = {
+		controller = {
 			add_resource = {
 				engineering_research = 500
 			}
@@ -1046,7 +1096,7 @@ ship_event = {
 
 	option = { 
 		name = "giga_wrecked_ships.1040.a"
-		owner = {
+		controller = {
 			add_resource = {
 				engineering_research = 2500
 			}

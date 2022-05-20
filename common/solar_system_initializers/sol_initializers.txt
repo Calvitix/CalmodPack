@@ -442,6 +442,8 @@ sol_system_solsector_large = {
 		flags = { planet_earth }
 		
 		init_effect = {
+			save_global_event_target_as = sol_system_earth
+		
 			prevent_anomaly = yes
 		}
 				
@@ -801,6 +803,8 @@ sol_system_solsector_small = {
 		flags = { planet_earth }
 		
 		init_effect = {
+			save_global_event_target_as = sol_system_earth
+			
 			prevent_anomaly = yes
 		}
 				
@@ -1104,8 +1108,11 @@ com_sol_system = {
 		modifier = {
 			any_country = {
 				has_country_flag = human_2
-				species_portrait = human
-				has_origin = origin_lost_colony
+				OR = {
+					species_portrait = human
+					has_origin = origin_lost_colony
+					species_portrait = human_legacy
+				}
 			}
 			NOR = {
 				any_country = { has_country_flag = human_1 }
@@ -1560,7 +1567,10 @@ lost_colony_sol_system = {
 		base = 0
 		modifier = {
 			any_country = {
-				species_portrait = human
+				OR = {
+					species_portrait = human
+					species_portrait = human_legacy
+				}
 				NOT = { has_country_flag = human_2 }
 				has_origin = origin_lost_colony
 			}
@@ -1624,15 +1634,18 @@ lost_colony_sol_system = {
 		flags = { planet_earth }
 		
 		init_effect = {
+			save_global_event_target_as = sol_system_earth
+			
 			prevent_anomaly = yes
 		}
 		
 		init_effect = {
-			save_global_event_target_as = sol_system_earth
-
 			random_country = {
 				limit = { 
+					OR = {
 					species_portrait = human
+						species_portrait = human_legacy
+					}
 					has_origin = origin_lost_colony
 				}
 				save_event_target_as = human_lost_colony

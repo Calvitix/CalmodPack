@@ -1,6 +1,6 @@
 ### GPM File
 #
-# Calvitix Check 3.3.4
+# Calvitix Check 3.4.2 + trad names
 #
 # Last GPM Update   19.03.2022
 
@@ -89,41 +89,6 @@ gpm_scale_planet_modifiers = {
 		set_variable = { which = gpm_planet_size_multiplier_precursor value = 2 }
 	}
 
-	# switch = {
-	# 	trigger = planet_size
-	# 	5 = { set_variable = { which = gpm_planet_size_multiplier_precursor value = 0.5 } }
-	# 	6 = { set_variable = { which = gpm_planet_size_multiplier_precursor value = 0.5 } }
-	# 	7 = { set_variable = { which = gpm_planet_size_multiplier_precursor value = 0.5 } }
-	# 	8 = { set_variable = { which = gpm_planet_size_multiplier_precursor value = 0.5 } }
-	# 	9 = { set_variable = { which = gpm_planet_size_multiplier_precursor value = 0.5 } }
-	# 	10 = { set_variable = { which = gpm_planet_size_multiplier_precursor value = 0.6 } }
-	# 	11 = { set_variable = { which = gpm_planet_size_multiplier_precursor value = 0.7 } }
-	# 	12 = { set_variable = { which = gpm_planet_size_multiplier_precursor value = 0.8 } }
-	# 	13 = { set_variable = { which = gpm_planet_size_multiplier_precursor value = 0.9 } }
-	# 	14 = { set_variable = { which = gpm_planet_size_multiplier_precursor value = 1.0 } }
-	# 	15 = { set_variable = { which = gpm_planet_size_multiplier_precursor value = 1.1 } }
-	# 	16 = { set_variable = { which = gpm_planet_size_multiplier_precursor value = 1.2 } }
-	# 	17 = { set_variable = { which = gpm_planet_size_multiplier_precursor value = 1.3 } }
-	# 	18 = { set_variable = { which = gpm_planet_size_multiplier_precursor value = 1.4 } }
-	# 	19 = { set_variable = { which = gpm_planet_size_multiplier_precursor value = 1.5 } }
-	# 	20 = { set_variable = { which = gpm_planet_size_multiplier_precursor value = 1.6 } }
-	# 	21 = { set_variable = { which = gpm_planet_size_multiplier_precursor value = 1.7 } }
-	# 	22 = { set_variable = { which = gpm_planet_size_multiplier_precursor value = 1.8 } }
-	# 	23 = { set_variable = { which = gpm_planet_size_multiplier_precursor value = 1.9 } }
-	# 	24 = { set_variable = { which = gpm_planet_size_multiplier_precursor value = 2.0 } }
-	# 	25 = { set_variable = { which = gpm_planet_size_multiplier_precursor value = 2.0 } }
-	# 	26 = { set_variable = { which = gpm_planet_size_multiplier_precursor value = 2 } }
-	# 	27 = { set_variable = { which = gpm_planet_size_multiplier_precursor value = 2 } }
-	# 	28 = { set_variable = { which = gpm_planet_size_multiplier_precursor value = 2 } }
-	# 	29 = { set_variable = { which = gpm_planet_size_multiplier_precursor value = 2 } }
-	# 	30 = { set_variable = { which = gpm_planet_size_multiplier_precursor value = 2 } }
-	# 	31 = { set_variable = { which = gpm_planet_size_multiplier_precursor value = 2 } }
-	# 	32 = { set_variable = { which = gpm_planet_size_multiplier_precursor value = 2 } }
-	# 	33 = { set_variable = { which = gpm_planet_size_multiplier_precursor value = 2 } }
-	# 	34 = { set_variable = { which = gpm_planet_size_multiplier_precursor value = 2 } }
-	# 	35 = { set_variable = { which = gpm_planet_size_multiplier_precursor value = 2 } }
-	# }
-
 	# General Modifiers	
 	if = {
 		limit = { planet_size < 12 }
@@ -147,43 +112,207 @@ gpm_scale_planet_modifiers = {
 	}
 
 }
+
+
+# gets galaxy setting habitable planets scale and sets as variable
+gpm_set_galaxy_scaler_planet_variable = {
+	optimize_memory
+	# 0.25- 0.5		= 0.5
+	# 0.5 - 1.0		= 0.75
+	# 1.0 - 2.0		= 1
+	# 2.0 - 3.0		= 1.1
+	# 3.0 - 4.0		= 1.2
+	# 4.0 - 5.0		= 1.3
+
+	# reset/base
+	set_variable = { which = gpm_galaxy_setting_habitable_worlds_scale value = 1 }
+
+
+	if = {
+		limit = {
+			check_galaxy_setup_value = { setting = habitable_worlds_scale value <= 0.5 }
+		}
+		set_variable = { which = gpm_galaxy_setting_habitable_worlds_scale value = 0.5 }
+	}
+	if = {
+		limit = {
+			check_galaxy_setup_value = { setting = habitable_worlds_scale value > 0.5 }
+			check_galaxy_setup_value = { setting = habitable_worlds_scale value < 1 }
+		}
+		set_variable = { which = gpm_galaxy_setting_habitable_worlds_scale value = 0.75 }
+	}
+	if = { 
+		limit = {
+			check_galaxy_setup_value = { setting = habitable_worlds_scale value >= 1 }
+			check_galaxy_setup_value = { setting = habitable_worlds_scale value <= 2 }
+		}
+		set_variable = { which = gpm_galaxy_setting_habitable_worlds_scale value = 1 }
+	}
+	if = { 
+		limit = {
+			check_galaxy_setup_value = { setting = habitable_worlds_scale value > 2 }
+			check_galaxy_setup_value = { setting = habitable_worlds_scale value <= 3 }
+		}
+		set_variable = { which = gpm_galaxy_setting_habitable_worlds_scale value = 1.1 }
+	}
+	if = { 
+		limit = {
+			check_galaxy_setup_value = { setting = habitable_worlds_scale value > 3 }
+			check_galaxy_setup_value = { setting = habitable_worlds_scale value <= 4 }
+		}
+		set_variable = { which = gpm_galaxy_setting_habitable_worlds_scale value = 1.2 }
+	}
+	if = { 
+		limit = {
+			check_galaxy_setup_value = { setting = habitable_worlds_scale value > 4 }
+			check_galaxy_setup_value = { setting = habitable_worlds_scale value <= 5 }
+		}
+		set_variable = { which = gpm_galaxy_setting_habitable_worlds_scale value = 1.3 }
+	}
+}
+
+
+
 # Colour planet name based on requirements and give it an icon (
 # happens on survey
 
-gpm_designate_precursor_world = {
-	set_planet_flag = gpm_is_precursor_world
-}
+# gpm_designate_precursor_world = {
+# 	set_planet_flag = gpm_is_precursor_world
+# }
 
 gpm_designate_wonder_world = {
+	optimize_memory
 	set_planet_flag = gpm_is_wondrous_world
 	set_planet_flag = unique_world					# Real Space mod request
 }
 
-
+gpm_make_precursor_ruined_world = {
+	change_pc = pc_gpm_precursor_tomb
+	clear_deposits = yes
+	# clear_planet_modifiers = yes
+	gpm_purge_all_core_modifiers = yes
+	gpm_purge_all_planetary_modifiers = yes
+	if = {
+		limit = { has_modifier = terraforming_candidate }
+		remove_modifier = terraforming_candidate	
+	}
+	if = {
+		limit = { planet_size < 8 }
+		# add_deposit = d_archaeological_site
+		add_deposit = d_city_ruins
+		while = {
+			count = 2
+			random_list = {
+				# 10 = { add_deposit = d_archaeological_site }
+				10 = { add_deposit = d_city_ruins }
+				10 = { add_deposit = d_infestation }
+				10 = { add_deposit = gpm_tb_automated_turrets_empty }
+				10 = { add_deposit = gpm_tb_xenomorph_blocker_empty }
+			}
+		}
+	}
+	if = { 
+		limit = { planet_size > 7 planet_size < 13 }
+		# add_deposit = d_archaeological_site
+		add_deposit = d_city_ruins
+		while = {
+			count = 3
+			random_list = {
+				# 10 = { add_deposit = d_archaeological_site }
+				10 = { add_deposit = d_city_ruins }
+				10 = { add_deposit = d_infestation }
+				10 = { add_deposit = gpm_tb_automated_turrets_empty }
+				10 = { add_deposit = gpm_tb_xenomorph_blocker_empty }
+			}
+		}
+	}
+	if = { 
+		limit = { planet_size > 12 planet_size < 16 }
+		# add_deposit = d_archaeological_site
+		add_deposit = d_city_ruins
+		while = {
+			count = 5
+			random_list = {
+				# 10 = { add_deposit = d_archaeological_site }
+				10 = { add_deposit = d_city_ruins }
+				10 = { add_deposit = d_infestation }
+				10 = { add_deposit = gpm_tb_automated_turrets_empty }
+				10 = { add_deposit = gpm_tb_xenomorph_blocker_empty }
+			}
+		}
+	}
+	if = { 
+		limit = { planet_size > 15 planet_size < 20 }
+		# add_deposit = d_archaeological_site
+		add_deposit = d_city_ruins
+		while = {
+			count = 6
+			random_list = {
+				# 10 = { add_deposit = d_archaeological_site }
+				10 = { add_deposit = d_city_ruins }
+				10 = { add_deposit = d_infestation }
+				10 = { add_deposit = gpm_tb_automated_turrets_empty }
+				10 = { add_deposit = gpm_tb_xenomorph_blocker_empty }
+			}
+		}
+	}
+	if = { 
+		limit = { planet_size > 19 planet_size < 24 }
+		# add_deposit = d_archaeological_site
+		add_deposit = d_city_ruins
+		while = {
+			count = 8
+			random_list = {
+				# 10 = { add_deposit = d_archaeological_site }
+				10 = { add_deposit = d_city_ruins }
+				10 = { add_deposit = d_infestation }
+				10 = { add_deposit = gpm_tb_automated_turrets_empty }
+				10 = { add_deposit = gpm_tb_xenomorph_blocker_empty }
+			}
+		}
+	}
+	if = { 
+		limit = { planet_size > 23 }
+		# add_deposit = d_archaeological_site
+		add_deposit = d_city_ruins
+		while = {
+			count = 9
+			random_list = {
+				# 10 = { add_deposit = d_archaeological_site }
+				10 = { add_deposit = d_city_ruins }
+				10 = { add_deposit = d_infestation }
+				10 = { add_deposit = gpm_tb_automated_turrets_empty }
+				10 = { add_deposit = gpm_tb_xenomorph_blocker_empty }
+			}
+		}
+	}	
+}
 
 gpm_colour_planet_name = {
 	if = {
 		limit = {
-			AND = {
 				has_planet_flag = "gpm_is_precursor_world"
 				NOT = { has_planet_flag = "gpm_is_precursor_world_colour" }
 			}
+		set_name = {
+			key = "NAME_color_precursor"
+			variable_string = "\\[This.GetName]"
 		} 
-		set_name = "color_precursor"
 		set_planet_flag = "gpm_is_precursor_world_colour"
-		log = "***- Planet given a blue colour and icon----"
+		# log = "***- Planet given a blue colour and icon----"
 
 	}
 	if = {
 		limit = {
-			AND = {
 				has_planet_flag = "gpm_is_wondrous_world"
 				NOT = { has_planet_flag = "gpm_is_wondrous_world_colour" }
 			}
+		set_name = {
+			key = "NAME_color_planet_wonder"
+			variable_string = "\\[This.GetName]"
 		} 
-		set_name = "color_planet_wonder"
 		set_planet_flag = "gpm_is_wondrous_world_colour"
-		log = "***- Planet given an orange colour and icon----"
+		# log = "***- Planet given an orange colour and icon----"
 
 	}
 }
@@ -199,7 +328,10 @@ gpm_reset_planet_name = {
 			}
 		}
 		set_name = random
-		set_name = "color_default_white"
+		set_name = {
+			key = "NAME_color_default_white"
+			variable_string = "\\[This.Solar_System.GetName]"
+		}
 		if = {
 			limit = {
 				has_planet_flag = "gpm_is_precursor_world"
@@ -275,7 +407,7 @@ gpm_random_dangerous_modifiers = {
 
 gpm_random_res_metallic_ring_deposit = {
 	random_list = {
-		75 = {
+		75 = { #Calvitix keep old version
 			clear_deposits = yes
 			random_list = {
 				91 = { add_deposit = d_minerals_2 }
@@ -337,6 +469,8 @@ gpm_create_tiyanki_resident = {
 	save_event_target_as = planet_location
 	set_planet_flag = gpm_tiyanki_grounds
 	add_modifier = { days = -1 modifier = "gpm_tiyanki_feeding_grounds" }
+	random_list = {
+		10 = {
 	create_fleet = {
 		name = "NAME_Tiyanki_Space_Whale"
 		effect = {
@@ -355,7 +489,7 @@ gpm_create_tiyanki_resident = {
 			}
 			set_location = event_target:planet_location
 			set_fleet_stance = passive
-			set_aggro_range_measure_from = return_point
+					set_aggro_range_measure_from = self
 			set_aggro_range = 5
 			# queue_actions = {
 			# 	repeat = {
@@ -380,6 +514,8 @@ gpm_create_tiyanki_resident = {
 			# }
 		}
 	}
+		}
+		10 = {
 	create_fleet = {
 		name = "NAME_Tiyanki_Space_Whale"
 		effect = {
@@ -402,7 +538,7 @@ gpm_create_tiyanki_resident = {
 			}
 			set_location = event_target:planet_location
 			set_fleet_stance = passive
-			set_aggro_range_measure_from = return_point
+					set_aggro_range_measure_from = self
 			set_aggro_range = 5
 			# queue_actions = {
 			# 	repeat = {
@@ -427,6 +563,8 @@ gpm_create_tiyanki_resident = {
 			# }
 		}
 	}
+		}
+		10 = {
 	create_fleet = {
 		name = "NAME_Tiyanki_Space_Whale"
 		effect = {
@@ -437,7 +575,7 @@ gpm_create_tiyanki_resident = {
 			}
 			set_location = event_target:planet_location
 			set_fleet_stance = passive
-			set_aggro_range_measure_from = return_point
+					set_aggro_range_measure_from = self
 			set_aggro_range = 5
 			# queue_actions = {
 			# 	repeat = {
@@ -462,6 +600,8 @@ gpm_create_tiyanki_resident = {
 			# }
 		}
 	}
+		}
+		10 = {
 	create_fleet = {
 		name = "NAME_Tiyanki_Space_Whale"
 		effect = {
@@ -472,7 +612,7 @@ gpm_create_tiyanki_resident = {
 			}
 			set_location = event_target:planet_location
 			set_fleet_stance = passive
-			set_aggro_range_measure_from = return_point
+					set_aggro_range_measure_from = self
 			set_aggro_range = 5
 			# queue_actions = {
 			# 	repeat = {
@@ -495,23 +635,394 @@ gpm_create_tiyanki_resident = {
 			# 		}
 			# 	}
 			# }
+		}
+	}
+		}
+	}
+}
+
+gpm_create_rogue_traders = {
+	save_event_target_as = planet_location
+	event_target:drone_country = {
+		random_list = {
+			0 = { }
+			10 = {
+				create_fleet = {
+					name = "NAME_Mining_Corps"
+					effect = {
+						set_owner = event_target:drone_country
+						random_list = {
+							10 = {
+								while = {
+									count = 1
+									create_ship = {
+										name = "NAME_Drone_1832-D"
+										design = "NAME_Ancient_Mining_Drone"
+									}
+								}
+							}
+							9 = {
+								while = {
+									count = 2
+									create_ship = {
+										name = "NAME_Drone_0931-F"
+										design = "NAME_Ancient_Mining_Drone"
+									}
+								}
+							}
+							8 = {
+								while = {
+									count = 3
+									create_ship = {
+										name = "NAME_Drone_0931-F"
+										design = "NAME_Ancient_Mining_Drone"
+									}
+								}
+							}
+							7 = {
+								while = {
+									count = 4
+									create_ship = {
+										name = "NAME_Drone_1119-X"
+										design = "NAME_Ancient_Mining_Drone"
+									}
+								}
+							}
+							6 = {
+								while = {
+									count = 5
+									create_ship = {
+										name = "NAME_Drone_1119-X"
+										design = "NAME_Ancient_Mining_Drone"
+									}
+								}
+							}
+							5 = {
+								while = {
+									count = 6
+									create_ship = {
+										name = "NAME_Drone_1119-X"
+										design = "NAME_Ancient_Mining_Drone"
+									}
+								}
+							}
+							4 = {
+								while = {
+									count = 7
+									create_ship = {
+										name = "NAME_Drone_1832-D"
+										design = "NAME_Ancient_Mining_Drone"
+									}
+								}
+							}
+						}
+						set_location = {
+							target = event_target:planet_location
+							distance = 0
+							angle = 20
+						}
+						set_formation_scale = 2
+						set_fleet_stance = aggressive
+						set_aggro_range_measure_from = self
+						set_aggro_range = 200
+					}
+				}
+			}
+			10 = {
+				create_fleet = {
+					name = "NAME_Mining_Corps"
+					effect = {
+						set_owner = event_target:drone_country
+						random_list = {
+							10 = {
+								while = {
+									count = 1
+									create_ship = {
+										name = "NAME_Drone_1832-D"
+										design = "NAME_Ancient_Combat_Drone"
+									}
+								}
+							}
+							9 = {
+								while = {
+									count = 2
+									create_ship = {
+										name = "NAME_Drone_0931-F"
+										design = "NAME_Ancient_Combat_Drone"
+									}
+								}
+							}
+							8 = {
+								while = {
+									count = 3
+									create_ship = {
+										name = "NAME_Drone_1119-X"
+										design = "NAME_Ancient_Combat_Drone"
+									}
+								}
+							}
+						}
+						set_location = {
+							target = event_target:planet_location
+							distance = 0
+							angle = 20
+						}
+						set_formation_scale = 2
+						set_fleet_stance = aggressive
+						set_aggro_range_measure_from = self
+						set_aggro_range = 200
+					}
+				}
+			}
+			10 = {
+				create_fleet = {
+					name = "NAME_Mining_Corps"
+					effect = {
+						set_owner = event_target:drone_country
+						while = {
+							count = 1
+							create_ship = {
+								name = ""
+								design = "NAME_Pirate_Nest"
+								graphical_culture = "pirate_01"
+							}
+						}
+						set_location = {
+							target = event_target:planet_location
+							distance = 0
+							angle = 20
+						}
+						set_formation_scale = 2
+						set_aggro_range_measure_from = self
+						set_aggro_range = 200
+					}
+				}
+				create_fleet = {
+					name = "NAME_Mining_Corps"
+					effect = {
+						set_owner = event_target:drone_country
+						while = {
+							count = 3
+							create_ship = {
+								name = "NAME_Drone_1832-D"
+								design = "NAME_Ancient_Combat_Drone"
+							}
+						}
+						set_location = {
+							target = event_target:planet_location
+							distance = 0
+							angle = 20
+						}
+						set_formation_scale = 2
+						set_fleet_stance = aggressive
+						set_aggro_range_measure_from = self
+						set_aggro_range = 200
+					}
+				}
+			}
+			10 = {
+				create_fleet = {
+					name = "NAME_Mining_Corps"
+					effect = {
+						set_owner = event_target:drone_country
+						while = {
+							count = 1
+							create_ship = {
+								name = ""
+								design = "NAME_Marauder"
+							}
+						}
+						set_location = {
+							target = event_target:planet_location
+							distance = 0
+							angle = 20
+						}
+						set_formation_scale = 2
+						set_fleet_stance = aggressive
+						set_aggro_range_measure_from = self
+						set_aggro_range = 200
+					}
+				}
+				create_fleet = {
+					name = "NAME_Mining_Corps"
+					effect = {
+						set_owner = event_target:drone_country
+						while = {
+							count = 2
+							create_ship = {
+								name = "NAME_Drone_1832-D"
+								design = "NAME_Ancient_Combat_Drone"
+							}
+						}
+						set_location = {
+							target = event_target:planet_location
+							distance = 0
+							angle = 20
+						}
+						set_formation_scale = 2
+						set_fleet_stance = aggressive
+						set_aggro_range_measure_from = self
+						set_aggro_range = 200
+					}
+				}
+			}
+			10 = {
+				create_fleet = {
+					name = "NAME_Mining_Corps"
+					effect = {
+						set_owner = event_target:drone_country
+						while = {
+							count = 1
+							create_ship = {
+								name = ""
+								design = "NAME_Corsair"
+							}
+						}
+						set_location = {
+							target = event_target:planet_location
+							distance = 0
+							angle = 20
+						}
+						set_formation_scale = 2
+						set_fleet_stance = aggressive
+						set_aggro_range_measure_from = self
+						set_aggro_range = 200
+					}
+				}
+				create_fleet = {
+					name = "NAME_Mining_Corps"
+					effect = {
+						set_owner = event_target:drone_country
+						while = {
+							count = 4
+							create_ship = {
+								name = "NAME_Drone_1832-D"
+								design = "NAME_Ancient_Combat_Drone"
+							}
+						}
+						set_location = {
+							target = event_target:planet_location
+							distance = 0
+							angle = 20
+						}
+						set_formation_scale = 2
+						set_fleet_stance = aggressive
+						set_aggro_range_measure_from = self
+						set_aggro_range = 200
+					}
+				}
+			}
+			10 = {
+				create_fleet = {
+					name = "NAME_Mining_Corps"
+					effect = {
+						set_owner = event_target:drone_country
+						while = {
+							count = 1
+							create_ship = {
+								name = ""
+								design = "NAME_Abandoned_Manufactory"
+							}
+						}
+						set_location = {
+							target = event_target:planet_location
+							distance = 0
+							angle = 20
+						}
+						set_formation_scale = 2
+						set_fleet_stance = passive
+						set_aggro_range_measure_from = self
+						set_aggro_range = 200
+					}
+				}
+				create_fleet = {
+					name = "NAME_Mining_Corps"
+					effect = {
+						set_owner = event_target:drone_country
+						while = {
+							count = 6
+							create_ship = {
+								name = "NAME_Drone_1832-D"
+								design = "NAME_Ancient_Combat_Drone"
+							}
+						}
+						set_location = {
+							target = event_target:planet_location
+							distance = 0
+							angle = 20
+						}
+						set_formation_scale = 2
+						set_fleet_stance = aggressive
+						set_aggro_range_measure_from = self
+						set_aggro_range = 200
+					}
+				}
+			}
 		}
 	}
 }
 
 gpm_random_ring_feature = {
+	####################
+	# GALAXY AGE: YOUNG
+	if = { 
+		limit = { has_global_flag = gpm_galaxy_age_young }
 	random_list = {
-		98 = {}
-		2 = { 
+			50 = {}
+			15 = { 
 			gpm_create_tiyanki_resident = yes
 			modifier = { factor = 0 solar_system = { exists = owner } }
+				modifier = { factor = 0 NOT = { exists = event_target:tiyanki_country } }
+			}
+			5 = {
+				gpm_create_rogue_traders = yes
+				modifier = { factor = 0 solar_system = { exists = owner } }
+				modifier = { factor = 0 NOT = { exists = event_target:drone_country } }
+			}
+		}	
+	}
+
+	####################
+	# GALAXY AGE: NORMAL
+	if = { 
+		limit = { has_global_flag = gpm_galaxy_age_default }
+		random_list = {
+			50 = { }
+			10 = { 
+				gpm_create_tiyanki_resident = yes
+				modifier = { factor = 0 solar_system = { exists = owner } }
+				modifier = { factor = 0 NOT = { exists = event_target:tiyanki_country } }
+			}
+			15 = {
+				gpm_create_rogue_traders = yes
+				modifier = { factor = 0 solar_system = { exists = owner } }
+				modifier = { factor = 0 NOT = { exists = event_target:drone_country } }
+			}
 		}
-		# 5 = { gpm_create_rogue_traders = yes }
+	}
+
+	####################
+	# GALAXY AGE: OLD
+	if = { 
+		limit = { has_global_flag = gpm_galaxy_age_old }
+		random_list = {
+			50 = {}
+			5 = {
+				gpm_create_tiyanki_resident = yes
+				modifier = { factor = 0 solar_system = { exists = owner } }
+				modifier = { factor = 0 NOT = { exists = event_target:tiyanki_country } }
+			}
+			25 = {
+				gpm_create_rogue_traders = yes
+				modifier = { factor = 0 solar_system = { exists = owner } }
+				modifier = { factor = 0 NOT = { exists = event_target:drone_country } }
+			}
+		}
 	}
 }
 
 gpm_set_planet_picture = {
-
+	optimize_memory
 	if = {
 		limit = {
 			is_planet_class = pc_barren
@@ -853,7 +1364,7 @@ gpm_cybrex_ringworld_switch = {
 # 			} 
 # 			random_list = {
 # 				10 = { }
-# 				10 = { gpm_designate_precursor_world = yes }
+# 				10 = { set_planet_flag = gpm_is_precursor_world }
 # 			}
 # 		}
 # 		planet_event = { id = gpm_engine.1 }
@@ -870,8 +1381,8 @@ gpm_precursor_home_planet_setup = {
 			gpm_are_precursors_enabled = yes
 		}
 		# designate as precursor world
-		gpm_designate_precursor_world = yes
-		set_planet_flag = has_precursor_planet_modifier
+		set_planet_flag = gpm_is_precursor_world
+		# set_planet_flag = has_precursor_planet_modifier
 		
 		# spawn precursor shipyards on star!
 
@@ -930,8 +1441,8 @@ gpm_precursor_planet_setup_no_modifiers = {
 			gpm_are_precursors_enabled = yes
 		}
 		# designate as precursor world
-		gpm_designate_precursor_world = yes
-		set_planet_flag = has_precursor_planet_modifier
+		set_planet_flag = gpm_is_precursor_world
+		# set_planet_flag = has_precursor_planet_modifier
 
 		# set home world modifiers and stuff
 		if = { 
@@ -1058,7 +1569,7 @@ gpm_create_primitive_relic_world = {
 				name = "Les Enfants perdus"
 				authority = random
 				civics = random
-				species = last_created
+				species = last_created_species
 				ethos = random
 
 				flag = random
@@ -1075,7 +1586,7 @@ gpm_create_primitive_relic_world = {
 				name = "Empire des Tours Montantes"
 				authority = random
 				civics = random
-				species = last_created
+				species = last_created_species
 				ethos = random
 
 				flag = random
@@ -1092,7 +1603,7 @@ gpm_create_primitive_relic_world = {
 				name = "Royaume de Métal" #Calvitix kingdom of 
 				authority = random
 				civics = random
-				species = last_created
+				species = last_created_species
 				ethos = random
 
 				flag = random
@@ -1109,7 +1620,7 @@ gpm_create_primitive_relic_world = {
 				name = "Société Zap"
 				authority = random
 				civics = random
-				species = last_created
+				species = last_created_species
 				ethos = random
 
 				flag = random
@@ -1126,7 +1637,7 @@ gpm_create_primitive_relic_world = {
 				name = "Royaume de la ferraille"
 				authority = random
 				civics = random
-				species = last_created
+				species = last_created_species
 				ethos = random
 
 				flag = random
@@ -1143,7 +1654,7 @@ gpm_create_primitive_relic_world = {
 				name = "Technozone"
 				authority = random
 				civics = random
-				species = last_created
+				species = last_created_species
 				ethos = random
 
 				flag = random
@@ -1192,11 +1703,12 @@ gpm_remove_galaxy_generation_deposits = {
 			}
 			NOT = { has_planet_flag = forbid_guillis_planet_modifiers }
 			gpm_engine_forbidden_planets = no
+			gpm_is_planet_class_asteroid = no
 		}
 
 		random_list = {
-			75 = { }
-			25 = {
+			88 = { }
+			12 = {
 				if = {
 					limit = { has_deposit = d_minerals_2 }
 					remove_deposit = d_minerals_2
@@ -1220,6 +1732,288 @@ gpm_remove_galaxy_generation_deposits = {
 				if = { 
 					limit = { has_deposit = d_energy_4 }
 					remove_deposit = d_energy_4
+				}
+			}
+		}
+	}
+}
+
+gpm_spawn_ruined_observation_station = {
+	solar_system = {
+		spawn_megastructure = {
+			type = "gpm_observation_station_ruined"
+			coords_from = prev
+
+			init_effect = {
+				random_list = {
+					10 = { set_name = NAME_ruined_observation_station_1 }
+					10 = { set_name = NAME_ruined_observation_station_2 }
+					10 = { set_name = NAME_ruined_observation_station_3 }
+					10 = { set_name = NAME_ruined_observation_station_4 }
+					10 = { set_name = NAME_ruined_observation_station_5 }
+				}
+				create_ambient_object = {
+					type = "large_debris_object"
+					location = this
+				}
+				last_created_ambient_object = {
+					set_location = {
+						target = prev
+						distance = 2
+						angle = 20
+					}
+					set_ambient_object_flag = gpm_ambient_ruined_observation_station_debris
+				}
+				create_ambient_object = {
+					type = "medium_debris_01_object"
+					entity_offset_height = { min = -0 max = 5 }
+					location = this
+				}
+				last_created_ambient_object = {
+					set_location = {
+						target = prev
+						distance = 4
+						angle = random
+					}
+					set_ambient_object_flag = gpm_ambient_ruined_observation_station_debris
+				}
+				create_ambient_object = {
+					type = "medium_debris_02_object"
+					entity_offset_height = { min = -0 max = -5 }
+					location = this
+				}
+				last_created_ambient_object = {
+					set_location = {
+						target = prev
+						distance = 6
+						angle = random
+					}
+					set_ambient_object_flag = gpm_ambient_ruined_observation_station_debris
+				}
+				create_ambient_object = {
+					type = "small_debris_object"
+					entity_offset_height = { min = -0 max = -10 }
+					location = this
+				}
+				last_created_ambient_object = {
+					set_location = {
+						target = prev
+						distance = 5
+						angle = random
+					}
+					set_ambient_object_flag = gpm_ambient_ruined_observation_station_debris
+				}
+			}
+		}
+	}
+}
+
+gpm_spawn_ruined_mining_facility = {
+	solar_system = {
+		spawn_megastructure = {
+			type = "gpm_mining_facility_ruined"
+			coords_from = prev
+
+			init_effect = {
+				random_list = {
+					10 = { set_name = NAME_ruined_mining_facility_1 }
+					10 = { set_name = NAME_ruined_mining_facility_2 }
+					10 = { set_name = NAME_ruined_mining_facility_3 }
+					10 = { set_name = NAME_ruined_mining_facility_4 }
+					10 = { set_name = NAME_ruined_mining_facility_5 }
+				}
+				create_ambient_object = {
+					type = "large_debris_object"
+					entity_offset_height = { min = -5 max = -5 }
+					location = this
+				}
+				last_created_ambient_object = {
+					set_location = {
+						target = prev
+						distance = 2
+						angle = 20
+					}
+					set_ambient_object_flag = gpm_ambient_ruined_mining_facility_debris
+				}
+				create_ambient_object = {
+					type = "medium_debris_01_object"
+					entity_offset_height = { min = -10 max = -10 }
+					location = this
+				}
+				last_created_ambient_object = {
+					set_location = {
+						target = prev
+						distance = 4
+						angle = random
+					}
+					set_ambient_object_flag = gpm_ambient_ruined_mining_facility_debris
+				}
+				create_ambient_object = {
+					type = "medium_debris_02_object"
+					entity_offset_height = { min = -13 max = -13 }
+					location = this
+				}
+				last_created_ambient_object = {
+					set_location = {
+						target = prev
+						distance = 6
+						angle = random
+					}
+					set_ambient_object_flag = gpm_ambient_ruined_mining_facility_debris
+				}
+				create_ambient_object = {
+					type = "small_debris_object"
+					entity_offset_height = { min = -15 max = -15 }
+					location = this
+				}
+				last_created_ambient_object = {
+					set_location = {
+						target = prev
+						distance = 5
+						angle = random
+					}
+					set_ambient_object_flag = gpm_ambient_ruined_mining_facility_debris
+				}
+			}
+		}
+	}
+}
+
+gpm_spawn_ruined_refinery = {
+	solar_system = {
+		spawn_megastructure = {
+			type = "gpm_refinery_ruined"
+			coords_from = prev
+
+			init_effect = {
+				random_list = {
+					10 = { set_name = NAME_ruined_refinery_1 }
+					10 = { set_name = NAME_ruined_refinery_2 }
+					10 = { set_name = NAME_ruined_refinery_3 }
+					10 = { set_name = NAME_ruined_refinery_4 }
+					10 = { set_name = NAME_ruined_refinery_5 }
+				}
+				create_ambient_object = {
+					type = "large_debris_object"
+					location = this
+				}
+				last_created_ambient_object = {
+					set_location = {
+						target = prev
+						distance = 2
+						angle = 20
+					}
+					set_ambient_object_flag = gpm_ambient_ruined_refinery_debris
+				}
+				create_ambient_object = {
+					type = "medium_debris_01_object"
+					entity_offset_height = { min = -0 max = 5 }
+					location = this
+				}
+				last_created_ambient_object = {
+					set_location = {
+						target = prev
+						distance = 4
+						angle = random
+					}
+					set_ambient_object_flag = gpm_ambient_ruined_refinery_debris
+				}
+				create_ambient_object = {
+					type = "medium_debris_02_object"
+					entity_offset_height = { min = -0 max = -5 }
+					location = this
+				}
+				last_created_ambient_object = {
+					set_location = {
+						target = prev
+						distance = 6
+						angle = random
+					}
+					set_ambient_object_flag = gpm_ambient_ruined_refinery_debris
+				}
+				create_ambient_object = {
+					type = "small_debris_object"
+					entity_offset_height = { min = -0 max = -10 }
+					location = this
+				}
+				last_created_ambient_object = {
+					set_location = {
+						target = prev
+						distance = 5
+						angle = random
+					}
+					set_ambient_object_flag = gpm_ambient_ruined_refinery_debris
+				}
+			}
+		}
+	}
+}
+
+gpm_spawn_ruined_silo = {
+	solar_system = {
+		spawn_megastructure = {
+			type = "gpm_silo_ruined"
+			random_pos = yes
+			orbit_angle = 360
+
+			init_effect = {
+				random_list = {
+					10 = { set_name = NAME_ruined_silo_1 }
+					10 = { set_name = NAME_ruined_silo_2 }
+					10 = { set_name = NAME_ruined_silo_3 }
+					10 = { set_name = NAME_ruined_silo_4 }
+					10 = { set_name = NAME_ruined_silo_5 }
+				}
+				create_ambient_object = {
+					type = "large_debris_object"
+					location = this
+				}
+				last_created_ambient_object = {
+					set_location = {
+						target = prev
+						distance = 2
+						angle = 20
+					}
+					set_ambient_object_flag = gpm_ambient_ruined_silo_debris
+				}
+				create_ambient_object = {
+					type = "medium_debris_01_object"
+					entity_offset_height = { min = -0 max = 5 }
+					location = this
+				}
+				last_created_ambient_object = {
+					set_location = {
+						target = prev
+						distance = 4
+						angle = random
+					}
+					set_ambient_object_flag = gpm_ambient_ruined_silo_debris
+				}
+				create_ambient_object = {
+					type = "medium_debris_02_object"
+					entity_offset_height = { min = -0 max = -5 }
+					location = this
+				}
+				last_created_ambient_object = {
+					set_location = {
+						target = prev
+						distance = 6
+						angle = random
+					}
+					set_ambient_object_flag = gpm_ambient_ruined_silo_debris
+				}
+				create_ambient_object = {
+					type = "small_debris_object"
+					entity_offset_height = { min = -0 max = -10 }
+					location = this
+				}
+				last_created_ambient_object = {
+					set_location = {
+						target = prev
+						distance = 5
+						angle = random
+					}
+					set_ambient_object_flag = gpm_ambient_ruined_silo_debris
 				}
 			}
 		}

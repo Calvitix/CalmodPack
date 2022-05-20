@@ -1,8 +1,8 @@
 # Giga file
 #
-# Calvitix Check 3.3.4 & Trad names
+# Calvitix Check 3.4.2 & Trad names
 #
-# Update 24.04.2022
+# Update 19.05.2022
 #
 #
 namespace = giga_paluush
@@ -22,14 +22,14 @@ ship_event = {
 
 	trigger = {
 		NOT = { has_global_flag = meopa_spawned_as_fe }
-		owner = { NOT = { has_country_flag = encountered_paluush } }
+		controller = { NOT = { has_country_flag = encountered_paluush } }
 		from = {
 			has_star_flag = giga_system_six
 			any_system_planet = { has_planet_flag = paluushia }
 		}
 	}
 
-	immediate = { owner = { set_country_flag = encountered_paluush } }
+	immediate = { controller = { set_country_flag = encountered_paluush } }
 	option = { name = "giga_paluush.001.a" }
 }
 
@@ -268,14 +268,14 @@ planet_event = {
 		solar_system = {
 			random_fleet_in_system = {
 				limit = {
-					exists = owner
+					exists = controller
 					exists = orbit
-					owner = { is_same_value = root.from }
+					controller = { is_same_value = root.from }
 					orbit = { is_same_value = root }
 				}
 
 				save_event_target_as = paalush_return_fire
-				random_controlled_ship = {
+				random_owned_ship = {
 					random_list = {
 						1 = { reduce_hp = 100 }
 						2 = { reduce_hp = 200 }
@@ -1360,7 +1360,7 @@ country_event = {
 	}
 }
 
-#Flusion Textures
+#Pre-FTL Flusion Health
 event = {
 	id = giga_flusion.100
 	hide_window = yes
@@ -1771,7 +1771,7 @@ event = { #This event triggers if the empire involved in the Muno event chain be
 				has_planet_flag = muno_project_event
 			}
 			any_galaxy_fleet = {
-				any_controlled_ship = {
+				any_owned_ship = {
 					is_ship_size = giga_war_moon_flusion
 				}
 			}
@@ -2920,7 +2920,7 @@ ship_event = {
 	show_sound = event_radio_chatter
 
 	trigger = {
-		owner = {
+		controller = {
 			NOT = {
 				has_country_flag = knows_muno_attack_moon
 			}
@@ -2933,12 +2933,12 @@ ship_event = {
 		}
 	}
 
-	immediate = { owner = { set_country_flag = knows_muno_attack_moon } }
+	immediate = { controller = { set_country_flag = knows_muno_attack_moon } }
 
 	option = { #Yay!
 		name = "giga_flusion.405.a"
 		trigger = {
-			owner = {
+			controller = {
 				NOR = {
 					has_valid_civic = civic_fanatic_purifiers
 					has_valid_civic = civic_hive_devouring_swarm
@@ -2951,7 +2951,7 @@ ship_event = {
 	option = { #Nay!
 		name = "giga_flusion.405.b"
 		trigger = {
-			owner = {
+			controller = {
 				OR = {
 					has_valid_civic = civic_fanatic_purifiers
 					has_valid_civic = civic_hive_devouring_swarm

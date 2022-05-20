@@ -33,8 +33,12 @@ diagnostician = {
 		}		
     }
 
-    planet_modifier = {
+	triggered_planet_modifier = {
+		potential = {
+			always = yes
+		}
 		planet_amenities_add = 10
+		mult = value:scripted_modifier_mult|MODIFIER|pop_job_amenities_mult|
 	}
 
 	triggered_planet_modifier = {
@@ -61,37 +65,13 @@ diagnostician = {
 		planet_pop_assembly_mult = 0.025
     }
 
-	triggered_planet_modifier = {
-		potential = {
-			OR = {
-				has_trait = trait_robot_domestic_protocols
-				has_trait = trait_charismatic
-			}
-		}
-		modifier = { planet_amenities_add = 2 }
-    }
-	triggered_planet_modifier = {
-		potential = { has_trait = trait_repugnant }
-		modifier = { planet_amenities_add = -2 }
-	}	
-		
 	weight = {
-		weight = @spawner_drone_job_weight
+		weight = @high_prio_specialist_job_weight
+		mult = value:scripted_modifier_job_weight_mult|MODIFIER|pop_job_amenities_mult|
 		modifier = {
 			factor = 0.2
 			has_citizenship_rights = no	
 			NOT = { has_trait = trait_mechanical }	
-		}		
-		modifier = {
-			factor = 1.5
-			OR = {
-				has_trait = trait_robot_domestic_protocols
-				has_trait = trait_charismatic
-			}
-		}
-		modifier = {
-			factor = 0.5
-			has_trait = trait_repugnant
 		}		
 		modifier = {
 			factor = 0.1
@@ -99,12 +79,19 @@ diagnostician = {
 		}
 		modifier = {
 			factor = 1.5
-			has_job = healthcare
+			has_job = diagnostician
         }
 		modifier = {
 			factor = 0.5
 			is_enslaved = yes
 			has_slavery_type = { type = slavery_indentured }
 		}		
+		modifier = {
+			factor = 10
+			NOT = { has_job = diagnostician }
+			planet = {
+				free_amenities < 0
+			}
+		}
 	}
 }

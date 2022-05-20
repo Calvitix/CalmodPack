@@ -1,6 +1,7 @@
-#UI OverHaul, Modif Calvitix, Check 3.3.4   19.03.2022
+#UI OverHaul, Modif Calvitix, Check 3.4.2   19.05.2022
 # Calvitix shortcut change
 # taille des boîtes de dialogues
+@SituationEventElementHeight = 80
 guiTypes = {
 	containerWindowType = {
 		name = "EventWindow"
@@ -60,7 +61,7 @@ guiTypes = {
 			name = "track_button"
 			position = { x = -77 y = 13 }
 			orientation = upper_right
-			spriteType = "GFX_track_all_projects_icon"
+			spriteType = "GFX_button_track_project" # "GFX_track_all_projects_icon"
 		}
 		### PORTRAIT ###
 		@PORTRAIT_Y = 170
@@ -99,13 +100,121 @@ guiTypes = {
 				alwaysTransparent = yes
 			}
 		}
+		### SITUATION ###
+		containerWindowType = { #If the Situation is finished, this shifts up by situations_progress_bar_container height
+			name = "situations_progress_subview"
+			position = { x = 0 y = 317 }
+			size = { width = 480 height = @SituationEventElementHeight }
+			orientation = center_up
+			origo = center_up
+			iconType = {
+				name = "middle_indicator"
+				position = { x = 244 y = 32 }
+				spriteType = "GFX_situation_middle_indicator"
+			}
+			containerWindowType = {
+				name = "situations_progress_bar_container"
+				position = { x = 77 y = 0 }
+				size = { width = 335 height = 40 }
+				iconType = {
+					name = "progress_bar_monodirectional"
+					position = { x = 0 y = 31 }
+					spriteType = "GFX_situation_event_progressbar_monodirectional_neutral" # Set in code
+				}
+				iconType = {
+					name = "progress_bar_bidirectional_left"
+					position = { x = 0 y = 31 }
+					spriteType = "GFX_situation_event_progressbar_bidirectional_neutral_left" # Set in code
+				}
+				iconType = {
+					name = "progress_bar_bidirectional_right"
+					position = { x = 168 y = 31 }
+					spriteType = "GFX_situation_event_progressbar_bidirectional_neutral_right" # Set in code
+				}
+			}
+			iconType = {
+				name = "start_indicator"
+				position = { x = 74 y = 32 }
+				spriteType = "GFX_situation_start_indicator"
+			}
+			iconType = {
+				name = "outcome_right"
+				orientation = upper_right
+				position = { x = -61 y = 38 }
+				spriteType = "GFX_invisible"
+				centerPosition = yes
+			}
+			iconType = {
+				name = "outcome_right_frame"
+				orientation = upper_right
+				position = { x = -61 y = 39 }
+				spriteType = "GFX_invisible"
+				centerPosition = yes
+			}
+			iconType = {
+				name = "outcome_left"
+				position = { x = 61 y = 39 }
+				spriteType = "GFX_invisible"
+				centerPosition = yes
+			}
+			iconType = {
+				name = "outcome_left_frame"
+				position = { x = 61 y = 39 }
+				spriteType = "GFX_invisible"
+				centerPosition = yes
+			}
+			containerWindowType = {
+				name = "progress_bar_pin_container"
+				size = { width = 72 height = 30 }
+				clipping = no
+				iconType = {
+					name = "pin_bg"
+					position = { x = 0 y = 1 }
+					quadTextureSprite = "GFX_situation_progress_pin"
+				}
+				iconType = {
+					name = "pin_icon"
+					position = { x = 52 y = 13 }
+					spriteType = "GFX_situation_progress_arrows"
+					centerPosition = yes
+				}
+				instantTextBoxType = {
+					name = "monthly_change"
+					position = { x = -3 y = 5 }
+					font = "cg_16b"
+					maxWidth = 40
+					maxHeight = 30
+					format = right
+				}
+			}
+			containerWindowType = { #If the Situation is finished, this shifts down by situations_progress_bar_container height
+				name = "situation_title_container"
+				position = { x = 0 y = -25 }
+				size = { width = 490 height = 32 }
+				instantTextBoxType = {
+					name = "situation_title"
+					position = { x = 0 y = 0 }
+					maxWidth = 490
+					maxHeight = 32
+					format = center
+					font = "cg_16b"
+					text_color_code = "H"
+					text = "Situation Title Here"
+				}
+			}
+			buttonType = {
+				name = "situation_goto_button"
+				quadTextureSprite = "gfx_transparency_button"
+				position = { x = 20 y = -10 }
+				size = { x = 460 y = 80 }
+				oversound = no_sound
+			}
+		}
 		### DESCRIPTION ###
 		containerWindowType = {
 			name = "description_frame"
-			position = { x = 0 y = 295 }
-			size = { width = -20 height = -10 }
-			orientation = center_up
-			origo = center_up
+			position = { x = 10 y = 295 }
+			size = { width = -10 height = -10 }
 			background = {
 				name = "description_frame"
 				spriteType = "GFX_tiles_frame_light"
@@ -120,10 +229,10 @@ guiTypes = {
 					alwaysTransparent = yes
 				}
 			}
-		}
 		instantTextBoxType = {
 			name = "description"
-			position = { x = 30 y = 307 }
+				position = { x = 21 y = 10 }
+				#font = "cg_16b"
 			font = "malgun_goth_24"
 			text = "Long text here!"
 			maxWidth = 643
@@ -134,6 +243,8 @@ guiTypes = {
 				min_height = 1440
 				font = "malgun_goth_24"
 				maxHeight = 850
+			}
+				scrollbartype = "standardtext_slider_small"
 			}
 		}
 	}
@@ -177,6 +288,10 @@ guiTypes = {
 	containerWindowType = {
 		name = "trigger_icon_entry"
 		size = { width = 29 height = 29 }
+		iconType = { #usually hidden, scripted ones can have backgrounds for Situation Approaches
+			name = "background"
+			spriteType = "GFX_trigger_icon"
+		}
 		iconType = {
 			name = "icon"
 			spriteType = "GFX_trigger_icon"

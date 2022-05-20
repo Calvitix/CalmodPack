@@ -1,0 +1,324 @@
+# Original File
+#
+# Calvitix Check 3.4.2  18.05.2022
+#
+# Merge with JL PICARD 19.05.2022
+#
+############################œ
+#
+# Necroids Events
+# Written by Gemma Thomson
+#
+############################
+
+namespace = necroids
+
+#How much more or less likely a given sacrifice result should be, if the number of Mortal Initiates is within each effect's stated bounds.
+@sacrificeUpWeighting = 5
+@sacrificeDownWeighting = 0.1
+
+#Sacrifice: Togetherness (fired by edict)
+country_event = {
+	id = necroids.200
+	title = necroids.200.name
+	desc = necroids.200.desc
+	picture = GFX_evt_alien_propaganda
+	show_sound = event_death_cult
+	location = capital_scope
+	is_triggered_only = yes
+
+	trigger = {
+		is_spiritualist = yes
+		OR = {
+			has_valid_civic = civic_death_cult
+			has_valid_civic = civic_death_cult_corporate
+		}
+	}
+
+	immediate = {
+		death_cult_sacrifice_effect = yes
+	}
+
+	option = {
+		name = PRAISE
+		add_modifier = {
+			modifier = sacrifice_togetherness_mod
+			days = 1800
+			multiplier = sacrifice_result_mult
+			time_multiplier = edict_length_modifiers
+		}
+	}
+
+	after = {
+		hidden_effect = {
+			every_subject = {
+				limit = { has_country_flag = recent_overlord_sacrifice }
+				remove_country_flag = recent_overlord_sacrifice
+				add_modifier = {
+					modifier = sacrifice_togetherness_mod_overlord
+					days = 1800
+				}
+				create_message = {
+					type = MESSAGE_OVERLORD_SACRIFICE
+					localization = MESSAGE_OVERLORD_SACRIFICE_DESC
+					days = 30
+				}
+			}
+			clear_variable = sacrifice_result_mult
+			clear_variable = edict_length_modifiers
+		}
+	}
+}
+
+#Sacrifice: Harmony (fired by edict)
+country_event = {
+	id = necroids.201
+	title = necroids.201.name
+	desc = necroids.201.desc
+	picture = GFX_evt_alien_propaganda
+	show_sound = event_death_cult
+	location = capital_scope
+	is_triggered_only = yes
+
+	trigger = {
+		is_spiritualist = yes
+		OR = {
+			has_valid_civic = civic_death_cult
+			has_valid_civic = civic_death_cult_corporate
+		}
+	}
+
+	immediate = {
+		death_cult_sacrifice_effect = yes
+	}
+
+	option = {
+		name = PRAISE
+		add_modifier = {
+			modifier = sacrifice_harmony_mod
+			days = 1800
+			multiplier = sacrifice_result_mult
+			time_multiplier = edict_length_modifiers
+		}
+	}
+
+	after = {
+		hidden_effect = {
+			every_subject = {
+				limit = { has_country_flag = recent_overlord_sacrifice }
+				remove_country_flag = recent_overlord_sacrifice
+				add_modifier = {
+					modifier = sacrifice_harmony_mod_overlord
+					days = 1800
+				}
+				create_message = {
+					type = MESSAGE_OVERLORD_SACRIFICE
+					localization = MESSAGE_OVERLORD_SACRIFICE_DESC
+					days = 30
+				}
+			}
+			clear_variable = sacrifice_result_mult
+			clear_variable = edict_length_modifiers
+		}
+	}
+}
+
+#Sacrifice: Bounty (fired by edict)
+country_event = {
+	id = necroids.202
+	title = necroids.202.name
+	desc = necroids.202.desc
+	picture = GFX_evt_alien_propaganda
+	show_sound = event_death_cult
+	location = capital_scope
+	is_triggered_only = yes
+
+	trigger = {
+		is_spiritualist = yes
+		OR = {
+			has_valid_civic = civic_death_cult
+			has_valid_civic = civic_death_cult_corporate
+		}
+	}
+
+
+	immediate = {
+		death_cult_sacrifice_effect = yes
+	}
+
+	option = {
+		name = PRAISE
+		add_modifier = {
+			modifier = sacrifice_bounty_mod
+			days = 1800
+			multiplier = sacrifice_result_mult
+			time_multiplier = edict_length_modifiers
+		}
+	}
+
+	after = {
+		hidden_effect = {
+			every_subject = {
+				limit = { has_country_flag = recent_overlord_sacrifice }
+				remove_country_flag = recent_overlord_sacrifice
+				add_modifier = {
+					modifier = sacrifice_bounty_mod_overlord
+					days = 1800
+				}
+				create_message = {
+					type = MESSAGE_OVERLORD_SACRIFICE
+					localization = MESSAGE_OVERLORD_SACRIFICE_DESC
+					days = 30
+				}
+			}
+			clear_variable = sacrifice_result_mult
+			clear_variable = edict_length_modifiers
+		}
+	}
+}
+
+planet_event = { #Braiiiins
+	id = necroids.250
+	is_triggered_only = yes
+	hide_window = yes
+
+	trigger = {
+		fromfrom = { 
+			is_organic_species = yes
+			NOT = { has_trait = trait_zombie }
+		}
+		owner = { has_valid_civic = civic_permanent_employment }
+		has_building = building_posthumous_employment_center
+	}
+
+	immediate = {
+		fromfrom = {
+			make_pop_zombie = yes
+		}
+	}
+	after = {
+		fromfrom = {
+			clear_pop_category = yes #To make sure that the zombie pop does not spawn as a non worker strata
+		}
+	}
+}
+
+country_event = {
+	id = necroids.255
+	is_triggered_only = yes
+	hide_window = yes
+
+	trigger = {
+		has_valid_civic = civic_permanent_employment
+	}
+
+	immediate = {
+		country_event = { id = necroids.260 days = 36000 random = 7200 }
+	}
+}
+
+country_event = {
+	id = necroids.260
+	is_triggered_only = yes
+	title = necroids.260.name
+	desc = necroids.260.desc
+	picture = GFX_evt_board_meeting
+	show_sound = event_yellow_alert
+	location = event_target:debt_free_zombie.planet # Correction de bug - manquant #@# À tester
+
+	trigger = {
+		has_valid_civic = civic_permanent_employment
+		any_owned_pop = {
+			has_trait = trait_zombie
+		}
+	}
+
+	immediate = {
+		random_owned_pop = {
+			limit = {
+				has_trait = trait_zombie
+			}
+			save_event_target_as = debt_free_zombie
+		}
+	}
+
+	option = {
+		allow = { is_authoritarian = no }
+		name = necroids.260.a
+		event_target:debt_free_zombie = {
+			kill_pop = yes
+		}
+	}
+	option = {
+		name = necroids.260.b
+		if = {
+			limit = {
+				is_authoritarian = no
+			}
+			add_modifier = {
+				modifier = zombie_contract_manipulation
+				days = -1
+			}
+		}
+	}
+}
+
+planet_event = {
+	id = necroids.275
+	is_triggered_only = yes
+	hide_window = yes
+
+	trigger = {
+		OR = {
+			num_assigned_jobs = {
+				job = overlord_reassigner
+				value >= 1
+ 			}
+ 			num_assigned_jobs = {
+				job = overlord_reassigner_drone
+				value >= 1
+ 			}
+		}
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				any_owned_pop = {
+					NOT = { has_trait = trait_hive_mind }
+					is_robot_pop = no
+				}
+			}
+			random_owned_pop = {
+				limit = {
+					NOT = { has_trait = trait_hive_mind }
+					is_robot_pop = no
+				}
+				root = {
+					create_pop = {
+						species = prev
+					}
+				}
+			}
+		}
+		else = {
+			random_owned_pop = {
+				root = {
+					create_pop = {
+						species = prev
+					}
+				}
+			}
+		}
+		last_created_pop = {
+			if = {
+				limit = {
+					NOT = { 
+						has_trait = trait_zombie
+					}
+				}
+				make_pop_zombie = yes
+			}
+		}
+	}
+}

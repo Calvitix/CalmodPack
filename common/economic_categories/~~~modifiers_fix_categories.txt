@@ -43,16 +43,17 @@ edicts = {
 	generate_mult_modifiers = {
 		produces 
 		cost
+		upkeep
 	}
-
 	generate_add_modifiers = {
 		produces
 		cost
+		upkeep
 	}
 }
 
 rare_edicts = {
-	use_for_ai_budget = yes					
+	use_for_ai_budget = no			
 	parent = edicts
 	
 	generate_mult_modifiers = {
@@ -72,7 +73,7 @@ rare_edicts = {
 #}
 
 campaigns = {
-	use_for_ai_budget = yes					
+	use_for_ai_budget = no				
 	parent = edicts
 	generate_mult_modifiers = {
 		produces 
@@ -1838,7 +1839,10 @@ starbase_stations = {
 
 		trigger = {
 			is_scope_valid = yes #When called from ship designer the design is not valid yet.
+			OR = {
 			is_ship_size = starbase_outpost
+				is_ship_size = orbital_ring_tier_1 #TODOJM: Remove?
+			}
 		}
 	}
     
@@ -1852,7 +1856,10 @@ starbase_stations = {
 
 		trigger = {
 			is_scope_valid = yes #When called from ship designer the design is not valid yet.
+			OR = {
 			is_ship_size = starbase_outpost
+				is_ship_size = orbital_ring_tier_1 #TODOJM: Remove?
+			}
 		}
 	}
 	
@@ -2044,10 +2051,7 @@ starbase_constructions = {
 }
 
 starbase_buildings = {
-
 	parent = starbase_constructions
-
-
 
 	generate_mult_modifiers = {
 		cost
@@ -2063,10 +2067,7 @@ starbase_buildings = {
 }
 
 starbase_modules = {
-
 	parent = starbase_constructions
-
-
 
 	generate_mult_modifiers = {
 		cost
@@ -2143,6 +2144,22 @@ planet_buildings_strongholds = {
 }								
 planet_branch_offices = {
 	parent = planets
+
+	generate_mult_modifiers = {
+		cost
+		upkeep
+		produces
+	}
+
+	generate_add_modifiers = {
+		cost
+		upkeep
+		produces
+	}
+}
+
+planet_buildings_hab_capital = { #new in 3.4
+	parent = planet_buildings
 
 	generate_mult_modifiers = {
 		cost

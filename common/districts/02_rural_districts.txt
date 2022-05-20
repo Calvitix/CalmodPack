@@ -2,7 +2,7 @@
 #
 # Calvitix Check 3.4.2  15.05.2022
 #
-# Merge with Planet. Diversity 03.01.2022
+# Merge with Planet. Diversity 19.05.2022
 # Merge with Venture megacorp  02.01.2022
 # Merge with STARNET AI 24.11.2021
 # Merge with Bigger Colonies Fix 23.10.2021
@@ -267,17 +267,19 @@ district_mining = {
 
 	show_on_uncolonized = {
 		uses_district_set = standard
+		NAND = {
+			exists = from
+			from = { is_subterranean_empire = yes }
+		}
 	}
 
 	potential = {
 		uses_district_set = standard
-		NOT = {
-			AND = { 
+		NAND = {
 				exists = owner
 				owner = { is_subterranean_empire = yes }
 			}
 		}
-	}
 
 	allow = {
 		NOT = { has_modifier = resort_colony }
@@ -713,6 +715,13 @@ district_farming = {
 		tech_industrial_farming
 	}
 
+	destroy_trigger = {
+		exists = owner
+		AND = {
+			owner = { is_ai = yes }
+			owner = { country_uses_food = no }
+		}
+	}
 #### plentiful traditions
 	triggered_planet_modifier = {
 		potential = {
@@ -1055,10 +1064,16 @@ district_mining_uncapped = {
 			uses_district_set = hive_world
 			uses_district_set = machine_world
 			uses_district_set = shattered_ring_world
+			AND = {
+				exists = from
+				from = { is_subterranean_empire = yes }
+				uses_district_set = standard
+			}
 		}
 	}
 
 	potential = {
+		
 		OR = {
 			uses_district_set = hive_world
 			uses_district_set = machine_world
@@ -1548,6 +1563,13 @@ district_farming_uncapped = {
 		text = job_pearl_diver_effect_desc
 	}
 
+	destroy_trigger = {
+		exists = owner
+		AND = {
+			owner = { is_ai = yes }
+			owner = { country_uses_food = no }
+		}
+	}
 
 #### plentiful traditions
 	triggered_planet_modifier = {

@@ -1,8 +1,8 @@
 # Giga File
 #
-# Calvitix Check 3.3.4
+# Calvitix Check 3.4.2
 #
-# Last Update : 24.04.2022
+# Last Update : 19.05.2022
 #
 building_giga_paluush_homes = {
 	capital = no
@@ -135,14 +135,13 @@ building_giga_iodizium_plant = {
 	prerequisites = { "giga_tech_fusion_suppressor" }
 
 	potential = {
-		planet = {
-			owner = { resource_stockpile_compare = { resource = sr_iodizium value >= 1 } }
-			NOT = { is_planet_class = pc_habitat }
-		}
+		NOT = { has_modifier = resort_colony }
+		NOT = { has_modifier = slave_colony }
 	}
 	
 	planet_modifier = {
-		planet_technician_energy_produces_add = 1
+		planet_technician_energy_produces_add = 2
+		planet_technician_sr_iodizium_upkeep_add = 0.01
 	}
 
 	resources = {
@@ -170,14 +169,6 @@ building_giga_iodizium_plant = {
 		produces = { energy = 35 }
 	}
 
-	ai_weight = {
-		weight = 1
-		modifier = {
-			factor = 0
-			owner = { resource_stockpile_compare = { resource = sr_iodizium value >= 1 } }
-		}
-	}
-
 	ai_resource_production = {
 		energy = 20
 		trigger = { always = yes }
@@ -192,16 +183,15 @@ building_giga_iodizium_research = {
 	prerequisites = { "giga_tech_fusion_suppressor" }
 
 	potential = {
-		planet = {
-			owner = { resource_stockpile_compare = { resource = sr_iodizium value >= 1 } }
-			NOT = { is_planet_class = pc_habitat }
-		}
+		NOT = { has_modifier = resort_colony }
+		NOT = { has_modifier = slave_colony }
 	}
 	
 	planet_modifier = {
 		planet_researchers_physics_research_produces_add = 1
 		planet_researchers_society_research_produces_add = 1
 		planet_researchers_engineering_research_produces_add = 1
+		planet_researchers_sr_iodizium_upkeep_add = 0.01
 	}
 
 	resources = {
@@ -233,19 +223,61 @@ building_giga_iodizium_research = {
 		}
 	}
 
-	ai_weight = {
-		weight = 1
+	ai_resource_production = {
+		physics_research = 25
+		engineering_research = 25
+		society_research = 25
+		trigger = { always = yes }
+	}
+}
+
+building_giga_iodizium_mines = {
+	base_buildtime = @b1_time
+	
+	is_capped_by_modifier = yes
+	
+	category = resource
+	
+	potential = {
+		NOT = { has_modifier = resort_colony }
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_regular_empire = yes }
+		}
 		modifier = {
-			factor = 0
-			owner = { resource_stockpile_compare = { resource = sr_iodizium value >= 1 } }
+			job_giga_iodizium_miner_add = 1
 		}
 	}
-
-	ai_resource_production = {
-		physics_research = 10
-		engineering_research = 10
-		society_research = 10
-		trigger = { always = yes }
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_gestalt = yes }
+		}
+		modifier = {
+			job_giga_iodizium_mining_drone_add = 1
+		}
+	}
+	
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 200
+		}
+		upkeep = {
+			energy = 1
+		}
+	}
+	
+	show_tech_unlock_if = {
+		always = no
+	}
+	
+	prerequisites = {
+		giga_tech_fusion_suppressor
 	}
 }
 
@@ -722,21 +754,7 @@ building_giga_gas_giant_habitation_module = {
 	base_cap_amount = 1
 
 	destroy_trigger = {
-		exists = owner
-		OR = {
-			owner = {
-				is_ai = yes
-			}
-			planet = {
-				free_building_slots = 0
-				free_amenities > 5
-				owner = {
-					is_ai = yes
-					has_monthly_income = { resource = food      value > 100 }
-					has_monthly_income = { resource = minerals  value > 100 }
-				}
-			}
-		}
+		always = no # no point in destroying
 	}
 
 	resources = {
@@ -1167,7 +1185,7 @@ building_giga_research_lab_1 = {
 		cost = {
 			minerals = 1400
 			exotic_gases =150
-			rare_crystals = 50
+			#rare_crystals = 50
 		}
 		upkeep = {
 			energy = 9
@@ -1300,8 +1318,8 @@ building_giga_research_lab_2 = {
 		cost = {
 			minerals = @b4_minerals
 			exotic_gases = @b4_rare_cost
-			rare_crystals = 100
-			volatile_motes = 50
+			#rare_crystals = 100
+			#volatile_motes = 50
 		}
 		upkeep = {
 			energy = @b4_upkeep
@@ -1353,9 +1371,10 @@ building_giga_research_lab_2 = {
 # Unorthodox Research Facility
 building_giga_institute_1 = {
     base_buildtime = @b3_time
-    base_cap_amount = 1
 
-
+	empire_limit = {
+		base = 1
+	}
 
 	potential = {
 		NOT = { has_modifier = resort_colony }
@@ -1391,8 +1410,8 @@ building_giga_institute_1 = {
 		cost = {
 			minerals = @b3_minerals
 			exotic_gases = @b3_rare_cost
-			rare_crystals = @b2_rare_cost
-            volatile_motes = 50
+			#rare_crystals = @b2_rare_cost
+			#volatile_motes = 50
 		}
 		upkeep = {
 			energy = @b3_upkeep
@@ -1470,7 +1489,7 @@ building_giga_institute_2 = {
 	}
 
 	allow = {
-		has_major_upgraded_capital = yes
+		has_fully_upgraded_capital = yes
 	}
 
 	resources = {
@@ -1478,8 +1497,8 @@ building_giga_institute_2 = {
 		cost = {
 			minerals = @b4_minerals
 			exotic_gases = @b4_rare_cost#
-			rare_crystals = @b3_rare_cost
-			volatile_motes = @b2_rare_cost
+			#rare_crystals = @b3_rare_cost
+			#volatile_motes = @b2_rare_cost
 			ehof_sr_negative_mass = 20
 		}
 		upkeep = {
@@ -1539,8 +1558,10 @@ building_giga_institute_2 = {
 building_giga_supercomputer_1 = {
     base_buildtime = @b3_time
     icon = building_giga_institute_1
-	base_cap_amount = 1
 
+	empire_limit = {
+		base = 1
+	}
 
 	category = research
 
@@ -1583,8 +1604,8 @@ building_giga_supercomputer_1 = {
 		cost = {
 			minerals = @b3_minerals
 			exotic_gases = @b3_rare_cost
-			rare_crystals = @b2_rare_cost
-            volatile_motes = 50
+			#rare_crystals = @b2_rare_cost
+			#volatile_motes = 50
 		}
 		upkeep = {
 			energy = @b3_upkeep
@@ -1671,7 +1692,7 @@ building_giga_supercomputer_2 = {
 	}
 
 	allow = {
-		has_major_upgraded_capital = yes
+		has_fully_upgraded_capital = yes
 	}
 
 	destroy_trigger = {
@@ -1696,8 +1717,8 @@ building_giga_supercomputer_2 = {
 		cost = {
 			minerals = @b4_minerals
 			exotic_gases = @b4_rare_cost#
-			rare_crystals = @b3_rare_cost
-			volatile_motes = @b2_rare_cost
+			#rare_crystals = @b3_rare_cost
+			#volatile_motes = @b2_rare_cost
 			ehof_sr_negative_mass = 20
 		}
 		upkeep = {
@@ -1773,15 +1794,17 @@ building_giga_supercomputer_2 = {
 building_giga_energy_nexus_1 = {
      base_buildtime = @b3_time
      category = resource
-	 base_cap_amount = 1
 
+	empire_limit = {
+		base = 1
+	}
 
 	resources = {
 		category = planet_buildings
 		cost = {
 			minerals = @b3_minerals
 			exotic_gases = @b3_rare_cost
-			rare_crystals = 20
+			#rare_crystals = 20
 		}
 		cost = {
 			trigger = {
@@ -1789,8 +1812,8 @@ building_giga_energy_nexus_1 = {
 					is_robot_empire = yes
 				}
 			}
-			minerals = 450
-			alloys = 300
+			minerals = 100
+			alloys = 100
 		}
 		upkeep = {
 			energy = 6
@@ -1804,12 +1827,16 @@ building_giga_energy_nexus_1 = {
  		}
  	}
 
+	allow = {
+		has_major_upgraded_capital = yes
+	}
+	
 	prerequisites = {
 		tech_l_conductor
 	}
 
  	planet_modifier = {
- 		planet_technician_energy_produces_add = 3
+		planet_technician_energy_produces_add = 2
  	}
 
      upgrades = {
@@ -1863,7 +1890,7 @@ building_giga_energy_nexus_1 = {
  			}
  		}
  		modifier = {
- 			district_generator_max = 6
+			district_generator_max = 4
  		}
  	}
 
@@ -1906,8 +1933,8 @@ building_giga_energy_nexus_2 = {
 		cost = {
 			minerals = @b4_minerals
 			exotic_gases = @b4_rare_cost
-			rare_crystals = @b2_rare_cost
-			volatile_motes = 20
+			# rare_crystals = @b2_rare_cost
+			# volatile_motes = 20
 		}
 		cost = {
 			trigger = {
@@ -1915,8 +1942,8 @@ building_giga_energy_nexus_2 = {
 					is_robot_empire = yes
 				}
 			}
-			minerals = 600
-			alloys = 450
+			minerals = 300
+			alloys = 150
 		}
 		upkeep = {
 			energy = 8
@@ -1928,6 +1955,10 @@ building_giga_energy_nexus_2 = {
 		tech_hyperlane_p_t
 	}
 
+	allow = {
+		has_fully_upgraded_capital = yes
+	}
+	
  	destroy_trigger = {
  		OR = {
  			has_modifier = resort_colony
@@ -1936,7 +1967,7 @@ building_giga_energy_nexus_2 = {
  	}
 
  	planet_modifier = {
- 		planet_technician_energy_produces_add = 4
+		planet_technician_energy_produces_add = 3
  	}
 
      upgrades = {
@@ -1990,7 +2021,7 @@ building_giga_energy_nexus_2 = {
  			}
  		}
  		modifier = {
- 			district_generator_max = 8
+			district_generator_max = 4
  		}
  	}
 
@@ -2033,8 +2064,8 @@ building_giga_energy_nexus_3 = {
 		cost = {
 			minerals = @b4_minerals
 			exotic_gases = @b4_rare_cost
-			rare_crystals = @b3_rare_cost
-			volatile_motes = @b2_rare_cost
+			#rare_crystals = @b3_rare_cost
+			#volatile_motes = @b2_rare_cost
 			ehof_sr_negative_mass = 20
 		}
 		cost = {
@@ -2043,8 +2074,8 @@ building_giga_energy_nexus_3 = {
 					is_robot_empire = yes
 				}
 			}
-			minerals = 900
-			alloys = 700
+			minerals = 500
+			alloys = 200
 		}
 		upkeep = {
 			energy = 8
@@ -2068,9 +2099,9 @@ building_giga_energy_nexus_3 = {
  		planet_technician_energy_produces_add = 4
  	}
 
-    # upgrades = {
-    #     building_giga_energy_nexus_3
-    # }
+	upgrades = {
+		building_giga_energy_nexus_3
+	}
 
  	triggered_planet_modifier = {
  		potential = {
@@ -2119,7 +2150,7 @@ building_giga_energy_nexus_3 = {
  			}
  		}
  		modifier = {
- 			district_generator_max = 10
+			district_generator_max = 6
  		}
  	}
 
@@ -2217,46 +2248,6 @@ building_giga_planetary_shield_generator_2 = {
     	}
 }
 
-# # Negative Mass Transmuter
-# building_negative_mass_factory_2 = {
-#     base_buildtime = 1200
-#     category = resource
-#     can_build = no
-
-# 	resources = {
-# 		category = planet_buildings
-# 		cost = {
-# 			minerals = 2600
-# 			rare_crystals = @b3_rare_cost
-# 		}
-# 		cost = {
-# 			trigger = {
-# 				owner = {
-# 					is_robot_empire = yes
-# 				}
-# 			}
-# 			minerals = 1200
-# 			alloys = 900
-# 		}
-# 		upkeep = {
-# 			energy = @b4_upkeep
-# 		}
-# 	}
-
-# 	triggered_planet_modifier = {
-# 		potential = {
-# 			exists = owner
-# 		}
-# 		modifier = {
-# 			job_energy_converter_add = @b2_jobs
-# 		}
-# 	}
-
-# 		prerequisites = {
-#     		"tech_nm_utilization_2"
-#     	}
-# }
-
 # Prototype Energy Anti-Transmuter
 building_negative_mass_factory_1 = {
 	base_buildtime = @b4_time
@@ -2295,15 +2286,6 @@ building_negative_mass_factory_1 = {
 			minerals = @b4_minerals
 			exotic_gases = @b2_rare_cost
 			rare_crystals = @b2_rare_cost
-		}
-		cost = {
-			trigger = {
-				owner = {
-					is_robot_empire = yes
-				}
-			}
-			minerals = 900
-			alloys = 700
 		}
 		upkeep = {
 			energy = @b3_upkeep
@@ -2347,20 +2329,8 @@ building_negative_mass_factory_2 = {
 			exotic_gases = @b3_rare_cost
 			rare_crystals = @b3_rare_cost
 		}
-		cost = {
-			trigger = {
-				owner = {
-					is_robot_empire = yes
-				}
-			}
-			minerals = 900
-			alloys = 700
-		}
 		upkeep = {
-			energy = 50
-			exotic_gases = @b3_rare_upkeep
-			rare_crystals = @b3_rare_upkeep
-			volatile_motes = @b2_rare_upkeep
+			energy = @b3_upkeep
 		}
 	}
 }

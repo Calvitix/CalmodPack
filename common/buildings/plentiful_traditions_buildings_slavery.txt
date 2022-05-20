@@ -93,6 +93,15 @@ building_plentiful_traditions_advanced_slave_processing = {
 		has_upgraded_capital = yes
 	}
 
+	destroy_trigger = { # destroys if true
+		exists = owner
+		OR = {
+			owner = { is_regular_empire = no }
+			NOT = { owner = { has_policy_flag = slavery_allowed } }
+			has_modifier = resort_colony
+		}
+	}
+
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
@@ -108,6 +117,7 @@ building_plentiful_traditions_advanced_slave_processing = {
 		job_slave_enforcer_add = 5
 		planet_jobs_slave_produces_mult = 0.10
 		pop_cat_slave_political_power = -0.50
+		planet_resettlement_unemployed_mult = -0.75
 	}	
 
 	resources = {
@@ -135,15 +145,6 @@ building_plentiful_traditions_advanced_slave_processing = {
 	show_tech_unlock_if = { 
 		owner = {
 			has_tradition = tr_plentiful_malice_5
-		}
-	}
-	
-	ai_weight = {
-		weight = 1
-
-		modifier = {
-			factor = 10
-			any_owned_pop = { is_enslaved = yes }
 		}
 	}
 }

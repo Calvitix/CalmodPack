@@ -1,9 +1,243 @@
 # Giga File
 #
-# Calvitix Check 3.3.1
+# Calvitix Check 3.4.2
 #
-# Last Update : 24.02.2022
+# Last Update : 19.05.2022
 #
+# Build Orbital Arcology
+decision_giga_build_orbital_arcology = {
+	owned_planets_only = yes
+	sound = event_construction
+	icon = decision_build_giga_orbital_arcology
+	prerequisites = { "giga_tech_orbital_arcologies" }
+	ai_weight = {
+		weight = 300
+		modifier = { factor = 0.1	solar_system = { any_neighbor_system = { exists = owner NOT = { owner = { is_same_value = from } } } } }
+		modifier = { factor = 0.5	solar_system = { any_neighbor_system = { any_neighbor_system = { exists = owner NOT = { owner = { is_same_value = from } } } } } }
+		modifier = { factor = 4		solar_system = { exists = owner is_same_value = owner.capital_scope.solar_system } }
+		modifier = {
+			factor = 3
+			solar_system = {
+				any_system_planet = {
+					AND = {
+						NOR = { 
+							has_planet_flag = orbital_arcology 
+							has_planet_flag = giga_drive_yard 
+						}
+						OR = {
+							is_planet_class = pc_city
+							is_planet_class = pc_giga_planetary_computer
+							count_owned_pop = { count >= 40 }
+						}
+					}
+				}
+			}
+		}
+		modifier = { factor = 0.00 from = { has_country_flag = has_recently_built_orbital_arcology } }
+	}
+
+	potential = {
+		exists = owner
+		habitable_structure = no
+		NOR = { 
+			has_planet_flag = orbital_arcology 
+			has_planet_flag = giga_drive_yard
+		}
+	}
+
+	allow = {
+		custom_tooltip = {
+			fail_text = "requires_not_capped"
+			owner = {
+				OR = {
+					check_variable = { which = giga_orbital_arcologies_cap value = 0 }						# No Cap
+					check_variable = { which = giga_current_orbital_arcologies value < giga_orbital_arcologies_cap }
+				}
+			}
+		}
+	}
+
+	resources = {
+		category = giga_megastructures
+		cost = {
+			alloys = 200
+			multiplier = trigger:planet_size
+		}
+	}
+
+	effect = {
+		custom_tooltip = "decision_giga_build_orbital_arcology_effect"
+		hidden_effect = {
+			solar_system = {
+				spawn_megastructure = {
+					type = orbital_arcology_0
+					planet = ROOT
+					owner = space_owner
+				}
+				random_system_megastructure = {
+					limit = {
+						is_megastructure_type = orbital_arcology_0
+						planet = { is_same_value = ROOT } 
+					}
+					upgrade_megastructure_to = orbital_arcology_1
+				}
+			}
+		}
+	}
+
+	enactment_time = 0
+}
+
+# Upgrade Orbital Arcology
+decision_giga_upgrade_orbital_arcology = {
+	owned_planets_only = yes
+	sound = event_construction
+	icon = decision_enhance_orbital_arcology
+	prerequisites = { "giga_tech_enhance_orbital_arcologies" }
+	ai_weight = {
+		weight = 300
+		modifier = { factor = 0.1	solar_system = { any_neighbor_system = { exists = owner NOT = { owner = { is_same_value = from } } } } }
+		modifier = { factor = 0.5	solar_system = { any_neighbor_system = { any_neighbor_system = { exists = owner NOT = { owner = { is_same_value = from } } } } } }
+		modifier = { factor = 4		solar_system = { exists = owner is_same_value = owner.capital_scope.solar_system } }
+		modifier = {
+			factor = 3
+			solar_system = {
+				any_system_planet = {
+					AND = {
+						NOR = { 
+							has_planet_flag = orbital_arcology 
+							has_planet_flag = giga_drive_yard 
+						}
+						OR = {
+							is_planet_class = pc_city
+							is_planet_class = pc_giga_planetary_computer
+							count_owned_pop = { count >= 40 }
+						}
+					}
+				}
+			}
+		}
+		modifier = { factor = 0.00 from = { has_country_flag = has_recently_built_orbital_arcology } }
+	}
+
+	potential = {
+		exists = owner
+		habitable_structure = no
+		has_planet_flag = orbital_arcology
+		solar_system = {
+			any_system_megastructure = {
+				is_megastructure_type = orbital_arcology_1
+				planet = { is_same_value = ROOT }
+				is_upgrading = no
+			}
+		}
+	}
+
+	allow = {
+		has_major_upgraded_capital = yes
+	}
+
+	resources = {
+		category = giga_megastructures
+		cost = {
+			alloys = 250
+			multiplier = trigger:planet_size
+		}
+	}
+
+	effect = {
+		custom_tooltip = "decision_giga_upgrade_orbital_arcology_effect"
+		hidden_effect = {
+			solar_system = {
+				random_system_megastructure = {
+					limit = {
+						is_megastructure_type = orbital_arcology_1
+						planet = { is_same_value = ROOT } 
+					}
+					upgrade_megastructure_to = orbital_arcology_2
+				}
+			}
+		}
+	}
+
+	enactment_time = 0
+}
+
+# Maximize Orbital Arcology
+decision_giga_maximize_orbital_arcology = {
+	owned_planets_only = yes
+	sound = event_construction
+	icon = decision_maximize_orbital_arcology
+	prerequisites = { "giga_tech_maximize_orbital_arcologies" }
+	ai_weight = {
+		weight = 300
+		modifier = { factor = 0.1	solar_system = { any_neighbor_system = { exists = owner NOT = { owner = { is_same_value = from } } } } }
+		modifier = { factor = 0.5	solar_system = { any_neighbor_system = { any_neighbor_system = { exists = owner NOT = { owner = { is_same_value = from } } } } } }
+		modifier = { factor = 4		solar_system = { exists = owner is_same_value = owner.capital_scope.solar_system } }
+		modifier = {
+			factor = 3
+			solar_system = {
+				any_system_planet = {
+					AND = {
+						NOR = { 
+							has_planet_flag = orbital_arcology 
+							has_planet_flag = giga_drive_yard 
+						}
+						OR = {
+							is_planet_class = pc_city
+							is_planet_class = pc_giga_planetary_computer
+							count_owned_pop = { count >= 40 }
+						}
+					}
+				}
+			}
+		}
+		modifier = { factor = 0.00 from = { has_country_flag = has_recently_built_orbital_arcology } }
+	}
+
+	potential = {
+		exists = owner
+		habitable_structure = no
+		has_planet_flag = orbital_arcology
+		solar_system = {
+			any_system_megastructure = {
+				is_megastructure_type = orbital_arcology_2
+				planet = { is_same_value = ROOT }
+				is_upgrading = no
+			}
+		}
+	}
+	
+	allow = {
+		has_fully_upgraded_capital = yes
+	}
+
+	resources = {
+		category = giga_megastructures
+		cost = {
+			alloys = 300
+			multiplier = trigger:planet_size
+		}
+	}
+
+	effect = {
+		custom_tooltip = "decision_giga_maximize_orbital_arcology_effect"
+		hidden_effect = {
+			solar_system = {
+				random_system_megastructure = {
+					limit = {
+						is_megastructure_type = orbital_arcology_2
+						planet = { is_same_value = ROOT } 
+					}
+					upgrade_megastructure_to = orbital_arcology_3
+				}
+			}
+		}
+	}
+
+	enactment_time = 0
+}
+
 # Psychic Beacon (Illuminate)
 decision_psychic_illuminate = {
 	icon = decision_psychic_illuminate
@@ -292,7 +526,7 @@ decision_ringworld_upgrade = {
 		cost = { trigger = { has_planet_flag = giga_ringworld_tit }	alloys = 10000 }
 		cost = { trigger = { has_planet_flag = giga_ringworld_beh }	alloys = 10000 }
 		cost = { trigger = { has_planet_flag = giga_ringworld_gar }	alloys = 10000 }
-		cost = {													alloys = 10000 unity = 500 }
+		cost = {													alloys = 10000 influence = 50 }
 	}
 
 	potential = {
@@ -420,6 +654,7 @@ decision_harvest_matter_for_planetary_printing = {
 			is_planet_class = pc_gigabrown_dwarf
 			is_planet_class = pc_birch
 			owner = { is_country_type = primitive }
+			owner = { is_country_type = frameworld_outpost_country_type }
 		}
 		is_star = no
 		is_colony = no
@@ -428,11 +663,12 @@ decision_harvest_matter_for_planetary_printing = {
 	}
 
 	resources = {
-		category = decisions
+		category = giga_kilostructures
 		cost = {
 			alloys = 5000
 			energy = 15000
 		}
+		cost = { alloys = -1 multiplier = value:giga_ai_savings_cost|CATEGORY|military|RESOURCE|alloys|AMOUNT|5000| }
 	}
 
 	prerequisites = { giga_tech_planetary_matter_harvesting }
@@ -440,6 +676,9 @@ decision_harvest_matter_for_planetary_printing = {
 	effect = {
 		custom_tooltip = "decision_build_planetary_matter_harvester"
 		hidden_effect = {
+			from = {
+				giga_ai_savings_withdraw = { CATEGORY = resource RESOURCE = alloys AMOUNT = 5000 }
+			}
 			set_planet_flag = getting_harvested_for_printing
 			set_planet_flag = megastructure
 			set_planet_flag = has_megastructure
@@ -469,7 +708,7 @@ decision_claim_system_megas = {
 	resources = {
 		category = decisions
 		cost = {
-			unity = 50
+			influence = 5
 		}
 	}
 
@@ -519,7 +758,7 @@ decision_take_solakia_back = {
 
 	resources = {
 		category = decisions
-		cost = { unity = 1000 }
+		cost = { influence = 100 }
 	}
 
 	allow = {
@@ -641,7 +880,7 @@ decision_give_flusion_to_solakia = {
 
 	resources = {
 		category = decisions
-		cost = { unity = 500 }
+		cost = { influence = 50 }
 	}
 
 	allow = {

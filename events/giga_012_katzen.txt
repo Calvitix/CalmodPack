@@ -1,8 +1,8 @@
 # Giga File
 #
-# Calvitix Check 3.3.4
+# Calvitix Check 3.4.2
 #
-# Last Update : 24.04.2022
+# Last Update : 19.05.2022
 #
 #Calvitix Trad Names
 namespace = giga_katzen
@@ -2520,6 +2520,7 @@ country_event = { #hello
 		name = "giga_katzen.020.submit"
 		custom_tooltip = "giga_katzen.020.submit.tooltip"
 		trigger = {
+			always = no #temp disabled for overlord
 			NOR = {
 				has_country_flag = katzen_vassal
 				has_global_flag = katzenartig_stellarite
@@ -3892,7 +3893,7 @@ country_event = {
 			is_country_type = katzenartig_imperium
 		}
 		event_target:flusion_primitives_country = {
-			any_controlled_ship = {
+			any_owned_ship = {
 				is_ship_size = giga_kaiser_moon_flusion
 			}
 		}
@@ -5103,9 +5104,9 @@ country_event = { #Manage war forges and the Kaiser's eco
 							exists = solar_system
 							owner = { is_country_type = katzenartig_imperium }
 							OR = {
-								any_controlled_ship = { is_ship_size = giga_katzen_panzer }
-								any_controlled_ship = { is_ship_size = giga_katzen_bomber }
-								any_controlled_ship = { is_ship_size = giga_katzen_cruiser }
+								any_owned_ship = { is_ship_size = giga_katzen_panzer }
+								any_owned_ship = { is_ship_size = giga_katzen_bomber }
+								any_owned_ship = { is_ship_size = giga_katzen_cruiser }
 							}
 							NOR = {
 								has_fleet_flag = katzen_submarine_fleet
@@ -5126,15 +5127,15 @@ country_event = { #Manage war forges and the Kaiser's eco
 						has_fleet_flag = kaiser_moon_fleet
 					}
 					exists = solar_system
-					any_controlled_ship = {
+					any_owned_ship = {
 						solar_system = {
 							any_fleet_in_system = {
 								exists = solar_system
 								owner = { is_country_type = katzenartig_imperium }
 								OR = {
-									any_controlled_ship = { is_ship_size = giga_katzen_panzer }
-									any_controlled_ship = { is_ship_size = giga_katzen_bomber }
-									any_controlled_ship = { is_ship_size = giga_katzen_cruiser }
+									any_owned_ship = { is_ship_size = giga_katzen_panzer }
+									any_owned_ship = { is_ship_size = giga_katzen_bomber }
+									any_owned_ship = { is_ship_size = giga_katzen_cruiser }
 								}
 								NOT = { has_fleet_flag = katzen_submarine_fleet }
 								NOT = { has_fleet_flag = katzen_fleet_merging }
@@ -5151,9 +5152,9 @@ country_event = { #Manage war forges and the Kaiser's eco
 							exists = solar_system
 							owner = { is_country_type = katzenartig_imperium }
 							OR = {
-								any_controlled_ship = { is_ship_size = giga_katzen_panzer }
-								any_controlled_ship = { is_ship_size = giga_katzen_bomber }
-								any_controlled_ship = { is_ship_size = giga_katzen_cruiser }
+								any_owned_ship = { is_ship_size = giga_katzen_panzer }
+								any_owned_ship = { is_ship_size = giga_katzen_bomber }
+								any_owned_ship = { is_ship_size = giga_katzen_cruiser }
 							}
 							NOT = { has_fleet_flag = katzen_submarine_fleet }
 							NOT = { has_fleet_flag = katzen_fleet_merging }
@@ -5349,9 +5350,9 @@ country_event = { #Manage war forges and the Kaiser's eco
 						value = 0
 					}
 					OR = {
-						any_controlled_ship = { is_ship_size = giga_katzen_panzer }
-						any_controlled_ship = { is_ship_size = giga_katzen_bomber }
-						any_controlled_ship = { is_ship_size = giga_katzen_cruiser }
+						any_owned_ship = { is_ship_size = giga_katzen_panzer }
+						any_owned_ship = { is_ship_size = giga_katzen_bomber }
+						any_owned_ship = { is_ship_size = giga_katzen_cruiser }
 					}
 				}
 				while = {
@@ -5361,9 +5362,9 @@ country_event = { #Manage war forges and the Kaiser's eco
 							value > kaiser_resource_stockpile
 						}
 						OR = {
-							any_controlled_ship = { is_ship_size = giga_katzen_panzer }
-							any_controlled_ship = { is_ship_size = giga_katzen_bomber }
-							any_controlled_ship = { is_ship_size = giga_katzen_cruiser }
+							any_owned_ship = { is_ship_size = giga_katzen_panzer }
+							any_owned_ship = { is_ship_size = giga_katzen_bomber }
+							any_owned_ship = { is_ship_size = giga_katzen_cruiser }
 						}
 					}
 					random_owned_ship = {
@@ -5546,7 +5547,7 @@ country_event = { #Manage war forges and the Kaiser's eco
 				}
 				event_target:gigaflusion.solar_system = {
 					any_fleet_in_system = {
-						owner = {
+						controller = {
 							OR = {
 								is_hostile_to = event_target:flusion_primitives_country
 								is_at_war_with = event_target:flusion_primitives_country
@@ -5576,14 +5577,14 @@ country_event = { #Manage war forges and the Kaiser's eco
 			event_target:giga_jublio_system = {
 				random_fleet_in_system = {
 					limit = {
-						owner = {
+						controller = {
 							OR = {
 								is_hostile_to = event_target:flusion_primitives_country
 								is_at_war_with = event_target:flusion_primitives_country
 							}
 						}
 					}
-					owner = {
+					controller = {
 						country_event = { id = giga_katzenai.0131 days = 6 }
 						country_event = { id = giga_katzenai.013 days = 20 }
 					}
@@ -5680,7 +5681,7 @@ country_event = { #Manage war forges and the Kaiser's eco
 							any_system_megastructure = { is_megastructure_type = katzen_forge_0 } #not another one
 							any_system_megastructure = { is_megastructure_type = katzen_forge_1 } #not another one
 							any_fleet_in_system = { #no hostiles
-								owner = {
+								controller = {
 									OR = {
 										is_at_war_with = event_target:flusion_primitives_country
 										is_hostile = event_target:flusion_primitives_country
@@ -5726,7 +5727,7 @@ country_event = { #Manage war forges and the Kaiser's eco
 				is_megastructure_type = katzen_forge_0
 				solar_system = {
 					any_fleet_in_system = { #no hostiles
-						owner = {
+						controller = {
 							OR = {
 								is_at_war_with = event_target:flusion_primitives_country
 								is_hostile = event_target:flusion_primitives_country
@@ -5742,7 +5743,7 @@ country_event = { #Manage war forges and the Kaiser's eco
 				is_megastructure_type = katzen_forge_1
 				solar_system = {
 					any_fleet_in_system = { #no hostiles
-						owner = {
+						controller = {
 							OR = {
 								is_at_war_with = event_target:flusion_primitives_country
 								is_hostile = event_target:flusion_primitives_country
@@ -5774,7 +5775,7 @@ country_event = { #Manage war forges and the Kaiser's eco
 				is_megastructure_type = kaiser_ehof_0
 				solar_system = {
 					any_fleet_in_system = { #no hostiles
-						owner = {
+						controller = {
 							OR = {
 								is_at_war_with = event_target:flusion_primitives_country
 								is_hostile = event_target:flusion_primitives_country
@@ -5790,7 +5791,7 @@ country_event = { #Manage war forges and the Kaiser's eco
 				is_megastructure_type = kaiser_ehof_1
 				solar_system = {
 					any_fleet_in_system = { #no hostiles
-						owner = {
+						controller = {
 							OR = {
 								is_at_war_with = event_target:flusion_primitives_country
 								is_hostile = event_target:flusion_primitives_country
@@ -5830,7 +5831,7 @@ country_event = { #Manage war forges and the Kaiser's eco
 				owner = { is_country_type = katzenartig_imperium }
 				solar_system = {
 					any_fleet_in_system = { #no hostiles
-						owner = {
+						controller = {
 							OR = {
 								is_at_war_with = event_target:flusion_primitives_country
 								is_hostile = event_target:flusion_primitives_country
@@ -6958,7 +6959,7 @@ country_event = { #Katzen expansion: Every year, all nearby unclaimed systems ar
 							has_planet_flag = corrona
 							solar_system = {
 								any_fleet_in_system = { #no hostiles
-									owner = {
+									controller = {
 										OR = {
 											is_at_war_with = event_target:flusion_primitives_country
 											is_hostile = event_target:flusion_primitives_country
@@ -6992,7 +6993,7 @@ country_event = { #Katzen expansion: Every year, all nearby unclaimed systems ar
 							}
 						}
 						any_fleet_in_system = { #no hostiles
-							owner = {
+							controller = {
 								OR = {
 									is_at_war_with = event_target:flusion_primitives_country
 									is_hostile = event_target:flusion_primitives_country
@@ -8192,9 +8193,10 @@ country_event = {
 					event_target:giga_jublio_system = { starbase = { owner = { is_country_type = katzenartig_imperium } } }
 			}
 				set_planet_flag = kaiser_built_orbital_arcology
+				set_planet_flag = orbital_arcology
 			solar_system = {
 				spawn_megastructure = {
-					type = orbital_arcology_1_l
+						type = orbital_arcology_1
 					planet = event_target:gigaflusion
 					owner = event_target:flusion_primitives_country
 				}
@@ -10376,16 +10378,15 @@ country_event = { #Collapse of Katzenartig
 				destroy_fleet = THIS
 			}
 		}
-		every_galaxy_planet = {
+		event_target:giga_jublio_system = {
+			every_system_planet = {
 			limit = {
-				solar_system = {
-					has_star_flag = flusion_system
-				}
 				owner = {
 					is_country_type = katzenartig_imperium
 				}
 			}
 			set_owner = solar_system.space_owner
+		}
 		}
 		every_system = {
 			limit = { has_star_flag = solakian_system }
@@ -11015,6 +11016,7 @@ planet_event = {
 	is_triggered_only = yes
 
 	trigger = {
+		exists = owner
 		owner = {
 			is_country_type = katzenartig_imperium
 		}
@@ -11847,7 +11849,7 @@ country_event = {
 	}
 }
 
-#Siegfried Worlsd blow up
+#Siegfried Worlds blow up
 country_event = {
 	id = giga_katzen.123
 	hide_window = yes
@@ -11971,8 +11973,8 @@ ship_event = {
 			40 = {
 				destroy_ship = ROOT
 				if = {
-					limit = { ROOT.from.owner = { has_country_flag = blowing_up_katzen_subs } }
-					ROOT.from.owner = {
+					limit = { ROOT.from.controller = { has_country_flag = blowing_up_katzen_subs } }
+					ROOT.from.controller = {
 						change_variable = {
 							which = katzen_subs_destroyed
 							value = 1
@@ -12719,7 +12721,7 @@ planet_event = {
 
 	trigger = {
 		any_fleet_in_orbit = {
-			any_controlled_ship = { is_ship_size = giga_katzen_submarine }
+			any_owned_ship = { is_ship_size = giga_katzen_submarine }
 			owner = { is_country_type = katzenartig_imperium }
 		}
 	}

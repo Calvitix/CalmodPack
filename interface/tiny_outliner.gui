@@ -1,4 +1,4 @@
-#UI OverHAul + Tiny Outliner v2, 3.3.4, Check 30.03.2022
+#UI OverHAul + Tiny Outliner v2, 3.4.2, Check 19.05.2022
 # direct Tiny Outliner v2 not  used 
 #Calvitix Trad. (transformé en yml)
 guiTypes = {
@@ -597,6 +597,114 @@ guiTypes = {
 			spriteType = "GFX_debug_ai_strategy"
 		}
 	}
+	containerWindowType = {
+		name = "outliner_member_situations_entry_window"
+		size = { width = @outliner_w height = @outliner_h }
+		if_resolution = {
+			min_width = 3440
+			size = { width = @outliner_w_3440 height = @outliner_h }
+		}
+		buttonType = {
+			name = "background"
+			quadTextureSprite = "GFX_outliner_member_small_bg"
+			if_resolution = {
+				min_width = 3440
+				quadTextureSprite = "GFX_outliner_member_small_3440_bg"
+			}
+			position = { x = -4 y = -5 }
+			clicksound = "click_outliner"
+		}
+		iconType = {
+			name = "situation_icon_background"
+			position = { x = 15 y = 10 }
+			spriteType = "GFX_invisible"
+			alwaysTransparent = yes
+			centerPosition = yes
+			scale = 0.5
+		}
+		iconType = {
+			name = "situation_icon"
+			position = { x = 15 y = 10 }
+			spriteType = "GFX_invisible"
+			alwaysTransparent = yes
+			centerPosition = yes
+			scale = 0.5
+		}
+		# Dynamic element - See item with same name in situation_log.gui for documentation
+		containerWindowType = {
+			name = "situations_progress_subview"
+			position = { x = 0 y = 0 }
+			size = { width = 100% height = 100% }
+			iconType = {
+				name = "middle_indicator"
+				position = { x = 100 y = 13 }
+				spriteType = "GFX_situation_middle_indicator"
+				alwaysTransparent = yes
+			}
+			containerWindowType = {
+				name = "situations_progress_bar_container_short" # The "_short" postfix makes the progress bar use short gfx variants
+				position = { x = 30 y = 12 }
+				size = { width = 180 height = 13 } # { width = 180 height = 13 } # Used to position elements along the progress bar
+				clipping = yes
+				iconType = {
+					name = "progress_bar_monodirectional"
+					position = { x = 0  y = 0 }
+					spriteType = "GFX_situation_event_progressbar_monodirectional_neutral_short" # Set in code
+					alwaysTransparent = yes
+				}
+				iconType = {
+					name = "progress_bar_bidirectional_left"
+					position = { x = 0 y = 0 }
+					spriteType = "GFX_situation_event_progressbar_bidirectional_neutral_short_left" # Set in code
+					alwaysTransparent = yes
+				}
+				iconType = {
+					name = "progress_bar_bidirectional_right"
+					position = { x = 71 y = 0 }
+					spriteType = "GFX_situation_event_progressbar_bidirectional_neutral_short_right" # Set in code
+					alwaysTransparent = yes
+				}
+			}
+			iconType = {
+				name = "start_indicator"
+				position = { x = 30 y = 13 }
+				spriteType = "GFX_situation_start_indicator"
+				alwaysTransparent = yes
+			}
+			iconType = {
+				name = "pin_icon"
+				spriteType = "GFX_situation_progress_arrows" # Mirrored in code as needed
+				position = { x = -45 y = 10 }
+				orientation = upper_right
+				centerPosition = yes
+				alwaysTransparent = yes
+			}
+			# Shows all numbers as positive. "pin_icon" indicates if it's negative or positive
+			instantTextBoxType = {
+				name = "monthly_change"
+				position = { x = -47 y = 2 }
+				orientation = upper_right
+				font = "cg_16b"
+				maxWidth = 30
+				maxHeight = 15
+				format = right
+				vertical_alignment = center
+				fixedSize = yes
+				alwaysTransparent = yes
+			}
+		}
+		instantTextBoxType = {
+			name = "situation_name"
+			position = { x = 28 y = 2 }
+			font = "cg_16b"
+			maxWidth = 215
+			maxHeight = 15
+			text = ""
+			fixedSize = yes
+			format = left
+			alwaysTransparent = yes
+		}
+	}
 	### PLANETS ###
 	containerWindowType = {
 		name = "outliner_member_planet_entry_window"
@@ -646,12 +754,6 @@ guiTypes = {
 			position = { x = 6 y = -2 }
 			spriteType = "GFX_planet_invasion"
 		}
-		buttonType = {
-			name = "branch_office_flag"
-			spriteType = "GFX_empire_flag_32"
-			position = { x = -1 y = -1 }
-			scale = 0.5
-		}
 		instantTextBoxType = {
 			name = "name"
 			font = "cg_16b"
@@ -663,6 +765,12 @@ guiTypes = {
 			format = left
 			text_color_code = "E"
 			alwaysTransparent = yes
+		}
+		buttonType = {
+			name = "holding_flag"
+			spriteType = "GFX_empire_flag_32"
+			position = { x = -1 y = -1 }
+			scale = 0.5
 		}
 		instantTextBoxType = {
 			name = "colony_type"

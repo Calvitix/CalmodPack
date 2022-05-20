@@ -1,7 +1,7 @@
 
 # Original File
 #
-# Calvitix Check 3.4.2  18.05.2022
+# Calvitix Check 3.4.3  19.05.2022
 #
 # Merge with RealSpace  23.11.2021
 # Merge with JL Picard
@@ -790,7 +790,10 @@ special_init_04 = {
 		modifier = {
 			any_country = {
 				has_country_flag = human_1
-				species_portrait = human
+				OR = {
+					species_portrait = human
+					species_portrait = human_legacy
+				}
 			}
 			NOT = { any_system = { has_star_flag = deneb_system } }
 			NOT = { has_star_flag = empire_cluster }
@@ -846,7 +849,10 @@ special_init_04 = {
 			if = {
 				limit = {
 					any_country = {
-						species_portrait = human
+						OR = {
+							species_portrait = human
+							species_portrait = human_legacy
+						}
 					}
 				}
 				set_name = "NAME_Earth"
@@ -2523,6 +2529,103 @@ crystal_manufactory_system = {
 			add_anomaly = {
 				category = CRYSTAL_MANUFACTORY_CAT
 			}
+		}
+	}
+}
+
+parvus_system = {
+	name = "NAME_Parvus"
+	class = "sc_k"
+	asteroid_belt = {
+		type = rocky_asteroid_belt
+		radius = 170
+	}
+	usage = misc_system_init
+	usage_odds = {
+		base = 2000000
+		modifier = {
+			factor = 0
+			is_bottleneck_system = yes
+		}
+	}
+	max_instances = 1
+	scaled_spawn_chance = 3	# scales by galaxy size (1000 stars = 10x base)
+
+	planet = {
+		count = 1
+		class = star
+		orbit_distance = 0
+		orbit_angle = 1
+		size = { min = 22 max = 22 }
+		has_ring = no
+	}
+
+	change_orbit = 45
+
+	planet = {
+		count = 1
+		class = "pc_molten"
+		size = 13
+		orbit_angle = { min = 90 max = 270 }
+	}
+
+	change_orbit = 10
+
+	planet = {
+		count = 1
+		class = "pc_barren"
+		size = 13
+		orbit_angle = { min = 90 max = 270 }
+	}
+	planet = {
+		count = 1
+		orbit_distance = 30
+		class = "pc_desert"
+		orbit_angle = { min = 90 max = 270 }
+		size = 22
+		modifiers = none
+		init_effect = {
+			prevent_anomaly = yes
+			add_anomaly = {
+				category = NANO_SWARM_CAT
+			}
+		}
+	}
+	change_orbit = 50
+	planet = {
+		count = { min = 3 max = 6 }
+		class = pc_asteroid
+		orbit_distance = 0
+		orbit_angle = { min = 40 max = 100 }
+	}
+
+	change_orbit = 40
+
+	planet = {
+		count = 1
+		class = "pc_gas_giant"
+		orbit_distance = 25
+		orbit_angle = 110
+		size = 30
+		change_orbit = 7
+	}
+
+	change_orbit = 10
+
+	planet = {
+		count = 1
+		class = "pc_gas_giant"
+		orbit_distance = 25
+		orbit_angle = 90
+		size = 36
+		has_ring = yes
+		change_orbit = 7
+		moon = {
+			class = "pc_barren"
+			size = 16
+			orbit_distance = 13
+			orbit_angle = 20
+			has_ring = no
 		}
 	}
 }
