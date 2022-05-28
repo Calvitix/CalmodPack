@@ -1,11 +1,11 @@
 eac_fire_proton_cannon = {
     if = {
-        limit = { 
+        limit = {
             has_building = eac_building_planetary_proton_cannon 
          }
         planet = { 
             save_event_target_as = eac_bombarded_planet
-            
+
             random_owned_pop = {
                 limit = {
                     OR = {
@@ -23,13 +23,18 @@ eac_fire_proton_cannon = {
                                     is_ship_class = shipclass_military_special
                                 }
                                 exists = orbit
-                                orbit = { exists = planet is_planet = event_target:eac_bombarded_planet }
+                                orbit = { 
+                                    exists = planet
+                                    planet = {
+                                        is_planet = event_target:eac_bombarded_planet 
+                            }
+                                }
                             }
 
                             
                             random_list = {
                                 50 = {
-                                    random_controlled_ship = {
+                                    random_owned_ship = {
                                         random_list = {
                                             20 = { reduce_hp = 500 }
                                             20 = { reduce_hp = 400 }
@@ -150,11 +155,16 @@ eac_fire_neutron_cannon = {
                                     is_ship_class = shipclass_military_special
                                 }
                                 exists = orbit
-                                orbit = { exists = planet is_planet = event_target:eac_bombarded_planet }
+                                orbit = { 
+                                    exists = planet
+                                    planet = {
+                                        is_planet = event_target:eac_bombarded_planet 
+                            }
+                                }
                             }
                             random_list = {
                                 60 = {
-                                    random_controlled_ship = {
+                                    random_owned_ship = {
                                         random_list = {
                                             20 = { reduce_hp = 500 }
                                             20 = { reduce_hp = 750 }
@@ -275,11 +285,16 @@ eac_fire_tachyon_cannon = {
                                     is_ship_class = shipclass_military_special
                                 }
                                 exists = orbit
-                                orbit = { exists = planet is_planet = event_target:eac_bombarded_planet }
+                                orbit = { 
+                                    exists = planet
+                                    planet = {
+                                        is_planet = event_target:eac_bombarded_planet 
+                            }
+                                }
                             }
                             random_list = {
                                 70 = {
-                                    random_controlled_ship = {
+                                    random_owned_ship = {
                                         random_list = {
                                             20 = { reduce_hp = 5000 }
                                             20 = { reduce_hp = 4000 }
@@ -399,17 +414,17 @@ eac_fire_coil_scattergun = {
                                     count = 20						
                                     random_list = {
                                         35 = {
-                                            random_controlled_ship = {
+                                            random_owned_ship = {
                                                 # limit = {
                                                 #     NOT = { has_ship_flag = eac_coil_scattergun_targeted }
                                                 # }
                                                 # set_timed_ship_flag = { flag = eac_coil_scattergun_targeted days = 2 }
                                                 random_list = {
-                                                    20 = { reduce_hp = 25 }
-                                                    20 = { reduce_hp = 22 }
-                                                    20 = { reduce_hp = 18 }
-                                                    20 = { reduce_hp = 14 }
-                                                    20 = { reduce_hp = 10 }
+                                                    20 = { reduce_hp = 250 }
+                                                    20 = { reduce_hp = 220 }
+                                                    20 = { reduce_hp = 180 }
+                                                    20 = { reduce_hp = 140 }
+                                                    20 = { reduce_hp = 100 }
                                                 }
                                                 
                                                 create_ambient_object = {
@@ -499,17 +514,17 @@ eac_fire_rail_scattergun = {
                                     count = 20						
                                     random_list = {
                                         40 = {
-                                            random_controlled_ship = {
+                                            random_owned_ship = {
                                                 # limit = {
                                                 #     NOT = { has_ship_flag = eac_rail_scattergun_targeted }
                                                 # }
                                                 # set_timed_ship_flag = { flag = eac_rail_scattergun_targeted days = 2 }
                                                 random_list = {
-                                                    20 = { reduce_hp = 35 }
-                                                    20 = { reduce_hp = 32 }
-                                                    20 = { reduce_hp = 28 }
-                                                    20 = { reduce_hp = 24 }
-                                                    20 = { reduce_hp = 20 }
+                                                    20 = { reduce_hp = 350 }
+                                                    20 = { reduce_hp = 320 }
+                                                    20 = { reduce_hp = 280 }
+                                                    20 = { reduce_hp = 240 }
+                                                    20 = { reduce_hp = 200 }
                                                 }
                                                 
                                                 create_ambient_object = {
@@ -582,7 +597,12 @@ eac_get_scattergun_target = {
             limit = {
                 is_ship_class = shipclass_transport
                 exists = orbit
-                orbit = { exists = planet is_planet = event_target:eac_bombarded_planet }
+                orbit = { 
+                    exists = planet
+                    planet = {
+                        is_planet = event_target:eac_bombarded_planet 
+            }
+                }
             }
             save_event_target_as = eac_targeted_fleet
         }

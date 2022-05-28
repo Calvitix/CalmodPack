@@ -1,6 +1,6 @@
 #Expanded Events File
 #
-# Last update  19.03.2022
+# Last update  27.05.2022
 #
 #	Example:
 #
@@ -61,10 +61,13 @@ is_xenophobic_isolationists = {
 
 # governments
 is_auth_corporate = {
+	custom_tooltip = {
+		fail_text = is_auth_corporate_tooltip
 	OR = {
 		is_megacorp = yes
 		has_valid_civic = civic_corporate_dominion
 		has_valid_civic = civic_merchant_guilds
+	}
 	}
 }
 
@@ -115,6 +118,8 @@ is_civic_efficient_bureaucracy = {
 }
 
 is_civic_environmentalist = {
+	custom_tooltip = {
+		fail_text = is_civic_environmentalist_tooltip
 	OR = {
 		is_anglers_empire = yes
 		is_memorialist_empire = yes
@@ -134,9 +139,12 @@ is_civic_environmentalist = {
 		has_origin = origin_symbiote
 		has_origin = origin_ocean_paradise
 	}
+	}
 }
 
 is_civic_terraformer = {
+	custom_tooltip = {
+		fail_text = is_civic_terraformer_tooltip
 	OR = {
 		has_valid_civic = civic_idyllic_bloom
 		has_valid_civic = civic_hive_idyllic_bloom
@@ -147,6 +155,7 @@ is_civic_terraformer = {
 		has_ascension_perk = ap_world_shaper
 		has_ascension_perk = ap_hive_worlds
 		has_ascension_perk = ap_machine_worlds
+	}
 	}
 }
 
@@ -204,6 +213,7 @@ is_civic_mining_guilds = {
 		has_valid_civic = civic_mining_company
 		has_valid_civic = civic_mineral_hoarders
 		has_valid_civic = civic_crafters
+		has_valid_civic = civic_corporate_crafters
 		has_origin = origin_exploited_homeworld
 	}
 }
@@ -279,6 +289,8 @@ is_origin_syncretic_livestock = {
 }
 
 is_civic_has_elite = {
+	custom_tooltip = {
+		fail_text = is_civic_has_elite_tooltip
 	OR = {
 		is_civic_slaver_guilds = yes
 		is_origin_syncretic_livestock = yes
@@ -296,6 +308,8 @@ is_civic_has_elite = {
 		has_origin = origin_necrophage
 		has_origin = origin_ancient_dynasty
 		has_origin = origin_hegemon
+			has_origin = origin_ocean_paradise
+		}
 	}
 }
 
@@ -323,6 +337,8 @@ is_civic_health = {
 }
 
 is_civic_authoritarian = {
+	custom_tooltip = {
+		fail_text = is_civic_authoritarian_tooltip
 	OR = {
 		is_civic_slaver_guilds = yes
 		is_civic_police_state = yes
@@ -342,9 +358,12 @@ is_civic_authoritarian = {
 		}
 		has_origin = origin_ancient_dynasty
 	}
+	}
 }
 
 is_civic_militarist = {
+	custom_tooltip = {
+		fail_text = is_civic_militarist_tooltip
 	OR = {
 		has_valid_civic = civic_citizen_service
 		has_origin = origin_natural_hunters
@@ -363,9 +382,12 @@ is_civic_militarist = {
 		has_valid_civic = civic_machine_deepspace_networking
 		has_origin = origin_militarist
 	}
+	}
 }
 
 is_civic_materialist = {
+	custom_tooltip = {
+		fail_text = is_civic_materialist_tooltip
 	OR = {
 		has_origin = origin_mechanists
 		has_origin = origin_research_coop
@@ -373,6 +395,8 @@ is_civic_materialist = {
 		has_origin = origin_primitive_cyborgs
 		has_valid_civic = civic_technocracy
 		has_valid_civic = civic_technocracy_corp
+			has_valid_civic = civic_public_informants
+			has_valid_civic = civic_corp_public_informants
 		has_origin = origin_iron_despot
 		has_valid_civic = civic_hive_natural_neural_network
 		has_valid_civic = civic_hive_pooled_knowledge
@@ -380,13 +404,19 @@ is_civic_materialist = {
 		has_valid_civic = civic_machine_predictive_analysis
 		has_valid_civic = civic_machine_introspective
 		has_valid_civic = civic_machine_factory_overclock
+			has_valid_civic = civic_machine_cult
+		}
 	}
 }
 
 is_civic_spiritualist = {
+	custom_tooltip = {
+		fail_text = is_civic_spiritualist_tooltip
 	is_materialist = no
 	is_machine_empire = no
+		NOT = { has_valid_civic = civic_machine_cult }
 	OR = {
+			has_origin = origin_shroudwalker_apprentice
 		has_valid_civic = civic_imperial_cult
 		has_valid_civic = civic_exalted_priesthood
 		has_valid_civic = civic_death_cult
@@ -417,12 +447,14 @@ is_civic_spiritualist = {
 			is_xenophobic_isolationists = no
 		}
 	}
+	}
 }
 
 is_spy_empire = {
 	OR = {
 		has_valid_civic = civic_cutthroat_politics
 		has_valid_civic = civic_shadow_council
+		has_valid_civic = civic_shadow_council_megacorp
 		has_valid_civic = civic_ruthless_competition
 		has_valid_civic = civic_criminal_heritage
 		has_valid_civic = civic_machine_predictive_analysis
@@ -431,6 +463,8 @@ is_spy_empire = {
 }
 
 is_civic_expansionist = {
+	custom_tooltip = {
+		fail_text = is_civic_expansionist_tooltip
 	OR = {
 		is_homicidal = yes
 		is_civic_efficient_bureaucracy = yes
@@ -446,6 +480,9 @@ is_civic_expansionist = {
 		has_origin = origin_necrophage
 		has_origin = origin_doomsday
 		has_origin = origin_exploited_homeworld
+			has_origin = origin_star_slingshot
+			has_origin = origin_ocean_paradise
+		}
 	}
 }
 
@@ -466,18 +503,28 @@ from_has_antagonistic_ethics = {
 			AND = {
 				OR = {
 					is_materialist = yes
+					has_valid_civic = civic_machine_cult
 					is_machine_empire = yes
 				}
-				FROM = { is_spiritualist = yes }
+				FROM = {
+					AND = {
+						is_spiritualist = yes
+						NOT = { has_valid_civic = civic_machine_cult }
+					}
+				}
 			}
 			AND = {
 				FROM = {
 					OR = {
 						is_materialist = yes
+						has_valid_civic = civic_machine_cult
 						is_machine_empire = yes
 					}
 				}
+				AND = {
 				is_spiritualist = yes
+					NOT = { has_valid_civic = civic_machine_cult }
+				}
 			}
 			AND = {
 				FROM = { is_militarist = yes }
@@ -502,7 +549,12 @@ from_has_antagonistic_ethics = {
 					is_xenophobe = yes
 					has_valid_civic = civic_closed_collective
 					has_valid_civic = civic_closed_network
-					any_owned_pop = { is_being_purged = yes }
+					any_owned_species = {
+						has_citizenship_type = {
+							type = citizenship_purge
+							country = prev
+						}
+					}
 				}
 				FROM = {
 					OR = {
@@ -521,7 +573,12 @@ from_has_antagonistic_ethics = {
 						is_xenophobe = yes
 						has_valid_civic = civic_closed_collective
 						has_valid_civic = civic_closed_network
-						any_owned_pop = { is_being_purged = yes }
+						any_owned_species = {
+							has_citizenship_type = {
+								type = citizenship_purge
+								country = prev
+							}
+						}
 					}
 				}
 			}
@@ -532,7 +589,12 @@ from_has_antagonistic_ethics = {
 						is_hive_empire = yes
 						NOT = { has_ai_personality = open_hive_mind }
 					}
-					any_owned_pop = { is_enslaved = yes }
+					any_owned_species = {
+						has_citizenship_type = {
+							type = citizenship_slavery
+							country = prev
+						}
+					}
 				}
 				FROM = {
 					OR = {
@@ -553,7 +615,12 @@ from_has_antagonistic_ethics = {
 							is_hive_empire = yes
 							NOT = { has_ai_personality = open_hive_mind }
 						}
-						any_owned_pop = { is_enslaved = yes }
+						any_owned_species = {
+							has_citizenship_type = {
+								type = citizenship_slavery
+								country = prev
+							}
+						}
 					}
 				}
 			}
@@ -568,18 +635,28 @@ prev_has_antagonistic_ethics = {
 			AND = {
 				OR = {
 					is_materialist = yes
+					has_valid_civic = civic_machine_cult
 					is_machine_empire = yes
 				}
-				PREV = { is_spiritualist = yes }
+				PREV = {
+					AND = {
+						is_spiritualist = yes
+						NOT = { has_valid_civic = civic_machine_cult }
+					}
+				}
 			}
 			AND = {
 				PREV = {
 					OR = {
 						is_materialist = yes
+						has_valid_civic = civic_machine_cult
 						is_machine_empire = yes
 					}
 				}
+				AND = {
 				is_spiritualist = yes
+					NOT = { has_valid_civic = civic_machine_cult }
+				}
 			}
 			AND = {
 				PREV = { is_militarist = yes }
@@ -604,7 +681,12 @@ prev_has_antagonistic_ethics = {
 					is_xenophobe = yes
 					has_valid_civic = civic_closed_collective
 					has_valid_civic = civic_closed_network
-					any_owned_pop = { is_being_purged = yes }
+					any_owned_species = {
+						has_citizenship_type = {
+							type = citizenship_purge
+							country = prev
+						}
+					}
 				}
 				PREV = {
 					OR = {
@@ -623,7 +705,12 @@ prev_has_antagonistic_ethics = {
 						is_xenophobe = yes
 						has_valid_civic = civic_closed_collective
 						has_valid_civic = civic_closed_network
-						any_owned_pop = { is_being_purged = yes }
+						any_owned_species = {
+							has_citizenship_type = {
+								type = citizenship_purge
+								country = prev
+							}
+						}
 					}
 				}
 			}
@@ -634,7 +721,12 @@ prev_has_antagonistic_ethics = {
 						is_hive_empire = yes
 						NOT = { has_ai_personality = open_hive_mind }
 					}
-					any_owned_pop = { is_enslaved = yes }
+					any_owned_species = {
+						has_citizenship_type = {
+							type = citizenship_slavery
+							country = prev
+						}
+					}
 				}
 				PREV = {
 					OR = {
@@ -655,7 +747,276 @@ prev_has_antagonistic_ethics = {
 							is_hive_empire = yes
 							NOT = { has_ai_personality = open_hive_mind }
 						}
-						any_owned_pop = { is_enslaved = yes }
+						any_owned_species = {
+							has_citizenship_type = {
+								type = citizenship_slavery
+								country = prev
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+from_has_compatible_ethics = {
+	custom_tooltip = has_compatible_ethics
+	hidden_trigger = {
+		OR = {
+			AND = {
+				OR = {
+					is_materialist = yes
+					has_valid_civic = civic_machine_cult
+					is_machine_empire = yes
+				}
+				FROM = {
+					OR = {
+						is_materialist = yes
+						has_valid_civic = civic_machine_cult
+						is_machine_empire = yes
+					}
+				}
+			}
+			AND = {
+				FROM = {
+					AND = {
+						is_spiritualist = yes
+						NOT = { has_valid_civic = civic_machine_cult }
+					}
+				}
+				AND = {
+					is_spiritualist = yes
+					NOT = { has_valid_civic = civic_machine_cult }
+				}
+			}
+			AND = {
+				FROM = { is_militarist = yes }
+				is_militarist = yes
+			}
+			AND = {
+				OR = {
+					is_pacifist = yes
+					has_ai_personality = open_hive_mind
+					has_ai_personality = open_machine_intelligence
+				}
+				FROM = {
+					OR = {
+						is_pacifist = yes
+						has_ai_personality = open_hive_mind
+						has_ai_personality = open_machine_intelligence
+					}
+				}
+			}
+			AND = {
+				OR = {
+					is_xenophobe = yes
+					has_valid_civic = civic_closed_collective
+					has_valid_civic = civic_closed_network
+					any_owned_species = {
+						has_citizenship_type = {
+							type = citizenship_purge
+							country = prev
+						}
+					}
+				}
+				FROM = {
+					OR = {
+						is_xenophobe = yes
+						has_valid_civic = civic_closed_collective
+						has_valid_civic = civic_closed_network
+						any_owned_species = {
+							has_citizenship_type = {
+								type = citizenship_purge
+								country = prev
+							}
+						}
+					}
+				}
+			}
+			AND = {
+				OR = {
+					is_xenophile = yes
+					is_civic_machine_servitor = yes
+				}
+				FROM = {
+					OR = {
+						is_xenophile = yes
+						is_civic_machine_servitor = yes
+					}
+				}
+			}
+			AND = {
+				OR = {
+					is_authoritarian = yes
+					AND = {
+						is_hive_empire = yes
+						NOT = { has_ai_personality = open_hive_mind }
+					}
+					any_owned_species = {
+						has_citizenship_type = {
+							type = citizenship_slavery
+							country = prev
+						}
+					}
+				}
+				FROM = {
+					OR = {
+						is_authoritarian = yes
+						AND = {
+							is_hive_empire = yes
+							NOT = { has_ai_personality = open_hive_mind }
+						}
+						any_owned_species = {
+							has_citizenship_type = {
+								type = citizenship_slavery
+								country = prev
+							}
+						}
+					}
+				}
+			}
+			AND = {
+				OR = {
+					is_egalitarian = yes
+					has_valid_civic = civic_machine_servitor
+				}
+				FROM = {
+					OR = {
+						is_egalitarian = yes
+						has_valid_civic = civic_machine_servitor
+					}
+				}
+			}
+		}
+	}
+}
+
+prev_has_compatible_ethics = {
+	custom_tooltip = has_compatible_ethics
+	hidden_trigger = {
+		OR = {
+			AND = {
+				OR = {
+					is_materialist = yes
+					has_valid_civic = civic_machine_cult
+					is_machine_empire = yes
+				}
+				prev = {
+					OR = {
+						is_materialist = yes
+						has_valid_civic = civic_machine_cult
+						is_machine_empire = yes
+					}
+				}
+			}
+			AND = {
+				prev = {
+					AND = {
+						is_spiritualist = yes
+						NOT = { has_valid_civic = civic_machine_cult }
+					}
+				}
+				AND = {
+					is_spiritualist = yes
+					NOT = { has_valid_civic = civic_machine_cult }
+				}
+			}
+			AND = {
+				prev = { is_militarist = yes }
+				is_militarist = yes
+			}
+			AND = {
+				OR = {
+					is_pacifist = yes
+					has_ai_personality = open_hive_mind
+					has_ai_personality = open_machine_intelligence
+				}
+				prev = {
+					OR = {
+						is_pacifist = yes
+						has_ai_personality = open_hive_mind
+						has_ai_personality = open_machine_intelligence
+					}
+				}
+			}
+			AND = {
+				OR = {
+					is_xenophobe = yes
+					has_valid_civic = civic_closed_collective
+					has_valid_civic = civic_closed_network
+					any_owned_species = {
+						has_citizenship_type = {
+							type = citizenship_purge
+							country = prev
+						}
+					}
+				}
+				prev = {
+					OR = {
+						is_xenophobe = yes
+						has_valid_civic = civic_closed_collective
+						has_valid_civic = civic_closed_network
+						any_owned_species = {
+							has_citizenship_type = {
+								type = citizenship_purge
+								country = prev
+							}
+						}
+					}
+				}
+			}
+			AND = {
+				OR = {
+					is_xenophile = yes
+					is_civic_machine_servitor = yes
+				}
+				prev = {
+					OR = {
+						is_xenophile = yes
+						is_civic_machine_servitor = yes
+					}
+				}
+			}
+			AND = {
+				OR = {
+					is_authoritarian = yes
+					AND = {
+						is_hive_empire = yes
+						NOT = { has_ai_personality = open_hive_mind }
+					}
+					any_owned_species = {
+						has_citizenship_type = {
+							type = citizenship_slavery
+							country = prev
+						}
+					}
+				}
+				prev = {
+					OR = {
+						is_authoritarian = yes
+						AND = {
+							is_hive_empire = yes
+							NOT = { has_ai_personality = open_hive_mind }
+						}
+						any_owned_species = {
+							has_citizenship_type = {
+								type = citizenship_slavery
+								country = prev
+							}
+						}
+					}
+				}
+			}
+			AND = {
+				OR = {
+					is_egalitarian = yes
+					has_valid_civic = civic_machine_servitor
+				}
+				prev = {
+					OR = {
+						is_egalitarian = yes
+						has_valid_civic = civic_machine_servitor
 					}
 				}
 			}

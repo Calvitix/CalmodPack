@@ -1,7 +1,3 @@
-#Expanded Events File
-#
-# Last update  19.03.2022
-#
 ## Possible Deposit Variables ##
 # resources, resource and amount
 # potential trigger (planet scope)
@@ -35,6 +31,15 @@ d_collapsed_sinkhole = {
 	icon = d_deep_sinkhole
 	is_for_colonizable = yes
 	category = deposit_cat_blockers
+
+	can_be_cleared = {
+		custom_tooltip = {
+			fail_text = has_ranger_lodge
+			planet = {
+				NOT = { has_building = building_ranger_lodge }
+			}
+		}
+	}
 	
 	potential = { always = no }
 
@@ -53,68 +58,8 @@ d_collapsed_sinkhole = {
 	}
 
 	drop_weight = {
-		weight = 0.1
+		weight = 0
 	}
-}
-
-d_deep_sinkhole_mesa = { #disabled 26.09.2021 ?
-	time = 180
-	icon = d_deep_sinkhole
-	is_for_colonizable = yes
-	category = deposit_cat_blockers
-
-	potential = { always = no }	
-	
-	resources = {
-		category = deposit_blockers
-		cost = {
-			energy = 500
-		}
-	}
-	
-	planet_modifier = { 
-		planet_max_districts_add = -1
-	}
-	
-	blocker_swap_types = {
-		d_prosperous_mesa
-	}
-
-	drop_weight = {
-		weight = 0.1
-	}
-	
-	prerequisites = { "tech_deep_sinkhole" }
-}
-
-d_noxious_swamp_bubbling = {
-	time = 180
-	icon = d_noxious_swamp
-	is_for_colonizable = yes
-	category = deposit_cat_blockers
-
-	potential = { always = no }	
-	
-	resources = {
-		category = deposit_blockers
-		cost = {
-			energy = 500
-		}
-	}
-	
-	planet_modifier = { 
-		planet_max_districts_add = -1
-	}
-	
-	blocker_swap_types = {
-		d_bubbling_swamp
-	}
-
-	drop_weight = {
-		weight = 0.1
-	}
-	
-	prerequisites = { "tech_noxious_swamp" }
 }
 
 # Event Lithoid Monolith
@@ -157,7 +102,7 @@ d_hibernating_lithoids_event = {
 	}
 
 	drop_weight = {
-		weight = 0.1
+		weight = 0
 	}
 }
 
@@ -241,12 +186,28 @@ d_toy_factory_complex = {
 		potential = {
 			has_planet_flag = toy_factory_artisans
 			exists = owner
-			owner = { is_regular_empire = yes }
+			owner = {
+				is_regular_empire = yes
+				is_crafter_empire = no
+			}
 		}
 		modifier = {
 			job_artisan_add = 2
 		}
-	}	
+	}
+	triggered_planet_modifier = {
+		potential = {
+			has_planet_flag = toy_factory_artisans
+			exists = owner
+			owner = {
+				is_regular_empire = yes
+				is_crafter_empire = yes
+			}
+		}
+		modifier = {
+			job_artificer_add = 2
+		}
+	}
 	
 	triggered_planet_modifier = {
 		potential = {
@@ -260,7 +221,7 @@ d_toy_factory_complex = {
 	}	
 	
 	drop_weight = {
-		weight = 0.1
+		weight = 0
 	}
 }
 
@@ -307,7 +268,7 @@ d_predatory_plants = {
 	}
 	
 	drop_weight = {
-		weight = 0.1
+		weight = 0
 	}
 }
 
@@ -412,7 +373,7 @@ d_titanic_fossils = {
 	}
 	
 	drop_weight = {
-		weight = 0.1
+		weight = 0
 	}
 }
 
@@ -427,7 +388,7 @@ d_abandoned_colony = {
 	}
 	
 	drop_weight = {
-		weight = 0.1
+		weight = 0
 	}
 }
 
@@ -475,7 +436,7 @@ d_misty_shores = {
 	}
 	
 	drop_weight = {
-		weight = 0.1
+		weight = 0
 	}
 }
 
@@ -491,7 +452,7 @@ d_nanosands = {
 	}
 	
 	drop_weight = {
-		weight = 0.1
+		weight = 0
 	}
 }
 
@@ -535,7 +496,7 @@ d_acid_jungles = {
 	}
 	
 	drop_weight = {
-		weight = 0.1
+		weight = 0
 	}
 }
 
@@ -629,7 +590,7 @@ d_irradiated_wasteland_anomaly = {
 	}
 	
 	drop_weight = {
-		weight = 0.1
+		weight = 0
 	}
 }
 
@@ -644,7 +605,7 @@ d_fallen_robots = {
 			trigger = {
 				has_global_flag = EcologyMod_active
 			}
-			waste = -100
+			waste = 100
 		}
 	}
 	
@@ -683,7 +644,7 @@ d_fallen_robots = {
 	}
 	
 	drop_weight = {
-		weight = 0.1
+		weight = 0
 	}
 }
 
@@ -760,7 +721,7 @@ d_liquid_sands = {
 	}
 	
 	drop_weight = {
-		weight = 0.1
+		weight = 0
 	}
 }
 
@@ -769,15 +730,7 @@ d_ship_graveyard = {
 	category = deposit_cat_rare
 	icon = d_ship_graveyard
 	
-	resources = {
-		category = planet_deposits
-		produces = {
-			alloys = 2
-		}
-	}
-	
 	planet_modifier = {
-		district_mining_max = 2
 		planet_jobs_society_research_produces_mult = 0.10
 	}
 	
@@ -802,7 +755,7 @@ d_ship_graveyard = {
 	}
 	
 	drop_weight = {
-		weight = 0.1
+		weight = 0
 	}
 }
 
@@ -810,17 +763,6 @@ d_giant_pearls = {
 	is_for_colonizable = yes
 	category = deposit_cat_rare
 	icon = d_tropical_island
-	
-	resources = {
-		category = planet_deposits
-		produces = {
-			trigger = {
-				exists = owner
-				owner = { is_gestalt = yes }
-			}
-			energy = 6
-		}
-	}
 	
 	planet_modifier = { 
 		district_farming_max = 1
@@ -865,26 +807,9 @@ d_cunning_flora_perimeter_1 = {
 		potential = {
 			exists = owner
 			owner = { is_regular_empire = yes }
-			OR = {
-				owner = { NOT = { has_ascension_perk = ap_mind_over_matter } }
-				NOT = { has_planet_flag = built_one_psi_corps }
-			}
 		}
 		modifier = {
 			job_enforcer_add = 1
-		}
-	}
-	triggered_planet_modifier = {
-		potential = {
-			exists = owner
-			owner = { is_regular_empire = yes }
-			OR = {
-				owner = { has_ascension_perk = ap_mind_over_matter }
-				has_planet_flag = built_one_psi_corps
-			}
-		}
-		modifier = {
-			job_telepath_add = 1
 		}
 	}
 	
@@ -899,7 +824,7 @@ d_cunning_flora_perimeter_1 = {
 	}
 	
 	drop_weight = {
-		weight = 0.1
+		weight = 0
 	}
 }
 
@@ -920,33 +845,7 @@ d_cunning_flora_perimeter_2 = {
 		}
 		modifier = {
 			job_soldier_add = 1
-		}
-	}
-	
-	triggered_planet_modifier = {
-		potential = {
-			exists = owner
-			owner = { is_regular_empire = yes }
-			OR = {
-				owner = { NOT = { has_ascension_perk = ap_mind_over_matter } }
-				NOT = { has_planet_flag = built_one_psi_corps }
-			}
-		}
-		modifier = {
 			job_enforcer_add = 1
-		}
-	}
-	triggered_planet_modifier = {
-		potential = {
-			exists = owner
-			owner = { is_regular_empire = yes }
-			OR = {
-				owner = { has_ascension_perk = ap_mind_over_matter }
-				has_planet_flag = built_one_psi_corps
-			}
-		}
-		modifier = {
-			job_telepath_add = 1
 		}
 	}
 	
@@ -962,7 +861,7 @@ d_cunning_flora_perimeter_2 = {
 	}
 	
 	drop_weight = {
-		weight = 0.1
+		weight = 0
 	}
 }
 
@@ -978,33 +877,7 @@ d_cunning_flora_perimeter_3 = {
 		}
 		modifier = {
 			job_soldier_add = 2
-		}
-	}
-	
-	triggered_planet_modifier = {
-		potential = {
-			exists = owner
-			owner = { is_regular_empire = yes }
-			OR = {
-				owner = { NOT = { has_ascension_perk = ap_mind_over_matter } }
-				NOT = { has_planet_flag = built_one_psi_corps }
-			}
-		}
-		modifier = {
 			job_enforcer_add = 2
-		}
-	}
-	triggered_planet_modifier = {
-		potential = {
-			exists = owner
-			owner = { is_regular_empire = yes }
-			OR = {
-				owner = { has_ascension_perk = ap_mind_over_matter }
-				has_planet_flag = built_one_psi_corps
-			}
-		}
-		modifier = {
-			job_telepath_add = 2
 		}
 	}
 	
@@ -1020,7 +893,7 @@ d_cunning_flora_perimeter_3 = {
 	}
 	
 	drop_weight = {
-		weight = 0.1
+		weight = 0
 	}
 }
 
@@ -1050,7 +923,7 @@ d_damaged_ecosystem = {
 	}
 	
 	drop_weight = {
-		weight = 0.1
+		weight = 0
 	}
 }
 
@@ -1631,7 +1504,7 @@ d_aliens_site_junk = {
 	}
 	
 	drop_weight = {
-		weight = 0.1
+		weight = 0
 	}
 }
 
@@ -1678,7 +1551,7 @@ d_limitless_art ={
 	}
 	
 	drop_weight = {
-		weight = 0.1
+		weight = 0
 	}
 }
 
@@ -1719,7 +1592,7 @@ d_space_elevator = {
 	}
 	
 	drop_weight = {
-		weight = 0.1
+		weight = 0
 	}
 }
 
@@ -1743,7 +1616,7 @@ d_warmer_climates_cyro_tubes = {
 	}
 	
 	drop_weight = {
-		weight = 0.1
+		weight = 0
 	}
 }
 
@@ -1785,7 +1658,7 @@ d_warmer_climates_core_tunnels = {
 	}
 	
 	drop_weight = {
-		weight = 0.1
+		weight = 0
 	}
 }
 
@@ -1827,7 +1700,7 @@ d_warmer_climates_tunnels = {
 	}
 	
 	drop_weight = {
-		weight = 0.1
+		weight = 0
 	}
 }
 
@@ -1870,7 +1743,7 @@ d_wise_treasure = {
 	}
 	
 	drop_weight = {
-		weight = 0.1
+		weight = 0
 	}
 }
 
@@ -1905,14 +1778,14 @@ d_battle_graveyard = {
 	}
 	
 	drop_weight = {
-		weight = 0.1
+		weight = 0
 	}
 }
 
 d_aurora_life = {
 	is_for_colonizable = yes
 	category = deposit_cat_rare
-	icon = "unused/d_surreal_visions"
+	icon = "d_surreal_visions"
 	
 	planet_modifier = {
 		planet_jobs_society_research_produces_mult = 0.20
@@ -1926,7 +1799,7 @@ d_aurora_life = {
 	}
 	
 	drop_weight = {
-		weight = 0.1
+		weight = 0
 	}
 }
 
@@ -1972,7 +1845,7 @@ d_fe_mat_ruins = {
 	}
 	
 	drop_weight = {
-		weight = 0.01
+		weight = 0
 	}
 }
 
@@ -2032,13 +1905,13 @@ d_presidium = {
 			owner = { is_machine_empire = yes }
 		}
 		modifier = {
-			job_evaluator_add = 2
+			job_coordinator_add = 2
 			job_maintenance_drone_add = 2
 		}
 	}
 	
 	drop_weight = {
-		weight = 0.1
+		weight = 0
 	}
 }
 
@@ -2055,7 +1928,7 @@ d_protein_vats = {
 	}
 	
 	drop_weight = {
-		weight = 0.1
+		weight = 0
 	}
 }
 
@@ -2067,7 +1940,7 @@ d_engineered_keepers = {
 	planet_modifier = {
 		planet_amenities_add = 10
 		deposit_blockers_cost_mult = -0.25
-		planet_clear_blocker_time_mult = -0.25
+		planet_clear_blocker_speed_mult = 0.25
 	}
 	
 	resources = {
@@ -2085,7 +1958,7 @@ d_engineered_keepers = {
 	}
 	
 	drop_weight = {
-		weight = 0.1
+		weight = 0
 	}
 }
 
@@ -2103,7 +1976,7 @@ d_citadel_wards = {
 	}
 	
 	drop_weight = {
-		weight = 0.1
+		weight = 0
 	}
 }
 
@@ -2121,6 +1994,6 @@ d_spice_mine = {
 	}
 	
 	drop_weight = {
-		weight = 0.1
+		weight = 0
 	}
 }

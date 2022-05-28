@@ -1,0 +1,58 @@
+### ################################################# ###
+###                     ESC Edicts                    ###
+### ################################################# ###
+
+# - Mod Menu							(none) opens ESC mod menu; only human player can use it
+# - Living Crystals Trading				(living crystals) boost trade value production [normal empires]
+# - Living Crystals Extractors			(living crystals) boost rare crystals mining [gestalt empires]
+# - Great Psychic Unification			(psionic charges) increase governing ethics attraction and job unity production
+# - Summon Psionic Avatar				(psionic charges) instantly create a psionic avatar army
+# - Improved Gravity Manipulation		(gravitic anomalies) increase construction speed for buildings and outposts
+# - Gravitic Foundries					(gravitic anomalies) boost alloy production
+# - Improved Nano-Assemblers			(nanites) boost comsumer goods production [normal empires]
+# - Maintenance Nanites					(nanites) less maintenance per pop [gestalt empires]
+# - Enigmatic Energy Power Boost		(enigmatic energy) increase empire's energy production
+# - Transdimensional Research			(transdimensional vortex) increase science production
+
+@EdictDuration = 3600
+@EdictCost1 = 50
+@EdictCost2 = 100
+@EdictCost3 = 250
+@EdictCost4 = 500
+@EdictCost5 = 2500
+
+### ################################################# ###
+###                     ESC Mod menu                  ###
+### ################################################# ###
+
+esc_mod_control_edict = {
+	length = 0
+
+	resources = {
+		category = edicts
+		cost = {
+			energy = 0
+		}
+	}
+
+	allow = {
+		NOT = { has_global_flag = ESC_GLOBAL_FLAG_MENU_ACTIVE }
+	}
+
+	potential = {
+		# only human players are allowed to use this
+		exists = owner
+		owner = { is_ai = no }
+		# free use in singleplayer, available only for the first 15 years in multiplayer
+		OR = {
+			is_multiplayer = no
+			AND = {
+				is_multiplayer = yes
+				years_passed < 15
+			}
+		}
+	}
+
+	effect = { country_event = { id = esc_options.1000 days = 0 } }
+}
+

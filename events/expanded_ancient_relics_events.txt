@@ -1,9 +1,3 @@
-# Expanded Events File
-#
-# Calvitix Check 3.2  28.11.2021
-#
-# 
-#
 ############################
 #
 # Ancient Relics Events
@@ -165,19 +159,10 @@ planet_event = {
 		set_planet_flag = worm_on_the_attack
 		add_modifier = { modifier = planet_active_worm days = -1 }
 		owner = { abort_special_project = { type = WORM_REMOVAL_PROJECT location = ROOT }  }
-		# fires worm events
-		# pops and armies killed, devastation added
-		planet_event = { id = expandedrelics.8 days = 60 random = 360 }
-		# planet becomes arid or arctic, if not already
-		planet_event = { id = expandedrelics.9 days = 720 random = 1800 } # 2 - 7 years
-		# planet becomes bleak
-		planet_event = { id = expandedrelics.11 days = 720 random = 1800 } # 2 - 7 years
-		# planet becomes barren
-		planet_event = { id = expandedrelics.12 days = 2880 random = 1440 } # 8 - 12 years
 		# add threat for worm activation
 		while = {
 			count = 5
-		random_owned_pop = { kill_pop = yes }
+			random_owned_pop = { kill_pop = yes }
 		}
 		add_planet_devastation = 40
 		while = {
@@ -204,7 +189,7 @@ planet_event = {
                 modifier = {
                     factor = 0
 					owner = {
-                    OR = {
+						OR = {
 							NOT = {
 								any_spynetwork = {
 									owner = { is_same_value = root.owner }
@@ -213,47 +198,56 @@ planet_event = {
 							}
 							has_country_flag = recently_received_espionage_asset
 						}
-                    }
+					}
                 }
                 modifier = {
                     factor = 3
 					owner = {
 						relative_encryption_decryption = { target = from value > 0.8 }
 						relative_encryption_decryption = { target = from value < 1.6 }
-                }
+					}
                 }
                 modifier = {
                     factor = 10
                     owner = { relative_encryption_decryption = { target = from value >= 1.6 } }
                 }
 				owner = {
-                set_timed_country_flag = {
-                    flag = espionage_caught_saboteurs
-                    days = 20
-                }
+					set_timed_country_flag = {
+						flag = espionage_caught_saboteurs
+						days = 20
+					}
 				}
                 if = {
                     limit = {
-                        owner = { 
+						owner = {
 							any_spynetwork = {
 								owner = { is_same_value = root.owner }
 								target = { is_same_value = from }
 								is_spynetwork_level > 5
 							}
-							NOT = {  has_country_flag = recently_received_espionage_asset } 
+							NOT = { has_country_flag = recently_received_espionage_asset }
 						}
                     }
 					owner = {
-                    country_event = { #A Surprise Catch (asset granted)
-                        id = espionage.1040
-                        days = 15
-                        scopes = { from = fromfrom }
-                    }
+						country_event = { #A Surprise Catch (asset granted)
+							id = espionage.1040
+							days = 15
+							scopes = { from = fromfrom }
+						}
+					}
                 }
-            }
             }
             9 = { } #Nothing
         }
+	}
+	
+	after = {
+		owner = {
+			start_situation = {
+				type = situation_worm_activated
+				target = root
+			}
+		}
 	}
 	
 	option = {
@@ -262,7 +256,7 @@ planet_event = {
 			add_modifier = { modifier = planet_active_worm days = -1 }
 				while = {
 				count = 5
-			random_owned_pop = { kill_pop = yes }
+				random_owned_pop = { kill_pop = yes }
 			}
 			add_planet_devastation = 40
 			while = {
@@ -304,15 +298,6 @@ planet_event = {
 		set_planet_flag = worm_on_the_attack
 		add_modifier = { modifier = planet_active_worm days = -1 }
 		owner = { abort_special_project = { type = WORM_REMOVAL_PROJECT location = ROOT }  }
-		# fires worm events
-		# pops and armies killed, devastation added
-		planet_event = { id = expandedrelics.8 days = 60 random = 360 }
-		# planet becomes arid or arctic, if not already
-		planet_event = { id = expandedrelics.9 days = 720 random = 1800 } # 2 - 7 years
-		# planet becomes bleak
-		planet_event = { id = expandedrelics.11 days = 720 random = 1800 } # 2 - 7 years
-		# planet becomes barren
-		planet_event = { id = expandedrelics.12 days = 2880 random = 1440 } # 8 - 12 years
 		# add threat for worm activation
 		add_threat = { who = from amount = 3 }
 		owner = {
@@ -358,7 +343,7 @@ planet_event = {
 		}
 		while = {
 			count = 5
-		random_owned_pop = { kill_pop = yes }
+			random_owned_pop = { kill_pop = yes }
 		}
 		add_planet_devastation = 40
 		while = {
@@ -381,30 +366,39 @@ planet_event = {
 			}
 		}
 		owner = {
-		set_timed_country_flag = {
-			flag = espionage_caught_saboteurs
-			days = 20
-		}
+			set_timed_country_flag = {
+				flag = espionage_caught_saboteurs
+				days = 20
+			}
 		}
 		if = {
 			limit = {
 				owner = {
-				any_spynetwork = {
+					any_spynetwork = {
 						owner = { is_same_value = root.owner }
-					target = { is_same_value = from }
-					is_spynetwork_level > 5
+						target = { is_same_value = from }
+						is_spynetwork_level > 5
+					}
+					NOT = { has_country_flag = recently_received_espionage_asset }
 				}
-				NOT = { has_country_flag = recently_received_espionage_asset }
-			}
 			}
 			owner = {
-			country_event = { #A Surprise Catch (asset granted)
-				id = espionage.1040
-				days = 15
-				scopes = { from = fromfrom }
+				country_event = { #A Surprise Catch (asset granted)
+					id = espionage.1040
+					days = 15
+					scopes = { from = fromfrom }
+				}
 			}
 		}
 	}
+	
+	after = {
+		owner = {
+			start_situation = {
+				type = situation_worm_activated
+				target = root
+			}
+		}
 	}
 	
 	option = {
@@ -413,7 +407,7 @@ planet_event = {
 			add_modifier = { modifier = planet_active_worm days = -1 }
 			while = {
 				count = 5
-			random_owned_pop = { kill_pop = yes }
+				random_owned_pop = { kill_pop = yes }
 			}
 			add_planet_devastation = 40
 			while = {
@@ -463,220 +457,294 @@ country_event = {
 	}
 }
 
-# worm damages planet, kills pops
-planet_event = {
+# Labyrinth moves, prompting a rethink
+situation_event = {
 	id = expandedrelics.8
-	hide_window = yes
+	title = expandedrelics.8.name
+	desc = expandedrelics.8.desc
+
+	picture = GFX_evt_unspeakable_horror
 	is_triggered_only = yes
-	
-	trigger = {
-		has_planet_flag = worm_on_the_attack
-		has_modifier = planet_active_worm
-	}
-	
+	location = target
+	situation = this
+
 	immediate = {
-		while = {
-			count = 3
-		random_owned_pop = { kill_pop = yes }
+		set_situation_locked = yes
+	}
+	after = {
+		set_situation_locked = no
+		target = {
+			remove_modifier = lush_planet
+			add_modifier = { modifier = bleak_planet days = -1 }
+			add_deposit = d_deep_sinkhole
+			add_deposit = d_deep_sinkhole
 		}
-		add_planet_devastation = 40
-		while = {
-			count = 3
-			random_planet_army = {
-				limit = {
-					is_owned_by = planet.owner
-				}
-				remove_army = yes
-			}
-		}
-		planet_event = { id = expandedrelics.8 days = 60 random = 360 }
+	}
+
+	option = {
+		name = TERRIBLE
 	}
 }
 
-# worm turns planet into arctic (if already cold) or arid world
-planet_event = {
+situation_event = {
 	id = expandedrelics.9
-	hide_window = yes
-	is_triggered_only = yes
-	
-	trigger = {
-		has_planet_flag = worm_on_the_attack
-		has_modifier = planet_active_worm
-		NOR = {
-			is_planet_class = pc_arctic
-			is_planet_class = pc_arid
-		}
-	}
-	
-	immediate = {
-		if = {
-			limit = { is_cold = yes }
-			change_pc = pc_arctic
-			reset_planet = yes
-			remove_modifier = lush_planet
-			if = {
-				limit = { NOT = { has_modifier = bleak_planet } }
-				add_modifier = { modifier = bleak_planet days = -1 }
-			}
-			add_deposit = d_deep_sinkhole
-			add_deposit = d_deep_sinkhole
+	title = expandedrelics.9.name
+	desc = expandedrelics.9.desc
 
-		}
-		else_if = {
-			limit = { is_planet_class = pc_city }
-			change_pc = pc_relic
-			clear_deposits = yes
-			relic_world_deposits = yes
-		}
-		else = {
-			change_pc = pc_arid
-			reset_planet = yes
-			remove_modifier = lush_planet
-			if = {
-				limit = { NOT = { has_modifier = bleak_planet } }
-				add_modifier = { modifier = bleak_planet days = -1 }
-			}
-			add_deposit = d_deep_sinkhole
-			add_deposit = d_deep_sinkhole
-		}
-		if = {
-			limit = { solar_system = { exists = space_owner  } }
-			solar_system = {
-				space_owner = { country_event = { id = expandedrelics.10 } }
-			}
-		}
-	}
-}
-
-# space owner informed of planet damage
-country_event = {
-	id = expandedrelics.10
-	title = "expandedrelics.10.name"
-	desc = expandedrelics.10.desc
 	picture = {
-		trigger = { FROM = { is_planet_class = pc_arctic } }
+		trigger = { target = { is_cold = yes } }
 		picture = GFX_evt_arctic
 	}
 	picture = {
-		trigger = { FROM = { is_planet_class = pc_relic } }
+		trigger = { target = { is_planet_class = pc_city } }
 		picture = GFX_evt_relic_world_building
 	}
 	picture = {
-		trigger = { FROM = { is_planet_class = pc_arid } }
+		trigger = {
+			target = {
+				is_cold = no
+				NOT = { is_planet_class = pc_city }
+			}
+		}
 		picture = GFX_evt_arid
 	}
-	show_sound = event_structural_collapse
-	location = FROM
-	
 	is_triggered_only = yes
-	
+	location = target
+	situation = this
+
+	immediate = {
+		set_situation_locked = yes
+	}
+	after = {
+		set_situation_locked = no
+		target = {
+			if = {
+				limit = {
+					is_cold = yes
+					NOT = { is_planet_class = pc_arctic }
+				}
+				change_pc = pc_arctic
+				reset_planet = yes
+				add_deposit = d_deep_sinkhole
+				add_deposit = d_deep_sinkhole
+
+			}
+			else_if = {
+				limit = { is_planet_class = pc_city }
+				change_pc = pc_relic
+				clear_deposits = yes
+				relic_world_deposits = yes
+			}
+			else_if = {
+				limit = {
+					is_cold = no
+					NOT = { is_planet_class = pc_city }
+					NOT = { is_planet_class = pc_arid }
+				}
+				change_pc = pc_arid
+				reset_planet = yes
+				add_deposit = d_deep_sinkhole
+				add_deposit = d_deep_sinkhole
+			}
+			else = {
+				add_deposit = d_deep_sinkhole
+				add_deposit = d_deep_sinkhole
+				add_planet_devastation = 40
+			}
+		}
+	}
+
 	option = {
 		name = TERRIBLE
-		tooltip = {
-			add_modifier = { modifier = bleak_planet days = -1 }
-		}
 	}
 }
 
-# worm turns planet bleak
-planet_event = {
-	id = expandedrelics.11
-	hide_window = yes
-	is_triggered_only = yes
-	
-	trigger = {
-		has_planet_flag = worm_on_the_attack
-		has_modifier = planet_active_worm
-		NOT = { has_modifier = bleak_planet }
-		OR = {
-			is_planet_class = pc_arctic
-			is_planet_class = pc_arid
-		}
-	}
-	
-	immediate = {
-		remove_modifier = lush_planet
-		add_modifier = { modifier = bleak_planet days = -1 }
-		add_deposit = d_deep_sinkhole
-		add_deposit = d_deep_sinkhole
-		if = {
-			limit = { solar_system = { exists = space_owner  } }
-			solar_system = {
-				space_owner = { country_event = { id = expandedrelics.10 } }
-			}
-		}
-	}
-}
+situation_event = {
+	id = expandedrelics.10
+	title = expandedrelics.10.name
+	desc = expandedrelics.10.desc
 
-# worm finishes, planet turned barren or barren cold
-planet_event = {
-	id = expandedrelics.12
-	hide_window = yes
-	is_triggered_only = yes
-	
-	trigger = {
-		has_planet_flag = worm_on_the_attack
-		has_modifier = planet_active_worm
-	}
-	
-	immediate = {
-		destroy_colony = yes
-		if = {
-			limit = { is_cold = yes }
-			change_pc = pc_barren_cold
-		}
-		else = {
-			change_pc = pc_barren
-		}
-		reset_planet = yes
-		clear_deposits = yes
-		set_deposit = d_society_5
-		add_modifier = {
-			modifier = "terraforming_candidate"
-			days = -1
-		}
-		remove_planet_flag = worm_on_the_attack
-		remove_modifier = planet_active_worm
-		if = {
-			limit = { solar_system = { exists = space_owner  } }
-			solar_system = {
-				space_owner = { country_event = { id = expandedrelics.13 } }
-			}
-		}
-	}
-}
-
-# inform owner of planet loss
-country_event = {
-	id = expandedrelics.13
-	title = "expandedrelics.13.name"
-	desc = expandedrelics.13.desc
 	picture = {
-		trigger = { FROM = { is_planet_class = pc_barren } }
+		trigger = { target = { is_cold = no } }
 		picture = GFX_evt_warm_barren
 	}
 	picture = {
-		trigger = { FROM = { is_planet_class = pc_barren_cold } }
+		trigger = { target = { is_cold = yes } }
 		picture = GFX_evt_cold_barren
 	}
-	show_sound = event_wind_ruins
-	location = FROM
-	
 	is_triggered_only = yes
-	
-	option = {
-		name = TERRIBLE
-		tooltip = {
-			FROM = {
-				remove_modifier = planet_active_worm
+	location = target
+	situation = this
+
+	after = {
+		target = {
+			hidden_effect = {
+				remove_planet_flag = worm_on_the_attack
+				destroy_colony = yes
+			}
+			remove_modifier = planet_active_worm
+			if = {
+				limit = { is_cold = yes }
+				change_pc = pc_barren_cold
+			}
+			else = {
 				change_pc = pc_barren
-				add_modifier = {
-					modifier = "terraforming_candidate"
-					days = -1
-				}
-				set_deposit = d_society_5
+			}
+			hidden_effect = {
+				reset_planet = yes
+				clear_deposits = yes
+			}
+			set_deposit = d_society_5
+			add_modifier = {
+				modifier = "terraforming_candidate"
+				days = -1
 			}
 		}
+		destroy_situation = this
+	}
+
+	option = {
+		name = expandedrelics.10.a
+	}
+}
+
+situation_event = {
+	id = expandedrelics.11
+	title = expandedrelics.11.name
+	desc = expandedrelics.11.desc
+	picture = GFX_evt_unspeakable_horror
+	show_sound = event_alien_nature
+	is_triggered_only = yes
+	location = target
+	situation = this
+
+	trigger = {
+		target = {
+			exists = owner
+			num_pops > 3
+			NOT = { has_planet_flag = random_event_worm }
+		}
+	}
+
+	immediate = {
+		target = { set_timed_planet_flag = { flag = random_event_worm days = 180 } }
+	}
+	
+	after = {
+		target = {
+			while = {
+				count = 3
+				random_owned_pop = { kill_pop = yes }
+			}
+			add_planet_devastation = 40
+		}
+	}
+
+	option = {
+		name = TERRIBLE
+	}
+}
+
+situation_event = {
+	id = expandedrelics.12
+	title = expandedrelics.12.name
+	desc = expandedrelics.12.desc
+	picture = GFX_evt_unspeakable_horror
+	show_sound = event_alien_nature
+	is_triggered_only = yes
+	location = target
+	situation = this
+
+	trigger = {
+		current_situation_approach = approach_attack
+		situation_progress > 30
+		target = {
+			exists = owner
+			num_pops > 3
+			NOT = { has_planet_flag = random_event_worm }
+		}
+	}
+
+	immediate = {
+		target = { set_timed_planet_flag = { flag = random_event_worm days = 360 } }
+	}
+	
+	after = {
+		add_situation_progress = -8
+		target = {
+			owner = {
+				add_monthly_resource_mult = {
+					resource = unity
+					value = @tier1unityreward
+					min = @tier1unitymin
+					max = @tier1unitymax
+				}
+			}
+			random_owned_pop = { kill_pop = yes }
+			while = {
+				count = 2
+				random_planet_army = {
+					limit = {
+						is_owned_by = root.target.owner
+					}
+					remove_army = yes
+				}
+			}
+			add_planet_devastation = 25
+		}
+	}
+
+	option = {
+		name = EXCELLENT
+	}
+}
+
+situation_event = {
+	id = expandedrelics.13
+	title = expandedrelics.13.name
+	desc = expandedrelics.13.desc
+	picture = GFX_evt_unspeakable_horror
+	show_sound = event_alien_nature
+	is_triggered_only = yes
+	location = target
+	situation = this
+
+	trigger = {
+		current_situation_approach = approach_attack
+		situation_progress < 80
+		target = {
+			exists = owner
+			num_pops > 3
+			NOT = { has_planet_flag = random_event_worm }
+		}
+	}
+
+	immediate = {
+		target = { set_timed_planet_flag = { flag = random_event_worm days = 360 } }
+	}
+	
+	after = {
+		add_situation_progress = 3
+		target = {
+			while = {
+				count = 2
+				random_owned_pop = { kill_pop = yes }
+			}
+			while = {
+				count = 4
+				random_planet_army = {
+					limit = {
+						is_owned_by = root.target.owner
+					}
+					remove_army = yes
+				}
+			}
+			add_planet_devastation = 40
+		}
+	}
+
+	option = {
+		name = TERRIBLE
 	}
 }
 
@@ -756,15 +824,6 @@ ship_event = {
 			remove_planet_flag = has_hidden_worm
 			set_planet_flag = worm_on_the_attack
 			add_modifier = { modifier = planet_active_worm days = -1 }
-			# fires worm events
-			# pops and armies killed, devastation added
-			planet_event = { id = expandedrelics.8 days = 60 random = 360 }
-			# planet becomes arid or arctic, if not already
-			planet_event = { id = expandedrelics.9 days = 720 random = 1800 } # 2 - 7 years
-			# planet becomes bleak
-			planet_event = { id = expandedrelics.11 days = 720 random = 1800 } # 2 - 7 years
-			# planet becomes barren
-			planet_event = { id = expandedrelics.12 days = 2880 random = 1440 } # 8 - 12 years
 			if = {
 				limit = { NOT = { has_global_flag = tech_hidden_worm_can_spread } }
 				save_event_target_as = hidden_worm_planet
@@ -779,7 +838,7 @@ ship_event = {
 			}
 			while = {
 				count = 5
-			random_owned_pop = { kill_pop = yes }
+				random_owned_pop = { kill_pop = yes }
 			}
 			add_planet_devastation = 40
 			while = {
@@ -793,6 +852,15 @@ ship_event = {
 			}
 		}
 	}
+	
+	after = {
+		owner = {
+			start_situation = {
+				type = situation_worm_activated
+				target = root
+			}
+		}
+	}
 
 	option = {
 		name = OOPS
@@ -801,7 +869,7 @@ ship_event = {
 				add_modifier = { modifier = planet_active_worm days = -1 }
 				while = {
 					count = 5
-				random_owned_pop = { kill_pop = yes }
+					random_owned_pop = { kill_pop = yes }
 				}
 				add_planet_devastation = 40
 				while = {
@@ -818,7 +886,22 @@ ship_event = {
 	}
 }
 
-# worm cancels terraforming
+# Planet Killers remove worm
+planet_event = {
+	id = expandedrelics.17
+	is_triggered_only = yes
+	hide_window = yes
+	
+	trigger = {
+		has_modifier = planet_active_worm
+	}
+	
+	immediate = {
+		remove_planet_flag = worm_on_the_attack
+		remove_modifier = planet_active_worm
+	}
+
+}
 
 
 ### Archaeology: Target from Orbit
@@ -1449,45 +1532,45 @@ country_event = {
 	}
 	
 	immediate = {
-			if = {
-				limit = { event_target:warmer_climates_planet = { habitable_planet = yes } }
+		if = {
+			limit = { event_target:warmer_climates_planet = { habitable_planet = yes } }
 			event_target:warmer_climates_planet = { save_event_target_as = cold_survivor_join_planet }
-			}
-			else = {
-				random_owned_planet = {
-					weights = {
-						base = 1
+		}
+		else = {
+			random_owned_planet = {
+				weights = {
+					base = 1
 					modifier = { 
 						factor = 0.25
 						NOT = { free_housing > 0 }
 					}
-						modifier = { 
-							add = 2
-							free_housing > 0
-						}
-						modifier = { 
-							add = 5
-							free_housing > 1
-						}
-						modifier = { 
-							add = 10
-							free_housing > 5
-						}
-						modifier = { 
-							add = 10
-							free_housing > 10
-						}
-						modifier = { 
-							add = 5
-							planet_size > 17
-		 				}
-						modifier = { 
-							add = 5
-							planet_size > 21
-						}
+					modifier = { 
+						add = 2
+						free_housing > 0
 					}
-					save_event_target_as = cold_survivor_join_planet
+					modifier = { 
+						add = 5
+						free_housing > 1
+					}
+					modifier = { 
+						add = 10
+						free_housing > 5
+					}
+					modifier = { 
+						add = 10
+						free_housing > 10
+					}
+					modifier = { 
+						add = 5
+						planet_size > 17
+					}
+					modifier = { 
+						add = 5
+						planet_size > 21
+					}
 				}
+				save_event_target_as = cold_survivor_join_planet
+			}
 		}
 	}
 	
@@ -1527,14 +1610,14 @@ country_event = {
 					homeworld = event_target:cold_survivor_join_planet
 				}
 			}
-				event_target:cold_survivor_join_planet = {
-					while = {
-						count = 2
-						create_pop = { species = last_created_species }					
-					}
+			event_target:cold_survivor_join_planet = {
+				while = {
+					count = 2
+					create_pop = { species = last_created_species }					
 				}
 			}
 		}
+	}
 	option = {
 		name = expandedrelics.42.b
 		allow = { is_xenophile = no }
@@ -1583,42 +1666,6 @@ country_event = {
 
 ### Ix Belèn - Memorex
 # Reserved 50-79
-# Comatos Pop Dies (yearly)
-event = {
-	id = expandedrelics.50
-	hide_window = yes
-	is_triggered_only = yes
-	
-	immediate = {
-		random_country = {
-			limit = {
-				any_owned_pop = { has_trait = trait_memorex_comatos }
-			}
-			random_owned_pop = {
-				limit = { has_trait = trait_memorex_comatos }
-				kill_pop = yes
-			}
-		}
-		random_country = {
-			limit = {
-				any_owned_pop = { has_trait = trait_memorex_comatos }
-			}
-			random_owned_pop = {
-				limit = { has_trait = trait_memorex_comatos }
-				kill_pop = yes
-			}
-		}
-		random_country = {
-			limit = {
-				any_owned_pop = { has_trait = trait_memorex_comatos }
-			}
-			random_owned_pop = {
-				limit = { has_trait = trait_memorex_comatos }
-				kill_pop = yes
-			}
-		}
-	}
-}
 
 # Fire Warning Signs (bi-yearly scope)
 event = {
@@ -2749,7 +2796,7 @@ planet_event = {
 	option = {
 		name = expandedrelics.211.b
 		owner = {
-			add_resource = { influence = 60 }
+			add_resource = { unity = 600 }
 		}
 	}
 }
@@ -3390,11 +3437,11 @@ fleet_event = {
 	title = "expandedrelics.258.name"
 	desc = {
 		text = "expandedrelics.258.desc"
-		trigger = { is_robot_empire = no }
+		trigger = { owner = { is_robot_empire = no } }
 	}
 	desc = {
 		text = "expandedrelics.258.desc.machine"
-		trigger = { is_robot_empire = yes }
+		trigger = { owner = { is_robot_empire = yes } }
 	}
 	picture = "GFX_evt_archaeology_trap"
 	show_sound = event_screams
@@ -3726,11 +3773,7 @@ country_event = {
 		is_dialog_only = yes
 		trigger = {
 			NOT = { has_country_flag = fe_mat_asked_for_freedom }
-			OR = {
-				is_subject_type = satellite
-				#is_subject_type = scion_satellite
-				is_subject_type = scion
-			}
+			is_subject = yes
 			event_target:materialist_fallen_empire = { is_overlord_to = ROOT }
 		}
 		hidden_effect = { set_country_flag = fe_mat_asked_for_freedom }
@@ -3740,11 +3783,7 @@ country_event = {
 		response_text = expandedrelics.270.e.response
 		trigger = {
 			has_country_flag = fe_mat_asked_for_freedom
-			OR = {
-				is_subject_type = satellite
-				#is_subject_type = scion_satellite
-				is_subject_type = scion
-			}
+			is_subject = yes
 			event_target:materialist_fallen_empire = { is_overlord_to = ROOT }
 		}
 		event_target:materialist_fallen_empire = {
@@ -3784,6 +3823,11 @@ country_event = {
 	}
 		
 	immediate = {
+		set_country_flag = master_archives_restored
+		set_timed_country_flag = {
+			flag = master_archives_restored_timer
+			days = 18000
+		}
 		random_owned_planet = {
 			limit = { has_building = building_master_archive }
 			save_event_target_as = font_of_knowledge_scope
@@ -5461,7 +5505,7 @@ fleet_event = {
 	option = {
 		name = expandedrelics.319.b
 		owner = {
-			add_resource = { influence = 300 }
+			add_resource = { unity = 3000 }
 			add_monthly_resource_mult = {
 				resource = physics_research
 				value = @tier4researchreward

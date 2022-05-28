@@ -12,12 +12,13 @@
 pm_terraforming_candidate = {
 	spawn_chance = {
 		modifier = {
-			add = 10
+			add = 8
 			planet_size > 9
 			planet_size < 26
 			OR = {
 				is_planet_class = pc_barren
 				is_planet_class = pc_barren_cold
+				is_planet_class = pc_frozen
 				is_planet_class = pc_gray_goo
 				is_planet_class = pc_hothouse
 			}
@@ -27,7 +28,12 @@ pm_terraforming_candidate = {
 			factor = 0.25
 			OR = { 
 				is_planet_class = pc_barren_cold
+				is_planet_class = pc_frozen
 			}
+		}
+		modifier = { 
+			factor = 0.25
+			planet_size < 15 # larger planets more likely to have plate tectonics and magnetic fields
 		}
 		modifier = { 
 			factor = 0.50
@@ -1652,4 +1658,97 @@ pm_burrowing_wildlife = {
 	}
 	
 	modifier = "burrowing_wildlife"
+}
+
+### Modded ###
+pm_recovered_tomb_world = {
+	spawn_chance = {
+		modifier = {
+			add = 2
+			is_planet_class = "pc_desert"
+		}
+		modifier = {
+			add = 2
+			is_planet_class = "pc_tropical"
+		}
+		modifier = {
+			add = 2
+			is_planet_class = "pc_arid"
+		}
+		modifier = {
+			add = 2
+			is_planet_class = "pc_continental"
+		}
+		modifier = {
+			add = 2
+			is_planet_class = "pc_tundra"
+		}
+		modifier = {
+			add = 2
+			is_planet_class = "pc_arctic"
+		}
+		modifier = {
+			add = 2
+			is_planet_class = "pc_alpine"
+		}
+		modifier = {
+			add = 2
+			is_planet_class = "pc_savannah"
+		}				
+		modifier = {
+			factor = 0
+			has_planet_modifier = "pm_recovered_tomb_world"
+		}
+		modifier = {
+			factor = 0
+			has_planet_modifier = "pm_titanic_life"
+		}
+		modifier = {
+			factor = 0
+			has_planet_modifier = "pm_natural_beauty"
+		}
+		modifier = {
+			factor = 0
+			has_planet_modifier = "pm_atmospheric_aphrodisiac"
+		}
+		modifier = {
+			factor = 0
+			has_planet_modifier = "pm_lush"
+		}
+		modifier = {
+			factor = 0
+			has_planet_modifier = "pm_irradiated"
+		}
+		modifier = {
+			factor = 0
+			has_planet_modifier = "pm_young_world"
+		}
+		modifier = {
+			factor = 2
+			OR = {
+				has_planet_modifier = "pm_bleak"
+				# Third Party Mods
+				#has_planet_modifier = "pm_death_world"
+				has_planet_modifier = "pm_ancient_cities"
+			}
+		}
+		
+		modifier = {
+			factor = 0
+			AND = {
+				OR = { is_planet_subclass = no NOT = { has_global_flag = has_new_frontiers_mod } }
+				num_modifiers > 2
+			}
+		}
+		modifier = {
+			factor = 0
+			AND = {
+				is_planet_subclass = yes
+				has_global_flag = has_new_frontiers_mod
+				num_modifiers > 3
+			}
+		}
+	}
+	
+	modifier = "recovered_tomb_world"
 }

@@ -1,0 +1,85 @@
+
+#############################################
+#############################################
+#####									#####
+#####	Crisis Manager					#####
+#####									#####
+#####	Scripted Triggers (Common)		#####
+#####									#####
+#############################################
+#############################################
+
+############################
+###- Check Country Type -###
+############################
+
+### Replaced merg_is_default_empire
+### DEPRECATED
+# CmtTriggerIsPlayableEmpire = {
+# 	OR = {		## Written in also Cmt40 and Cmt50.
+# 		# is_country_type = default
+# 		# is_zofe_country = yes # is_zofe_compatible
+# 		merg_is_default_empire = yes
+# 		is_ai = no
+# 	}
+# }
+
+# # Replaced by merg_is_standard_empire
+# CmtTriggerIsEmpire = {		## Written in also Cmt50
+# 	OR = {
+# 		merg_is_standard_empire = yes
+# 		# merg_is_default_empire = yes
+# 		# CmtTriggerIsFallenEmpire = yes
+# 		# is_country_type = default
+# 		is_ai = no
+# 		# is_zofe_country = yes # is_zofe_compatible
+# 		# is_country_type = fallen_empire
+# 		# is_country_type = awakened_fallen_empire
+# 	}
+# }
+
+# is_zofe_country = {
+# 	always = no
+# 	# OR = {
+# 	# 	is_country_type = ascended_empire
+# 	# 	is_country_type = lost_empire
+# 	# }
+# }
+
+### Mid-Game Crises ###
+CmtTriggerIsMarauder = {
+	OR = {
+		is_country_type = dormant_marauders
+		is_country_type = ruined_marauders
+		is_country_type = awakened_marauders
+		is_country_type = marauder_raiders
+	}
+}
+
+# Only use if exists = event_target:raider_khanate
+CmtTriggerIsKhanCountry = {
+	OR = {
+		is_country_type = awakened_marauders
+		is_same_value = event_target:raider_khanate
+	}
+	# CmtFlagKhanDeadCountry replaced with vanilla
+	NOT = { has_country_flag = khan_dead_event_fine }
+}
+
+CmtTriggerExistKhanCountry = {
+	any_country = { CmtTriggerIsKhanCountry = yes }
+}
+
+CmtTriggerNowInKhanCrisis = {
+	any_country = { is_country_type = awakened_marauders }
+}
+
+# As is_pirate is bugged (still 3.3)
+is_pirate_country = {
+	OR = {
+		is_country_type = pirate
+		is_country_type = pirate_waves_country
+		is_country_type = dormant_marauders
+		is_country_type = ruined_marauders
+	}
+}

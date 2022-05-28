@@ -62,7 +62,7 @@ opinion_federation = {
 # Guarantees our independence
 opinion_guarantees_independence = {
 	opinion = {
-		base = 10	
+		base = 10
 	}
 }
 
@@ -212,6 +212,645 @@ opinion_first_contact_war = {
 	}
 }
 
+# Xenophobes are a bit less popular with everyone else
+triggered_opinion_xenophobes = {
+	trigger = {
+		from = { is_xenophobe = yes }
+		exists = from.species
+	}
+	opinion = {
+		base = 0
+
+		modifier = {
+			add = -10
+			OR = {
+				has_ethic = "ethic_xenophile"
+				has_ethic = "ethic_fanatic_xenophile"
+			}
+			FROM = { has_ethic = "ethic_xenophobe" }
+			NOT = { is_same_species_class = FROM }
+		}
+		modifier = {
+			add = -5
+			OR = {
+				has_ethic = "ethic_xenophile"
+				has_ethic = "ethic_fanatic_xenophile"
+			}
+			FROM = { has_ethic = "ethic_xenophobe" }
+			is_same_species_class = FROM
+			NOT = { is_same_species = FROM }
+			NOT = { is_subspecies = FROM }
+		}
+
+		modifier = {
+			add = -10
+			NOT = { has_ethic = "ethic_fanatic_xenophobe" }
+			NOT = { has_ethic = "ethic_xenophobe" }
+			NOT = { has_civic = civic_machine_terminator }
+			FROM = { has_ethic = "ethic_xenophobe" }
+			NOT = { is_same_species_class = FROM }
+		}
+		modifier = {
+			add = -5
+			NOT = { has_ethic = "ethic_fanatic_xenophobe" }
+			NOT = { has_ethic = "ethic_xenophobe" }
+			NOT = { has_civic = civic_machine_terminator }
+			FROM = { has_ethic = "ethic_xenophobe" }
+			is_same_species_class = FROM
+			NOT = { is_same_species = FROM }
+			NOT = { is_subspecies = FROM }
+		}
+
+		modifier = {
+			add = -20
+			OR = {
+				has_ethic = "ethic_xenophile"
+				has_ethic = "ethic_fanatic_xenophile"
+			}
+			FROM = {
+				has_ethic = "ethic_fanatic_xenophobe"
+			}
+			NOT = { is_same_species_class = FROM }
+		}
+		modifier = {
+			add = -10
+			OR = {
+				has_ethic = "ethic_xenophile"
+				has_ethic = "ethic_fanatic_xenophile"
+			}
+			FROM = { has_ethic = "ethic_fanatic_xenophobe" }
+			is_same_species_class = FROM
+			NOT = { is_same_species = FROM }
+			NOT = { is_subspecies = FROM }
+		}
+
+		modifier = {
+			add = -20
+			NOT = { has_ethic = "ethic_fanatic_xenophobe" }
+			NOT = { has_ethic = "ethic_xenophobe" }
+			NOT = { has_civic = civic_machine_terminator }
+			FROM = { has_ethic = "ethic_fanatic_xenophobe" }
+			NOT = { is_same_species_class = FROM }
+		}
+		modifier = {
+			add = -10
+			NOT = { has_ethic = "ethic_fanatic_xenophobe" }
+			NOT = { has_ethic = "ethic_xenophobe" }
+			NOT = { has_civic = civic_machine_terminator }
+			FROM = { has_ethic = "ethic_fanatic_xenophobe" }
+			is_same_species_class = FROM
+			NOT = { is_same_species = FROM }
+			NOT = { is_subspecies = FROM }
+		}
+	}
+}
+
+# Xenophiles are a bit more popular with everyone else
+triggered_opinion_xenophiles = {
+	trigger = {
+		from = { is_xenophile = yes }
+	}
+	opinion = {
+		base = 0
+
+		modifier = {
+			add = 10
+			NOR = {
+				has_ethic = "ethic_xenophile"
+				has_ethic = "ethic_fanatic_xenophile"
+				has_ethic = "ethic_xenophobe"
+				has_ethic = "ethic_fanatic_xenophobe"
+			}
+			FROM = { has_ethic = "ethic_xenophile" }
+			exists = from.species
+			NOT = { is_same_species_class = FROM }
+		}
+
+		modifier = {
+			add = 20
+			NOR = {
+				has_ethic = "ethic_xenophile"
+				has_ethic = "ethic_fanatic_xenophile"
+				has_ethic = "ethic_xenophobe"
+				has_ethic = "ethic_fanatic_xenophobe"
+			}
+			FROM = { has_ethic = "ethic_fanatic_xenophile" }
+			exists = from.species
+			NOT = { is_same_species_class = FROM }
+		}
+
+		modifier = {
+			add = 5
+			NOR = {
+				has_ethic = "ethic_xenophile"
+				has_ethic = "ethic_fanatic_xenophile"
+				has_ethic = "ethic_xenophobe"
+				has_ethic = "ethic_fanatic_xenophobe"
+			}
+			FROM = { has_ethic = "ethic_xenophile" }
+			exists = from.species
+			is_same_species_class = FROM
+		}
+
+		modifier = {
+			add = 10
+			NOR = {
+				has_ethic = "ethic_xenophile"
+				has_ethic = "ethic_fanatic_xenophile"
+				has_ethic = "ethic_xenophobe"
+				has_ethic = "ethic_fanatic_xenophobe"
+			}
+			FROM = { has_ethic = "ethic_fanatic_xenophile" }
+			exists = from.species
+			is_same_species_class = FROM
+		}
+
+		modifier = {
+			add = 10
+			has_ethic = "ethic_xenophile"
+			FROM = {
+				OR = {
+					has_ethic = "ethic_xenophile"
+					has_ethic = "ethic_fanatic_xenophile"
+				}
+			}
+		}
+		modifier = {
+			add = 10
+			has_ethic = "ethic_fanatic_xenophile"
+			FROM = { has_ethic = "ethic_xenophile" }
+		}
+		modifier = {
+			add = 20
+			has_ethic = "ethic_fanatic_xenophile"
+			FROM = { has_ethic = "ethic_fanatic_xenophile" }
+		}
+	}
+}
+
+# Xenophobia
+triggered_opinion_xenophobia = {
+	trigger = {
+		from = { is_xenophile = yes }
+	}
+	opinion = {
+		base = 0
+
+		modifier = {
+			add = -20
+			NOT = { has_valid_civic = civic_fanatic_purifiers } #handled elsewhere
+			has_ethic = "ethic_xenophobe"
+			exists = from.species
+			NOT = { is_same_species_class = FROM }
+		}
+		modifier = {
+			add = -10
+			NOT = { has_valid_civic = civic_fanatic_purifiers } #handled elsewhere
+			has_ethic = "ethic_xenophobe"
+			exists = from.species
+			is_same_species_class = FROM
+			NOT = { is_same_species = FROM }
+			NOT = { is_subspecies = FROM }
+		}
+		modifier = {
+			add = -5
+			NOT = { has_valid_civic = civic_fanatic_purifiers } #handled elsewhere
+			has_ethic = "ethic_xenophobe"
+			exists = from.species
+			is_same_species_class = FROM
+			NOT = { is_same_species = FROM }
+			is_subspecies = FROM
+		}
+
+		modifier = {
+			add = -40
+			NOT = { has_valid_civic = civic_fanatic_purifiers } #handled elsewhere
+			has_ethic = "ethic_fanatic_xenophobe"
+			exists = from.species
+			NOT = { is_same_species_class = FROM }
+		}
+		modifier = {
+			add = -20
+			NOT = { has_valid_civic = civic_fanatic_purifiers } #handled elsewhere
+			has_ethic = "ethic_fanatic_xenophobe"
+			exists = from.species
+			is_same_species_class = FROM
+			NOT = { is_same_species = FROM }
+			NOT = { is_subspecies = FROM }
+		}
+		modifier = {
+			add = -10
+			NOT = { has_valid_civic = civic_fanatic_purifiers } #handled elsewhere
+			has_ethic = "ethic_fanatic_xenophobe"
+			exists = from.species
+			is_same_species_class = FROM
+			NOT = { is_same_species = FROM }
+			is_subspecies = FROM
+		}
+	}
+}
+
+# Xenophilia
+triggered_opinion_xenophilia = {
+	trigger = {
+		is_xenophile = yes
+		exists = from.species
+	}
+	opinion = {
+		base = 0
+		modifier = {
+			add = 10
+			has_ethic = "ethic_xenophile"
+			NOT = { is_same_species_class = FROM }
+			FROM = {
+				NOT = {
+					has_civic = civic_machine_terminator
+					has_civic = civic_fanatic_purifiers
+				}
+			}
+		}
+		modifier = {
+			add = 5
+			has_ethic = "ethic_xenophile"
+			is_same_species_class = FROM
+			NOT = { is_same_species = FROM }
+			NOT = { is_subspecies = FROM }
+			FROM = {
+				NOT = {
+					has_civic = civic_machine_terminator
+					has_civic = civic_fanatic_purifiers
+				}
+			}
+		}
+		modifier = {
+			add = 5
+			has_ethic = "ethic_xenophile"
+			is_same_species_class = FROM
+			NOT = { is_same_species = FROM }
+			is_subspecies = FROM
+			FROM = {
+				NOT = {
+					has_civic = civic_machine_terminator
+					has_civic = civic_fanatic_purifiers
+				}
+			}
+		}
+
+		modifier = {
+			add = 20
+			has_ethic = "ethic_fanatic_xenophile"
+			NOT = { is_same_species_class = FROM }
+			FROM = {
+				NOT = {
+					has_civic = civic_machine_terminator
+					has_civic = civic_fanatic_purifiers
+				}
+			}
+		}
+		modifier = {
+			add = 10
+			has_ethic = "ethic_fanatic_xenophile"
+			is_same_species_class = FROM
+			NOT = { is_same_species = FROM }
+			NOT = { is_subspecies = FROM }
+			FROM = {
+				NOT = {
+					has_civic = civic_machine_terminator
+					has_civic = civic_fanatic_purifiers
+				}
+			}
+		}
+		modifier = {
+			add = 5
+			has_ethic = "ethic_fanatic_xenophile"
+			is_same_species_class = FROM
+			NOT = { is_same_species = FROM }
+			is_subspecies = FROM
+			FROM = {
+				NOT = {
+					has_civic = civic_machine_terminator
+					has_civic = civic_fanatic_purifiers
+				}
+			}
+		}
+	}
+}
+
+# Bad Opinion of Ethic: Materialist
+triggered_opinion_of_materialist = {
+	trigger = {
+		from = { is_materialist = yes }
+	}
+	opinion = {
+		base = 0
+
+		modifier = {
+			add = -10
+			has_ethic = "ethic_spiritualist"
+			FROM = { has_ethic = "ethic_materialist" }
+		}
+		modifier = {
+			add = -40
+			has_ethic = "ethic_spiritualist"
+			FROM = { has_ethic = "ethic_fanatic_materialist" }
+		}
+		modifier = {
+			add = -20
+			has_ethic = "ethic_fanatic_spiritualist"
+			FROM = { has_ethic = "ethic_materialist" }
+		}
+		modifier = {
+			add = -40
+			has_ethic = "ethic_fanatic_spiritualist"
+			FROM = { has_ethic = "ethic_fanatic_materialist" }
+		}
+	}
+}
+
+# Good Opinion of Ethic: Materialist
+triggered_opinion_of_materialist_pos = {
+	trigger = {
+		from = { is_materialist = yes }
+	}
+	opinion = {
+		base = 0
+
+		modifier = {
+			add = 15
+			has_ethic = "ethic_fanatic_materialist"
+			FROM = { has_ethic = "ethic_fanatic_materialist" }
+		}
+		modifier = {
+			add = 5
+			has_ethic = "ethic_fanatic_materialist"
+			FROM = { has_ethic = "ethic_materialist" }
+		}
+		modifier = {
+			add = 5
+			has_ethic = "ethic_materialist"
+			FROM = { has_ethic = "ethic_fanatic_materialist" }
+		}
+		modifier = {
+			add = 5
+			has_ethic = "ethic_materialist"
+			FROM = { has_ethic = "ethic_materialist" }
+		}
+	}
+}
+
+# Opinion of Ethic: Spiritualist
+triggered_opinion_of_spiritualist = {
+	trigger = {
+		from = { is_spiritualist = yes }
+	}
+	opinion = {
+		base = 0
+
+		modifier = {
+			add = -10
+			has_ethic = "ethic_materialist"
+			FROM = { has_ethic = "ethic_spiritualist" }
+		}
+		modifier = {
+			add = -20
+			has_ethic = "ethic_materialist"
+			FROM = { has_ethic = "ethic_fanatic_spiritualist" }
+		}
+		modifier = {
+			add = -20
+			has_ethic = "ethic_fanatic_materialist"
+			FROM = { has_ethic = "ethic_spiritualist" }
+		}
+		modifier = {
+			add = -40
+			has_ethic = "ethic_fanatic_materialist"
+			FROM = { has_ethic = "ethic_fanatic_spiritualist" }
+		}
+	}
+}
+
+# Good Opinion of Ethic: Spiritualist
+triggered_opinion_of_spiritualist_pos = {
+	trigger = {
+		from = { is_spiritualist = yes }
+	}
+	opinion = {
+		base = 0
+
+		modifier = {
+			add = 15
+			has_ethic = "ethic_fanatic_spiritualist"
+			FROM = { has_ethic = "ethic_fanatic_spiritualist" }
+		}
+		modifier = {
+			add = 5
+			has_ethic = "ethic_fanatic_spiritualist"
+			FROM = { has_ethic = "ethic_spiritualist" }
+		}
+		modifier = {
+			add = 5
+			has_ethic = "ethic_spiritualist"
+			FROM = { has_ethic = "ethic_fanatic_spiritualist" }
+		}
+		modifier = {
+			add = 5
+			has_ethic = "ethic_spiritualist"
+			FROM = { has_ethic = "ethic_spiritualist" }
+		}
+	}
+}
+
+# Opinion of Ethic: egalitarian
+triggered_opinion_of_egalitarian = {
+	trigger = {
+		from = { is_egalitarian = yes }
+	}
+	opinion = {
+		base = 0
+		modifier = {
+			add = -10
+			has_ethic = "ethic_authoritarian"
+			FROM = { has_ethic = "ethic_egalitarian" }
+		}
+		modifier = {
+			add = -20
+			has_ethic = "ethic_authoritarian"
+			FROM = { has_ethic = "ethic_fanatic_egalitarian" }
+		}
+		modifier = {
+			add = -20
+			has_ethic = "ethic_fanatic_authoritarian"
+			FROM = { has_ethic = "ethic_egalitarian" }
+		}
+		modifier = {
+			add = -40
+			has_ethic = "ethic_fanatic_authoritarian"
+			FROM = { has_ethic = "ethic_fanatic_egalitarian" }
+		}
+	}
+}
+
+# Good Opinion of Ethic: Egalitarian
+triggered_opinion_of_egalitarian_pos = {
+	trigger = {
+		from = { is_egalitarian = yes }
+	}
+	opinion = {
+		base = 0
+
+		modifier = {
+			add = 15
+			has_ethic = "ethic_fanatic_egalitarian"
+			FROM = { has_ethic = "ethic_fanatic_egalitarian" }
+		}
+		modifier = {
+			add = 5
+			has_ethic = "ethic_fanatic_egalitarian"
+			FROM = { has_ethic = "ethic_egalitarian" }
+		}
+		modifier = {
+			add = 5
+			has_ethic = "ethic_egalitarian"
+			FROM = { has_ethic = "ethic_fanatic_egalitarian" }
+		}
+		modifier = {
+			add = 5
+			has_ethic = "ethic_egalitarian"
+			FROM = { has_ethic = "ethic_egalitarian" }
+		}
+	}
+}
+
+# Good Opinion of Ethic: Pacifist
+triggered_opinion_of_pacifist_pos = {
+	trigger = {
+		from = { is_pacifist = yes }
+	}
+	opinion = {
+		base = 0
+
+		modifier = {
+			add = 15
+			has_ethic = "ethic_fanatic_pacifist"
+			FROM = { has_ethic = "ethic_fanatic_pacifist" }
+		}
+		modifier = {
+			add = 5
+			has_ethic = "ethic_fanatic_pacifist"
+			FROM = { has_ethic = "ethic_pacifist" }
+		}
+		modifier = {
+			add = 5
+			has_ethic = "ethic_pacifist"
+			FROM = { has_ethic = "ethic_fanatic_pacifist" }
+		}
+		modifier = {
+			add = 5
+			has_ethic = "ethic_pacifist"
+			FROM = { has_ethic = "ethic_pacifist" }
+		}
+	}
+}
+
+# Opinion of Ethic: authoritarian
+triggered_opinion_of_authoritarian = {
+	trigger = {
+		from = { is_authoritarian = yes }
+	}
+	opinion = {
+		base = 0
+		modifier = {
+			add = -10
+			has_ethic = "ethic_egalitarian"
+			FROM = { has_ethic = "ethic_authoritarian" }
+		}
+		modifier = {
+			add = -20
+			has_ethic = "ethic_egalitarian"
+			FROM = { has_ethic = "ethic_fanatic_authoritarian" }
+		}
+		modifier = {
+			add = -20
+			has_ethic = "ethic_fanatic_egalitarian"
+			FROM = { has_ethic = "ethic_authoritarian" }
+		}
+		modifier = {
+			add = -40
+			has_ethic = "ethic_fanatic_egalitarian"
+			FROM = { has_ethic = "ethic_fanatic_authoritarian" }
+		}
+	}
+}
+
+##########################################################################
+# DECAYING
+##########################################################################
+
+# They declared war on us
+opinion_declared_war = {
+	opinion = {
+		base = -25
+	}
+
+	decay = {
+		base = 1
+	}
+}
+
+# It's people!
+triggered_opinion_xenophage = {
+	trigger = {
+			NOT = { is_country_type = fallen_empire }
+		is_xenophobe = no
+		from = {
+			OR = {
+				allows_slavery = yes
+				allows_purge = yes
+			}
+					any_owned_species = {
+						is_sapient = yes
+						OR = {
+							AND = {
+								OR = {
+									has_citizenship_type = { country = from type = citizenship_purge_machine }
+									has_citizenship_type = { country = from type = citizenship_purge }
+								}
+								OR = {
+									has_purge_type = { country = from type = purge_processing }
+									has_purge_type = { country = from type = purge_matrix }
+								}
+							}
+							AND = {
+								has_citizenship_type = { country = from type = citizenship_slavery }
+								OR = {
+									has_slavery_type = { country = from type = slavery_livestock }
+									has_slavery_type = { country = from type = slavery_matrix }
+								}
+							}
+						}
+					}
+				}
+			}
+	opinion = {
+		base = 0
+		modifier = {
+			add = -45
+			NOR = {
+				has_ethic = "ethic_authoritarian"
+				has_ethic = "ethic_fanatic_authoritarian"
+			}
+		}
+		modifier = {
+			add = -45
+			OR = {
+				has_ethic = "ethic_xenophile"
+				has_ethic = "ethic_fanatic_xenophile"
+			}
+				}
+			}
+}
+
+
 
 
 # opinion_biophage = {
@@ -270,7 +909,7 @@ opinion_first_contact_war = {
 opinion_declared_war = {
 	opinion = {
 		base = -25
-	}
+		}
 
 	decay = {
 		base = 1
@@ -506,7 +1145,7 @@ opinion_tried_to_kick = {
 	accumulative = yes
 
 	decay = {
-		base = 2 
+		base = 2
 	}
 }
 
@@ -2239,6 +2878,7 @@ opinion_zarqlans_chosen = {
 	}
 }
 
+#TODO: AI
 opinion_imperial_overlord_ai_opinion = {
 	opinion = {
 		base = 150
@@ -2249,6 +2889,7 @@ opinion_imperial_overlord_ai_opinion = {
 	}
 }
 
+#TODO: AI
 opinion_imperial_vassal_ai_opinion = {
 	opinion = {
 		base = 120
@@ -2259,6 +2900,7 @@ opinion_imperial_vassal_ai_opinion = {
 	}
 }
 
+#TODO: AI
 opinion_imperial_vassal_new_overlord = {
 	opinion = {
 		base = 150
@@ -2268,6 +2910,7 @@ opinion_imperial_vassal_new_overlord = {
 	}
 }
 
+#TODO: AI
 opinion_imperial_vassal_refused_overlordship = {
 	opinion = {
 		base = -80
@@ -2277,6 +2920,7 @@ opinion_imperial_vassal_refused_overlordship = {
 	}
 }
 
+#TODO: AI
 opinion_imperial_vassal_harsh_response_overlord_opinion = {
 	opinion = {
 		base = -20
@@ -2287,6 +2931,7 @@ opinion_imperial_vassal_harsh_response_overlord_opinion = {
 	}
 }
 
+#TODO: AI
 opinion_imperial_vassal_grateful_response_overlord_opinion = {
 	opinion = {
 		base = 20
@@ -2609,630 +3254,6 @@ triggered_dc_opinion_of_assimilators = {
 }
 
 
-# Xenophobes are a bit less popular with everyone else
-triggered_opinion_xenophobes = {
-	trigger = {
-		from = { is_xenophobe = yes }
-		exists = from.species
-	}
-	opinion = {
-		base = 0
-
-		modifier = {
-			add = -10
-			OR = {
-				has_ethic = "ethic_xenophile"
-				has_ethic = "ethic_fanatic_xenophile"
-			}
-			FROM = { has_ethic = "ethic_xenophobe" }
-			NOT = { is_same_species_class = FROM }
-		}
-		modifier = {
-			add = -5
-			OR = {
-				has_ethic = "ethic_xenophile"
-				has_ethic = "ethic_fanatic_xenophile"
-			}
-			FROM = { has_ethic = "ethic_xenophobe" }
-			is_same_species_class = FROM
-			NOT = { is_same_species = FROM }
-			NOT = { is_subspecies = FROM }
-		}
-
-		modifier = {
-			add = -10
-			NOT = { has_ethic = "ethic_fanatic_xenophobe" }
-			NOT = { has_ethic = "ethic_xenophobe" }
-			NOT = { has_civic = civic_machine_terminator }
-			FROM = { has_ethic = "ethic_xenophobe" }
-			NOT = { is_same_species_class = FROM }
-		}
-		modifier = {
-			add = -5
-			NOT = { has_ethic = "ethic_fanatic_xenophobe" }
-			NOT = { has_ethic = "ethic_xenophobe" }
-			NOT = { has_civic = civic_machine_terminator }
-			FROM = { has_ethic = "ethic_xenophobe" }
-			is_same_species_class = FROM
-			NOT = { is_same_species = FROM }
-			NOT = { is_subspecies = FROM }
-		}
-
-		modifier = {
-			add = -20
-			OR = {
-				has_ethic = "ethic_xenophile"
-				has_ethic = "ethic_fanatic_xenophile"
-			}
-			FROM = {
-				has_ethic = "ethic_fanatic_xenophobe"
-			}
-			NOT = { is_same_species_class = FROM }
-		}
-		modifier = {
-			add = -10
-			OR = {
-				has_ethic = "ethic_xenophile"
-				has_ethic = "ethic_fanatic_xenophile"
-			}
-			FROM = { has_ethic = "ethic_fanatic_xenophobe" }
-			is_same_species_class = FROM
-			NOT = { is_same_species = FROM }
-			NOT = { is_subspecies = FROM }
-		}
-
-		modifier = {
-			add = -20
-			NOT = { has_ethic = "ethic_fanatic_xenophobe" }
-			NOT = { has_ethic = "ethic_xenophobe" }
-			NOT = { has_civic = civic_machine_terminator }
-			FROM = { has_ethic = "ethic_fanatic_xenophobe" }
-			NOT = { is_same_species_class = FROM }
-		}
-		modifier = {
-			add = -10
-			NOT = { has_ethic = "ethic_fanatic_xenophobe" }
-			NOT = { has_ethic = "ethic_xenophobe" }
-			NOT = { has_civic = civic_machine_terminator }
-			FROM = { has_ethic = "ethic_fanatic_xenophobe" }
-			is_same_species_class = FROM
-			NOT = { is_same_species = FROM }
-			NOT = { is_subspecies = FROM }
-		}
-	}
-}
-
-# Xenophiles are a bit more popular with everyone else
-triggered_opinion_xenophiles = {
-	trigger = {
-		from = { is_xenophile = yes }
-	}
-	opinion = {
-		base = 0
-
-		modifier = {
-			add = 10
-			NOR = {
-				has_ethic = "ethic_xenophile"
-				has_ethic = "ethic_fanatic_xenophile"
-				has_ethic = "ethic_xenophobe"
-				has_ethic = "ethic_fanatic_xenophobe"
-			}
-			FROM = { has_ethic = "ethic_xenophile" }
-			exists = from.species
-			NOT = { is_same_species_class = FROM }
-		}
-
-		modifier = {
-			add = 20
-			NOR = {
-				has_ethic = "ethic_xenophile"
-				has_ethic = "ethic_fanatic_xenophile"
-				has_ethic = "ethic_xenophobe"
-				has_ethic = "ethic_fanatic_xenophobe"
-			}
-			FROM = { has_ethic = "ethic_fanatic_xenophile" }
-			exists = from.species
-			NOT = { is_same_species_class = FROM }
-		}
-
-		modifier = {
-			add = 5
-			NOR = {
-				has_ethic = "ethic_xenophile"
-				has_ethic = "ethic_fanatic_xenophile"
-				has_ethic = "ethic_xenophobe"
-				has_ethic = "ethic_fanatic_xenophobe"
-			}
-			FROM = { has_ethic = "ethic_xenophile" }
-			exists = from.species
-			is_same_species_class = FROM
-		}
-
-		modifier = {
-			add = 10
-			NOR = {
-				has_ethic = "ethic_xenophile"
-				has_ethic = "ethic_fanatic_xenophile"
-				has_ethic = "ethic_xenophobe"
-				has_ethic = "ethic_fanatic_xenophobe"
-			}
-			FROM = { has_ethic = "ethic_fanatic_xenophile" }
-			exists = from.species
-			is_same_species_class = FROM
-		}
-
-		modifier = {
-			add = 10
-			has_ethic = "ethic_xenophile"
-			FROM = {
-				OR = {
-					has_ethic = "ethic_xenophile"
-					has_ethic = "ethic_fanatic_xenophile"
-				}
-			}
-		}
-		modifier = {
-			add = 10
-			has_ethic = "ethic_fanatic_xenophile"
-			FROM = { has_ethic = "ethic_xenophile" }
-		}
-		modifier = {
-			add = 20
-			has_ethic = "ethic_fanatic_xenophile"
-			FROM = { has_ethic = "ethic_fanatic_xenophile" }
-		}
-	}
-}
-
-# Xenophobia
-triggered_opinion_xenophobia = {
-	trigger = {
-		from = { is_xenophile = yes }
-	}
-	opinion = {
-		base = 0
-
-		modifier = {
-			add = -20
-			NOT = { has_valid_civic = civic_fanatic_purifiers } #handled elsewhere
-			has_ethic = "ethic_xenophobe"
-			exists = from.species
-			NOT = { is_same_species_class = FROM }
-		}
-		modifier = {
-			add = -10
-			NOT = { has_valid_civic = civic_fanatic_purifiers } #handled elsewhere
-			has_ethic = "ethic_xenophobe"
-			exists = from.species
-			is_same_species_class = FROM
-			NOT = { is_same_species = FROM }
-			NOT = { is_subspecies = FROM }
-		}
-		modifier = {
-			add = -5
-			NOT = { has_valid_civic = civic_fanatic_purifiers } #handled elsewhere
-			has_ethic = "ethic_xenophobe"
-			exists = from.species
-			is_same_species_class = FROM
-			NOT = { is_same_species = FROM }
-			is_subspecies = FROM
-		}
-
-		modifier = {
-			add = -40
-			NOT = { has_valid_civic = civic_fanatic_purifiers } #handled elsewhere
-			has_ethic = "ethic_fanatic_xenophobe"
-			exists = from.species
-			NOT = { is_same_species_class = FROM }
-		}
-		modifier = {
-			add = -20
-			NOT = { has_valid_civic = civic_fanatic_purifiers } #handled elsewhere
-			has_ethic = "ethic_fanatic_xenophobe"
-			exists = from.species
-			is_same_species_class = FROM
-			NOT = { is_same_species = FROM }
-			NOT = { is_subspecies = FROM }
-		}
-		modifier = {
-			add = -10
-			NOT = { has_valid_civic = civic_fanatic_purifiers } #handled elsewhere
-			has_ethic = "ethic_fanatic_xenophobe"
-			exists = from.species
-			is_same_species_class = FROM
-			NOT = { is_same_species = FROM }
-			is_subspecies = FROM
-		}
-	}
-}
-
-# Xenophilia
-triggered_opinion_xenophilia = {
-	trigger = {
-		is_xenophile = yes
-		exists = from.species
-	}
-	opinion = {
-		base = 0
-		modifier = {
-			add = 20
-			has_ethic = "ethic_xenophile"
-			NOT = { is_same_species_class = FROM }
-			FROM = {
-				NOT = {
-					has_civic = civic_machine_terminator
-					has_civic = civic_fanatic_purifiers
-				}
-			}
-		}
-		modifier = {
-			add = 10
-			has_ethic = "ethic_xenophile"
-			is_same_species_class = FROM
-			NOT = { is_same_species = FROM }
-			NOT = { is_subspecies = FROM }
-			FROM = {
-				NOT = {
-					has_civic = civic_machine_terminator
-					has_civic = civic_fanatic_purifiers
-				}
-			}
-		}
-		modifier = {
-			add = 5
-			has_ethic = "ethic_xenophile"
-			is_same_species_class = FROM
-			NOT = { is_same_species = FROM }
-			is_subspecies = FROM
-			FROM = {
-				NOT = {
-					has_civic = civic_machine_terminator
-					has_civic = civic_fanatic_purifiers
-				}
-			}
-		}
-
-		modifier = {
-			add = 40
-			has_ethic = "ethic_fanatic_xenophile"
-			NOT = { is_same_species_class = FROM }
-			FROM = {
-				NOT = {
-					has_civic = civic_machine_terminator
-					has_civic = civic_fanatic_purifiers
-				}
-			}
-		}
-		modifier = {
-			add = 20
-			has_ethic = "ethic_fanatic_xenophile"
-			is_same_species_class = FROM
-			NOT = { is_same_species = FROM }
-			NOT = { is_subspecies = FROM }
-			FROM = {
-				NOT = {
-					has_civic = civic_machine_terminator
-					has_civic = civic_fanatic_purifiers
-				}
-			}
-		}
-		modifier = {
-			add = 10
-			has_ethic = "ethic_fanatic_xenophile"
-			is_same_species_class = FROM
-			NOT = { is_same_species = FROM }
-			is_subspecies = FROM
-			FROM = {
-				NOT = {
-					has_civic = civic_machine_terminator
-					has_civic = civic_fanatic_purifiers
-				}
-			}
-		}
-	}
-}
-
-# Bad Opinion of Ethic: Materialist
-triggered_opinion_of_materialist = {
-	trigger = {
-		from = { is_materialist = yes }
-	}
-	opinion = {
-		base = 0
-
-		modifier = {
-			add = -10
-			has_ethic = "ethic_spiritualist"
-			FROM = { has_ethic = "ethic_materialist" }
-		}
-		modifier = {
-			add = -20
-			has_ethic = "ethic_spiritualist"
-			FROM = { has_ethic = "ethic_fanatic_materialist" }
-		}
-		modifier = {
-			add = -20
-			has_ethic = "ethic_fanatic_spiritualist"
-			FROM = { has_ethic = "ethic_materialist" }
-		}
-		modifier = {
-			add = -40
-			has_ethic = "ethic_fanatic_spiritualist"
-			FROM = { has_ethic = "ethic_fanatic_materialist" }
-		}
-	}
-}
-
-# Good Opinion of Ethic: Materialist
-triggered_opinion_of_materialist_pos = {
-	trigger = {
-		from = { is_materialist = yes }
-	}
-	opinion = {
-		base = 0
-
-		modifier = {
-			add = 25
-			has_ethic = "ethic_fanatic_materialist"
-			FROM = { has_ethic = "ethic_fanatic_materialist" }
-		}
-		modifier = {
-			add = 10
-			has_ethic = "ethic_fanatic_materialist"
-			FROM = { has_ethic = "ethic_materialist" }
-		}
-		modifier = {
-			add = 10
-			has_ethic = "ethic_materialist"
-			FROM = { has_ethic = "ethic_fanatic_materialist" }
-		}
-		modifier = {
-			add = 10
-			has_ethic = "ethic_materialist"
-			FROM = { has_ethic = "ethic_materialist" }
-		}
-	}
-}
-
-# Opinion of Ethic: Spiritualist
-triggered_opinion_of_spiritualist = {
-	trigger = {
-		from = { is_spiritualist = yes }
-	}
-	opinion = {
-		base = 0
-
-		modifier = {
-			add = -10
-			has_ethic = "ethic_materialist"
-			FROM = { has_ethic = "ethic_spiritualist" }
-		}
-		modifier = {
-			add = -20
-			has_ethic = "ethic_materialist"
-			FROM = { has_ethic = "ethic_fanatic_spiritualist" }
-		}
-		modifier = {
-			add = -20
-			has_ethic = "ethic_fanatic_materialist"
-			FROM = { has_ethic = "ethic_spiritualist" }
-		}
-		modifier = {
-			add = -40
-			has_ethic = "ethic_fanatic_materialist"
-			FROM = { has_ethic = "ethic_fanatic_spiritualist" }
-		}
-	}
-}
-
-# Good Opinion of Ethic: Spiritualist
-triggered_opinion_of_spiritualist_pos = {
-	trigger = {
-		from = { is_spiritualist = yes }
-	}
-	opinion = {
-		base = 0
-
-		modifier = {
-			add = 25
-			has_ethic = "ethic_fanatic_spiritualist"
-			FROM = { has_ethic = "ethic_fanatic_spiritualist" }
-		}
-		modifier = {
-			add = 10
-			has_ethic = "ethic_fanatic_spiritualist"
-			FROM = { has_ethic = "ethic_spiritualist" }
-		}
-		modifier = {
-			add = 10
-			has_ethic = "ethic_spiritualist"
-			FROM = { has_ethic = "ethic_fanatic_spiritualist" }
-		}
-		modifier = {
-			add = 10
-			has_ethic = "ethic_spiritualist"
-			FROM = { has_ethic = "ethic_spiritualist" }
-		}
-	}
-}
-
-# Opinion of Ethic: egalitarian
-triggered_opinion_of_egalitarian = {
-	trigger = {
-		from = { is_egalitarian = yes }
-	}
-	opinion = {
-		base = 0
-		modifier = {
-			add = -10
-			has_ethic = "ethic_authoritarian"
-			FROM = { has_ethic = "ethic_egalitarian" }
-		}
-		modifier = {
-			add = -20
-			has_ethic = "ethic_authoritarian"
-			FROM = { has_ethic = "ethic_fanatic_egalitarian" }
-		}
-		modifier = {
-			add = -20
-			has_ethic = "ethic_fanatic_authoritarian"
-			FROM = { has_ethic = "ethic_egalitarian" }
-		}
-		modifier = {
-			add = -40
-			has_ethic = "ethic_fanatic_authoritarian"
-			FROM = { has_ethic = "ethic_fanatic_egalitarian" }
-		}
-	}
-}
-
-# Good Opinion of Ethic: Egalitarian
-triggered_opinion_of_egalitarian_pos = {
-	trigger = {
-		from = { is_egalitarian = yes }
-	}
-	opinion = {
-		base = 0
-
-		modifier = {
-			add = 25
-			has_ethic = "ethic_fanatic_egalitarian"
-			FROM = { has_ethic = "ethic_fanatic_egalitarian" }
-		}
-		modifier = {
-			add = 10
-			has_ethic = "ethic_fanatic_egalitarian"
-			FROM = { has_ethic = "ethic_egalitarian" }
-		}
-		modifier = {
-			add = 10
-			has_ethic = "ethic_egalitarian"
-			FROM = { has_ethic = "ethic_fanatic_egalitarian" }
-		}
-		modifier = {
-			add = 10
-			has_ethic = "ethic_egalitarian"
-			FROM = { has_ethic = "ethic_egalitarian" }
-		}
-	}
-}
-
-# Good Opinion of Ethic: Pacifist
-triggered_opinion_of_pacifist_pos = {
-	trigger = {
-		from = { is_pacifist = yes }
-	}
-	opinion = {
-		base = 0
-
-		modifier = {
-			add = 25
-			has_ethic = "ethic_fanatic_pacifist"
-			FROM = { has_ethic = "ethic_fanatic_pacifist" }
-		}
-		modifier = {
-			add = 10
-			has_ethic = "ethic_fanatic_pacifist"
-			FROM = { has_ethic = "ethic_pacifist" }
-		}
-		modifier = {
-			add = 10
-			has_ethic = "ethic_pacifist"
-			FROM = { has_ethic = "ethic_fanatic_pacifist" }
-		}
-		modifier = {
-			add = 10
-			has_ethic = "ethic_pacifist"
-			FROM = { has_ethic = "ethic_pacifist" }
-		}
-	}
-}
-
-# Opinion of Ethic: authoritarian
-triggered_opinion_of_authoritarian = {
-	trigger = {
-		from = { is_authoritarian = yes }
-	}
-	opinion = {
-		base = 0
-		modifier = {
-			add = -10
-			has_ethic = "ethic_egalitarian"
-			FROM = { has_ethic = "ethic_authoritarian" }
-		}
-		modifier = {
-			add = -20
-			has_ethic = "ethic_egalitarian"
-			FROM = { has_ethic = "ethic_fanatic_authoritarian" }
-		}
-		modifier = {
-			add = -20
-			has_ethic = "ethic_fanatic_egalitarian"
-			FROM = { has_ethic = "ethic_authoritarian" }
-		}
-		modifier = {
-			add = -40
-			has_ethic = "ethic_fanatic_egalitarian"
-			FROM = { has_ethic = "ethic_fanatic_authoritarian" }
-		}
-	}
-}
-
-# It's people!
-triggered_opinion_xenophage = {
-	trigger = {
-		NOT = { is_country_type = fallen_empire }
-		is_xenophobe = no
-		from = {
-			OR = {
-				allows_slavery = yes
-				allows_purge = yes
-			}
-			any_owned_species = {
-				is_sapient = yes
-				OR = {
-					AND = {
-						OR = {
-							has_citizenship_type = { country = from type = citizenship_purge_machine }
-							has_citizenship_type = { country = from type = citizenship_purge }
-						}
-						OR = {
-							has_purge_type = { country = from type = purge_processing }
-							has_purge_type = { country = from type = purge_matrix }
-						}
-					}
-					AND = {
-						has_citizenship_type = { country = from type = citizenship_slavery }
-						OR = {
-							has_slavery_type = { country = from type = slavery_livestock }
-							has_slavery_type = { country = from type = slavery_matrix }
-						}
-					}
-				}
-			}
-		}
-	}
-	opinion = {
-		base = 0
-		modifier = {
-			add = -25
-			NOR = {
-				has_ethic = "ethic_authoritarian"
-				has_ethic = "ethic_fanatic_authoritarian"
-			}
-		}
-		modifier = {
-			add = -25
-			OR = {
-				has_ethic = "ethic_xenophile"
-				has_ethic = "ethic_fanatic_xenophile"
-			}
-		}
-	}
-}
-
-
 triggered_materialist_opinion_of_machine_empires = {
 	trigger = {
 		has_ethic = ethic_materialist
@@ -3245,7 +3266,7 @@ triggered_materialist_opinion_of_machine_empires = {
 		}
 	}
 	opinion = {
-		base = 20  #10
+		base = 20
 	}
 }
 
@@ -3261,7 +3282,7 @@ triggered_fanatic_materialist_opinion_of_machine_empires = {
 		}
 	}
 	opinion = {
-		base = 30    #20
+		base = 30
 	}
 }
 
@@ -3463,7 +3484,7 @@ triggered_opinion_both_terminators = {
 		FROM = { has_civic = civic_machine_terminator }
 	}
 	opinion = {
-		base = 500   #200
+		base = 500
 	}
 }
 
@@ -3511,7 +3532,7 @@ triggered_exterminators_opinion_of_machines = {
 		}
 	}
 	opinion = {
-		base = 200   #100
+		base = 200
 	}
 }
 

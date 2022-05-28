@@ -131,7 +131,7 @@ offspring_drone = {
 		}
 		planet_amenities_no_happiness_add = 5
 		mult = value:scripted_modifier_job_weight_mult|MODIFIER|pop_job_amenities_mult|
-		}
+	}
 
 	triggered_planet_modifier = {
 		potential = {
@@ -333,7 +333,14 @@ evaluator = {
 	weight = {
 		weight = @synapse_drone_job_weight
 		mult = value:job_weights_modifier|JOB|evaluator|RESOURCE|unity|
+		modifier = {
+			factor = 0.9
+			exists = owner
+			years_passed < 1
+			owner = { has_valid_civic = civic_machine_assimilator }
+			has_trait = trait_cybernetic
 		}
+	}
 }
 
 synapse_drone = {
@@ -389,9 +396,9 @@ synapse_drone = {
 			exists = owner
 			owner = { has_active_tradition = tr_synchronicity_instinctive_synchronization }
 		}
-			planet_amenities_no_happiness_add = 2
+		planet_amenities_no_happiness_add = 2
 		mult = value:scripted_modifier_mult|MODIFIER|pop_job_amenities_mult|
-		}
+	}
 
 	triggered_planet_modifier = {
 		potential = {
@@ -411,7 +418,7 @@ synapse_drone = {
 		weight = @synapse_drone_job_weight
 		mult = value:job_weights_modifier|JOB|synapse_drone|RESOURCE|unity|
 		mult = value:scripted_modifier_job_weight_mult|MODIFIER|pop_job_amenities_mult|
-			}
+	}
 }
 
 brain_drone = {
@@ -452,6 +459,19 @@ brain_drone = {
 			years_passed < 1
 			owner = { has_valid_civic = civic_machine_assimilator }
 			has_trait = trait_cybernetic
+		}
+		modifier = {
+			factor = 0
+			planet = {
+				owner = {
+					is_ai = yes
+					has_resource = { type = minerals amount < 500 }
+					has_monthly_income = {
+						resource = minerals
+						value < 25
+					}
+				}
+			}
 		}
 	}
 }
@@ -494,6 +514,19 @@ calculator = {
 			years_passed < 1
 			owner = { has_valid_civic = civic_machine_assimilator }
 			has_trait = trait_cybernetic
+		}
+		modifier = {
+			factor = 0
+			planet = {
+				owner = {
+					is_ai = yes
+					has_resource = { type = minerals amount < 500 }
+					has_monthly_income = {
+						resource = minerals
+						value < 25
+					}
+				}
+			}
 		}
 	}
 }
@@ -564,7 +597,7 @@ artisan_drone = {
 		modifier = {
 			factor = 2
 			OR = {
-			has_job = artisan_drone
+				has_job = artisan_drone
 				AND = {
 					exists = owner
 					owner = { has_deficit = consumer_goods }
@@ -1143,7 +1176,7 @@ mining_drone = {
 			trigger = {
 				planet = {
 					has_planet_flag = has_material_requisitorium
-    }
+				}
 			}
 			minerals = @requisitorium_minerals_overlord
 		}
@@ -1407,15 +1440,29 @@ maintenance_drone = {
 				exists = starbase
 				starbase = {
 					has_starbase_building = ring_maintenance_hub
+				}
 			}
 		}
-		}
-			planet_amenities_no_happiness_add = 1
+		planet_amenities_no_happiness_add = 1
 		mult = value:scripted_modifier_mult|MODIFIER|pop_job_amenities_mult|
 	}
 
 	weight = {
-		weight = @maintenance_drone_job
+		weight = @clerk_job_weight
+		modifier = {
+			add = @maintenance_drone_job
+			exists = owner
+			owner = {
+				is_ai = no
+			}
+		}
+		modifier = {
+			add = -2.2
+			exists = owner
+			owner = {
+				is_ai = no
+			}
+		}
 		mult = value:scripted_modifier_job_weight_mult|MODIFIER|pop_job_amenities_mult|
 		modifier = {
 			mult = value:job_weights_modifier|JOB|maintenance_drone|RESOURCE|unity|FACTOR|0.25|
@@ -1434,6 +1481,10 @@ maintenance_drone = {
 
 		modifier = {
 			factor = 1000 # <- hive mind amenities jobs are non specialist so they have base weight 1 instead of 1000 but we still want them
+			exists = owner
+			owner = {
+				is_ai = no
+			}
 			NOT = { has_job = maintenance_drone }
 			planet = {
 				free_amenities < 3
@@ -1442,9 +1493,60 @@ maintenance_drone = {
 
 		modifier = {
 			factor = 1000 # <- hive mind amenities jobs are non specialist so they have base weight 1 instead of 1000 but we still want them
+			exists = owner
+			owner = {
+				is_ai = no
+			}
 			has_job = maintenance_drone
 			planet = {
 				free_amenities < 8
+			}
+		}
+		modifier = {
+			factor = 0.1
+			exists = owner
+			owner = {
+				is_ai = no
+			}
+			NOT = { has_job = maintenance_drone }
+			planet = {
+				free_amenities > 5
+			}
+		}		
+		modifier = {
+			factor = 0
+			exists = owner
+			owner = {
+				is_ai = yes
+			}
+			planet = { habitability = { who = root value < 0.4 } }
+			planet = { num_pops > 1 num_pops < 8 }
+			owner = { num_pops < 100 }
+		}
+		modifier = {
+			factor = 100000
+			exists = owner
+			owner = {
+				is_ai = yes
+			}
+			years_passed > 2
+		}
+		modifier = {
+			factor = 2
+			planet = {
+				free_amenities <= -1
+			}
+		}
+		modifier = {
+			factor = 1.5
+			planet = {
+				free_amenities <= -5
+			}
+		}
+		modifier = {
+			factor = 1.5
+			planet = {
+				free_amenities <= -10
 			}
 		}
 	}
@@ -1477,7 +1579,6 @@ warrior_drone = {
 	pop_modifier = {
 		pop_defense_armies_add = 3
 	}
-
 
 	triggered_planet_modifier = {
 		modifier = {
@@ -1552,7 +1653,7 @@ warrior_drone = {
 }
 
 bluelotus_drone = {
-    category = complex_drone
+	category = complex_drone
 	is_capped_by_modifier = yes
 	condition_string = DRONE_JOB_TRIGGER
 	building_icon = building_illicit_research_labs

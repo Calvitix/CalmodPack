@@ -1,9 +1,3 @@
-# Expanded Events File
-#
-# Calvitix Check 3.2  28.11.2021
-#
-# 
-#
 ############################
 #
 # Expanded Game Start Events
@@ -97,11 +91,6 @@ country_event = {
 	is_triggered_only = yes
 	
 	immediate = {
-		# Remnants get extra old colonies
-		if = {
-			limit = { has_origin = origin_remnants }
-			country_event = { id = gamestartexpanded.10 }
-		}
 		# Lost Colony events
 		if = {
 			limit = {
@@ -169,6 +158,11 @@ country_event = {
 					set_location = prev.capital_scope
 				}
 			}
+			# Get to know the Scraper Enclave from the start
+			if = {
+				limit = { has_overlord_dlc = yes }
+				establish_communications_no_message = event_target:salvager_enclave_country
+			}
 			country_event = { id = countryexpanded.458 days = 3 random = 6 }
 		}
 		# Convergent Evolution
@@ -190,11 +184,11 @@ country_event = {
 					1 = {
 						modifier = { factor = 0 has_plantoids = no }
 						create_generic_presapient_species = { UPLIFT_TO = PLANT }
-							}
+					}
 					1 = {
 						modifier = { factor = 0 has_lithoids = no }
 						create_generic_presapient_species = { UPLIFT_TO = LITHOID }
-						}
+					}
 					1 = {
 						modifier = { factor = 0 has_necroids = no }
 						create_generic_presapient_species = { UPLIFT_TO = NECROID }
@@ -479,7 +473,9 @@ country_event = {
 						pop_has_trait = trait_rapid_breeders
 					}
 				}
+				capital_scope = { is_artificial = no }
 				NOR = {
+					has_country_flag = human_2 # capital is a colony
 					any_owned_pop = { pop_has_trait = trait_conservational }
 					any_owned_pop = { pop_has_trait = trait_communal }
 					any_owned_pop = { pop_has_trait = trait_agrarian }
@@ -518,7 +514,7 @@ country_event = {
 					has_origin = origin_children_of_dunes # world is already f*cked
 					has_origin = origin_postglacial
 					has_origin = origin_ark # already f*cked up
-					has_country_flag = human_2 # capital is a colony
+					has_origin = origin_frameworld
 				}
 			}
 			country_event = { id = gamestartexpanded.6 days = 1 random = 10 }
@@ -1167,13 +1163,6 @@ country_event = {
 				modifier = {
 					factor = 1.2
 					OR = {
-						is_megacorp = yes
-						has_civic = civic_corporate_dominion
-					}
-				}
-				modifier = {
-					factor = 1.2
-					OR = {
 						has_civic = civic_mining_guilds
 						has_civic = civic_mining_company
 					}
@@ -1458,101 +1447,5 @@ event = {
 			}
 		}
 		add_extra_hyperlane_to_spawned_system_effect = yes
-	}
-}
-
-# Remnants spawning old colonies
-country_event = {
-	id = gamestartexpanded.10
-	hide_window = yes
-	is_triggered_only = yes
-	
-	trigger = { has_origin = origin_remnants }
-	
-	immediate = {
-		closest_system = {
-			limit = {
-				any_system_planet = {
-					has_planet_flag = prescripted_ideal
-					NOT = { has_planet_flag = colonial_remains@root }
-				}
-			}
-			random_system_planet = {
-				limit = {
-					has_planet_flag = prescripted_ideal
-				}
-				set_planet_flag = colonial_remains@root
-			}
-		}
-		closest_system = {
-			limit = {
-				any_system_planet = {
-					has_planet_flag = prescripted_ideal
-					NOT = { has_planet_flag = colonial_remains@root }
-				}
-			}
-			random_system_planet = {
-				limit = {
-					has_planet_flag = prescripted_ideal
-				}
-				set_planet_flag = colonial_remains@root
-			}
-		}
-		closest_system = {
-			limit = {
-				any_system_planet = {
-					habitable_planet = yes
-					habitability = { who = ROOT.owner_species value > 0.55 }
-					has_owner = no
-					is_surveyed = { who = root status = no }
-					NOT = { has_planet_flag = prescripted_ideal }
-				}
-				NOT = {
-					exists = space_owner
-					has_star_flag = hostile_system
-				}
-			}
-			min_steps = 1
-			max_steps = 20
-			random_system_planet = {
-				limit = {
-					habitable_planet = yes
-					habitability = { who = ROOT.owner_species value > 0.55 }
-					has_owner = no
-					is_surveyed = { who = root status = no }
-					NOT = { has_planet_flag = prescripted_ideal }
-				}
-				set_planet_flag = prescripted_ideal
-				set_planet_flag = colonial_remains@root
-			}
-		}
-		closest_system = {
-			limit = {
-				any_system_planet = {
-					habitable_planet = yes
-					habitability = { who = ROOT.owner_species value > 0.55 }
-					has_owner = no
-					is_surveyed = { who = root status = no }
-					NOT = { has_planet_flag = prescripted_ideal }
-				}
-				NOT = {
-					exists = space_owner
-					has_star_flag = hostile_system
-				}
-			}
-			min_steps = 1
-			max_steps = 20
-			random_system_planet = {
-				limit = {
-					habitable_planet = yes
-					habitability = { who = ROOT.owner_species value > 0.55 }
-					has_owner = no
-					is_surveyed = { who = root status = no }
-					NOT = { has_planet_flag = prescripted_ideal }
-				}
-				set_planet_flag = prescripted_ideal
-				set_planet_flag = colonial_remains@root
-			}
-		}
 	}
 }

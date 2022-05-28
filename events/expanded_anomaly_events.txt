@@ -1,11 +1,3 @@
-# Expanded Events File
-#
-# Calvitix Check 3.3.4
-#
-#
-# Update Expanded Events  02.04.2022
-# 
-#
 ############################
 #
 # Anomaly Events
@@ -1442,12 +1434,12 @@ country_event = {
 					species = this
 					add_trait = trait_brainslug
 					add_traits_at_start_of_list = yes
-					effect = { #Calvitix debug
-						set_citizenship_type = {
-							country = root
-							type = citizenship_full
-							cooldown = no
-						}
+				}
+				species = {
+					set_citizenship_type = {
+						country = root
+						type = citizenship_full
+						cooldown = no
 					}
 				}
 			}
@@ -1526,12 +1518,12 @@ country_event = {
 					species = this
 					add_trait = trait_brainslug
 					add_traits_at_start_of_list = yes
-					effect = { #Calvitix
-						set_citizenship_type = {
-							country = root
-							type = citizenship_full
-							cooldown = no
-						}
+				}
+				species = {
+					set_citizenship_type = {
+						country = root
+						type = citizenship_full
+						cooldown = no
 					}
 				}
 			}
@@ -1923,7 +1915,7 @@ country_event = {
 	}
 }
 
-# Dead God Psyonics
+# Dead God Psionics
 country_event = {
 	id = anomalymod.62
 	hide_window = yes
@@ -1943,6 +1935,7 @@ country_event = {
 	trigger = {
 		NOT = { has_country_flag = dead_god_psionics }
 		NOT = { has_ascension_perk = ap_mind_over_matter }
+		NOT = { has_origin = origin_shroudwalker_apprentice }
 		NOT = { has_ethic = ethic_gestalt_consciousness }
 		has_country_flag = dead_god_original_primitives
 		has_country_flag = dead_god_is_real
@@ -2025,6 +2018,7 @@ country_event = {
 		OR = {
 			has_country_flag = dead_god_psionics
 			has_ascension_perk = ap_mind_over_matter
+			has_origin = origin_shroudwalker_apprentice
 		}
 		NOT = { has_country_flag = dead_god_fully_psionic }
 		NOT = { has_ascension_perk = ap_transcendence }
@@ -2239,6 +2233,7 @@ country_event = {
 						OR = {
 							has_country_flag = dead_god_psionics
 							has_ascension_perk = ap_mind_over_matter
+							has_origin = origin_shroudwalker_apprentice
 						}
 						NOR = {
 							has_country_flag = dead_god_fully_psionic
@@ -2548,7 +2543,7 @@ planet_event = {
 					influence = 250
 					alloys = 500
 				}
-				add_100_unity_per_year_passed = yes # scripted effect
+				add_500_unity_per_year_passed = yes # scripted effect
 				establish_communications_no_message = event_target:dead_god_invaders
 				add_opinion_modifier = { 
 					who = event_target:dead_god_invaders
@@ -4170,7 +4165,7 @@ country_event = {
 					}
 					else_if = {
 						limit = {
-							is_ringworld = yes
+							is_planet_class = pc_ringworld_habitable
 						}
 						spawn_ringworld_cracker_effect = yes
 						change_pc = pc_ringworld_habitable_damaged
@@ -4285,7 +4280,7 @@ country_event = {
 					}
 					else_if = {
 						limit = {
-							is_ringworld = yes
+							is_planet_class = pc_ringworld_habitable
 						}
 						spawn_ringworld_cracker_effect = yes
 						change_pc = pc_ringworld_habitable_damaged
@@ -4397,7 +4392,7 @@ country_event = {
 						}
 						else_if = {
 							limit = {
-								is_ringworld = yes
+								is_planet_class = pc_ringworld_habitable
 							}
 							spawn_ringworld_cracker_effect = yes
 							change_pc = pc_ringworld_habitable_damaged
@@ -4435,7 +4430,7 @@ country_event = {
 							}
 							else_if = {
 								limit = {
-									is_ringworld = yes
+									is_planet_class = pc_ringworld_habitable
 								}
 								spawn_ringworld_cracker_effect = yes
 								change_pc = pc_ringworld_habitable_damaged
@@ -4473,7 +4468,7 @@ country_event = {
 								}
 								else_if = {
 									limit = {
-										is_ringworld = yes
+										is_planet_class = pc_ringworld_habitable
 									}
 									spawn_ringworld_cracker_effect = yes
 									change_pc = pc_ringworld_habitable_damaged
@@ -7129,11 +7124,11 @@ ship_event = {
 		name = DISGUSTING
 		exclusive_trigger = {
 			owner = {
-			OR = {
-				is_xenophobe = yes
-				has_valid_civic = civic_machine_terminator
-					}
+				OR = {
+					is_xenophobe = yes
+					has_valid_civic = civic_machine_terminator
 				}
+			}
 		}
 		owner = {
 			add_monthly_resource_mult = {
@@ -8702,9 +8697,53 @@ ship_event = {
 	}
 }
 
+### Old Probe, asteroid only
+ship_event = {
+	id = anomalymod.266
+	title = "anomalymod.266.name"
+	desc = {
+		trigger = { owner = { is_machine_empire = no } }
+		text = "anomaly.100.desc"
+	}
+	desc = {
+		trigger = { owner = { is_machine_empire = yes } }
+		text = "anomalymod.266.desc.machi"
+	}
+	picture = GFX_evt_landing_ship_2
+	show_sound = event_mystic_reveal
+	location = FROM
+
+	is_triggered_only = yes
+
+	option = {
+		name = anomalymod.266.a
+		trigger = { owner = { is_machine_empire = no } }
+		owner = {
+			add_monthly_resource_mult = {
+				resource = unity
+				value = @tier3unityreward
+				min = @tier3unitymin
+				max = @tier3unitymax
+			}
+		}
+	}
+	option = {
+		name = CURIOUS
+		trigger = { owner = { is_machine_empire = yes } }
+		owner = {
+			add_monthly_resource_mult = {
+				resource = influence
+				value = @tier1influencereward
+				min = @tier1influencemin
+				max = @tier1influencemax
+			}
+		}
+	}
+}
+
 ##################################
 # Pre-Sapient Events
-# Reserved 190 - 199
+# Reserved 290 - 299
 ##################################
 
 ### Uplifting Necroids

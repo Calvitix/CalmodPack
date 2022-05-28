@@ -827,11 +827,44 @@ get_new_autocratic_gov = {
 		}
 		if = {
 			limit = {
+				OR = {
+					exists = heir
+					any_owned_leader = {
+						OR = {
+							has_leader_flag = appointed_heir
+							has_leader_flag = clone_heir_base
+						}
+					}
+				}
+			}
+		if = {
+			limit = {
 				exists = heir
 			}
 			heir = {
 				set_leader_flag = dead_ruler
 				kill_leader = { show_notification = no }
+			}
+		}
+			if = {
+				limit = {
+					any_owned_leader = {
+						OR = {
+							has_leader_flag = appointed_heir
+							has_leader_flag = clone_heir_base
+						}
+					}
+				}
+				every_owned_leader = {
+					limit = {
+						OR = {
+							has_leader_flag = appointed_heir
+							has_leader_flag = clone_heir_base
+						}
+					}
+					set_leader_flag = dead_ruler
+					kill_leader = { show_notification = no }
+				}
 			}
 		}
 		ruler = { set_leader_flag = grateful_installed_vassal_leader_@this }
@@ -907,12 +940,226 @@ get_new_autocratic_gov_no_penalty = {
 		}
 		if = {
 			limit = {
+				OR = {
+					exists = heir
+					any_owned_leader = {
+						OR = {
+							has_leader_flag = appointed_heir
+							has_leader_flag = clone_heir_base
+						}
+					}
+				}
+			}
+		if = {
+			limit = {
 				exists = heir
 			}
 			heir = {
 				set_leader_flag = dead_ruler
 				kill_leader = { show_notification = no }
 			}
+		}
+			if = {
+				limit = {
+					any_owned_leader = {
+						OR = {
+							has_leader_flag = appointed_heir
+							has_leader_flag = clone_heir_base
+						}
+					}
+				}
+				every_owned_leader = {
+					limit = {
+						OR = {
+							has_leader_flag = appointed_heir
+							has_leader_flag = clone_heir_base
+						}
+					}
+					set_leader_flag = dead_ruler
+					kill_leader = { show_notification = no }
+				}
+			}
+		}
+	}
+}
+
+##########
+
+# Get Scientist Leaders
+get_relocation_planets = {
+	set_variable = { which = total_relocation_planets value = 0 }
+
+	every_owned_planet = {
+		limit = {
+			is_capital = no
+			is_occupied_flag = no
+			is_under_colonization = no
+			has_orbital_bombardment = no
+		}
+		set_planet_flag = relocation_planet
+		prev = { change_variable = { which = total_relocation_planets value = 1 } }
+	}
+
+	# Next, we save each subject as an Event Target
+	# As the scripting language doesn't have proper loops, we use a lot of ifs if there are more than 10, the event can be run again.
+	if = {
+		limit = { check_variable = { which = total_relocation_planets value >= 1 } }
+		random_owned_planet = {
+			limit = { has_planet_flag = relocation_planet }
+			remove_planet_flag = relocation_planet
+			save_event_target_as = relocation_planet_1
+		}
+	}
+	if = {
+		limit = { check_variable = { which = total_relocation_planets value >= 2 } }
+		random_owned_planet = {
+			limit = { has_planet_flag = relocation_planet }
+			remove_planet_flag = relocation_planet
+			save_event_target_as = relocation_planet_2
+		}
+	}
+	if = {
+		limit = { check_variable = { which = total_relocation_planets value >= 3 } }
+		random_owned_planet = {
+			limit = { has_planet_flag = relocation_planet }
+			remove_planet_flag = relocation_planet
+			save_event_target_as = relocation_planet_3
+		}
+	}
+	if = {
+		limit = { check_variable = { which = total_relocation_planets value >= 4 } }
+		random_owned_planet = {
+			limit = { has_planet_flag = relocation_planet }
+			remove_planet_flag = relocation_planet
+			save_event_target_as = relocation_planet_4
+		}
+	}
+	if = {
+		limit = { check_variable = { which = total_relocation_planets value >= 5 } }
+		random_owned_planet = {
+			limit = { has_planet_flag = relocation_planet }
+			remove_planet_flag = relocation_planet
+			save_event_target_as = relocation_planet_5
+		}
+	}
+	if = {
+		limit = { check_variable = { which = total_relocation_planets value >= 6 } }
+		random_owned_planet = {
+			limit = { has_planet_flag = relocation_planet }
+			remove_planet_flag = relocation_planet
+			save_event_target_as = relocation_planet_6
+		}
+	}
+	if = {
+		limit = { check_variable = { which = total_relocation_planets value >= 7 } }
+		random_owned_planet = {
+			limit = { has_planet_flag = relocation_planet }
+			remove_planet_flag = relocation_planet
+			save_event_target_as = relocation_planet_7
+		}
+	}
+	if = {
+		limit = { check_variable = { which = total_relocation_planets value >= 8 } }
+		random_owned_planet = {
+			limit = { has_planet_flag = relocation_planet }
+			remove_planet_flag = relocation_planet
+			save_event_target_as = relocation_planet_8
+		}
+	}
+	if = {
+		limit = { check_variable = { which = total_relocation_planets value >= 9 } }
+		random_owned_planet = {
+			limit = { has_planet_flag = relocation_planet }
+			remove_planet_flag = relocation_planet
+			save_event_target_as = relocation_planet_9
+		}
+	}
+	if = {
+		limit = { check_variable = { which = total_relocation_planets value >= 10 } }
+		random_owned_planet = {
+			limit = { has_planet_flag = relocation_planet }
+			remove_planet_flag = relocation_planet
+			save_event_target_as = relocation_planet_10
+		}
+	}
+	if = {
+		limit = { check_variable = { which = total_relocation_planets value >= 11 } }
+		random_owned_planet = {
+			limit = { has_planet_flag = relocation_planet }
+			remove_planet_flag = relocation_planet
+			save_event_target_as = relocation_planet_11
+		}
+	}
+	if = {
+		limit = { check_variable = { which = total_relocation_planets value >= 12 } }
+		random_owned_planet = {
+			limit = { has_planet_flag = relocation_planet }
+			remove_planet_flag = relocation_planet
+			save_event_target_as = relocation_planet_12
+		}
+	}
+	if = {
+		limit = { check_variable = { which = total_relocation_planets value >= 13 } }
+		random_owned_planet = {
+			limit = { has_planet_flag = relocation_planet }
+			remove_planet_flag = relocation_planet
+			save_event_target_as = relocation_planet_13
+		}
+	}
+	if = {
+		limit = { check_variable = { which = total_relocation_planets value >= 14 } }
+		random_owned_planet = {
+			limit = { has_planet_flag = relocation_planet }
+			remove_planet_flag = relocation_planet
+			save_event_target_as = relocation_planet_14
+		}
+	}
+	if = {
+		limit = { check_variable = { which = total_relocation_planets value >= 15 } }
+		random_owned_planet = {
+			limit = { has_planet_flag = relocation_planet }
+			remove_planet_flag = relocation_planet
+			save_event_target_as = relocation_planet_15
+		}
+	}
+	if = {
+		limit = { check_variable = { which = total_relocation_planets value >= 16 } }
+		random_owned_planet = {
+			limit = { has_planet_flag = relocation_planet }
+			remove_planet_flag = relocation_planet
+			save_event_target_as = relocation_planet_16
+		}
+	}
+	if = {
+		limit = { check_variable = { which = total_relocation_planets value >= 17 } }
+		random_owned_planet = {
+			limit = { has_planet_flag = relocation_planet }
+			remove_planet_flag = relocation_planet
+			save_event_target_as = relocation_planet_17
+		}
+	}
+	if = {
+		limit = { check_variable = { which = total_relocation_planets value >= 18 } }
+		random_owned_planet = {
+			limit = { has_planet_flag = relocation_planet }
+			remove_planet_flag = relocation_planet
+			save_event_target_as = relocation_planet_18
+		}
+	}
+	if = {
+		limit = { check_variable = { which = total_relocation_planets value >= 19 } }
+		random_owned_planet = {
+			limit = { has_planet_flag = relocation_planet }
+			remove_planet_flag = relocation_planet
+			save_event_target_as = relocation_planet_19
+		}
+	}
+	if = {
+		limit = { check_variable = { which = total_relocation_planets value >= 20 } }
+		random_owned_planet = {
+			limit = { has_planet_flag = relocation_planet }
+			remove_planet_flag = relocation_planet
+			save_event_target_as = relocation_planet_20
 		}
 	}
 }

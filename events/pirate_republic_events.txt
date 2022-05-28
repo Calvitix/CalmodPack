@@ -1,0 +1,905 @@
+namespace = pirate_republic
+## Pirates have been controlling a system for more than 10 years (monthly pulse)
+event = {
+	id = pirate_republic.1
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		NOT = { has_global_flag = pirate_republic_inactive }
+		any_country = {
+			OR = {
+				is_country_type = pirate
+				is_country_type = pirate_waves_country
+			}
+			any_owned_fleet = {
+				is_ship_size = pirate_station
+				NOT = { has_fleet_flag = pirate_waves_station_life_flag }
+			}
+		}
+	}
+	immediate = {
+		every_playable_country = {
+			limit = {
+				NOR = {
+					has_country_flag = pirates_spawned # <- timed flag from on_pirate_spawn 10 years
+					has_ethic = ethic_gestalt_consciousness
+				}
+				any_system_within_border = {
+					is_pirate_system = yes
+					NOT = {
+						any_fleet_in_system = {
+							is_ship_size = pirate_station
+							has_fleet_flag = pirate_waves_station_flag
+							has_fleet_flag = pirate_waves_station_life_flag # <- timed flag from on_pirate_spawn 10 years
+						}
+					}
+				}
+				any_system_within_border = {
+					is_capital_system = no
+					any_system_planet = {
+						has_owner = yes
+						is_colony = yes
+						is_under_colonization = no
+						NOT = { has_planet_flag = pirate_invasion }
+						has_ground_combat = no
+						owner = { is_primitive = no }
+					}
+					NOT = {
+						any_fleet_in_system = {
+							exists = owner
+							owner = { is_country_type = rebel }
+						}
+					}
+				}
+			}
+			country_event = { id = pirate_republic.10 }
+		}
+	}
+}
+
+# The pirates disappeared!
+country_event = {
+	id = pirate_republic.10
+	title = pirate_republic.10.name
+	picture = GFX_evt_unknown_ships
+	desc = pirate_republic.10.desc
+	location = event_target:pirate_system
+	is_triggered_only = yes
+	immediate = {
+		random_country = {
+			limit = {
+				# is_pirate = yes only works for single country type
+				OR = {
+					is_country_type = pirate
+					is_country_type = pirate_waves_country
+				}
+				any_owned_fleet = {
+					is_ship_size = pirate_station
+					solar_system = { is_owned_by = root }
+					NAND = {
+						has_fleet_flag = pirate_waves_station_flag
+						has_fleet_flag = pirate_waves_station_life_flag
+					}
+				}
+			}
+			weights = {
+				base = 1
+				modifier = { add = 20 is_country_type = pirate }
+			}
+			save_event_target_as = pirate_band
+			save_event_target_as = current_pirate_country
+			random_owned_fleet = {
+				limit = {
+					is_ship_size = pirate_station
+					NAND = {
+						has_fleet_flag = pirate_waves_station_flag
+						has_fleet_flag = pirate_waves_station_life_flag
+					}
+				}
+				solar_system = {
+					save_event_target_as = pirate_system
+					if = {
+						limit = {
+							any_system_planet = {
+								is_colony = yes
+								is_under_colonization = no
+								OR = {
+									is_owned_by = root
+									is_controlled_by = root
+								}
+								planet_stability < 90
+							}
+							NOT = {
+								any_fleet_in_system = {
+									exists = owner
+									owner = { is_country_type = rebel }
+								}
+							}
+						}
+						random_system_planet = {
+							limit = {
+								is_colony = yes
+								is_under_colonization = no
+								OR = {
+									is_owned_by = root
+									is_controlled_by = root
+								}
+								planet_stability < 90
+							}
+							save_event_target_as = pirate_target
+						}
+					} else_if = {
+						limit = {
+							closest_system = {
+								min_steps = 1
+								max_steps = 10
+								limit = {
+									is_owned_by = root
+									is_capital_system = no
+									any_system_planet = {
+										is_colony = yes
+										is_under_colonization = no
+										OR = {
+											is_owned_by = root
+											is_controlled_by = root
+										}
+										planet_stability < 90
+									}
+									NOT = {
+										any_fleet_in_system = {
+											exists = owner
+											owner = { is_country_type = rebel }
+										}
+									}
+								}
+							}
+						}
+						closest_system = {
+							min_steps = 1
+							max_steps = 10
+							limit = {
+								is_owned_by = root
+								is_capital_system = no
+								any_system_planet = {
+									is_colony = yes
+									is_under_colonization = no
+									NOT = { has_planet_flag = pirate_invasion }
+									has_ground_combat = no
+									OR = {
+										is_owned_by = root
+										is_controlled_by = root
+									}
+									planet_stability < 90
+									# owner = {
+									# 	is_primitive = no
+									# 	is_hostile = event_target:pirate_band
+									# }
+								}
+								NOT = {
+									any_fleet_in_system = {
+										exists = owner
+										owner = { is_country_type = rebel }
+									}
+								}
+							}
+							random_system_planet = {
+								limit = {
+									is_colony = yes
+									is_under_colonization = no
+									NOT = { has_planet_flag = pirate_invasion }
+									has_ground_combat = no
+									OR = {
+										is_owned_by = root
+										is_controlled_by = root
+									}
+									planet_stability < 90
+									# owner = {
+									# 	is_primitive = no
+									# 	is_hostile = event_target:pirate_band
+									# }
+								}
+								save_event_target_as = pirate_target
+							}
+						}
+					} else_if = {
+						limit = { exists = prevprev.species }
+						prevprev.species = { save_event_target_as = pirate_species }
+						closest_system = {
+							min_steps = 0
+							max_steps = 10
+							limit = {
+								is_capital_system = no
+								any_system_planet = {
+									is_colonizable = yes
+									habitability = { who = event_target:pirate_species value > 0.6 }
+								}
+								NOT = {
+									any_fleet_in_system = {
+										exists = owner
+										owner = { is_country_type = rebel }
+									}
+								}
+							}
+							random_system_planet = {
+								limit = {
+									is_colonizable = yes
+									habitability = { who = event_target:pirate_species value > 0.6 }
+								}
+								weights = {
+									base = 1
+									modifier = { add = 2 habitable_planet = yes }
+								}
+								save_event_target_as = pirate_target
+								while = {
+									count = 5
+									create_pop = {
+										species = event_target:pirate_species
+										ethos = { ethic = "ethic_militarist" }
+									}
+								}
+								set_controller = prevprevprevprev
+								set_owner = prevprevprevprev
+								if = {
+									limit = { is_planet_class = pc_habitat }
+									add_building = building_hab_capital
+								} else = { add_building = building_slave_capital }
+							}
+						}
+					}
+					every_fleet_in_system = {
+						limit = {
+							exists = owner
+							is_owned_by = prevprevprev # event_target:pirate_band
+						}
+						if = {
+							limit = { is_mobile = yes }
+							delete_fleet = {
+								target = this
+								# kill_leader = no
+							}
+						} else = { destroy_fleet = this }
+					}
+				}
+			}
+			if = {
+				limit = {
+					exists = this # As it could be destroyed earlier...
+					is_country_type = pirate
+				}
+				destroy_country = yes # Not compatible with Pirate Waves, so destroy only system fleets.
+			}
+		}
+	}
+	option = {
+		# Where could they have gone?
+		name = pirate_republic.10.option
+		hidden_effect = {
+			if = {
+				limit = {
+					exists = event_target:pirate_target
+					event_target:pirate_target = { is_scope_type = planet }
+				}
+				event_target:pirate_target = {
+					planet_event = { id = pirate_republic.11 days = 16 random = 8 }
+				}
+			} else = { log="pirate_target not found for \\[This.GetName]" }
+		}
+	}
+}
+
+## Pirate invasion!
+# From = probably root.owner
+planet_event = {
+	id = pirate_republic.11
+	title = pirate_republic.11.name
+	desc = pirate_republic.11.desc
+	picture = GFX_evt_ground_combat
+	show_sound = event_planetary_riot
+	location = root
+	is_triggered_only = yes
+	trigger = { exists = event_target:pirate_target }
+	immediate = {
+		if = {
+			limit = { host_has_dlc = "Megacorp" }
+			create_rebels = {
+				name = random
+				ethos = {
+					ethic = "ethic_fanatic_militarist"
+					ethic = "ethic_authoritarian"
+				}
+				authority = auth_corporate
+				civics = {
+					civic = civic_criminal_heritage
+					civic = random
+				}
+				origin = "origin_separatists" # "origin_void_dwellers"
+				species = root.owner_species
+				flag = random
+				effect = { save_event_target_as = pirate_republic }
+			}
+		} else = {
+			create_rebels = {
+				name = random
+				ethos = {
+					ethic = "ethic_fanatic_militarist"
+					ethic = "ethic_authoritarian"
+				}
+				authority = auth_oligarchic
+				civics = {
+					civic = civic_corporate_dominion
+					civic = random
+				}
+				origin = "origin_separatists" # "origin_void_dwellers"
+				species = root.owner_species
+				flag = random
+				effect = { save_event_target_as = pirate_republic }
+			}
+		}
+		if = {
+			limit = { NOT = { exists = event_target:pirate_republic } }
+			break = yes
+		} # else = { log="Separatists: \\[pirate_republic.GetName] and \\[last_created_country.GetName]" }
+		event_target:pirate_republic = {
+			randomize_flag_symbol = pirate
+			set_graphical_culture = "pirate_01"
+			set_country_flag = pirate_republic
+			establish_communications_no_message = root.owner
+			set_relation_flag = { flag = rebelling_pirates_former_owner who = root.owner }
+
+			create_leader = {
+				class = ruler
+				species = owner_main_species
+				name = random
+				skill = 2
+				traits = { trait = random_trait }
+			}
+			assign_leader = last_created_leader
+			ruler = { add_random_leader_trait = yes }
+			set_pirates_difficulty = yes
+			# Create a fleet based on fleet power.
+			create_fleet = {
+				name = "NAME_Pirate_Fleet"
+				effect = {
+					save_event_target_as = pirate_waves_fleet
+					# Owner is set before the ships are created so that random naming works.
+					set_owner = prev
+					# Create ships
+					create_pirate_waves_fleet = yes
+					# Fleet settings
+					set_location = root
+					# set_fleet_stance = aggressive
+					set_aggro_range_measure_from = self
+					set_aggro_range = 150
+				}
+			}
+			root = {
+				# Dyn. amount
+				set_variable = { which = num_armies_var value = 1 }
+				change_variable = { which = num_armies_var value = owner.pirates_factor }
+				multiply_variable = { which = num_armies_var value = 10 }
+				while = {
+					count = num_armies_var # 25
+					create_army = {
+						name = "Pirate Invaders"
+						owner = event_target:pirate_republic
+						species = root.owner_species
+						type = "pirate_army"
+					}
+				}
+				owner = {
+					every_relation = {
+						limit = { has_communications = prev }
+						establish_communications_no_message = prevprevprev
+					}
+					create_leader = {
+						class = general
+						species = owner_main_species
+						name = random
+						skill = 2
+						traits = { trait = random_trait }
+					}
+					# last_created_army = {
+					random_owned_army = { assign_leader = last_created_leader }
+				}
+			}
+		}
+		set_planet_flag = pirate_invasion
+	}
+	after = { clear_variable = num_armies_var }
+	option = {
+		name = pirate_republic.11.option
+		hidden_effect = {
+			# Fallback if race condition?
+			if = {
+				limit = { exists = event_target:pirate_republic }
+				event_target:pirate_republic = {
+					if = {
+						limit = { NOT = { has_country_flag = pirate_republic } }
+						randomize_flag_symbol = pirate
+						set_graphical_culture = "pirate_01"
+						set_country_flag = pirate_republic
+						establish_communications_no_message = root.owner
+						set_relation_flag = { flag = rebelling_pirates_former_owner who = root.owner }
+						root = {
+							owner = {
+								every_relation = {
+									limit = { has_communications = prev }
+									establish_communications_no_message = prevprevprev
+								}
+							}
+							# Dyn. amount
+							set_variable = { which = num_armies_var value = 1 }
+							change_variable = { which = num_armies_var value = owner.pirates_factor }
+							multiply_variable = { which = num_armies_var value = 10 }
+							while = {
+								count = num_armies_var # 25
+								create_army = {
+									name = "Pirate Invaders"
+									owner = event_target:pirate_republic
+									species = root.owner_species
+									type = "pirate_army"
+								}
+							}
+						}
+						create_leader = {
+							class = ruler
+							species = owner_main_species
+							name = random
+							skill = 2
+							traits = { trait = random_trait }
+						}
+						assign_leader = last_created_leader
+						ruler = { add_random_leader_trait = yes }
+						set_pirates_difficulty = yes
+						# Create a fleet based on fleet power.
+						create_fleet = {
+							name = "NAME_Pirate_Fleet"
+							effect = {
+								save_event_target_as = pirate_waves_fleet
+								# Owner is set before the ships are created so that random naming works.
+								set_owner = prev
+								# Create ships
+								create_pirate_waves_fleet = yes
+								# Fleet settings
+								set_location = root
+								# set_fleet_stance = aggressive
+								set_aggro_range_measure_from = self
+								set_aggro_range = 150
+							}
+						}
+					}
+				}
+				clear_variable = num_armies_var
+				set_planet_flag = pirate_invasion
+
+				if = {
+					limit = {
+						exists = event_target:pirate_system
+						event_target:pirate_system = {
+							exists = starbase
+							starbase = { is_owned_by = from } # root.owner
+							NOR = {
+								any_fleet_in_system = {
+									is_mobile = yes
+									exists = owner
+									is_owned_by = from	# space_owner
+									is_civilian = no	# is_ship_class = shipclass_military
+								}
+								any_system_planet = {
+									has_owner = yes
+									OR = {
+										has_planet_flag = pirate_invasion
+										NOR = {
+											is_owned_by = from
+											is_controlled_by = from
+										}
+									}
+								}
+							}
+						}
+					}
+					event_target:pirate_system.starbase = { set_owner = prev }
+				}
+			}
+		}
+	}
+}
+
+## Pirates lost
+country_event = {
+	id = pirate_republic.12
+	title = pirate_republic.12.name
+	desc = pirate_republic.12.desc
+	picture = GFX_evt_alien_propaganda
+	show_sound = event_celebration
+	location = event_target:pirate_target
+	is_triggered_only = yes
+	trigger = {
+		merg_is_default_empire = yes # merg_is_default_empire = yes
+		fromfrom = {
+			has_planet_flag = pirate_invasion
+			controller = { is_same_empire = root }
+		}
+	}
+	immediate = {
+		fromfrom = {
+			add_modifier = { modifier = revolt_suppressed years = 10 }
+			save_event_target_as = pirate_target
+			remove_planet_flag = pirate_invasion
+		}
+	}
+	option = { name = pirate_republic.12.option }
+}
+
+## Pirates won
+country_event = {
+	id = pirate_republic.13
+	title = pirate_republic.13.name
+	desc = pirate_republic.13.desc
+	picture = GFX_evt_burning_settlement
+	show_sound = event_air_raid_siren
+	location = event_target:pirate_republic_planet
+	is_triggered_only = yes
+	trigger = {
+		from = { is_country_type = rebel }
+		fromfrom = { has_planet_flag = pirate_invasion }
+	}
+	immediate = {
+		fromfrom = {
+			save_event_target_as = pirate_republic_planet
+			remove_planet_flag = pirate_invasion
+			kill_leader = { type = governor }
+		}
+		from = { save_event_target_as = pirate_republic }
+		save_event_target_as = old_owner
+		fromfrom.solar_system = {
+			if = {
+				limit = { exists = starbase }
+				starbase = { set_owner = event_target:pirate_republic }
+			}
+			add_claims = {
+				who = event_target:old_owner
+				num_of_claims = 1
+				show_notification = no
+			}
+		}
+	}
+	after = {
+		## Create start resources
+		from = {
+			add_resource = {
+				energy = 2000
+				minerals = 1000
+				unity = 20000
+				influence = 400
+			}
+			add_500_unity_per_year_passed = yes
+			create_starting_leaders = yes
+
+			country_event = { id = game_start.6 days = 6 random = 2 } # advanced_empire
+			country_event = { id = game_start.8 days = 9 random = 3 } # +tech +resources
+			country_event = { id = game_start.9 days = 12 random = 4 } # empire_init_create_ships
+
+			remove_country_flag = pirate_waves_spawn_allowed
+			remove_country_flag = pirate_waves_very_easy
+			remove_country_flag = pirate_waves_easy
+			remove_country_flag = pirate_waves_medium
+			remove_country_flag = pirate_waves_hard
+			remove_country_flag = pirate_waves_insane
+			clear_variable = pirate_waves_difficulty
+			clear_variable = pirates_factor
+
+			from = {
+				planet_event = { id = game_start.20 days = 80 random = 30 } # Remove blockers on capital
+				planet_event = { id = game_start.21 days = 120 random = 40 } # Upgrade colony shelter on additional colonies.
+				planet_event = { id = game_start.22 days = 180 random = 60 } # Set up additional buildings (mines, farms, power plants)
+				planet_event = { id = game_start.23 days = 360 random = 90 } # Add additional pops
+
+				solar_system = {
+					if = {
+						limit = {
+							root = { has_technology = tech_starbase_4 }
+							NAND = {
+								exists = starbase
+								starbase = { has_starbase_size > starbase_starfortress }
+							}
+						}
+						create_starbase = {
+							size = starbase_starfortress
+							owner = prevprev
+							module = shipyard
+							module = missile_battery
+							building = defense_grid
+						}
+					} else_if = {
+						limit = {
+							NOT = { root = { has_technology = tech_starbase_5 } }
+							NAND = {
+								exists = starbase
+								starbase = { has_starbase_size > starbase_starhold }
+							}
+						}
+						create_starbase = {
+							size = starbase_starhold
+							owner = prevprev
+							module = shipyard
+							module = missile_battery
+							building = defense_grid
+						}
+					}
+
+					random_fleet_in_system = {
+						limit = {
+							exists = owner
+							is_owned_by = root
+							is_civilian = yes
+						}
+						set_owner = prevprevprev
+						if = {
+							limit = {
+								is_ship_class = shipclass_science_ship
+								exists = leader
+							}
+							leader = { set_owner = prevprevprevprev }
+							assign_leader = leader
+						} else_if = {
+							limit = { is_ship_class = shipclass_transport }
+							# Give armies (general)
+							root = {
+								every_owned_army = {
+									limit = {
+										exists = fleet
+										NOT = { is_owned_by = prev }
+										# fleet = { is_same_value = prevprevprev }
+									}
+									set_owner = fleet.owner
+								}
+							}
+							# Set leader
+							if = {
+								limit = { exists = leader }
+								prevprevprev = {
+									random_owned_army = {
+										limit = { exists = fleet }
+										assign_leader = prevprev.leader
+									}
+								}
+								leader = { set_owner = prevprevprevprev }
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	option = {
+		name = pirate_republic.13.option
+		hidden_effect = {
+			if = {
+				limit = {
+					NOT = {
+						any_subject = { has_country_flag = pirate_republic }
+					}
+				}
+				country_event = { id = pirate_republic.14 }
+			}
+		}
+	}
+}
+
+## The pirates institute a "Republick"
+country_event = {
+	id = pirate_republic.14
+	title = pirate_republic.14.name
+	desc = pirate_republic.14.desc
+	picture = GFX_evt_smugglers_in_bar
+	location = event_target:pirate_republic
+	is_triggered_only = yes
+	option = {
+		name = pirate_republic.14.option
+		hidden_effect = {
+			country_event = { id = pirate_republic.100 }
+		}
+	}
+}
+
+## Main Screen - Communication from the pirate leader.
+country_event = {
+	id = pirate_republic.100
+	title = pirate_republic.100.name
+	desc = pirate_republic.100.desc
+	location = event_target:pirate_republic
+	diplomatic = yes
+	is_triggered_only = yes
+	picture_event_data = {
+		portrait = event_target:pirate_republic
+		planet_background = event_target:pirate_republic
+		graphical_culture = event_target:pirate_republic
+		city_level = event_target:pirate_republic
+		room = event_target:pirate_republic.ruler
+	}
+	# Return this planet right now!
+	option = {
+		name = pirate_republic.100.a
+		response_text = pirate_republic.100.a.response
+		is_dialog_only = yes
+	}
+	# Threaten them
+	option = {
+		name = pirate_republic.100.b
+		response_text = pirate_republic.100.b.response
+		is_dialog_only = yes
+	}
+	# What do you want?
+	option = {
+		name = pirate_republic.100.c
+		response_text = pirate_republic.100.c.response
+		is_dialog_only = yes
+	}
+	# Hear proposal
+	option = {
+		name = pirate_republic.100.d
+		hidden_effect = {
+			country_event = { id = pirate_republic.101 }
+		}
+		ai_chance = { factor = 1 }
+	}
+}
+
+## Let's hear this proposal of yours...
+country_event = {
+	id = pirate_republic.101
+	title = pirate_republic.100.name
+	desc = pirate_republic.101.desc
+	location = event_target:pirate_republic
+	diplomatic = yes
+	is_triggered_only = yes
+	picture_event_data = {
+		portrait = event_target:pirate_republic
+		planet_background = event_target:pirate_republic
+		graphical_culture = event_target:pirate_republic
+		city_level = event_target:pirate_republic
+		room = event_target:pirate_republic.ruler
+	}
+	# Are you insane?
+	option = {
+		name = pirate_republic.101.insane
+		hidden_effect = {
+			country_event = { id = pirate_republic.102 }
+		}
+	}
+	# Refuse out of hand
+	option = {
+		name = pirate_republic.101.refuse
+		hidden_effect = {
+			country_event = { id = pirate_republic.104 }
+		}
+		ai_chance = { factor = 1 }
+	}
+}
+
+## Are you insane?
+country_event = {
+	id = pirate_republic.102
+	title = pirate_republic.100.name
+	desc = pirate_republic.102.desc
+	location = event_target:pirate_republic
+	diplomatic = yes
+	is_triggered_only = yes
+	picture_event_data = {
+		portrait = event_target:pirate_republic
+		planet_background = event_target:pirate_republic
+		graphical_culture = event_target:pirate_republic
+		city_level = event_target:pirate_republic
+		room = event_target:pirate_republic.ruler
+	}
+	# Accept
+	option = {
+		name = pirate_republic.102.accept
+		hidden_effect = {
+			country_event = { id = pirate_republic.103 }
+		}
+	}
+	# Refuse
+	option = {
+		name = pirate_republic.102.refuse
+		hidden_effect = {
+			country_event = { id = pirate_republic.104 }
+		}
+		ai_chance = { factor = 1 }
+	}
+}
+
+## Transform into subject empire
+country_event = {
+	id = pirate_republic.103
+	title = pirate_republic.100.name
+	desc = pirate_republic.103.desc
+	location = event_target:pirate_republic
+	diplomatic = yes
+	is_triggered_only = yes
+	picture_event_data = {
+		portrait = event_target:pirate_republic
+		planet_background = event_target:pirate_republic
+		graphical_culture = event_target:pirate_republic
+		city_level = event_target:pirate_republic
+		room = event_target:pirate_republic.ruler
+	}
+	option = {
+		name = pirate_republic.103.option
+		event_target:pirate_republic = {
+			set_country_type = default
+			set_subject_of = {
+				who = root
+				preset = preset_tributary
+			}
+		}
+	}
+}
+
+## Offer refused
+country_event = {
+	id = pirate_republic.104
+	title = pirate_republic.100.name
+	desc = pirate_republic.104.desc
+	location = event_target:pirate_republic
+	diplomatic = yes
+	is_triggered_only = yes
+	picture_event_data = {
+		portrait = event_target:pirate_republic
+		planet_background = event_target:pirate_republic
+		graphical_culture = event_target:pirate_republic
+		city_level = event_target:pirate_republic
+		room = event_target:pirate_republic.ruler
+	}
+	immediate = {
+		event_target:pirate_republic.capital_scope = {
+			### Create Defense Armies (for some job reasons common armies get deleted)
+			set_variable = { which = num_armies_var value = trigger:num_pops }
+			divide_variable = { which = num_armies_var value = 7 }
+			round_variable = num_armies_var
+			while = {
+				count = num_armies_var
+				create_army = {
+					name = random
+					owner = root
+					species = owner_species
+					type = "marauder_defense_army"
+				}
+				random_owned_pop = {
+					limit = {
+						is_robot_pop = no
+						is_sapient = yes
+					}
+					weights = {
+						base = 1
+						modifier = { add = 1 is_unemployed = yes }
+						modifier = { add = 1 NOT = { ideal_planet_class = prev } }
+						modifier = { add = 1 prev = { habitability = { who = prev value < 0.7 } } }
+						modifier = { add = 3 NOT = { is_same_species = prev.owner_species } }
+					}
+					kill_pop = yes
+				}
+				create_pop = {
+					species = owner_species
+					ethos = { ethic = "ethic_militarist" }
+				}
+
+			}
+			set_variable = { which = num_armies_var value = 2 }
+			divide_variable = { which = num_armies_var value = trigger:num_pops }
+			multiply_variable = { which = num_armies_var value = 13.4 }
+			round_variable = num_armies_var
+			subtract_variable = { which = num_armies_var value = 1 }
+			while = {
+				count = num_armies_var
+				create_pop = {
+					species = owner_species
+					ethos = { ethic = "ethic_militarist" }
+				}
+			}
+			clear_variable = num_armies_var
+		}
+	}
+	option = { name = pirate_republic.104.option }
+}

@@ -1,0 +1,2524 @@
+namespace = tob_merc
+# LEGACY/DEPRECATED First Contact
+# special_project INVESTIGATE_BULWARK
+# From = contact_country = encountered_bulwark
+country_event = {
+	id = tob_merc.1
+	title = "tob_merc.1.name"
+	desc = "tob_merc.1.desc"
+	picture = GFX_evt_pirate_armada
+	show_sound = event_radio_chatter
+	location = event_target:tob_discovered_bulwark_home
+	is_triggered_only = yes
+	immediate = {
+		establish_communications_no_message = from
+		from = {
+			establish_communications_no_message = root
+			owner_species = { save_event_target_as = bulwark_species }
+		}
+		if = {
+			limit = {
+				from = { has_country_flag = bulwark_numbers }
+			}
+			random_system = {
+				limit = { has_star_flag = tob_supremacists }
+				save_event_target_as = tob_discovered_bulwark_home
+			}
+		} else_if = {
+			limit = {
+				from = { has_country_flag = bulwark_techies }
+			}
+			random_system = {
+				limit = { has_star_flag = tob_technologists }
+				save_event_target_as = tob_discovered_bulwark_home
+			}
+		} else_if = {
+			limit = {
+				from = { has_country_flag = bulwark_monsters }
+			}
+			random_system = {
+				limit = { has_star_flag = tob_tamers }
+				save_event_target_as = tob_discovered_bulwark_home
+			}
+		}
+	}
+	option = {
+		name = tob_merc.1.a
+		hidden_effect = {
+			country_event = { id = tob_merc.2 scopes = { from = from } }
+		}
+	}
+}
+
+# Introduction
+# From = contact_country = encountered_bulwark
+country_event = {
+	id = tob_merc.2
+	title = "TRANSMISSION"
+	desc = {
+		text = tob_merc.2.1.desc
+		trigger = {
+			from = { has_country_flag = bulwark_numbers }
+		}
+	}
+	desc = {
+		text = tob_merc.2.2.desc
+		trigger = {
+			from = { has_country_flag = bulwark_techies }
+		}
+	}
+	desc = {
+		text = tob_merc.2.3.desc
+		trigger = {
+			from = { has_country_flag = bulwark_monsters }
+		}
+	}
+	diplomatic = yes
+	picture_event_data = {
+		portrait = from
+		room = "ethic_spaceship_room"
+	}
+	is_triggered_only = yes
+	option = { name = tob_merc.2.a }
+}
+
+# Main Menu (Initial - on_custom_diplomacy)
+# From = event_target:current_bulwark_diplomacy
+country_event = {
+	id = tob_merc.3
+	title = tob_merc.3.name
+	# Supremacists
+	desc = {
+		text = tob_merc.3.1.desc_01
+		trigger = {
+			from = { has_country_flag = bulwark_numbers }
+		}
+	}
+	# Technologists
+	desc = {
+		text = tob_merc.3.1.desc_02
+		trigger = {
+			from = { has_country_flag = bulwark_techies }
+		}
+	}
+	# Tamers
+	desc = {
+		text = tob_merc.3.1.desc_03
+		trigger = {
+			from = { has_country_flag = bulwark_monsters }
+		}
+	}
+	picture_event_data = {
+		portrait = from
+		room = ethic_spaceship_room
+	}
+	is_triggered_only = yes
+	force_open = yes
+	diplomatic = yes
+	trigger = {
+		from = { is_country_type = outer_bulwarks }
+		NOR = {
+			has_country_flag = bulwark_diplomacy_engaged
+			has_country_flag = bulwark_has_been_betrayed_by_us
+			has_country_flag = bulwark_complete_traitors
+			# has_relation_flag = { who = from flag = current_target }
+			# has_relation_flag = { who = from flag = current_hired_target }
+		}
+	}
+	immediate = {
+		from = {
+			owner_species = { save_event_target_as = bulwark_species }
+			# save_event_target_as = current_bulwark_diplomacy # somehow not working
+		}
+		set_timed_country_flag = { flag = bulwark_diplomacy_engaged months = 1 }
+	}
+	after = {
+		hidden_effect = { remove_country_flag = bulwark_diplomacy_engaged }
+	}
+	# Ask About Origins Supremacists
+	option = {
+		name = tob_merc.3.a
+		trigger = {
+			from = { has_country_flag = bulwark_numbers }
+		}
+		response_text = tob_merc.3.a.response
+		is_dialog_only = yes
+	}
+	# Ask About Origins Technologists
+	option = {
+		name = tob_merc.3.a
+		trigger = {
+			from = { has_country_flag = bulwark_techies }
+		}
+		response_text = tob_merc.3.a.1.response
+		is_dialog_only = yes
+	}
+	# Ask About Origins Tamers
+	option = {
+		name = tob_merc.3.a
+		trigger = {
+			from = { has_country_flag = bulwark_monsters }
+		}
+		response_text = tob_merc.3.a.2.response
+		is_dialog_only = yes
+	}
+	# Ask About Bulwark Supremacists
+	option = {
+		name = tob_merc.3.b
+		trigger = {
+			from = { has_country_flag = bulwark_numbers }
+		}
+		response_text = tob_merc.3.b.response
+		is_dialog_only = yes
+	}
+	# Ask About Bulwark Technologists
+	option = {
+		name = tob_merc.3.b
+		trigger = {
+			from = { has_country_flag = bulwark_techies }
+		}
+		response_text = tob_merc.3.b.1.response
+		is_dialog_only = yes
+	}
+	# Ask About Bulwark Tamers
+	option = {
+		name = tob_merc.3.b
+		trigger = {
+			from = { has_country_flag = bulwark_monsters }
+		}
+		response_text = tob_merc.3.b.2.response
+		is_dialog_only = yes
+	}
+	# Hire Mercenary Fleet
+	option = {
+		name = tob_merc.3.c
+		trigger = {
+			from = {
+				is_country_type = outer_bulwarks
+				# OR = {
+				# 	has_country_flag = bulwark_numbers
+				# 	has_country_flag = bulwark_techies
+				# 	has_country_flag = bulwark_monsters
+				# }
+			}
+			NOR = {
+				has_country_flag = bulwark_at_war_quest
+				any_owned_fleet = {
+					has_fleet_flag = bulwark_mercenary_fleet
+					# OR = {
+					# 	has_fleet_flag = bulwark_numbers_mercfleet
+					# 	has_fleet_flag = bulwark_techies_mercfleet
+					# 	has_fleet_flag = bulwark_monsters_mercfleet
+					# }
+				}
+				from = { has_country_flag = bulwark_merc_fleet_hired }
+				if = {
+					limit = {
+						from = { has_country_flag = bulwark_numbers }
+					}
+					has_global_flag = bulwark_numbers_mercs_gone
+				} else_if = {
+					limit = {
+						from = { has_country_flag = bulwark_techies }
+					}
+					has_global_flag = bulwark_techies_mercs_gone
+				} else_if = {
+					limit = {
+						from = { has_country_flag = bulwark_monsters }
+					}
+					has_global_flag = bulwark_monsters_mercs_gone
+				}
+			}
+		}
+		custom_tooltip = hire_mercenaries
+		hidden_effect = {
+			country_event = { id = tob_merc.4 scopes = { from = from } }
+		}
+	}
+	# Commission Bulwark Fleet
+	option = {
+		name = tob_merc.3.d
+		trigger = {
+			from = {
+				is_country_type = outer_bulwarks
+				# OR = {
+				# 	has_country_flag = bulwark_numbers
+				# 	has_country_flag = bulwark_techies
+				# 	has_country_flag = bulwark_monsters
+				# }
+			}
+			NOR = {
+				has_country_flag = bulwark_at_war_quest
+				has_country_flag = bulwark_commissioned_fleet_recently_target
+				from = { has_country_flag = bulwark_commissioned_fleet_recently }
+			}
+		}
+		custom_tooltip = commission_fleet
+		hidden_effect = {
+			country_event = { id = tob_merc.6 scopes = { from = from } }
+		}
+	}
+	# Commission Training
+	option = {
+		name = tob_merc.3.f
+		trigger = {
+			from = {
+				is_country_type = outer_bulwarks
+				# OR = {
+				# 	has_country_flag = bulwark_numbers
+				# 	has_country_flag = bulwark_techies
+				# 	has_country_flag = bulwark_monsters
+				# }
+			}
+			NOR = {
+				has_country_flag = bulwark_at_war_quest
+				has_country_flag = bulwark_trainers_hired
+				has_global_flag = bulwark_trainers_scared
+				from = { has_country_flag = bulwark_commissioned_training_recently }
+			}
+		}
+		custom_tooltip = commission_trainers
+		hidden_effect = {
+			country_event = { id = tob_merc.7 scopes = { from = from } }
+		}
+	}
+	# Commission Stations
+	option = {
+		name = tob_merc.3.g
+		trigger = {
+			from = {
+				is_country_type = outer_bulwarks
+				# OR = {
+				# 	has_country_flag = bulwark_numbers
+				# 	has_country_flag = bulwark_techies
+				# 	has_country_flag = bulwark_monsters
+				# }
+			}
+			NOR = {
+				has_country_flag = bulwark_at_war_quest
+				has_country_flag = bulwark_commission_stations_target
+				from = { has_country_flag = bulwark_commission_stations_root }
+			}
+		}
+		custom_tooltip = commission_stations
+		hidden_effect = {
+			country_event = { id = tob_merc.9 scopes = { from = from } }
+		}
+	}
+	# Terminate communications
+	option = {
+		name = tob_merc.3.e
+		default_hide_option = yes
+	}
+}
+
+# Hire Mercenaries
+# From = event_target:current_bulwark_diplomacy
+country_event = {
+	id = tob_merc.4
+	title = "Mercenary Options"
+	desc = {
+		text = tob_merc.4.1.desc
+		trigger = {
+			from = { has_country_flag = bulwark_numbers }
+		}
+	}
+	desc = {
+		text = tob_merc.4.2.desc
+		trigger = {
+			from = { has_country_flag = bulwark_techies }
+		}
+	}
+	desc = {
+		text = tob_merc.4.3.desc
+		trigger = {
+			from = { has_country_flag = bulwark_monsters }
+		}
+	}
+	diplomatic = yes
+	picture_event_data = {
+		portrait = from
+		room = "ethic_spaceship_room"
+	}
+	is_triggered_only = yes
+	trigger = {}
+	immediate = {
+		set_country_flag = bulwark_diplomacy_engaged
+		from = {
+			if = { limit =  { is_hostile = root }
+				set_faction_hostility = { target = root set_hostile = no set_neutral = yes }
+			}
+		}
+	}
+	after = {
+		hidden_effect = { remove_country_flag = bulwark_diplomacy_engaged }
+	}
+	# Hire for 5 years
+	option = {
+		name = tob_merc.4.a
+		trigger = {
+			NOT = {
+				from = { has_country_flag = bulwark_merc_fleet_hired }
+			}
+		}
+		allow = {
+			resource_stockpile_compare = { resource = energy value > 5000 }
+			hidden_trigger = {
+				NOT = {
+					from = { has_country_flag = bulwark_merc_fleet_hired }
+				}
+			}
+		}
+		set_timed_country_flag = { flag = bulwark_mercs_hired_safeguard days = 3 }
+		add_resource = { energy = -5000 }
+		custom_tooltip = bulwark_mercenaries_hire_low
+		hidden_effect = {
+			if = {
+				limit = {
+					from = { has_country_flag = bulwark_numbers }
+				}
+				random_playable_country = {
+					limit = { has_country_flag = bulwark_mercs_hired_safeguard }
+					save_event_target_as = receiving_bulwark_numbers_fleet
+				}
+			} else_if = {
+				limit = {
+					from = { has_country_flag = bulwark_techies }
+				}
+				random_playable_country = {
+					limit = { has_country_flag = bulwark_mercs_hired_safeguard }
+					save_event_target_as = receiving_bulwark_techies_fleet
+				}
+			} else_if = {
+				limit = {
+					from = { has_country_flag = bulwark_monsters }
+				}
+				random_playable_country = {
+					limit = { has_country_flag = bulwark_mercs_hired_safeguard }
+					save_event_target_as = receiving_bulwark_monsters_fleet
+				}
+			}
+			from = {
+				set_country_flag = bulwark_merc_fleet_hired
+				change_variable = { which = bulwarkbudget value = 250 }
+				if = {
+					limit = { has_country_flag = bulwark_numbers }
+					random_owned_fleet = {
+						limit = { has_fleet_flag = bulwark_numbers_mercfleet }
+						set_owner = event_target:receiving_bulwark_numbers_fleet
+						fleet_event = { id = tob_merc.5 days = 1800 }
+					}
+				} else_if = {
+					limit = { has_country_flag = bulwark_techies }
+					random_owned_fleet = {
+						limit = { has_fleet_flag = bulwark_techies_mercfleet }
+						set_owner = event_target:receiving_bulwark_techies_fleet
+						fleet_event = { id = tob_merc.5 days = 1800 }
+					}
+				} else_if = {
+					limit = { has_country_flag = bulwark_monsters }
+					random_owned_fleet = {
+						limit = { has_fleet_flag = bulwark_monsters_mercfleet }
+						set_owner = event_target:receiving_bulwark_monsters_fleet
+						fleet_event = { id = tob_merc.5 days = 1800 }
+					}
+				}
+			}
+		}
+	}
+	# Hire for 10 years
+	option = {
+		name = tob_merc.4.b
+		trigger = {
+			NOT = {
+				from = { has_country_flag = bulwark_merc_fleet_hired }
+			}
+		}
+		allow = {
+			resource_stockpile_compare = { resource = energy value > 10000 }
+			hidden_trigger = {
+				NOT = {
+					from = { has_country_flag = bulwark_merc_fleet_hired }
+				}
+			}
+		}
+		set_timed_country_flag = { flag = bulwark_mercs_hired_safeguard days = 3 }
+		add_resource = { energy = -10000 }
+		custom_tooltip = bulwark_mercenaries_hire_low
+		hidden_effect = {
+			if = {
+				limit = {
+					from = { has_country_flag = bulwark_numbers }
+				}
+				random_playable_country = {
+					limit = { has_country_flag = bulwark_mercs_hired_safeguard }
+					save_event_target_as = receiving_bulwark_numbers_fleet
+				}
+			} else_if = {
+				limit = {
+					from = { has_country_flag = bulwark_techies }
+				}
+				random_playable_country = {
+					limit = { has_country_flag = bulwark_mercs_hired_safeguard }
+					save_event_target_as = receiving_bulwark_techies_fleet
+				}
+			} else_if = {
+				limit = {
+					from = { has_country_flag = bulwark_monsters }
+				}
+				random_playable_country = {
+					limit = { has_country_flag = bulwark_mercs_hired_safeguard }
+					save_event_target_as = receiving_bulwark_monsters_fleet
+				}
+			}
+			from = {
+				set_country_flag = bulwark_merc_fleet_hired
+				change_variable = { which = bulwarkbudget value = 500 }
+				if = {
+					limit = { has_country_flag = bulwark_numbers }
+					random_owned_fleet = {
+						limit = { has_fleet_flag = bulwark_numbers_mercfleet }
+						set_owner = event_target:receiving_bulwark_numbers_fleet
+						fleet_event = { id = tob_merc.5 days = 3600 }
+					}
+				} else_if = {
+					limit = { has_country_flag = bulwark_techies }
+					random_owned_fleet = {
+						limit = { has_fleet_flag = bulwark_techies_mercfleet }
+						set_owner = event_target:receiving_bulwark_techies_fleet
+						fleet_event = { id = tob_merc.5 days = 3600 }
+					}
+				} else_if = {
+					limit = { has_country_flag = bulwark_monsters }
+					random_owned_fleet = {
+						limit = { has_fleet_flag = bulwark_monsters_mercfleet }
+						set_owner = event_target:receiving_bulwark_monsters_fleet
+						fleet_event = { id = tob_merc.5 days = 3600 }
+					}
+				}
+			}
+		}
+	}
+	# Hire for 20 years
+	option = {
+		name = tob_merc.4.c
+		trigger = {
+			NOT = {
+				from = { has_country_flag = bulwark_merc_fleet_hired }
+			}
+		}
+		allow = {
+			resource_stockpile_compare = { resource = energy value > 20000 }
+			hidden_trigger = {
+				NOT = {
+					from = { has_country_flag = bulwark_merc_fleet_hired }
+				}
+			}
+		}
+		set_timed_country_flag = { flag = bulwark_mercs_hired_safeguard days = 3 }
+		add_resource = { energy = -20000 }
+		custom_tooltip = bulwark_mercenaries_hire_low
+		hidden_effect = {
+			if = {
+				limit = {
+					from = { has_country_flag = bulwark_numbers }
+				}
+				random_playable_country = {
+					limit = { has_country_flag = bulwark_mercs_hired_safeguard }
+					save_event_target_as = receiving_bulwark_numbers_fleet
+				}
+			} else_if = {
+				limit = {
+					from = { has_country_flag = bulwark_techies }
+				}
+				random_playable_country = {
+					limit = { has_country_flag = bulwark_mercs_hired_safeguard }
+					save_event_target_as = receiving_bulwark_techies_fleet
+				}
+			} else_if = {
+				limit = {
+					from = { has_country_flag = bulwark_monsters }
+				}
+				random_playable_country = {
+					limit = { has_country_flag = bulwark_mercs_hired_safeguard }
+					save_event_target_as = receiving_bulwark_monsters_fleet
+				}
+			}
+			from = {
+				set_country_flag = bulwark_merc_fleet_hired
+				change_variable = { which = bulwarkbudget value = 1000 }
+				if = {
+					limit = { has_country_flag = bulwark_numbers }
+					random_owned_fleet = {
+						limit = { has_fleet_flag = bulwark_numbers_mercfleet }
+						set_owner = event_target:receiving_bulwark_numbers_fleet
+						fleet_event = { id = tob_merc.5 days = 7200 }
+					}
+				} else_if = {
+					limit = { has_country_flag = bulwark_techies }
+					random_owned_fleet = {
+						limit = { has_fleet_flag = bulwark_techies_mercfleet }
+						set_owner = event_target:receiving_bulwark_techies_fleet
+						fleet_event = { id = tob_merc.5 days = 7200 }
+					}
+				} else_if = {
+					limit = { has_country_flag = bulwark_monsters }
+					random_owned_fleet = {
+						limit = { has_fleet_flag = bulwark_monsters_mercfleet }
+						set_owner = event_target:receiving_bulwark_monsters_fleet
+						fleet_event = { id = tob_merc.5 days = 7200 }
+					}
+				}
+			}
+		}
+	}
+	option = {
+		name = tob_merc.4.d
+		default_hide_option = yes
+	}
+}
+
+# Mercenary Contract Ends
+fleet_event = {
+	id = tob_merc.5
+	title = "tob_merc.5.name"
+	desc = "tob_merc.5.desc"
+	picture = GFX_evt_pirate_armada
+	show_sound = event_radio_chatter
+	location = this
+	is_triggered_only = yes
+	trigger = {
+		any_country = {
+			has_country_flag = bulwark_merc_fleet_hired
+			is_country_type = outer_bulwarks
+			# OR = {
+			# 	has_country_flag = bulwark_numbers
+			# 	has_country_flag = bulwark_techies
+			# 	has_country_flag = bulwark_monsters
+			# }
+		}
+	}
+	immediate = {
+		if = {
+			limit = {
+				has_fleet_flag = bulwark_mercenary_fleet
+				# OR = {
+				# 	has_fleet_flag = bulwark_numbers_mercfleet
+				# 	has_fleet_flag = bulwark_techies_mercfleet
+				# 	has_fleet_flag = bulwark_monsters_mercfleet
+				# }
+			}
+			set_event_locked = yes
+		}
+	}
+	option = {
+		# Extend contract 1
+		name = tob_merc.5.a
+		allow = {
+			owner = {
+				resource_stockpile_compare = { resource = energy value > 5000 }
+				NOT = { has_country_flag = bulwark_has_been_betrayed_by_us }
+			}
+		}
+		trigger = {
+			has_fleet_flag = bulwark_mercenary_fleet
+			# OR = {
+			# 	has_fleet_flag = bulwark_numbers_mercfleet
+			# 	has_fleet_flag = bulwark_techies_mercfleet
+			# 	has_fleet_flag = bulwark_monsters_mercfleet
+			# }
+			NOT = {
+				owner = { has_country_flag = bulwark_has_been_betrayed_by_us }
+			}
+		}
+		owner = {
+			add_resource = { energy = -5000 }
+		}
+		if = {
+			limit = { has_fleet_flag = bulwark_numbers_mercfleet }
+			random_country = {
+				limit = { has_country_flag = bulwark_numbers }
+				change_variable = { which = bulwarkbudget value = 250 }
+			}
+		} else_if = {
+			limit = { has_fleet_flag = bulwark_techies_mercfleet }
+			random_country = {
+				limit = { has_country_flag = bulwark_techies }
+				change_variable = { which = bulwarkbudget value = 250 }
+			}
+		} else_if = {
+			limit = { has_fleet_flag = bulwark_monsters_mercfleet }
+			random_country = {
+				limit = { has_country_flag = bulwark_monsters }
+				change_variable = { which = bulwarkbudget value = 250 }
+			}
+		}
+		hidden_effect = {
+			fleet_event = { id = tob_merc.5 days = 1800 }
+			set_event_locked = no
+		}
+	}
+	option = {
+		# Extend contract 2
+		name = tob_merc.5.b
+		allow = {
+			owner = {
+				resource_stockpile_compare = { resource = energy value > 5000 }
+				NOT = { has_country_flag = bulwark_has_been_betrayed_by_us }
+			}
+		}
+		trigger = {
+			has_fleet_flag = bulwark_mercenary_fleet
+			# OR = {
+			# 	has_fleet_flag = bulwark_numbers_mercfleet
+			# 	has_fleet_flag = bulwark_techies_mercfleet
+			# 	has_fleet_flag = bulwark_monsters_mercfleet
+			# }
+			NOT = {
+				owner = { has_country_flag = bulwark_has_been_betrayed_by_us }
+			}
+		}
+		owner = {
+			add_resource = { energy = -10000 }
+		}
+		if = {
+			limit = { has_fleet_flag = bulwark_numbers_mercfleet }
+			random_country = {
+				limit = { has_country_flag = bulwark_numbers }
+				change_variable = { which = bulwarkbudget value = 500 }
+			}
+		} else_if = {
+			limit = { has_fleet_flag = bulwark_techies_mercfleet }
+			random_country = {
+				limit = { has_country_flag = bulwark_techies }
+				change_variable = { which = bulwarkbudget value = 500 }
+			}
+		} else_if = {
+			limit = { has_fleet_flag = bulwark_monsters_mercfleet }
+			random_country = {
+				limit = { has_country_flag = bulwark_monsters }
+				change_variable = { which = bulwarkbudget value = 500 }
+			}
+		}
+		hidden_effect = {
+			fleet_event = { id = tob_merc.5 days = 3600 }
+			set_event_locked = no
+		}
+	}
+	option = {
+		# Extend contract 3
+		name = tob_merc.5.c
+		allow = {
+			owner = {
+				resource_stockpile_compare = { resource = energy value > 5000 }
+				NOT = { has_country_flag = bulwark_has_been_betrayed_by_us }
+			}
+		}
+		trigger = {
+			has_fleet_flag = bulwark_mercenary_fleet
+			# OR = {
+			# 	has_fleet_flag = bulwark_numbers_mercfleet
+			# 	has_fleet_flag = bulwark_techies_mercfleet
+			# 	has_fleet_flag = bulwark_monsters_mercfleet
+			# }
+			NOT = {
+				owner = { has_country_flag = bulwark_has_been_betrayed_by_us }
+			}
+		}
+		owner = {
+			add_resource = { energy = -20000 }
+		}
+		if = {
+			limit = { has_fleet_flag = bulwark_numbers_mercfleet }
+			random_country = {
+				limit = { has_country_flag = bulwark_numbers }
+				change_variable = { which = bulwarkbudget value = 1000 }
+			}
+		} else_if = {
+			limit = { has_fleet_flag = bulwark_techies_mercfleet }
+			random_country = {
+				limit = { has_country_flag = bulwark_techies }
+				change_variable = { which = bulwarkbudget value = 1000 }
+			}
+		} else_if = {
+			limit = { has_fleet_flag = bulwark_monsters_mercfleet }
+			random_country = {
+				limit = { has_country_flag = bulwark_monsters }
+				change_variable = { which = bulwarkbudget value = 1000 }
+			}
+		}
+		hidden_effect = {
+			fleet_event = { id = tob_merc.5 days = 7200 }
+			set_event_locked = no
+		}
+	}
+	option = {
+		# Decline
+		name = tob_merc.5.d
+		ai_chance = { factor = 100 }
+		hidden_effect = {
+			set_event_locked = no
+			if = {
+				limit = { has_fleet_flag = bulwark_numbers_mercfleet }
+				event_target:tob_supremacist_faction = { remove_country_flag = bulwark_merc_fleet_hired }
+				root = {
+					set_owner = event_target:tob_supremacist_faction
+					queue_actions = {
+						find_random_system = {
+							trigger = {
+								id = "tob_merc_return.1"
+								has_star_flag = tob_supremacists
+							}
+							found_system = { move_to = this }
+						}
+						find_closest_planet = {
+							trigger = {
+								id = tob_merc_return.2
+								is_star = yes
+							}
+							found_planet = { orbit_planet = this }
+						}
+					}
+				}
+			} else_if = {
+				limit = { has_fleet_flag = bulwark_techies_mercfleet }
+				event_target:tob_technologist_faction = { remove_country_flag = bulwark_merc_fleet_hired }
+				root = {
+					set_owner = event_target:tob_technologist_faction
+					queue_actions = {
+						find_random_system = {
+							trigger = {
+								id = "tob_merc_return.3"
+								has_star_flag = tob_technologists
+							}
+							found_system = { move_to = this }
+						}
+						find_closest_planet = {
+							trigger = {
+								id = tob_merc_return.4
+								is_star = yes
+							}
+							found_planet = { orbit_planet = this }
+						}
+					}
+				}
+			} else_if = {
+				limit = { has_fleet_flag = bulwark_monsters_mercfleet }
+				event_target:tob_tamer_faction = { remove_country_flag = bulwark_merc_fleet_hired }
+				root = {
+					set_owner = event_target:tob_tamer_faction
+					queue_actions = {
+						find_random_system = {
+							trigger = {
+								id = "tob_merc_return.5"
+								has_star_flag = tob_tamers
+							}
+							found_system = { move_to = this }
+						}
+						find_closest_planet = {
+							trigger = {
+								id = tob_merc_return.6
+								is_star = yes
+							}
+							found_planet = { orbit_planet = this }
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+# Commission Fleets
+country_event = {
+	id = tob_merc.6
+	title = "Fleet Options"
+	desc = tob_merc.6.desc
+	diplomatic = yes
+	picture_event_data = {
+		portrait = from
+		room = "ethic_spaceship_room"
+	}
+	is_triggered_only = yes
+	immediate = {
+		set_country_flag = bulwark_diplomacy_engaged
+		from = {
+			if = { limit =  { is_hostile = root }
+				set_faction_hostility = { target = root set_hostile = no set_neutral = yes }
+			}
+		}
+	}
+	after = {
+		hidden_effect = { remove_country_flag = bulwark_diplomacy_engaged }
+	}
+	# Commission Weak Fleet
+	option = {
+		name = tob_merc.6.a
+		trigger = {
+			NOT = {
+				from = { has_country_flag = bulwark_commissioned_fleet_recently }
+			}
+		}
+		allow = {
+			resource_stockpile_compare = { resource = energy value > 7500 }
+			hidden_trigger = {
+				NOT = {
+					from = { has_country_flag = bulwark_commissioned_fleet_recently }
+				}
+			}
+		}
+		set_timed_country_flag = { flag = bulwark_commissioned_fleet_recently_safeguard days = 3 }
+		set_timed_country_flag = { flag = bulwark_commissioned_fleet_recently_target months = 30 }
+		add_resource = { energy = -7500 }
+		hidden_effect = {
+			random_playable_country = {
+				limit = { has_country_flag = bulwark_commissioned_fleet_recently_safeguard }
+				save_event_target_as = receiving_bulwark_fleet_commission
+			}
+			from = {
+				random_system_within_border = {
+					# limit = { }
+					if = {
+						limit = {
+							closest_system = {
+								limit = { space_owner = { is_same_empire = event_target:receiving_bulwark_fleet_commission } }
+								min_steps = 1
+								max_steps = 50
+								use_bypasses = no
+							}
+						}
+						closest_system = {
+							min_steps = 1
+							max_steps = 50
+							use_bypasses = no
+							limit = { space_owner = { is_same_empire = event_target:receiving_bulwark_fleet_commission } }
+							save_event_target_as = bulwark_fleet_commission_goes_here
+						}
+					} else = {
+						event_target:receiving_bulwark_fleet_commission = {
+							random_owned_planet = {
+								limit = { is_colony = yes num_pops > 5 }
+								weights = { base = 1 modifier = { add = 2 is_capital = yes } }
+								save_event_target_as = bulwark_fleet_commission_goes_here
+							}
+						}
+					}
+				}
+				set_timed_country_flag = { flag = bulwark_commissioned_fleet_recently years = 5 }
+				change_variable = { which = bulwarkbudget value = 375 }
+				create_fleet = {
+					settings = {
+						spawn_debris = no
+						can_change_composition = no
+						uses_naval_capacity = no
+						can_upgrade = no
+					}
+					effect = {
+						set_owner = event_target:receiving_bulwark_fleet_commission
+						prev = {
+							if = { limit = { has_country_flag = bulwark_country_numbersone }
+								switch = { trigger = has_country_flag
+									bulwark_country_techone =	{ create_dyn_bulwark_fleet = { LOWCORVETTE		= 20 LOWDESTROYER		= 5 } }
+									bulwark_country_techtwo =	{ create_dyn_bulwark_fleet = { MEDCORVETTE		= 20 MEDDESTROYER		= 5 } }
+									bulwark_country_techthree =	{ create_dyn_bulwark_fleet = { HIGHCORVETTE		= 20 HIGHDESTROYER		= 5 } }
+									bulwark_country_techfour =	{ create_dyn_bulwark_fleet = { HIGHERCORVETTE	= 20 HIGHERDESTROYER	= 5 } }
+									bulwark_country_techfive =	{ create_dyn_bulwark_fleet = { HIGHESTCORVETTE	= 20 HIGHESTDESTROYER	= 5 } }
+								}
+							} else_if = { limit = { has_country_flag = bulwark_country_techone }
+								switch = { trigger = has_country_flag
+									bulwark_country_numberstwo =	{ create_dyn_bulwark_fleet = { LOWCORVETTE = 40 LOWDESTROYER =	20 } }
+									bulwark_country_numbersthree =	{ create_dyn_bulwark_fleet = { LOWCORVETTE = 60 LOWDESTROYER =	35 } }
+									bulwark_country_numbersfour =	{ create_dyn_bulwark_fleet = { LOWCORVETTE = 80 LOWDESTROYER =	50 } }
+									bulwark_country_numbersfive =	{ create_dyn_bulwark_fleet = { LOWCORVETTE = 100 LOWDESTROYER =	65 } }
+								}
+							} else_if = { limit = { has_country_flag = bulwark_country_techtwo }
+								switch = { trigger = has_country_flag
+									bulwark_country_numberstwo =	{ create_dyn_bulwark_fleet = { MEDCORVETTE = 40 MEDDESTROYER =	20 LOWCRUISER = 10 } }
+									bulwark_country_numbersthree =	{ create_dyn_bulwark_fleet = { MEDCORVETTE = 60 MEDDESTROYER =	35 LOWCRUISER = 20 } }
+									bulwark_country_numbersfour =	{ create_dyn_bulwark_fleet = { MEDCORVETTE = 80 MEDDESTROYER =	50 LOWCRUISER = 30 } }
+									bulwark_country_numbersfive =	{ create_dyn_bulwark_fleet = { MEDCORVETTE = 100 MEDDESTROYER =	65 LOWCRUISER = 40 } }
+								}
+							} else_if = { limit = { has_country_flag = bulwark_country_techthree }
+								switch = { trigger = has_country_flag
+									bulwark_country_numberstwo =	{ create_dyn_bulwark_fleet = { HIGHCORVETTE = 40 HIGHDESTROYER =	20 MEDCRUISER = 10 LOWBATTLESHIP = 5 } }
+									bulwark_country_numbersthree =	{ create_dyn_bulwark_fleet = { HIGHCORVETTE = 60 HIGHDESTROYER =	35 MEDCRUISER = 20 LOWBATTLESHIP = 10 } }
+									bulwark_country_numbersfour =	{ create_dyn_bulwark_fleet = { HIGHCORVETTE = 80 HIGHDESTROYER =	50 MEDCRUISER = 30 LOWBATTLESHIP = 15 } }
+									bulwark_country_numbersfive =	{ create_dyn_bulwark_fleet = { HIGHCORVETTE = 100 HIGHDESTROYER =	65 MEDCRUISER = 40 LOWBATTLESHIP = 20 } }
+								}
+							} else_if = { limit = { has_country_flag = bulwark_country_techfour }
+								switch = { trigger = has_country_flag
+									bulwark_country_numberstwo =	{ create_dyn_bulwark_fleet = { HIGHERCORVETTE = 40 HIGHERDESTROYER =	20 HIGHCRUISER = 10 MEDBATTLESHIP = 5 } }
+									bulwark_country_numbersthree =	{ create_dyn_bulwark_fleet = { HIGHERCORVETTE = 60 HIGHERDESTROYER =	35 HIGHCRUISER = 20 MEDBATTLESHIP = 10 } }
+									bulwark_country_numbersfour =	{ create_dyn_bulwark_fleet = { HIGHERCORVETTE = 80 HIGHERDESTROYER =	50 HIGHCRUISER = 30 MEDBATTLESHIP = 15 } }
+									bulwark_country_numbersfive =	{ create_dyn_bulwark_fleet = { HIGHERCORVETTE = 100 HIGHERDESTROYER =	65 HIGHCRUISER = 40 MEDBATTLESHIP = 20 } }
+								}
+							} else_if = { limit = { has_country_flag = bulwark_country_techfive }
+								switch = { trigger = has_country_flag
+									bulwark_country_numberstwo =	{ create_dyn_bulwark_fleet = { HIGHESTCORVETTE = 40 HIGHESTDESTROYER =	20 HIGHESTCRUISER = 10 HIGHESTBATTLESHIP = 5 } }
+									bulwark_country_numbersthree =	{ create_dyn_bulwark_fleet = { HIGHESTCORVETTE = 60 HIGHESTDESTROYER =	35 HIGHESTCRUISER = 20 HIGHESTBATTLESHIP = 10 } }
+									bulwark_country_numbersfour =	{ create_dyn_bulwark_fleet = { HIGHESTCORVETTE = 80 HIGHESTDESTROYER =	50 HIGHESTCRUISER = 30 HIGHESTBATTLESHIP = 15 } }
+									bulwark_country_numbersfive =	{ create_dyn_bulwark_fleet = { HIGHESTCORVETTE = 100 HIGHESTDESTROYER =	65 HIGHESTCRUISER = 40 HIGHESTBATTLESHIP = 20 } }
+								}
+							}
+						}
+						set_location = event_target:bulwark_fleet_commission_goes_here
+						set_fleet_stance = aggressive
+						set_aggro_range_measure_from = self
+						set_aggro_range = 250
+					}
+				}
+			}
+		}
+	}
+	# Commission OK Fleet
+	option = {
+		name = tob_merc.6.b
+		trigger = {
+			NOT = {
+				from = { has_country_flag = bulwark_commissioned_fleet_recently }
+			}
+		}
+		allow = {
+			resource_stockpile_compare = { resource = energy value > 12500 }
+			hidden_trigger = {
+				NOT = {
+					from = { has_country_flag = bulwark_commissioned_fleet_recently }
+				}
+			}
+		}
+		set_timed_country_flag = { flag = bulwark_commissioned_fleet_recently_safeguard days = 3 }
+		set_timed_country_flag = { flag = bulwark_commissioned_fleet_recently_target months = 30 }
+		add_resource = { energy = -12500 }
+		hidden_effect = {
+			random_playable_country = {
+				limit = { has_country_flag = bulwark_commissioned_fleet_recently_safeguard }
+				save_event_target_as = receiving_bulwark_fleet_commission
+			}
+			from = {
+				random_system_within_border = {
+					# limit = { }
+					if = {
+						limit = {
+							closest_system = {
+								limit = { space_owner = { is_same_empire = event_target:receiving_bulwark_fleet_commission } }
+								min_steps = 1
+								max_steps = 50
+								use_bypasses = no
+							}
+						}
+						closest_system = {
+							min_steps = 1
+							max_steps = 50
+							use_bypasses = no
+							limit = { space_owner = { is_same_empire = event_target:receiving_bulwark_fleet_commission } }
+							save_event_target_as = bulwark_fleet_commission_goes_here
+						}
+					} else = {
+						event_target:receiving_bulwark_fleet_commission = {
+							random_owned_planet = {
+								limit = { is_colony = yes num_pops > 5 }
+								weights = { base = 1 modifier = { add = 2 is_capital = yes } }
+								save_event_target_as = bulwark_fleet_commission_goes_here
+							}
+						}
+					}
+				}
+				set_timed_country_flag = { flag = bulwark_commissioned_fleet_recently months = 90 }
+				change_variable = { which = bulwarkbudget value = 625 }
+				create_fleet = {
+					settings = {
+						spawn_debris = no
+						can_change_composition = no
+						uses_naval_capacity = no
+						can_upgrade = no
+					}
+					effect = {
+						set_owner = event_target:receiving_bulwark_fleet_commission
+						prev = {
+							if = { limit = { has_country_flag = bulwark_country_numbersone }
+								switch = { trigger = has_country_flag
+									bulwark_country_techone =	{ create_dyn_bulwark_fleet = { LOWCORVETTE		= 30 LOWDESTROYER		= 15 } }
+									bulwark_country_techtwo =	{ create_dyn_bulwark_fleet = { MEDCORVETTE		= 30 MEDDESTROYER		= 15 } }
+									bulwark_country_techthree =	{ create_dyn_bulwark_fleet = { HIGHCORVETTE		= 30 HIGHDESTROYER		= 15 } }
+									bulwark_country_techfour =	{ create_dyn_bulwark_fleet = { HIGHERCORVETTE	= 30 HIGHERDESTROYER	= 15 } }
+									bulwark_country_techfive =	{ create_dyn_bulwark_fleet = { HIGHESTCORVETTE	= 30 HIGHESTDESTROYER	= 15 } }
+								}
+							} else_if = { limit = { has_country_flag = bulwark_country_techone }
+								switch = { trigger = has_country_flag
+									bulwark_country_numberstwo =	{ create_dyn_bulwark_fleet = { LOWCORVETTE = 50 LOWDESTROYER	= 30 } }
+									bulwark_country_numbersthree =	{ create_dyn_bulwark_fleet = { LOWCORVETTE = 70 LOWDESTROYER	= 45 } }
+									bulwark_country_numbersfour =	{ create_dyn_bulwark_fleet = { LOWCORVETTE = 90 LOWDESTROYER	= 60 } }
+									bulwark_country_numbersfive =	{ create_dyn_bulwark_fleet = { LOWCORVETTE = 110 LOWDESTROYER	= 75 } }
+								}
+							} else_if = { limit = { has_country_flag = bulwark_country_techtwo }
+								switch = { trigger = has_country_flag
+									bulwark_country_numberstwo =	{ create_dyn_bulwark_fleet = { MEDCORVETTE = 50 MEDDESTROYER =	30 LOWCRUISER = 10 } }
+									bulwark_country_numbersthree =	{ create_dyn_bulwark_fleet = { MEDCORVETTE = 70 MEDDESTROYER =	45 LOWCRUISER = 20 } }
+									bulwark_country_numbersfour =	{ create_dyn_bulwark_fleet = { MEDCORVETTE = 90 MEDDESTROYER =	60 LOWCRUISER = 30 } }
+									bulwark_country_numbersfive =	{ create_dyn_bulwark_fleet = { MEDCORVETTE = 110 MEDDESTROYER =	75 LOWCRUISER = 40 } }
+								}
+							} else_if = { limit = { has_country_flag = bulwark_country_techthree }
+								switch = { trigger = has_country_flag
+									bulwark_country_numberstwo =	{ create_dyn_bulwark_fleet = { HIGHCORVETTE = 50 HIGHDESTROYER =	30 MEDCRUISER = 10 LOWBATTLESHIP = 5 } }
+									bulwark_country_numbersthree =	{ create_dyn_bulwark_fleet = { HIGHCORVETTE = 70 HIGHDESTROYER =	45 MEDCRUISER = 20 LOWBATTLESHIP = 10 } }
+									bulwark_country_numbersfour =	{ create_dyn_bulwark_fleet = { HIGHCORVETTE = 90 HIGHDESTROYER =	60 MEDCRUISER = 30 LOWBATTLESHIP = 15 } }
+									bulwark_country_numbersfive =	{ create_dyn_bulwark_fleet = { HIGHCORVETTE = 110 HIGHDESTROYER =	75 MEDCRUISER = 40 LOWBATTLESHIP = 20 } }
+								}
+							} else_if = { limit = { has_country_flag = bulwark_country_techfour }
+								switch = { trigger = has_country_flag
+									bulwark_country_numberstwo =	{ create_dyn_bulwark_fleet = { HIGHERCORVETTE = 50 HIGHERDESTROYER =	30 HIGHCRUISER = 10 MEDBATTLESHIP = 5 } }
+									bulwark_country_numbersthree =	{ create_dyn_bulwark_fleet = { HIGHERCORVETTE = 70 HIGHERDESTROYER =	45 HIGHCRUISER = 20 MEDBATTLESHIP = 10 } }
+									bulwark_country_numbersfour =	{ create_dyn_bulwark_fleet = { HIGHERCORVETTE = 90 HIGHERDESTROYER =	60 HIGHCRUISER = 30 MEDBATTLESHIP = 15 } }
+									bulwark_country_numbersfive =	{ create_dyn_bulwark_fleet = { HIGHERCORVETTE = 110 HIGHERDESTROYER =	75 HIGHCRUISER = 40 MEDBATTLESHIP = 20 } }
+								}
+							} else_if = { limit = { has_country_flag = bulwark_country_techfive }
+								switch = { trigger = has_country_flag
+									bulwark_country_numberstwo =	{ create_dyn_bulwark_fleet = { HIGHESTCORVETTE = 50 HIGHESTDESTROYER =	30 HIGHESTCRUISER = 10 HIGHESTBATTLESHIP = 5 } }
+									bulwark_country_numbersthree =	{ create_dyn_bulwark_fleet = { HIGHESTCORVETTE = 70 HIGHESTDESTROYER =	45 HIGHESTCRUISER = 20 HIGHESTBATTLESHIP = 10 } }
+									bulwark_country_numbersfour =	{ create_dyn_bulwark_fleet = { HIGHESTCORVETTE = 90 HIGHESTDESTROYER =	60 HIGHESTCRUISER = 30 HIGHESTBATTLESHIP = 15 } }
+									bulwark_country_numbersfive =	{ create_dyn_bulwark_fleet = { HIGHESTCORVETTE = 110 HIGHESTDESTROYER =	75 HIGHESTCRUISER = 40 HIGHESTBATTLESHIP = 20 } }
+								}
+							}
+						}
+						set_location = event_target:bulwark_fleet_commission_goes_here
+						set_fleet_stance = aggressive
+						set_aggro_range_measure_from = self
+						set_aggro_range = 250
+					}
+				}
+			}
+		}
+	}
+	# Commission High Fleet
+	option = {
+		name = tob_merc.6.c
+		trigger = {
+			NOT = {
+				from = { has_country_flag = bulwark_commissioned_fleet_recently }
+			}
+		}
+		allow = {
+			resource_stockpile_compare = { resource = energy value > 17500 }
+			hidden_trigger = {
+				NOT = {
+					from = { has_country_flag = bulwark_commissioned_fleet_recently }
+				}
+			}
+		}
+		set_timed_country_flag = { flag = bulwark_commissioned_fleet_recently_safeguard days = 3 }
+		set_timed_country_flag = { flag = bulwark_commissioned_fleet_recently_target months = 30 }
+		add_resource = { energy = -17500 }
+		hidden_effect = {
+			random_playable_country = {
+				limit = { has_country_flag = bulwark_commissioned_fleet_recently_safeguard }
+				save_event_target_as = receiving_bulwark_fleet_commission
+			}
+			from = {
+				random_system_within_border = {
+					# limit = { }
+					if = {
+						limit = {
+							closest_system = {
+								limit = { space_owner = { is_same_empire = event_target:receiving_bulwark_fleet_commission } }
+								min_steps = 1
+								max_steps = 50
+								use_bypasses = no
+							}
+						}
+						closest_system = {
+							min_steps = 1
+							max_steps = 50
+							use_bypasses = no
+							limit = { space_owner = { is_same_empire = event_target:receiving_bulwark_fleet_commission } }
+							save_event_target_as = bulwark_fleet_commission_goes_here
+						}
+					} else = {
+						event_target:receiving_bulwark_fleet_commission = {
+							random_owned_planet = {
+								limit = { is_colony = yes num_pops > 5 }
+								weights = { base = 1 modifier = { add = 2 is_capital = yes } }
+								save_event_target_as = bulwark_fleet_commission_goes_here
+							}
+						}
+					}
+				}
+				set_timed_country_flag = { flag = bulwark_commissioned_fleet_recently years = 10 }
+				change_variable = { which = bulwarkbudget value = 875 }
+				create_fleet = {
+					settings = {
+						spawn_debris = no
+						can_change_composition = no
+						uses_naval_capacity = no
+						can_upgrade = no
+					}
+					effect = {
+						set_owner = event_target:receiving_bulwark_fleet_commission
+						prev = {
+							if = { limit = { has_country_flag = bulwark_country_numbersone }
+								switch = { trigger = has_country_flag
+									bulwark_country_techone =	{ create_dyn_bulwark_fleet = { LOWCORVETTE		= 40 LOWDESTROYER		= 25 } }
+									bulwark_country_techtwo =	{ create_dyn_bulwark_fleet = { MEDCORVETTE		= 40 MEDDESTROYER		= 25 } }
+									bulwark_country_techthree =	{ create_dyn_bulwark_fleet = { HIGHCORVETTE		= 40 HIGHDESTROYER		= 25 } }
+									bulwark_country_techfour =	{ create_dyn_bulwark_fleet = { HIGHERCORVETTE	= 40 HIGHERDESTROYER	= 25 } }
+									bulwark_country_techfive =	{ create_dyn_bulwark_fleet = { HIGHESTCORVETTE	= 40 HIGHESTDESTROYER	= 25 } }
+								}
+							} else_if = { limit = { has_country_flag = bulwark_country_techone }
+								switch = { trigger = has_country_flag
+									bulwark_country_numberstwo =	{ create_dyn_bulwark_fleet = { LOWCORVETTE = 60 LOWDESTROYER	= 40 } }
+									bulwark_country_numbersthree =	{ create_dyn_bulwark_fleet = { LOWCORVETTE = 80 LOWDESTROYER	= 55 } }
+									bulwark_country_numbersfour =	{ create_dyn_bulwark_fleet = { LOWCORVETTE = 100 LOWDESTROYER	= 70 } }
+									bulwark_country_numbersfive =	{ create_dyn_bulwark_fleet = { LOWCORVETTE = 120 LOWDESTROYER	= 85 } }
+								}
+							} else_if = { limit = { has_country_flag = bulwark_country_techtwo }
+								switch = { trigger = has_country_flag
+									bulwark_country_numberstwo =	{ create_dyn_bulwark_fleet = { MEDCORVETTE = 60 MEDDESTROYER =	40 LOWCRUISER = 10 } }
+									bulwark_country_numbersthree =	{ create_dyn_bulwark_fleet = { MEDCORVETTE = 80 MEDDESTROYER =	55 LOWCRUISER = 20 } }
+									bulwark_country_numbersfour =	{ create_dyn_bulwark_fleet = { MEDCORVETTE = 100 MEDDESTROYER =	70 LOWCRUISER = 30 } }
+									bulwark_country_numbersfive =	{ create_dyn_bulwark_fleet = { MEDCORVETTE = 120 MEDDESTROYER =	85 LOWCRUISER = 40 } }
+								}
+							} else_if = { limit = { has_country_flag = bulwark_country_techthree }
+								switch = { trigger = has_country_flag
+									bulwark_country_numberstwo =	{ create_dyn_bulwark_fleet = { HIGHCORVETTE = 60 HIGHDESTROYER =	40 MEDCRUISER = 10 LOWBATTLESHIP = 5 } }
+									bulwark_country_numbersthree =	{ create_dyn_bulwark_fleet = { HIGHCORVETTE = 80 HIGHDESTROYER =	55 MEDCRUISER = 20 LOWBATTLESHIP = 10 } }
+									bulwark_country_numbersfour =	{ create_dyn_bulwark_fleet = { HIGHCORVETTE = 100 HIGHDESTROYER =	70 MEDCRUISER = 30 LOWBATTLESHIP = 15 } }
+									bulwark_country_numbersfive =	{ create_dyn_bulwark_fleet = { HIGHCORVETTE = 120 HIGHDESTROYER =	85 MEDCRUISER = 40 LOWBATTLESHIP = 20 } }
+								}
+							} else_if = { limit = { has_country_flag = bulwark_country_techfour }
+								switch = { trigger = has_country_flag
+									bulwark_country_numberstwo =	{ create_dyn_bulwark_fleet = { HIGHERCORVETTE = 60 HIGHERDESTROYER =	40 HIGHCRUISER = 10 MEDBATTLESHIP = 5 } }
+									bulwark_country_numbersthree =	{ create_dyn_bulwark_fleet = { HIGHERCORVETTE = 80 HIGHERDESTROYER =	55 HIGHCRUISER = 20 MEDBATTLESHIP = 10 } }
+									bulwark_country_numbersfour =	{ create_dyn_bulwark_fleet = { HIGHERCORVETTE = 100 HIGHERDESTROYER =	70 HIGHCRUISER = 30 MEDBATTLESHIP = 15 } }
+									bulwark_country_numbersfive =	{ create_dyn_bulwark_fleet = { HIGHERCORVETTE = 120 HIGHERDESTROYER =	85 HIGHCRUISER = 40 MEDBATTLESHIP = 20 } }
+								}
+							} else_if = { limit = { has_country_flag = bulwark_country_techfive }
+								switch = { trigger = has_country_flag
+									bulwark_country_numberstwo =	{ create_dyn_bulwark_fleet = { HIGHESTCORVETTE = 60 HIGHESTDESTROYER =	40 HIGHESTCRUISER = 10 HIGHESTBATTLESHIP = 5 } }
+									bulwark_country_numbersthree =	{ create_dyn_bulwark_fleet = { HIGHESTCORVETTE = 80 HIGHESTDESTROYER =	55 HIGHESTCRUISER = 20 HIGHESTBATTLESHIP = 10 } }
+									bulwark_country_numbersfour =	{ create_dyn_bulwark_fleet = { HIGHESTCORVETTE = 100 HIGHESTDESTROYER =	70 HIGHESTCRUISER = 30 HIGHESTBATTLESHIP = 15 } }
+									bulwark_country_numbersfive =	{ create_dyn_bulwark_fleet = { HIGHESTCORVETTE = 120 HIGHESTDESTROYER =	85 HIGHESTCRUISER = 40 HIGHESTBATTLESHIP = 20 } }
+								}
+							}
+						}
+						set_location = event_target:bulwark_fleet_commission_goes_here
+						set_fleet_stance = aggressive
+						set_aggro_range_measure_from = self
+						set_aggro_range = 250
+					}
+				}
+			}
+		}
+	}
+	option = {
+		name = tob_merc.6.d
+		default_hide_option = yes
+	}
+}
+
+# Hire Trainers
+country_event = {
+	id = tob_merc.7
+	title = "Training Options"
+	desc = {
+		text = tob_merc.7.1.desc
+		trigger = {
+			from = { has_country_flag = bulwark_numbers }
+		}
+	}
+	desc = {
+		text = tob_merc.7.2.desc
+		trigger = {
+			from = { has_country_flag = bulwark_techies }
+		}
+	}
+	desc = {
+		text = tob_merc.7.3.desc
+		trigger = {
+			from = { has_country_flag = bulwark_monsters }
+		}
+	}
+	diplomatic = yes
+	picture_event_data = {
+		portrait = from
+		room = "ethic_spaceship_room"
+	}
+	is_triggered_only = yes
+	immediate = { set_country_flag = bulwark_diplomacy_engaged }
+	after = {
+		hidden_effect = { remove_country_flag = bulwark_diplomacy_engaged }
+	}
+	# Military Training.
+	option = {
+		name = tob_merc.7.a
+		trigger = {
+			NOT = { has_country_flag = bulwark_trainers_hired }
+		}
+		allow = {
+			resource_stockpile_compare = { resource = energy value > 2500 }
+			NOT = { has_country_flag = bulwark_trainers_hired }
+		}
+		set_timed_country_flag = { flag = bulwark_trainers_hired years = 10 }
+		set_timed_country_flag = { flag = bulwark_trainers_hired_safeguard days = 3 }
+		add_resource = { energy = -2500 }
+		hidden_effect = {
+			if = {
+				limit = {
+					from = { has_country_flag = bulwark_numbers }
+				}
+				add_modifier = { modifier = bulwark_expert_military_training years = 10 }
+			} else = {
+				add_modifier = { modifier = bulwark_good_military_training years = 10 }
+			}
+			every_owned_leader = {
+				limit = {
+					OR = {
+						leader_class = general
+						leader_class = admiral
+					}
+				}
+				add_experience = 100
+			}
+			from = {
+				set_timed_country_flag = { flag = bulwark_commissioned_training_recently years = 10 }
+				change_variable = { which = bulwarkbudget value = 125 }
+			}
+			country_event = { id = tob_merc.8 days = 3600 }
+		}
+	}
+	# Science Training.
+	option = {
+		name = tob_merc.7.b
+		trigger = {
+			NOT = { has_country_flag = bulwark_trainers_hired }
+		}
+		allow = {
+			resource_stockpile_compare = { resource = energy value > 2500 }
+			NOT = { has_country_flag = bulwark_trainers_hired }
+		}
+		set_timed_country_flag = { flag = bulwark_trainers_hired years = 10 }
+		set_timed_country_flag = { flag = bulwark_trainers_hired_safeguard days = 3 }
+		add_resource = { energy = -2500 }
+		hidden_effect = {
+			if = {
+				limit = {
+					from = { has_country_flag = bulwark_techies }
+				}
+				add_modifier = { modifier = bulwark_expert_science_training years = 10 }
+			} else = {
+				add_modifier = { modifier = bulwark_good_science_training years = 10 }
+			}
+			every_owned_leader = {
+				limit = { leader_class = scientist }
+				add_experience = 200
+			}
+			from = {
+				set_timed_country_flag = { flag = bulwark_commissioned_training_recently years = 10 }
+				change_variable = { which = bulwarkbudget value = 125 }
+			}
+			country_event = { id = tob_merc.8 days = 3600 }
+		}
+	}
+	# Populace Training.
+	option = {
+		name = tob_merc.7.c
+		trigger = {
+			NOT = { has_country_flag = bulwark_trainers_hired }
+		}
+		allow = {
+			resource_stockpile_compare = { resource = energy value > 2500 }
+			NOT = { has_country_flag = bulwark_trainers_hired }
+		}
+		set_timed_country_flag = { flag = bulwark_trainers_hired years = 10 }
+		set_timed_country_flag = { flag = bulwark_trainers_hired_safeguard days = 3 }
+		add_resource = { energy = -2500 }
+		hidden_effect = {
+			if = {
+				limit = {
+					from = { has_country_flag = bulwark_monsters }
+				}
+				add_modifier = { modifier = bulwark_expert_populace_training years = 10 }
+			} else = {
+				add_modifier = { modifier = bulwark_good_populace_training years = 10 }
+			}
+			every_owned_leader = {
+				limit = { leader_class = governor }
+				add_experience = 200
+			}
+			from = {
+				set_timed_country_flag = { flag = bulwark_commissioned_training_recently years = 10 }
+				change_variable = { which = bulwarkbudget value = 125 }
+			}
+			country_event = { id = tob_merc.8 days = 3600 }
+		}
+	}
+	option = {
+		name = tob_merc.7.d
+		default_hide_option = yes
+	}
+}
+
+# Trainers leave
+# From = event_target:current_bulwark_diplomacy
+country_event = {
+	id = tob_merc.8
+	title = "Trainers Leave"
+	desc = tob_merc.8.desc
+	picture = GFX_evt_pirate_armada
+	show_sound = event_radio_chatter
+	location = this
+	is_triggered_only = yes
+	trigger = {
+		OR = {
+			has_modifier = bulwark_expert_military_training
+			has_modifier = bulwark_good_military_training
+			has_modifier = bulwark_expert_science_training
+			has_modifier = bulwark_good_science_training
+			has_modifier = bulwark_expert_populace_training
+			has_modifier = bulwark_good_populace_training
+		}
+	}
+	option = {
+		name = tob_merc.8.a
+		default_hide_option = yes
+	}
+}
+
+# Commission Stations
+# From = event_target:current_bulwark_diplomacy
+country_event = {
+	id = tob_merc.9
+	title = "Station Options"
+	desc = tob_merc.9.desc
+	diplomatic = yes
+	picture_event_data = {
+		portrait = from
+		room = "ethic_spaceship_room"
+	}
+	is_triggered_only = yes
+	immediate = { set_country_flag = bulwark_diplomacy_engaged }
+	after = {
+		hidden_effect = { remove_country_flag = bulwark_diplomacy_engaged }
+	}
+	# Commission 10 stations
+	option = {
+		name = tob_merc.9.a
+		trigger = {
+			NOT = {
+				from = { has_country_flag = bulwark_commission_stations_root }
+			}
+		}
+		allow = {
+			resource_stockpile_compare = { resource = energy value > 1000 }
+			hidden_trigger = {
+				NOT = {
+					from = { has_country_flag = bulwark_commission_stations_root }
+				}
+			}
+		}
+		set_timed_country_flag = { flag = bulwark_commissioned_stations_recently_safeguard days = 3 }
+		set_timed_country_flag = { flag = bulwark_commission_stations_target years = 2 }
+		add_resource = { energy = -1000 }
+		hidden_effect = {
+			if = {
+				limit = {
+					from = { has_country_flag = bulwark_country_techone }
+				}
+				from = {
+					set_timed_country_flag = { flag = bulwark_commission_stations_root years = 4 }
+					change_variable = { which = bulwarkbudget value = 50 }
+				}
+				random_playable_country = {
+					limit = { has_country_flag = bulwark_commissioned_stations_recently_safeguard }
+					save_global_event_target_as = receiving_bulwark_station_commission
+					set_variable = { which = bulwarkstations value = 10 }
+				}
+				while = {
+					limit = {
+						event_target:receiving_bulwark_station_commission = {
+							check_variable = { which = bulwarkstations value > 0 }
+							any_system_within_border = {
+								any_system_planet = {
+									NOT = {
+										any_fleet_in_orbit = { is_ship_size = marauder_station }
+									}
+								}
+							}
+						}
+					}
+					event_target:receiving_bulwark_station_commission = {
+						subtract_variable = { which = bulwarkstations value = 1 }
+					}
+					random_system_within_border = {
+						limit = {
+							exists = starbase
+							OR = {
+								has_any_megastructure = yes
+								starbase = {
+									OR = {
+										has_starbase_module = gun_battery
+										has_starbase_module = missile_battery
+										has_starbase_module = hangar_bay
+										has_starbase_module = shipyard
+									}
+								}
+							}
+						}
+						random_system_planet = {
+							limit = {
+								NOT = {
+									any_fleet_in_orbit = { is_ship_size = marauder_station }
+								}
+							}
+							save_event_target_as = bulwark_station_planet_target
+							create_fleet = {
+								effect = {
+									set_owner = event_target:receiving_bulwark_station_commission
+									create_ship = {
+										name = random
+										design = "NAME_BULWARK_STATION_MKO"
+										graphical_culture = "pirate_01"
+										effect = {
+											add_modifier = { modifier = "bulwark_ships_unlimited" }
+											add_modifier = { modifier = "bulwark_budget_repairs" days = 5 }
+										}
+									}
+									set_location = event_target:bulwark_station_planet_target
+								}
+								settings = { spawn_debris = no }
+							}
+						}
+					}
+				}
+			} else_if = {
+				limit = {
+					from = { has_country_flag = bulwark_country_techtwo }
+				}
+				from = {
+					set_timed_country_flag = { flag = bulwark_commission_stations_root years = 4 }
+					change_variable = { which = bulwarkbudget value = 50 }
+				}
+				random_playable_country = {
+					limit = { has_country_flag = bulwark_commissioned_stations_recently_safeguard }
+					save_global_event_target_as = receiving_bulwark_station_commission
+					set_variable = { which = bulwarkstations value = 10 }
+				}
+				while = {
+					limit = {
+						event_target:receiving_bulwark_station_commission = {
+							check_variable = { which = bulwarkstations value > 0 }
+							any_system_within_border = {
+								any_system_planet = {
+									NOT = {
+										any_fleet_in_orbit = { is_ship_size = marauder_station }
+									}
+								}
+							}
+						}
+					}
+					event_target:receiving_bulwark_station_commission = {
+						subtract_variable = { which = bulwarkstations value = 1 }
+					}
+					random_system_within_border = {
+						limit = {
+							exists = starbase
+							OR = {
+								has_any_megastructure = yes
+								starbase = {
+									OR = {
+										has_starbase_module = gun_battery
+										has_starbase_module = missile_battery
+										has_starbase_module = hangar_bay
+										has_starbase_module = shipyard
+									}
+								}
+							}
+						}
+						random_system_planet = {
+							limit = {
+								NOT = {
+									any_fleet_in_orbit = { is_ship_size = marauder_station }
+								}
+							}
+							save_event_target_as = bulwark_station_planet_target
+							create_fleet = {
+								effect = {
+									set_owner = event_target:receiving_bulwark_station_commission
+									create_ship = {
+										name = random
+										design = "NAME_BULWARK_STATION_MKT"
+										graphical_culture = "pirate_01"
+										effect = {
+											add_modifier = { modifier = "bulwark_ships_unlimited" }
+											add_modifier = { modifier = "bulwark_budget_repairs" days = 5 }
+										}
+									}
+									set_location = event_target:bulwark_station_planet_target
+								}
+								settings = { spawn_debris = no }
+							}
+						}
+					}
+				}
+			} else_if = {
+				limit = {
+					from = { has_country_flag = bulwark_country_techthree }
+				}
+				from = {
+					set_timed_country_flag = { flag = bulwark_commission_stations_root years = 4 }
+					change_variable = { which = bulwarkbudget value = 50 }
+				}
+				random_playable_country = {
+					limit = { has_country_flag = bulwark_commissioned_stations_recently_safeguard }
+					save_global_event_target_as = receiving_bulwark_station_commission
+					set_variable = { which = bulwarkstations value = 10 }
+				}
+				while = {
+					limit = {
+						event_target:receiving_bulwark_station_commission = {
+							check_variable = { which = bulwarkstations value > 0 }
+							any_system_within_border = {
+								any_system_planet = {
+									NOT = {
+										any_fleet_in_orbit = { is_ship_size = marauder_station }
+									}
+								}
+							}
+						}
+					}
+					event_target:receiving_bulwark_station_commission = {
+						subtract_variable = { which = bulwarkstations value = 1 }
+					}
+					random_system_within_border = {
+						limit = {
+							exists = starbase
+							OR = {
+								has_any_megastructure = yes
+								starbase = {
+									OR = {
+										has_starbase_module = gun_battery
+										has_starbase_module = missile_battery
+										has_starbase_module = hangar_bay
+										has_starbase_module = shipyard
+									}
+								}
+							}
+						}
+						random_system_planet = {
+							limit = {
+								NOT = {
+									any_fleet_in_orbit = { is_ship_size = marauder_station }
+								}
+							}
+							save_event_target_as = bulwark_station_planet_target
+							create_fleet = {
+								effect = {
+									set_owner = event_target:receiving_bulwark_station_commission
+									create_ship = {
+										name = random
+										design = "NAME_BULWARK_STATION_MKTH"
+										graphical_culture = "pirate_01"
+										effect = {
+											add_modifier = { modifier = "bulwark_ships_unlimited" }
+											add_modifier = { modifier = "bulwark_budget_repairs" days = 5 }
+										}
+									}
+									set_location = event_target:bulwark_station_planet_target
+								}
+								settings = { spawn_debris = no }
+							}
+						}
+					}
+				}
+			} else_if = {
+				limit = {
+					from = { has_country_flag = bulwark_country_techfour }
+				}
+				from = {
+					set_timed_country_flag = { flag = bulwark_commission_stations_root years = 4 }
+					change_variable = { which = bulwarkbudget value = 50 }
+				}
+				random_playable_country = {
+					limit = { has_country_flag = bulwark_commissioned_stations_recently_safeguard }
+					save_global_event_target_as = receiving_bulwark_station_commission
+					set_variable = { which = bulwarkstations value = 10 }
+				}
+				while = {
+					limit = {
+						event_target:receiving_bulwark_station_commission = {
+							check_variable = { which = bulwarkstations value > 0 }
+							any_system_within_border = {
+								any_system_planet = {
+									NOT = {
+										any_fleet_in_orbit = { is_ship_size = marauder_station }
+									}
+								}
+							}
+						}
+					}
+					event_target:receiving_bulwark_station_commission = {
+						subtract_variable = { which = bulwarkstations value = 1 }
+					}
+					random_system_within_border = {
+						limit = {
+							exists = starbase
+							OR = {
+								has_any_megastructure = yes
+								starbase = {
+									OR = {
+										has_starbase_module = gun_battery
+										has_starbase_module = missile_battery
+										has_starbase_module = hangar_bay
+										has_starbase_module = shipyard
+									}
+								}
+							}
+						}
+						random_system_planet = {
+							limit = {
+								NOT = {
+									any_fleet_in_orbit = { is_ship_size = marauder_station }
+								}
+							}
+							save_event_target_as = bulwark_station_planet_target
+							create_fleet = {
+								effect = {
+									set_owner = event_target:receiving_bulwark_station_commission
+									create_ship = {
+										name = random
+										design = "NAME_BULWARK_STATION_MKFO"
+										graphical_culture = "pirate_01"
+										effect = {
+											add_modifier = { modifier = "bulwark_ships_unlimited" }
+											add_modifier = { modifier = "bulwark_budget_repairs" days = 5 }
+										}
+									}
+									set_location = event_target:bulwark_station_planet_target
+								}
+								settings = { spawn_debris = no }
+							}
+						}
+					}
+				}
+			} else_if = {
+				limit = {
+					from = { has_country_flag = bulwark_country_techfive }
+				}
+				from = {
+					set_timed_country_flag = { flag = bulwark_commission_stations_root years = 4 }
+					change_variable = { which = bulwarkbudget value = 50 }
+				}
+				random_playable_country = {
+					limit = { has_country_flag = bulwark_commissioned_stations_recently_safeguard }
+					save_global_event_target_as = receiving_bulwark_station_commission
+					set_variable = { which = bulwarkstations value = 10 }
+				}
+				while = {
+					limit = {
+						event_target:receiving_bulwark_station_commission = {
+							check_variable = { which = bulwarkstations value > 0 }
+							any_system_within_border = {
+								any_system_planet = {
+									NOT = {
+										any_fleet_in_orbit = { is_ship_size = marauder_station }
+									}
+								}
+							}
+						}
+					}
+					event_target:receiving_bulwark_station_commission = {
+						subtract_variable = { which = bulwarkstations value = 1 }
+					}
+					random_system_within_border = {
+						limit = {
+							exists = starbase
+							OR = {
+								has_any_megastructure = yes
+								starbase = {
+									OR = {
+										has_starbase_module = gun_battery
+										has_starbase_module = missile_battery
+										has_starbase_module = hangar_bay
+										has_starbase_module = shipyard
+									}
+								}
+							}
+						}
+						random_system_planet = {
+							limit = {
+								NOT = {
+									any_fleet_in_orbit = { is_ship_size = marauder_station }
+								}
+							}
+							save_event_target_as = bulwark_station_planet_target
+							create_fleet = {
+								effect = {
+									set_owner = event_target:receiving_bulwark_station_commission
+									create_ship = {
+										name = random
+										design = "NAME_BULWARK_STATION_MKFI"
+										graphical_culture = "pirate_01"
+										effect = {
+											add_modifier = { modifier = "bulwark_ships_unlimited" }
+											add_modifier = { modifier = "bulwark_budget_repairs" days = 5 }
+										}
+									}
+									set_location = event_target:bulwark_station_planet_target
+								}
+								settings = { spawn_debris = no }
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	# Commission 20 stations
+	option = {
+		name = tob_merc.9.b
+		trigger = {
+			NOT = {
+				from = { has_country_flag = bulwark_commission_stations_root }
+			}
+		}
+		allow = {
+			resource_stockpile_compare = { resource = energy value > 2000 }
+			hidden_trigger = {
+				NOT = {
+					from = { has_country_flag = bulwark_commission_stations_root }
+				}
+			}
+		}
+		set_timed_country_flag = { flag = bulwark_commissioned_stations_recently_safeguard days = 3 }
+		set_timed_country_flag = { flag = bulwark_commission_stations_target years = 2 }
+		add_resource = { energy = -2000 }
+		hidden_effect = {
+			if = {
+				limit = {
+					from = { has_country_flag = bulwark_country_techone }
+				}
+				from = {
+					set_timed_country_flag = { flag = bulwark_commission_stations_root years = 4 }
+					change_variable = { which = bulwarkbudget value = 100 }
+				}
+				random_playable_country = {
+					limit = { has_country_flag = bulwark_commissioned_stations_recently_safeguard }
+					save_global_event_target_as = receiving_bulwark_station_commission
+					set_variable = { which = bulwarkstations value = 20 }
+				}
+				while = {
+					limit = {
+						event_target:receiving_bulwark_station_commission = {
+							check_variable = { which = bulwarkstations value > 0 }
+							any_system_within_border = {
+								any_system_planet = {
+									NOT = {
+										any_fleet_in_orbit = { is_ship_size = marauder_station }
+									}
+								}
+							}
+						}
+					}
+					event_target:receiving_bulwark_station_commission = {
+						subtract_variable = { which = bulwarkstations value = 1 }
+					}
+					random_system_within_border = {
+						limit = {
+							exists = starbase
+							OR = {
+								has_any_megastructure = yes
+								starbase = {
+									OR = {
+										has_starbase_module = gun_battery
+										has_starbase_module = missile_battery
+										has_starbase_module = hangar_bay
+										has_starbase_module = shipyard
+									}
+								}
+							}
+						}
+						random_system_planet = {
+							limit = {
+								NOT = {
+									any_fleet_in_orbit = { is_ship_size = marauder_station }
+								}
+							}
+							save_event_target_as = bulwark_station_planet_target
+							create_fleet = {
+								effect = {
+									set_owner = event_target:receiving_bulwark_station_commission
+									create_ship = {
+										name = random
+										design = "NAME_BULWARK_STATION_MKO"
+										graphical_culture = "pirate_01"
+										effect = {
+											add_modifier = { modifier = "bulwark_ships_unlimited" }
+											add_modifier = { modifier = "bulwark_budget_repairs" days = 5 }
+										}
+									}
+									set_location = event_target:bulwark_station_planet_target
+								}
+								settings = { spawn_debris = no }
+							}
+						}
+					}
+				}
+			} else_if = {
+				limit = {
+					from = { has_country_flag = bulwark_country_techtwo }
+				}
+				from = {
+					set_timed_country_flag = { flag = bulwark_commission_stations_root years = 4 }
+					change_variable = { which = bulwarkbudget value = 100 }
+				}
+				random_playable_country = {
+					limit = { has_country_flag = bulwark_commissioned_stations_recently_safeguard }
+					save_global_event_target_as = receiving_bulwark_station_commission
+					set_variable = { which = bulwarkstations value = 20 }
+				}
+				while = {
+					limit = {
+						event_target:receiving_bulwark_station_commission = {
+							check_variable = { which = bulwarkstations value > 0 }
+							any_system_within_border = {
+								any_system_planet = {
+									NOT = {
+										any_fleet_in_orbit = { is_ship_size = marauder_station }
+									}
+								}
+							}
+						}
+					}
+					event_target:receiving_bulwark_station_commission = {
+						subtract_variable = { which = bulwarkstations value = 1 }
+					}
+					random_system_within_border = {
+						limit = {
+							exists = starbase
+							OR = {
+								has_any_megastructure = yes
+								starbase = {
+									OR = {
+										has_starbase_module = gun_battery
+										has_starbase_module = missile_battery
+										has_starbase_module = hangar_bay
+										has_starbase_module = shipyard
+									}
+								}
+							}
+						}
+						random_system_planet = {
+							limit = {
+								NOT = {
+									any_fleet_in_orbit = { is_ship_size = marauder_station }
+								}
+							}
+							save_event_target_as = bulwark_station_planet_target
+							create_fleet = {
+								effect = {
+									set_owner = event_target:receiving_bulwark_station_commission
+									create_ship = {
+										name = random
+										design = "NAME_BULWARK_STATION_MKT"
+										graphical_culture = "pirate_01"
+										effect = {
+											add_modifier = { modifier = "bulwark_ships_unlimited" }
+											add_modifier = { modifier = "bulwark_budget_repairs" days = 5 }
+										}
+									}
+									set_location = event_target:bulwark_station_planet_target
+								}
+								settings = { spawn_debris = no }
+							}
+						}
+					}
+				}
+			} else_if = {
+				limit = {
+					from = { has_country_flag = bulwark_country_techthree }
+				}
+				from = {
+					set_timed_country_flag = { flag = bulwark_commission_stations_root years = 4 }
+					change_variable = { which = bulwarkbudget value = 100 }
+				}
+				random_playable_country = {
+					limit = { has_country_flag = bulwark_commissioned_stations_recently_safeguard }
+					save_global_event_target_as = receiving_bulwark_station_commission
+					set_variable = { which = bulwarkstations value = 20 }
+				}
+				while = {
+					limit = {
+						event_target:receiving_bulwark_station_commission = {
+							check_variable = { which = bulwarkstations value > 0 }
+							any_system_within_border = {
+								any_system_planet = {
+									NOT = {
+										any_fleet_in_orbit = { is_ship_size = marauder_station }
+									}
+								}
+							}
+						}
+					}
+					event_target:receiving_bulwark_station_commission = {
+						subtract_variable = { which = bulwarkstations value = 1 }
+					}
+					random_system_within_border = {
+						limit = {
+							exists = starbase
+							OR = {
+								has_any_megastructure = yes
+								starbase = {
+									OR = {
+										has_starbase_module = gun_battery
+										has_starbase_module = missile_battery
+										has_starbase_module = hangar_bay
+										has_starbase_module = shipyard
+									}
+								}
+							}
+						}
+						random_system_planet = {
+							limit = {
+								NOT = {
+									any_fleet_in_orbit = { is_ship_size = marauder_station }
+								}
+							}
+							save_event_target_as = bulwark_station_planet_target
+							create_fleet = {
+								effect = {
+									set_owner = event_target:receiving_bulwark_station_commission
+									create_ship = {
+										name = random
+										design = "NAME_BULWARK_STATION_MKTH"
+										graphical_culture = "pirate_01"
+										effect = {
+											add_modifier = { modifier = "bulwark_ships_unlimited" }
+											add_modifier = { modifier = "bulwark_budget_repairs" days = 5 }
+										}
+									}
+									set_location = event_target:bulwark_station_planet_target
+								}
+								settings = { spawn_debris = no }
+							}
+						}
+					}
+				}
+			} else_if = {
+				limit = {
+					from = { has_country_flag = bulwark_country_techfour }
+				}
+				from = {
+					set_timed_country_flag = { flag = bulwark_commission_stations_root years = 4 }
+					change_variable = { which = bulwarkbudget value = 100 }
+				}
+				random_playable_country = {
+					limit = { has_country_flag = bulwark_commissioned_stations_recently_safeguard }
+					save_global_event_target_as = receiving_bulwark_station_commission
+					set_variable = { which = bulwarkstations value = 20 }
+				}
+				while = {
+					limit = {
+						event_target:receiving_bulwark_station_commission = {
+							check_variable = { which = bulwarkstations value > 0 }
+							any_system_within_border = {
+								any_system_planet = {
+									NOT = {
+										any_fleet_in_orbit = { is_ship_size = marauder_station }
+									}
+								}
+							}
+						}
+					}
+					event_target:receiving_bulwark_station_commission = {
+						subtract_variable = { which = bulwarkstations value = 1 }
+					}
+					random_system_within_border = {
+						limit = {
+							exists = starbase
+							OR = {
+								has_any_megastructure = yes
+								starbase = {
+									OR = {
+										has_starbase_module = gun_battery
+										has_starbase_module = missile_battery
+										has_starbase_module = hangar_bay
+										has_starbase_module = shipyard
+									}
+								}
+							}
+						}
+						random_system_planet = {
+							limit = {
+								NOT = {
+									any_fleet_in_orbit = { is_ship_size = marauder_station }
+								}
+							}
+							save_event_target_as = bulwark_station_planet_target
+							create_fleet = {
+								effect = {
+									set_owner = event_target:receiving_bulwark_station_commission
+									create_ship = {
+										name = random
+										design = "NAME_BULWARK_STATION_MKFO"
+										graphical_culture = "pirate_01"
+										effect = {
+											add_modifier = { modifier = "bulwark_ships_unlimited" }
+											add_modifier = { modifier = "bulwark_budget_repairs" days = 5 }
+										}
+									}
+									set_location = event_target:bulwark_station_planet_target
+								}
+								settings = { spawn_debris = no }
+							}
+						}
+					}
+				}
+			} else_if = {
+				limit = {
+					from = { has_country_flag = bulwark_country_techfive }
+				}
+				from = {
+					set_timed_country_flag = { flag = bulwark_commission_stations_root years = 4 }
+					change_variable = { which = bulwarkbudget value = 100 }
+				}
+				random_playable_country = {
+					limit = { has_country_flag = bulwark_commissioned_stations_recently_safeguard }
+					save_global_event_target_as = receiving_bulwark_station_commission
+					set_variable = { which = bulwarkstations value = 20 }
+				}
+				while = {
+					limit = {
+						event_target:receiving_bulwark_station_commission = {
+							check_variable = { which = bulwarkstations value > 0 }
+							any_system_within_border = {
+								any_system_planet = {
+									NOT = {
+										any_fleet_in_orbit = { is_ship_size = marauder_station }
+									}
+								}
+							}
+						}
+					}
+					event_target:receiving_bulwark_station_commission = {
+						subtract_variable = { which = bulwarkstations value = 1 }
+					}
+					random_system_within_border = {
+						limit = {
+							exists = starbase
+							OR = {
+								has_any_megastructure = yes
+								starbase = {
+									OR = {
+										has_starbase_module = gun_battery
+										has_starbase_module = missile_battery
+										has_starbase_module = hangar_bay
+										has_starbase_module = shipyard
+									}
+								}
+							}
+						}
+						random_system_planet = {
+							limit = {
+								NOT = {
+									any_fleet_in_orbit = { is_ship_size = marauder_station }
+								}
+							}
+							save_event_target_as = bulwark_station_planet_target
+							create_fleet = {
+								effect = {
+									set_owner = event_target:receiving_bulwark_station_commission
+									create_ship = {
+										name = random
+										design = "NAME_BULWARK_STATION_MKFI"
+										graphical_culture = "pirate_01"
+										effect = {
+											add_modifier = { modifier = "bulwark_ships_unlimited" }
+											add_modifier = { modifier = "bulwark_budget_repairs" days = 5 }
+										}
+									}
+									set_location = event_target:bulwark_station_planet_target
+								}
+								settings = { spawn_debris = no }
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	# Commission 30 stations
+	option = {
+		name = tob_merc.9.c
+		trigger = {
+			NOT = {
+				from = { has_country_flag = bulwark_commission_stations_root }
+			}
+		}
+		allow = {
+			resource_stockpile_compare = { resource = energy value > 3000 }
+			hidden_trigger = {
+				NOT = {
+					from = { has_country_flag = bulwark_commission_stations_root }
+				}
+			}
+		}
+		set_timed_country_flag = { flag = bulwark_commissioned_stations_recently_safeguard days = 3 }
+		set_timed_country_flag = { flag = bulwark_commission_stations_target years = 2 }
+		add_resource = { energy = -3000 }
+		hidden_effect = {
+			if = {
+				limit = {
+					from = { has_country_flag = bulwark_country_techone }
+				}
+				from = {
+					set_timed_country_flag = { flag = bulwark_commission_stations_root years = 4 }
+					change_variable = { which = bulwarkbudget value = 150 }
+				}
+				random_playable_country = {
+					limit = { has_country_flag = bulwark_commissioned_stations_recently_safeguard }
+					save_global_event_target_as = receiving_bulwark_station_commission
+					set_variable = { which = bulwarkstations value = 30 }
+				}
+				while = {
+					limit = {
+						event_target:receiving_bulwark_station_commission = {
+							check_variable = { which = bulwarkstations value > 0 }
+							any_system_within_border = {
+								any_system_planet = {
+									NOT = {
+										any_fleet_in_orbit = { is_ship_size = marauder_station }
+									}
+								}
+							}
+						}
+					}
+					event_target:receiving_bulwark_station_commission = {
+						subtract_variable = { which = bulwarkstations value = 1 }
+					}
+					random_system_within_border = {
+						limit = {
+							exists = starbase
+							OR = {
+								has_any_megastructure = yes
+								starbase = {
+									OR = {
+										has_starbase_module = gun_battery
+										has_starbase_module = missile_battery
+										has_starbase_module = hangar_bay
+										has_starbase_module = shipyard
+									}
+								}
+							}
+						}
+						random_system_planet = {
+							limit = {
+								NOT = {
+									any_fleet_in_orbit = { is_ship_size = marauder_station }
+								}
+							}
+							save_event_target_as = bulwark_station_planet_target
+							create_fleet = {
+								effect = {
+									set_owner = event_target:receiving_bulwark_station_commission
+									create_ship = {
+										name = random
+										design = "NAME_BULWARK_STATION_MKO"
+										graphical_culture = "pirate_01"
+										effect = {
+											add_modifier = { modifier = "bulwark_ships_unlimited" }
+											add_modifier = { modifier = "bulwark_budget_repairs" days = 5 }
+										}
+									}
+									set_location = event_target:bulwark_station_planet_target
+								}
+								settings = { spawn_debris = no }
+							}
+						}
+					}
+				}
+			} else_if = {
+				limit = {
+					from = { has_country_flag = bulwark_country_techtwo }
+				}
+				from = {
+					set_timed_country_flag = { flag = bulwark_commission_stations_root years = 4 }
+					change_variable = { which = bulwarkbudget value = 150 }
+				}
+				random_playable_country = {
+					limit = { has_country_flag = bulwark_commissioned_stations_recently_safeguard }
+					save_global_event_target_as = receiving_bulwark_station_commission
+					set_variable = { which = bulwarkstations value = 30 }
+				}
+				while = {
+					limit = {
+						event_target:receiving_bulwark_station_commission = {
+							check_variable = { which = bulwarkstations value > 0 }
+							any_system_within_border = {
+								any_system_planet = {
+									NOT = {
+										any_fleet_in_orbit = { is_ship_size = marauder_station }
+									}
+								}
+							}
+						}
+					}
+					event_target:receiving_bulwark_station_commission = {
+						subtract_variable = { which = bulwarkstations value = 1 }
+					}
+					random_system_within_border = {
+						limit = {
+							exists = starbase
+							OR = {
+								has_any_megastructure = yes
+								starbase = {
+									OR = {
+										has_starbase_module = gun_battery
+										has_starbase_module = missile_battery
+										has_starbase_module = hangar_bay
+										has_starbase_module = shipyard
+									}
+								}
+							}
+						}
+						random_system_planet = {
+							limit = {
+								NOT = {
+									any_fleet_in_orbit = { is_ship_size = marauder_station }
+								}
+							}
+							save_event_target_as = bulwark_station_planet_target
+							create_fleet = {
+								effect = {
+									set_owner = event_target:receiving_bulwark_station_commission
+									create_ship = {
+										name = random
+										design = "NAME_BULWARK_STATION_MKT"
+										graphical_culture = "pirate_01"
+										effect = {
+											add_modifier = { modifier = "bulwark_ships_unlimited" }
+											add_modifier = { modifier = "bulwark_budget_repairs" days = 5 }
+										}
+									}
+									set_location = event_target:bulwark_station_planet_target
+								}
+								settings = { spawn_debris = no }
+							}
+						}
+					}
+				}
+			} else_if = {
+				limit = {
+					from = { has_country_flag = bulwark_country_techthree }
+				}
+				from = {
+					set_timed_country_flag = { flag = bulwark_commission_stations_root years = 4 }
+					change_variable = { which = bulwarkbudget value = 150 }
+				}
+				random_playable_country = {
+					limit = { has_country_flag = bulwark_commissioned_stations_recently_safeguard }
+					save_global_event_target_as = receiving_bulwark_station_commission
+					set_variable = { which = bulwarkstations value = 30 }
+				}
+				while = {
+					limit = {
+						event_target:receiving_bulwark_station_commission = {
+							check_variable = { which = bulwarkstations value > 0 }
+							any_system_within_border = {
+								any_system_planet = {
+									NOT = {
+										any_fleet_in_orbit = { is_ship_size = marauder_station }
+									}
+								}
+							}
+						}
+					}
+					event_target:receiving_bulwark_station_commission = {
+						subtract_variable = { which = bulwarkstations value = 1 }
+					}
+					random_system_within_border = {
+						limit = {
+							exists = starbase
+							OR = {
+								has_any_megastructure = yes
+								starbase = {
+									OR = {
+										has_starbase_module = gun_battery
+										has_starbase_module = missile_battery
+										has_starbase_module = hangar_bay
+										has_starbase_module = shipyard
+									}
+								}
+							}
+						}
+						random_system_planet = {
+							limit = {
+								NOT = {
+									any_fleet_in_orbit = { is_ship_size = marauder_station }
+								}
+							}
+							save_event_target_as = bulwark_station_planet_target
+							create_fleet = {
+								effect = {
+									set_owner = event_target:receiving_bulwark_station_commission
+									create_ship = {
+										name = random
+										design = "NAME_BULWARK_STATION_MKTH"
+										graphical_culture = "pirate_01"
+										effect = {
+											add_modifier = { modifier = "bulwark_ships_unlimited" }
+											add_modifier = { modifier = "bulwark_budget_repairs" days = 5 }
+										}
+									}
+									set_location = event_target:bulwark_station_planet_target
+								}
+								settings = { spawn_debris = no }
+							}
+						}
+					}
+				}
+			} else_if = {
+				limit = {
+					from = { has_country_flag = bulwark_country_techfour }
+				}
+				from = {
+					set_timed_country_flag = { flag = bulwark_commission_stations_root years = 4 }
+					change_variable = { which = bulwarkbudget value = 150 }
+				}
+				random_playable_country = {
+					limit = { has_country_flag = bulwark_commissioned_stations_recently_safeguard }
+					save_global_event_target_as = receiving_bulwark_station_commission
+					set_variable = { which = bulwarkstations value = 30 }
+				}
+				while = {
+					limit = {
+						event_target:receiving_bulwark_station_commission = {
+							check_variable = { which = bulwarkstations value > 0 }
+							any_system_within_border = {
+								any_system_planet = {
+									NOT = {
+										any_fleet_in_orbit = { is_ship_size = marauder_station }
+									}
+								}
+							}
+						}
+					}
+					event_target:receiving_bulwark_station_commission = {
+						subtract_variable = { which = bulwarkstations value = 1 }
+					}
+					random_system_within_border = {
+						limit = {
+							exists = starbase
+							OR = {
+								has_any_megastructure = yes
+								starbase = {
+									OR = {
+										has_starbase_module = gun_battery
+										has_starbase_module = missile_battery
+										has_starbase_module = hangar_bay
+										has_starbase_module = shipyard
+									}
+								}
+							}
+						}
+						random_system_planet = {
+							limit = {
+								NOT = {
+									any_fleet_in_orbit = { is_ship_size = marauder_station }
+								}
+							}
+							save_event_target_as = bulwark_station_planet_target
+							create_fleet = {
+								effect = {
+									set_owner = event_target:receiving_bulwark_station_commission
+									create_ship = {
+										name = random
+										design = "NAME_BULWARK_STATION_MKFO"
+										graphical_culture = "pirate_01"
+										effect = {
+											add_modifier = { modifier = "bulwark_ships_unlimited" }
+											add_modifier = { modifier = "bulwark_budget_repairs" days = 5 }
+										}
+									}
+									set_location = event_target:bulwark_station_planet_target
+								}
+								settings = { spawn_debris = no }
+							}
+						}
+					}
+				}
+			} else_if = {
+				limit = {
+					from = { has_country_flag = bulwark_country_techfive }
+				}
+				from = {
+					set_timed_country_flag = { flag = bulwark_commission_stations_root years = 4 }
+					change_variable = { which = bulwarkbudget value = 150 }
+				}
+				random_playable_country = {
+					limit = { has_country_flag = bulwark_commissioned_stations_recently_safeguard }
+					save_global_event_target_as = receiving_bulwark_station_commission
+					set_variable = { which = bulwarkstations value = 30 }
+				}
+				while = {
+					limit = {
+						event_target:receiving_bulwark_station_commission = {
+							check_variable = { which = bulwarkstations value > 0 }
+							any_system_within_border = {
+								any_system_planet = {
+									NOT = {
+										any_fleet_in_orbit = { is_ship_size = marauder_station }
+									}
+								}
+							}
+						}
+					}
+					event_target:receiving_bulwark_station_commission = {
+						subtract_variable = { which = bulwarkstations value = 1 }
+					}
+					random_system_within_border = {
+						limit = {
+							exists = starbase
+							OR = {
+								has_any_megastructure = yes
+								starbase = {
+									OR = {
+										has_starbase_module = gun_battery
+										has_starbase_module = missile_battery
+										has_starbase_module = hangar_bay
+										has_starbase_module = shipyard
+									}
+								}
+							}
+						}
+						random_system_planet = {
+							limit = {
+								NOT = {
+									any_fleet_in_orbit = { is_ship_size = marauder_station }
+								}
+							}
+							save_event_target_as = bulwark_station_planet_target
+							create_fleet = {
+								effect = {
+									set_owner = event_target:receiving_bulwark_station_commission
+									create_ship = {
+										name = random
+										design = "NAME_BULWARK_STATION_MKFI"
+										graphical_culture = "pirate_01"
+										effect = {
+											add_modifier = { modifier = "bulwark_ships_unlimited" }
+											add_modifier = { modifier = "bulwark_budget_repairs" days = 5 }
+										}
+									}
+									set_location = event_target:bulwark_station_planet_target
+								}
+								settings = { spawn_debris = no }
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	option = {
+		name = tob_merc.9.d
+		default_hide_option = yes
+	}
+}

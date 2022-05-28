@@ -1,10 +1,3 @@
-# Expanded Events File
-#
-# Calvitix Check 3.2  
-# 28.11.2021
-#
-# 
-#
 ############################
 #
 # Expanded Country Events
@@ -694,9 +687,13 @@ country_event = {
 			}
 			add_deposit = d_damaged_ecosystem
 		}
-		begin_event_chain = {
-			event_chain = "damaged_ecosystem_chain"
-			target = ROOT
+		#begin_event_chain = {
+		#	event_chain = "damaged_ecosystem_chain"
+		#	target = ROOT
+		#}
+		start_situation = {
+			type = situation_damaged_ecosystem
+			target = root.capital_scope
 		}
 	}
 }
@@ -754,7 +751,22 @@ planet_event = {
 				resource = unity
 				value = @tier5unityreward
 			}
-			end_event_chain = "damaged_ecosystem_chain"
+			add_modifier = { modifier = saved_homeworld days = 7200 }
+			add_random_research_option = {
+				add_progress = 0.25
+				category  = biology
+				area = society
+				ignore_prereqs = no
+				fail_effects = {
+					add_monthly_resource_mult = {
+						resource = society_research
+						value = @tier5researchreward
+						min = @tier5researchmin
+						max = @tier5researchmax
+					}
+				}
+			}
+			#end_event_chain = "damaged_ecosystem_chain"
 			hidden_effect = {
 				every_owned_pop = {
 					add_modifier = {
@@ -767,82 +779,90 @@ planet_event = {
 	}
 }
 
-planet_event = {
+situation_event = {
 	id = countryexpanded.23
 	title = "countryexpanded.23.name"
 	desc = "countryexpanded.23.desc"
 	show_sound = event_air_raid_siren
 	picture = GFX_evt_warm_barren
+	location = target
+	situation = this
 	
-	pre_triggers = {
-		is_homeworld = yes
-	}
-	
-	trigger = {
-		has_planet_flag = damaged_homeworld
-		has_modifier = damaged_ecosystem
-		mid_game_years_passed >= 25
-	}
-	
-	mean_time_to_happen = {
-		months = 2500
-	}
+	is_triggered_only = yes
 	
 	immediate = {
-		remove_modifier = damaged_ecosystem
-		planet_event = { id = countryexpanded.24 days = 10800 random = 18000 }
+		set_situation_locked = yes
+		target = {
+			remove_modifier = damaged_ecosystem
+			add_modifier = {
+				modifier = "deteriorating_ecosystem"
+				days = -1
+			}
+		}
+	}
+	after = {
+		set_situation_locked = no
 	}
 	
 	option = {
 		name = countryexpanded.23.a
-		add_modifier = {
-			modifier = "deteriorating_ecosystem"
-			days = -1
+		tooltip = {
+			target = {
+				add_modifier = {
+					modifier = "deteriorating_ecosystem"
+					days = -1
+				}
+			}
 		}
 	}
 }
 
-planet_event = {
+situation_event = {
 	id = countryexpanded.24
 	title = "countryexpanded.24.name"
 	desc = "countryexpanded.24.desc"
 	show_sound = event_air_raid_siren
 	picture = GFX_evt_warm_barren
+	location = target
+	situation = this
 	
 	is_triggered_only = yes
-	
-	trigger = {
-		has_planet_flag = damaged_homeworld
-		has_modifier = deteriorating_ecosystem
-	}
 
 	immediate = {
-		remove_modifier = damaged_ecosystem
-		remove_modifier = deteriorating_ecosystem
-		remove_deposit = d_damaged_ecosystem
-		remove_planet_flag = damaged_homeworld
+		target = {
+			remove_modifier = damaged_ecosystem
+			remove_modifier = deteriorating_ecosystem
+			remove_deposit = d_damaged_ecosystem
+			remove_planet_flag = damaged_homeworld
+		}
 	}
 	
 	option = {
 		name = TERRIBLE
-		destroy_colony = yes
-		hidden_effect = {
-			add_modifier = {
-				modifier = "terraforming_candidate"
-				days = -1
-			}
-		}
-		if = {
-			limit = {
-				OR = {
-					is_dry = yes
-					is_wet = yes
+		#owner = { end_event_chain = "damaged_ecosystem_chain" }
+	}
+	
+	after = {
+		target = {
+			destroy_colony = yes
+			hidden_effect = {
+				add_modifier = {
+					modifier = "terraforming_candidate"
+					days = -1
 				}
 			}
-			change_pc = pc_barren
+			if = {
+				limit = {
+					OR = {
+						is_dry = yes
+						is_wet = yes
+					}
+				}
+				change_pc = pc_barren
+			}
+			else = { change_pc = pc_barren_cold }
 		}
-		else = { change_pc = pc_barren_cold }
-		owner = { end_event_chain = "damaged_ecosystem_chain" }
+		destroy_situation = this
 	}
 }
 
@@ -1639,7 +1659,7 @@ ship_event = {
 					factor = 0
 					FROMFROM = {
 						OR = {
-						is_city = yes
+							is_city = yes
 							is_planet_class = pc_sterile
 							is_planet_class = pc_hollow
 						}
@@ -1661,7 +1681,7 @@ ship_event = {
 					factor = 0
 					FROMFROM = {
 						OR = {
-						is_city = yes
+							is_city = yes
 							is_planet_class = pc_sterile
 							is_planet_class = pc_hollow
 						}
@@ -1692,7 +1712,7 @@ ship_event = {
 					factor = 0
 					FROMFROM = {
 						OR = {
-						is_city = yes
+							is_city = yes
 							is_planet_class = pc_sterile
 							is_planet_class = pc_hollow
 						}
@@ -1721,7 +1741,7 @@ ship_event = {
 					factor = 0
 					FROMFROM = {
 						OR = {
-						is_city = yes
+							is_city = yes
 							is_planet_class = pc_sterile
 							is_planet_class = pc_hollow
 						}
@@ -1747,7 +1767,7 @@ ship_event = {
 					factor = 5
 					FROMFROM = {
 						OR = {
-							has_modifier = bleak_planet 
+							has_modifier = bleak_planet
 							is_planet_class = pc_sterile
 							is_planet_class = pc_hollow
 							is_city = yes
@@ -1808,16 +1828,10 @@ ship_event = {
 								is_deposit_type = d_quicksand_basin
 								is_deposit_type = d_noxious_swamp
 								is_deposit_type = d_massive_glacier
-								is_deposit_type = d_impassable_erg
-								is_deposit_type = d_saline_lakes
-								is_deposit_type = d_dusty_pit
-								is_deposit_type = d_igneous_traps
-								is_deposit_type = d_viscous_morass
-								is_deposit_type = d_flooded_plain
-								is_deposit_type = d_ice_crust
-								is_deposit_type = d_impenetrable_taiga
 								is_deposit_type = d_large_ice_ridge
 								is_deposit_type = d_dune_sea
+								is_deposit_type = d_igneous_traps
+								is_deposit_type = d_ice_crust
 								is_deposit_type = d_thick_forest
 							}
 						}
@@ -1878,7 +1892,7 @@ ship_event = {
 					factor = 0
 					FROMFROM = {
 						OR = {
-						is_city = yes
+							is_city = yes
 							is_planet_class = pc_sterile
 							is_planet_class = pc_hollow
 						}
@@ -2303,7 +2317,7 @@ country_event = {
 		last_created_country = {
 			set_subject_of = {
 				who = ROOT
-				subject_type = vassal
+				preset = preset_scholarium
 			}
 			hidden_effect = {
 				add_resource = {
@@ -2648,38 +2662,38 @@ planet_event = {
 			random_list = {
 				15 = {
 					# colony_system_5_barren
-						spawn_system = {
-							min_distance = 25
-							max_distance = 75
-							initializer = "colony_5_1_system"
-						}
+					spawn_system = {
+						min_distance = 25
+						max_distance = 75
+						initializer = "colony_5_1_system"
+					}
 					add_extra_hyperlane_to_spawned_system_effect = yes
 				}
 				20 = {
 					# colony_system_5_disintegrated
-						spawn_system = {
-							min_distance = 25
-							max_distance = 75
-							initializer = "colony_5_2_system"
-						}
+					spawn_system = {
+						min_distance = 25
+						max_distance = 75
+						initializer = "colony_5_2_system"
+					}
 					add_extra_hyperlane_to_spawned_system_effect = yes
 				}
 				25 = {
 					# colony_system_5_blackhole
-						spawn_system = {
-							min_distance = 25
-							max_distance = 75
-							initializer = "colony_5_3_system"
-						}
+					spawn_system = {
+						min_distance = 25
+						max_distance = 75
+						initializer = "colony_5_3_system"
+					}
 					add_extra_hyperlane_to_spawned_system_effect = yes
 				}
 				10 = {
 					# colony_system_5_primitives
-						spawn_system = {
-							min_distance = 25
-							max_distance = 75
-							initializer = "colony_5_4_system"
-						}
+					spawn_system = {
+						min_distance = 25
+						max_distance = 75
+						initializer = "colony_5_4_system"
+					}
 					add_extra_hyperlane_to_spawned_system_effect = yes
 				}
 				15 = {
@@ -3042,6 +3056,8 @@ country_event = {
 		add_monthly_resource_mult = {
 			resource = unity
 			value = @tier2unityreward
+			min = @tier2unitymin
+			max = @tier2unitymax
 		}
 	}
 }
@@ -3058,7 +3074,7 @@ country_event = {
 	
 	trigger = {
 		has_event_chain = "une_search_for_com_chain"
-		has_country_flag = search_for_com 
+		has_country_flag = search_for_com
 	}
 	
 	immediate = {
@@ -3079,6 +3095,8 @@ country_event = {
 		add_monthly_resource_mult = {
 			resource = unity
 			value = @tier2unityreward
+			min = @tier2unitymin
+			max = @tier2unitymax
 		}
 	}
 }
@@ -3245,7 +3263,7 @@ country_event = {
 				AND = {
 					exists = ruler
 					ruler = {
-						species = { species_portrait = human }
+						species = { OR = { species_portrait = human species_portrait = human_legacy } }
 					}
 				}
 				event_target:contact_empire = { is_xenophobe = no }
@@ -3262,7 +3280,7 @@ country_event = {
 			has_country_flag = human_1
 			exists = ruler
 			ruler = {
-				NOT = { species = { species_portrait = human } }
+				NOT = { species = { OR = { species_portrait = human species_portrait = human_legacy } } }
 			}
 		}
 	}
@@ -3299,7 +3317,7 @@ country_event = {
 			has_authority = auth_democratic
 			exists = ruler
 			ruler = {
-				NOT = { species = { species_portrait = human } }
+				NOT = { species = { OR = { species_portrait = human species_portrait = human_legacy } } }
 			}
 			event_target:contact_empire = {
 				has_country_flag = human_2
@@ -3316,7 +3334,7 @@ country_event = {
 			NOT = { has_authority = auth_democratic }
 			exists = ruler
 			ruler = {
-				NOT = { species = { species_portrait = human } }
+				NOT = { species = { OR = { species_portrait = human species_portrait = human_legacy } } }
 			}
 			event_target:contact_empire = {
 				has_country_flag = human_2
@@ -3336,7 +3354,7 @@ country_event = {
 				AND = {
 					exists = ruler
 					ruler = {
-						species = { species_portrait = human }
+						species = { OR = { species_portrait = human species_portrait = human_legacy } }
 					}
 				}
 			}
@@ -3375,7 +3393,7 @@ country_event = {
 				AND = {
 					exists = ruler
 					ruler = {
-						species = { species_portrait = human }
+						species = { OR = { species_portrait = human species_portrait = human_legacy } }
 					}
 				}
 			}
@@ -3398,7 +3416,7 @@ country_event = {
 					AND = {
 						exists = ruler
 						ruler = {
-							species = { species_portrait = human }
+							species = { OR = { species_portrait = human species_portrait = human_legacy } }
 						}
 					}
 				}
@@ -3420,7 +3438,7 @@ country_event = {
 					AND = {
 						exists = ruler
 						ruler = {
-							species = { species_portrait = human }
+							species = { OR = { species_portrait = human species_portrait = human_legacy } }
 						}
 					}
 				}
@@ -3438,7 +3456,7 @@ country_event = {
 				has_country_flag = human_1
 				exists = ruler
 				ruler = {
-					species = { species_portrait = human }
+					species = { OR = { species_portrait = human species_portrait = human_legacy } }
 				}
 			}
 		}
@@ -3457,7 +3475,7 @@ country_event = {
 							AND = {
 								exists = ruler
 								ruler = {
-									species = { species_portrait = human }
+									species = { OR = { species_portrait = human species_portrait = human_legacy } }
 								}
 							}
 						}
@@ -3694,7 +3712,7 @@ country_event = {
 				has_country_flag = human_1
 				exists = ruler
 				ruler = {
-					NOT = { species = { species_portrait = human } }
+					NOT = { species = { OR = { species_portrait = human species_portrait = human_legacy } } }
 				}
 				event_target:contact_empire = {
 					has_country_flag = human_2
@@ -3708,7 +3726,7 @@ country_event = {
 					has_country_flag = human_1
 					exists = ruler
 					ruler = {
-						species = { species_portrait = human }
+						species = { OR = { species_portrait = human species_portrait = human_legacy } }
 					}
 				}
 			}
@@ -4328,7 +4346,7 @@ country_event = {
 				AND = {
 					exists = ruler
 					ruler = {
-						species = { species_portrait = human }
+						species = { OR = { species_portrait = human species_portrait = human_legacy } }
 					}
 				}
 				event_target:contact_empire = { is_xenophobe = no }
@@ -4345,7 +4363,7 @@ country_event = {
 			has_country_flag = human_1
 			exists = ruler
 			ruler = {
-				NOT = { species = { species_portrait = human } }
+				NOT = { species = { OR = { species_portrait = human species_portrait = human_legacy } } }
 			}
 		}
 	}
@@ -4382,7 +4400,7 @@ country_event = {
 			has_authority = auth_democratic
 			exists = ruler
 			ruler = {
-				NOT = { species = { species_portrait = human } }
+				NOT = { species = { OR = { species_portrait = human species_portrait = human_legacy } } }
 			}
 			event_target:from = {
 				has_country_flag = human_2
@@ -4399,7 +4417,7 @@ country_event = {
 			NOT = { has_authority = auth_democratic }
 			exists = ruler
 			ruler = {
-				NOT = { species = { species_portrait = human } }
+				NOT = { species = { OR = { species_portrait = human species_portrait = human_legacy } } }
 			}
 			event_target:from = {
 				has_country_flag = human_2
@@ -4419,7 +4437,7 @@ country_event = {
 				AND = {
 					exists = ruler
 					ruler = {
-						species = { species_portrait = human }
+						species = { OR = { species_portrait = human species_portrait = human_legacy } }
 					}
 				}
 			}
@@ -4458,7 +4476,7 @@ country_event = {
 				AND = {
 					exists = ruler
 					ruler = {
-						species = { species_portrait = human }
+						species = { OR = { species_portrait = human species_portrait = human_legacy } }
 					}
 				}
 			}
@@ -4481,7 +4499,7 @@ country_event = {
 					AND = {
 						exists = ruler
 						ruler = {
-							species = { species_portrait = human }
+							species = { OR = { species_portrait = human species_portrait = human_legacy } }
 						}
 					}
 				}
@@ -4503,7 +4521,7 @@ country_event = {
 					AND = {
 						exists = ruler
 						ruler = {
-							species = { species_portrait = human }
+							species = { OR = { species_portrait = human species_portrait = human_legacy } }
 						}
 					}
 				}
@@ -4521,7 +4539,7 @@ country_event = {
 				has_country_flag = human_1
 				exists = ruler
 				ruler = {
-					species = { species_portrait = human }
+					species = { OR = { species_portrait = human species_portrait = human_legacy } }
 				}
 			}
 		}
@@ -4540,7 +4558,7 @@ country_event = {
 							AND = {
 								exists = ruler
 								ruler = {
-									species = { species_portrait = human }
+									species = { OR = { species_portrait = human species_portrait = human_legacy } }
 								}
 							}
 						}
@@ -4777,7 +4795,7 @@ country_event = {
 				has_country_flag = human_1
 				exists = ruler
 				ruler = {
-					NOT = { species = { species_portrait = human } }
+					NOT = { species = { OR = { species_portrait = human species_portrait = human_legacy } } }
 				}
 				event_target:from = {
 					has_country_flag = human_2
@@ -4791,7 +4809,7 @@ country_event = {
 					has_country_flag = human_1
 					exists = ruler
 					ruler = {
-						species = { species_portrait = human }
+						species = { OR = { species_portrait = human species_portrait = human_legacy } }
 					}
 				}
 			}
@@ -5341,8 +5359,8 @@ country_event = {
 	immediate = {
 		random_country = {
 			limit = { has_country_flag = human_1 }
-		country_event = { id = countryexpanded.61 days = 60 random = 2000 }
-	}
+			country_event = { id = countryexpanded.61 days = 60 random = 2000 }
+		}
 	}
 }
 
@@ -5710,13 +5728,13 @@ country_event = {
 						is_valid_refugee_pop = yes
 					}
 				}
-				# if = {   #calvitix disabled
-					# limit = {
-						# has_global_flag = better_diplo_installed
-						# is_active_resolution = "resolution_galacticcooperation_sanctity_of_life"
-					# }
-					# ROOT = { add_resource = { influence = 1 } }
-				# }
+				if = {
+					limit = {
+						has_global_flag = better_diplo_installed
+						is_active_resolution = "resolution_galacticcooperation_sanctity_of_life"
+					}
+					ROOT = { add_resource = { influence = 1 } }
+				}
 				random_owned_pop = {
 					limit = {
 						is_being_purged = yes
@@ -6261,7 +6279,7 @@ country_event = {
 			}		
 			modifier = {
 				factor = 0.75
-				fleet_power > 2000 #10000
+				fleet_power > 10000
 			}
 		}
 		event_target:FallenEmpireTaskPlanet = {
@@ -6527,7 +6545,7 @@ country_event = {
 			}
 			modifier = {
 				factor = 0.75
-				fleet_power > 2000 #10000
+				fleet_power > 10000
 			}
 		}
 		custom_tooltip = countryexpanded.111.a.tooltip
@@ -6577,7 +6595,7 @@ country_event = {
 			}
 			modifier = {
 				factor = 0.75
-				fleet_power > 2000 #10000
+				fleet_power > 10000
 			}
 		}
 		custom_tooltip = countryexpanded.111.a.tooltip
@@ -6867,7 +6885,7 @@ country_event = {
 			}
 			modifier = {
 				factor = 0.75
-				fleet_power > 2000 #10000
+				fleet_power > 10000
 			}
 		}
 		add_modifier = { modifier = fe_missionaries days = 36000 }
@@ -7510,7 +7528,7 @@ country_event = {
 			}
 			modifier = {
 				factor = 0.75
-				fleet_power > 2000 #10000
+				fleet_power > 10000
 			}
 		}
 		add_resource = { energy = -2000 }
@@ -7562,7 +7580,7 @@ country_event = {
 			}
 			modifier = {
 				factor = 0.75
-				fleet_power > 2000 #10000
+				fleet_power > 10000
 			}
 		}
 		add_resource = { minerals = -2000 }
@@ -7614,7 +7632,7 @@ country_event = {
 			}
 			modifier = {
 				factor = 0.75
-				fleet_power > 2000 #10000
+				fleet_power > 10000
 			}
 		}
 		add_resource = { alloys = -500 }
@@ -7802,6 +7820,71 @@ country_event = {
 		}
 		custom_tooltip = fallen_empire_unhappy_tooltip
 		hidden_effect = { event_target:FallenEmpireTaskOrigin = { add_opinion_modifier = { who = root modifier = opinion_refused_fallen_empire_request } } }
+	}
+}
+
+# Guardians of the Galaxy (Player Crisis)
+country_event = {
+	id = countryexpanded.124
+	title = OK
+	desc = OK
+
+	hide_window = yes
+
+	trigger = {
+		any_country = { has_country_flag = cracked_first_star }
+		NOT = { has_global_flag = sleepers_awake_rival_waking } # Not if WiH happened
+		has_country_flag = guardians_of_the_galaxy
+		NOT = { has_global_flag = guardians_of_the_galaxy_happened }
+		NOT = { has_country_flag = timed_guardians_of_the_galaxy }
+	}
+
+	mean_time_to_happen = {
+		years = 5
+		modifier = {
+			factor = 0.01
+			NOT = { has_country_flag = timed_guardians_of_the_galaxy_2 }
+		}
+	}
+
+	immediate = {
+		set_global_flag = guardians_of_the_galaxy_happened
+		country_event = { id = fallen_empires_awakening.3 }
+
+		every_country = {
+			limit = {
+				OR = { is_country_type = default is_country_type = ascended_empire is_country_type = lost_empire }
+				NOT = { has_ascension_perk = ap_become_the_crisis }
+			}
+			random_list = {
+				33 = { add_opinion_modifier = { who = root modifier = opinion_crisis_fighter } }
+				33 = { add_opinion_modifier = { who = root modifier = opinion_crisis_fighter_small } }
+				33 = { }
+			}
+		}
+
+		# Notify
+		every_country = {
+			limit = {
+				is_ai = no
+			}
+			country_event = { id = fallen_empires_awakening.5 }
+		}
+		every_country = {
+			limit = {
+				OR = {
+					has_country_flag = crisis_sphere_revealed
+					has_country_flag = cracked_first_star
+				}
+			}
+			ROOT = {
+				declare_war = {
+					target = PREV
+					attacker_war_goal = "wg_end_threat_crisis"
+				}
+			}
+		}
+		observer_event = { id = observer.74 }
 	}
 }
 
@@ -8532,16 +8615,11 @@ country_event = {
 								is_deposit_type = d_quicksand_basin
 								is_deposit_type = d_noxious_swamp
 								is_deposit_type = d_massive_glacier
-								is_deposit_type = d_impassable_erg
-								is_deposit_type = d_saline_lakes
-								is_deposit_type = d_dusty_pit
-								is_deposit_type = d_igneous_traps
-								is_deposit_type = d_viscous_morass
-								is_deposit_type = d_flooded_plain
-								is_deposit_type = d_ice_crust
-								is_deposit_type = d_impenetrable_taiga
 								is_deposit_type = d_large_ice_ridge
 								is_deposit_type = d_dune_sea
+								is_deposit_type = d_igneous_traps
+								is_deposit_type = d_flooded_plain
+								is_deposit_type = d_ice_crust
 								is_deposit_type = d_thick_forest
 							}
 						}
@@ -8650,6 +8728,14 @@ country_event = {
 		if = {
 			limit = { is_species_class = REP }
 			event_target:lost_sister_colony = { set_name = "NAME_colony_rep" }
+		}
+		if = {
+			limit = { is_species_class = NECROID }
+			event_target:lost_sister_colony = { set_name = "NAME_colony_necroid" }
+		}
+		if = {
+			limit = { is_species_class = AQUATIC }
+			event_target:lost_sister_colony = { set_name = "NAME_colony_aquatic" }
 		}
 	}
 
@@ -10043,7 +10129,7 @@ event = {
 							}
 							country_event = { id = countryexpanded.262 days = 5 random = 1260 }
 						}
-						# Xeno rights movement supressed
+						# Xeno rights movement suppressed
 						8 = {
 							modifier = {
 								factor = 0
@@ -10754,7 +10840,7 @@ country_event = {
 	option = {
 		name = NOTIME
 		trigger = { is_ai = no }
-		add_resource = { influence = 50 }
+		add_resource = { unity = 500 }
 	}
 }
 
@@ -10859,14 +10945,14 @@ ship_event = {
 		text = countryexpanded.304.desc.a
 		trigger = {
 			has_ship_flag = distant_origin_microbes
-			habitable_planet = yes
+			FROM = { habitable_planet = yes }
 		}
 	}
 	desc = {
 		text = countryexpanded.304.desc.a.candidate
 		trigger = {
 			has_ship_flag = distant_origin_microbes
-			habitable_planet = no
+			FROM = { habitable_planet = no }
 		}
 	}
 	desc = {
@@ -10888,7 +10974,7 @@ ship_event = {
 	immediate = {
 		random_list = {
 			8 = {
-				set_ship_flag = distant_origin_aliens
+				set_ship_flag = distant_origin_microbes
 				modifier = {
 					factor = 0
 					FROM = {
@@ -12846,7 +12932,7 @@ country_event = {
 	
 	option = {
 		name = EXCELLENT
-		add_resource = { influence = 25 }
+		add_resource = { unity = 250 }
 		hidden_effect = { remove_country_flag = lost_war_timer }
 	}
 }
@@ -12863,7 +12949,7 @@ country_event = {
 	
 	option = {
 		name = UNFORTUNATE
-		add_resource = { influence = 25 }
+		add_resource = { unity = 250 }
 		event_target:dueled_leader = {
 			kill_leader = { show_notification = yes }
 		}
@@ -14527,7 +14613,7 @@ country_event = {
 	option = {
 		name = countryexpanded.458.b
 		trigger = { is_ai = no }
-		add_resource = { influence = 50 }
+		add_resource = { unity = 500 }
 	}
 }
 

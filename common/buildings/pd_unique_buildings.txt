@@ -1,8 +1,8 @@
 # Planetary Diversity Unique
 #
-# Calvitix Check 3.4.2
+# Calvitix Check 3.4.3
 #
-# Last update 19.05.2022
+# Last update 27.05.2022
 #
 
 #Floating
@@ -944,7 +944,7 @@ building_acean_farm = {
 	base_buildtime = @b3_time
 	base_cap_amount = 1
 
-	category = trade
+	category = resource
 
 	potential = {
 		NOT = { has_modifier = resort_colony }
@@ -960,7 +960,7 @@ building_acean_farm = {
 	destroy_trigger = {
 		exists = owner
 		OR = {
-			owner = { is_regular_empire = no }
+			#owner = { is_regular_empire = no }
 			has_modifier = slave_colony
 			has_modifier = resort_colony
 		}
@@ -1036,7 +1036,7 @@ building_acean_patch = {
 	base_buildtime = @b3_time
 	base_cap_amount = 1
 
-	category = trade
+	category = resource
 
 	potential = {
 		NOT = { has_modifier = resort_colony }
@@ -1052,7 +1052,7 @@ building_acean_patch = {
 	destroy_trigger = {
 		exists = owner
 		OR = {
-			owner = { is_regular_empire = no }
+			#owner = { is_regular_empire = no }
 			has_modifier = slave_colony
 			has_modifier = resort_colony
 		}
@@ -1062,7 +1062,7 @@ building_acean_patch = {
 		potential = {
 			exists = owner
 			owner = { NOT = { has_deficit = sr_acean } }
-			owner = { is_regular_empire = yes }
+			#owner = { is_regular_empire = yes }
 		}
 		planet_jobs_minerals_produces_mult = 0.2
 		job_crystal_miner_add = 1
@@ -1122,141 +1122,6 @@ building_acean_patch = {
 			}
 		}
 	}
-}
-
-#Archive Habitat
-
-# Archive Administration
-building_archive_capital = {
-	capital = yes
-	can_build = no
-	can_demolish = no
-	can_be_ruined = no
-	can_be_disabled = no
-	icon = building_capital
-
-	category = government
-	
-	potential = {
-		is_planet_class = pc_archive
-	}
-	
-	resources = {
-		category = planet_buildings
-		upkeep = {
-			energy = 3
-			alloys = 5
-		}		
-	}
-	
-	planet_modifier = {
-		planet_housing_add = 3
-		planet_amenities_add = 3	
-	}
-	
-	triggered_planet_modifier = {
-		potential = {
-			exists = owner
-			owner = { is_mechanical_empire = yes }		
-		}
-		job_roboticist_add = 1
-	}
-
-	triggered_planet_modifier = {
-		potential = {
-			exists = owner
-			owner = { 
-				NOT = { has_authority = auth_corporate }
-				is_regular_empire = yes 
-			}
-		}
-		job_politician_add = 1
-	}
-	
-	triggered_planet_modifier = {
-		potential = {
-			exists = owner
-			owner = { has_authority = auth_corporate }
-		}
-		modifier = {
-			job_executive_add = 1
-		}
-	}	
-		
-	
-	triggered_planet_modifier = {
-		potential = {
-			exists = owner
-			owner = { is_hive_empire = yes }
-		}
-		job_synapse_drone_add = 1
-	}
-	
-	triggered_planet_modifier = {
-		potential = {
-			exists = owner
-			owner = { is_machine_empire = yes }
-		}
-		job_coordinator_add = 1
-		job_replicator_add = 1
-	}
-	
-	triggered_desc = {
-		trigger = {
-			exists = owner
-			owner = { 
-				NOT = { has_authority = auth_corporate }
-				is_regular_empire = yes 
-			}
-		}	
-		text = job_politician_effect_desc
-	}
-	
-	triggered_desc = {
-		trigger = { 
-			exists = owner
-			owner = { is_mechanical_empire = yes }		
-		}
-		text = job_roboticist_effect_desc
-	}	
-	
-	triggered_desc = {
-		trigger = {
-			exists = owner
-			owner = { 
-				has_authority = auth_corporate
-			}
-		}	
-		text = job_executive_effect_desc
-	}	
-	
-	triggered_desc = {
-		trigger = {
-			exists = owner
-			owner = { is_machine_empire = yes }
-		}		
-		text = job_coordinator_effect_desc
-	}		
-	
-	triggered_desc = {
-		trigger = {
-			exists = owner
-			owner = { is_machine_empire = yes }
-		}	
-		text = job_replicator_effect_desc
-	}	
-	
-	triggered_desc = {
-		trigger = {
-			exists = owner
-			owner = { is_hive_empire = yes }
-		}	
-		text = job_synapse_drone_effect_desc
-	}	
-
-	upgrades = {
-		"building_archive_major_capital"
-	} 
 }
 
 # Habitat Central Complex
@@ -1576,12 +1441,15 @@ building_techno_canal = {
 	base_buildtime = @b3_time
 	base_cap_amount = 1
 
-	category = trade
+	category = resource
 
 	potential = {
 		NOT = { has_modifier = resort_colony }
 		NOT = { has_modifier = slave_colony }
 		NOT = { is_planet_class = pc_technoorganic }
+		is_pd_arcology = no
+		is_pd_robot_arcology = no
+		is_pd_hive_arcology = no  
 	}
 
 	allow = {
@@ -1668,7 +1536,7 @@ building_techno_synth_workshop = {
 	base_buildtime = @b3_time
 	base_cap_amount = 1
 
-	category = amenity
+	category = research
 
 	potential = {
 		NOT = { has_modifier = resort_colony }
@@ -1742,7 +1610,7 @@ building_techno_synth_workshop = {
 building_biosynth_lm_refinery = {
 	base_buildtime = @b3_time
 
-	category = amenity
+	category = manufacturing
 
 	potential = {
 		NOT = { has_modifier = resort_colony }

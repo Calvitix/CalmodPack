@@ -303,47 +303,62 @@ is_fe_cluster = {
 }
 
 has_leviathans = {
+	optimize_memory
 	host_has_dlc = "Leviathans Story Pack"
 }
 
 has_utopia = {
+	optimize_memory
 	host_has_dlc = "Utopia"
 }
 
 has_plantoids = {
+	optimize_memory
 	host_has_dlc = "Plantoids Species Pack"
 }
 
 has_synthethic_dawn = {
+	optimize_memory
 	host_has_dlc = "Synthetic Dawn Story Pack"
 }
 
 has_humanoids = {
+	optimize_memory
 	host_has_dlc = "Humanoids Species Pack"
 }
 
 has_not_humanoids = {
+	optimize_memory
 	NOT = { host_has_dlc = "Humanoids Species Pack" }
 }
 
 has_lithoids = {
+	optimize_memory
 	host_has_dlc = "Lithoids Species Pack"
 }
 
 has_federations_dlc = {
+	optimize_memory
 	host_has_dlc = "Federations"
 }
 
 has_necroids = {
+	optimize_memory
 	host_has_dlc = "Necroids Species Pack"
 }
 
 has_nemesis = {
+	optimize_memory
 	host_has_dlc = "Nemesis"
 }
 
 has_aquatics = {
+	optimize_memory
 	host_has_dlc = "Aquatics Species Pack"
+}
+
+has_overlord_dlc = {
+	host_has_dlc = "Overlord"
 }
 
 uninhabitable_regular_planet = {
@@ -365,6 +380,7 @@ colonizable_planet = {
 		is_planet_class = pc_nuked
 		is_planet_class = pc_hive
 		is_planet_class = pc_machine
+		habitable_structure = yes
 		is_artificial = yes
 		habitable_planet = yes
 		is_planet_class = pc_irradiated
@@ -662,12 +678,12 @@ has_encountered_other_species = {
 	}
 }
 
-has_citizenship_rights = {
-	OR = {
-		has_citizenship_type = { type = citizenship_full }
-		has_citizenship_type = { type = citizenship_full_machine }
-	}
-}
+# has_citizenship_rights = { #handled in code now
+# 	OR = {
+# 		has_citizenship_type = { type = citizenship_full }
+# 		has_citizenship_type = { type = citizenship_full_machine }
+# 	}
+# }
 
 allows_alien_leaders = {
 	any_owned_planet ={
@@ -914,21 +930,17 @@ has_any_megastructure_in_empire = {
 			has_megastructure = crisis_sphere_2
 			has_megastructure = crisis_sphere_3
 			has_megastructure = crisis_sphere_4
+			has_megastructure = quantum_catapult_0
+			has_megastructure = quantum_catapult_1
+			has_megastructure = quantum_catapult_2
+			has_megastructure = quantum_catapult_3
+			has_megastructure = quantum_catapult_ruined
+			has_megastructure = quantum_catapult_restored
+			has_megastructure = quantum_catapult_ruined_slingshot
+			has_megastructure = quantum_catapult_restored_slingshot
 		}
 	}
 }
-
-#has_any_tradition_unlocked = {  #3.1.1 removed
-#	OR = {
-#		has_tradition = tr_discovery_adopt
-#		has_tradition = tr_diplomacy_adopt
-#		has_tradition = tr_domination_adopt
-#		has_tradition = tr_expansion_adopt
-#		has_tradition = tr_harmony_adopt
-#		has_tradition = tr_prosperity_adopt
-#		has_tradition = tr_supremacy_adopt
-#	}
-#}
 
 is_fallen_machine_empire = {
 	OR = {
@@ -1116,6 +1128,7 @@ is_country_type_with_subjects = {
 	OR = {
 		is_country_type = default
 		is_country_type = awakened_fallen_empire
+		is_country_type = awakened_marauders
 	}
 }
 
@@ -1161,6 +1174,17 @@ has_sapient_combat_computer = {
 		has_component = COMBAT_COMPUTER_ARTILLERY_SAPIENT
 		has_component = COMBAT_COMPUTER_CARRIER_SAPIENT
 		has_component = COMBAT_COMPUTER_PLATFORM_SAPIENT
+	}
+}
+
+has_autonomous_combat_computer = {
+	OR = {
+		has_component = COMBAT_COMPUTER_SWARM_AUTONOMOUS
+		has_component = COMBAT_COMPUTER_LINE_AUTONOMOUS
+		has_component = COMBAT_COMPUTER_PICKET_AUTONOMOUS
+		has_component = COMBAT_COMPUTER_ARTILLERY_AUTONOMOUS
+		has_component = COMBAT_COMPUTER_CARRIER_AUTONOMOUS
+		has_component = COMBAT_COMPUTER_PLATFORM_AUTONOMOUS
 	}
 }
 
@@ -1605,6 +1629,20 @@ has_no_non_gate_megastructure = {
 					is_megastructure_type = crisis_sphere_2
 					is_megastructure_type = crisis_sphere_3
 					is_megastructure_type = crisis_sphere_4
+
+					is_megastructure_type = quantum_catapult_0
+					is_megastructure_type = quantum_catapult_1
+					is_megastructure_type = quantum_catapult_2
+					is_megastructure_type = quantum_catapult_3
+					is_megastructure_type = quantum_catapult_ruined
+					is_megastructure_type = quantum_catapult_restored
+					is_megastructure_type = quantum_catapult_ruined_slingshot
+					is_megastructure_type = quantum_catapult_restored_slingshot
+					is_megastructure_type = quantum_catapult_improved_slingshot
+
+					is_megastructure_type = orbital_ring
+					is_megastructure_type = orbital_ring_ruined
+					is_megastructure_type = orbital_ring_restored
 				}
 			}
 		}
@@ -3321,7 +3359,7 @@ has_non_hostile_origin_dragon_trigger = {
 
 is_dragon_breeder_country = {
 	has_country_flag = dragon_breeders
-	any_controlled_ship = {
+	any_owned_ship = {
 		is_ship_size = space_dragon_origin
 	}
 }

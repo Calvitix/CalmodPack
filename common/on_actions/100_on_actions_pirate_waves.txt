@@ -1,29 +1,42 @@
 ##########################################################################
-# Action Triggers for Pirate Waves
+# Action Triggers for Pirate Waves.
 #
-# Written by ScepraX
 ##########################################################################
+
+on_game_start = {
+	events = {
+		khan.300
+	}
+}
+
+on_single_player_save_game_load = {
+	events = {
+		khan.300
+		# marauder.99
+	}
+}
 
 # No scope, like on_game_start
 on_monthly_pulse = {
 	events = {
-		pirate_waves.5
-		pirate_waves.1
-		pirate_waves.7
+		# pirate_waves.5 # Create pirate countries
+		pirate_waves.1 # Create pirate stations
+		# pirate_waves.7 # Build fleets reinforcements
 	}
 }
-
-# Triggers when the game starts
-on_game_start = {
+# on_decade_pulse
+# No scope, like on_game_start
+on_five_year_pulse = {
 	events = {
-		pirate_waves.5
+		pirate.2
+		pirate_waves.200
 	}
 }
 
 # This = owner of ship 1 (destroyed)
 # From = owner of ship 2 (combatant)
-# FromFrom = ship 1
-# FromFromFrom = ship 2
+# Fromfrom = ship 1
+# Fromfromfrom = ship 2
 on_ship_destroyed_victim = {
 	events = {
 		pirate_waves.8
@@ -32,19 +45,43 @@ on_ship_destroyed_victim = {
 
 # This = owner of ship 1 (combatant)
 # From = owner of ship 2 (destroyed)
-# FromFrom = ship 1
-# FromFromFrom = ship 2
+# Fromfrom = ship 1
+# Fromfromfrom = ship 2
 on_ship_destroyed_perp = {
 	events = {
 		pirate_waves.9
 	}
 }
 
-# Executed as a leader has died
+# Executed as a leader has died.
 # This = Country
 # From = Leader
 on_leader_death = {
 	events = {
 		pirate_waves.20
+	}
+}
+
+# This = Ship
+# From = Disabler Ship
+on_ship_disabled = {
+	events = {
+		pirate.65
+	}
+}
+
+# This = Ship
+on_ship_enabled = {
+	events = {
+		pirate.66
+	}
+}
+
+# You have changed the location of your capital. Also called when a country's capital is first set e.g. during galaxy creation (but then FROM is not set)
+# this/root = new capital
+# from = old capital
+on_capital_changed = {
+	events = {
+		khan.320
 	}
 }
