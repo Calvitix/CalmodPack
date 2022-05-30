@@ -1082,6 +1082,72 @@ country_event = {
 		}
 		text = distar.9000.lcluster_clue_desc_3
 	}
+	desc = {
+		trigger = {
+			has_country_flag = lcluster_clue_pirate
+		}
+		text = distar.9000.lcluster_clue_pirate
+	}
+	desc = {
+		trigger = {
+			has_country_flag = lcluster_clue_battle
+		}
+		text = distar.9000.lcluster_clue_battle
+	}
+	desc = {
+		trigger = {
+			has_country_flag = lcluster_clue_graveyard
+		}
+		text = distar.9000.lcluster_clue_graveyard
+	}
+	desc = {
+		trigger = {
+			has_country_flag = lcluster_clue_dark_flow
+		}
+		text = distar.9000.lcluster_clue_dark_flow
+	}
+	desc = {
+		trigger = {
+			has_country_flag = lcluster_clue_clones
+		}
+		text = distar.9000.lcluster_clue_clones
+	}
+	desc = {
+		trigger = {
+			has_country_flag = lcluster_clue_junkyard
+		}
+		text = distar.9000.lcluster_clue_junkyard
+	}
+	desc = {
+		trigger = {
+			has_country_flag = lcluster_clue_junkball
+		}
+		text = distar.9000.lcluster_clue_junkball
+	}
+	desc = {
+		trigger = {
+			has_country_flag = lcluster_clue_ratling
+		}
+		text = distar.9000.lcluster_clue_ratling
+	}
+	desc = {
+		trigger = {
+			has_country_flag = lcluster_clue_bunker_bot
+		}
+		text = distar.9000.lcluster_clue_bunker_bot
+	}
+	desc = {
+		trigger = {
+			has_country_flag = lcluster_clue_asteroid_gate
+		}
+		text = distar.9000.lcluster_clue_asteroid_gate
+	}
+	desc = {
+		trigger = {
+			has_country_flag = lcluster_clue_mineral_processing
+		}
+		text = distar.9000.lcluster_clue_mineral_processing
+	}
 	desc = distar.9000.fallback
 	picture = GFX_evt_drifting_gateway
 	location = capital_scope
@@ -1099,6 +1165,17 @@ country_event = {
 				lcluster_clue_desc_1 = { remove_country_flag = lcluster_clue_desc_1 }
 				lcluster_clue_desc_2 = { remove_country_flag = lcluster_clue_desc_2 }
 				lcluster_clue_desc_3 = { remove_country_flag = lcluster_clue_desc_3 }
+				lcluster_clue_pirate = { remove_country_flag = lcluster_clue_pirate }
+				lcluster_clue_battle = { remove_country_flag = lcluster_clue_battle }
+				lcluster_clue_graveyard = { remove_country_flag = lcluster_clue_graveyard }
+				lcluster_clue_dark_flow = { remove_country_flag = lcluster_clue_dark_flow }
+				lcluster_clue_clones = { remove_country_flag = lcluster_clue_clones }
+				lcluster_clue_junkyard = { remove_country_flag = lcluster_clue_junkyard }
+				lcluster_clue_junkball = { remove_country_flag = lcluster_clue_junkball }
+				lcluster_clue_ratling = { remove_country_flag = lcluster_clue_ratling }
+				lcluster_clue_bunker_bot = { remove_country_flag = lcluster_clue_bunker_bot }
+				lcluster_clue_asteroid_gate = { remove_country_flag = lcluster_clue_asteroid_gate }
+				lcluster_clue_mineral_processing = { remove_country_flag = lcluster_clue_mineral_processing }
 			}
 		}
 	}
@@ -1106,6 +1183,19 @@ country_event = {
 	option = {
 		name = FORTUITOUS
 		generate_lcluster_clue = yes
+		if = {
+			limit = {
+				OR = {
+					has_country_flag = lcluster_clue_desc_1
+					has_country_flag = lcluster_clue_desc_3
+					has_country_flag = lcluster_clue_junkyard
+					has_country_flag = lcluster_clue_battle
+					has_country_flag = lcluster_clue_graveyard
+					has_country_flag = lcluster_clue_mineral_processing
+				}
+			}
+			add_resource = { nanites = 250 }
+		}
 	}
 }
 
@@ -1121,6 +1211,11 @@ country_event = {
 			limit = {
 				any_owned_megastructure = {
 					is_megastructure_type = lgate_base
+				}
+				OR = {
+					is_ai = no
+					NOT = { has_global_flag = gray_goo_crisis_set }
+					fleet_power > 30000
 				}
 			}
 			random_owned_megastructure = {
@@ -1157,6 +1252,7 @@ country_event = {
 
 	option = {
 		name = "distar.10901.b"
+		trigger = { is_ai = no }
 		liquidate_clues = yes
 	}
 }
@@ -1179,6 +1275,11 @@ country_event = {
 					is_megastructure_type = lgate_base
 				}
 				has_technology = tech_lgate_activation
+				OR = {
+					is_ai = no
+					NOT = { has_global_flag = gray_goo_crisis_set }
+					fleet_power > 30000
+				}
 			}
 			random_owned_megastructure = {
 				limit = {

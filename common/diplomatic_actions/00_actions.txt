@@ -768,8 +768,8 @@ action_form_commercial_pact = {
 	icon = "GFX_diplomacy_status_commercial_pact"
 	diplo_view_acceptance_icon = yes
 	should_notify_all_communications = no
-	requires_actor_independence = yes
-	requires_recipient_independence = yes
+	requires_actor_independence = no
+	requires_recipient_independence = no
 	AI_acceptance_base_value = -50
 	action_type = positive
 	possible = {
@@ -869,6 +869,30 @@ action_form_commercial_pact = {
 				}
 			}
 		}
+		custom_tooltip = {
+			fail_text = "federation_actor_no_separate_treaties_empire"
+			NOT = {
+				AND = {
+					has_federation = yes
+					federation = { has_federation_law = treaties_separate_no_empire }
+					NOT = { federation = { any_member = { is_same_value = root.from } } }
+				}
+			}
+		}
+		custom_tooltip = {
+			fail_text = "federation_recipient_no_separate_treaties_empire"
+			from = {
+				NOT = {
+					AND = {
+						has_federation = yes
+						federation = {
+							has_federation_law = treaties_separate_no_empire
+						}
+						NOT = { federation = { any_member = { is_same_value = root } } }
+					}
+				}
+			}
+		}
 		if = {
 			limit = {
 				from = { has_valid_civic = civic_pompous_purists }
@@ -897,6 +921,7 @@ action_form_commercial_pact = {
 			fail_text = "requires_good_or_better_opinion"
 
 			OR = {
+				is_subject = yes
 				opinion_level = { who = from level >= good }
 				is_improving_relations_with = from
 			}
@@ -1025,6 +1050,30 @@ action_form_research_agreement = {
 						has_federation = yes
 						federation = {
 							has_federation_law = treaties_separate_no
+						}
+						NOT = { federation = { any_member = { is_same_value = root } } }
+					}
+				}
+			}
+		}
+		custom_tooltip = {
+			fail_text = "federation_actor_no_separate_treaties_empire"
+			NOT = {
+				AND = {
+					has_federation = yes
+					federation = { has_federation_law = treaties_separate_no_empire }
+					NOT = { federation = { any_member = { is_same_value = root.from } } }
+				}
+			}
+		}
+		custom_tooltip = {
+			fail_text = "federation_recipient_no_separate_treaties_empire"
+			from = {
+				NOT = {
+					AND = {
+						has_federation = yes
+						federation = {
+							has_federation_law = treaties_separate_no_empire
 						}
 						NOT = { federation = { any_member = { is_same_value = root } } }
 					}
@@ -2478,6 +2527,8 @@ action_demand_subjugation = {
 				is_guaranteeing = from
 					}
 				}
+		# Shared Borders
+		get_border_test = yes
 			}
 
 	proposable = {
@@ -2613,6 +2664,8 @@ action_ask_to_become_subjugated = {
 			fail_text = "requires_actor_not_pompous"
 			NOT = { has_valid_civic = civic_pompous_purists	}
 		}
+		# Shared Borders
+		get_border_test = yes
 	}
 }
 
