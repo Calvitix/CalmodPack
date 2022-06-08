@@ -1,3 +1,128 @@
+divination_worm = {
+	picture = GFX_evt_black_hole
+	complete_icon_frame = GFX_situation_outcome_frame_blue
+	complete_icon = GFX_situation_outcome_unknown
+	abort_trigger = {
+		OR = {
+			NOT = { exists = event_target:shroudwalker_enclave_country }
+			owner = { is_hostile = event_target:shroudwalker_enclave_country }
+		}
+	}
+	modifier = {
+		# pop_ethic_xenophile_attraction_mult = 0.1
+	}
+	stages = {
+		stage_1 = {
+			icon = GFX_situation_stage_1
+			icon_background = GFX_situation_stage_frame_blue
+			end = 100
+		}
+	}
+	on_monthly = {
+		events = {
+			leviathanexpanded.299
+		}
+		random_events = {
+			# should be 10/19 chance of nothing happening
+			25 = 0
+			2 = enclave.5190 # Hero Redivivus
+			1 = leviathanexpanded.218 # It Was Aliens
+			1 = leviathanexpanded.219 # City of Bone
+			1 = leviathanexpanded.220 # Asteroid Blast Door
+			1 = leviathanexpanded.221 # Mutation Vats
+			1 = leviathanexpanded.222 # Atomic Clock
+			1 = leviathanexpanded.223 # Signs of Battle
+			1 = leviathanexpanded.224 # Old Gods
+			1 = leviathanexpanded.225 # Debris Field
+			1 = leviathanexpanded.226 # Monoliths
+			1 = leviathanexpanded.227 # Toxicity
+			1 = leviathanexpanded.228 # Looking Down
+			1 = leviathanexpanded.229 # Buried in the Sand
+			1 = leviathanexpanded.230 # A Feel for Steel
+			1 = leviathanexpanded.231 # Winter of the Fallen
+			1 = leviathanexpanded.232 # Ship Fragments
+			1 = leviathanexpanded.233 # Abandoned Settlements
+			1 = leviathanexpanded.234 # Horizon Signal
+			1 = leviathanexpanded.235 # Abandoned Terraforming
+			1 = leviathanexpanded.236 # Submerged Cruiser
+			1 = leviathanexpanded.238 # Blade of the Huntress
+		}
+	}
+	monthly_progress = {
+		base = 2 #total: 100
+		#Player actions & policies:
+		modifier = {
+			add = 2
+			desc = divination_worm_embrace
+			owner = {
+				OR = {
+					has_policy_flag = diplo_stance_isolationist
+					has_policy_flag = first_contact_cautious
+					has_edict = masters_writings_politics
+					has_edict = masters_writings_diplomacy
+					has_edict = masters_writings_philosophy
+					has_edict = masters_writings_war
+					has_edict = renewable_energy
+					any_planet_within_border = {
+						exists = archaeological_site 
+						archaeological_site = { is_site_under_excavation = yes }
+					}
+				}
+			}
+		}
+		modifier = {
+			add = -2
+			desc = divination_worm_denied
+			owner = {
+				OR = {
+					has_policy_flag = diplo_stance_expansionist
+					has_policy_flag = diplo_stance_supremacist
+					has_edict = fleet_supremacy
+					AND = {
+						any_planet_within_border = {
+							exists = archaeological_site
+							archaeological_site = { is_site_completed = no }
+						}
+						NOT = {
+							any_planet_within_border = {
+								exists = archaeological_site 
+								archaeological_site = { is_site_under_excavation = yes }
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	on_progress_complete = {
+		custom_tooltip = divination_situation_end
+		hidden_effect = {
+			if = {
+				limit = {
+					has_situation_flag = divination_occurring
+				}
+				situation_event = { id = enclave.416 }
+			}
+			else = {
+				situation_event = { id = enclave.5557 }
+			}
+		}
+	}
+	on_fail = {
+		custom_tooltip = divination_situation_end
+		hidden_effect = { destroy_situation = this }
+	}
+	approach = {
+		name = into_the_unknown
+		icon = GFX_situation_approach_unity
+		icon_background = GFX_situation_approach_bg_green
+		default = yes
+		on_select = {
+			custom_tooltip = deficit_approach_do_nothing_tooltip
+		}
+	}
+}
+
 situation_damaged_ecosystem = {
 	picture = GFX_evt_metropolis
 	complete_icon_frame = GFX_situation_outcome_frame_red
