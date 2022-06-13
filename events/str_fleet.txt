@@ -13,6 +13,11 @@ country_event = {
 	hide_window = yes
 	fire_only_once = no
 	is_triggered_only = yes
+	trigger = {
+		NOT = {
+			has_global_flag = str_doomstack_disabled
+		}
+	}
 	immediate = {
 		if = {
 			limit = {
@@ -203,7 +208,7 @@ country_event = {
 		        }
 		    }
 		
-			every_controlled_fleet = {
+			every_owned_fleet = {
 				limit = {
 		            is_ship_class = shipclass_transport
 		            is_fleet_idle = yes
@@ -229,7 +234,7 @@ country_event = {
 		        }
 			}
 
-			every_controlled_fleet = {
+			every_owned_fleet = {
 				limit = {
 		            is_ship_class = shipclass_military
 		            fleet_power > 50
@@ -302,7 +307,7 @@ country_event = {
 				clear_fleet_actions = this
 	            }
 	            owner = {
-	                every_controlled_fleet = {
+					every_owned_fleet = {
 	                    limit = {
 	                        not = {
 	                            has_fleet_flag = str_flagman
@@ -321,7 +326,6 @@ country_event = {
 	            }
 	        }
 	    }
-
 
         if = {
             limit = {
@@ -359,18 +363,18 @@ fleet_event = {
         } 
         if = {
             limit = {
-                exists = event_target:str_merger_target
-                event_target:str_merger_target = {
+				exists = event_target:strmerger
+				event_target:strmerger = {
                     exists = owner
                     owner = { is_same_value = root.owner }
                 }
-                not = { is_same_value = event_target:str_merger_target }
+				not = { is_same_value = event_target:strmerger }
             }
         queue_actions = {
             find_closest_fleet = {
                 found_fleet = {
                     merge_fleet = {
-                        target = event_target:str_merger_target
+							target = event_target:strmerger
                         allow_ftl = no
                     }
                 }

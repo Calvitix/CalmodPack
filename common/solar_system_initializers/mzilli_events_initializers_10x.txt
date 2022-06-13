@@ -38,7 +38,7 @@ mzilli_events_shadow_moon_system_10x = {
 		count = 1
 		class = pc_gas_giant
 		orbit_distance = 70
-		orbit_angle = { min = 90 max = 270 }
+		orbit_angle = { min = 1 max = 359 }
 		size = 40
 		has_ring = no
 		entity = "gas_giant_y_dwarf_entity"
@@ -62,10 +62,7 @@ mzilli_events_shadow_moon_system_10x = {
 		init_effect = {
 			clear_planet_modifiers = yes
 			change_pc = pc_mzilli_shadow
-			add_modifier = {
-				modifier = mzilli_shadow_modifier
-				days = -1
-			}
+			add_modifier = { modifier = mzilli_shadow_modifier }
 		}
 	}
 }
@@ -526,10 +523,8 @@ mzilli_rogue_planet_system_10x = {
 			reset_planet = yes
 			set_deposit = d_physics_3
 			set_planet_entity = { entity = "frozen_planet_01_entity" }
-			add_modifier = {
-				modifier = mzilli_rogue_planet_modifier
-				days = -1
-			}
+			create_archaeological_site = mzilli_arch_rogue_planet
+			add_modifier = { modifier = mzilli_rogue_planet_modifier }
 		}
 	}
 
@@ -544,7 +539,11 @@ mzilli_rogue_planet_system_10x = {
 		has_ring = no
 
 		init_effect = {
-			set_name = "[This.System.GetName] a"
+			set_name = {
+				key = "rogue_planet_moon_name"
+				variable_string = "[This.System.GetName]"
+			}
+			#set_name = "[This.System.GetName] a"
 			prevent_anomaly = yes
 			reset_planet = yes
 			set_deposit = d_minerals_6
@@ -594,7 +593,10 @@ mzilli_multiplanetary_primitives_10x = {
 		has_ring = no
 		satellite_naming_policy = upper_case_roman_numerals
 
-		init_effect = { planet_event = { id = mzilli_multiplan_events.2 days = 150 random = 60 } }
+		init_effect = {
+			planet_event = { id = mzilli_multiplan_events.2 days = 150 random = 60 }
+			planet_event = { id = mzilli_multiplan_events.19 days = 540 random = 360 }
+		}
 
 		planet = {
 			orbit_distance = 40

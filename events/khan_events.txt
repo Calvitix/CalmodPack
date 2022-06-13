@@ -48,6 +48,7 @@ event = {
 	hide_window = yes
 	is_triggered_only = yes
 	immediate = {
+		log = "khan.300 : file loading "		
 		# Config only for minimal compatibility Crisis Manager.
 		if = {
 			limit = {
@@ -62,6 +63,7 @@ event = {
 				}
 				save_global_event_target_as = global_event_country
 			}
+			log = "khan.300 : file loading 1/4"		
 			event_target:global_event_country = {
 				save_global_event_target_as = CmtGlobalVar
 				set_variable = { which = CmtVarKhanMultiple value = 2 }
@@ -82,6 +84,7 @@ event = {
 				set_variable = { which = CmtVarConstructorNumber_Khan value = 1 }
 			}
 		}
+		log = "khan.300 : file loading 2/4"		
 		if = {
 			# Workaround bugfix (unknown reason on saveload): Khan fights own subjects (seems since 3.1)
 			limit = {
@@ -96,15 +99,19 @@ event = {
 				country_event = { id = marauder.507 days = 105 random = 80 }
 			}
 		}
+		log = "khan.300 : file loading 3/4"		
 		## TEST raiding_marauder stuck fix
-		every_country = {
-			# Find raiding_marauder (parent)
-			limit = {
-				is_country_type = dormant_marauders
-				has_country_flag = raid_ongoing
-			}
-			country_event = { id = marauder.28 days = 8 }
-		}
+		#every_country = {
+		#	# Find raiding_marauder (parent)
+		#	limit = {
+		#		has_country_flag = raid_ongoing
+		#		is_country_type = dormant_marauders
+		#	}
+		#	log = "khan.300 : launch marauder.28"				
+		#	country_event = { id = marauder.28 days = 8 }
+		#	log = "khan.300 : launch marauder.28 done"							
+		#}
+		log = "khan.300 : file loading OK 4/4"		
 	}
 }
 
@@ -710,7 +717,7 @@ country_event = {
 	trigger = { has_country_flag = attacking_fleets_stopped }
 	immediate = {
 		remove_country_flag = attacking_fleets_stopped
-		every_owned_fleet = {
+		every_controlled_fleet = {
 			limit = {
 				is_mobile = yes
 				is_ship_class = shipclass_military
@@ -748,7 +755,7 @@ country_event = {
 	immediate = {
 		log = "Fix ongoing hostility"		# \\[This.GetName]
 		# Before we need to stop fleets attacking.
-		every_owned_fleet = {
+		every_controlled_fleet = {
 			limit = {
 				is_mobile = yes
 				is_in_combat = yes
@@ -779,7 +786,7 @@ country_event = {
 			}
 		}
 		from = {
-			every_owned_fleet = {
+			every_controlled_fleet = {
 				limit = {
 					is_mobile = yes
 					is_in_combat = yes
@@ -910,7 +917,7 @@ country_event = {
 					NOT = { has_country_flag = rebelling_satrapy }
 					is_hostile = prev
 				}
-				log = "Fix ongoing hostilityy"				# \\[This.GetName]
+				log = "Fix ongoing hostility for \\[This.GetName]"
 				prev = {
 					country_event = {
 						id = khan.308
@@ -1510,8 +1517,8 @@ system_event = {
 						ethos = { ethic = "ethic_militarist" }
 					}
 				}
-				set_controller = space_owner
-				set_owner = space_owner
+				set_controller = from # space_owner
+				# set_owner = space_owner
 				add_building = building_hab_major_capital				# 3 jobs
 				# add_building = building_foundry_1			# 2
 				# add_building = building_foundry_1			# 2
@@ -1538,32 +1545,42 @@ system_event = {
 				}
 				from = {
 					change_variable = { which = marauder_habitat_count value = -1 }
-					country_event = { id = khan.612 days = 480 }
-					# Build Habitats
+					country_event = { id = khan.612 days = 480 }		# Build Habitats
 				}
-				# start_colony = {
-				# 	owner = space_owner # from
-				# 	species = space_owner # from.species
-				# 	# ethos = random
-				# }
-				# TODO "Unexpected token: (everything after scope start_colony)
+				# TODO: Add negative modifier that needs to be removed with expensive decision?
+				start_colony = {
+					owner = from
+					species = from.species
+					# ethos = random
+				} # "Unexpected token:  (everything after scope start_colony)
 			}
 		}
-		# from = {			# Build Habitats
-		# 	random_planet_within_border = {
-		# 		limit = {
-		# 			OR = {
-		# 				uses_district_set = habitat
-		# 				uses_district_set = ring_world
-		# 			}
-		# 			is_colonizable = yes
-		# 		}
-		# 		start_colony = {
-		# 			owner = prev
-		# 			species = prev
-		# 			# ethos = owner
-		# 		}
-		# 	}
-		# }
+		# Unknown "Unexpected token: country_event, near line: 3543
+		from = {
+			random_planet_within_border = {
+				limit = {
+					is_colonizable = yes
+					habitability = {
+						who = this
+						value > 0.65
+					}
+				}
+				weights = {
+					base = 1
+					modifier = {
+						add = 3
+						OR = {
+							uses_district_set = habitat
+							uses_district_set = ring_world
+						}
+					}
+				}
+				start_colony = {
+					owner = prev
+					species = prev.species
+					# ethos = owner
+				}
+			}
+				}
 	}
 }

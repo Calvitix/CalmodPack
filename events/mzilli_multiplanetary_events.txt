@@ -162,7 +162,12 @@ planet_event = {
 					}
 				}
 			}
-			else = { clear_global_event_target = multiplan_civ_target }
+			else = {
+				if = {
+					limit = { exists = event_target:multiplan_civ_target }
+					clear_global_event_target = multiplan_civ_target
+		}
+			}
 		}
 		planet_event = { id = mzilli_multiplan_events.2 days = 150 random = 60 }
 	}
@@ -1010,7 +1015,6 @@ country_event = {
 					if = {
 						limit = { NOT = { has_star_flag = at_war } }
 						set_star_flag = at_war
-						star = { planet_event = { id = mzilli_multiplan_events.19 days = 540 random = 360 } }
 					}
 				}
 			}
@@ -1120,7 +1124,22 @@ planet_event = {
 		solar_system = {
 			if = {
 				limit = {
+					OR = {
 					has_star_flag = at_war
+						has_global_flag = gray_goo_crisis_active
+						has_global_flag = marauder_crisis_ongoing
+						has_global_flag = war_in_heaven_ongoing
+						has_global_flag = ongoing_prethoryn_invasion
+						has_global_flag = ai_invasion_ongoing
+						AND = {
+							has_global_flag = extradimensional_invasion_happened
+							NOT = { has_global_flag = extradimensional_invasion_defeated }
+						}
+						any_country = {
+							is_country_type = default
+							has_crisis_level = crisis_level_5
+						}
+					}
 					any_system_planet = {
 						exists = owner
 						owner = { is_country_type = primitive }
@@ -1336,7 +1355,6 @@ planet_event = {
 						}
 					}
 				}
-				ROOT = { planet_event = { id = mzilli_multiplan_events.19 days = 540 random = 360 } }
 			}
 			else_if = {
 				limit = {
@@ -1351,6 +1369,7 @@ planet_event = {
 				remove_star_flag = at_war
 			}
 		}
+		planet_event = { id = mzilli_multiplan_events.19 days = 540 random = 360 }
 	}
 }
 
@@ -1606,9 +1625,14 @@ country_event = {
 				civics = random
 			}
 		}
-		set_name = "Triumvirate of [This.home_planet.System.GetName]"
-		set_adjective = "[This.home_planet.System.GetName]"
-		set_ship_prefix = "TSS"
+		set_name = random
+		#set_name = {
+		#	key = "triumvirate_empire_name"
+		#	variable_string = "[capital_scope.solar_system.GetName]"
+		#}
+		#set_name = "Triumvirate of [This.home_planet.System.GetName]"
+		#capital_scope = { solar_system = { prevprev = { set_adjective = prev } } }
+		#set_ship_prefix = "TSS"
 		capital_scope = {
 			solar_system = {
 				every_fleet_in_system = {
@@ -1638,7 +1662,7 @@ country_event = {
 							name = random
 							skill = 3
 						}
-						every_controlled_fleet = {
+						every_owned_fleet = {
 							limit = { NOT = { is_same_value = prevprev } }
 							delete_fleet = this
 						}
@@ -1738,11 +1762,6 @@ country_event = {
 			who = FROM
 			modifier = opinion_declared_war
 		}
-		set_closed_borders = {
-			who = FROM
-			status = yes
-			forced = 10
-		}
 
 		FROM = { country_event = { id = mzilli_multiplan_events.25 days = 2 } }
 	}
@@ -1753,7 +1772,7 @@ country_event = {
 	id = mzilli_multiplan_events.25
 	title = "mzilli_multiplan_events.25.name"
 	desc = "mzilli_multiplan_events.25.desc"
-	picture = GFX_evt_crisis_defeated
+	picture = GFX_evt_three_sided_deal
 	show_sound = event_celebration
 	location = FROM
 	is_triggered_only = yes
@@ -1791,7 +1810,7 @@ country_event = {
 		}
 		FROMFROM = {
 			OR = {
-				is_same_value = multiplan_species.home_planet
+				has_planet_flag = civ_1_planet_1
 				has_planet_flag = civ_2_planet_3
 				has_planet_flag = civ_3_planet_2
 			}

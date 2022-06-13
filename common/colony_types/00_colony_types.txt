@@ -4,7 +4,7 @@
 #
 # Merge with Planetary Diversity 19.05.2022
 # Merge with GPM 24.04.2021
-# Merge with STARNET AI   19.03.2022
+# Merge with STARNET AI   11.06.2022
 # Merge with Megacordp mod 21.05.2021
 #
 #root = planet
@@ -101,6 +101,7 @@ col_city = {
 ##
 		}
 		is_special_colony_type = no
+        owner = { is_ai = no }
 	}
 
 	planet_modifier = {
@@ -170,6 +171,7 @@ col_mining = {
 ###
 		}
 		is_special_colony_type = no
+        num_districts = {type = district_industrial value < 4}
 	}
 
 	planet_modifier = {
@@ -238,7 +240,7 @@ col_mining = {
 		}
 		modifier = {
 			# add = 5
-			add = 20
+			factor = 1.5
 			OR = {
 				has_modifier = asteroid_belt
 				has_modifier = mineral_rich
@@ -335,6 +337,7 @@ col_farming = {
 ###
 		}
 		is_special_colony_type = no
+        num_districts = {type = district_industrial value < 4}
 	}
 
 	planet_modifier = {
@@ -549,6 +552,7 @@ col_generator = {
 ###
 		}
 		is_special_colony_type = no
+        num_districts = {type = district_industrial value < 4}
 	}
 
 	planet_modifier = {
@@ -749,6 +753,7 @@ col_hive = {
 		exists = owner
 		owner = { is_hive_empire = yes }
 		is_special_colony_type = no
+        owner = { is_ai = no }
 	}
 
 	planet_modifier = {
@@ -824,6 +829,7 @@ col_nexus = {
 		exists = owner
 		owner = { is_machine_empire = yes }
 		is_special_colony_type = no
+        owner = { is_ai = no }
 	}
 
 	planet_modifier = {
@@ -867,7 +873,13 @@ col_industrial = {
 
 	potential = {
 		exists = owner
-		owner = { country_uses_consumer_goods = yes }
+		owner = {
+			OR = {
+				is_ai = no
+				has_country_flag = str_col_industrial_allowed
+			}
+			country_uses_consumer_goods = yes
+		}
 		NOR = {
 			uses_district_set = city_world
 			uses_district_set = habitat
@@ -981,7 +993,7 @@ col_foundry = {
 
 	ai_resource_current_conversion = {
 		alloys = 0.5
-		consumer_goods = -2
+		consumer_goods = -1 #-2
 
 		trigger = {
 			owner = {
@@ -1014,6 +1026,10 @@ col_foundry = {
 ###
 		}
 		is_special_colony_type = no
+		OR = {
+			str_can_be_factory_pretrigger = no
+			str_can_be_foundry_pretrigger = yes
+		}
 	}
 
 	custom_tooltip = col_foundry_custom #Ori3.3.2
@@ -1076,7 +1092,7 @@ col_foundry = {
 				}
 				AND = {
 					owner = {
-						has_monthly_income = { resource = alloys value < 60 }
+						has_monthly_income = { resource = alloys value < 50 }
 						years_passed > 75
 						years_passed < 100
 					}
@@ -1367,7 +1383,7 @@ col_factory = {
 
 	# used by AI to estimate what will happen when we change the designation
 	ai_resource_conversion = {
-		consumer_goods = 2
+		consumer_goods = 4 #2
 		alloys = 0
 		
 		trigger = {
@@ -1379,8 +1395,8 @@ col_factory = {
 
 	# Used by AI to estimate the current effects of this designation
 	ai_resource_current_conversion = {
-		consumer_goods = 0.5
 		alloys = -0.5
+		consumer_goods = 1 #0.5
 
 		trigger = {
 			owner = {
@@ -1729,6 +1745,7 @@ col_refinery = {
 ###
 		}
 		is_special_colony_type = no
+        owner = { is_ai = no }
 	}
 
 	planet_modifier = {
@@ -1893,6 +1910,7 @@ col_research = {
 ###
 		}
 		is_special_colony_type = no
+        num_districts = {type = district_industrial value < 6}
 	}
 
 	planet_modifier = {
@@ -2052,6 +2070,7 @@ col_fortress = {
 ###
 		}
 		is_special_colony_type = no
+        owner = { is_ai = no }
 	}
 
 	planet_modifier = {
@@ -3021,6 +3040,7 @@ col_rural_gestalt = {
 		exists = owner
 		owner = { is_gestalt = yes }
 		is_special_colony_type = no
+        num_districts = {type = district_industrial value < 4}
 	}
 
 	planet_modifier = {
@@ -3191,6 +3211,7 @@ col_rural = {
 ###
 		}
 		is_special_colony_type = no
+        num_districts = {type = district_industrial value < 4}
 	}
 
 	planet_modifier = {
@@ -3470,7 +3491,7 @@ col_ring_mix = {
 	}
 
 	weight_modifier = {
-		base = 1
+		base = 100 #1
 	}
 }
 
@@ -4594,6 +4615,7 @@ col_bureau = {
 			uses_district_set = pdbiocapital
 		}
 		is_special_colony_type = no
+        num_districts = {type = district_industrial value < 4}
 	}
 
 	planet_modifier = {
@@ -4720,6 +4742,7 @@ col_bureau_spiritualist = {
 			uses_district_set = habitat
 		}
 		is_special_colony_type = no
+        num_districts = {type = district_industrial value < 4}
 	}
 
 	planet_modifier = {
@@ -4838,6 +4861,7 @@ col_bureau_hive = {
 			uses_district_set = habitat
 		}
 		is_special_colony_type = no
+        num_districts = {type = district_industrial value < 4}
 	}
 
 	planet_modifier = {
@@ -4924,6 +4948,7 @@ col_bureau_machine = {
 			uses_district_set = habitat
 		}
 		is_special_colony_type = no
+        num_districts = {type = district_industrial value < 4}
 	}
 
 	planet_modifier = {

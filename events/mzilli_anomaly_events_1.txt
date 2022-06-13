@@ -348,10 +348,7 @@ ship_event = {
 			FROMFROM = {
 				if = {
 					limit = { owner = { NOT = { has_country_flag = stone_age } } }
-					random_list = {
-						10 = { set_name = random }
-						10 = { set_name = "[owner.GetSpeciesName]" }
-					}
+					set_name = random
 				}
 			}
 			owner = { country_event = { id = story.6 days = 30 } }
@@ -905,7 +902,15 @@ ship_event = {
 		name = mzilli_anomaly_events.18.a
 		owner = { end_event_chain = "help_landlocked_planet" }
 		custom_tooltip = mzilli_anomaly_events.18.tooltip
-		hidden_effect = { event_target:non_landlocked_planet = { set_name = "New [landlocked_species.GetName]" } }
+		hidden_effect = {
+			event_target:non_landlocked_planet = {
+				set_name = {
+					key = "landlocked_new_homeworld_name"
+					variable_string = "[landlocked_species.home_planet.GetName]"
+				}
+				#set_name = "New [landlocked_species.home_planet.GetName]"
+			}
+		}
 	}
 }
 
@@ -1834,8 +1839,8 @@ country_event = {
 						has_deposit_for = shipclass_research_station
 					}
 				}
-			}
 			add_deposit = d_minerals_6
+		}
 		}
 		owner = {
 			add_monthly_resource_mult = {
@@ -2121,14 +2126,14 @@ ship_event = {
 	}
 }
 
-### Ringed Moon
+### Ringed Moon - option 1
 ship_event = {
 	id = mzilli_anomaly_events.44
 	title = "mzilli_anomaly_events.44.name"
 	desc = "mzilli_anomaly_events.44.desc"
 	picture = GFX_evt_ship_in_orbit
 	show_sound = event_mystic_reveal
-	location = FROM
+	location = FROMFROM
 	
 	is_triggered_only = yes
 
@@ -2144,6 +2149,7 @@ ship_event = {
 				max = @tier3researchmax
 			}
 		}
+		FROMFROM = { add_modifier = { modifier = mzilli_artificial_beauty } }
 	}
 }
 
@@ -2205,12 +2211,6 @@ ship_event = {
 			}
 		}
 		FROM = {
-			set_planet_flag = greenhouse_planet
-			if = {
-				limit = { is_moon = yes }
-				orbit = { save_global_event_target_as = greenhouse_primary }
-			}
-			else = { save_global_event_target_as = greenhouse_primary }
 			solar_system = {
 				random_system_planet = {
 					limit = { has_planet_flag = greenhouse_sun }
@@ -2243,7 +2243,7 @@ ship_event = {
 	option = {
 		name = mzilli_anomaly_events.47.a
 		hidden_effect = { clear_global_event_target = planet_venus }
-		event_target:greenhouse_primary = {
+		FROMFROM = {
 			enable_special_project = {
 				name = "REVERSE_GREENHOUSE"
 				location = this
@@ -2267,22 +2267,15 @@ ship_event = {
 ship_event = {
 	id = mzilli_anomaly_events.48
 	title = "mzilli_anomaly_events.48.name"
-	desc = {
-		trigger = { event_target:greenhouse_planet = { NOT = { is_moon = yes } } }
-		text = "mzilli_anomaly_events.48.desc.a"
-	}
-	desc = {
-		trigger = { event_target:greenhouse_planet = { is_moon = yes } }
-		text = "mzilli_anomaly_events.48.desc.b"
-	}
+	desc = "mzilli_anomaly_events.48.desc"
 	picture = GFX_evt_drilling_for_gas
 	show_sound = event_celebration
-	location = event_target:greenhouse_planet
+	location = FROMFROM
 	
 	is_triggered_only = yes
 
 	immediate = {
-		event_target:greenhouse_planet = {
+		FROMFROM = {
 			remove_modifier = mzilli_greenhouse_effect
 			if = {
 				limit = {
@@ -2300,19 +2293,7 @@ ship_event = {
 
 	option = {
 		name = MARVELOUS
-		if = {
-			limit = {
-				NOT = {
-					any_galaxy_planet = {
-						has_modifier = terraforming_candidate
-						is_planet_class = pc_toxic
-					}
-				}
-			}
-			custom_tooltip = mzilli_anomaly_events.48.tooltip
-		}
-		event_target:greenhouse_planet = { add_modifier = { modifier = terraforming_candidate } }
-			clear_global_event_target = greenhouse_planet
+		FROMFROM = { add_modifier = { modifier = terraforming_candidate } }
 			clear_global_event_target = greenhouse_sun
 		}
 }
@@ -2843,8 +2824,22 @@ ship_event = {
 ship_event = {
 	id = mzilli_anomaly_events.63
 	title = "mzilli_anomaly_events.63.name"
-	desc = "mzilli_anomaly_events.63.desc"
-	picture = GFX_evt_ship_in_orbit_2
+	desc = {
+		trigger = { FROM = { NOT = { is_star = yes } } }
+		text = "mzilli_anomaly_events.63.desc.a"
+	}
+	desc = {
+		trigger = { FROM = { is_star = yes } }
+		text = "mzilli_anomaly_events.63.desc.b"
+	}
+	picture = {
+		trigger = { FROM = { NOT = { is_star = yes } } }
+		picture = GFX_evt_gas_giant
+	}
+	picture = {
+		trigger = { FROM = { is_star = yes } }
+		picture = GFX_evt_star_neutron
+	}
 	show_sound = event_mystic_reveal
 	location = FROM
 	
@@ -3112,7 +3107,13 @@ country_event = {
 			from = event_target:rogue_planet_lament.solar_system
 			to = event_target:rogue_planet_system
 		}
-		hidden_effect = { clear_global_event_target = rogue_planet_scientist }
+		hidden_effect = {
+			clear_global_event_target = rogue_planet_scientist
+			#random_galaxy_planet = {
+			#	limit = { is_planet_class = pc_mzilli_rogue }
+			#	create_archaeological_site = mzilli_arch_rogue_planet
+			#}
+		}
 	}
 	option = {
 		trigger = { NOT = { is_ai = yes } }
@@ -3131,10 +3132,10 @@ country_event = {
 				event_chain = mzilli_rogue_planet_chain
 				location = event_target:rogue_planet_system
 			}
-			random_galaxy_planet = {
-				limit = { is_planet_class = pc_mzilli_rogue }
-				create_archaeological_site = mzilli_arch_rogue_planet
-			}
+			#random_galaxy_planet = {
+			#	limit = { is_planet_class = pc_mzilli_rogue }
+			#	create_archaeological_site = mzilli_arch_rogue_planet
+			#}
 		}
 	}
 }
@@ -3262,40 +3263,67 @@ ship_event = {
 	desc = "mzilli_anomaly_events.74.desc"
 	picture = GFX_evt_alien_cavemen
 	show_sound = event_scanner
-	location = FROM
+	location = FROMFROM
 
 	immediate = {
-		FROM = {
+		FROMFROM = {
 			solar_system = { set_star_flag = primitive_system }
-			if = {
-				limit = { solar_system = { has_star_flag = sol } }
-				create_species = {
-					name = Human
-					plural = Humans
-					class = "HUM"
-					portrait = "human"
-					homeworld = THIS
-					namelist = HUMAN3
-					traits = {
-						ideal_planet_class = pc_continental
-						trait = trait_survivor
-						trait = trait_adaptive
-						trait = trait_nomadic
-						trait = trait_wasteful
-					}
-				}
-			}
-			else = {
 				change_pc = rl_habitable_normal
+			random_list = {
+				10 = {
 				create_species = {
 					name = random
-					class = random_non_machine
+						class = HUM
+						name_list = HUM3
 					portrait = random
 					homeworld = THIS
-					traits = { trait = trait_survivor trait = random_traits }
+						traits = {
+							trait = trait_survivor
+							trait = random_traits
+						}
+					}
+				}
+				10 = {
+					create_species = {
+						name = random
+						class = MAM
+						name_list = MAM3
+						portrait = random
+						homeworld = THIS
+						traits = {
+							trait = trait_survivor
+							trait = random_traits
+						}
+					}
+				}
+				10 = {
+					create_species = {
+						name = random
+						class = REP
+						name_list = REP1
+						portrait = random
+						homeworld = THIS
+						traits = {
+							trait = trait_survivor
+							trait = random_traits
+						}
+					}
+				}
+				10 = {
+					create_species = {
+						name = random
+						class = ART
+						name_list = ART3
+						portrait = random
+						homeworld = THIS
+						traits = {
+							trait = trait_survivor
+							trait = random_traits
+						}
+					}
+				}
 				}
 				change_pc = pc_nuked
-			}
 			create_early_primitive_empire = yes
 			setup_primitive_planet = yes
 		}
@@ -3308,19 +3336,8 @@ ship_event = {
 		custom_tooltip = mzilli_anomaly_events.74.tooltip.1
 		if = {
 			limit = { last_created_country = { NOT = { has_country_flag = stone_age } } }
-			custom_tooltip = mzilli_anomaly_events.74.tooltip.2
-			hidden_effect = {
-				FROM = {
-					if = {
-						limit = { solar_system = { NOT = { has_star_flag = sol } } }
-						random_list = {
-							10 = { set_name = random }
-							10 = { set_name = "[last_created_country.GetSpeciesName]" }
-						}
-					}
-					else = { set_name = "Earth" }
-				}
-			}
+			#custom_tooltip = mzilli_anomaly_events.74.tooltip.2
+			hidden_effect = { FROMFROM = { set_name = random } }
 		}
 		hidden_effect = { owner = { country_event = { id = story.6 } } }
 	}
@@ -3614,19 +3631,13 @@ ship_event = {
 			add_modifier = { modifier = doomsday_1 }
 			remove_modifier = unstable_tectonics
 		}
+		ship_event = { id = distar.305 days = 1 }
 	}
 
 	option = {
 		trigger = { owner = { NOT = { has_origin = origin_doomsday } } }
 		name = mzilli_anomaly_events.85.a
-		if = {
-			limit = { FROM = { has_deposit_for = shipclass_research_station } }
-			FROM = {	
-				add_deposit = d_physics_3
-				add_deposit = d_engineering_3
-			}
-		}
-		else = {
+		FROM = { add_deposit = d_rare_crystals_5 }
 			owner = {
 				add_monthly_resource_mult = {
 					resource = engineering_research
@@ -3641,22 +3652,12 @@ ship_event = {
 					max = @tier2researchmax
 				}
 			}
-			FROM = { add_deposit = d_rare_crystals_5 }
-		}
-		hidden_effect = { ship_event = { id = distar.305 days = 1 } }
 	}
 
 	option = {
 		trigger = { owner = { has_origin = origin_doomsday } }
 		name = mzilli_anomaly_events.85.b
-		if = {
-			limit = { FROM = { has_deposit_for = shipclass_research_station } }
-			FROM = {	
-				add_deposit = d_physics_3
-				add_deposit = d_engineering_3
-			}
-		}
-		else = {
+		FROM = { add_deposit = d_rare_crystals_5 }
 			owner = {
 				add_monthly_resource_mult = {
 					resource = engineering_research
@@ -3671,9 +3672,6 @@ ship_event = {
 					max = @tier2researchmax
 				}
 			}
-			FROM = { add_deposit = d_rare_crystals_5 }
-		}
-		hidden_effect = { ship_event = { id = distar.305 days = 1 } }
 	}
 }
 
@@ -3722,15 +3720,9 @@ ship_event = {
 		FROM = {
 			solar_system = {
 				random_list = {
-					0 = {
-						modifier = {
-							add = 10
-							has_global_flag = mzilli_10x
-						}
-						set_star_class = sc_l
-					}
 					10 = { set_star_class = sc_m }
 					10 = { set_star_class = sc_k }
+					10 = { set_star_class = sc_g }
 				}
 				spawn_planet = {
 					class = "rl_habitable_normal"
@@ -3744,7 +3736,11 @@ ship_event = {
 							change_pc = event_target:black_domain_descendents
 							set_planet_flag = homeworld_of_@event_target:black_domain_descendents
 						}
-						set_name = "[This.System.GetName] I"
+						set_name = {
+							key = "black_domain_name_1"
+							variable_string = "[This.System.GetName]"
+						}
+						#set_name = "[This.System.GetName] I"
 						prevent_anomaly = yes
 						reset_planet = yes
 						reroll_deposits = yes
@@ -3759,14 +3755,22 @@ ship_event = {
 					orbit_angle_offset = 175
 					size = 13
 					init_effect = {
-						set_name = "[This.System.GetName] II"
+						set_name = {
+							key = "black_domain_name_2"
+							variable_string = "[This.System.GetName]"
+						}
+						#set_name = "[This.System.GetName] II"
 						prevent_anomaly = yes
 					}
 				}
 				if = {
 					limit = { NOT = { is_inside_nebula = yes } }
 					create_nebula = {
-						name = "[This.System.GetName] Lightspeed Veil"
+						#name = {
+						#	key = "lightspeed_veil_name"
+						#	variable_string = "[This.System.GetName]"
+						#}
+						name = "Lightspeed Veil"
 						radius = 1
 					}
 				}
@@ -3850,5 +3854,194 @@ ship_event = {
 		name = AMAZING
 		custom_tooltip = mzilli_anomaly_events.90.tooltip
 		hidden_effect = { FROMFROM = { set_deposit = d_dark_matter_deposit_3 } }
+	}
+}
+
+### Ringed Moon - option 1
+ship_event = {
+	id = mzilli_anomaly_events.91
+	title = "mzilli_anomaly_events.91.name"
+	desc = "mzilli_anomaly_events.91.desc"
+	picture = GFX_evt_orbital_ring
+	show_sound = event_mystic_reveal
+	location = FROMFROM
+	
+	is_triggered_only = yes
+
+	immediate = {
+		owner = { country_event = { id = story.5 days = 30 } }
+		FROMFROM = {
+			set_ring = no
+			set_planet_flag = has_megastructure
+			solar_system = {
+				spawn_megastructure = {
+					type = "orbital_ring_ruined"
+					planet = prev
+				}
+			}
+		}
+	}
+
+	option = {
+		name = AMAZING
+		custom_tooltip = mzilli_anomaly_events.91.tooltip
+	}
+}
+
+### From the Ashes - Subterranean
+ship_event = {
+	id = mzilli_anomaly_events.92
+	title = "mzilli_anomaly_events.92.name"
+	desc = "mzilli_anomaly_events.92.desc"
+	picture = GFX_evt_underground_city
+	show_sound = event_scanner
+	location = FROMFROM
+
+	immediate = {
+		FROMFROM = {
+			solar_system = { set_star_flag = primitive_system }
+			change_pc = rl_habitable_normal
+			random_list = {
+				10 = {
+					create_species = {
+						name = random
+						class = HUM
+						name_list = HUM3
+						portrait = random
+						homeworld = THIS
+						traits = {
+							trait = trait_cave_dweller
+							trait = random_traits
+						}
+					}
+				}
+				10 = {
+					create_species = {
+						name = random
+						class = MAM
+						name_list = MAM3
+						portrait = random
+						homeworld = THIS
+						traits = {
+							trait = trait_cave_dweller
+							trait = random_traits
+						}
+					}
+				}
+				10 = {
+					create_species = {
+						name = random
+						class = REP
+						name_list = REP1
+						portrait = random
+						homeworld = THIS
+						traits = {
+							trait = trait_cave_dweller
+							trait = random_traits
+						}
+					}
+				}
+				10 = {
+					create_species = {
+						name = random
+						class = ART
+						name_list = ART3
+						portrait = random
+						homeworld = THIS
+						traits = {
+							trait = trait_cave_dweller
+							trait = random_traits
+						}
+					}
+				}
+			}
+			change_pc = pc_nuked
+			create_country = {
+				name = random
+				authority = random
+				civics = {
+					civic = civic_increasing_urbanization
+					civic = civic_atmospheric_pollution
+				}
+				species = last_created_species
+				ethos = random
+				flag = {
+					icon = {
+						category = "spherical"
+						file = "flag_spherical_22.dds"
+					}
+					background= {
+						category = "backgrounds"
+						file = "new_dawn.dds"
+					}
+					colors={
+						"turquoise"
+						"green"
+						"null"
+						"null"
+					}
+				}
+				origin = origin_subterranean
+				type = primitive
+			}
+			last_created_country = {
+				set_graphical_culture = industrial_01
+				random_list = {
+					25 = {
+						set_country_flag = industrial_age
+						set_primitive_age = industrial_age
+						change_country_flag = {
+							icon = {
+								category = "special"
+								file = "primitive.dds"
+							}
+							background= {
+								category = "backgrounds"
+								file = "new_dawn.dds"
+							}
+							colors={
+								"beige"
+								"yellow"
+								"null"
+								"null"
+							}
+						}
+					}
+					25 = {
+						set_country_flag = machine_age
+						set_primitive_age = machine_age
+						change_country_flag = {
+							icon = {
+								category = "special"
+								file = "primitive.dds"
+							}
+							background= {
+								category = "backgrounds"
+								file = "new_dawn.dds"
+							}
+							colors={
+								"yellow"
+								"orange"
+								"null"
+								"null"
+							}
+						}
+					}
+				}
+			}
+			setup_primitive_planet = yes
+		}
+	}
+	
+	is_triggered_only = yes
+
+	option = {
+		name = FASCINATING
+		custom_tooltip = mzilli_anomaly_events.92.tooltip
+		#custom_tooltip = mzilli_anomaly_events.74.tooltip.2
+		hidden_effect = {
+			FROMFROM = { set_name = random }
+			owner = { country_event = { id = story.6 } }
+		}
 	}
 }

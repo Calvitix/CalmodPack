@@ -952,10 +952,6 @@ ap_esap_gov_1 = {
 		}	
 	}
 
-	modifier = {
-		country_edict_fund_add = 100
-	}
-
 	potential = {
 		NOT = {
 			has_ethic = ethic_gestalt_consciousness
@@ -1006,10 +1002,6 @@ ap_esap_gov_GC_1 = {
 				id = esap_gov.2
 			}
 		}	
-	}
-
-	modifier = {
-		country_edict_fund_add = 100
 	}
 
 	potential = {
@@ -2674,7 +2666,7 @@ ap_esap_militarist_1 = {
 	on_enabled = {
 		custom_tooltip = ap_esap_militarist_1_tooltip
 		hidden_effect = {
-			every_controlled_ship = {
+			every_owned_ship = {
 				ship_event = {
 					id = esap_ethics.3
 				}
@@ -2753,7 +2745,7 @@ ap_esap_materialist_1 = {
 	on_enabled = {
 		custom_tooltip = ap_esap_materialist_1_tooltip
 		Hidden_effect = {
-			every_controlled_ship = {
+			every_owned_ship = {
 				ship_event = {
 					id = esap_ethics.6
 				}
@@ -3203,7 +3195,7 @@ ap_hive_worlds = {
 	}
 
 	ai_weight = {
-		factor = 100
+		factor = 20
 	}
 }
 
@@ -3240,7 +3232,7 @@ ap_synthetic_age = {
 	}
 
 	ai_weight = {
-		factor = 30
+		factor = 20
 	}
 }
 
@@ -3390,6 +3382,48 @@ ap_universal_transactions = {
 		# }
 	# }
 # }
+
+
+#################
+# OVERLORD ASCENSION PERKS
+#################
+
+ap_lord_of_war = {
+	potential = {
+		host_has_dlc = "Overlord"
+		NOT = { has_ascension_perk = ap_lord_of_war }
+		NOR = {
+			has_ethic = ethic_gestalt_consciousness
+			has_valid_civic = civic_fanatic_purifiers
+		}
+	}
+
+	on_enabled ={
+		custom_tooltip = ap_lord_of_war_tooltip
+	}
+
+	modifier = {
+		country_enclave_capacity_add = 1
+		diplo_weight_naval_mult = 0.25
+		#Bonus to dividends frequency handled in the dividends situation.
+	}
+
+	ai_weight = {
+		factor = 5
+		modifier = {
+			factor = 2
+			has_ethic = ethic_militarist
+		}
+		modifier = {
+			factor = 3
+			has_ethic = ethic_fanatic_militarist
+		}
+		modifier = {
+			factor = 2
+			has_authority = auth_corporate
+		}
+	}
+}
 
 #################
 # AQUATICS ASCENSION PERKS
@@ -4251,104 +4285,6 @@ ap_esap_smallworld = {
 		factor = 0
 	}
 }
-
-###mastery
-# ap_mastery_of_nature = {
-	# on_enabled = {
-		# custom_tooltip = "allow_decision_mastery_of_nature"
-		# custom_tooltip = "describe_decision_mastery_of_nature"
-	# }
-	# modifier = {
-		# deposit_blockers_cost_mult = -0.33
-	# }
-
-	# potential = {
-		# NOT = {
-			# has_ascension_perk = ap_mastery_of_nature
-		# }
-	# }
-
-	# ai_weight = {
-		# factor = 10
-		# modifier = {
-			# factor = 0.5
-			# num_ascension_perks > 0
-		# }
-		# modifier = {
-			# factor = 0.1
-			# num_ascension_perks > 1
-		# }
-		# modifier = {
-			# factor = 0
-			# has_origin = origin_void_dwellers
-		# }
-		# modifier = {
-ap_voidborn = {
-	potential = {
-		host_has_dlc = "Utopia"
-		NOT = {
-			has_ascension_perk = ap_voidborn
-		}
-	}
-
-	possible = {
-		custom_tooltip = {
-			fail_text = "requires_technology_habitat_1"
-			has_technology = tech_habitat_1
-		}
-	}
-
-	on_enabled = {
-		custom_tooltip = "ap_voidborn_habitat_effect"
-		if = {
-			limit = {
-				NOT = { has_technology = tech_habitat_2 }
-			}
-			add_research_option = tech_habitat_2
-			custom_tooltip = "add_research_options_voidborn"
-		}
-		if = {
-			limit = {
-				has_technology = tech_habitat_2
-				NOT = { has_technology = tech_habitat_3 }
-			}
-			add_research_option = tech_habitat_3
-		}
-	}
-
-	modifier = {
-		pc_habitat_habitability = 0.2
-	}
-
-	ai_weight = {
-		factor = 10
-		modifier = {
-			factor = 2
-			has_ethic = ethic_pacifist
-		}
-		modifier = {
-			factor = 3
-			OR = {
-				has_ethic = ethic_fanatic_pacifist
-				has_origin = origin_void_dwellers
-			}
-		}
-		modifier = {
-			factor = 2
-			count_owned_planet = {
-				count > 2
-				limit = {
-					is_planet_class = pc_habitat
-				}
-			}
-		}
-	}
-}
-			# factor = 2
-			# num_owned_planets < 8
-		# }
-	# }
-# }
 
 
 ap_xeno_compatibility = {

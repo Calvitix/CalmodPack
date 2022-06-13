@@ -10,12 +10,6 @@ event = {
 	is_triggered_only = yes
 	
 	immediate = {
-		# Multiplanetary Primitives
-		every_country = {
-			limit = { has_country_flag = multiplanetary_primitives }
-			set_name = random
-			set_name = "[This.GetRealName] of [This.Capital.GetName]"
-		}
 		# Binary planets
 		every_galaxy_planet = {
 			limit = {
@@ -239,7 +233,12 @@ event = {
 			limit = { has_planet_flag = planet_uranus }
 			add_modifier = { modifier = mzilli_crooked_planet }
 			if = {
-				limit = { NOT = { has_planet_flag = realsol_uranus } }
+				limit = {
+					NOR = {
+						has_planet_flag = realsol_uranus
+						has_global_flag = mzilli_personal
+					}
+				}
 				set_planet_entity = { entity = "gas_giant_uranus_mzilli_events_entity" }
 			}
 		}
@@ -253,7 +252,13 @@ event = {
 			solar_system = {
 				if = {
 					limit = { NOT = { any_system_planet = { has_planet_flag = mustafar_inner_planet } } }
-					PREV = { set_name = "[This.System.GetName] I-IIa" }
+					PREV = {
+						set_name = {
+							key = "mustafar_1-2a"
+							variable_string = "[This.System.GetName]"
+						}
+						#set_name = "[This.System.GetName] I-IIa"
+				}
 				}
 				else = {
 					random_system_planet = {
@@ -262,7 +267,13 @@ event = {
 					}
 					if = {
 						limit = { NOT = { any_system_planet = { has_planet_flag = mustafar_inner_planet } } }
-						PREV = { set_name = "[This.System.GetName] II-IIIa" }
+						PREV = {
+							set_name = {
+								key = "mustafar_2-3a"
+								variable_string = "[This.System.GetName]"
+							}
+							#set_name = "[This.System.GetName] II-IIIa"
+						}
 					}
 					else = {
 						random_system_planet = {
@@ -271,7 +282,13 @@ event = {
 						}
 						if = {
 							limit = { NOT = { any_system_planet = { has_planet_flag = mustafar_inner_planet } } }
-							PREV = { set_name = "[This.System.GetName] III-IVa" }
+							PREV = {
+								set_name = {
+									key = "mustafar_3-4a"
+									variable_string = "[This.System.GetName]"
+								}
+								#set_name = "[This.System.GetName] III-IVa"
+							}
 						}
 						else = {
 							random_system_planet = {
@@ -280,7 +297,13 @@ event = {
 							}
 							if = {
 								limit = { NOT = { any_system_planet = { has_planet_flag = mustafar_inner_planet } } }
-								PREV = { set_name = "[This.System.GetName] IV-Va" }
+								PREV = {
+									set_name = {
+										key = "mustafar_4-5a"
+										variable_string = "[This.System.GetName]"
+									}
+									#set_name = "[This.System.GetName] IV-Va"
+								}
 							}
 							else = {
 								random_system_planet = {
@@ -289,7 +312,13 @@ event = {
 								}
 								if = {
 									limit = { NOT = { any_system_planet = { has_planet_flag = mustafar_inner_planet } } }
-									PREV = { set_name = "[This.System.GetName] V-VIa" }
+									PREV = {
+										set_name = {
+											key = "mustafar_5-6a"
+											variable_string = "[This.System.GetName]"
+										}
+										#set_name = "[This.System.GetName] V-VIa"
+									}
 								}
 							}
 						}
@@ -957,8 +986,8 @@ ship_event = {
 								is_planet_class = pc_gaia
 							}
 						}
+						save_global_event_target_as = planet_earth
 					}
-					save_global_event_target_as = planet_earth
 				}
 			}
 		}
@@ -1023,20 +1052,21 @@ event = {
 		any_country = {
 			is_country_type = default
 			has_technology = tech_mzilli_black_domain
-		}
-		any_system = {
-			exists = starbase
-			starbase = { has_starbase_building = mzilli_black_domain_building }
+			any_owned_starbase = { has_starbase_building = mzilli_black_domain_building }
 		}
 	}
 	
 	immediate = {
-		every_system = {
+		every_country = {
 			limit = {
-				exists = starbase
-				starbase = { has_starbase_building = mzilli_black_domain_building }
+				is_country_type = default
+				has_technology = tech_mzilli_black_domain
+				any_owned_starbase = { has_starbase_building = mzilli_black_domain_building }
 			}
-			starbase = { starbase_event = { id = mzilli_general_events.14 } }
+			every_owned_starbase = {
+				limit = { has_starbase_building = mzilli_black_domain_building }
+				starbase_event = { id = mzilli_general_events.14 }
+			}
 		}
 	}
 }
@@ -1060,7 +1090,11 @@ starbase_event = {
 			if = {
 				limit = { NOT = { is_inside_nebula = yes } }
 				create_nebula = {
-					name = "[This.GetName] Lightspeed Veil"
+					#name = {
+					#	key = "lightspeed_veil_name"
+					#	variable_string = "[Root.solar_system.GetName]"
+					#}
+					name = "Lightspeed Veil"
 					radius = 1
 				}
 			}
