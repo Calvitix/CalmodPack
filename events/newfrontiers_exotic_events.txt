@@ -45,6 +45,16 @@ event = {
 							is_ai = no
 						}						
 					}
+					weights = {
+						base = 10
+						modifier = { 
+							factor = 0.25
+							OR = {
+								has_modifier = planetary_quarantine
+								has_modifier = planetary_quarantine_gestalt
+							}
+						}
+					}
 					save_event_target_as = infected_planet
 				}
 				random_galaxy_planet = {
@@ -127,6 +137,35 @@ planet_event = {
 				set_country_flag = mold_contact 
 				add_research_option = tech_megamycete
 			}
+			else = {
+				if = {
+					limit = { NOT = { has_technology = tech_megamycete } } 
+					add_tech_progress = {
+						tech = tech_megamycete
+						progress = 0.05
+					}
+				}
+				else = {
+					if = {
+						limit = {
+							OR = {
+								is_machine_empire = yes
+								is_lithoid_empire = yes
+							}
+						}
+						add_tech_progress = {
+							tech = tech_structural_calcification
+							progress = 0.05
+						}
+					}
+					else = {
+						add_tech_progress = {
+							tech = tech_invasive_necrotoxication
+							progress = 0.05
+						}
+					}
+				}
+			}
 		}
 	}
 
@@ -208,6 +247,35 @@ planet_event = {
 				limit = { NOT = { has_country_flag = mold_contact } }
 				set_country_flag = mold_contact 
 				add_research_option = tech_megamycete
+			}
+			else = {
+				if = {
+					limit = { NOT = { has_technology = tech_megamycete } } 
+					add_tech_progress = {
+						tech = tech_megamycete
+						progress = 0.05
+					}
+				}
+				else = {
+					if = {
+						limit = {
+							OR = {
+								is_machine_empire = yes
+								is_lithoid_empire = yes
+							}
+						}
+						add_tech_progress = {
+							tech = tech_structural_calcification
+							progress = 0.05
+						}
+					}
+					else = {
+						add_tech_progress = {
+							tech = tech_invasive_necrotoxication
+							progress = 0.05
+						}
+					}
+				}
 			}
 		}
 	}
@@ -331,25 +399,12 @@ planet_event = {
 
 # Spread of infection
 
-event = {
+planet_event = {
 	id = newfrontiers_exotic_event.6
 	hide_window = yes
 	is_triggered_only = yes
 	
 	trigger = {
-		any_galaxy_species = {
-			any_species_pop = {
-				OR = { 
-					pop_has_trait = trait_infected
-					pop_has_trait = trait_corrupted
-				}
-			}
-		}
-	}
-	
-	immediate = {
-		random_galaxy_planet = {
-			limit = {
 				any_owned_pop = {
 					OR = { 
 						pop_has_trait = trait_infected
@@ -357,18 +412,10 @@ event = {
 					}
 				}
 			}
-			weights = {
-				base = 25
-				modifier = { 
-					factor = 2
-					NOR = {
-						has_modifier = planetary_quarantine
-						has_modifier = planetary_quarantine_gestalt
-					}
-				}
-			}
+	
+	immediate = {
 			random_list = {
-				40 = {
+			30 = {
 					while = {
 						count = 1
 						random_owned_pop = {
@@ -395,36 +442,13 @@ event = {
 						}
 					}
 				}
-				25 = {
-					while = {
-						count = 2
-						random_owned_pop = {
-							limit = {
-								NOR = {
-									pop_has_trait = trait_molded
-									pop_has_trait = trait_infected
-									pop_has_trait = trait_corrupted
-								}
-							}
-							if = {
-								limit = { is_robot_pop = no }
-								modify_species = {
-									species = this
-									add_trait = trait_infected
-								}
-							}
-							else = {
-								modify_species = {
-									species = this
-									add_trait = trait_corrupted
-								}
-							}
-						}
-					}
-				}
 				15 = {
+				modifier = {
+					factor = 0.5
+					has_modifier = protective_equipment
+				}
 					while = {
-						count = 3
+					count = 5
 						random_owned_pop = {
 							limit = {
 								NOR = {
@@ -449,11 +473,45 @@ event = {
 						}
 					}
 				}
-				60 = { #calvitix reduce propagation
+			5 = {
 					modifier = {
-						factor = 2
+					factor = 0.25
 						has_modifier = protective_equipment
 					}
+				while = {
+					count = 10
+					random_owned_pop = {
+						limit = {
+							NOR = {
+								pop_has_trait = trait_molded
+								pop_has_trait = trait_infected
+								pop_has_trait = trait_corrupted
+							}
+						}
+						if = {
+							limit = { is_robot_pop = no }
+							modify_species = {
+								species = this
+								add_trait = trait_infected
+							}
+						}
+						else = {
+							modify_species = {
+								species = this
+								add_trait = trait_corrupted
+							}
+						}
+					}
+				}
+			}
+			50 = {
+				modifier = { 
+					factor = 1.5
+					OR = {
+						has_modifier = planetary_quarantine
+						has_modifier = planetary_quarantine_gestalt
+					}
+				}
 					#Null
 				}
 			}
@@ -470,7 +528,6 @@ event = {
 				planet_event = { id = newfrontiers_exotic_event.7 days = 30 random = 10 }
 			}
 		}
-	}
 }
 
 planet_event = {
@@ -501,6 +558,35 @@ planet_event = {
 				limit = { NOT = { has_country_flag = mold_contact } }
 				set_country_flag = mold_contact 
 				add_research_option = tech_megamycete
+			}
+			else = {
+				if = {
+					limit = { NOT = { has_technology = tech_megamycete } } 
+					add_tech_progress = {
+						tech = tech_megamycete
+						progress = 0.05
+					}
+				}
+				else = {
+					if = {
+						limit = {
+							OR = {
+								is_machine_empire = yes
+								is_lithoid_empire = yes
+							}
+						}
+						add_tech_progress = {
+							tech = tech_structural_calcification
+							progress = 0.05
+						}
+					}
+					else = {
+						add_tech_progress = {
+							tech = tech_invasive_necrotoxication
+							progress = 0.05
+						}
+					}
+				}
 			}
 		}
 	}
@@ -824,13 +910,8 @@ planet_event = {
 				starbase = { set_owner = event_target:mold_country }
 			}
 		}
-		if = {
-			limit = {
-				exists = event_target:mold_country
-			}
 			event_target:mold_country = { country_event = { id = newfrontiers_exotic_event.23 days = 1 } }
 		}
-	}
 }
 
 # Consequences of an molded army attack
@@ -880,6 +961,35 @@ planet_event = {
 				limit = { NOT = { has_country_flag = mold_contact } }
 				set_country_flag = mold_contact 
 				add_research_option = tech_megamycete
+			}
+			else = {
+				if = {
+					limit = { NOT = { has_technology = tech_megamycete } } 
+					add_tech_progress = {
+						tech = tech_megamycete
+						progress = 0.05
+					}
+				}
+				else = {
+					if = {
+						limit = {
+							OR = {
+								is_machine_empire = yes
+								is_lithoid_empire = yes
+							}
+						}
+						add_tech_progress = {
+							tech = tech_structural_calcification
+							progress = 0.05
+						}
+					}
+					else = {
+						add_tech_progress = {
+							tech = tech_invasive_necrotoxication
+							progress = 0.05
+						}
+					}
+				}
 			}
 		}
 		add_modifier = {

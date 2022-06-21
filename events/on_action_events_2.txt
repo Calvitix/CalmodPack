@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.4.2 18.05.2022
+# Calvitix Check 3.4.4 21.06.2022
 #
 # Merge with Aripath 19.11.2021
 #########################################
@@ -1850,6 +1850,7 @@ starbase_event = {
 					planet = event_target:ruined_orbital_ring_planet
 		
 					init_effect = {
+						set_owner = prev.owner
 						create_ambient_object = {
 							type = "medium_debris_01_object"
 							location = this
@@ -1890,38 +1891,7 @@ country_event = {
 	is_triggered_only = yes
 
 	immediate = {
-		# Necrophages
-		if = {
-			limit = {
-				has_trait = trait_necrophage
-			}
-			set_origin = origin_necrophage
-		}
-		# Subterranean
-		else_if = {
-			limit = {
-				has_trait = trait_cave_dweller
-			}
-			set_origin = origin_subterranean
-		}
-		# Void Dwellers
-		else_if = {
-			limit = {
-				has_trait = trait_void_dweller_1
-			}
-			set_origin = origin_void_dwellers
-		}
-		# Calamitous Birth
-		else_if = {
-			limit = {
-				from = { has_origin = origin_lithoid }
-				has_trait = trait_lithoid
-			}
-			set_origin = origin_lithoid
-		}
-		else = {
-			set_origin = origin_default
-		}
+		set_origin_effect = yes
 		if = {
 			limit = {
 				has_civic = civic_galactic_sovereign
@@ -1966,23 +1936,7 @@ country_event = {
 	}
 
 	immediate = {
-		if = {
-			limit = { has_technology = tech_galactic_administration }
-			change_government = {
-				authority = auth_oligarchic
-				cooldown = no
-				remove_invalid_civics = yes
-				civics = { civic = civic_merchant_guilds civic = random civic = random }
-			}
-		}
-		else = {
-			change_government = {
-				authority = auth_oligarchic
-				cooldown = no
-				remove_invalid_civics = yes
-				civics = { civic = civic_merchant_guilds civic = random }
-			}
-		}
+		set_merchant_government_effect = yes
 	}
 }
 
@@ -2663,5 +2617,27 @@ agreement_event = {
 
 	immediate = {
 		target = { remove_country_flag = specialistion_subject_conversion_flag }
+	}
+}
+
+# Unlock Memorialist buildings for hive-minds that reform into the civic.
+country_event = {
+	id = action.455
+	hide_window = yes
+
+	is_triggered_only = yes
+
+	trigger = {
+		has_civic = civic_hive_memorialist
+		NOT = {
+			has_technology = tech_cultural_heritage
+		}
+	}
+
+	immediate = {
+		give_technology = {
+			tech = tech_cultural_heritage
+			message = no
+		}
 	}
 }

@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.4.2  18.05.2022
+# Calvitix Check 3.4.4  21.06.2022
 #
 # Merge with Arisphaos Unofficial patch
 #
@@ -238,11 +238,6 @@ event = {
 		every_playable_country = {
 			limit = { has_origin = origin_shroudwalker_apprentice }
 			country_event = { id = origin.5600 }
-		}
-		#Subterranean
-		every_playable_country = {
-			limit = { has_origin = origin_subterranean }
-			country_event = { id = origin.3105}
 		}
 
 		# Imperial Vassal
@@ -838,6 +833,66 @@ planet_event = {
 				is_capital = yes
 				owner = { has_origin = origin_shattered_ring }
 			}
+
+			random_deposit = {
+				limit = { is_deposit_type = d_decrepit_tunnels_2 }
+				clear_blocker = yes
+			}
+			random_deposit = {
+				limit = { is_deposit_type = d_decrepit_tunnels_3 }
+				clear_blocker = yes
+			}
+			random_deposit = {
+				limit = { is_deposit_type = d_segment_rubble_4 }
+				clear_blocker = yes
+			}
+			while = {
+				count = 2
+				add_district = district_industrial
+			}
+			while = {
+				count = 2
+				add_district = district_mining_uncapped
+			}
+			if = {
+				limit = {
+					owner = { is_gestalt = no }
+				}
+				while = {
+					count = 2
+					add_district = district_city
+				}
+				if = {
+					limit = {
+						owner = { is_lithoid_empire = yes }
+					}
+					add_district = district_srw_commercial
+				}
+				else = { add_district = district_farming_uncapped }
+			}
+			else_if = {
+				limit = {
+					owner = { is_hive_empire = yes }
+				}
+				while = {
+					count = 2
+					add_district = district_hive
+				}
+				if = {
+					limit = {
+						owner = { is_lithoid_empire = yes }
+					}
+					add_district = district_hive
+				}
+				else = { add_district = district_farming_uncapped }
+			}
+			else = {
+				while = {
+					count = 3
+					add_district = district_nexus
+				}
+			}
+
 			add_building = building_foundry_1
 			add_building = building_factory_1
 			if = {
@@ -881,16 +936,7 @@ planet_event = {
 				limit = {
 					owner = { is_gestalt = no }
 				}
-				add_district = district_rw_commercial
-			}
-			else_if = {
-				limit = {
-					owner = { is_hive_empire = yes }
-				}
-				add_district = district_rw_hive
-			}
-			else = {
-				add_district = district_rw_nexus
+				add_building = building_holo_theatres
 			}
 		}
 		else = {

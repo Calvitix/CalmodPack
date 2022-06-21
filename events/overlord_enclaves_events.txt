@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.4.2  18.05.2022
+# Calvitix Check 3.4.4  21.06.2022
 #
 # Merge with JL PICARD 19.05.2022
 #
@@ -536,6 +536,13 @@ country_event = {
 
 	is_triggered_only = yes
 
+	trigger = {
+		exists = event_target:mercenary_fleet
+		event_target:mercenary_fleet = {
+			is_leased = yes
+		}
+	}
+
 	immediate = {
 		event_target:mercenary_fleet = {
 			break_fleet_contract = yes
@@ -784,6 +791,78 @@ country_event = {
 		run_in_ai_mode = yes
 	}
 
+	#Cease dialog
+	option = {
+		name = GOODBYE
+		trigger = {
+			NOR = {
+				is_hostile = event_target:mercenary_enclave_country
+				#is_homicidal = yes
+			}
+		}
+		default_hide_option = yes
+	}
+
+	# Hostility options
+	option = {
+		name = enclave.205.i
+		trigger = {
+			is_hostile = event_target:mercenary_enclave_country
+			#NOT = { is_homicidal = yes }
+		}
+		allow = {
+			resource_stockpile_compare = {
+				resource = energy
+				value >= 2500
+			}
+		}
+		add_resource = {
+			energy = -2500
+		}
+		hidden_effect = {
+			event_target:mercenary_enclave_country = {
+				set_faction_hostility = {
+					target = root
+					set_neutral = yes
+				}
+				every_owned_fleet = {
+					limit = {
+						is_in_combat = yes
+						solar_system = { is_same_value = event_target:mercenary_enclave_system }
+					}
+					clear_fleet_actions = this
+					queue_actions = {
+						repeat = {
+							max_iterations = 1
+							find_closest_planet = {
+								found_planet = {
+									orbit_planet = this
+								}
+							}
+						}
+					}
+				}
+			}
+			every_owned_fleet = {
+				limit = {
+					is_in_combat = yes
+					solar_system = { is_same_value = event_target:mercenary_enclave_system }
+				}
+				clear_fleet_actions = this
+				queue_actions = {
+					repeat = {
+						max_iterations = 1
+						find_closest_planet = {
+							found_planet = {
+								orbit_planet = this
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
 	#Hire fleet
 	option = {
 		name = enclave.205.a
@@ -1018,78 +1097,6 @@ country_event = {
 		}
 	}
 
-	#Cease dialog
-	option = {
-		name = GOODBYE
-		trigger = {
-			NOR = { 
-				is_hostile = event_target:mercenary_enclave_country 
-				#is_homicidal = yes
-			}
-		}
-		default_hide_option = yes
-	}
-
-	# Hostility options
-	option = {
-		name = enclave.205.i
-		trigger = {
-			is_hostile = event_target:mercenary_enclave_country
-			#NOT = { is_homicidal = yes }
-		}
-		allow = {
-			resource_stockpile_compare = {
-				resource = energy
-				value >= 2500
-			}
-		}
-		add_resource = {
-			energy = -2500
-		}
-		hidden_effect = {
-			event_target:mercenary_enclave_country = {
-				set_faction_hostility = {
-					target = root
-					set_neutral = yes
-				}
-				every_owned_fleet = {
-					limit = {
-						is_in_combat = yes
-						solar_system = { is_same_value = event_target:mercenary_enclave_system }
-					}
-					clear_fleet_actions = this
-					queue_actions = {
-						repeat = {
-							max_iterations = 1
-							find_closest_planet = {
-								found_planet = {
-									orbit_planet = this
-								}
-							}
-						}
-					}
-				}
-			}
-			every_owned_fleet = {
-				limit = {
-					is_in_combat = yes
-					solar_system = { is_same_value = event_target:mercenary_enclave_system }
-				}
-				clear_fleet_actions = this
-				queue_actions = {
-					repeat = {
-						max_iterations = 1
-						find_closest_planet = {
-							found_planet = {
-								orbit_planet = this
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-
 	#option = {
 	#	name = DOTDOTDOT
 	#	trigger = {
@@ -1160,6 +1167,14 @@ country_event = {
 		run_in_ai_mode = yes
 	}
 
+	#Discuss another matter (return to menu)
+	option = {
+		name = enclave.215.a
+		hidden_effect = {
+			country_event = { id = enclave.205 }
+		}
+	}
+
 	option = {
 		name = DEAL
 		ai_trade_facility = {
@@ -1189,14 +1204,6 @@ country_event = {
 		custom_tooltip = opinion15
 		hidden_effect = {
 			country_event = { id = enclave.211 }
-		}
-	}
-
-	#Discuss another matter (return to menu)
-	option = {
-		name = enclave.215.a
-		hidden_effect = {
-			country_event = { id = enclave.205 }
 		}
 	}
 
@@ -1235,6 +1242,14 @@ country_event = {
 		}
 		# without this immediate is not invoked when event runs in a special mode that allows AI to collect trade data
 		run_in_ai_mode = yes
+	}
+
+	#Discuss another matter (return to menu)
+	option = {
+		name = enclave.215.a
+		hidden_effect = {
+			country_event = { id = enclave.205 }
+		}
 	}
 
 	#Extend the hire
@@ -1280,14 +1295,6 @@ country_event = {
 		}
 	}
 
-	#Discuss another matter (return to menu)
-	option = {
-		name = enclave.215.a
-		hidden_effect = {
-			country_event = { id = enclave.205 }
-		}
-	}
-
 	#Goodbye
 	option = {
 		name = GOODBYE
@@ -1304,6 +1311,14 @@ country_event = {
 	option_clear = yes
 
 	desc = enclave.220.desc
+
+	#Discuss another matter (return to menu)
+	option = {
+		name = enclave.215.a
+		hidden_effect = {
+			country_event = { id = enclave.205 }
+		}
+	}
 
 	#Buy the license to install garrisons
 	option = {
@@ -1330,14 +1345,6 @@ country_event = {
 		trigger = {
 			resource_stockpile_compare = { resource = energy value < 1000 }
 		}
-		hidden_effect = {
-			country_event = { id = enclave.205 }
-		}
-	}
-
-	#Discuss another matter (return to menu)
-	option = {
-		name = enclave.215.a
 		hidden_effect = {
 			country_event = { id = enclave.205 }
 		}
@@ -1409,6 +1416,15 @@ country_event = {
 			}
 		}
 		text = enclave.235.5.desc
+	}
+
+	#Discuss another matter (return to menu)
+	option = {
+		name = enclave.215.a
+		default_hide_option = yes
+		hidden_effect = {
+			country_event = { id = enclave.205 }
+		}
 	}
 
 	#First Increase
@@ -1577,15 +1593,6 @@ country_event = {
 			country_event = { id = enclave.225 }
 		}
 	}
-
-	#Discuss another matter (return to menu)
-	option = {
-		name = enclave.215.a
-		default_hide_option = yes
-		hidden_effect = {
-			country_event = { id = enclave.205 }
-		}
-	}
 }
 
 # Mercenary Enclave: TACTICAL APPRAISAL
@@ -1597,6 +1604,14 @@ country_event = {
 	option_clear = yes
 
 	desc = enclave.240.desc
+
+	#Discuss another matter (return to menu)
+	option = {
+		name = enclave.215.a
+		hidden_effect = {
+			country_event = { id = enclave.205 }
+		}
+	}
 
 	# Khan
 	option = {
@@ -1640,6 +1655,7 @@ country_event = {
 		name = enclave.240.b
 		trigger = {
 			NOT = { has_modifier = tactic_v_gray }
+			has_global_flag = gray_goo_crisis_active
 			any_country = {
 				OR = {
 					is_country_type = gray
@@ -1665,6 +1681,7 @@ country_event = {
 		name = enclave.240.b
 		trigger = {
 			has_modifier = tactic_v_gray
+			has_global_flag = gray_goo_crisis_active
 			any_country = {
 				OR = {
 					is_country_type = gray
@@ -1788,14 +1805,6 @@ country_event = {
 			country_event = { id = enclave.265 }
 		}
 	}
-
-	#Discuss another matter (return to menu)
-	option = {
-		name = enclave.215.a
-		hidden_effect = {
-			country_event = { id = enclave.205 }
-		}
-	}
 }
 
 ## Tactical Appraisal Events
@@ -1845,6 +1854,14 @@ country_event = {
 
 	desc = enclave.270.desc
 
+	#Discuss another matter (return to menu)
+	option = {
+		name = enclave.215.a
+		hidden_effect = {
+			country_event = { id = enclave.205 }
+		}
+	}
+
 	# Small Army
 	option = {
 		name = enclave.270.a
@@ -1876,6 +1893,9 @@ country_event = {
 							army_name = "military_contractors"
 							species = event_target:mercenary_enclave_species
 						}
+					}
+					set_location = {
+						target = root.capital_scope
 					}
 				}
 			}
@@ -1919,6 +1939,9 @@ country_event = {
 							species = event_target:mercenary_enclave_species
 						}
 					}
+					set_location = {
+						target = root.capital_scope
+					}
 				}
 			}
 
@@ -1957,6 +1980,9 @@ country_event = {
 							army_name = "military_contractors"
 							species = event_target:mercenary_enclave_species
 						}
+					}
+					set_location = {
+						target = root.capital_scope
 					}
 				}
 			}
@@ -2000,6 +2026,9 @@ country_event = {
 							species = event_target:mercenary_enclave_species
 						}
 					}
+					set_location = {
+						target = root.capital_scope
+					}
 				}
 			}
 
@@ -2039,18 +2068,13 @@ country_event = {
 							species =event_target:mercenary_enclave_species
 						}
 					}
+					set_location = {
+						target = root.capital_scope
 				}
 			}
-
-
-			country_event = { id = enclave.205 }
-		}
 	}
 
-	#Discuss another matter (return to menu)
-	option = {
-		name = enclave.215.a
-		hidden_effect = {
+
 			country_event = { id = enclave.205 }
 		}
 	}
@@ -2086,7 +2110,7 @@ country_event = {
 				24 = {
 					modifier = {
 						factor = 0
-						event_target:mercenary_patron = { used_naval_capacity_percent < 0.95 }
+						event_target:mercenary_patron = { used_naval_capacity_percent > 0.95 }
 					}
 					country_event = { id = enclave.2015 }
 				}
@@ -2131,6 +2155,14 @@ country_event = {
 		}
 	}
 
+	#Discuss another matter (return to menu)
+	option = {
+		name = enclave.215.a
+		hidden_effect = {
+			country_event = { id = enclave.205 }
+		}
+	}
+
 	#Expand Mercenary Fleet
 	option = {
 		name = enclave.205.d
@@ -2151,7 +2183,7 @@ country_event = {
 			exists = event_target:loaned_mercenary_fleet
 			event_target:loaned_mercenary_fleet = {
 				controller = {
-					NOT = { is_same_value = root.controller }
+					NOT = { is_same_value = root }
 				}
 			}
 			event_target:mercenary_enclave_country ={
@@ -2186,14 +2218,6 @@ country_event = {
 			country_event = { id = enclave.2040 }
 		}
 	}
-
-	#Discuss another matter (return to menu)
-	option = {
-		name = enclave.215.a
-		hidden_effect = {
-			country_event = { id = enclave.205 }
-		}
-	}
 }
 
 #Mercenary Enclave: RECALL FLEET
@@ -2212,6 +2236,15 @@ country_event = {
 			}
 		}
 	}
+
+	#Discuss another matter (return to menu)
+	option = {
+		name = enclave.215.a
+		hidden_effect = {
+			country_event = { id = enclave.205 }
+		}
+	}
+
 	#Multiple options to scale costs with fleet size
 	#Size 0
 	option = {
@@ -2395,14 +2428,6 @@ country_event = {
 			event_target:current_mercenary_client = {
 				country_event = { id = enclave.299 } #three months warning and refund
 			}
-		}
-	}
-
-	#Discuss another matter (return to menu)
-	option = {
-		name = enclave.215.a
-		hidden_effect = {
-			country_event = { id = enclave.205 }
 		}
 	}
 
@@ -2951,6 +2976,7 @@ country_event = {
 			min = @tier1materialmin
 			max = @tier1materialmax
 		}
+		custom_tooltip = merc_enclave_grants_ships
 		hidden_effect = {
 			if = {
 				limit = {
@@ -3010,6 +3036,7 @@ country_event = {
 			min = @tier2materialmin
 			max = @tier2materialmax
 		}
+		custom_tooltip = merc_enclave_grants_ships
 		hidden_effect = {
 			if = {
 				limit = {
@@ -3112,6 +3139,7 @@ country_event = {
 			min = @tier3materialmin
 			max = @tier3materialmax
 		}
+		custom_tooltip = merc_enclave_grants_ships
 		hidden_effect = {
 			if = {
 				limit = {
@@ -3273,6 +3301,7 @@ country_event = {
 			min = @tier1materialmin
 			max = @tier1materialmax
 		}
+		custom_tooltip = merc_enclave_grants_ships
 		hidden_effect = {
 			if = {
 				limit = {
@@ -3348,6 +3377,7 @@ country_event = {
 			min = @tier1researchmin
 			max = @tier1researchmax
 		}
+		custom_tooltip = merc_enclave_grants_ships
 		hidden_effect = {
 			if = {
 				limit = {
@@ -3475,6 +3505,7 @@ country_event = {
 			min = @tier2researchmin
 			max = @tier2researchmax
 		}
+		custom_tooltip = merc_enclave_grants_ships
 		hidden_effect = {
 			if = {
 				limit = {
@@ -3688,6 +3719,14 @@ country_event = {
 
 	desc = enclave.2030.desc
 
+	#Discuss another matter (return to menu)
+	option = {
+		name = enclave.215.a
+		hidden_effect = {
+			country_event = { id = enclave.205 }
+		}
+	}
+
 	option = {
 		name = DEAL
 		trigger = { max_naval_capacity < 76 } #TODO: Balance
@@ -3811,14 +3850,6 @@ country_event = {
 				}
 			}
 			country_event = { id = enclave.2035 days = 3600 }
-		}
-	}
-
-	#Discuss another matter (return to menu)
-	option = {
-		name = enclave.215.a
-		hidden_effect = {
-			country_event = { id = enclave.205 }
 		}
 	}
 }
@@ -3972,6 +4003,14 @@ country_event = {
 
 	desc = enclave.2040.desc
 
+	#Discuss another matter (return to menu)
+	option = {
+		name = enclave.215.a
+		hidden_effect = {
+			country_event = { id = enclave.205 }
+		}
+	}
+
 	#Offer technology for a small fee
 	option = {
 		name = DEAL
@@ -3994,14 +4033,6 @@ country_event = {
 			}
 
 			country_event = { id = enclave.225 }
-		}
-	}
-
-	#Discuss another matter (return to menu)
-	option = {
-		name = enclave.215.a
-		hidden_effect = {
-			country_event = { id = enclave.205 }
 		}
 	}
 
@@ -6911,6 +6942,17 @@ situation_event = {
 					has_federation_type = default_federation
 					has_federation_type = research_federation
 				}
+					NOT = { has_federation_flag = dismembered_cloud_complete }
+					NOT = { has_federation_flag = recent_or_current_dismembered_cloud }
+				any_member = {
+					is_at_war = no
+					has_technology = tech_sensors_2
+				}
+				NOT = {
+					any_member = {
+						has_event_chain = dismembered_cloud_chain
+					}
+				}
 			}
 			count_owned_ship = {
 				limit = { is_ship_class = shipclass_science_ship }
@@ -6948,7 +6990,23 @@ situation_event = {
 				has_ethic = ethic_fanatic_egalitarian
 				has_country_flag = recent_envoy_event
 			}
-			#Remaining triggers have been left to the subsequent event
+			any_relation = {
+				is_harming_relations_with = root
+				any_envoy = {
+					has_envoy_task = {
+						task = harm_relations
+						target = root
+					}
+				}
+				is_gestalt = no
+				NOT = { has_country_flag = recent_envoy_event }
+			}
+			any_pop_faction = {
+				NOT = { is_pop_faction_type = progressive }
+				NOT = { is_pop_faction_type = prosperity }
+				NOT = { is_pop_faction_type = xenoist }
+				is_owner_ethic_pop_faction = yes
+			}
 		}
 	}
 
@@ -8208,7 +8266,7 @@ planet_event = {
 		}
 		hidden_effect = {
 			planet_event = {
-				id = enclave.5120 # Correction de bug
+				id = enclave.5100
 				days = 60
 			}
 			event_target:shroudwalker_enclave_country = {
@@ -11561,8 +11619,11 @@ country_event = { # Salvagers
 		OR = {
 			has_technology = tech_battleships
 			has_technology = tech_starbase_5
-			has_technology = tech_habitat_1
 			has_technology = tech_mega_engineering
+			AND = {
+				has_technology = tech_habitat_1
+				NOT = { has_origin = origin_void_dwellers }
+			}
 		}
 	}
 
@@ -11731,9 +11792,8 @@ country_event = { # Insight - Asset
 		}
 	}
 
-	immediate = {
-		custom_tooltip = enclave.7060.tt
-		hidden_effect = {
+	option = {
+		name = INTERESTING
 			if = {
 				limit = {
 					from = { is_hive_empire = yes }
@@ -11771,11 +11831,6 @@ country_event = { # Insight - Asset
 				}
 			}
 		}
-	}
-
-	option = {
-		name = INTERESTING
-	}
 }
 
 country_event = { # Insight - Spy Network Level
@@ -11934,13 +11989,13 @@ country_event = {
 			}
 			custom_tooltip = shroudwalker_teacher_buy_more_than_one
 		}
-		custom_tooltip = shroudwalker_teacher_explanation
 		add_resource = { influence = -50 }
 		add_resource = {
 			energy = -10
 			mult = root.trigger:empire_size
 		}
 		custom_tooltip = opinion10
+		custom_tooltip = shroudwalker_teacher_explanation
 		hidden_effect = {
 			event_target:shroudwalker_enclave_country = {
 				add_trust = {

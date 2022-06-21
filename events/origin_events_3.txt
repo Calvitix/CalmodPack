@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.4.2  18.05.2022
+# Calvitix Check 3.4.4  21.06.2022
 #
 # Merge with Arisphaos Unofficial patch
 #
@@ -252,25 +252,6 @@ planet_event = {
 				5 = { add_deposit = d_organic_landfill }
 				1 = { add_deposit = d_organic_slurry }
 			}
-		}
-	}
-}
-
-###############
-# SUBTERRANEAN
-###############
-
-# Start Game event
-country_event = {
-	id = origin.3105
-	hide_window = yes
-
-	is_triggered_only = yes
-
-	immediate = {
-		add_modifier = {
-			modifier = subterranean_nation_modifier
-			days = -1
 		}
 	}
 }
@@ -846,7 +827,6 @@ country_event = {
 				save_event_target_as = quantum_catapult_system
 			}
 		}
-		set_country_flag = built_quantum_catapult_site
 		set_country_flag = slingshot_origin_arcsite_owner
 		add_modifier = {
 			modifier = into_the_unknown
@@ -1496,6 +1476,26 @@ country_event = {
 	}
 
 	immediate = {
+		if = {
+			limit = {
+				NOT = {
+					closest_system = {
+						limit = { has_star_flag = overlord_empire_flag }
+						max_steps = 5
+					}
+				}
+			}
+			capital_scope.solar_system = {
+				spawn_system = {
+					min_distance = 30
+					max_distance = 80
+					min_jumps = 2
+					max_jumps = 3
+					hyperlane = yes
+					initializer = overlord_system_8_init
+				}
+			}
+		}
 		# Have met aliens (their liege)
 		set_country_flag = first_contact_event
 		set_country_flag = Story2 # Already encountered spacefarers
@@ -2018,12 +2018,29 @@ country_event = { # Overlord Version
 		save_event_target_as = previous_overlord
 		set_country_flag = origin_imperial_vassal_ex_overlord
 		set_origin = origin_default
+		every_megastructure = {
+			limit = {
+				is_megastructure_type = gateway_derelict
+			}
+			solar_system = {
+				spawn_megastructure = {
+					type = "gateway_ruined"
+					coords_from = prev
+				}
+			}
+			remove_megastructure = this
+		}
 		change_government = {
 			authority = auth_dictatorial
 			civics = random
 		}
 		every_subject = { # Release and notify current subjects
+			if = {
+				limit = {
+					is_ai = yes
+				}
 			set_subject_of = { who = none }
+			}
 			country_event = { id = origin.5735 }
 		}
 		while = { # iterate through all splintering worlds
@@ -2071,6 +2088,11 @@ country_event = { # Overlord Version
 								}
 							}
 
+							# Give them tech from previous Overlord
+							copy_techs_from = {
+								target = event_target:previous_overlord
+							}
+
 							# Give them a fleet of their own
 							create_fleet = {
 								effect = {
@@ -2102,6 +2124,10 @@ country_event = { # Overlord Version
 					}
 					set_owner = event_target:current_splinter
 				}
+				every_system_planet = {
+					limit = { is_colony = yes }
+					set_owner = event_target:current_splinter
+				}
 				starbase = { set_owner = event_target:current_splinter }
 			}
 		}
@@ -2120,12 +2146,6 @@ country_event = { # Vassal Version
 		has_origin = origin_imperial_vassal
 	}
 
-	immediate = {
-		set_subject_of = {
-			who = none
-		}
-	}
-
 	option = {
 		name = origin.5735.a
 		trigger = {
@@ -2135,6 +2155,7 @@ country_event = { # Vassal Version
 				is_xenophobe = no
 			}
 		}
+		set_subject_of = { who = none }
 	}
 
 	option = {
@@ -2146,6 +2167,8 @@ country_event = { # Vassal Version
 				is_xenophobe = yes
 			}
 		}
+
+		set_subject_of = { who = none }
 
 		add_resource = { influence = -100 }
 		custom_tooltip = origin.5735.b.tt
@@ -2177,6 +2200,15 @@ country_event = { # Vassal Version
 				}
 			}
 		}
+	}
+
+	option = {
+		name = origin.5735.c
+		trigger = {
+			is_ai = no
+		}
+		custom_tooltip = origin.5735.c.tt
+		add_resource = { influence = 100 }
 	}
 
 	after = {
