@@ -266,7 +266,6 @@ xvcv_mdlc_empire_init_adjustments_effect = {
 			set_country_flag = flesh_weakened
 			set_country_flag = synthetic_age
 			set_country_flag = synthetic_empire
-			set_country_flag = xvcv_mdlc_synth_empire
 	
 			give_technology = { tech = tech_robotic_workers message = no }
 			give_technology = { tech = tech_droid_workers message = no }
@@ -979,8 +978,14 @@ xvcv_mdlc_civic_trading_machine_target_selection_effect = {
 	}
 }
 xvcv_mdlc_civic_trading_machine_reset_variables_flags_effect = {
+	if = {
+		limit = { is_variable_set = xvcv_mdlc_target_$ID$_trade_value }
 	clear_variable = xvcv_mdlc_target_$ID$_trade_value
+	}
+	if = {
+		limit = { is_variable_set = xvcv_mdlc_target_$ID$_energy_income }
 	clear_variable = xvcv_mdlc_target_$ID$_energy_income
+	}
 	if = {
 		limit = { has_country_flag = xvcv_mdlc_target_$ID$_trade_value_added_to_all_trade_value }
 		remove_country_flag = xvcv_mdlc_target_$ID$_trade_value_added_to_all_trade_value
@@ -1065,10 +1070,7 @@ xvcv_mdlc_civic_trading_machine_ship_build_projects_effect = {
 					name = "NAME_XVCV_MDLC_CIVIC_TRADING_MACHINE_SHIP"
 					design = "NAME_XVCV_MDLC_CIVIC_TRADING_MACHINE_SHIP_DESIGN"
 				}
-				set_location = {
-					target = root.capital_scope.starbase
-					angle = random
-				}
+				set_location = root.capital_scope.starbase
 				#below codes are to create different flags based on an internal id of a country or a fleet, avoiding conflicts of multiple players having this civic at the same time
 				if = {
 					limit = { root = { has_country_flag = xvcv_mdlc_civic_trading_machine_ship_build_project_1_done } }
@@ -1976,15 +1978,10 @@ xvcv_mdlc_ap_mind_separation_project_main_effect = {
 
 	#see 'GOVERNMENT_CHANGE_EMPIRE_SIZE_MULT' in the '00_defines.txt' vanilla file for more info
 	#GOVERNMENT_CHANGE_EMPIRE_SIZE_MULT	= 10.0 # It will cost (Empire Size) * X Unity to change Government Type
-	export_trigger_value_to_variable = {
-		trigger = empire_size
-		variable = xvcv_mdlc_gov_reform_cost_var
-	}
 	add_resource = {
 		unity = 10 #cost to reform government
-		mult = xvcv_mdlc_gov_reform_cost_var
+		mult = trigger:empire_size
 	}
-	clear_variable = xvcv_mdlc_gov_reform_cost_var
 	every_owned_pop = { prev = { add_resource = { consumer_goods = 12 } } } #add 12 goods per pop
 
 	if = {
@@ -2002,7 +1999,7 @@ xvcv_mdlc_ap_mind_separation_project_main_effect = {
 	country_add_ethic = ethic_materialist
 	change_government = {
 		authority = auth_dictatorial
-		civics = { civic = civic_philosopher_king }
+		civics = { civic = civic_philosopher_king } #the least impactful civic
 		remove_invalid_civics = yes
 		cooldown = no
 	}
@@ -2010,7 +2007,6 @@ xvcv_mdlc_ap_mind_separation_project_main_effect = {
 	set_country_flag = flesh_weakened
 	set_country_flag = synthetic_age
 	set_country_flag = synthetic_empire
-	set_country_flag = xvcv_mdlc_synth_empire
 
 	give_technology = { tech = tech_robotic_workers message = no }
 	give_technology = { tech = tech_droid_workers message = no }
@@ -2021,6 +2017,20 @@ xvcv_mdlc_ap_mind_separation_project_main_effect = {
 
 	give_technology = { tech = tech_luxuries_1 message = no }
 	give_technology = { tech = tech_luxuries_2 message = no }
+
+	#give species modification points with proper techs
+	if = {
+		limit = { has_technology = tech_robomodding_m }
+		give_technology = { tech = tech_robomodding message = no }
+	}
+	if = {
+		limit = { has_technology = tech_binary_motivators }
+		give_technology = { tech = tech_robomodding_points_1 message = no }
+	}
+	if = {
+		limit = { has_technology = tech_nanite_assemblers }
+		give_technology = { tech = tech_robomodding_points_2 message = no }
+	}
 
 	every_owned_pop = {
 		limit = { has_trait = xvcv_mdlc_trait_bio_robot }
@@ -2144,7 +2154,7 @@ xvcv_mdlc_ap_mind_separation_project_main_effect = {
 
 	#reset the origin when it's needed
 	if = {
-		limit = { NOT = { has_authority = auth_dictatorial } }
+		limit = { has_authority = auth_machine_intelligence }
 		set_origin = origin_default
 		#and attempt again to change the government
 		change_government = {
@@ -2354,15 +2364,10 @@ xvcv_mdlc_ap_mind_separation_project_temp_modifiers_add_effect = {
 xvcv_mdlc_ap_mind_integration_project_main_effect = {
 	optimize_memory
 
-	export_trigger_value_to_variable = {
-		trigger = empire_size
-		variable = xvcv_mdlc_gov_reform_cost_var
-	}
 	add_resource = {
-		unity = 10
-		mult = xvcv_mdlc_gov_reform_cost_var
+		unity = 10 #cost to reform government
+		mult = trigger:empire_size
 	}
-	clear_variable = xvcv_mdlc_gov_reform_cost_var
 
 	#to remove "[19:01:58][government_restrictions_solver.cpp:1316]: change_government at  file: events/xvcv_mdlc_events.txt line: 1527: Result origin is not valid" error log #stellaris v3.0.4
 	if = {
@@ -2405,19 +2410,30 @@ xvcv_mdlc_ap_mind_integration_project_main_effect = {
 	}
 
 	if = {
-		limit = { has_country_flag = synthetic_age }
-		remove_country_flag = synthetic_age
-	}
-	if = {
 		limit = { has_country_flag = flesh_weakened }
 		remove_country_flag = flesh_weakened
 	}
+	if = {
+		limit = { has_country_flag = synthetic_age }
+		remove_country_flag = synthetic_age
+	}
 	remove_country_flag = synthetic_empire
-	remove_country_flag = xvcv_mdlc_synth_empire
 
 	if = {
 		limit = { NOT = { has_technology = tech_bio_reactor } }
 		give_technology = { tech = tech_bio_reactor message = no }
+	}
+	if = {
+		limit = { has_technology = tech_robomodding }
+		give_technology = { tech = tech_robomodding_m message = no }
+	}
+	if = {
+		limit = { has_technology = tech_robomodding_points_1 }
+		give_technology = { tech = tech_binary_motivators message = no }
+	}
+	if = {
+		limit = { has_technology = tech_robomodding_points_2 }
+		give_technology = { tech = tech_nanite_assemblers message = no }
 	}
 
 	every_owned_pop = {
@@ -3032,10 +3048,6 @@ xvcv_mdlc_ap_bio_robot_project_effect = {
 }
 xvcv_mdlc_ap_bio_robot_project_dominant_species_change_effect = {
 	if = {
-		limit = { has_valid_civic = xvcv_mdlc_civic_rock_body }
-		force_remove_civic = xvcv_mdlc_civic_rock_body
-	}
-	if = {
 		limit = { has_valid_civic = xvcv_mdlc_civic_synth_skin }
 		force_remove_civic = xvcv_mdlc_civic_synth_skin
 	}
@@ -3168,6 +3180,14 @@ xvcv_mdlc_bio_robot_auto_growth_effect = {
 			add_modifier = { modifier = xvcv_mdlc_bio_robot_growth_progress_percent days = -1 }
 		}
 	}
+}
+xvcv_mdlc_bio_robot_auto_growth_stop_effect = {
+	remove_modifier = xvcv_mdlc_bio_robot_growth_progress_percent
+	#clear variables for using it later
+	clear_variable = xvcv_mdlc_bio_robot_growth_progress_var 
+	clear_variable = xvcv_mdlc_bio_robot_growth_rate_per_month_var
+	clear_variable = xvcv_mdlc_bio_robot_remaining_time_to_finish_growth_var
+	clear_variable = xvcv_mdlc_bio_robot_growth_requirement_var 
 }
 xvcv_mdlc_bio_robot_trait_species_changing_effect = {
 	if = {

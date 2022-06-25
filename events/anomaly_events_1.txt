@@ -1,8 +1,8 @@
 # Original File
 #
-# Calvitix Check 3.4.2  18.05.2022
+# Calvitix Check 3.4.4  18.05.2022
 #
-# Merge with Arisphaos Unofficial patch
+# Merge with Arisphaos Unofficial patch 24.06.2022
 # Merge with Expanded events 02.06.2021
 # Merge with JL Picard  19.05.2022
 
@@ -1251,6 +1251,61 @@ ship_event = {
 				min = @tier2materialmin
 				max = @tier2materialmax
 			}
+		}
+	}
+}
+
+#Reanimated Rock Brain
+ship_event = {
+	id = anomaly.81
+	title = "distar.218.name"
+	desc = "anomaly.81.desc"
+	location = event_target:rock_brain
+
+	is_triggered_only = yes
+
+	picture = GFX_evt_ice_asteroids
+	show_sound = event_collapsing_ruins
+
+	immediate = {
+		fromfrom = { save_event_target_as = rock_brain }
+		create_fleet = {
+			name = "NAME_Asteroid"
+			effect = {
+				set_owner = root.owner
+				create_ship = {
+					name = "NAME_Asteroid"
+					design = "NAME_Asteroid"
+					prefix = no
+					upgradable = no
+					effect = {
+						set_disabled = yes
+						save_event_target_as = rock_brain_ship
+					}
+				}
+				set_location = {
+					target = event_target:rock_brain
+					distance = 0
+					angle = random
+				}
+				set_fleet_stance = passive
+			}
+			settings = {
+				can_upgrade = no
+				can_change_composition = no
+				can_change_leader = no
+				uses_naval_capacity = no
+				spawn_debris = no
+			}
+		}
+	}
+
+	option = {
+		name = "it_hungers"
+		tooltip = { event_target:rock_brain_ship.fleet = { set_owner = root.owner } }
+		hidden_effect = {
+			event_target:rock_brain_ship = { set_disabled = no }
+			event_target:rock_brain = { remove_planet = yes }
 		}
 	}
 }

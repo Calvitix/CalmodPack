@@ -83,6 +83,7 @@ country_event = {
 	title = "xvcv_mdlc.9.name"
 	desc = "xvcv_mdlc.9.desc"
 	picture = GFX_evt_busy_spaceport
+	#no sound here #players will keeping hearing it while clicking event options
 	is_triggered_only = yes
 
 	immediate = {
@@ -710,7 +711,7 @@ country_event = {
 }
 #'xvcv_mdlc_pc_mechanical' planet class terraforming complete effect event
 planet_event = {
-	id = xvcv_mdlc.27
+	id = xvcv_mdlc.21
 	hide_window = yes
 	is_triggered_only = yes
 
@@ -726,7 +727,7 @@ planet_event = {
 #'xvcv_mdlc_ap_self_assembling_colony_ship' ascension perk effect event
 #I could change or add the '00_country_customization.txt' file, but nah, this one is fine
 planet_event = {
-	id = xvcv_mdlc.28
+	id = xvcv_mdlc.22
 	hide_window = yes
 	is_triggered_only = yes
 
@@ -778,6 +779,7 @@ country_event = {
 		}
 	}
 }
+#to loop the 'xvcv_mdlc_ap_mind_separation_project_temp_modifiers_add_effect' scripted effect
 country_event = {
 	id = xvcv_mdlc.30
 	hide_window = yes
@@ -793,6 +795,7 @@ country_event = {
 	title = "xvcv_mdlc.31.name"
 	desc = "xvcv_mdlc.31.desc"
 	picture = GFX_evt_star_chart
+	show_sound = event_conversation
 	is_triggered_only = yes
 
 	option = {
@@ -898,6 +901,7 @@ country_event = {
 		}
 	}
 }
+#to loop the 'xvcv_mdlc_ap_mind_integration_project_temp_modifiers_add_effect' scripted effect
 country_event = {
 	id = xvcv_mdlc.33
 	hide_window = yes
@@ -1027,7 +1031,7 @@ country_event = {
 		}
 	}
 }
-#'xvcv_mdlc_leader_tied_traits_add_effect' event
+#add new leader traits when their species have required traits when the species modification is done
 country_event = {
 	id = xvcv_mdlc.50
 	hide_window = yes
@@ -1049,6 +1053,7 @@ country_event = {
 		xvcv_mdlc_leader_tied_traits_remove_effect = yes
 	}
 }
+#add new leader traits when their species have required traits when a new leader is created
 country_event = {
 	id = xvcv_mdlc.51
 	hide_window = yes
@@ -1128,10 +1133,6 @@ country_event = {
 		name = xvcv_mdlc.60.b
 		custom_tooltip = xvcv_mdlc.60.b.tooltip
 		if = {
-			limit = { has_valid_civic = xvcv_mdlc_civic_rock_body }
-			custom_tooltip = xvcv_mdlc.60.b.tooltip_civic_rock_body
-		}
-		if = {
 			limit = { has_valid_civic = xvcv_mdlc_civic_synth_skin }
 			custom_tooltip = xvcv_mdlc.60.b.tooltip_civic_synth_skin
 		}
@@ -1154,7 +1155,7 @@ country_event = {
 		xvcv_mdlc_bio_robot_auto_growth_effect = yes
 	}
 }
-#a variable for bio robot auto growth reset effect event
+#variables for bio robot auto growth reset effect event
 country_event = {
 	id = xvcv_mdlc.62
 	hide_window = yes
@@ -1174,18 +1175,27 @@ country_event = {
 				is_variable_set = xvcv_mdlc_bio_robot_growth_progress_var
 				xvcv_mdlc_bio_robot_auto_growth_not_possible_planet_trigger = yes
 			}
-			remove_modifier = xvcv_mdlc_bio_robot_growth_progress_percent
-			#clear variables for using it later
-			clear_variable = xvcv_mdlc_bio_robot_growth_progress_var 
-			clear_variable = xvcv_mdlc_bio_robot_growth_rate_per_month_var
-			clear_variable = xvcv_mdlc_bio_robot_remaining_time_to_finish_growth_var
-			clear_variable = xvcv_mdlc_bio_robot_growth_requirement_var 
+			xvcv_mdlc_bio_robot_auto_growth_stop_effect = yes
 		}
+	}
+}
+#reset variables for bio robot auto growth when the planet becomes ownerless or has the new owner
+planet_event = {
+	id = xvcv_mdlc.63
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		is_variable_set = xvcv_mdlc_bio_robot_growth_progress_var
+	}
+
+	immediate = {
+		xvcv_mdlc_bio_robot_auto_growth_stop_effect = yes
 	}
 }
 #when the xvcv_mdlc_trait_bio_robot trait is added or removed
 country_event = {
-	id = xvcv_mdlc.63
+	id = xvcv_mdlc.64
 	hide_window = yes
 	is_triggered_only = yes
 

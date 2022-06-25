@@ -165,52 +165,71 @@ xvcv_mdlc_operation_malware_activity_main_effect = {
 	}
 }
 xvcv_mdlc_operation_machine_uprising_main_effect = {
-	event_target:current_uprising_originator = { #for 'syndaw.1025.desc'
-		set_country_flag = had_uprising
-		random_owned_planet = {
-			limit = { is_capital = no }
-			save_event_target_as = xvcv_mdlc_operation_machine_uprising_target_world
+	#vanilla script modified
+	event_target:current_uprising_originator = { #for the 'syndaw.1025' event descriptions
+		random_situation = {
+			limit = { is_situation_type = situation_machine_uprising }
+			destroy_situation = this #just in case the situation has occurred after the operation has been started
 		}
-		random_owned_species = {
+
+		every_controlled_fleet = { set_event_locked = yes }
+		random_owned_planet = {
 			limit = {
+				any_owned_pop = {
 				OR = {
 					has_trait = trait_machine_unit
 					has_trait = trait_mechanical
 				}
 			}
-			save_event_target_as = xvcv_mdlc_operation_machine_uprising_target_species
 		}
-		if = {
-			limit = { NOT = { exists = event_target:xvcv_mdlc_operation_machine_uprising_target_species } }
-			create_species = {
-				name = random
-				namelist = prev
-				class = "MACHINE"
-				portrait = sd_avi_robot
-				traits = { trait = trait_machine_unit }
-				traits = random
-				homeworld = this
-				effect = { save_event_target_as = xvcv_mdlc_operation_machine_uprising_target_species }
+			set_planet_flag = machup_capital@prev
+			save_event_target_as = xvcv_mdlc_operation_machine_uprising_origin_planet
 			}
+
+		# Determine Robot Pop percentage of Empire.
+		export_trigger_value_to_variable = {
+			trigger = pop_percentage
+			parameters = { limit = { is_robot_pop = yes } }
+			variable = var_country_robot_pops_percent
 		}
+		# Take percentage of Robot pops and average it together with 0.5 to get Uprising strength (0.25 to 0.75).
+		change_variable = { which = var_country_robot_pops_percent value = 0.5 }
+		divide_variable = { which = var_country_robot_pops_percent value = 2 }
+
+		# find and flag planets
 		effect_on_blob = {
-			center = event_target:xvcv_mdlc_operation_machine_uprising_target_world.solar_system
-			owned_planets_percentage = 0.5
+			center = event_target:xvcv_mdlc_operation_machine_uprising_origin_planet.solar_system
+			owned_planets_percentage = var_country_robot_pops_percent
 			planet_limit = {
-				solar_system = {
-					exists = starbase
-					starbase = { is_owned_by = prevprevprev }
-					NOT = { any_system_planet = { is_same_value = prevprevprev.capital_scope } }
+				OR = {
+					is_controlled_by = prev
+					is_owned_by = prev
 				}
+				solar_system = { NOT = { is_same_value = prevprev.capital_scope.solar_system } } # never flip any planets in the capital system
 				is_under_colonization = no
 			}
 			effect = { set_star_flag = machup_system_flip }
 		}
+		clear_variable = var_country_robot_pops_percent
+
+		# create machine species
+		create_species = {
+			name = random
+			class = MACHINE
+			portrait = random
+			traits = {
+				trait = trait_machine_unit
+				trait = random_traits
+			}
+			immortal = yes
+		}
+
+		# create machine country
 		create_country = {
 			name = random
 			type = default
 			flag = random
-			species = event_target:xvcv_mdlc_operation_machine_uprising_target_species
+			species = last_created_species
 			ignore_initial_colony_error = yes
 			day_zero_contact = no
 			ethos = { ethic = ethic_gestalt_consciousness }
@@ -221,73 +240,211 @@ xvcv_mdlc_operation_machine_uprising_main_effect = {
 				civic = xvcv_mdlc_civic_warfleet
 				civic = xvcv_mdlc_civic_expander
 			}
+			effect = { save_event_target_as = current_uprising } #for the 'syndaw.1025' event descriptions
 		}
-		event_target:xvcv_mdlc_operation_machine_uprising_target_world = {
-			solar_system.starbase = { set_owner = last_created_country }
-			set_owner = last_created_country
-			set_capital = yes
-		}
-		every_system = {
-			limit = {
-				has_star_flag = machup_system_flip
-				is_owned_by = prev
-			}
-			starbase = { set_owner = last_created_country }
-			every_system_planet = {
-				limit = { is_colony = yes }
-				set_owner = last_created_country
-				while = {
-					limit = { has_district = district_city }
-					remove_district = district_city
-					change_variable = { which = xvcv_mdlc_district_city_count_var value = 1 }
-				}
-			}
-		}
+
 		last_created_country = {
-			save_event_target_as = current_uprising #for 'syndaw.1025.desc'
+			#this = event_target:current_uprising
+			#prev = event_target:current_uprising_originator
+			#from = event_target:xvcv_mdlc_operation_machine_uprising_origin_planet
+
+			# setting flags
+			set_country_flag = machine_uprising_country@prev
 			set_country_flag = machine_uprising_country
-			every_country = {
-				limit = { has_communications = prevprev }
-				establish_communications_no_message = prev
-				establish_contact = { who = prev location = event_target:xvcv_mdlc_operation_machine_uprising_target_world }
+			set_relation_flag = { who = prev flag = uprising_to_host_flag }
+			prev = {
+				set_country_flag = machine_uprising_originator@event_target:current_uprising
+				set_country_flag = machine_uprising_originator
+				set_relation_flag = { who = event_target:current_uprising flag = host_to_uprising_flag }
 			}
-			set_relation_flag = {
-				who = prev
-				flag = uprising_to_host_flag
-			}
-			add_opinion_modifier = { who = prev modifier = opinion_machine_uprising_originator }
+
+			# setting graphical culture
 			set_graphical_culture = prev
+
+			# establish comms
+			every_country = {
+				limit = {
+					OR = {
+						has_communications = event_target:current_uprising_originator
+						intel_level = {
+							level > low
+							system = event_target:current_uprising_originator.capital_scope.solar_system
+						}
+						any_system = {
+							has_star_flag = machup_system_flip
+							prev = {
+								intel_level = {
+									level > low
+									system = prev
+								}
+							}
+						}
+					}
+				}
+				establish_communications_no_message = prev
+				establish_contact = { who = prev location = event_target:xvcv_mdlc_operation_machine_uprising_origin_planet }
+			}
+
+			# baseline resource stockpile
 			add_resource = {
-				energy = 5000
-				minerals = 5000
-				influence = 500
-				alloys = 5000
-				unity = 5000
+				energy = 20000
+				minerals = 20000
+				influence = 800
+				alloys = 10000
+				food = 10000 #just in case
+				consumer_goods = 5000 #just in case
+				rare_crystals = 1000
+				volatile_motes = 1000
+				exotic_gases = 1000
+				sr_dark_matter = 100
 			}
-			add_500_unity_per_year_passed = yes
-			every_owned_planet = {
-				while = {
-					limit = { check_variable = { which = xvcv_mdlc_district_city_count_var value > 0 } }
-					subtract_variable = { which = xvcv_mdlc_district_city_count_var value = 1 }
-					add_district = district_nexus
+			add_500_unity_per_year_passed = yes # scripted effect
+
+			# Machine Uprising opinion modifier
+			add_opinion_modifier = { who = prev modifier = opinion_machine_uprising_originator }
+			prev = { add_opinion_modifier = { who = event_target:current_uprising modifier = opinion_machine_uprising } }
+			
+			# clear new contact opinion modifier
+			if = {
+				limit = { has_opinion_modifier = { who = prev modifier = opinion_new_contact } }
+				remove_opinion_modifier = { who = prev modifier = opinion_new_contact }
+			}
+
+			# flip capital planet and add at least 10 Machine pops
+			event_target:xvcv_mdlc_operation_machine_uprising_origin_planet = {
+				#prev = event_target:current_uprising
+				#prevprev = event_target:current_uprising_originator
+				#this = event_target:xvcv_mdlc_operation_machine_uprising_origin_planet
+
+				# flip military stations
+				solar_system = {
+					every_fleet_in_system = {
+						limit = {
+							exists = owner
+							owner = { is_same_value = event_target:current_uprising_originator }
+							any_controlled_ship = { is_ship_class = shipclass_military_station }
+						}
+						set_owner = event_target:current_uprising
+					}
 				}
+				set_owner = prev
+				set_controller = prev
+				set_capital = yes
+				# create shipyards
+				solar_system = {
+					if = {
+						limit = { exists = starbase }
+						starbase = {
+							set_owner = event_target:current_uprising
+							if = {
+								limit = { has_starbase_size = starbase_outpost }
+								set_starbase_size = starbase_starport
+								set_starbase_module = { slot = 1 module = shipyard }
+								set_starbase_module = { slot = 2 module = shipyard }
+							}
+							else_if = {
+								limit = { NOT = { has_starbase_module = shipyard } }
+								set_starbase_module = { slot = 1 module = shipyard }
+								set_starbase_module = { slot = 2 module = shipyard }
+							}
+						}
+						else = {
+							create_starbase = {
+								size = starbase_starport
+								module = shipyard
+								owner = event_target:current_uprising
+							}
+						}
+					}
+				}
+				# create pops
+				while = { create_pop = { species = prev.species } count = 10 }
 				while = {
-					limit = { any_owned_pop = { NOT = { is_same_species = owner.species } } }
+					limit = { count_owned_pop = { limit = { is_exact_same_species = event_target:current_uprising.species } count < 5 } }
 					random_owned_pop = {
-						limit = { NOT = { is_same_species = owner.species } }
+						limit = { NOT = { is_exact_same_species = event_target:current_uprising.species } }
 						kill_pop = yes
+						prev = { create_pop = { species = event_target:current_uprising.species } }
 					}
-					create_pop = { species = owner.species }
 				}
+				# create armies
+				while = { create_army = { owner = prev type = machine_assault_1 } count = 6 }
+				# flip remaining flagged planets
 				while = {
-					create_army = {
-						owner = this.owner
-						species = owner.species
-						type = machine_assault_1
+					limit = {
+						any_system = {
+							has_star_flag = machup_system_flip
+							exists = starbase
+							starbase = { owner = { is_same_value = event_target:current_uprising_originator } }
+						}
 					}
-					count = 6
+					random_system = {
+						limit = {
+							has_star_flag = machup_system_flip
+							exists = starbase
+							starbase = { owner = { is_same_value = event_target:current_uprising_originator } }
+						}
+						starbase = { set_owner = event_target:current_uprising }
+					}
 				}
 			}
+			prev = {
+			every_owned_planet = {
+					limit = { solar_system = { has_star_flag = machup_system_flip } }
+			
+					# flip military stations
+					solar_system = {
+						every_fleet_in_system = {
+							limit = {
+								exists = owner
+								owner = { is_same_value = event_target:current_uprising_originator }
+								any_controlled_ship = { is_ship_class = shipclass_military_station }
+							}
+							set_owner = event_target:current_uprising
+						}
+					}
+			
+					set_planet_flag = been_flipped
+					set_owner = event_target:current_uprising
+					set_controller = event_target:current_uprising
+			
+					export_trigger_value_to_variable = {
+						trigger = free_housing
+						variable = housing_var
+					}
+					if = {
+						limit = {
+							OR = {
+								check_variable = { which = housing_var value < 2 }
+								check_variable = { which = housing_var value > 25 }
+							}
+						}
+						set_variable = { which = housing_var value = 15 }
+				}
+					while = { create_pop = { species = event_target:current_uprising } count = housing_var }
+					clear_variable = housing_var
+				while = {
+						limit = { count_owned_pop = { limit = { is_exact_same_species = event_target:current_uprising.species } count < 5 } }
+					random_owned_pop = {
+							limit = { NOT = { is_exact_same_species = event_target:current_uprising.species } }
+						kill_pop = yes
+							prev = { create_pop = { species = event_target:current_uprising.species } }
+					}
+				}
+			
+					# create armies on planets
+					while = { create_army = { owner = event_target:current_uprising type = machine_assault_1 } count = 6 }
+					if = {
+						limit = { is_under_colonization = yes }
+						destroy_colony = yes
+					}
+				}
+			}
+			every_system = {
+				limit = { has_star_flag = machup_system_flip }
+				remove_star_flag = machup_system_flip
+			}
+			# get host's technologies
 			copy_techs_from = {
 				target = prev
 				except = {
@@ -334,99 +491,80 @@ xvcv_mdlc_operation_machine_uprising_main_effect = {
 					tech_akx_worm_3
 				}
 			}
-			while = {
+			# survey host's surveyed planets
+			every_galaxy_planet = {
+				limit = { is_surveyed = { who = event_target:current_uprising_originator status = yes } }
+				set_surveyed = { surveyed = yes surveyor = event_target:current_uprising }
+			}
+
+			# create fleets
+			# exterminator fleets, 150% naval cap
+			create_fleet_from_naval_cap = 0.2
+			random_owned_planet = { last_created_fleet = { set_location = prev } }
+			reroll_random = yes
+			create_fleet_from_naval_cap = 0.3
+			random_owned_planet = { last_created_fleet = { set_location = prev } }
+			reroll_random = yes
 				create_fleet_from_naval_cap = 0.4
 				random_owned_planet = { last_created_fleet = { set_location = prev } }
-				count = 2
-			}
-			add_modifier = {
-				modifier = uprising_ai_buff
-				days = 1800
-			}
-		}
-		set_relation_flag = {
-			who = last_created_country
-			flag = host_to_uprising_flag
-		}
-		add_opinion_modifier = { who = last_created_country modifier = opinion_machine_uprising }
-		every_system = {
-			limit = { has_star_flag = machup_system_flip }
-			remove_star_flag = machup_system_flip
-		}
-		every_galaxy_planet = {
-			limit = {
-				is_surveyed = {
-					who = prev
-					status = yes
-				}
-			}
-			set_surveyed = {
-				surveyed = yes
-				surveyor = last_created_country
-			}
-		}
+			reroll_random = yes
+			create_fleet_from_naval_cap = 0.6
+			random_owned_planet = { last_created_fleet = { set_location = prev } }
+			#science
 		create_fleet = {
 			effect = {
-				set_owner = last_created_country
-				create_ship = {
-					name = random
-					random_existing_design = science
-				}
+					set_owner = event_target:current_uprising
+					create_ship = { name = random random_existing_design = science }
 				set_fleet_stance = evasive				
-				set_location = last_created_country.capital_scope
-				owner = {
+					set_location = event_target:current_uprising.capital_scope
+					event_target:current_uprising = {
 					create_leader = {
 						class = scientist
 						sub_type = survey
 						name = random
-						species = owner.species
+							species = this.species
 					}
 				}
 				set_leader = last_created_leader
 			}			
 		}
+			#constructor
 		create_fleet = {
 			effect = {
-				set_owner = last_created_country
-				create_ship = {
-					name = random
-					random_existing_design = constructor
-				}
+					set_owner = event_target:current_uprising
+					create_ship = { name = random random_existing_design = constructor }
 				set_fleet_stance = evasive
-				set_location = last_created_country.capital_scope
+					set_location = event_target:current_uprising.capital_scope
 			}
 		}
+			every_controlled_fleet = { set_event_locked = no }
+			add_modifier = { modifier = uprising_ai_buff days = 1800 }
 	}
 	every_playable_country = {
 		limit = {
-			has_communications = event_target:current_uprising_originator
+				has_communications = prev
 			NOR = {
-				is_same_value = root
-				is_same_value = last_created_country
-				is_same_value = event_target:current_uprising_originator
+					is_same_value = event_target:current_uprising
+					is_same_value = prev
+					is_same_value = prevprev
 			}
 		}
 		country_event = { id = syndaw.1025 days = 5 }
 	}
 	observer_event = { id = observer.81 }
+		every_controlled_fleet = { set_event_locked = no }
+	}
+
+	#mod script
+	event_target:current_uprising = {
+		set_closed_borders = { who = prev status = no }
+		join_alliance = { who = prev override_requirements = yes }
+	}
+	set_closed_borders = { who = event_target:current_uprising status = no }
+	# declare war on host
 	declare_war = {
 		target = event_target:current_uprising_originator
-		name = "NAME_Machine_Uprising_War"
+		name = { key = "NAME_Machine_Uprising_War" variable_string = "This.MainDefender.GetAdj" }
 		attacker_war_goal = "wg_machine_uprising"
-	}
-	last_created_country = {
-		set_closed_borders = {
-			who = root
-			status = no
-		}
-		join_alliance = {
-			who = root
-			override_requirements = yes
-		}
-		join_war = root
-	}
-	set_closed_borders = {
-		who = last_created_country
-		status = no
 	}
 }

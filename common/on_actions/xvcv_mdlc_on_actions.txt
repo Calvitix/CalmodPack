@@ -3,7 +3,7 @@ on_monthly_pulse_country = {
 	events = {
 		xvcv_mdlc_config_effect.5 #auto pop migration
 		xvcv_mdlc.61 #bio robot auto growth effect event
-		xvcv_mdlc.62 #the variable for bio robot auto growth reset effect event
+		xvcv_mdlc.62 #variables for bio robot auto growth reset effect event
 		xvcv_mdlc.80 #'xvcv_mdlc_goods_for_pop_unity_bonus' modifier add effect event
 		xvcv_mdlc.81 #remove the 'xvcv_mdlc_goods_for_pop_unity_bonus' modifier when its requirements are unfulfilled
 	}
@@ -41,6 +41,7 @@ on_game_start = {
 	events = {
 		xvcv_mdlc_active.1 #set a global flag to detect this mod
 		xvcv_mdlc.3 #on_game_start / on_single_player_save_game_load: creating invisible countries
+		xvcv_mdlc_archaeology.1 #create a primitive empire with a digsite
 	}
 }
 # No scope, like on_game_start
@@ -48,7 +49,7 @@ on_game_start = {
 on_single_player_save_game_load = {
 	events = {
 		xvcv_mdlc_active.1 #set a global flag to detect this mod
-		#xvcv_mdlc.3 #on_game_start / on_single_player_save_game_load: creating invisible countries  #Bug ?
+		xvcv_mdlc.3 #on_game_start / on_single_player_save_game_load: creating invisible countries
 	}
 }
 # A pop has finished purging
@@ -64,8 +65,8 @@ on_pop_purged = {
 # This = Country
 on_tech_increased = {
 	events = {
-		xvcv_mdlc_customgui.2
-		xvcv_mdlc_customgui.4
+		xvcv_mdlc_customgui.2 #'xvcv_mdlc_tech_leader_making_improvement' tech effect event
+		xvcv_mdlc_customgui.4 #'xvcv_mdlc_tech_core_modifying_improvement' tech effect event
 	}
 }
 # Executed as a leader has died
@@ -73,7 +74,7 @@ on_tech_increased = {
 # From = Leader
 on_leader_death = {
 	events = {
-		xvcv_mdlc_customgui.5
+		xvcv_mdlc_customgui.5 #'xvcv_mdlc_ruler_trait_memory_backup' trait effect event
 		xvcv_mdlc.53 #'xvcv_mdlc_leader_trait_memory_backup' trait effect event
 	}
 }
@@ -118,15 +119,15 @@ on_capital_changed = {
 # From = Species ( Post Modification )
 on_modification_complete = {
 	events = {
-		xvcv_mdlc.50 #'xvcv_mdlc_leader_tied_traits_add_effect' event
-		xvcv_mdlc.63 #when the xvcv_mdlc_trait_bio_robot trait is added or removed
+		xvcv_mdlc.50 #add new leader traits when their species have required traits when the species modification is done
+		xvcv_mdlc.64 #when the xvcv_mdlc_trait_bio_robot trait is added or removed
 	}
 }
 # a new leader is generated for an empire, to be available for recruitment
 # scope: country, from: leader
 on_leader_spawned = {
 	events = {
-		xvcv_mdlc.51
+		xvcv_mdlc.51 #add new leader traits when their species have required traits when a new leader is created
 	}
 }
 # A leader leveled up.
@@ -142,7 +143,7 @@ on_leader_level_up = {
 # From = Terraforming country
 on_terraforming_complete = {
 	events = {
-		xvcv_mdlc.27 #'xvcv_mdlc_pc_mechanical' planet class terraforming complete effect event
+		xvcv_mdlc.21 #'xvcv_mdlc_pc_mechanical' planet class terraforming complete effect event
 	}
 }
 #A district construction has been completed.
@@ -165,7 +166,7 @@ on_district_demolished = {
 # Scope = Planet
 on_colonized = {
 	events = {
-		xvcv_mdlc.28 #'xvcv_mdlc_ap_self_assembling_colony_ship' ascension perk effect event
+		xvcv_mdlc.22 #'xvcv_mdlc_ap_self_assembling_colony_ship' ascension perk effect event
 	}
 }
 #This = destroyed country
@@ -183,8 +184,8 @@ on_country_destroyed = {
 # From = source country
 on_custom_diplomacy = {
 	events = {
-		xvcv_mdlc_abyss.10
-		xvcv_mdlc_abyss.11
+		xvcv_mdlc_abyss.10 #abyss main lobby
+		xvcv_mdlc_abyss.11 #when the lobby is unavailable
 	}
 }
 #spynetwork scope
@@ -215,10 +216,74 @@ on_post_government_changed = {
 		xvcv_mdlc_espionage.4 #remove 'xvcv_mdlc_asset_malware' asset when an empire doesn't have the required civic
 	}
 }
+#'on_operation_cancelled' on_action trigger doesn't seem to work so I use this instead #don't know why #stellaris v3.4.3
+# A war is beginning, executed for every country in the war.
+# Root = Country
+# From = War
+on_war_beginning = {
+	events = {
+		xvcv_mdlc_espionage.27 #abort the 'xvcv_mdlc_operation_machine_uprising' operation when machine uprising happens to the target
+	}
+}
 # Executed as new ruler has been set
 # This = Country
 on_ruler_set = {
 	events = {
-		xvcv_mdlc_customgui.6
+		xvcv_mdlc_customgui.6 #reset core modifying variables when a new ruler drone is set
+	}
+}
+#From = Planet/Starbase/Megastructure scope
+#This = Fleet scope
+on_fleet_enter_orbit = {
+	events = {
+		xvcv_mdlc_archaeology.3 #attack a ship on the orbit of the primitive machine world
+	}
+}
+#From = Country scope
+#This = Planet scope
+on_planet_ownerless = {
+	events = {
+		xvcv_mdlc.63 #reset variables for bio robot auto growth when the planet becomes ownerless or has the new owner
+	}
+}
+#Fired whenever a new owner is set for a planet,
+#be it after a war or through a trade
+#From = Country scope (new owner)
+#This = Planet scope
+on_planet_transfer = {
+	events = {
+		xvcv_mdlc.63 #reset variables for bio robot auto growth when the planet becomes ownerless or has the new owner
+	}
+}
+# Triggers country_event for the defender upon victory
+# Root = country, planet owner
+# From = country, attack leader
+# FromFrom = planet
+on_planet_defenders_win = {
+	events = {
+		xvcv_mdlc_archaeology.5 #when the player defended the planet against the 'xvcv_mdlc_primitive_machine_country' country
+	}
+}
+# Triggers country_event for the defender upon defeat
+# This = country, planet owner
+# From = country, attack leader
+# FromFrom = planet
+on_planet_defenders_lose = {
+	events = {
+		xvcv_mdlc_archaeology.7 #when the player failed to defend the planet against the 'xvcv_mdlc_primitive_machine_country' country
+	}
+}
+# Triggers country_event for the attacker upon victory
+# (Before controller is switched)
+# This = country, leader attacker
+# From = country, planet owner
+# FromFrom = planet
+# IDENTITIES: attacker is the side that "IsHostile" to
+# the planet controller; e.g. spawned monster armies
+# are attackers, but if they win and the player attempts
+# to retake the planet, the player is the attacker
+on_planet_attackers_win = {
+	events = {
+		xvcv_mdlc_archaeology.9	#when the player recaptured or conquered the 'xvcv_mdlc_primitive_machine_planet' planet
 	}
 }

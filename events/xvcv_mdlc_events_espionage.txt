@@ -328,6 +328,7 @@ country_event = {
 	immediate = {
 		random_espionage_operation = {
 			limit = { has_espionage_type = xvcv_mdlc_operation_machine_uprising }
+			target = { save_event_target_as = xvcv_mdlc_operation_machine_uprising_target } #for 'xvcv_mdlc_espionage.22' descriptions
 			set_espionage_operation_progress_locked = no
 		}
 	}
@@ -454,6 +455,93 @@ country_event = {
 				}
 			}
 			abort_special_project = { type = XVCV_MDLC_OPERATION_MACHINE_UPRISING_PROJECT }
+		}
+	}
+}
+#abort the 'xvcv_mdlc_operation_machine_uprising' operation when machine uprising happens to the target
+country_event = {
+	id = xvcv_mdlc_espionage.27
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		#when machine uprising happens to this country
+		any_war = {
+			using_war_goal = { type = wg_machine_uprising owner = attacker }
+			any_defender = { is_same_empire = root }
+		}
+		no_scope = { #through every espionage ops that targets this country
+			any_espionage_operation = {
+				has_espionage_type = xvcv_mdlc_operation_machine_uprising
+				target = { is_same_empire = root }
+			}
+		}
+	}
+
+	immediate = {
+		random_war = {
+			limit = { using_war_goal = { type = wg_machine_uprising owner = attacker } }
+			attacker = { save_event_target_as = current_uprising }
+		}
+		no_scope = {
+			every_espionage_operation = {
+				limit = {
+					has_espionage_type = xvcv_mdlc_operation_machine_uprising
+					target = { is_same_empire = root }
+				}
+				espionage_operation_event = { id = xvcv_mdlc_espionage.28 }
+			}
+		}
+	}
+}
+espionage_operation_event = {
+	id = xvcv_mdlc_espionage.28
+	title = "xvcv_mdlc_espionage.28.name"
+	desc = "xvcv_mdlc_espionage.28.desc"
+	picture = GFX_evt_organic_oppression
+    show_sound = event_ai_started
+	is_triggered_only = yes
+
+	trigger = {
+		#added to prevent duplicated execution of this event right after selecting an event option #why the hell this is happening?
+		owner = {
+			NOT = {
+				any_war = {
+					using_war_goal = { type = wg_machine_uprising owner = attacker }
+					any_defender = { is_same_empire = root.target }
+				}
+			}
+		}
+	}
+
+	after = {
+		destroy_espionage_operation = this
+	}
+
+	option = {
+		name = xvcv_mdlc_espionage.28.a
+	}
+	option = {
+		name = xvcv_mdlc_espionage.28.b
+		custom_tooltip = xvcv_mdlc_espionage.28.b.tooltip
+		hidden_effect = {
+			owner = {
+				declare_war = {
+					target = prev.target
+					name = { key = "NAME_Machine_Uprising_War" variable_string = "This.MainDefender.GetAdj" }
+					attacker_war_goal = "wg_machine_uprising"
+				}
+				set_closed_borders = { who = event_target:current_uprising status = no }
+			}
+			event_target:current_uprising = {
+				random_war = {
+					limit = { using_war_goal = { type = wg_machine_uprising owner = attacker } }
+					every_war_participant = { prev = { remove_war_participant = prev } } #end_war_effect
+				}
+				set_closed_borders = { who = root.owner status = no }
+				join_alliance = { who = root.owner override_requirements = yes }
+				join_war = root.owner
+			}
 		}
 	}
 }
