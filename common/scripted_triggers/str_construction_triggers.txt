@@ -1,8 +1,8 @@
 # Starnet File
 #
-# Calvitix Check 3.2
+# Calvitix Check 3.4.4
 #
-# Merge with Starnet AI 30.11.2021
+# Merge with Starnet AI 26.06.2022
 #
 #
 
@@ -11,7 +11,7 @@ str_enable_clerks = {
 		is_regular_empire = yes
 		or = {
 			is_ai = no
-			not = { has_global_flag = str_planet_economic_modul_flag }
+			not = { has_global_flag = str_planet_economic_modul_flag } #Calvitix
 			prev = { has_planet_flag = str_should_use_clerks }
 			years_passed < 1
 			and = {
@@ -59,7 +59,7 @@ str_bureaucratic_allow = {
 				not = { has_planet_flag = str_planet_economic_modul_flag }                
 				resource_income_compare = {
 					resource = physics_research
-					value > 70 #120
+					value > 70 #120 #Calvitix
 				}
 			}
 		}
@@ -218,6 +218,7 @@ str_foundry_allow = {
 }
 
 str_factory_allow = {
+	hidden_trigger = {
 	str_vanilla_buildings_allow_compatibility = yes
     exists = owner
 	or = {
@@ -255,9 +256,11 @@ str_factory_allow = {
 			num_pops > 8
 		}
 	}
+	}
 }
 
 str_research_allow = {
+	hidden_trigger = {
 	str_vanilla_buildings_allow_compatibility = yes
 	owner = {
 		or = {
@@ -314,6 +317,7 @@ str_research_allow = {
         owner = { not = { has_global_flag = str_planet_economic_modul_flag } }
 		str_is_col_bureau = no
 	}
+	}
 }
 
 str_research_destroy = {
@@ -341,9 +345,12 @@ str_research_destroy = {
 }
 
 str_industrial_district_allow = {
+	hidden_trigger = {
 	str_industry_allow_compatibility = yes
 	or = {
 		owner = { not = { has_global_flag = str_planet_economic_modul_flag } }
+			has_planet_flag = str_industrial_district_allow_fixer # Save fix, see event starnet.100 Remove in 3.5
+		
 		and = {
 	nand = {
 		exists = owner 
@@ -566,10 +573,12 @@ str_industrial_district_allow = {
 				}
 			}
 		}
+	}		
 	}
 }
 
 str_energy_district_allow = {
+	hidden_trigger = {
 	str_energy_allow_compatibility = yes
 	or = {
 		owner = { not = { has_global_flag = str_planet_economic_modul_flag } }
@@ -673,11 +682,13 @@ str_energy_district_allow = {
 			}
 		}
 	}
+	}
 }
 
 
 str_food_district_allow = {
-	or = {
+	hidden_trigger = {
+		or = {
 		owner = { not = { has_global_flag = str_planet_economic_modul_flag } }
 	    nand = { #calvitix added, food emergency
 	        exists = owner
@@ -864,9 +875,11 @@ str_food_district_allow = {
 			# }
 		}
 	}
+	}
 }
 
 str_mineral_district_allow = {
+	hidden_trigger = {
 	str_minerals_allow_compatibility = yes
 	or = {
     owner = { not = { has_global_flag = str_planet_economic_modul_flag } }
@@ -1039,9 +1052,11 @@ str_mineral_district_allow = {
 			}
 		}
 	}
+	}
 }
 
 str_nexus_district_allow = {
+	hidden_trigger = {
 	exists = owner
 	str_city_allow_compatibility = yes
 	or = {
@@ -1137,9 +1152,11 @@ str_nexus_district_allow = {
 			}
 		}
 	}
+	}
 }
 
 str_city_district_allow = {
+	hidden_trigger = {
 	str_city_allow_compatibility = yes
 	or = {
 		owner = { not = { has_global_flag = str_planet_economic_modul_flag } }
@@ -1213,6 +1230,7 @@ str_city_district_allow = {
 			}
 		}
 	}
+	}
 }
 
 
@@ -1263,6 +1281,7 @@ str_hydroponics_destroy = {
 }
 
 str_food_processing_allow = {
+	hidden_trigger = {
 	str_vanilla_buildings_allow_compatibility = yes
 	or = {
 		owner = { not = { has_global_flag = str_planet_economic_modul_flag } }
@@ -1274,6 +1293,7 @@ str_food_processing_allow = {
 		owner = {
 			is_ai=no
 		}
+	}
 	}
 }
 
@@ -1293,6 +1313,7 @@ str_food_processing_destroy = {
 
 
 str_mineral_purification_allow = {
+	hidden_trigger = {
 	str_vanilla_buildings_allow_compatibility = yes
 	or = {
 		owner = { not = { has_global_flag = str_planet_economic_modul_flag } }
@@ -1302,6 +1323,7 @@ str_mineral_purification_allow = {
 			is_ai=no
 		}
 		free_building_slots > 1		
+	}
 	}
 }
 
@@ -1489,7 +1511,8 @@ str_stronghold_destroy = {
 
 
 str_habitat_housing_allow = {
-	or = {
+	hidden_trigger = {
+		or = {
     owner = { not = { has_global_flag = str_planet_economic_modul_flag } }
 	and = {
 	nand = {
@@ -1526,6 +1549,7 @@ str_habitat_housing_allow = {
 	}
 	}
 	}
+	}
 }
 
 str_habitat_housing_destroy = {
@@ -1534,7 +1558,8 @@ str_habitat_housing_destroy = {
 
 
 str_habitat_industry_allow = {
-	or = {
+	hidden_trigger = {
+		or = {
     owner = { not = { has_global_flag = str_planet_economic_modul_flag } }
 	and = {
 	nand = {
@@ -1560,6 +1585,7 @@ str_habitat_industry_allow = {
 	}
 	}
 	}
+	}
 }
 
 str_habitat_industry_destroy = {
@@ -1567,9 +1593,11 @@ str_habitat_industry_destroy = {
 }
 
 str_habitat_trade_allow = {
+	hidden_trigger = {
 	nand = {
 		exists = owner
 		owner = { is_ai = yes }
+	}
 	}
 }
 
@@ -1582,12 +1610,13 @@ str_habitat_trade_destroy = {
 
 
 str_habitat_culture_allow = {
-	or = {
+	hidden_trigger = {	or = {
 	nand = {
 		exists = owner
 		owner = { is_ai = yes }
 	}
 	owner = { not = { has_global_flag = str_planet_economic_modul_flag } }
+	}
 	}
 }
 
@@ -1605,10 +1634,49 @@ str_uses_comzones = {
 	or = {
 		owner = { not = { has_global_flag = str_planet_economic_modul_flag } }
 		and = {
-	owner = {
-		has_tradition = tr_mercantile_commercial_enterprise
-	}
-	has_planet_flag = str_should_use_merchants
+			owner = {
+				has_tradition = tr_mercantile_commercial_enterprise
+			}
+			has_planet_flag = str_should_use_merchants
 		}
 	}
+}
+
+# Defines if ai_budget should potential for habitats, adjustable via DMM (event str_menu.1). Mods can hook up to these options by checking for flags in their megastructure potential or possible block.
+str_ai_should_build_habitats = {
+	OR = {
+		has_country_flag = str_country_ai_should_build_habitats		# Exception for global flag which bans habitats.
+		NOR = {
+			has_global_flag = str_global_ai_should_not_build_habitats
+			AND = {
+				has_country_flag = str_country_ai_should_not_build_habitats
+				str_is_habitat_empire = no 		# Habitat empires should build habitats anyway.
+		}
+	}
+	}
+}
+
+str_is_habitat_empire = {
+	OR = {
+		has_origin = origin_void_dwellers
+		has_country_flag = str_country_is_habitat_empire
+	}
+}
+
+# Defines if ai_budget should potential for megastructures, adjustable via DMM (event str_menu.1). Mods can hook up to these options by checking for flags in their megastructure potential or possible block.
+str_ai_should_build_megastructures = {
+	OR = {
+		has_country_flag = str_country_ai_should_build_megastructures	# Exception for global flag which bans megastructures.
+		NOR = {
+			has_global_flag = str_global_ai_should_not_build_megastructures
+			AND = {
+				has_country_flag = str_country_ai_should_not_build_megastructures
+				str_is_megastructures_empire = no 		# Megastructures empires should build megastructures anyway.
+			}
+		}
+	}
+}
+
+str_is_megastructures_empire = {
+	has_country_flag = str_country_is_megastructures_empire
 }

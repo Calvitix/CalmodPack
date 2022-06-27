@@ -1,8 +1,8 @@
 # Original File
 #
-# Calvitix Check 3.3.1  23.02.2022
+# Calvitix Check 3.4.4  23.02.2022
 #
-# Merge with STARNET AI    05.03.2022
+# Merge with STARNET AI   26.06.2022
 #
 #
 ## Categories used in this file must have use_for_ai_budget = yes defined in economic_categories ##
@@ -49,8 +49,12 @@ energy_expenditure_planets_gaia_seeder = {
 	}
 
 	fraction = {
-		weight = 0.2
+		weight = 1.0 # 0.2 #Starnet
 	}
+	
+	static_max = {
+		base = 1350
+	}	
 }
 
 energy_expenditure_trade = {
@@ -152,20 +156,20 @@ energy_expenditure_trade_deficit = {
 
 
 energy_expenditure_colonies = {
-	resource = energy 
+	resource = energy
 	type = expenditure
 	category = trade
-	
+
 	potential = {
 		always = yes
 	}
 	fraction ={
 		weight = 0.5
 	}
-   
-    static_min = {
-        base = 1000
-    }	
+
+	static_min = {
+		base = 1000
+	}
 }
 
 #Ori3.3b removed
@@ -193,11 +197,11 @@ energy_expenditure_privatecolonies = {
 
 	potential = {
 		always = yes
-		}
-	
+	}
+
 	fraction = {
 		weight = 0.8
-	}	
+	}
 	static_min = {
 		base = 700
 	}
@@ -278,43 +282,43 @@ energy_expenditure_deposit_blockers = {
 		base = 0
 		modifier = {
 			add = 500
-			years_passed > 3			
+			years_passed > 3
 			any_owned_planet = {
 				num_uncleared_blockers > 0
-				or = { 
-				num_free_districts = { type = any value < 1 }
-				num_pops > 14
+				or = {
+					num_free_districts = { type = any value < 1 }
+					num_pops > 14
 				}
 			}
 		}
 		modifier = {
-			add = 2000	
+			add = 2000
 			any_owned_planet = {
 				num_uncleared_blockers > 0
 				or = {
-				num_free_districts = { type = any value < 1 }
-				num_pops > 14	
+					num_free_districts = { type = any value < 1 }
+					num_pops > 14
+				}
 			}
-		}
 			years_passed > 20
 		}
 	}
 }
 
 energy_expenditure_decisions = {
-    resource = energy
-    type = expenditure
-    category = decisions
-   
-    potential = {
+	resource = energy
+	type = expenditure
+	category = decisions
+
+	potential = {
 		resource_income_compare = {
 			resource = energy
 			value > 5
 		}
-    }
-   
-    fraction = {
-        weight = 0
+	}
+
+	fraction = {
+		weight = 0
 	}
 
 	# base remove blocker cost
@@ -322,7 +326,7 @@ energy_expenditure_decisions = {
 		base = 500
 	}
 	static_max = {
-        base = 30000
+		base = 30000
 	}
 }
 
@@ -345,6 +349,7 @@ energy_expenditure_megastructures = {
 			type = energy
 			amount > 6000
 		}
+		str_ai_should_build_megastructures = yes
 	}
 
 	fraction = {
@@ -437,28 +442,28 @@ energy_expenditure_armies = {
 	potential = {
 		has_valid_civic = civic_reanimated_armies
 		or = {
-		is_at_war = yes
-		and = {
-		prepare_for_war = yes
-		used_naval_capacity_percent <= 1
-		}
-		and = {
-		resource_stockpile_compare = {
-			resource = energy
-			value > 1000
-		}
-		resource_income_compare = {
-			resource = energy
-			value > 10
-		}
-		used_naval_capacity_percent > 0.9
+			is_at_war = yes
+			and = {
+				prepare_for_war = yes
+				used_naval_capacity_percent <= 1
+			}
+			and = {
+				resource_stockpile_compare = {
+					resource = energy
+					value > 1000
+				}
+				resource_income_compare = {
+					resource = energy
+					value > 10
+				}
+				used_naval_capacity_percent > 0.9
 			}
 		}
 	}
-	
+
 	fraction = {
 		weight = 0.1
-	}	
+	}
 	static_min = {
 		base = 5000
 	}
@@ -468,59 +473,59 @@ energy_expenditure_armies = {
 ## Upkeep ##
 ############
 energy_upkeep_country = { # Covers most other things
-	resource = energy 
+	resource = energy
 	type = upkeep
 	category = country
-	
+
 	potential = {
 		always = yes
 	}
-	
+
 	fraction = {
 		weight = 0.75 #0.9
-	}	
+	}
 }
 
 #Starnet AI
 energy_upkeep_building_unstucker = { # Covers most other things
-	resource = energy 
+	resource = energy
 	type = upkeep
 	category = planets
 
 	potential = {
 		has_country_flag = str_planet_buildings_unstuck
 	}
-	
+
 	fraction = {
 		weight = 2
-	}	
+	}
 }
 
 energy_upkeep_starbase_unstucker = { # Covers most other things
-	resource = energy 
+	resource = energy
 	type = upkeep
 	category = starbases
-	
+
 	potential = {
 		has_country_flag = str_planet_buildings_unstuck
 	}
-	
+
 	fraction = {
 		weight = 2
-	}	
+	}
 }
 
 energy_upkeep_country_not_terraforming = { # Covers most other things
-	resource = energy 
+	resource = energy
 	type = upkeep
 	category = country
-	
+
 	potential = {
 		nand = {
 			or = {
 				and = {
-			has_ascension_perk = ap_world_shaper
-			has_country_flag = str_has_terraformables
+					has_ascension_perk = ap_world_shaper
+					has_country_flag = str_has_terraformables
 				}
 				has_country_flag = str_lets_terraform
 			}
@@ -531,50 +536,50 @@ energy_upkeep_country_not_terraforming = { # Covers most other things
 			}
 		}
 	}
-	
+
 	fraction = {
 		weight = 0.15
-	}	
+	}
 }
 ###
 energy_upkeep_country_early = { # Covers most other things
-	resource = energy 
+	resource = energy
 	type = upkeep
 	category = country
-	
+
 	potential = {
 		years_passed < 30
 		years_passed > 9
 		has_technology = tech_hydroponics
 	}
-	
+
 	fraction = {
 		weight = 0.25
-	}	
+	}
 }
 
 energy_upkeep_country_getting_rushed_panic = { # Covers most other things
-	resource = energy 
+	resource = energy
 	type = upkeep
 	category = country
-	
+
 	potential = {
 		str_make_fleet_against_rush = yes
 	}
-	
+
 	fraction = {
 		weight = 0.3
-	}	
+	}
 }
 
 energy_upkeep_country_can_spend = { # Covers most other things
-	resource = energy 
+	resource = energy
 	type = upkeep
 	category = country
-	
+
 	potential = {
 		resource_income_compare = {
-			resource = energy 
+			resource = energy
 			value > 10
 		}
 		nand = {
@@ -587,31 +592,31 @@ energy_upkeep_country_can_spend = { # Covers most other things
 			}
 		}
 	}
-	
+
 	fraction = {
 		weight = 0.1
-	}	
+	}
 }
 
 energy_upkeep_war = { # Covers most other things
-	resource = energy 
+	resource = energy
 	type = upkeep
 	category = country
-	
+
 	potential = {
 		is_at_war = yes
 	}
-	
+
 	fraction = {
 		weight = 0.3
-	}	
+	}
 }
 
 energy_upkeep_warprep = { # Covers most other things
-	resource = energy 
+	resource = energy
 	type = upkeep
 	category = country
-	
+
 	potential = {
 		prepare_for_war = yes
 		nand = {
@@ -624,17 +629,17 @@ energy_upkeep_warprep = { # Covers most other things
 			}
 		}
 	}
-	
+
 	fraction = {
 		weight = 0.2
-	}	
+	}
 }
 
 energy_upkeep_country_a = { # Covers most other things
-	resource = energy 
+	resource = energy
 	type = upkeep
 	category = country
-	
+
 	potential = {
 		has_country_flag = acceptable_raw_economy
 		nand = {
@@ -647,16 +652,16 @@ energy_upkeep_country_a = { # Covers most other things
 			}
 		}
 	}
-	
+
 	fraction = {
 		weight = 0.05
-	}	
+	}
 }
 energy_upkeep_country_f = { # Covers most other things
-	resource = energy 
+	resource = energy
 	type = upkeep
 	category = country
-	
+
 	potential = {
 		has_country_flag = fine_raw_economy
 		nand = {
@@ -669,17 +674,17 @@ energy_upkeep_country_f = { # Covers most other things
 			}
 		}
 	}
-	
+
 	fraction = {
 		weight = 0.1
-	}	
+	}
 }
 
 energy_upkeep_country_g = { # Covers most other things
-	resource = energy 
+	resource = energy
 	type = upkeep
 	category = country
-	
+
 	potential = {
 		has_country_flag = good_raw_economy
 		nand = {
@@ -692,16 +697,16 @@ energy_upkeep_country_g = { # Covers most other things
 			}
 		}
 	}
-	
+
 	fraction = {
 		weight = 0.1
-	}	
+	}
 }
 energy_upkeep_country_insane = { # Covers most other things
-	resource = energy 
+	resource = energy
 	type = upkeep
 	category = country
-	
+
 	potential = {
 		resource_income_compare = {
 			resource = energy
@@ -712,10 +717,10 @@ energy_upkeep_country_insane = { # Covers most other things
 			value > 10000
 		}
 	}
-	
+
 	fraction = {
 		weight = 0.2
-	}	
+	}
 }
 
 #Startech
@@ -734,15 +739,15 @@ energy_upkeep_fleetbuilding = {
 ###
 
 energy_expenditure_ultralate = {
-	resource = energy 
+	resource = energy
 	type = upkeep
 	category = country
 	potential = {
 		nand = {
 			or = {
 				and = {
-			has_ascension_perk = ap_world_shaper
-			has_country_flag = str_has_terraformables
+					has_ascension_perk = ap_world_shaper
+					has_country_flag = str_has_terraformables
 				}
 				has_country_flag = str_lets_terraform
 			}
@@ -772,7 +777,7 @@ energy_expenditure_ultralate = {
 }
 
 energy_expenditure_ultralate2 = {
-	resource = energy 
+	resource = energy
 	type = upkeep
 	category = country
 	potential = {
@@ -785,10 +790,10 @@ energy_expenditure_ultralate2 = {
 }
 
 energy_upkeep_country_insane2 = { # Covers most other things
-	resource = energy 
+	resource = energy
 	type = upkeep
 	category = country
-	
+
 	potential = {
 		resource_income_compare = {
 			resource = energy
@@ -799,10 +804,10 @@ energy_upkeep_country_insane2 = { # Covers most other things
 			value > 10000
 		}
 	}
-	
+
 	fraction = {
 		weight = 0.3
-	}	
+	}
 }
 
 

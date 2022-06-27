@@ -2,7 +2,7 @@
 #
 # Calvitix Check 3.4.2  13.05.2022
 #
-# Merge with STARNET AI    05.03.2022
+# Merge with STARNET AI    26.06.2022
 #
 #
 ## Categories used in this file must have use_for_ai_budget = yes defined in economic_categories ##
@@ -17,7 +17,7 @@ influence_expenditure_buffer = { # Buffer, will not be spent
 	category = buffer
 
 	potential = {
-		always = no
+		always = yes
 	}
 
 	fraction = {
@@ -127,6 +127,50 @@ influence_expenditure_agreement_proposals = {
 
 	fraction = {
 		weight = 1000
+	}
+}
+
+influence_expenditure_edicts_initial = {
+	resource = influence
+	type = expenditure
+	category = edicts
+
+	potential = {
+		years_passed > 8
+		not = {
+			has_edict = capacity_subsidies
+		}
+	}
+
+	fraction = {
+		weight = 0.2
+	}
+
+	static_min = {
+		base = 800
+	}
+}
+
+influence_expenditure_important_edicts = {
+	resource = influence
+	type = expenditure
+	category = edicts
+
+	potential = {
+		years_passed > 10
+		nand = {
+			has_edict = capacity_subsidies
+			has_edict = mining_subsidies
+			has_edict = fortify_the_border
+		}
+	}
+
+	fraction = {
+		weight = 0.2
+	}
+
+	static_min = {
+		base = 800
 	}
 }
 
@@ -379,6 +423,7 @@ influence_expenditure_megastructures = {
 
 	potential = {
 		is_at_war = no
+		str_ai_should_build_megastructures = yes
 		OR = {
 			has_technology = tech_gateway_construction
 			has_technology = tech_ring_world
@@ -419,7 +464,10 @@ influence_expenditure_habitats = {
 	type = expenditure
 	category = megastructures_habitat
 
-	potential = { ai_should_build_habitats = yes }
+	potential = {
+		ai_should_build_habitats = yes
+		str_ai_should_build_habitats = yes
+	}
 
 	fraction = {
 		weight = 0.1
@@ -428,7 +476,7 @@ influence_expenditure_habitats = {
 			has_origin = origin_void_dwellers
 		}
 		modifier = {
-			factor = 2
+			factor = 5
 			has_origin = origin_void_dwellers
 			count_owned_planet = {
 				limit = { is_planet_class = pc_habitat }

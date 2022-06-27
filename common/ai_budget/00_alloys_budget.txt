@@ -1,9 +1,9 @@
 # Original File
 #
-# Calvitix Check  3.3.1  23.02.2022
+# Calvitix Check  3.4.4  26.06.2022
 #
 # Merge with Skalla Ai's Overhaul
-# Merge with Starnet AI 05.03.2022
+# Merge with Starnet AI 26.06.2022
 #
 
 ## Categories used in this file must have use_for_ai_budget = yes defined in economic_categories ##
@@ -464,17 +464,17 @@ alloys_expenditure_planets = {
 	}
 
 	fraction = {
-		weight = 0.1  #0.5 in Starnet
+		weight = 0.25  #0.5 in Starnet
 	}
 
 	static_min = {
-		base = 150 # 4500 #150 in 3.3b
+		base = 1500 # 4500 #150 in 3.3b
 	}
 
 	#Ori 3.3b 
-	static_max = {
-		base = 450
-	}
+	#static_max = {
+	#	base = 450
+	#}
 }
 
 alloys_expenditure_starbases = {
@@ -792,13 +792,14 @@ alloys_expenditure_megastructures = {
 	potential = {
 		is_country_type = default
 		is_at_war = no
-		can_build_megastructures = yes
+		#can_build_megastructures = yes
 		or = {
 			has_galactic_wonders = yes
 			has_technology = tech_strategic_coordination
 			has_origin = origin_void_dwellers
 		}
 		ai_colonize_plans < 3
+		str_ai_should_build_megastructures = yes
 	}
 
 	fraction = {
@@ -832,9 +833,13 @@ alloys_expenditure_megastructures = {
 		}
 	}
 
-	static_max = {
-		base = 20000 # current max alloy cost for a stage
+	static_min = {
+		base = 30000 # current max alloy cost for a stage
 	}
+	
+#	static_max = {
+#		base = 20000 # current max alloy cost for a stage
+#	}
 }
 
 alloys_expenditure_habitats = {
@@ -842,7 +847,10 @@ alloys_expenditure_habitats = {
 	type = expenditure
 	category = megastructures_habitat
 
-	potential = { ai_should_build_habitats = yes }
+	potential = {
+		ai_should_build_habitats = yes
+		str_ai_should_build_habitats = yes
+	}
 
 	fraction = {
 		weight = 0.2
@@ -851,7 +859,7 @@ alloys_expenditure_habitats = {
 			has_origin = origin_void_dwellers
 		}
 		modifier = {
-			factor = 2
+			factor = 5
 			has_origin = origin_void_dwellers
 			count_owned_planet = {
 				limit = { is_planet_class = pc_habitat }

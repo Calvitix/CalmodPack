@@ -365,7 +365,7 @@ country_event = {
 
 ##################################
 # Shroudwalkers - Divinations
-# Reserved 200 - 299
+# Reserved 200 - 399
 ##################################
 
 # Docile Wildlife
@@ -2690,9 +2690,1066 @@ situation_event = {
 	}
 }
 
+# Déjà Vu Dig
+situation_event = {
+	id = leviathanexpanded.240
+	title = leviathanexpanded.226.name
+	desc = leviathanexpanded.226.desc
+	picture = GFX_evt_surreal_visions
+	show_sound = event_mystic_reveal
+	location = event_target:monoliths_divination_planet
+	situation = this
+	is_triggered_only = yes
+
+	trigger = {
+		NOT = {
+			has_situation_flag = divination_occurring
+		}
+		situation_progress >= 25
+		has_ancrel = yes
+		NOR = {
+			has_global_flag = deja_vu_divination_planet
+			any_system = {
+				any_system_planet = {
+					exists = archaeological_site
+					archaeological_site = { is_site_type = site_deja_vu_dig }
+				}
+			}
+		}
+		owner = {
+			any_owned_planet = {
+				is_colony = yes
+				is_under_colonization = no
+				is_homeworld = no
+				is_planet_class = pc_nuked
+				NOT = { exists = archaeological_site }
+			}
+		}
+	}
+
+	immediate = {
+		set_situation_flag = divination_occurring
+		save_event_target_as = deja_vu_situation
+		set_global_flag = deja_vu_divination_planet
+		owner = {
+			random_planet_within_border = {
+				limit = {
+					is_colony = yes
+					is_under_colonization = no
+					is_homeworld = no
+					is_planet_class = pc_nuked
+					NOT = { exists = archaeological_site }
+				}
+				save_event_target_as = deja_vu_divination_planet
+			}
+		}
+	}
+
+	option = {
+		name = UNDERSTOOD
+		event_target:deja_vu_situation = {
+			add_situation_progress = 20
+		}
+		event_target:deja_vu_divination_planet = {
+			create_archaeological_site = site_deja_vu_dig
+		}
+	}
+}
+
+# Precursor Artifact
+situation_event = {
+	id = leviathanexpanded.241
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		NOT = {
+			has_situation_flag = divination_occurring
+		}
+		situation_progress >= 20
+		has_ancrel = yes
+		owner = {
+			is_ai = no
+			years_passed > 50
+			NOR = {
+				has_country_flag = new_precursor
+				has_country_flag = ongoing_precursor_artifact
+			}
+			OR = {
+				AND = {
+					has_event_chain = "vultaum_chain"
+					NOT = {
+						has_completed_event_chain_counter = {
+							event_chain = vultaum_chain
+							counter = vultaum_artifacts
+						}
+					}
+					any_system_within_border = {
+						has_star_flag = precursor_1
+						any_system_planet = {
+							NOT = { has_planet_flag = precursor_world }
+							uninhabitable_regular_planet = yes
+							has_owner = no
+							has_anomaly = no
+							is_surveyed = {
+								who = ROOT
+								status = yes
+							}
+						}
+					}
+				}
+				AND = {
+					has_event_chain = "yuht_chain"
+					NOT = {
+						has_completed_event_chain_counter = {
+							event_chain = yuht_chain
+							counter = yuht_artifacts
+						}
+					}
+					any_system_within_border = {
+						has_star_flag = precursor_2
+						any_system_planet = {
+							uninhabitable_regular_planet = yes
+							NOT = { has_planet_flag = precursor_world }
+							has_owner = no
+							has_anomaly = no
+							is_surveyed = {
+								who = ROOT
+								status = yes
+							}
+						}
+					}
+				}
+				AND = {
+					has_event_chain = "first_league_chain"
+					NOT = {
+						has_completed_event_chain_counter = {
+							event_chain = first_league_chain
+							counter = first_league_artifacts
+						}
+					}
+					any_system_within_border = {
+						has_star_flag = precursor_3
+						any_system_planet = {
+							uninhabitable_regular_planet = yes
+							NOT = { has_planet_flag = precursor_world }
+							has_owner = no
+							has_anomaly = no
+							is_surveyed = {
+								who = ROOT
+								status = yes
+							}
+						}
+					}
+				}
+				AND = {
+					has_event_chain = "irassian_chain"
+					NOT = {
+						has_completed_event_chain_counter = {
+							event_chain = irassian_chain
+							counter = irassian_artifacts
+						}
+					}
+					any_system_within_border = {
+						has_star_flag = precursor_4
+						any_system_planet = {
+							uninhabitable_regular_planet = yes
+							NOT = { has_planet_flag = precursor_world }
+							has_owner = no
+							has_anomaly = no
+							is_surveyed = {
+								who = ROOT
+								status = yes
+							}
+						}
+					}
+				}
+				AND = {
+					has_event_chain = "cybrex_chain"
+					NOT = {
+						has_completed_event_chain_counter = {
+							event_chain = cybrex_chain
+							counter = cybrex_artifacts
+						}
+					}
+					any_system_within_border = {
+						has_star_flag = precursor_5
+						any_system_planet = {
+							uninhabitable_regular_planet = yes
+							NOT = { has_planet_flag = precursor_world }
+							has_owner = no
+							has_anomaly = no
+							is_surveyed = {
+								who = ROOT
+								status = yes
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	immediate = {
+		set_situation_flag = divination_occurring
+		owner = {
+			country_event = { id = precursor.301 }
+		}
+	}
+}
+
+### Modded Added Events ###
+# Ancient Robots
+situation_event = {
+	id = leviathanexpanded.350
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_global_flag = mem_more_events_mod
+		NOT = { has_global_flag = mem_ancient_robots_fired }
+		NOT = {
+			has_situation_flag = divination_occurring
+		}
+		situation_progress >= 20
+		owner = {
+			is_ai = no
+			NOT = { has_ethic = ethic_gestalt_consciousness }
+			any_owned_planet = {
+				is_colony = yes
+				is_under_colonization = no
+				planet_size > 14
+				or = {
+					has_deposit = d_mountain_range
+					has_deposit = d_tempestous_mountain
+					has_deposit = d_rich_mountain
+				}
+			}
+		}
+	}
+
+	immediate = {
+		set_situation_flag = divination_occurring
+		owner = {
+			random_owned_planet = {
+				limit = {
+					is_colony = yes
+					is_under_colonization = no
+					planet_size > 14
+					or = {
+						has_deposit = d_mountain_range
+						has_deposit = d_tempestous_mountain
+						has_deposit = d_rich_mountain
+					}
+				}
+				save_event_target_as = ancient_robot_divination_planet
+			}
+		}
+		event_target:ancient_robot_divination_planet = {
+			planet_event = { id = mem_ancient_robots.201 }
+		}
+	}
+}
+
+# Blacksite
+situation_event = {
+	id = leviathanexpanded.351
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_global_flag = mem_more_events_mod
+		NOT = { has_global_flag = mem_blacksite_happened }
+		NOT = {
+			has_situation_flag = divination_occurring
+		}
+		situation_progress >= 20
+		owner = {
+			is_ai = no
+			NOT = { has_ethic = ethic_gestalt_consciousness }
+			NOT = { has_country_flag = mem_blacksite_fallen_empire }
+			is_at_war = no
+			any_country = {
+				has_established_contact = prev
+				is_country_type = fallen_empire
+				OR = {
+					has_ethic = ethic_fanatic_materialist
+					has_ethic = ethic_fanatic_spiritualist
+					has_ethic = ethic_fanatic_xenophile
+				}
+			}
+			any_planet_within_border = {
+				OR = {
+					is_planet_class = pc_barren
+					is_planet_class = pc_barren_cold
+					is_planet_class = pc_frozen
+					is_planet_class = pc_toxic
+				}
+				has_owner = no
+				has_anomaly = no
+				has_deposit = no
+				solar_system = {
+					NOR = {
+						is_bottleneck_system = yes
+						any_system_planet = {
+							OR = {
+								has_owner = yes
+								is_colonizable = yes
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	immediate = {
+		set_situation_flag = divination_occurring
+		owner = {
+			random_planet_within_border = {
+				limit = {
+					OR = {
+						is_planet_class = pc_barren
+						is_planet_class = pc_barren_cold
+						is_planet_class = pc_frozen
+						is_planet_class = pc_toxic
+					}
+					has_owner = no
+					has_anomaly = no
+					has_deposit = no
+					solar_system = {
+						NOR = {
+							is_bottleneck_system = yes
+							any_system_planet = {
+								OR = {
+									has_owner = yes
+									is_colonizable = yes
+								}
+							}
+						}
+					}
+				}
+				save_event_target_as = blacksite_planet
+				set_planet_flag = mem_blacksite_planet
+			}
+			random_country = {
+				limit = {
+					has_established_contact = prev
+					is_country_type = fallen_empire
+					OR = {
+						has_ethic = ethic_fanatic_materialist
+						has_ethic = ethic_fanatic_spiritualist
+						has_ethic = ethic_fanatic_xenophile
+					}
+				}
+				save_event_target_as = blacksite_fallen_empire
+				set_country_flag = mem_blacksite_fallen_empire
+			}
+			set_country_flag = mem_blacksite_country
+			country_event = { id = mem_blacksite.2 }
+		}
+	}
+}
+
+# Charmak
+situation_event = {
+	id = leviathanexpanded.352
+	title = leviathanexpanded.226.name
+	desc = leviathanexpanded.226.desc
+	picture = GFX_evt_surreal_visions
+	show_sound = event_mystic_reveal
+	location = event_target:monoliths_divination_planet
+	situation = this
+	is_triggered_only = yes
+
+	trigger = {
+		has_global_flag = mem_more_events_mod
+		NOT = {
+			has_situation_flag = divination_occurring
+		}
+		situation_progress >= 25
+		has_ancrel = yes
+		NOR = {
+			has_global_flag = charmak_divination_planet
+			any_system = {
+				any_system_planet = {
+					exists = archaeological_site
+					archaeological_site = { is_site_type = mem_charmak_site }
+				}
+			}
+		}
+		owner = {
+			any_planet_within_border = {
+				is_planet_class = pc_gas_giant
+				NOT = { exists = archaeological_site }
+			}
+		}
+	}
+
+	immediate = {
+		set_situation_flag = divination_occurring
+		save_event_target_as = charmak_situation
+		set_global_flag = charmak_divination_planet
+		owner = {
+			random_planet_within_border = {
+				limit = {
+					is_planet_class = pc_gas_giant
+					NOT = { exists = archaeological_site }
+				}
+				save_event_target_as = charmak_divination_planet
+			}
+		}
+	}
+
+	option = {
+		name = UNDERSTOOD
+		event_target:charmak_situation = {
+			add_situation_progress = 20
+		}
+		event_target:charmak_divination_planet = {
+			create_archaeological_site = mem_charmak_site
+		}
+	}
+}
+
+# Cold Comfort
+situation_event = {
+	id = leviathanexpanded.353
+	title = leviathanexpanded.226.name
+	desc = leviathanexpanded.226.desc
+	picture = GFX_evt_surreal_visions
+	show_sound = event_mystic_reveal
+	location = event_target:cold_comfort_divination_planet
+	situation = this
+	is_triggered_only = yes
+
+	trigger = {
+		has_global_flag = mem_more_events_mod
+		NOT = {
+			has_situation_flag = divination_occurring
+		}
+		situation_progress >= 20
+		has_ancrel = yes
+		NOR = {
+			has_global_flag = cold_comfort_divination_planet
+			any_system = {
+				any_system_planet = {
+					exists = archaeological_site
+					archaeological_site = { is_site_type = mem_cold_dig_site }
+				}
+			}
+		}
+		owner = {
+			any_planet_within_border = {
+				is_planet_class = pc_frozen
+				NOT = { exists = archaeological_site }
+			}
+		}
+	}
+
+	immediate = {
+		set_situation_flag = divination_occurring
+		save_event_target_as = cold_comfort_situation
+		set_global_flag = cold_comfort_divination_planet
+		owner = {
+			random_planet_within_border = {
+				limit = {
+					is_planet_class = pc_frozen
+					NOT = { exists = archaeological_site }
+				}
+				save_event_target_as = cold_comfort_divination_planet
+			}
+		}
+	}
+
+	option = {
+		name = UNDERSTOOD
+		event_target:cold_comfort_situation = {
+			add_situation_progress = 20
+		}
+		event_target:cold_comfort_divination_planet = {
+			create_archaeological_site = mem_cold_dig_site
+		}
+	}
+}
+
+# Colony Ship
+situation_event = {
+	id = leviathanexpanded.354
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_global_flag = mem_more_events_mod
+		NOT = { has_global_flag = mem_colony_ship_started }
+		NOT = {
+			has_situation_flag = divination_occurring
+		}
+		situation_progress >= 20
+		owner = {
+			is_ai = no
+			NOT = { has_ethic = ethic_gestalt_consciousness }
+			NOT = { has_country_flag = mem_colony_ship_rolled }
+			is_at_war = no
+			any_system_within_border = {
+				NOT = {
+					any_system_planet = { is_owned_by = root }
+				}
+				any_system_planet = {
+					is_colonizable = yes
+					OR = {
+						is_planet_class = pc_arid
+						is_planet_class = pc_desert
+						is_planet_class = pc_savannah
+						is_planet_class = pc_continental
+						is_planet_class = pc_ocean
+						is_planet_class = pc_tropical
+						is_planet_class = pc_tundra
+						is_planet_class = pc_arctic
+						is_planet_class = pc_alpine
+					}
+					NOR = {
+						exists = owner
+						has_planet_flag = colony_event
+					}
+				}
+			}
+		}
+	}
+
+	immediate = {
+		set_situation_flag = divination_occurring
+		owner = {
+			country_event = { id = mem_colony_ship.2 }
+		}
+	}
+}
+
+# Eager Merchants
+situation_event = {
+	id = leviathanexpanded.355
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_global_flag = mem_more_events_mod
+		NOT = {
+			has_situation_flag = divination_occurring
+		}
+		situation_progress >= 10
+		owner = {
+			is_ai = no
+			NOT = { has_ethic = ethic_gestalt_consciousness }
+			OR = {
+				AND = {
+					NOT = { has_country_flag = mem_eager_traders_happened1 }
+					any_neighbor_country = {
+						has_ai_personality = ruthless_capitalists
+						NOT = { 
+							has_country_flag = mem_ruthless_capitalist_met_player
+						}
+						has_communications = prev
+					}
+				}
+				AND = {
+					NOT = { has_country_flag = mem_eager_traders_happened2 }
+					any_neighbor_country = {
+						has_ai_personality = peaceful_traders
+						NOT = {
+							has_country_flag = mem_peaceful_traders_met_player
+						} 
+						has_communications = prev
+					}
+				}
+			}
+		}
+	}
+
+	immediate = {
+		set_situation_flag = divination_occurring
+		owner = {
+			if = {
+				limit = {
+					NOT = { has_country_flag = mem_eager_traders_happened1 }
+					any_neighbor_country = {
+						has_ai_personality = ruthless_capitalists
+						NOT = { 
+							has_country_flag = mem_ruthless_capitalist_met_player
+						}
+						has_communications = prev
+					}
+				}
+				random_list = {
+					4 = { country_event = { id = mem_eager_traders.1 days = 10 random = 5 } }
+					3 = { country_event = { id = mem_eager_traders.7 days = 10 random = 5 } }
+				}					
+			}
+			
+			else_if = {
+				limit = {
+					NOT = { has_country_flag = mem_eager_traders_happened2 }
+					any_neighbor_country = {
+						has_ai_personality = peaceful_traders
+						NOT = {
+							has_country_flag = mem_peaceful_traders_met_player
+						} 
+						has_communications = prev
+					}
+				}
+				random_list = {
+					4 = { country_event = { id = mem_eager_traders.5 days = 10 random = 5 } }
+					3 = { country_event = { id = mem_eager_traders.8 days = 10 random = 5 } }
+				}
+			}
+		}
+	}
+}
+
+# Elusive Carcosa
+situation_event = {
+	id = leviathanexpanded.356
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_global_flag = mem_more_events_mod
+		NOT = { has_global_flag = mem_elusive_carcosa }
+		NOT = {
+			has_situation_flag = divination_occurring
+		}
+		situation_progress >= 25
+		owner = {
+			is_ai = no
+			NOR = {
+				has_authority = auth_hive_mind
+				has_authority = auth_machine_intelligence
+			}
+			num_owned_planets > 4
+		}
+	}
+
+	immediate = {
+		set_situation_flag = divination_occurring
+		owner = {
+			random_owned_planet = {
+				limit = {
+					is_colony = yes
+					is_capital = no
+				}
+				save_global_event_target_as = mem_carcosa_colony
+			}
+			set_global_flag = mem_elusive_carcosa
+			country_event = { id = mem_elusive_carcosa.11 days = 20 } 
+		}
+	}
+}
+
+# A Stellar Performance
+situation_event = {
+	id = leviathanexpanded.357
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_global_flag = mem_more_events_mod
+		NOT = {
+			has_situation_flag = divination_occurring
+		}
+		situation_progress >= 10
+		owner = {
+			NOT = {
+				has_ethic = ethic_gestalt_consciousness
+			}
+			any_neighbor_country = {
+				OR = {
+					has_ethic = ethic_egalitarian
+					has_ethic = ethic_fanatic_egalitarian
+				}
+				NOT = {
+					has_country_flag = mem_sent_rockstar_to_player    #countries stop sending rockstars once they've sent one to a player
+				}
+				has_established_contact = root
+			}
+		}
+	}
+
+	immediate = {
+		set_situation_flag = divination_occurring
+		owner = {
+			country_event = { id = mem_music_tour.7 }
+		}
+	}
+}
+
+# Extinct Abductors
+situation_event = {
+	id = leviathanexpanded.358
+	title = leviathanexpanded.226.name
+	desc = leviathanexpanded.226.desc
+	picture = GFX_evt_surreal_visions
+	show_sound = event_mystic_reveal
+	location = event_target:ea_uplifter_divination_planet
+	situation = this
+	is_triggered_only = yes
+
+	trigger = {
+		has_global_flag = mem_more_events_mod
+		NOT = { has_global_flag = mem_ea_uplifter_quest_started }
+		NOT = {
+			has_situation_flag = divination_occurring
+		}
+		situation_progress >= 20
+		owner = {
+			NOT = { has_country_flag = mem_lotc_finder }
+			any_planet_within_border = {
+				or = {
+					is_planet_class = pc_barren
+					is_planet_class = pc_barren_cold
+					is_planet_class = pc_frozen
+				}
+				exists = sector
+				sector = {
+					any_system_within_border = {
+						is_capital_system = yes
+					}
+				}
+			}
+		}
+	}
+
+	immediate = {
+		set_situation_flag = divination_occurring
+		save_event_target_as = ea_uplifter_situation
+		owner = {
+			set_country_flag = ea_uplifter_divination_planet
+			random_planet_within_border = {
+				limit = {
+					or = {
+						is_planet_class = pc_barren
+						is_planet_class = pc_barren_cold
+						is_planet_class = pc_frozen
+					}
+					exists = sector
+					sector = {
+						any_system_within_border = {
+							is_capital_system = yes
+						}
+					}
+				}
+				save_event_target_as = ea_uplifter_divination_planet
+			}
+		}
+	}
+
+	option = {
+		name = UNDERSTOOD
+		event_target:ea_uplifter_situation = {
+			add_situation_progress = 20
+		}
+		event_target:ea_uplifter_divination_planet = {
+			add_anomaly = {
+				target = root.owner
+				category = mem_extinct_abductors_category
+			}
+		}
+	}
+}
+
+# Gaia Troubles
+situation_event = {
+	id = leviathanexpanded.359
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_global_flag = mem_more_events_mod
+		NOT = { has_global_flag = gaia_troubles_global }
+		NOT = {
+			has_situation_flag = divination_occurring
+		}
+		situation_progress >= 10
+		owner = {
+			is_ai = no
+			is_at_war = no
+			NOT = { has_country_flag = gaia_troubles_country }
+			NOT = { has_ethic = ethic_gestalt_consciousness }
+			any_owned_planet = {
+				is_colony = yes
+				is_homeworld = no
+				is_planet_class = pc_gaia
+				colony_age > 120
+				NOT = { has_planet_flag = colony_event }
+				NOT = { has_planet_flag = gaia_troubles_planet }
+				NOT = { has_global_flag = gaia_troubles_done }
+			}
+		}
+	}
+
+	immediate = {
+		set_situation_flag = divination_occurring
+		owner = {
+			random_owned_planet = {
+				limit = {
+					is_colony = yes
+					is_homeworld = no
+					is_planet_class = pc_gaia
+					colony_age > 120
+					NOT = { has_planet_flag = colony_event }
+					NOT = { has_planet_flag = gaia_troubles_planet }
+					NOT = { has_global_flag = gaia_troubles_done }
+				}
+				planet_event = { id = mem_gaia_troubles.2 }
+			}
+		}
+	}
+}
+
+# Strange Signal
+situation_event = {
+	id = leviathanexpanded.360
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_global_flag = mem_more_events_mod
+		NOT = { has_global_flag = mem_hithere_happened }
+		NOT = {
+			has_situation_flag = divination_occurring
+		}
+		situation_progress >= 15
+		owner = {
+			is_ai = no
+		}
+	}
+
+	immediate = {
+		set_situation_flag = divination_occurring
+		set_global_flag = mem_hithere_happened
+		owner = {
+			set_country_flag = mem_hithere_country
+			random_owned_planet = {
+				save_event_target_as = receiver
+			}
+			country_event = { id = mem_hithere.1 }
+		}
+	}
+}
+
+# Lunar Gate
+situation_event = {
+	id = leviathanexpanded.361
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_global_flag = mem_more_events_mod
+		NOT = { has_global_flag = mem_lunar_gate_happened }
+		NOT = {
+			has_situation_flag = divination_occurring
+		}
+		situation_progress >= 20
+		owner = {
+			NOT = { has_ethic = ethic_gestalt_consciousness }
+			NOT = {
+				has_country_flag = mem_lunar_gate
+			}
+			any_owned_planet = {
+				is_colony = yes
+				NOR = {
+					has_planet_flag = mem_lunar_gate_checked
+					has_planet_flag = colony_event
+					has_global_flag = mem_lunar_gate_happened
+				}
+				
+				num_pops > 15
+				is_homeworld = no
+				is_moon = no
+				has_moon = yes
+				any_moon = {
+					uninhabitable_regular_planet = yes
+				}
+			}
+		}
+	}
+
+	immediate = {
+		set_situation_flag = divination_occurring
+		owner = {
+			set_country_flag = mem_lunar_gate
+			random_owned_planet = {
+				limit = {
+					is_colony = yes
+					NOR = {
+						has_planet_flag = mem_lunar_gate_checked
+						has_planet_flag = colony_event
+						has_global_flag = mem_lunar_gate_happened
+					}
+					
+					num_pops > 15
+					is_homeworld = no
+					is_moon = no
+					has_moon = yes
+					any_moon = {
+						uninhabitable_regular_planet = yes
+					}
+				}
+				set_planet_flag = mem_lunar_gate_checked
+				planet_event = { id = mem_lunar_gate.2 }
+			}
+		}
+	}
+}
+
+# Outsiders
+situation_event = {
+	id = leviathanexpanded.362
+	title = leviathanexpanded.226.name
+	desc = leviathanexpanded.226.desc
+	picture = GFX_evt_surreal_visions
+	show_sound = event_mystic_reveal
+	location = event_target:outsiders_divination_planet
+	situation = this
+	is_triggered_only = yes
+
+	trigger = {
+		has_global_flag = mem_more_events_mod
+		NOT = {
+			has_situation_flag = divination_occurring
+		}
+		situation_progress >= 20
+		has_ancrel = yes
+		NOR = {
+			has_global_flag = outsiders_divination_planet
+			any_system = {
+				any_system_planet = {
+					exists = archaeological_site
+					archaeological_site = { is_site_type = mem_outsiders_dig_site }
+				}
+			}
+		}
+		owner = {
+			any_owned_planet = {
+				OR = {
+					is_planet_class = pc_barren
+					is_planet_class = pc_barren_cold
+				}
+				NOR = {
+					has_deposit_for = shipclass_mining_station
+					has_deposit_for = shipclass_research_station
+				}
+				NOT = { exists = archaeological_site }
+			}
+		}
+	}
+
+	immediate = {
+		set_situation_flag = divination_occurring
+		save_event_target_as = outsiders_situation
+		set_global_flag = outsiders_divination_planet
+		owner = {
+			random_planet_within_border = {
+				limit = {
+					OR = {
+						is_planet_class = pc_barren
+						is_planet_class = pc_barren_cold
+					}
+					NOR = {
+						has_deposit_for = shipclass_mining_station
+						has_deposit_for = shipclass_research_station
+					}
+					NOT = { exists = archaeological_site }
+				}
+				save_event_target_as = outsiders_divination_planet
+			}
+		}
+	}
+
+	option = {
+		name = UNDERSTOOD
+		event_target:outsiders_situation = {
+			add_situation_progress = 20
+		}
+		event_target:outsiders_divination_planet = {
+			create_archaeological_site = mem_outsiders_dig_site
+		}
+	}
+}
+
+# Synthetic Sun
+situation_event = {
+	id = leviathanexpanded.363
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_global_flag = mem_more_events_mod
+		NOT = { has_global_flag = mem_synthetic_sun }
+		NOT = {
+			has_situation_flag = divination_occurring
+		}
+		situation_progress >= 35
+		owner = {
+			is_ai = no
+			any_owned_planet = {
+				is_colony = yes
+				NOT = { has_planet_flag = colony_event }
+				is_capital = no
+				has_moon = yes
+				NOT = {
+					any_moon = { has_owner = yes }
+				}
+				any_moon = {
+					OR = {
+						is_planet_class = pc_barren
+						is_planet_class = pc_barren_cold
+					}
+				}
+				OR = {
+					is_wet = yes
+					is_dry = yes
+					is_cold = yes
+				}
+			}
+		}
+	}
+
+	immediate = {
+		set_situation_flag = divination_occurring
+		set_global_flag = mem_synthetic_sun
+		owner = {
+			set_country_flag = mem_lunar_gate
+			random_owned_planet = {
+				limit = {
+					is_colony = yes
+					NOT = { has_planet_flag = colony_event }
+					is_capital = no
+					has_moon = yes
+					NOT = {
+						any_moon = { has_owner = yes }
+					}
+					any_moon = {
+						OR = {
+							is_planet_class = pc_barren
+							is_planet_class = pc_barren_cold
+						}
+					}
+					OR = {
+						is_wet = yes
+						is_dry = yes
+						is_cold = yes
+					}
+				}
+				set_planet_flag = colony_event
+				planet_event = { id = mem_synthetic_sun.1 }
+			}
+		}
+	}
+}
+
+
 #Hidden Event to make sure at least one Worm event is selected for per Divination
 situation_event = {
-	id = leviathanexpanded.299
+	id = leviathanexpanded.399
 	hide_window = yes
 
 	is_triggered_only = yes

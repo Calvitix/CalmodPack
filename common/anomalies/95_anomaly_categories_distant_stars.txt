@@ -3,7 +3,7 @@
 # Calvitix Check 3.4.4  21.06.2022
 #
 # Merge with Arisphaos Unofficial patch
-# Merge with Expanded Events  24.09.2021
+# Merge with Expanded Events  25.06.2022
 # 
 #
 DISTAR_WRECK_CAT = {
@@ -67,6 +67,11 @@ DISTAR_RAINBOW_CAT = {
 			factor = 20
 			has_any_strategic_resource = no
 		}
+		modifier = {
+			add = 5
+			has_distar = yes
+			is_planet_class = pc_black_hole
+		}		
 	}
 
 	on_success = distar.15
@@ -224,6 +229,12 @@ DISTAR_TIME_CAT = {
 		###
 	}
 
+	on_spawn = {
+		from.owner = {
+			set_country_flag = ship_fragments_divination_planet
+		}
+	}
+
 	max_once_global = yes
 
 	on_success = distar.60
@@ -272,8 +283,6 @@ DISTAR_DEAD_GOD_CAT = {
 			add = 1000
 			has_distar = yes
 			is_moon = yes
-			habitable_planet = no
-			NOT = { has_deposit_for = shipclass_mining_station }
 			solar_system = {
 				any_system_planet = {
 					exists = owner
@@ -283,6 +292,7 @@ DISTAR_DEAD_GOD_CAT = {
 					has_moon = yes
 					any_moon = {
 						is_same_value = root
+						habitable_planet = no
 					}
 				}
 			}
@@ -523,7 +533,7 @@ DISTAR_EXO_CAT = {
 		}
 		modifier = {
 			factor = 0
-			has_modifier = "infernal_world"
+			has_modifier = "underground_world"
 		}
 ###exp.events mod end
 	}
@@ -1614,12 +1624,36 @@ atomic_clock_cat = {
 				}
 			}
 		}
+		
+		# more likely to spawn in pulsar systems, since they are rarer
+		modifier = {
+			add = 10
+			has_leviathans = yes
+			NOR = {
+				has_deposit_for = shipclass_research_station
+				has_deposit_for = shipclass_mining_station
+			}
+			solar_system = {
+				any_system_planet = {
+					OR = {
+						is_planet_class = pc_pulsar
+						is_planet_class = pc_neutron_star
+						is_planet_class = pc_magnetar
+					}
+				}
+			}
+		}
 ###exp.events mod end
 		modifier = {
 			factor = 0
 			NOR = {
 				has_distar = yes
 			}
+		}
+	}
+	on_spawn = {
+		from.owner = {
+			set_country_flag = atomic_clock_divination_planet
 		}
 	}
 	on_success = {
@@ -2271,6 +2305,12 @@ disco_breathing_rift_cat = {
 			}
 		}
 ###exp.events mod end
+	}
+
+	on_spawn = {
+		from.owner = {
+			set_country_flag = breathing_rift_divination_planet
+		}
 	}
 
 	on_success = distar.3060

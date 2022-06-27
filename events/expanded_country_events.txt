@@ -715,6 +715,30 @@ country_event = {
 		NOT = { has_special_project = SAVING_PLANET_EARTH_PROJECT }
 	}
 	
+	immediate = {
+		if = {
+			limit = {
+				any_owned_planet = {
+					is_homeworld = yes
+					has_planet_flag = damaged_homeworld
+				}
+			}
+			random_owned_planet = {
+				limit = {
+					is_homeworld = yes
+					has_planet_flag = damaged_homeworld
+				}
+				save_event_target_as = saving_homeworld
+			}
+		}
+		else = {
+			random_owned_planet = {
+				limit = { has_planet_flag = damaged_homeworld }
+				save_event_target_as = saving_homeworld
+			}
+		}
+	}
+	
 	option = {
 		name = OK
 		every_owned_planet = {
@@ -5865,12 +5889,14 @@ country_event = {
 	immediate = {
 		if = {
 			limit = { has_country_flag = fe_task_stop_robots }
+			set_timed_country_flag = { flag = used_stop_robot_cb days = 10 }
 			country_event = { id = fallen_empires_tasks.16 days = 2 }
 		}
 		From = {
 			if = {
 				limit = { has_country_flag = fe_task_stop_robots }
 				country_event = { id = fallen_empires_tasks.16 days = 2 }
+				set_timed_country_flag = { flag = used_stop_robot_cb days = 10 }
 			}
 		}
 	}
@@ -9249,6 +9275,7 @@ country_event = {
 		any_system_within_border = {
 			is_star_class = sc_black_hole
 			NOT = { has_star_flag = guardian }
+			exists = starbase
 			starbase = { has_starbase_building = black_hole_observatory }
 		}
 	}
@@ -9277,7 +9304,26 @@ country_event = {
 country_event = {
 	id = countryexpanded.209
 	title = akx.9000.name
-	desc = countryexpanded.209.desc
+	desc = {
+		text = countryexpanded.209.desc
+		trigger = {
+			event_target:horizonsignal_start_system = {
+				exists = starbase
+				starbase = { has_starbase_building = black_hole_observatory }
+			}
+		}
+	}
+	desc = {
+		text = countryexpanded.209.desc_shroudwalker
+		trigger = {
+			NOT = {
+				event_target:horizonsignal_start_system = {
+					exists = starbase
+					starbase = { has_starbase_building = black_hole_observatory }
+				}
+			}
+		}
+	}
 	picture = GFX_evt_black_hole
 	show_sound = event_alien_signal
 	location = event_target:horizonsignal_black_hole

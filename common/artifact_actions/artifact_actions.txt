@@ -2,13 +2,13 @@
 #
 # Calvitix Check 3.3.4  20.01.2022
 #
-# Merge with Exp. Events 19.03.2022
+# Merge with Exp. Events 25.06.2022
 #
 #
 
 @minor_artifact_decision_cost = 2
 @minor_artifact_decision_duration = 3600
-@minor_artifact_ai_threshold = 20 #Ori3.3B
+@minor_artifact_ai_threshold = 25 #20
 
 artifact_arcane_deciphering = {
 	resources = {
@@ -20,11 +20,15 @@ artifact_arcane_deciphering = {
 	
 	ai_weight = {
 		weight = 100
-		#Ori3.3B removed
-		#modifier = {
-		#	factor = 0
-		#	has_resource = { type = minor_artifacts amount < 105 }
-		#}
+		modifier = {
+			factor = 0
+			has_resource = { type = minor_artifacts amount < @minor_artifact_ai_threshold }
+		}
+		modifier = {
+			factor = 0
+			has_uncompleted_precursor_research = yes
+			has_resource = { type = minor_artifacts amount < 55 }
+		}
 	}
 
 	potential = {
@@ -68,14 +72,6 @@ artifact_lgate_clue = {
 	}
 	
 	potential = {
-		#has_event_chain = l_cluster_chain
-		#NOR = {
-		#	has_global_flag = l_cluster_opened
-		#	has_completed_event_chain_counter = {
-		#		event_chain = l_cluster_chain
-		#		counter = clues
-		#	}
-		#}
 		has_country_flag = encountered_first_lgate
 		NOT = { has_country_flag = completed_lcluster_chain }
 		NOT = { has_global_flag = l_cluster_opened }
@@ -103,7 +99,12 @@ artifact_lgate_clue = {
 		weight = 1
 		modifier = {
 			factor = 0
-			has_resource = { type = minor_artifacts amount < 105 }
+			has_resource = { type = minor_artifacts amount < @minor_artifact_ai_threshold }
+		}
+		modifier = {
+			factor = 0
+			has_uncompleted_precursor_research = yes
+			has_resource = { type = minor_artifacts amount < 55 }
 		}
 	}
 }
@@ -120,7 +121,12 @@ artifact_observer_clue = {
 		weight = 1
 		modifier = {
 			factor = 0
-			has_resource = { type = minor_artifacts amount < 105 }
+			has_resource = { type = minor_artifacts amount < @minor_artifact_ai_threshold }
+		}
+		modifier = {
+			factor = 0
+			has_uncompleted_precursor_research = yes
+			has_resource = { type = minor_artifacts amount < 55 }
 		}
 	}
 	
@@ -160,7 +166,12 @@ artifact_proclaim_religious_finding = {
 		}
 		modifier = {
 			factor = 0
-			has_resource = { type = minor_artifacts amount < @minor_artifact_ai_threshold } #Ori3.3B
+			has_resource = { type = minor_artifacts amount < @minor_artifact_ai_threshold }
+		}
+		modifier = {
+			factor = 0
+			has_uncompleted_precursor_research = yes
+			has_resource = { type = minor_artifacts amount < 55 }
 		}
 	}
 
@@ -198,7 +209,12 @@ artifact_proclaim_superiority = {
 		weight = 100
 		modifier = {
 			factor = 0
-			has_resource = { type = minor_artifacts amount < @minor_artifact_ai_threshold } #Ori3.3B
+			has_resource = { type = minor_artifacts amount < @minor_artifact_ai_threshold }
+		}
+		modifier = {
+			factor = 0
+			has_uncompleted_precursor_research = yes
+			has_resource = { type = minor_artifacts amount < 55 }
 		}
 	}
 
@@ -240,7 +256,12 @@ artifact_celebrate_diversity = {
 		}
 		modifier = {
 			factor = 0
-			has_resource = { type = minor_artifacts amount < @minor_artifact_ai_threshold } #Ori3.3B
+			has_resource = { type = minor_artifacts amount < @minor_artifact_ai_threshold }
+		}
+		modifier = {
+			factor = 0
+			has_uncompleted_precursor_research = yes
+			has_resource = { type = minor_artifacts amount < 55 }
 		}
 	}
 
@@ -408,7 +429,12 @@ artifact_find_military_applications = {
 		}
 		modifier = {
 			factor = 0
-			has_resource = { type = minor_artifacts amount < @minor_artifact_ai_threshold } #Ori3.3B
+			has_resource = { type = minor_artifacts amount < @minor_artifact_ai_threshold }
+		}
+		modifier = {
+			factor = 0
+			has_uncompleted_precursor_research = yes
+			has_resource = { type = minor_artifacts amount < 55 }
 		}
 	}
 
@@ -462,7 +488,12 @@ artifact_find_peaceful_applications = {
 		}
 		modifier = {
 			factor = 0
-			has_resource = { type = minor_artifacts amount < @minor_artifact_ai_threshold } #Ori3.3B
+			has_resource = { type = minor_artifacts amount < @minor_artifact_ai_threshold }
+		}
+		modifier = {
+			factor = 0
+			has_uncompleted_precursor_research = yes
+			has_resource = { type = minor_artifacts amount < 55 }
 		}
 	}
 
@@ -509,14 +540,24 @@ artifact_sell_collector = {
 		}
 		modifier = {
 			factor = 0
-			has_resource = { type = minor_artifacts amount < @minor_artifact_ai_threshold } #Ori3.3B
+			has_resource = { type = minor_artifacts amount < @minor_artifact_ai_threshold }
+		}
+		modifier = {
+			factor = 0
+			has_uncompleted_precursor_research = yes
+			has_resource = { type = minor_artifacts amount < 55 }
 		}
 	}
 
 	potential = { is_gestalt = no }
 
-	effect = { #Ori3.3B replacement
-		add_resource = { energy = 500 }
+	effect = {
+		add_monthly_resource_mult = {
+			resource = energy
+			value = @tier2materialreward
+			min = @tier2materialmin
+			max = @tier2materialmax
+		}
 		hidden_effect = {
 			add_modifier = {
 				modifier = "artifact_sell_cooldown"
@@ -783,7 +824,6 @@ artifact_league_research = {
 				has_modifier = first_league_homeworld
 			}
 		}
-
 		NOT = { has_country_flag = league_research_started } 
 	}
 	

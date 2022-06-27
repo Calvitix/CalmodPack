@@ -1,7 +1,7 @@
 # Starnet AI File
 #
 #
-# Merge with Starnet AI 10.06.2021
+# Merge with Starnet AI 26.06.2022
 # Merge with Starnet AI for NSC 25.11.2021
 #
 namespace = starnet
@@ -32,9 +32,17 @@ event = {
 					is_ai = no
 				}
 				country_event = {
-					id = starnet.3 days = 1 random = 200
+						id = starnet.3 days = 1 random = 200	# Determine small changes in fleet composition.
 				}
 			}			
+				if = {
+					limit = {
+						is_ai = yes
+					}
+					country_event = {
+						id = starnet.6 days = 5 random = 60		# Scripts attempting to unstuck economy.
+					}
+				}
 			if = {
 				limit = {
 					has_technology = tech_ecological_adaptation
@@ -79,51 +87,63 @@ country_event = {
 				is_country_type = default
 			}
 			if = {
-				limit = { relative_power = {
+				limit = {
+					relative_power = {
 					who = prev
 					category = fleet
 					value > equivalent
-				} }
+					}
+				}
 				prev = { set_country_flag = str_has_bad_fleet_score }
 			}
 			if = {
-				limit = { relative_power = {
+				limit = {
+					relative_power = {
 					who = prev
 					category = technology
 					value > equivalent
-				} }
+					}
+				}
 				prev = { set_country_flag = str_has_bad_tech_score }
 			}
 			if = {
-				limit = { relative_power = {
+				limit = {
+					relative_power = {
 					who = prev
 					category = economy
 					value > equivalent
-				} }
+					}
+				}
 				prev = { set_country_flag = str_has_bad_economy_score }
 			}
 			if = {
-				limit = { relative_power = {
+				limit = {
+					relative_power = {
 					who = prev
 					category = fleet
 					value > superior
-				} }
+					}
+				}
 				prev = { set_country_flag = str_has_terrible_fleet_score }
 			}
 			if = {
-				limit = { relative_power = {
+				limit = {
+					relative_power = {
 					who = prev
 					category = technology
 					value > superior
-				} }
+					}
+				}
 				prev = { set_country_flag = str_has_terrible_tech_score }
 			}
 			if = {
-				limit = { relative_power = {
+				limit = {
+					relative_power = {
 					who = prev
 					category = economy
 					value > superior
-				} }
+					}
+				}
 				prev = { set_country_flag = str_has_terrible_economy_score }
 			}
 		}
@@ -152,7 +172,7 @@ country_event = {
 			}
 			if = {
 				limit = {
-					count_controlled_ship = {
+					count_owned_ship = {
 						count > 200
 						limit = {
 							is_ship_size = corvette
@@ -169,7 +189,7 @@ country_event = {
 			}
 			if = {
 				limit = {
-					count_controlled_ship = {
+					count_owned_ship = {
 						count > 400
 						limit = {
 							is_ship_size = corvette
@@ -181,7 +201,7 @@ country_event = {
 		}
 		else_if = {
 				limit = {
-					count_controlled_ship = {
+				count_owned_ship = {
 						count > 600
 						limit = {
 							is_ship_size = corvette
@@ -236,7 +256,7 @@ event = {
 ##Starnet AI NSC
 			#if = { limit = { has_global_flag = edai_logging	} log = "FIX_Fleet: STR Impulse (Starnet.5) for [This.GetName]" }
 			
-			country_event = { id = str_doomstack.9 days = 1 }
+			#country_event = { id = str_doomstack.9 days = 1 }
 			country_event = { id = str_doomstack.1 days = 1 random = 180 }
 			country_event = { id = str_starbase_fix.1 days = 1 random = 180  }
 			if = {
@@ -265,10 +285,150 @@ event = {
 	}
 }
 
+# Scripts attempting to unstuck economy.
+country_event = {
+	id = starnet.6
+	hide_window = yes
+	is_triggered_only = yes
+	fire_only_once = no
+	immediate = {
+		add_resource = { starnet_spice_melange = -100000 }
+		every_owned_planet = {
+			check_planet_employment = yes
+			calculate_modifier = yes
+		}
+	}
+}
+
+# This fixes deprioritisation of amenity jobs by the game engine in saves made prior to the adjustments in StarNet. StarNet uses its own way to disable jobs. Can be removed in Stellaris 3.5.
+event = {
+	id = starnet.100
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		NOT = {
+			has_global_flag = str_ai_upper_amenities_limit_fixer_event_fired
+		}
+	}
+	immediate = {
+		set_global_flag = str_ai_upper_amenities_limit_fixer_event_fired
+	}
+}
+
+event = {
+	id = starnet.101
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		NOT = {
+			has_global_flag = str_ai_upper_amenities_limit_fixer_event_fired
+		}
+	}
+	immediate = {
+		set_global_flag = str_ai_upper_amenities_limit_fixer_event_fired
+		every_country = {
+			limit = {
+				is_ai = yes
+				OR = {
+					is_country_type = default
+					merg_is_standard_empire = yes
+
+				}
+			}
+			every_owned_planet = {
+				set_planet_flag = str_industrial_district_allow_fixer
+				add_modifier = {
+					modifier = ai_disable_popular_amenity_jobs_save_fix_1
+					days = 1
+				}
+				add_modifier = {
+					modifier = ai_disable_popular_amenity_jobs_save_fix_2
+					days = 7
+				}
+				calculate_modifier = yes
+				if = {
+					limit = {
+						owner = {
+							is_gestalt = yes
+						}
+					}
+					planet_event = {
+						id = starnet.102
+						days = 7
+					}
+				}
+			}
+		}
+	}
+}
+
+planet_event = {
+	id = starnet.102
+	hide_window = yes
+	is_triggered_only = yes
+	pre_triggers = {
+		has_owner = yes
+	}
+	trigger = {
+		exists = owner
+		owner = {
+			is_ai = yes
+		}	
+	}
+	immediate = {
+		if = {
+			limit = {
+				or = { free_amenities > 7 free_amenities < -1 }
+			}
+			planet_event = {
+				id = str_planet_audit.1
+			}
+		}
+		if = {
+			limit = {
+				free_amenities > 13
+			}
+			planet_event = {
+				id = str_planet_audit.1
+			}
+			planet_event = {
+				id = str_planet_audit.1
+			}
+		}
+		if = {
+			limit = {
+				free_amenities > 20
+			}
+			planet_event = {
+				id = str_planet_audit.1
+				days = 1
+			}
+			planet_event = {
+				id = str_planet_audit.1
+				days = 1
+			}
+		}
+		if = {
+			limit = {
+				free_amenities > 30
+			}
+			planet_event = {
+				id = str_planet_audit.1
+				days = 2
+			}
+			planet_event = {
+				id = str_planet_audit.1
+				days = 2
+			}
+		}
+	}
+}
+
+
 
 event = { #Calvitix, Starbase upgrade ofter
 	#Month pulse
-	id = starnet.6
+	id = starnet.60
 	hide_window = yes
 	is_triggered_only = yes
 	fire_only_once = no
@@ -294,13 +454,13 @@ event = { #Calvitix, Starbase upgrade ofter
 
 event = { #Calvitix, On load, reset the min variables values
 	#on_single_player_save_game_load
-	id = starnet.7
+	id = starnet.70
 	hide_window = yes
 	is_triggered_only = yes
 	fire_only_once = no
 
 	immediate = {
-		log = "Starnet.7 : Min reset "
+		log = "Starnet.70 : Min reset "
 		every_country = {
 			limit = {
 				is_ai = yes
