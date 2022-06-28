@@ -1,13 +1,12 @@
 # Giga File
 #
-# Calvitix Check 3.3.4
+# Calvitix Check 3.4.4
 #
-# Last Update : 30.03.2022
+# Last Update : 27.06.2022
 #
 # Calvitix Names Trad.
 #
 namespace = giga_flusionoperations_debug
-
 
 country_event = {
 	id = giga_flusionoperations_debug.1
@@ -770,20 +769,16 @@ country_event = {
 	}
 
 	option = {
-		trigger = { #Calvitix debug
+		name = "giga_katzen.2004.a" #pay
+		custom_tooltip = "giga_katzen.2004.a.tooltip"
+		response_text = "giga_katzen.2004.a.response"
+		allow = {
 			resource_stockpile_compare = {
 				resource = energy
 				value >= 10000
 			}
 		}
-		name = "giga_katzen.2004.a" #pay
-		custom_tooltip = "giga_katzen.2004.a.tooltip"
-		response_text = "giga_katzen.2004.a.response"
 		add_resource = { energy = -10000 }
-		#resource_stockpile_compare = {
-		#	resource = energy
-		#	value >= 10000
-		#}
 		hidden_effect = {
 			decrease_kaiser_opinion = yes
 		}
@@ -1924,8 +1919,13 @@ country_event = {
 			limit = { has_civic = civic_shared_burden }
 			change_variable = { which = solakian_willingness value = 20 }
 		}
+		#Rogue Servitors
+		if = {
+			limit = { has_civic = civic_machine_servitor }
+			change_variable = { which = solakian_willingness value = 60 }
+		}
 		if = { #yeah i think you can guess why lmao
-			limit = { is_gestalt = yes }
+			limit = { is_gestalt = yes NOT = { has_civic = civic_machine_servitor } }
 			set_variable = { which = solakian_willingness value = -100 }
 		}
 	}
@@ -9749,7 +9749,7 @@ country_event = {
 		custom_tooltip = "giga_katrebels.0012.sabotmoon.tooltip"
 		trigger = {
 			any_galaxy_fleet = {
-				any_controlled_ship = {
+				any_owned_ship = {
 					is_ship_size = giga_kaiser_moon_flusion
 				}
 			}
@@ -10382,14 +10382,14 @@ country_event = {
 		}
 		event_target:eziccountry = {
 			if = {
-				limit = { any_controlled_ship = { is_ship_size = giga_katzen_submarine } }
+				limit = { any_owned_ship = { is_ship_size = giga_katzen_submarine } }
 				every_owned_ship = {
 					limit = { is_ship_size = giga_katzen_submarine }
 					destroy_ship = THIS
 				}
 			}
 			if = {
-				limit = { any_controlled_ship = { is_ship_size = giga_katzen_submarine_submerged } }
+				limit = { any_owned_ship = { is_ship_size = giga_katzen_submarine_submerged } }
 				every_owned_ship = {
 					limit = { is_ship_size = giga_katzen_submarine_submerged }
 					destroy_ship = THIS
@@ -12686,7 +12686,7 @@ country_event = {
 			force_add_civic = civic_distinguished_admiralty
 			force_add_civic = civic_nationalistic_zeal
 			if = {
-				limit = { any_controlled_ship = { is_ship_size = giga_war_moon_flusion } }
+				limit = { any_owned_ship = { is_ship_size = giga_war_moon_flusion } }
 				random_owned_ship = {
 					limit = { is_ship_size = giga_war_moon_flusion }
 					fleet = { assign_leader = event_target:laurn_cuddles }
