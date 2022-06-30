@@ -2562,6 +2562,49 @@ planet_event = {
 		name = colony.104.a
 		custom_tooltip = abandoned_terraforming_completed
 		hidden_effect = {
+			# planetary diversity compatibility
+			if = {
+				limit = { has_global_flag = planetarydiversity }
+				remove_planet_flag = pdaquapicture
+				remove_modifier = "abandoned_terraforming"
+				random_list = {
+					3.7 = { change_pc = pc_mangrove }
+					3.7 = { change_pc = pc_wetswamp }
+					3.7 = { change_pc = pc_fog }
+					3.7 = { change_pc = pc_desertislands }
+					3.7 = { change_pc = pc_hajungle }
+					3.7 = { change_pc = pc_cenote }
+					3.7 = { change_pc = pc_cascadian }
+					3.7 = { change_pc = pc_swamp }
+					3.7 = { change_pc = pc_mud }
+					3.7 = { change_pc = pc_basalt }
+					3.7 = { change_pc = pc_subarctic }
+					3.7 = { change_pc = pc_glacial }
+					3.7 = { change_pc = pc_sandsea }
+					3.7 = { change_pc = pc_mesa }
+					3.7 = { change_pc = pc_badlands }
+					3.7 = { change_pc = pc_outback }
+					3.7 = { change_pc = pc_coastal }
+					3.7 = { change_pc = pc_oasis }
+					3.7 = { change_pc = pc_hadesert }
+					3.7 = { change_pc = pc_steppe }
+					3.7 = { change_pc = pc_frozen_desert }
+					3.7 = { change_pc = pc_boreal }
+					3.7 = { change_pc = pc_desert }
+					3.7 = { change_pc = pc_tropical }
+					3.7 = { change_pc = pc_arid }
+					3.7 = { change_pc = pc_continental }
+					3.7 = { change_pc = pc_ocean }
+					3.7 = { change_pc = pc_tundra }
+					3.7 = { change_pc = pc_arctic }
+					3.7 = { change_pc = pc_alpine }
+					3.7 = { change_pc = pc_savannah }
+					3.7 = { change_pc = pc_mushroom }
+				}
+			}
+			# standard
+			if = {
+				limit = { NOT = { has_global_flag = planetarydiversity } }
 			remove_modifier = "abandoned_terraforming"
 			switch = {
 				trigger = is_planet_class
@@ -2688,10 +2731,26 @@ planet_event = {
 				}
 			}
 		}
+			if = {									# -guilli
+				limit = {
+					NOT = {
+						gpm_has_precursor_modifiers = yes
+					}
+				}
+				reroll_planet_modifiers = yes		# -guilli
+				gpm_remove_precursor_modifiers = yes 	# -guilli
+				gpm_remove_planetary_features = yes 		# -guilli roll tombworld modifiers
+				gpm_roll_planetary_features = yes 			# -guilli up to X times planetary feature 
+			}
+			if = {
+				limit = { has_modifier = gpm_precursor_energy_grid }
+				gpm_set_precursor_energy_grid = yes
+			}
+		}
 	}
 }
 
-# Special Project Completed 2 (Mutated Creatures)
+# Special Project Completed 2 (Mutated Creatures)	-- overwriting to apply correct planet modifiers
 planet_event = {
 	id = colony.105
 	title = "PROJECT_COMPLETE"
@@ -2704,6 +2763,50 @@ planet_event = {
 
 	immediate = {
 		hidden_effect = {
+			# planetary diversity compatibility
+			if = {
+				limit = { has_global_flag = planetarydiversity }
+				remove_planet_flag = pdaquapicture
+				remove_modifier = "abandoned_terraforming"
+				random_list = {
+					3.7 = { change_pc = pc_mangrove }
+					3.7 = { change_pc = pc_wetswamp }
+					3.7 = { change_pc = pc_fog }
+					3.7 = { change_pc = pc_desertislands }
+					3.7 = { change_pc = pc_hajungle }
+					3.7 = { change_pc = pc_cenote }
+					3.7 = { change_pc = pc_cascadian }
+					3.7 = { change_pc = pc_swamp }
+					3.7 = { change_pc = pc_mud }
+					3.7 = { change_pc = pc_basalt }
+					3.7 = { change_pc = pc_subarctic }
+					3.7 = { change_pc = pc_glacial }
+					3.7 = { change_pc = pc_sandsea }
+					3.7 = { change_pc = pc_mesa }
+					3.7 = { change_pc = pc_badlands }
+					3.7 = { change_pc = pc_outback }
+					3.7 = { change_pc = pc_coastal }
+					3.7 = { change_pc = pc_oasis }
+					3.7 = { change_pc = pc_hadesert }
+					3.7 = { change_pc = pc_steppe }
+					3.7 = { change_pc = pc_frozen_desert }
+					3.7 = { change_pc = pc_boreal }
+					3.7 = { change_pc = pc_desert }
+					3.7 = { change_pc = pc_tropical }
+					3.7 = { change_pc = pc_arid }
+					3.7 = { change_pc = pc_continental }
+					3.7 = { change_pc = pc_ocean }
+					3.7 = { change_pc = pc_tundra }
+					3.7 = { change_pc = pc_arctic }
+					3.7 = { change_pc = pc_alpine }
+					3.7 = { change_pc = pc_savannah }
+					3.7 = { change_pc = pc_mushroom }
+				}
+			}
+			# standard
+			if = {
+				limit = { NOT = { has_global_flag = planetarydiversity } }
+				remove_modifier = "abandoned_terraforming"
 			switch = {
 				trigger = is_planet_class
 				pc_desert = {
@@ -2827,6 +2930,7 @@ planet_event = {
 						15 = { change_pc = pc_savannah }
 					}
 				}
+			}
 			}
 			remove_modifier = "abandoned_terraforming"
 			owner = { set_country_flag = terraforming_mutants_invade_country }
@@ -2853,6 +2957,21 @@ planet_event = {
 				owner = last_created_country
 				type = "mutant_army"
 			}
+			if = {									# -guilli
+				limit = {
+					NOT = {
+						gpm_has_precursor_modifiers = yes
+					}
+				}
+				reroll_planet_modifiers = yes		# -guilli
+				gpm_remove_precursor_modifiers = yes 	# -guilli
+				gpm_remove_planetary_features = yes 		# -guilli roll tombworld modifiers
+				gpm_roll_planetary_features = yes 			# -guilli up to X times planetary feature 
+			}
+			if = {
+				limit = { has_modifier = gpm_precursor_energy_grid }
+				gpm_set_precursor_energy_grid = yes
+			}
 		}
 	}
 
@@ -2862,7 +2981,7 @@ planet_event = {
 	}
 }
 
-# Special Project Completed 3 (Gaia World)
+# Special Project Completed 3 (Gaia World)	-- overwriting to apply correct planet modifiers
 planet_event = {
 	id = colony.106
 	title = "PROJECT_COMPLETE"
@@ -2881,12 +3000,34 @@ planet_event = {
 			days = -1
 		}
 		hidden_effect = {
+			# planetary diversity compatibility
+			if = {
+				limit = { has_global_flag = planetarydiversity }
+				remove_planet_flag = pdaquapicture
+			}
+			#
+
 			remove_modifier = "abandoned_terraforming"
+			if = {									# -guilli
+				limit = {
+					NOT = {
+						gpm_has_precursor_modifiers = yes
+					}
+				}
+				reroll_planet_modifiers = yes		# -guilli
+				gpm_remove_precursor_modifiers = yes 	# -guilli
+				gpm_remove_planetary_features = yes 		# -guilli roll tombworld modifiers
+				gpm_roll_planetary_features = yes 			# -guilli up to X times planetary feature 
+			}
+			if = {
+				limit = { has_modifier = gpm_precursor_energy_grid }
+				gpm_set_precursor_energy_grid = yes
+			}
 		}
 	}
 }
 
-# Special Project Completed 4 (Tomb World)
+# Special Project Completed 4 (Tomb World)	-- overwriting to apply correct planet modifiers
 planet_event = {
 	id = colony.107
 	title = "PROJECT_COMPLETE"
@@ -2954,7 +3095,45 @@ planet_event = {
 			custom_tooltip = colony.107.a.tooltip
 		}
 		hidden_effect = {
+			# planetary diversity compatibility
+			if = {
+				limit = { has_global_flag = planetarydiversity }
+				remove_planet_flag = pdaquapicture
+			}
+			#
+
 			remove_modifier = "abandoned_terraforming"
+			if = {									# -guilli
+				limit = {
+					NOT = {
+						gpm_has_precursor_modifiers = yes
+					}
+				}
+				reroll_planet_modifiers = yes		# -guilli
+				gpm_remove_precursor_modifiers = yes 	# -guilli
+			}
+			if = {
+				limit = { has_modifier = gpm_precursor_energy_grid }
+				gpm_set_precursor_energy_grid = yes
+			}
+			if = {
+				limit = { has_planet_flag = gpm_is_wondrous_planet }
+				remove_planet_flag = gpm_is_wondrous_planet
+				remove_planet_flag = gpm_is_wondrous_world_colour
+				remove_modifier = gpm_planet_wonder_discovered
+				set_name = {
+					key = "NAME_color_default_white"
+					variable_string = "[This.Solar_System.GetName]"
+				} 
+			}
+			if = {
+				limit = { has_planet_flag = gpm_is_precursor_world }
+				add_modifier = { modifier = terraforming_candidate days = -1 } 
+				set_name = {
+					key = "NAME_color_precursor"
+					variable_string = "[This.GetName]"
+				}
+			}
 		}
 	}
 	option = {
@@ -2968,10 +3147,49 @@ planet_event = {
 		hidden_effect = { change_pc = pc_nuked }
 		set_planet_flag = nuked_planet_anomalies_disabled
 		hidden_effect = {
+			# planetary diversity compatibility
+			if = {
+				limit = { has_global_flag = planetarydiversity }
+				remove_planet_flag = pdaquapicture
+			}
+			#
+			
 			remove_modifier = "abandoned_terraforming"
+			if = {									# -guilli
+				limit = {
+					NOT = {
+						gpm_has_precursor_modifiers = yes
+					}
+				}
+				reroll_planet_modifiers = yes		# -guilli
+				gpm_remove_precursor_modifiers = yes 	# -guilli
+			}
+			if = {
+				limit = { has_modifier = gpm_precursor_energy_grid }
+				gpm_set_precursor_energy_grid = yes
+			}
+			if = {
+				limit = { has_planet_flag = gpm_is_wondrous_planet }
+				remove_planet_flag = gpm_is_wondrous_planet
+				remove_planet_flag = gpm_is_wondrous_world_colour
+				remove_modifier = gpm_planet_wonder_discovered
+				set_name = {
+					key = "NAME_color_default_white"
+					variable_string = "[This.Solar_System.GetName]"
+				}
+			}
+			if = {
+				limit = { has_planet_flag = gpm_is_precursor_world }
+				add_modifier = { modifier = terraforming_candidate days = -1 } 
+				set_name = {
+					key = "NAME_color_precursor"
+					variable_string = "[This.GetName]"
+				}
+			}
 		}
 	}
 }
+
 
 # Victory over Mutants
 country_event = {

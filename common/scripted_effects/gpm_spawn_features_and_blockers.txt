@@ -3,6 +3,7 @@
 
 
 gpm_roll_planetary_features = {
+	optimize_memory
 	# set unique features
 	if = {
 		limit = {
@@ -82,6 +83,7 @@ gpm_roll_planetary_features = {
 		}
 		# roll blockers
 		gpm_roll_planetary_blockers = yes
+		
 	}
 	# roll city features
 	if = {
@@ -128,6 +130,7 @@ gpm_roll_planetary_features = {
 }
 
 gpm_roll_planetary_blockers = {
+	optimize_memory
 	# blockers
 	if = {
 		limit = {
@@ -200,6 +203,7 @@ gpm_roll_planetary_blockers = {
 
 # set unique features
 gpm_roll_planetary_features_unique = {
+	optimize_memory
 	if = {
 		limit = {
 			AND = {
@@ -240,6 +244,7 @@ gpm_roll_planetary_features_unique = {
 
 # roll normal habitable features
 gpm_roll_planetary_features_normal_habitable = {
+	optimize_memory
 	random_list = {
 		10 = {
 			add_deposit = gpm_d_ruined_battlefield
@@ -291,7 +296,7 @@ gpm_roll_planetary_features_normal_habitable = {
 			modifier = { factor = 0 NOT = { has_modifier = gpm_dunes } }
 			modifier = { factor = 0 count_deposits = { type = gpm_d_dunes count >=3 } }
 		}
-		8 = {
+		10 = {
 			add_deposit = gpm_d_mushroom_forest
 			modifier = { factor = 0 NOT = { has_modifier = gpm_mushroom_forest } }
 			modifier = { factor = 0 count_deposits = { type = gpm_d_mushroom_forest count >=3 } }
@@ -638,7 +643,7 @@ gpm_roll_planetary_features_normal_habitable = {
 			modifier = { factor = 0 NOT = { has_modifier = gpm_warm_water_lakes } }
 			modifier = { factor = 0 count_deposits = { type = gpm_d_hot_springs count >=1 } }
 		}
-		1 = {
+		10 = {
 			add_deposit = gpm_d_colossal_coral_life
 			modifier = { factor = 0 NOT = { has_modifier = gpm_extensive_reef_systems } }
 			modifier = { factor = 0 count_deposits = { type = gpm_d_colossal_coral_life count >=3 } }
@@ -660,37 +665,38 @@ gpm_roll_planetary_features_normal_habitable = {
 }
 # roll normal habitable blockers
 gpm_roll_planetary_blockers_normal_habitable = {
+	optimize_memory
 	if = {
-		limit = { has_modifier = gpm_toxic_gas }
+		limit = { has_modifier = gpm_toxic_gas free_district_slots > 2 }
 		add_deposit = gpm_tb_toxic_gas
 	}
 	if = {
-		limit = { has_modifier = gpm_locust_plagues }
+		limit = { has_modifier = gpm_locust_plagues free_district_slots > 2 }
 		add_deposit = gpm_tb_locust_plagues
 	}
 	if = {
-		limit = { has_modifier = gpm_seasonal_flooding }
+		limit = { has_modifier = gpm_seasonal_flooding free_district_slots > 2 }
 		add_deposit = gpm_tb_seasonal_flooding
 	}
 	if = {
-		limit = { has_modifier = gpm_strange_alien_eggs }
+		limit = { has_modifier = gpm_strange_alien_eggs free_district_slots > 2 }
 		add_deposit = gpm_tb_xenomorph_blocker
 		add_deposit = gpm_tb_xenomorph_blocker
 	}
 	if = {
-		limit = { gpm_is_planet_class_ringworld = yes }
+		limit = { gpm_is_planet_class_ringworld = yes free_district_slots > 2 }
 		add_deposit = gpm_tb_ringworld_blocker
 	}
 	if = {
-		limit = { has_modifier = gpm_extensive_cavern_system }
+		limit = { has_modifier = gpm_extensive_cavern_system free_district_slots > 2 }
 		add_deposit = gpm_tb_deep_caverns
 	}
 	if = {
-		limit = { has_modifier = gpm_cities_in_the_sky }
+		limit = { has_modifier = gpm_cities_in_the_sky free_district_slots > 2 }
 		add_deposit = gpm_tb_deprecated_infrastructure
 	}
 	if = {
-		limit = { has_modifier = gpm_hostile_flora }
+		limit = { has_modifier = gpm_hostile_flora free_district_slots > 2 }
 		random_list = {
 			33 = { add_deposit = gpm_tb_volatile_gasses }
 			33 = { add_deposit = gpm_tb_volatile_motes }
@@ -701,6 +707,7 @@ gpm_roll_planetary_blockers_normal_habitable = {
 		limit = {
 			gpm_is_planet_wet_cold = yes
 			NOT = { is_planet_class = pc_ocean }
+			free_district_slots > 2 
 		}
 		add_deposit = gpm_tb_forest_resources
 	}
@@ -708,18 +715,21 @@ gpm_roll_planetary_blockers_normal_habitable = {
 		limit = {
 			gpm_is_planet_wet_hot = yes
 			NOT = { is_planet_class = pc_ocean }
+			free_district_slots > 2 
 		}
 		add_deposit = gpm_tb_swamp_resources
 	}
 	if = {
 		limit = {
 			gpm_is_planet_dry_cold = yes
+			free_district_slots > 2 
 		}
 		add_deposit = gpm_tb_crystal_growth_resources
 	}
 	if = {
 		limit = {
 			gpm_is_planet_dry_hot = yes
+			free_district_slots > 2 
 		}
 		add_deposit = gpm_tb_lethal_overgrowth_resources
 	}
@@ -729,17 +739,20 @@ gpm_roll_planetary_blockers_normal_habitable = {
 				has_modifier = gpm_ruined_battlefield
 				has_modifier = gpm_spaceship_graveyard
 				gpm_is_planet_class_nuked = yes
+				free_district_slots > 2 
 			}
 		}
 		add_deposit = gpm_tb_automated_turrets
 	}
 	if = {
-		limit = { gpm_is_planet_water = yes }
+		limit = { gpm_is_planet_water = yes free_district_slots > 2 }
 		random_list = {
 			80 = { }			
 			20 = { add_deposit = gpm_tb_ocean_resources }
 		}
 	}
+	if = {
+		limit = { free_district_slots > 2 }
 	random_list =  {
 		40 = { }
 		5 = {
@@ -812,6 +825,7 @@ gpm_roll_planetary_blockers_normal_habitable = {
 			}
 		}
 	}
+	}	
 }
 
 # roll normal habitable features
@@ -821,6 +835,7 @@ gpm_roll_planetary_blockers_normal_habitable = {
 
 # roll city features
 gpm_roll_planetary_features_city = {
+	optimize_memory
 	random_list = {
 		10 = {
 			add_deposit =  gpm_d_relic_tank_factory
@@ -934,6 +949,7 @@ gpm_roll_planetary_features_city = {
 
 # roll hive features
 gpm_roll_planetary_features_hive = {
+	optimize_memory
 	# NOT = { has_planet_flag = gpm_is_terraformed_world }
 	random_list = {
 		10 = { }
@@ -943,6 +959,7 @@ gpm_roll_planetary_features_hive = {
 
 # roll machine world features
 gpm_roll_planetary_features_machine = {
+	optimize_memory
 	# NOT = { has_planet_flag = gpm_is_terraformed_world }
 	random_list = {
 		10 = { }
@@ -952,6 +969,7 @@ gpm_roll_planetary_features_machine = {
 
 # roll habitat features
 gpm_roll_planetary_features_habitat = {
+	optimize_memory
 	random_list = {
 		10 = { }
 		10 = { }
@@ -960,6 +978,7 @@ gpm_roll_planetary_features_habitat = {
 
 # roll ringworld features
 gpm_roll_planetary_features_ringworld = {
+	optimize_memory
 	random_list = {
 		10 = { }
 		10 = { }
@@ -969,6 +988,7 @@ gpm_roll_planetary_features_ringworld = {
 
 # spaws 1 - 3 random precursor features
 gpm_spawn_precursor_features = {
+	optimize_memory
 	if = {
 		limit = {
 			OR = { 
@@ -1061,6 +1081,7 @@ gpm_spawn_precursor_features = {
 
 # planet wonders
 gpm_spawn_planet_wonders_desert = {
+	optimize_memory
 	random_list = {
 		16 = { add_deposit = "gpm_d_gargantuan_sinkhole" }
 		2 = { add_deposit = "gpm_d_titanic_cave" }
@@ -1073,6 +1094,7 @@ gpm_spawn_planet_wonders_desert = {
 	}
 }
 gpm_spawn_planet_wonders_arid = {
+	optimize_memory
 	random_list = {
 		16 = { add_deposit = "gpm_d_discharging_field" }
 		2 = { add_deposit = "gpm_d_titanic_cave" }
@@ -1085,6 +1107,7 @@ gpm_spawn_planet_wonders_arid = {
 	}
 }
 gpm_spawn_planet_wonders_savannah = {
+	optimize_memory
 	random_list = {
 		16 = { add_deposit = "gpm_d_giant_trees" }
 		2 = { add_deposit = "gpm_d_titanic_cave" }
@@ -1097,6 +1120,7 @@ gpm_spawn_planet_wonders_savannah = {
 	}
 }
 gpm_spawn_planet_wonders_tropical = {
+	optimize_memory
 	random_list = {
 		16 = { add_deposit = "gpm_d_crystal_jungle" }
 		2 = { add_deposit = "gpm_d_titanic_cave" }
@@ -1109,6 +1133,7 @@ gpm_spawn_planet_wonders_tropical = {
 	}
 }
 gpm_spawn_planet_wonders_continental = {
+	optimize_memory
 	random_list = {
 		16 = { add_deposit = "gpm_d_floating_islands" }
 		2 = { add_deposit = "gpm_d_titanic_cave" }
@@ -1121,6 +1146,7 @@ gpm_spawn_planet_wonders_continental = {
 	}
 }
 gpm_spawn_planet_wonders_ocean = {
+	optimize_memory
 	random_list = {
 		16 = { add_deposit = "gpm_d_amoeba_sea" }
 		2 = { add_deposit = "gpm_d_titanic_cave" }
@@ -1132,6 +1158,7 @@ gpm_spawn_planet_wonders_ocean = {
 	}
 }
 gpm_spawn_planet_wonders_arctic = {
+	optimize_memory
 	random_list = {
 		16 = { add_deposit = "gpm_d_glass_towers" }
 		2 = { add_deposit = "gpm_d_titanic_cave" }
@@ -1143,6 +1170,7 @@ gpm_spawn_planet_wonders_arctic = {
 	}
 }
 gpm_spawn_planet_wonders_alpine = {
+	optimize_memory
 	random_list = {
 		16 = { add_deposit = "gpm_d_howling_peaks" }
 		2 = { add_deposit = "gpm_d_titanic_cave" }
@@ -1154,6 +1182,7 @@ gpm_spawn_planet_wonders_alpine = {
 	}
 }
 gpm_spawn_planet_wonders_tundra = {
+	optimize_memory
 	random_list = {
 		16 = { add_deposit = "gpm_d_mega_fungi" }
 		2 = { add_deposit = "gpm_d_titanic_cave" }
@@ -1165,6 +1194,7 @@ gpm_spawn_planet_wonders_tundra = {
 	}
 }
 gpm_spawn_planet_wonders_gaia = {
+	optimize_memory
 	random_list = {
 		16 = { add_deposit = "gpm_d_energy_storm" }
 		2 = { add_deposit = "gpm_d_titanic_cave" }
@@ -1176,6 +1206,7 @@ gpm_spawn_planet_wonders_gaia = {
 	}
 }
 gpm_spawn_planet_wonders_nuked = {
+	optimize_memory
 	random_list = {
 		16 = { add_deposit = "gpm_d_forgotten_deposit" }
 		2 = { add_deposit = "gpm_d_titanic_cave" }
@@ -1188,6 +1219,7 @@ gpm_spawn_planet_wonders_nuked = {
 	}
 }
 gpm_spawn_planet_wonders_any = {
+	optimize_memory
 	random_list = {
 		2 = { add_deposit = "gpm_d_titanic_cave" }
 		2 = { add_deposit = "gpm_d_abandoned_stargate" }
@@ -1199,7 +1231,86 @@ gpm_spawn_planet_wonders_any = {
 	}
 }
 
-
+gpm_spawn_planet_ring_modifier = {
+	optimize_memory
+	random_list = {
+		# 0 to catch exceptions
+		0 = { }
+		12 = {
+			add_modifier = { modifier = "gpm_metallic_ring" }
+			gpm_set_planetary_rings = yes
+			# Not with these modifiers
+			modifier = { factor = 0
+				OR = {
+					has_modifier = "gpm_metallic_ring"
+					has_modifier = "gpm_ice_ring"
+					has_modifier = "gpm_massive_world"
+					has_modifier = "gpm_tidally_active"
+				}
+			}
+			# (Not) on these planets
+			modifier = { factor = 0 is_moon = yes }
+			# Never in these systems
+			modifier = { factor = 0	solar_system = { has_star_flag = sol_system } }
+			# modifier = { factor = 0 exists = space_owner space_owner = { is_ai = no } }
+			# Tweaks
+			# modifier = { factor = 0
+			# 	distance = {
+			# 		source = solar_system.star
+			# 		max_distance <= 25
+			# 		min_distance >= 1
+			# 	}
+			# }
+			modifier = { factor = 1.2 planet_size > 15 }
+			modifier = { factor = 1.4 planet_size > 20 }
+			modifier = { factor = 2 planet_size > 25 }
+			modifier = { factor = 0 num_moons > 1 }
+			modifier = { factor = 0.4 num_moons = 1 }
+			modifier = { factor = 1.5 num_moons = 0 }
+			# Galaxy age setting modifier
+			modifier = { factor = 1.33 has_global_flag = gpm_galaxy_age_young }
+			modifier = { factor = 0.66 has_global_flag = gpm_galaxy_age_old }
+			# Weight Factor
+		}
+		5 = {
+			add_modifier = { modifier = "gpm_ice_ring" }
+			gpm_set_planetary_rings = yes
+			# Not with these modifiers
+			modifier = { factor = 0
+				OR = {
+					has_modifier = "gpm_metallic_ring"
+					has_modifier = "gpm_ice_ring"
+					has_modifier = "gpm_massive_world"
+					has_modifier = "gpm_tidally_active"
+				}
+			}
+			# (Not) on these planets
+			modifier = { factor = 0 is_moon = yes }
+			# Never in these systems
+			modifier = { factor = 0	solar_system = { has_star_flag = sol_system } }
+			# modifier = { factor = 0 exists = space_owner space_owner = { is_ai = no } }
+			# Tweaks
+			modifier = { factor = 10 gpm_is_planet_class_gas_giant = yes }
+			# modifier = { factor = 0
+			# 	distance = {
+			# 		source = solar_system.star
+			# 		max_distance <= 25
+			# 		min_distance >= 1
+			# 	}
+			# }
+			modifier = { factor = 1.2 planet_size > 15 }
+			modifier = { factor = 1.4 planet_size > 20 }
+			modifier = { factor = 2 planet_size > 25 }
+			modifier = { factor = 0 num_moons > 1 }
+			modifier = { factor = 0.4 num_moons = 1 }
+			modifier = { factor = 1.5 num_moons = 0 }
+			# Galaxy age setting modifier
+			modifier = { factor = 1.33 has_global_flag = gpm_galaxy_age_young }
+			modifier = { factor = 0.66 has_global_flag = gpm_galaxy_age_old }
+			# Weight Factor
+		}
+	}
+}
 
 
 

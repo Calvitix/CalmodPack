@@ -32,6 +32,7 @@
 @galaxyfoodtweak = 0.5
 
 gpm_spawn_normal_habitable_world_modifier = {
+	optimize_memory
 	random_list = {
 		10 = {
 			add_modifier = { modifier = "low_gravity" multiplier = gpm_planet_size_multiplier }
@@ -2273,6 +2274,7 @@ gpm_spawn_normal_habitable_world_modifier = {
 			}
 			# (Not) on these planets
 			modifier = { factor = 0 is_moon = yes }
+			modifier = { factor = 0 has_moon = yes }
 			# Never in these systems
 			# Tweaks
 			# Galaxy age setting modifier
@@ -2290,6 +2292,7 @@ gpm_spawn_normal_habitable_world_modifier = {
 			}
 			# (Not) on these planets
 			modifier = { factor = 0 is_moon = yes }
+			modifier = { factor = 0 has_moon = yes }
 			# Never in these systems
 			# Tweaks
 			# Galaxy age setting modifier
@@ -2751,82 +2754,11 @@ gpm_spawn_normal_habitable_world_modifier = {
 			# Weight Factor
 			modifier = { factor = @uncommon }
 		}
-		10 = {
-			add_modifier = { modifier = "gpm_metallic_ring" }
-			gpm_set_planetary_rings = yes
-			# Not with these modifiers
-			modifier = { factor = 0
-				OR = {
-					has_modifier = "gpm_metallic_ring"
-					has_modifier = "gpm_ice_ring"
-					has_modifier = "gpm_massive_world"
-					has_modifier = "gpm_tidally_active"
-				}
-			}
-			modifier = { factor = 0 has_global_flag = gpm_planetary_rings_disabled }
-			# (Not) on these planets
-			modifier = { factor = 0 is_moon = yes }
-			# Never in these systems
-			# Tweaks
-			modifier = { factor = 0
-				distance = {
-					source = solar_system.star
-					max_distance <= 25
-					min_distance >= 1
-				}
-			}
-			modifier = { factor = 1.2 planet_size > 15 }
-			modifier = { factor = 1.4 planet_size > 20 }
-			modifier = { factor = 2 planet_size > 25 }
-			modifier = { factor = 0 num_moons > 1 }
-			modifier = { factor = 0.4 num_moons = 1 }
-			modifier = { factor = 1.5 num_moons = 0 }
-			# Galaxy age setting modifier
-			modifier = { factor = 1.33 has_global_flag = gpm_galaxy_age_young }
-			modifier = { factor = 0.66 has_global_flag = gpm_galaxy_age_old }
-			# Weight Factor
-			modifier = { factor = @uncommon }
-		}
-		10 = {
-			add_modifier = { modifier = "gpm_ice_ring" }
-			gpm_set_planetary_rings = yes
-			# Not with these modifiers
-			modifier = { factor = 0
-				OR = {
-					has_modifier = "gpm_metallic_ring"
-					has_modifier = "gpm_ice_ring"
-					has_modifier = "gpm_massive_world"
-					has_modifier = "gpm_tidally_active"
-				}
-			}
-			modifier = { factor = 0 has_global_flag = gpm_planetary_rings_disabled }
-			# (Not) on these planets
-			modifier = { factor = 0 is_moon = yes }
-			# Never in these systems
-			# Tweaks
-			modifier = { factor = 0
-				distance = {
-					source = solar_system.star
-					max_distance <= 25
-					min_distance >= 1
-				}
-			}
-			modifier = { factor = 1.2 planet_size > 15 }
-			modifier = { factor = 1.4 planet_size > 20 }
-			modifier = { factor = 2 planet_size > 25 }
-			modifier = { factor = 0 num_moons > 1 }
-			modifier = { factor = 0.4 num_moons = 1 }
-			modifier = { factor = 1.5 num_moons = 0 }
-			# Galaxy age setting modifier
-			modifier = { factor = 1.33 has_global_flag = gpm_galaxy_age_young }
-			modifier = { factor = 0.66 has_global_flag = gpm_galaxy_age_old }
-			# Weight Factor
-			modifier = { factor = @rare }
-		}
 	}
 }
 
 gpm_roll_normal_habitable_modifiers = {
+	optimize_memory
 	switch = {
 		trigger = has_global_flag
 		gpm_modifier_amount_max_one = {
@@ -2851,8 +2783,8 @@ gpm_roll_normal_habitable_modifiers = {
 				if = {
 					limit = { num_modifiers < 2 }
 					random_list = {
-						75 = { }
-						25 = { gpm_spawn_normal_habitable_world_modifier = yes }
+						70 = { }
+						30 = { gpm_spawn_normal_habitable_world_modifier = yes }
 					}
 				}
 			}
@@ -2870,11 +2802,11 @@ gpm_roll_normal_habitable_modifiers = {
 				if = {
 					limit = { num_modifiers < 3 }
 					random_list = {
-						75 = { }
-						25 = { 
+						70 = { }
+						30 = { 
 							gpm_spawn_normal_habitable_world_modifier = yes
-							modifier = { factor = 0.5 num_modifiers > 1 }
-							modifier = { factor = 0.25 num_modifiers > 2 }
+							modifier = { factor = 0.5 num_modifiers >= 1 }
+							modifier = { factor = 0.25 num_modifiers >= 2 }
 						}
 					}
 				}
@@ -2882,7 +2814,7 @@ gpm_roll_normal_habitable_modifiers = {
 		}
 		gpm_modifier_amount_high = {
 			if = {
-				limit = { num_modifiers = 0 }
+				limit = { num_modifiers <= 1 }
 				gpm_spawn_normal_habitable_world_modifier = yes
 			}
 			while = {
@@ -2890,11 +2822,11 @@ gpm_roll_normal_habitable_modifiers = {
 				if = {
 					limit = { num_modifiers < 3 }
 					random_list = {
-						75 = { }
-						25 = { 
+						70 = { }
+						30 = { 
 							gpm_spawn_normal_habitable_world_modifier = yes
-							modifier = { factor = 0.5 num_modifiers > 1 }
-							modifier = { factor = 0.25 num_modifiers > 2 }
+							modifier = { factor = 0.5 num_modifiers >= 1 }
+							modifier = { factor = 0.25 num_modifiers >= 2 }
 						}
 					}
 				}

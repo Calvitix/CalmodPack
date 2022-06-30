@@ -13,13 +13,20 @@ planet_event = {
     picture = GFX_evt_city_planet
     show_sound = event_cityscape
     location = root
+
     is_triggered_only = yes
+
     trigger = {
         gpm_is_planet_class_city = yes
     }
+	
     immediate = {
+		# PD compatibility
         remove_modifier = engineered_environment
         remove_modifier = engineered_environment_gaia
+		#
+
+		
         set_planet_flag = gpm_is_new_ecumenopolis
         if = {
             limit = {
@@ -65,4 +72,39 @@ planet_event = {
     option = {
         name = mega.200.a
     }
+}
+
+# Ecumenopolis complete (Relic World)
+planet_event = {
+	id = mega.201
+	title = mega.200.name
+	desc = mega.201.desc
+	picture = GFX_evt_city_planet
+	show_sound = event_cityscape
+	location = root
+
+	is_triggered_only = yes
+
+	trigger = {
+		is_planet_class = pc_city
+	}
+
+	immediate = {
+        if = {
+            limit = {
+                has_global_flag = carrying_capacity_active
+            }
+            hidden_effect = {
+                planet_event = {
+                    id = carry.1
+                }
+            }
+        }
+        set_planet_flag = gpm_is_new_ecumenopolis
+		planet_event = { id = gpm_terraform.78871 }			# trigger the global terraform event to clear planet modifiers and arange deposits.
+	}	
+
+	option = {
+		name = mega.200.a
+	}
 }

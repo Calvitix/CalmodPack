@@ -1,9 +1,10 @@
 # Original File
 #
-# Calvitix Check 3.4.2  18.05.2022
+# Calvitix Check 3.4.4  18.05.2022
 #
 # Merge with Arisphaos Unofficial patch  24.11.2021
 # Merge with Expanded events  02.06.2021
+# Merge with GPM   29.06.2022
 #
 
 
@@ -1218,9 +1219,11 @@ ship_event = {
 
 	trigger = {
 		from = {
+			NOT = { exists = space_owner }
+			gpm_is_planet_class_normal_habitable = no
 			is_colonizable = no
 			gpm_has_precursor_modifiers = no
-			has_deposit = no
+			has_deposit_for = shipclass_mining_station
 			OR = {
 				has_modifier = chthonian_planet
 				# has_modifier = extensive_moon_system
@@ -1249,14 +1252,14 @@ ship_event = {
 
 	immediate = {
 		from = {
-			prevent_anomaly = yes
-			clear_deposits = yes
+			# prevent_anomaly = yes
+			# clear_deposits = yes
 			random_list = {
-				80 = { add_deposit = d_minerals_2 }
-				60 = { add_deposit = d_minerals_3 }
-				40 = { add_deposit = d_minerals_4 }
-				20 = { add_deposit = d_minerals_5 }
-				10 = { add_deposit = d_minerals_6 }
+				32 = { add_deposit = d_minerals_2 }
+				16 = { add_deposit = d_minerals_3 }
+				8 = { add_deposit = d_minerals_4 }
+				4 = { add_deposit = d_minerals_5 }
+				2 = { add_deposit = d_minerals_6 }
 			}
 		}
 	}
@@ -3422,6 +3425,54 @@ country_event = {
 		}
 	}
 }
+
+# add deposits for energy modifiers
+ship_event = {
+	id = anomaly.6663
+	hide_window = yes
+
+	is_triggered_only = yes
+
+	trigger = {
+		from = {
+			NOT = { exists = space_owner }
+			gpm_is_planet_class_normal_habitable = no
+			is_colonizable = no
+			gpm_has_precursor_modifiers = no
+			has_deposit_for = shipclass_mining_station
+			OR = { 
+				# has_modifier = hazardous_weather
+				has_modifier = strong_magnetic_field
+				has_modifier = gpm_strong_magnetic_field_2
+				has_modifier = gpm_strong_magnetic_field_gas_giant
+				# has_modifier = unstable_tectonics
+				# has_modifier = ultra_rich
+				# has_modifier = mineral_rich
+				# has_modifier = asteroid_impacts
+			}
+			NOR = {
+				has_deposit = d_energy_7
+				has_deposit = d_energy_8
+				has_deposit = d_energy_9
+				has_deposit = d_energy_10
+				has_deposit = d_guardian_dragon_hoard
+			}
+		}
+	}
+
+	immediate = {
+		from = {
+			# prevent_anomaly = yes
+			# clear_deposits = yes
+			random_list = {
+				32 = { add_deposit = d_minerals_2 }
+				8 = { add_deposit = d_minerals_3 }
+				2 = { add_deposit = d_minerals_4 }
+			}
+		}
+	}
+}
+
 
 # space shanty anomaly trigger
 

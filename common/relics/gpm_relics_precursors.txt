@@ -75,7 +75,7 @@ gpm_r_encyclopedia_galactica = {
 		potential = {
 			always = yes
 		}
-		empire_size_mult = -0.20
+		num_tech_alternatives_add = 4
 	}
 
 	score = 1000
@@ -455,7 +455,7 @@ gpm_r_power_core = {
 		potential = {
 			always = yes
 		}
-		station_gatherers_energy_produces_mult = 1.0
+		station_gatherers_energy_produces_mult = 0.5
 	}
 
 	score = 1000
@@ -604,9 +604,19 @@ gpm_r_codex_administratum = {
 	score = 1000
 
 	active_effect = {
+		if = {
+			limit = { is_machine_empire = yes }
+			add_modifier = {
+				modifier = "relay_network_stability_edict_modifier" multiplier = 3.34
+				days = @triumph_duration
+			}
+		}
+		if = {
+			limit = { is_machine_empire = no }
 		add_modifier = {
 			modifier = "gpm_r_codex_administratum_active_effect" 
 			days = @triumph_duration
+		}
 		}
 		custom_tooltip = relic_triumph_cooldown
 		hidden_effect = {
@@ -697,13 +707,16 @@ gpm_r_positronic_microchip = {
 			is_machine_empire = yes
 		}
 		MACHINE_species_trait_points_add = 3
+		MACHINE_species_trait_picks_add = 2
 	}
 	triggered_country_modifier = {
 		potential = {
 			is_hive_empire = yes
 		}
 		BIOLOGICAL_species_trait_points_add = 2
+		BIOLOGICAL_species_trait_picks_add = 1
 		LITHOID_species_trait_points_add = 2
+		LITHOID_species_trait_picks_add = 1
 	}
 	triggered_country_modifier = {
 		potential = {
@@ -711,8 +724,11 @@ gpm_r_positronic_microchip = {
 			is_hive_empire = no
 		}
 		ROBOT_species_trait_points_add = 2
+		ROBOT_species_trait_picks_add = 1
 		BIOLOGICAL_species_trait_points_add = 2
+		BIOLOGICAL_species_trait_picks_add = 1
 		LITHOID_species_trait_points_add = 2
+		LITHOID_species_trait_picks_add = 1
 	}
 
 	score = 1000
@@ -1311,14 +1327,30 @@ gpm_r_soul_gem = {
 	
 	triggered_country_modifier = {
 		potential = {
-			always = yes
+			is_machine_empire = no
 		}
 		leader_age = 100
+	}
+
+	triggered_country_modifier = {
+		potential = {
+			is_machine_empire = yes
+		}
+		country_physics_research_produces_mult = 0.15
 	}
 
 	score = 1000
 
 	active_effect = {
+		if = {
+			limit = { is_machine_empire = yes }
+			add_modifier = {
+				modifier = "shroud_influence_boost"
+				days = @triumph_duration
+			}
+		}
+		if = {
+			limit = { is_machine_empire = no }
 		custom_tooltip = "gpm_r_soul_gem_active_effect"
 		hidden_effect = {
 			random_list = {
@@ -1367,6 +1399,7 @@ gpm_r_soul_gem = {
 					}
 				}
 			}
+		}
 		}
 		custom_tooltip = relic_triumph_cooldown
 		hidden_effect = {

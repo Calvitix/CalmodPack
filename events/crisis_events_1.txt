@@ -1,10 +1,11 @@
 # Original File
 #
-# Calvitix Check 3.4.2  22.01.2022
+# Calvitix Check 3.4.4  22.01.2022
 #
 # Merge with Arisphaos Unofficial patch 24.11.2021
 # Merge with Carry cap.
 # Merge with JL PICARD 04.05.2021
+# Merge with GPM  29.06.2022
 #
 
 ############################
@@ -2965,6 +2966,7 @@ planet_event = {
 		reset_planet = yes
 		add_modifier = { modifier = "terraforming_candidate" days = -1 }
 		planet_event = { id = crisis.216 }
+		planet_event = { id = gpm_crisis.1 }		
 	}
 }
 
@@ -3005,27 +3007,37 @@ planet_event = {
 		controller = { save_event_target_as = swarm }
 		if = {
 			limit = {
-				is_artificial = no
+				NOR = {
+					is_artificial = yes
+					gpm_is_planet_class_habitat = yes
+					gpm_is_planet_class_ringworld = yes
+				}
 			}
 			change_pc = pc_infested
 			set_owner = event_target:swarm
 			planet_event = { id = crisis.215 }
+			planet_event = { id = gpm_crisis.2 }
 		}
 		else_if = {
 			# Habitable Ring Worlds can't be infested...
 			# they are destroyed instead
 			limit = { 
-				is_ringworld = yes
+				OR = {
+					is_planet_class = pc_ringworld_habitable
+					gpm_is_planet_class_ringworld = yes
+			}
 			}
 			destroy_colony = yes
 			change_pc = pc_ringworld_habitable_damaged
 			reset_planet = yes
 		}
 		else_if = {
-			limit = { is_planet_class = pc_habitat }
-			ariphaos_patch_remove_habitat = yes
+			limit = {
+				OR = {
+					is_planet_class = pc_habitat
+					gpm_is_planet_class_habitat = yes
 		}
-
+			}
 		solar_system = {
 			if = { # Build starbase if no other colonies are left
 				limit = {
@@ -3067,6 +3079,7 @@ planet_event = {
 			}
 		}
 	}
+	}
 }
 
 # Planet Colonized
@@ -3084,23 +3097,37 @@ planet_event = {
 		every_owned_pop = { kill_pop = yes }
 		if = {
 			limit = {
-				is_artificial = no
+				NOR = {
+					is_planet_class = pc_ringworld_habitable
+					is_planet_class = pc_habitat # habitats are currently uninfestable
+					gpm_is_planet_class_habitat = yes
+					gpm_is_planet_class_ringworld = yes
+				}
 			}
 			change_pc = pc_infested
 			reset_planet = yes
 			planet_event = { id = crisis.215 }
+			planet_event = { id = gpm_crisis.3 }
 		}
 		else_if = {
 			# Habitable Ring Worlds can't be infested...
 			# they are destroyed instead
 			limit = { 
-				is_ringworld = yes
+				OR = {
+					is_planet_class = pc_ringworld_habitable
+					gpm_is_planet_class_ringworld = yes
+			}
 			}
 			change_pc = pc_ringworld_habitable_damaged
 			reset_planet = yes
 		}
 		else_if = {
-			limit = { is_planet_class = pc_habitat }
+			limit = { 
+				OR = {
+					is_planet_class = pc_habitat
+					gpm_is_planet_class_habitat = yes
+				}
+			}
 			ariphaos_patch_remove_habitat = yes
 		}
 	}

@@ -187,9 +187,9 @@ Zrocursor_system = {
 	max_instances = 1
 	asteroid_belt = {
 		type = rocky_asteroid_belt
-		radius = 120
+		radius = 125
 	}
-	flags = { Zrocursor precursor_system }
+	flags = { Zrocursor precursor_system gpm_is_precursor_system }
 	
 	planet = {
 		class = star
@@ -588,6 +588,30 @@ Zrocursor_system = {
 			}
 		}
 	}
+
+	init_effect = {
+		if = {
+			limit = { host_has_dlc = Federations }
+			spawn_megastructure = {
+				type = "gpm_mega_shipyard_ruined_precursor"
+				planet = star
+
+				init_effect = {
+					create_ambient_object = {
+						type = "large_debris_object"
+						location = this
+					}
+					last_created_ambient_object = {
+						set_location = {
+							target = prev
+							distance = 20
+							angle = 20
+						}
+					}
+				}
+			}
+		}
+	}	
 }
 
 # Relic World
@@ -935,7 +959,6 @@ last_baol_system = {
 					10 = { add_modifier = { modifier = gpm_precursor_eternal_fortress } }
 					10 = { add_modifier = { modifier = gpm_precursor_crashed_spacestation } }
 					10 = { add_modifier = { modifier = gpm_precursor_battleground_ruins } }
-				
 				}
 				# random prized one
 				random_list = {
@@ -971,10 +994,13 @@ last_baol_system = {
 				}
 			}
 		}
-	}				
+	}
+}
+			
+				
 ###
 
-}
+
 
 ####### The Planetary Mechanocalibrator #######
 
