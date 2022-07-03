@@ -1978,10 +1978,15 @@ xvcv_mdlc_ap_mind_separation_project_main_effect = {
 
 	#see 'GOVERNMENT_CHANGE_EMPIRE_SIZE_MULT' in the '00_defines.txt' vanilla file for more info
 	#GOVERNMENT_CHANGE_EMPIRE_SIZE_MULT	= 10.0 # It will cost (Empire Size) * X Unity to change Government Type
+	export_trigger_value_to_variable = {
+		trigger = empire_size
+		variable = xvcv_mdlc_gov_reform_cost_var
+	}
 	add_resource = {
 		unity = 10 #cost to reform government
-		mult = trigger:empire_size
+		mult = xvcv_mdlc_gov_reform_cost_var
 	}
+	clear_variable = xvcv_mdlc_gov_reform_cost_var
 	every_owned_pop = { prev = { add_resource = { consumer_goods = 12 } } } #add 12 goods per pop
 
 	if = {
@@ -2154,7 +2159,7 @@ xvcv_mdlc_ap_mind_separation_project_main_effect = {
 
 	#reset the origin when it's needed
 	if = {
-		limit = { has_authority = auth_machine_intelligence }
+		limit = { NOT = { has_authority = auth_dictatorial } }
 		set_origin = origin_default
 		#and attempt again to change the government
 		change_government = {
@@ -2364,10 +2369,15 @@ xvcv_mdlc_ap_mind_separation_project_temp_modifiers_add_effect = {
 xvcv_mdlc_ap_mind_integration_project_main_effect = {
 	optimize_memory
 
-	add_resource = {
-		unity = 10 #cost to reform government
-		mult = trigger:empire_size
+	export_trigger_value_to_variable = {
+		trigger = empire_size
+		variable = xvcv_mdlc_gov_reform_cost_var
 	}
+	add_resource = {
+		unity = 10
+		mult = xvcv_mdlc_gov_reform_cost_var
+	}
+	clear_variable = xvcv_mdlc_gov_reform_cost_var
 
 	#to remove "[19:01:58][government_restrictions_solver.cpp:1316]: change_government at  file: events/xvcv_mdlc_events.txt line: 1527: Result origin is not valid" error log #stellaris v3.0.4
 	if = {

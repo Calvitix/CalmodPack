@@ -29,11 +29,11 @@
 		AI_FREE_JOBS_DISTRICT_BUILD_CAP = 6 # 6	#1		# AI will not build new districts on a planet with more than this many free jobs
 		AI_FREE_JOBS_BUILDING_BUILD_CAP = 6	# 2		# AI will not build new buildings on a planet with more than this many free jobs
 		#AI_FREE_JOBS_DISTRICT_BUILD_CAP = 7			# AI will not build new districts on a planet with more than this many free jobs
-		AI_DEFICIT_SCORE_MULT = 10 #0 # 2 #(orig)					# AI will score buildings producing resources in deficit this much more
+		AI_DEFICIT_SCORE_MULT = 20 #0 # 2 #(orig)					# AI will score buildings producing resources in deficit this much more
 		AI_FOCUS_SCORE_MULT = 5 #10 # 2 #(orig) 					# AI will score buildings producing  focus resources this much more
-		AI_AMENITIES_SCORE_MULT = 2 # 2 #(orig) 					# AI will score amenity buildings this much more than other misc resources
+		AI_AMENITIES_SCORE_MULT = 5 # 2 #(orig) 					# AI will score amenity buildings this much more than other misc resources
 		AI_HOUSING_SCORE_MULT = 15	#4.5				# AI will score housing buildings this much more than other misc resources
-		AI_CRIME_REDUCTION_SCORE_MULT = 3 # 10	#2		# AI will score crime fighting buildings this much more than other misc resource
+		AI_CRIME_REDUCTION_SCORE_MULT = 5 # 10	#2		# AI will score crime fighting buildings this much more than other misc resource
 		AI_ADMIN_CAP_SCORE_MULT = 1 # 13				# AI will score admin cap buildings this much more than other misc resource
 		AI_POPS_SCORE_MULT = 1 #3						# AI will score pop growth and assembly buildings this much more ( already fairly high weighted in code )
 		AI_UPGRADE_SCORE_MULT = 2 #1.5 ori3.3B, #100 last update #orig
@@ -68,9 +68,7 @@
 		WAR_DEFENSE_OWN_PLANET_PRIO = 0.5			# Priority on defending own planets in a controlled system
 		WAR_DEFENSE_OWN_PLANET_ENEMY_CONTROL_PRIO = 50 # Priority on defending own planets in an enemy controlled system
 
-		CAPITAL_TARGET_SCORE = 25 # extra score for defending/invading a capital
-		CHOKEPOINT_TARGET_MULT = 1.2 # extra multiplier for defensive scoring of chokepoints
-		HOSTILE_FLEETS_TARGET_SCORE = 50 # extra score for engaging hostile fleets
+		STARBASE_BYPASS_SCORE = 4
 
 		WAR_ATTACK_PLANET_PRIO = 5.0				# Priority on targeting enemy systems with planets
 		WAR_ATTACK_PLANET_CONTROLLED_SYSTEM_PRIO = 0.05 #3			# Priority on targeting enemy planets in controlled systems
@@ -78,24 +76,27 @@
 		WAR_DEFEND_STARBASE_PRIO = 0.9	#2.5			# Priority on defending systems with an upgraded starbase
 		WAR_ATTACK_MILITARY_FLEET_PRIO = 15.0 #3.0		# Priority on targeting enemy military fleets
 		WAR_ATTACK_JUMP_DRIVE_FLEET_PRIO = 5.0	#2.0	# Priority on targeting vulnerable jump-drive fleets that are in cooldown
-		
-		AI_FOLLOW_FLEET_DESIRE = 0.01					
-		AI_FOLLOW_WAR_LEADER_DESIRE = 20 #Ori3.3b
-
-
-		STARBASE_BYPASS_SCORE = 4
-	
-		MIN_FLEET_FOR_OPERATIONS = 500
-		MIN_FLEET_THREAT_TO_CRISIS = 50000
-
-		FLEET_SUPERIORITY_FACTOR = 2.5	
-	
 		FLEET_GROUP_ABORT_MISSION_MULT = 1.2 # The wanted amount of fleet power needs to have increased by at least this much for the AI to reconsider a mission once commited
 
 		FLEET_COMBAT_INTERVENTION_MULT = 0.6 #  The AI wont try to intervene in a fleet combat unless that intervention puts us at this percentage of the enemy fleet ( i.e. we wont intervene if the enemy outnumbers us by 2 or more )
 
+		CAPITAL_TARGET_SCORE = 25 # extra score for defending/invading a capital
+		HOSTILE_FLEETS_TARGET_SCORE = 50 # extra score for engaging hostile fleets
+		CHOKEPOINT_TARGET_MULT = 1.2 # extra multiplier for defensive scoring of chokepoints
+
+		
+		AI_FOLLOW_FLEET_DESIRE = 0.01					
+		AI_FOLLOW_WAR_LEADER_DESIRE = 20 #Ori3.3b
+
+	
+		MIN_FLEET_FOR_OPERATIONS = 500
+		MIN_FLEET_THREAT_TO_CRISIS = 50000
+
+	
+
 		
 		HOSTILE_FLEETS_TARGET_SCORE = 50 # extra score for engaging hostile fleets
+		AVERAGE_FLEET_SIZE_FACTOR = 0.75 #1 #Ori3.3b,  Previous Starnet : 0.4
 		FLEET_MAX_DISTANCE_LOOKUP	= 8			# Maximum number of hops the fleet AI should consider when assigning mission.
 													# If no objective is found, the backup AI will send it to the closest objective available, or back to base.
 		FLEET_MAX_DISTANCE_LOOKUP_LARGE	= 15			# Maximum number of hops the fleet AI should consider when assigning mission on a large map (800 systems or more).
@@ -104,8 +105,10 @@
 		OWN_FLEET_POWER_FACTOR = 1.0				# How much does AI count its own fleet power when evaluating forces
 		ALLY_FLEET_POWER_FACTOR = 0.7				# How much does AI count ally fleet power when evaluating forces
 		ENEMY_FLEET_POWER_FACTOR = 1.25
+		FLEET_SUPERIORITY_FACTOR = 2.5	
 
-		AVERAGE_FLEET_SIZE_FACTOR = 1 #Ori3.3b,  Previous Starnet : 0.4
+		OFFENSE_VS_DEFENSE_STRATEGY_ALLOTMENT = 1.2 # How much of its fleet power should a country with 1.0 aggressiveness should try to commit to offensive missions
+		
 		DEFENSE_STRATEGY_ALLOTMENT_RATIO = 0.8	# How much of the defensive allotment of a country should ( as base ) put into each defensive target
 
 		FLEET_DAMAGED_THRESHOLD_WAR = 0.45			# threshold when a fleet will be considered damaged and should return for repairs and avoid certain actions
@@ -134,9 +137,10 @@
 
     BROKEN_TRADE_DEAL_FACTOR = 0.5				# How much does broken trade deal affect opinion (based on value of deal)
 
+####
     
-		THREAT_PLANET_MULT = 8.0					# Base threat multiplier for planet
-		THREAT_STARBASE_MULT = 4.0					# Base threat multiplier for system with upgraded starbase
+		THREAT_PLANET_MULT = 20 # 8.0					# Base threat multiplier for planet
+		THREAT_STARBASE_MULT = 3.0 # 4.0					# Base threat multiplier for system with upgraded starbase
 		THREAT_SYSTEM_MULT = 2.0					# Base threat multiplier for system
 		
 		HIGH_THREAT_THRESHOLD = 50 # 60					# Must have at least this much threat to become fearful		
@@ -152,6 +156,13 @@
     THREAT_NEGATIVE_OPINION_FACTOR = 0.002
     THREAT_OPINION_MAX = 1.25
     THREAT_OPINION_MIN = 0.75
+
+		AI_AGGRESSIVENESS_LOW_MULT = 0.5 # 0.8		
+		AI_AGGRESSIVENESS_HIGH_MULT = 2.0 # 3.0			
+		AI_AGGRESSIVENESS_BASE = 250 # 500			# Base chance AI will declare a war (multiplied by personality aggressiveness score)
+		AI_AGGRESSIVENESS_PROPAGATOR_BOXED_IN_MULT = 60 # 60	# When a warlike 'propagator' personality is boxed in aggression is multiplied by this value
+		AI_AGGRESSIVENESS_BOXED_IN_MULT = 25 # 4 # 50	# When an AI can no longer peacefully expand aggression is multiplied by this value
+		AI_AGGRESSIVENESS_NO_COLONY_TARGET_MULT = 10 # 2 # 20 # When an AI has no immediate colony targets and at least MAX_PLANETS_FOR_BUDGET_FACTOR planets (but is not boxed in) aggression is multiplied by this value
 
 # move below
 
@@ -176,12 +187,6 @@
 
 		DIPLO_BREAK_THRESHOLD = -150
 
-		AI_AGGRESSIVENESS_LOW_MULT = 0.5 # 0.8		
-		AI_AGGRESSIVENESS_HIGH_MULT = 2.0 # 3.0			
-		AI_AGGRESSIVENESS_BASE = 250 # 500			# Base chance AI will declare a war (multiplied by personality aggressiveness score)
-		AI_AGGRESSIVENESS_PROPAGATOR_BOXED_IN_MULT = 60 # 60	# When a warlike 'propagator' personality is boxed in aggression is multiplied by this value
-		AI_AGGRESSIVENESS_BOXED_IN_MULT = 25 # 4 # 50	# When an AI can no longer peacefully expand aggression is multiplied by this value
-		AI_AGGRESSIVENESS_NO_COLONY_TARGET_MULT = 10 # 2 # 20 # When an AI has no immediate colony targets and at least MAX_PLANETS_FOR_BUDGET_FACTOR planets (but is not boxed in) aggression is multiplied by this value
 
     # Below are various acceptance factors for specific actions
 		FEDERATION_ACCEPTANCE_SHARED_RIVAL = 150 # per rival
