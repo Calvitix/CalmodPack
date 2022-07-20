@@ -307,6 +307,8 @@ country_event = {
 		every_galaxy_planet = { limit = { is_planet_class = pc_crystal is_homeworld = yes } generate_pd_start_deposits_and_blockers = yes }
 		#Floating
 		every_galaxy_planet = { limit = { is_planet_class = pc_floating is_homeworld = yes } generate_pd_start_deposits_and_blockers = yes }
+		#Zro Stripmine
+		every_galaxy_planet = { limit = { is_planet_class = pc_pd_zro is_homeworld = yes } generate_pd_start_deposits_and_blockers = yes }
 		#Graveyard
 		every_galaxy_planet = { limit = { is_planet_class = pc_graveyard is_homeworld = yes } generate_pd_start_deposits_and_blockers = yes }
 		#Techno-Organic
@@ -548,6 +550,17 @@ country_event = {
 				20 = { change_pc = pc_med reroll_planet = yes }		
 			}
 		}
+		#Zro Stripmine
+		every_galaxy_planet = { 				
+			limit = { is_planet_class = pc_pd_zro is_homeworld = no has_planet_flag = prescripted_ideal }
+			random_list = {		
+				20 = { change_pc = pc_savannah reroll_planet = yes	}	
+				20 = { change_pc = pc_steppe reroll_planet = yes }	
+				20 = { change_pc = pc_prairie reroll_planet = yes }
+				20 = { change_pc = pc_veld reroll_planet = yes }
+				20 = { change_pc = pc_semiarid reroll_planet = yes }		
+			}
+		}
 		#Radiotrophic Start
 		every_galaxy_planet = { 				
 			limit = { is_planet_class = pc_irradiated is_homeworld = no has_planet_flag = prescripted_ideal }
@@ -761,9 +774,9 @@ country_event = {
 		every_galaxy_planet = { 				
 			limit = { is_planet_class = pc_aquatic is_homeworld = no has_planet_flag = prescripted_ideal }
 			random_list = {
-				33.3 = { change_pc = pc_desertislands	reroll_planet = yes	}	
-				33.3 = { change_pc = pc_ocean reroll_planet = yes }		
-				33.3 = { change_pc = pc_subarctic reroll_planet = yes }	
+				33 = { change_pc = pc_desertislands	reroll_planet = yes	}	
+				33 = { change_pc = pc_ocean reroll_planet = yes }		
+				33 = { change_pc = pc_subarctic reroll_planet = yes }		
 			}
 		}
 		#Ammonia Start
@@ -988,7 +1001,10 @@ country_event = {
 	trigger	 = { 
 		has_country_flag = pdtidallylockedhomeworldmoon 
 		any_owned_planet = {
+			OR = {
 			is_planet_class = pc_tidallylocked
+				is_planet_class = pc_eyeball
+			}
 		}
 	}
 
@@ -996,12 +1012,37 @@ country_event = {
 		random_planet_within_border = {
 			limit = { is_capital = no is_moon = no is_star = no is_asteroid = no NOT = { is_planet_class = pc_gas_giant } is_artificial = no }
 			set_planet_size = 20
+			if = {
+				limit = {
+					root = { any_planet_within_border = { is_planet_class = pc_tidallylocked } }
+				}
 			change_pc = pc_tidallylocked
+			}
+			if = {
+				limit = {
+					root = { any_planet_within_border = { is_planet_class = pc_eyeball } }
+				}
+				change_pc = pc_eyeball
+			}
+			if = {
+				limit = {
+					root = { 
+						has_origin = origin_default 
+						is_gestalt = no
+					}
+				}
+				add_modifier = { modifier = prosp_uni_mod days = 7200 }
+			}
+			if = {
+				limit = {
+					root = { 
+						has_origin = origin_default 
+						is_gestalt = yes
+					}
+				}
+				add_modifier = { modifier = prosp_uni_mod_gestalt days = 7200 }
+			}
 			generate_pd_start_deposits_and_blockers = yes
-			#add_modifier = {
-			#	modifier = "tidal_locked2"
-			#	days = -1
-			#}
 			set_owner = ROOT
 			set_planet_flag = tidallylockedhomeworld
 			#All other pop types
@@ -1030,6 +1071,13 @@ country_event = {
 			change_pc = pc_barren
 			reset_planet = yes
 		}
+		every_planet_within_border = {
+			limit = { 
+				is_star = yes 
+			}
+			change_pc = pc_m_star
+		}
+		solar_system = { set_star_class = sc_m }
 	}
 } 
 
@@ -1182,6 +1230,10 @@ country_event = {
 		every_galaxy_planet = {
 			limit = { is_planet_class = pc_floating }
 			set_planet_flag = pdfloating
+		}
+		every_galaxy_planet = {
+			limit = { is_planet_class = pc_pd_zro }
+			set_planet_flag = pdzrostripmine
 		}
 		every_galaxy_planet = {
 			limit = { is_planet_class = pc_crystal }
@@ -1755,6 +1807,13 @@ planet_event = {
 		}
 		}
 		if = { 
+		limit = { NOT = { is_planet_class = pc_pd_zro }
+		}
+		#clear_deposits = yes
+		#reroll_deposits = yes
+		remove_modifier = pd_zro_stripmine
+		}
+		if = { 
 		limit = { NOT = { is_planet_class = pc_graveyard } }
 		remove_deposit = d_graveyard_well
 		remove_modifier = graveyard
@@ -1928,7 +1987,7 @@ planet_event = {
 		}
 		if = { 
 		limit = { 
-			NOT = { 
+			NOR = { 
 				is_planet_class = pc_pdshroud 
 				is_planet_class = pc_city 
 				is_planet_class = pc_ecocity 
@@ -1947,13 +2006,19 @@ planet_event = {
 		}
 		if = { 
 		limit = { 
-			NOT = { 
+			NOR = { 
 				is_planet_class = pc_habitat 
 				is_pd_habitat = yes
 			} 
 		}
 		remove_modifier = hab_terraforming_candidate
 		remove_modifier = flooded_habitat
+		}
+		if = { 
+		limit = { 
+			NOT = { is_planet_class = pc_pd_necro }
+		}
+		remove_deposit = d_pd_necro_planet
 		}
 	}
 }
@@ -2093,8 +2158,7 @@ planet_event = {
 		add_modifier = { modifier = "radiotrophic" days = -1 }
 		}
 		if = { 
-		limit = { OR = { is_planet_class = pc_gaia is_planet_class = pc_cold_gaia is_planet_class = pc_hot_gaia } 
-		}
+		limit = { OR = { is_planet_class = pc_gaia is_planet_class = pc_cold_gaia is_planet_class = pc_hot_gaia } }
 		if = { limit = { not = { has_deposit = d_pdgaia } } add_deposit = d_pdgaia }
 		remove_modifier = engineered_environment
 		remove_modifier = engineered_environment_gaia
@@ -2224,6 +2288,7 @@ planet_event = {
 			is_planet_class = pc_pdshroud
 			is_planet_class = pc_aquatic
 			is_planet_class = pc_tidallyaquatic
+			is_planet_class = pc_storm
 		}
 	}
 
@@ -2268,6 +2333,7 @@ planet_event = {
 			IF = { limit = { is_planet_class = pc_tundra } set_planet_entity = { picture = pc_aquaticcold_uw } set_planet_flag = pdaquapicture set_planet_flag = coldaquatic }
 			IF = { limit = { is_planet_class = pc_frozen_desert } set_planet_entity = { picture = pc_aquaticcold_uw } set_planet_flag = pdaquapicture set_planet_flag = coldaquatic }
 			IF = { limit = { is_planet_class = pc_cold_gaia } set_planet_entity = { picture = pc_aquaticcold_uw } set_planet_flag = pdaquapicture set_planet_flag = coldaquatic }
+			IF = { limit = { is_planet_class = pc_storm } set_planet_entity = { picture = pc_aquaticcold_uw } set_planet_flag = pdaquapicture set_planet_flag = coldaquatic }
 			#Tropical
 			IF = { limit = { is_planet_class = pc_desertislands } set_planet_entity = { picture = pc_aquatichot_uw } set_planet_flag = pdaquapicture set_planet_flag = hotaquatic }
 			IF = { limit = { is_planet_class = pc_tropical } set_planet_entity = { picture = pc_aquatichot_uw } set_planet_flag = pdaquapicture set_planet_flag = hotaquatic }
@@ -2507,6 +2573,20 @@ country_event = {
 			} 
 		}
 	}
+		if = { limit = { any_country = { has_origin = origin_pd_zro_world } }
+        every_galaxy_planet = {
+            if = {
+                limit = { solar_system = { has_star_flag = pd_stripmine_systemnotorigin } is_planet_class = pc_pd_zro }
+					change_pc = pc_broken
+					remove_planet_flag = pd_stripmine_planet
+					remove_modifier = pd_zro_stripmine
+					set_deposit = d_zro_deposit_1
+				}
+			}
+		every_system = {
+			remove_star_flag = pd_stripmine_system
+			} 
+		}
 	}
 }
 
@@ -3555,7 +3635,9 @@ planet_event = {
 	is_triggered_only = yes
 
 	trigger = {
+		AND = {
 		OR = {
+				is_pd_habitat = yes
 			has_planet_flag = pd_energy_hab
 			has_planet_flag = pd_mining_hab
 			has_planet_flag = pd_farming_hab
@@ -3564,6 +3646,7 @@ planet_event = {
 			has_planet_flag = pd_commercial_hab
 			has_planet_flag = pdhab
 		}
+	}
 	}
 
 	immediate = {
@@ -3589,23 +3672,23 @@ planet_event = {
 		remove_district = district_pdhab_cultural
 		remove_district = district_pdhab_cultural
 		remove_district = district_pdhab_cultural
-		remove_district = district_pdhab_energy
-		remove_district = district_pdhab_energy
-		remove_district = district_pdhab_energy
-		remove_district = district_pdhab_energy
-		remove_district = district_pdhab_energy
-		remove_district = district_pdhab_food
-		remove_district = district_pdhab_food
-		remove_district = district_pdhab_food
-		remove_district = district_pdhab_food
-		remove_district = district_pdhab_food
-		remove_district = district_pdhab_food
-		remove_district = district_pdhab_mining
-		remove_district = district_pdhab_mining
-		remove_district = district_pdhab_mining
-		remove_district = district_pdhab_mining
-		remove_district = district_pdhab_mining
-		remove_district = district_pdhab_mining
+		#remove_district = district_pdhab_energy
+		#remove_district = district_pdhab_energy
+		#remove_district = district_pdhab_energy
+		#remove_district = district_pdhab_energy
+		#remove_district = district_pdhab_energy
+		#remove_district = district_pdhab_food
+		#remove_district = district_pdhab_food
+		#remove_district = district_pdhab_food
+		#remove_district = district_pdhab_food
+		#remove_district = district_pdhab_food
+		#remove_district = district_pdhab_food
+		#remove_district = district_pdhab_mining
+		#remove_district = district_pdhab_mining
+		#remove_district = district_pdhab_mining
+		#remove_district = district_pdhab_mining
+		#remove_district = district_pdhab_mining
+		#remove_district = district_pdhab_mining
 		remove_district = district_pdhab_science
 		remove_district = district_pdhab_science
 		remove_district = district_pdhab_science
@@ -3661,11 +3744,6 @@ country_event = {
 					change_pc = pc_carbon
 					this = { clear_deposits = yes }
 					random_list = {
-						5 = { add_deposit = d_minerals_10 }
-						5 = { add_deposit = d_minerals_9 }
-						5 = { add_deposit = d_minerals_8 }
-						5 = { add_deposit = d_minerals_7 }
-						5 = { add_deposit = d_minerals_6 }
 						10 = { add_deposit = d_minerals_5 }
 						10 = { add_deposit = d_minerals_4 }
 						10 = { add_deposit = d_minerals_3 }
@@ -3673,11 +3751,6 @@ country_event = {
 						25 = { add_deposit = d_minerals_1 }
 					}
 					random_list = {
-						5 = { add_deposit = d_minerals_10 }
-						5 = { add_deposit = d_minerals_9 }
-						5 = { add_deposit = d_minerals_8 }
-						5 = { add_deposit = d_minerals_7 }
-						5 = { add_deposit = d_minerals_6 }
 						10 = { add_deposit = d_minerals_5 }
 						10 = { add_deposit = d_minerals_4 }
 						10 = { add_deposit = d_minerals_3 }
@@ -3714,11 +3787,6 @@ country_event = {
 					change_pc = pc_chthonian
 					this = { clear_deposits = yes }
 					random_list = {
-						5 = { add_deposit = d_minerals_10 }
-						5 = { add_deposit = d_minerals_9 }
-						5 = { add_deposit = d_minerals_8 }
-						5 = { add_deposit = d_minerals_7 }
-						5 = { add_deposit = d_minerals_6 }
 						10 = { add_deposit = d_minerals_5 }
 						10 = { add_deposit = d_minerals_4 }
 						10 = { add_deposit = d_minerals_3 }
@@ -3808,11 +3876,6 @@ country_event = {
 						40 = { add_deposit = d_alloys_1 }
 					}
 					random_list = {
-						5 = { add_deposit = d_energy_10 }
-						5 = { add_deposit = d_energy_9 }
-						5 = { add_deposit = d_energy_8 }
-						5 = { add_deposit = d_energy_7 }
-						5 = { add_deposit = d_energy_6 }
 						10 = { add_deposit = d_energy_5 }
 						10 = { add_deposit = d_energy_4 }
 						10 = { add_deposit = d_energy_3 }
@@ -3845,11 +3908,6 @@ country_event = {
 					change_pc = pc_hydrocarbon
 					this = { clear_deposits = yes }
 					random_list = {
-						5 = { add_deposit = d_energy_10 }
-						5 = { add_deposit = d_energy_9 }
-						5 = { add_deposit = d_energy_8 }
-						5 = { add_deposit = d_energy_7 }
-						5 = { add_deposit = d_energy_6 }
 						10 = { add_deposit = d_energy_5 }
 						10 = { add_deposit = d_energy_4 }
 						10 = { add_deposit = d_energy_3 }
@@ -3857,11 +3915,6 @@ country_event = {
 						25 = { add_deposit = d_energy_1 }
 					}
 					random_list = {
-						5 = { add_deposit = d_energy_10 }
-						5 = { add_deposit = d_energy_9 }
-						5 = { add_deposit = d_energy_8 }
-						5 = { add_deposit = d_energy_7 }
-						5 = { add_deposit = d_energy_6 }
 						10 = { add_deposit = d_energy_5 }
 						10 = { add_deposit = d_energy_4 }
 						10 = { add_deposit = d_energy_3 }
@@ -3894,11 +3947,6 @@ country_event = {
 					change_pc = pc_subglacial
 					this = { clear_deposits = yes }
 					random_list = {
-						5 = { add_deposit = d_physics_10 }
-						5 = { add_deposit = d_physics_9 }
-						5 = { add_deposit = d_physics_8 }
-						5 = { add_deposit = d_physics_7 }
-						5 = { add_deposit = d_physics_6 }
 						10 = { add_deposit = d_physics_5 }
 						10 = { add_deposit = d_physics_4 }
 						10 = { add_deposit = d_physics_3 }
@@ -3906,11 +3954,6 @@ country_event = {
 						25 = { add_deposit = d_physics_1 }
 					}
 					random_list = {
-						5 = { add_deposit = d_society_10 }
-						5 = { add_deposit = d_society_9 }
-						5 = { add_deposit = d_society_8 }
-						5 = { add_deposit = d_society_7 }
-						5 = { add_deposit = d_society_6 }
 						10 = { add_deposit = d_society_5 }
 						10 = { add_deposit = d_society_4 }
 						10 = { add_deposit = d_society_3 }
@@ -3973,11 +4016,6 @@ country_event = {
 					change_pc = pc_cloudless_gas_giant
 					this = { clear_deposits = yes }
 					random_list = {
-						5 = { add_deposit = d_society_10 }
-						5 = { add_deposit = d_society_9 }
-						5 = { add_deposit = d_society_8 }
-						5 = { add_deposit = d_society_7 }
-						5 = { add_deposit = d_society_6 }
 						10 = { add_deposit = d_society_5 }
 						10 = { add_deposit = d_society_4 }
 						10 = { add_deposit = d_society_3 }
@@ -3985,11 +4023,6 @@ country_event = {
 						25 = { add_deposit = d_society_1 }
 					}
 					random_list = {
-						5 = { add_deposit = d_engineering_10 }
-						5 = { add_deposit = d_engineering_9 }
-						5 = { add_deposit = d_engineering_8 }
-						5 = { add_deposit = d_engineering_7 }
-						5 = { add_deposit = d_engineering_6 }
 						10 = { add_deposit = d_engineering_5 }
 						10 = { add_deposit = d_engineering_4 }
 						10 = { add_deposit = d_engineering_3 }
@@ -4020,11 +4053,6 @@ country_event = {
 					change_pc = pc_cold_gas_giant
 					this = { clear_deposits = yes }
 					random_list = {
-						5 = { add_deposit = d_physics_10 }
-						5 = { add_deposit = d_physics_9 }
-						5 = { add_deposit = d_physics_8 }
-						5 = { add_deposit = d_physics_7 }
-						5 = { add_deposit = d_physics_6 }
 						10 = { add_deposit = d_physics_5 }
 						10 = { add_deposit = d_physics_4 }
 						10 = { add_deposit = d_physics_3 }
@@ -4032,11 +4060,6 @@ country_event = {
 						25 = { add_deposit = d_physics_1 }
 					}
 					random_list = {
-						5 = { add_deposit = d_engineering_10 }
-						5 = { add_deposit = d_engineering_9 }
-						5 = { add_deposit = d_engineering_8 }
-						5 = { add_deposit = d_engineering_7 }
-						5 = { add_deposit = d_engineering_6 }
 						10 = { add_deposit = d_engineering_5 }
 						10 = { add_deposit = d_engineering_4 }
 						10 = { add_deposit = d_engineering_3 }
@@ -4417,7 +4440,7 @@ planet_event = {
 	}
 }
 
-# Mars+Venus_Earth Gets Special Pictures/Diffuse
+# Mars+Venus+Earth Gets Special Pictures/Diffuse
 planet_event = {
 	id = pdengine.48
 	hide_window = yes
@@ -4464,6 +4487,7 @@ planet_event = {
 			limit = { 
 				has_planet_flag = planet_earth
 				is_wet = yes
+				NOT = { has_planet_flag = pd_snowball_start_earth }
 			}
 			set_planet_entity = {
 				entity = "continental_planet_earth_entity"
@@ -9036,6 +9060,7 @@ country_event = {
 				limit = { 
 					has_planet_flag = planet_earth
 					is_wet = yes
+					NOT = { has_planet_flag = pd_snowball_start_earth }
 				}
 				set_planet_entity = {
 					entity = "continental_planet_earth_entity"
@@ -9050,6 +9075,747 @@ country_event = {
 					entity = "nuked_planet_earth_entity"
 				}
 			}		
+		}
+	}
+}
+
+# Change Superhabitable Star Class to K for homeworld Superhabitable
+country_event = {
+	id = pdengine.74
+	hide_window = yes
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	immediate = {
+		every_galaxy_planet = {
+			if = { 
+				limit = { is_planet_class = pc_superhabitable is_homeworld = yes system_star = {  OR = { is_star_class = sc_b is_star_class = sc_a is_star_class = sc_f is_star_class = sc_g is_star_class = sc_m is_star_class = sc_m_giant is_star_class = sc_t is_star_class = sc_neutron_star is_star_class = sc_pulsar } } }
+				solar_system = {
+					set_star_class = sc_k
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 20 } change_planet_size = 10 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 21 } change_planet_size = 9 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 22 } change_planet_size = 8 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 23 } change_planet_size = 7 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 24 } change_planet_size = 6 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 25 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 26 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 27 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 28 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 29 } change_planet_size = 1 }
+				}
+			} 
+		}
+		every_galaxy_planet = {
+			if = {
+				limit = { is_planet_class = pc_superhabitable is_homeworld = yes system_star = { is_star_class = sc_binary_1 } }
+				solar_system = {
+					every_system_planet = { limit = { is_planet_class = pc_pulsar } change_pc = pc_f_star }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 15 } change_planet_size = 10 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 16 } change_planet_size = 9 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 17 } change_planet_size = 8 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 19 } change_planet_size = 6 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 20 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 21 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 22 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 23 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 24 } change_planet_size = 1 }
+					set_star_class = sc_binary_7
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 30 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 31 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 32 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 33 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 34 } change_planet_size = 1 }
+				}
+			}
+		}
+		every_galaxy_planet = {
+			if = {
+				limit = { is_planet_class = pc_superhabitable is_homeworld = yes system_star = { is_star_class = sc_binary_2 } }
+				solar_system = {
+					every_system_planet = { limit = { is_planet_class = pc_neutron_star } change_pc = pc_f_star }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 15 } change_planet_size = 10 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 16 } change_planet_size = 9 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 17 } change_planet_size = 8 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 19 } change_planet_size = 6 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 20 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 21 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 22 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 23 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 24 } change_planet_size = 1 }
+					set_star_class = sc_binary_7
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 30 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 31 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 32 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 33 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 34 } change_planet_size = 1 }
+				}
+			} 
+		}
+		every_galaxy_planet = {
+			if = {
+				limit = { is_planet_class = pc_superhabitable is_homeworld = yes system_star = { is_star_class = sc_binary_3 } }
+				solar_system = {
+					every_system_planet = { limit = { is_planet_class = pc_b_star } change_pc = pc_f_star }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 15 } change_planet_size = 10 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 16 } change_planet_size = 9 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 17 } change_planet_size = 8 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 19 } change_planet_size = 6 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 20 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 21 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 22 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 23 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 24 } change_planet_size = 1 }
+					set_star_class = sc_binary_7
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 30 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 31 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 32 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 33 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 34 } change_planet_size = 1 }
+				}
+			} 
+		}
+		every_galaxy_planet = { # This one already has a secondary F star so only the central star needs to change
+			if = {
+				limit = { is_planet_class = pc_superhabitable is_homeworld = yes system_star = { is_star_class = sc_binary_4 } }
+				solar_system = {
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 15 } change_planet_size = 10 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 16 } change_planet_size = 9 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 17 } change_planet_size = 8 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 19 } change_planet_size = 6 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 20 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 21 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 22 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 23 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 24 } change_planet_size = 1 }
+					set_star_class = sc_binary_7
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 30 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 31 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 32 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 33 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 34 } change_planet_size = 1 }
+				}
+			} 
+		}
+		every_galaxy_planet = { # This one is a B B binary so I change all of them to F stars and then set the star class to sc_binary_7 as it changes the central star to a K star
+			if = {
+				limit = { is_planet_class = pc_superhabitable is_homeworld = yes system_star = { is_star_class = sc_binary_5 } }
+				solar_system = {
+					every_system_planet = { limit = { is_planet_class = pc_b_star } change_pc = pc_f_star }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 15 } change_planet_size = 10 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 16 } change_planet_size = 9 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 17 } change_planet_size = 8 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 19 } change_planet_size = 6 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 20 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 21 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 22 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 23 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 24 } change_planet_size = 1 }
+					set_star_class = sc_binary_7
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 30 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 31 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 32 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 33 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 34 } change_planet_size = 1 }
+				}
+			} 
+		}
+		every_galaxy_planet = {
+			if = {
+				limit = { is_planet_class = pc_superhabitable is_homeworld = yes system_star = { is_star_class = sc_binary_6 } }
+				solar_system = {
+					every_system_planet = { limit = { is_planet_class = pc_g_star } change_pc = pc_f_star }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 15 } change_planet_size = 10 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 16 } change_planet_size = 9 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 17 } change_planet_size = 8 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 19 } change_planet_size = 6 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 20 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 21 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 22 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 23 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 24 } change_planet_size = 1 }
+					set_star_class = sc_binary_7
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 30 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 31 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 32 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 33 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 34 } change_planet_size = 1 }
+				}
+			} 
+		}
+		every_galaxy_planet = { # This one already has a secondary F star so only the central star needs to change
+			if = {
+				limit = { is_planet_class = pc_superhabitable is_homeworld = yes system_star = { is_star_class = sc_binary_8 } }
+				solar_system = {
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 15 } change_planet_size = 10 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 16 } change_planet_size = 9 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 17 } change_planet_size = 8 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 19 } change_planet_size = 6 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 20 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 21 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 22 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 23 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 24 } change_planet_size = 1 }
+					set_star_class = sc_binary_7
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 30 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 31 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 32 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 33 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 34 } change_planet_size = 1 }
+				} 
+			} 
+		}
+		every_galaxy_planet = { # This one already has a secondary F star so only the central star needs to change
+			if = {
+				limit = { is_planet_class = pc_superhabitable is_homeworld = yes system_star = { is_star_class = sc_binary_9 } }
+				solar_system = {
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 15 } change_planet_size = 10 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 16 } change_planet_size = 9 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 17 } change_planet_size = 8 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 19 } change_planet_size = 6 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 20 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 21 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 22 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 23 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 24 } change_planet_size = 1 }
+					set_star_class = sc_binary_7
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 30 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 31 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 32 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 33 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 34 } change_planet_size = 1 }
+				} 
+			} 
+		}
+		every_galaxy_planet = {
+			if = {
+				limit = { is_planet_class = pc_superhabitable is_homeworld = yes system_star = { is_star_class = sc_binary_10 } }
+				solar_system = {
+					every_system_planet = { limit = { is_planet_class = pc_t_star } change_pc = pc_f_star }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 15 } change_planet_size = 10 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 16 } change_planet_size = 9 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 17 } change_planet_size = 8 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 19 } change_planet_size = 6 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 20 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 21 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 22 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 23 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 24 } change_planet_size = 1 }
+					set_star_class = sc_binary_7
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 30 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 31 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 32 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 33 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 34 } change_planet_size = 1 }
+				}
+			} 
+		}
+		every_galaxy_planet = {
+			if = {
+				limit = { is_planet_class = pc_superhabitable is_homeworld = yes system_star = { is_star_class = sc_trinary_1 } }
+				solar_system = {
+					every_system_planet = { limit = { is_planet_class = pc_m_star } change_pc = pc_f_star }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 20 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 21 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 22 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 23 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 24 } change_planet_size = 1 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 26 } change_planet_size = -1 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 27 } change_planet_size = -2 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 28 } change_planet_size = -3 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 29 } change_planet_size = -4 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 30 } change_planet_size = -5 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star } change_pc = pc_g_star }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 15 } change_planet_size = 10 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 16 } change_planet_size = 9 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 17 } change_planet_size = 8 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 19 } change_planet_size = 6 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 20 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 21 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 22 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 23 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 24 } change_planet_size = 1 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 26 } change_planet_size = -1 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 27 } change_planet_size = -2 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 28 } change_planet_size = -3 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 29 } change_planet_size = -4 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 30 } change_planet_size = -5 }
+					set_star_class = sc_trinary_3
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 30 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 31 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 32 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 33 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 34 } change_planet_size = 1 }
+				}
+			}
+		}
+		every_galaxy_planet = { # Even if it already has an F Star I decided to change into a G star and the A star into an F in order to keep the secondary and tertiary planets similar to the sc_trinary_3 list order the code must execute in the exact order as below otherwise it may bork it
+			if = {
+				limit = { is_planet_class = pc_superhabitable is_homeworld = yes system_star = { is_star_class = sc_trinary_2 } }
+				solar_system = {
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 20 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 21 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 22 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 23 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 24 } change_planet_size = 1 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 26 } change_planet_size = -1 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 27 } change_planet_size = -2 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 28 } change_planet_size = -3 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 29 } change_planet_size = -4 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 30 } change_planet_size = -5 }
+					every_system_planet = { limit = { is_planet_class = pc_a_star } change_pc = pc_g_star }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 15 } change_planet_size = 10 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 16 } change_planet_size = 9 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 17 } change_planet_size = 8 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 19 } change_planet_size = 6 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 20 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 21 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 22 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 23 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 24 } change_planet_size = 1 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 26 } change_planet_size = -1 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 27 } change_planet_size = -2 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 28 } change_planet_size = -3 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 29 } change_planet_size = -4 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 30 } change_planet_size = -5 }
+					set_star_class = sc_trinary_3
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 30 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 31 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 32 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 33 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 34 } change_planet_size = 1 }
+				}
+			}
+		}
+		every_galaxy_planet = {
+			if = {
+				limit = { is_planet_class = pc_superhabitable is_homeworld = yes system_star = { is_star_class = sc_trinary_4 } }
+				solar_system = {
+					every_system_planet = { limit = { is_planet_class = pc_k_star } change_pc = pc_f_star }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 20 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 21 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 22 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 23 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 24 } change_planet_size = 1 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 26 } change_planet_size = -1 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 27 } change_planet_size = -2 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 28 } change_planet_size = -3 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 29 } change_planet_size = -4 }
+					every_system_planet = { limit = { is_planet_class = pc_f_star planet_size = 30 } change_planet_size = -5 }
+					every_system_planet = { limit = { is_planet_class = pc_t_star } change_pc = pc_g_star }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 15 } change_planet_size = 10 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 16 } change_planet_size = 9 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 17 } change_planet_size = 8 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 19 } change_planet_size = 6 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 20 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 21 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 22 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 23 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 24 } change_planet_size = 1 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 26 } change_planet_size = -1 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 27 } change_planet_size = -2 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 28 } change_planet_size = -3 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 29 } change_planet_size = -4 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 30 } change_planet_size = -5 }
+					set_star_class = sc_trinary_3
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 30 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 31 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 32 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 33 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 34 } change_planet_size = 1 }
+				}
+			}
+		}
+		every_galaxy_planet = {
+			if = {
+				limit = { OR = { is_planet_class = pc_tidallylocked is_planet_class = pc_eyeball } is_homeworld = yes system_star = {  OR = { is_star_class = sc_b is_star_class = sc_a is_star_class = sc_f is_star_class = sc_g is_star_class = sc_k is_star_class = sc_m_giant is_star_class = sc_t is_star_class = sc_neutron_star is_star_class = sc_pulsar } } }
+				solar_system = {
+					set_star_class = sc_m
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 20 } change_planet_size = 10 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 21 } change_planet_size = 9 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 22 } change_planet_size = 8 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 23 } change_planet_size = 7 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 24 } change_planet_size = 6 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 25 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 26 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 27 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 28 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 29 } change_planet_size = 1 }
+				}
+			}
+		}
+		every_galaxy_planet = {
+			if = { 
+				limit = { OR = { is_planet_class = pc_tidallylocked is_planet_class = pc_eyeball } is_homeworld = yes system_star = { is_star_class = sc_binary_1 } }
+				solar_system = {
+					every_system_planet = { limit = { is_planet_class = pc_pulsar } change_pc = pc_g_star }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 20 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 21 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 22 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 23 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 24 } change_planet_size = 1 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 26 } change_planet_size = -1 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 27 } change_planet_size = -2 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 28 } change_planet_size = -3 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 29 } change_planet_size = -4 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 30 } change_planet_size = -5 }
+					set_star_class = sc_binary_6
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 30 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 31 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 32 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 33 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 34 } change_planet_size = 1 }
+				}
+			}
+		}
+		every_galaxy_planet = {
+			if = { 
+				limit = { OR = { is_planet_class = pc_tidallylocked is_planet_class = pc_eyeball } is_homeworld = yes system_star = { is_star_class = sc_binary_2 } }
+				solar_system = {
+					every_system_planet = { limit = { is_planet_class = pc_neutron_star } change_pc = pc_g_star }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 20 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 21 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 22 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 23 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 24 } change_planet_size = 1 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 26 } change_planet_size = -1 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 27 } change_planet_size = -2 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 28 } change_planet_size = -3 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 29 } change_planet_size = -4 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 30 } change_planet_size = -5 }
+					set_star_class = sc_binary_6
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 30 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 31 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 32 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 33 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 34 } change_planet_size = 1 }
+				}
+			} 
+		}
+		every_galaxy_planet = {
+			if = { 
+				limit = { OR = { is_planet_class = pc_tidallylocked is_planet_class = pc_eyeball } is_homeworld = yes system_star = { is_star_class = sc_binary_3 } }
+				solar_system = {
+					every_system_planet = { limit = { is_planet_class = pc_b_star } change_pc = pc_g_star }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 20 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 21 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 22 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 23 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 24 } change_planet_size = 1 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 26 } change_planet_size = -1 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 27 } change_planet_size = -2 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 28 } change_planet_size = -3 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 29 } change_planet_size = -4 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 30 } change_planet_size = -5 }
+					set_star_class = sc_binary_6
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 30 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 31 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 32 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 33 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 34 } change_planet_size = 1 }
+				}
+			} 
+		}
+		every_galaxy_planet = {
+			if = { 
+				limit = { OR = { is_planet_class = pc_tidallylocked is_planet_class = pc_eyeball } is_homeworld = yes system_star = { is_star_class = sc_binary_4 } }
+				solar_system = {
+					every_system_planet = { limit = { is_planet_class = pc_f_star } change_pc = pc_g_star }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 20 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 21 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 22 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 23 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 24 } change_planet_size = 1 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 26 } change_planet_size = -1 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 27 } change_planet_size = -2 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 28 } change_planet_size = -3 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 29 } change_planet_size = -4 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 30 } change_planet_size = -5 }
+					set_star_class = sc_binary_6
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 30 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 31 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 32 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 33 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 34 } change_planet_size = 1 }
+				}
+			} 
+		}
+		every_galaxy_planet = {
+			if = { 
+				limit = { OR = { is_planet_class = pc_tidallylocked is_planet_class = pc_eyeball } is_homeworld = yes system_star = { is_star_class = sc_binary_5 } }
+				solar_system = {
+					every_system_planet = { limit = { is_planet_class = pc_b_star } change_pc = pc_g_star }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 20 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 21 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 22 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 23 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 24 } change_planet_size = 1 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 26 } change_planet_size = -1 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 27 } change_planet_size = -2 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 28 } change_planet_size = -3 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 29 } change_planet_size = -4 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 30 } change_planet_size = -5 }
+					set_star_class = sc_binary_6
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 30 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 31 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 32 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 33 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 34 } change_planet_size = 1 }
+				}
+			} 
+		}
+		every_galaxy_planet = {
+			if = { 
+				limit = { OR = { is_planet_class = pc_tidallylocked is_planet_class = pc_eyeball } is_homeworld = yes system_star = { is_star_class = sc_binary_7 } }
+				solar_system = {
+					every_system_planet = { limit = { is_planet_class = pc_f_star } change_pc = pc_g_star }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 20 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 21 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 22 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 23 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 24 } change_planet_size = 1 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 26 } change_planet_size = -1 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 27 } change_planet_size = -2 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 28 } change_planet_size = -3 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 29 } change_planet_size = -4 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 30 } change_planet_size = -5 }
+					set_star_class = sc_binary_6
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 30 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 31 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 32 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 33 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 34 } change_planet_size = 1 }
+				}
+			} 
+		}
+		every_galaxy_planet = {
+			if = { 
+				limit = { OR = { is_planet_class = pc_tidallylocked is_planet_class = pc_eyeball } is_homeworld = yes system_star = { is_star_class = sc_binary_8 } }
+				solar_system = {
+					every_system_planet = { limit = { is_planet_class = pc_f_star } change_pc = pc_g_star }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 20 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 21 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 22 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 23 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 24 } change_planet_size = 1 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 26 } change_planet_size = -1 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 27 } change_planet_size = -2 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 28 } change_planet_size = -3 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 29 } change_planet_size = -4 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 30 } change_planet_size = -5 }
+					set_star_class = sc_binary_6
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 30 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 31 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 32 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 33 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 34 } change_planet_size = 1 }
+				}
+			} 
+		}
+		every_galaxy_planet = {
+			if = { 
+				limit = { OR = { is_planet_class = pc_tidallylocked is_planet_class = pc_eyeball } is_homeworld = yes system_star = { is_star_class = sc_binary_9 } }
+				solar_system = {
+					every_system_planet = { limit = { is_planet_class = pc_f_star } change_pc = pc_g_star }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 20 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 21 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 22 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 23 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 24 } change_planet_size = 1 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 26 } change_planet_size = -1 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 27 } change_planet_size = -2 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 28 } change_planet_size = -3 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 29 } change_planet_size = -4 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 30 } change_planet_size = -5 }
+					set_star_class = sc_binary_6
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 30 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 31 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 32 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 33 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 34 } change_planet_size = 1 }
+				}
+			} 
+		}
+		every_galaxy_planet = {
+			if = { 
+				limit = { OR = { is_planet_class = pc_tidallylocked is_planet_class = pc_eyeball } is_homeworld = yes system_star = { is_star_class = sc_binary_10 } }
+				solar_system = {
+					every_system_planet = { limit = { is_planet_class = pc_t_star } change_pc = pc_g_star }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 20 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 21 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 22 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 23 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 24 } change_planet_size = 1 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 26 } change_planet_size = -1 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 27 } change_planet_size = -2 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 28 } change_planet_size = -3 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 29 } change_planet_size = -4 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 30 } change_planet_size = -5 }
+					set_star_class = sc_binary_6
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 30 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 31 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 32 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 33 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 34 } change_planet_size = 1 }
+				}
+			} 
+		}
+		every_galaxy_planet = {
+			if = { 
+				limit = { OR = { is_planet_class = pc_tidallylocked is_planet_class = pc_eyeball } is_homeworld = yes system_star = { is_star_class = sc_trinary_2 } }
+				solar_system = {
+					every_system_planet = { limit = { is_planet_class = pc_f_star } change_pc = pc_k_star }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 15 } change_planet_size = 10 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 16 } change_planet_size = 9 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 17 } change_planet_size = 8 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 18 } change_planet_size = 7 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 19 } change_planet_size = 6 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 20 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 21 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 22 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 23 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 24 } change_planet_size = 1 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 26 } change_planet_size = -1 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 27 } change_planet_size = -2 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 28 } change_planet_size = -3 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 29 } change_planet_size = -4 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 30 } change_planet_size = -5 }
+					every_system_planet = { limit = { is_planet_class = pc_a_star } change_pc = pc_m_star }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 20 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 21 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 22 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 23 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 24 } change_planet_size = 1 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 26 } change_planet_size = -1 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 27 } change_planet_size = -2 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 28 } change_planet_size = -3 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 29 } change_planet_size = -4 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 30 } change_planet_size = -5 }
+					set_star_class = sc_trinary_1
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 30 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 31 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 32 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 33 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 34 } change_planet_size = 1 }
+				}
+			} 
+		}
+		every_galaxy_planet = {
+			if = { 
+				limit = { OR = { is_planet_class = pc_tidallylocked is_planet_class = pc_eyeball } is_homeworld = yes system_star = { is_star_class = sc_trinary_3 } }
+				solar_system = {
+					every_system_planet = { limit = { is_planet_class = pc_f_star } change_pc = pc_k_star }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 15 } change_planet_size = 10 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 16 } change_planet_size = 9 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 17 } change_planet_size = 8 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 18 } change_planet_size = 7 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 19 } change_planet_size = 6 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 20 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 21 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 22 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 23 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 24 } change_planet_size = 1 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 26 } change_planet_size = -1 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 27 } change_planet_size = -2 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 28 } change_planet_size = -3 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 29 } change_planet_size = -4 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 30 } change_planet_size = -5 }
+					every_system_planet = { limit = { is_planet_class = pc_a_star } change_pc = pc_m_star }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 20 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 21 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 22 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 23 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 24 } change_planet_size = 1 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 26 } change_planet_size = -1 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 27 } change_planet_size = -2 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 28 } change_planet_size = -3 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 29 } change_planet_size = -4 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 30 } change_planet_size = -5 }
+					set_star_class = sc_trinary_1
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 30 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 31 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 32 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 33 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 34 } change_planet_size = 1 }
+				}
+			} 
+		}
+		every_galaxy_planet = {
+			if = { 
+				limit = { OR = { is_planet_class = pc_tidallylocked is_planet_class = pc_eyeball } is_homeworld = yes system_star = { is_star_class = sc_trinary_4 } }
+				solar_system = {
+					every_system_planet = { limit = { is_planet_class = pc_k_star } change_pc = pc_m_star }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 20 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 21 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 22 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 23 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 24 } change_planet_size = 1 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 26 } change_planet_size = -1 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 27 } change_planet_size = -2 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 28 } change_planet_size = -3 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 29 } change_planet_size = -4 }
+					every_system_planet = { limit = { is_planet_class = pc_m_star planet_size = 30 } change_planet_size = -5 }
+					every_system_planet = { limit = { is_planet_class = pc_t_star } change_pc = pc_k_star }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 15 } change_planet_size = 10 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 16 } change_planet_size = 9 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 17 } change_planet_size = 8 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 18 } change_planet_size = 7 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 19 } change_planet_size = 6 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 20 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 21 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 22 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 23 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 24 } change_planet_size = 1 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 26 } change_planet_size = -1 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 27 } change_planet_size = -2 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 28 } change_planet_size = -3 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 29 } change_planet_size = -4 }
+					every_system_planet = { limit = { is_planet_class = pc_k_star planet_size = 30 } change_planet_size = -5 }
+					set_star_class = sc_trinary_1
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 30 } change_planet_size = 5 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 31 } change_planet_size = 4 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 32 } change_planet_size = 3 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 33 } change_planet_size = 2 }
+					every_system_planet = { limit = { is_planet_class = pc_g_star planet_size = 34 } change_planet_size = 1 }
+				}
+			}
+		}
+	}
+}
+
+# Necro Seed building chain completed.
+planet_event = {
+	id = pdengine.75
+	is_triggered_only = yes
+	title = "pdengine.75.name"
+	desc = "pdengine.75.desc"
+	picture = GFX_evt_pd_necro
+
+	trigger = {
+		last_building_changed = building_necroseeders_3
+		NOT = {
+			is_planet_class = pc_pd_necro
+		}
+	}
+
+	immediate = {
+		# Turn planet into Gaia world.
+		change_pc = pc_pd_necro
+
+		# Remove Gaia Seed building.
+		remove_building = building_necroseeders_3
+
+		#Add special deposit
+		add_deposit = d_pd_necro_planet
+	}
+
+	option = {
+		name = pdengine.75.a
+	}
+
+	after = {
+		tooltip = {
+			change_pc = pc_pd_necro
+			remove_building = building_necroseeders_3
 		}
 	}
 }

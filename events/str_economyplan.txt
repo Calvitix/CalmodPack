@@ -471,8 +471,30 @@ country_event = {
         if = {
             limit = {
                 needs_shipyard = yes
+				or = {
+					count_owned_starbase = {
+						count <= 0
+						limit = { has_starbase_module = shipyard }
             }
-            random_owned_starbase = {
+					and = {
+						max_naval_capacity > 120
+						count_owned_starbase = {
+							count <= 1
+							limit = { has_starbase_module = shipyard }
+						}
+						used_naval_capacity_integer > 20
+					}
+					and = {
+						max_naval_capacity > 200
+						used_naval_capacity_integer > 20
+						count_owned_starbase = {
+							count <= 2
+							limit = { has_starbase_module = shipyard }
+						}
+					}
+				}
+			}
+			every_owned_starbase = {
                 if = {
                     limit = {
                         has_starbase_module = anchorage

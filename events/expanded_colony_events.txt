@@ -3480,213 +3480,26 @@ planet_event = {
 	}
 }
 
-# Minor Crime Modifiers Removed (Low Crime)
-planet_event = {
+# remove all minor crime modifiers (by console command only)
+country_event = {
 	id = colonyexpanded.401
-	title = colonyexpanded.401.name
-	desc = {
-		trigger = {
-			owner = {
-				NOT = { has_ethic = ethic_gestalt_consciousness }
-			}
-		}
-		text = colonyexpanded.401.desc
-	}
-	desc = {
-		trigger = { 
-			owner = { has_authority = auth_hive_mind }
-		}
-		text = colonyexpanded.401.b.desc
-	}
-	desc = {
-		trigger = { 
-			owner = { has_authority = auth_machine_intelligence }
-		}
-		text = colonyexpanded.401.c.desc
-	}
-	picture = {
-		trigger = { 
-			owner = {
-				NOT = { has_ethic = ethic_gestalt_consciousness }
-			}
-		}
-		picture = GFX_evt_dark_alley
-	}
-	picture = {
-		trigger = { 
-			owner = { has_authority = auth_hive_mind }
-		}
-		picture = GFX_evt_hive_mind
-	}
-	picture = {
-		trigger = { 
-			owner = { has_authority = auth_machine_intelligence }
-		}
-		picture = GFX_evt_glitchy_matrix
-	}
-	show_sound = event_cityscape
-	location = root
+	hide_window = yes
+	is_triggered_only = yes
 	
-	pre_triggers = {
-		has_owner = yes
-	}
-
-	trigger = {
-		owner = {
-			OR = {
-				is_country_type = default
-				is_country_type = ascended_empire
-				is_country_type = lost_empire
-			}
-		}
-		NOT = { has_planet_flag = minor_crime_disappeared } # Cooldown
-		num_pops > 0
-		planet_crime <= 10
-		OR = {
-			has_modifier = black_market
-			has_modifier = white_collar_crime
-			has_modifier = corrupt_cops
-			has_modifier = art_theft
-			has_modifier = mirror_criminals
-			has_modifier = mirror_criminals_hive
-			has_modifier = mirror_criminals_machine
-			has_modifier = software_error
-			has_modifier = malfunctioning_nexus
-			has_modifier = diseased_synapses
-		}
-		NOR = {
-			has_modifier = criminal_underworld
-			has_modifier = drone_deviancy
-			has_modifier = drone_corruption
-			has_modifier = gang_wars
-			has_modifier = center_of_drug_trade
-			has_modifier = mob_rule
-		}
-	}
-
-	mean_time_to_happen = {
-		months = 180
-
-		modifier = {
-			factor = 0.5
-			count_owned_pop = {
-				limit = { 
-					OR = {
-						has_job = enforcer
-						has_job = coordinator
-						has_job = synapse_drone
-						has_job = patrol_drone
-					}
-				}
-				count > 2
-			}
-		}
-		modifier = {
-			factor = 0.5
-			count_owned_pop = {
-				limit = { 
-					OR = {
-						has_job = enforcer
-						has_job = coordinator
-						has_job = synapse_drone
-						has_job = patrol_drone
-					}
-				}
-				count > 3
-			}
-		}
-		modifier = {
-			factor = 0.5
-			count_owned_pop = {
-				limit = { 
-					OR = {
-						has_job = enforcer
-						has_job = coordinator
-						has_job = synapse_drone
-						has_job = patrol_drone
-					}
-				}
-				count > 4
-			}
-		}	
-	}
-	
-	option = {
-		name = GOOD
-		trigger = {
-			owner = {
-				NOT = { has_ethic = ethic_gestalt_consciousness }
-			}
-		}
-		if = {
-			limit = { has_modifier = black_market }
+	immediate = {
+		every_playable_country = {
+			every_owned_planet = {
 			remove_modifier = black_market
-		}
-		if = {
-			limit = { has_modifier = white_collar_crime }
 			remove_modifier = white_collar_crime
-		}
-		if = {
-			limit = { has_modifier = corrupt_cops }
 			remove_modifier = corrupt_cops
-			add_modifier = { modifier = "corrupt_cops_lingering" days = 3600 }
-		}
-		if = {
-			limit = { has_modifier = art_theft }
 			remove_modifier = art_theft
-		}
-		if = {
-			limit = { has_modifier = mirror_criminals }
 			remove_modifier = mirror_criminals
-		}
-		if = {
-			limit = { has_modifier = mirror_criminals_hive }
 			remove_modifier = mirror_criminals_hive
-		}
-		if = {
-			limit = { has_modifier = mirror_criminals_machine }
 			remove_modifier = mirror_criminals_machine
-		}
-		hidden_effect = {
-			set_timed_planet_flag = { flag = minor_crime_disappeared days = 3600 }
-		}
-	}
-	option = {
-		name = GOOD
-		trigger = { 
-			owner = { has_authority = auth_hive_mind }
-		}
-		if = {
-			limit = { has_modifier = diseased_synapses }
-			remove_modifier = diseased_synapses
-		}
-		if = {
-			limit = { has_modifier = malfunctioning_nexus }
-			remove_modifier = scavenging_drones
-		}
-		hidden_effect = {
-			set_timed_planet_flag = { flag = minor_crime_disappeared days = 3600 }
-		}
-	}
-	option = {
-		name = GOOD
-		trigger = { 
-			owner = { has_authority = auth_machine_intelligence }
-		}
-		if = {
-			limit = { has_modifier = software_error }
 			remove_modifier = software_error
-		}
-		if = {
-			limit = { has_modifier = malfunctioning_nexus }
 			remove_modifier = malfunctioning_nexus
+				remove_modifier = diseased_synapses
 		}
-		if = {
-			limit = { has_modifier = malfunctioning_nexus }
-			remove_modifier = scavenging_drones
-		}
-		hidden_effect = {
-			set_timed_planet_flag = { flag = minor_crime_disappeared days = 3600 }
 		}
 	}
 }
@@ -3703,7 +3516,6 @@ event = {
 				any_owned_planet = {
 					NOR = {
 						has_planet_flag = planet_crime_flag
-						has_planet_flag = minor_crime_disappeared
 						has_modifier = crime_lord_deal
 					}
 					is_under_colonization = no
@@ -3717,7 +3529,6 @@ event = {
 				any_owned_planet = {
 					NOR = { 
 						has_planet_flag = planet_crime_flag
-						has_planet_flag = minor_crime_disappeared
 					}
 					is_under_colonization = no
 				}
@@ -3730,7 +3541,6 @@ event = {
 				any_owned_planet = {
 					NOR = { 
 						has_planet_flag = planet_crime_flag
-						has_planet_flag = minor_crime_disappeared
 					}
 					is_under_colonization = no
 				}
@@ -3749,7 +3559,6 @@ country_event = {
 			limit = {
 				NOR = { 
 					has_planet_flag = planet_crime_flag
-					has_planet_flag = minor_crime_disappeared
 					has_modifier = crime_lord_deal
 				}
 				is_under_colonization = no
@@ -3965,7 +3774,6 @@ country_event = {
 			limit = {
 				NOR = {
 					has_planet_flag = planet_crime_flag
-					has_planet_flag = minor_crime_disappeared
 				}
 				is_under_colonization = no
 			}
@@ -4065,7 +3873,6 @@ country_event = {
 			limit = {
 				NOR = {
 					has_planet_flag = planet_crime_flag
-					has_planet_flag = minor_crime_disappeared
 				}
 				is_under_colonization = no
 			}
@@ -4188,13 +3995,13 @@ planet_event = {
 			flag = planet_crime_flag
 			days = 3600
 		}
-		add_modifier = { modifier = "black_market" days = -1 }
+		add_modifier = { modifier = "black_market" days = 5400 }
 	}
 	
 	option = {
 		name = UNFORTUNATE
 		tooltip = {
-			add_modifier = { modifier = "black_market" days = -1 }
+			add_modifier = { modifier = "black_market" days = 5400 }
 		}
 	}
 }
@@ -4223,13 +4030,13 @@ planet_event = {
 			flag = planet_crime_flag
 			days = 3600
 		}
-		add_modifier = { modifier = "software_error" days = -1 }
+		add_modifier = { modifier = "software_error" days = 5400 }
 	}
 	
 	option = {
 		name = UNFORTUNATE
 		tooltip = {
-			add_modifier = { modifier = "software_error" days = -1 }
+			add_modifier = { modifier = "software_error" days = 5400 }
 		}
 		
 	}
@@ -4266,13 +4073,13 @@ planet_event = {
 			flag = planet_crime_flag
 			days = 3600
 		}
-		add_modifier = { modifier = "white_collar_crime" days = -1 }
+		add_modifier = { modifier = "white_collar_crime" days = 5400 }
 	}
 	
 	option = {
 		name = colonyexpanded.408.a
 		tooltip = {
-			add_modifier = { modifier = "white_collar_crime" days = -1 }
+			add_modifier = { modifier = "white_collar_crime" days = 5400 }
 		}
 	}
 }
@@ -4303,13 +4110,13 @@ planet_event = {
 			flag = planet_crime_flag
 			days = 3600
 		}
-		add_modifier = { modifier = "corrupt_cops" days = -1 }
+		add_modifier = { modifier = "corrupt_cops" days = 5400 }
 	}
 	
 	option = {
 		name = colonyexpanded.408.a
 		tooltip = {
-			add_modifier = { modifier = "corrupt_cops" days = -1 }
+			add_modifier = { modifier = "corrupt_cops" days = 5400 }
 		}
 	}
 }
@@ -4356,13 +4163,13 @@ planet_event = {
 			flag = planet_crime_flag
 			days = 3600
 		}
-		add_modifier = { modifier = "art_theft" days = -1 }
+		add_modifier = { modifier = "art_theft" days = 5400 }
 	}
 	
 	option = {
 		name = colonyexpanded.410.a
 		tooltip = {
-			add_modifier = { modifier = "art_theft" days = -1 }
+			add_modifier = { modifier = "art_theft" days = 5400 }
 		}
 	}
 }
@@ -4391,13 +4198,13 @@ planet_event = {
 			flag = planet_crime_flag
 			days = 3600
 		}
-		add_modifier = { modifier = "malfunctioning_nexus" days = -1 }
+		add_modifier = { modifier = "malfunctioning_nexus" days = 5400 }
 	}
 	
 	option = {
 		name = UNFORTUNATE
 		tooltip = {
-			add_modifier = { modifier = "malfunctioning_nexus" days = -1 }
+			add_modifier = { modifier = "malfunctioning_nexus" days = 5400 }
 		}
 		
 	}
@@ -4427,13 +4234,13 @@ planet_event = {
 			flag = planet_crime_flag
 			days = 3600
 		}
-		add_modifier = { modifier = "diseased_synapses" days = -1 }
+		add_modifier = { modifier = "diseased_synapses" days = 5400 }
 	}
 	
 	option = {
 		name = UNFORTUNATE
 		tooltip = {
-			add_modifier = { modifier = "diseased_synapses" days = -1 }
+			add_modifier = { modifier = "diseased_synapses" days = 5400 }
 		}
 		
 	}
@@ -4471,13 +4278,13 @@ planet_event = {
 			flag = planet_crime_flag
 			days = 3600
 		}
-		add_modifier = { modifier = "scavenging_drones" days = -1 }
+		add_modifier = { modifier = "scavenging_drones" days = 5400 }
 	}
 	
 	option = {
 		name = UNFORTUNATE
 		tooltip = {
-			add_modifier = { modifier = "scavenging_drones" days = -1 }
+			add_modifier = { modifier = "scavenging_drones" days = 5400 }
 		}
 		
 	}
@@ -4987,7 +4794,7 @@ planet_event = {
 		}
 		last_created_pop = {
 			hidden_effect = {
-				add_modifier = { modifier = recent_refugee days = 3600 }
+				add_modifier = { modifier = recent_refugee days = 5400 }
 			}
 		}
 	}
@@ -6082,7 +5889,6 @@ planet_event = {
 			has_modifier = mirror_criminals_hive
 			has_modifier = mirror_criminals_machine
 			has_planet_flag = planet_crime_flag
-			has_planet_flag = minor_crime_disappeared
 		}
 	}
 	
@@ -6093,15 +5899,15 @@ planet_event = {
 		}
 		if = {
 			limit = { owner = { is_gestalt = no } }
-			add_modifier = { modifier = mirror_criminals days = -1 }
+			add_modifier = { modifier = mirror_criminals days = 5400 }
 		}
 		else_if = {
 			limit = { owner = { is_hive_empire = yes } }
-			add_modifier = { modifier = mirror_criminals_hive days = -1 }
+			add_modifier = { modifier = mirror_criminals_hive days = 5400 }
 		}
 		else_if = {
 			limit = { owner = { is_machine_empire = yes } }
-			add_modifier = { modifier = mirror_criminals_machine days = -1 }
+			add_modifier = { modifier = mirror_criminals_machine days = 5400 }
 		}
 	}
 }
