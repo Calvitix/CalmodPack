@@ -1,4 +1,4 @@
-# Replaced graphical_culture = "madd_01"
+# Replaced graphical_culture = prev.owner # "madd_01"
 # Not really necessary, as vanilla graphical_culture gets ignored if invalid.
 # This = Fleet
 create_dyn_marauder_fleet = {
@@ -11,7 +11,7 @@ create_dyn_marauder_fleet = {
 			design = NAME_Outrider$VARIANT$
 			prefix = no
 			# upgradable = yes
-			graphical_culture = "madd_01"
+			graphical_culture = prev.owner # "madd_01"
 		}
 	}
 	while = {
@@ -21,7 +21,7 @@ create_dyn_marauder_fleet = {
 			design = NAME_Lancer$VARIANT$
 			prefix = no
 			# upgradable = yes
-			graphical_culture = "madd_01"
+			graphical_culture = prev.owner # "madd_01"
 		}
 	}
 	while = {
@@ -31,7 +31,7 @@ create_dyn_marauder_fleet = {
 			design = NAME_Void_Champion$VARIANT$
 			prefix = no
 			# upgradable = yes
-			graphical_culture = "madd_01"
+			graphical_culture = prev.owner # "madd_01"
 		}
 	}
 	while = {
@@ -41,7 +41,7 @@ create_dyn_marauder_fleet = {
 			design = NAME_Ancestral_Glory$VARIANT$
 			prefix = no
 			# upgradable = yes
-			graphical_culture = "madd_01"
+			graphical_culture = prev.owner # "madd_01"
 		}
 	}
 }
@@ -142,6 +142,8 @@ create_marauder_fleet = {
 	}
 	create_fleet = {
 		effect = {
+			random_list = {
+				50 = {
 			set_owner = event_target:raider_khanate
 			if = {
 				limit = {
@@ -153,6 +155,40 @@ create_marauder_fleet = {
 				create_dyn_marauder_fleet = { OUTRIDER = 32 LANCER = 16 CHAMPION = 12 }
 			} else = {
 				create_dyn_marauder_fleet = { OUTRIDER = 16 LANCER = 8 }
+			}
+				}
+				50 = { # Own ships
+					set_owner = root
+					while = {
+						count = 16
+						create_ship = {
+							name = random
+							prefix = no
+							random_existing_design = corvette
+							graphical_culture = root
+						}
+					}
+					while = {
+						count = 8
+						create_ship = {
+							name = random
+							prefix = no
+							random_existing_design = destroyer
+							graphical_culture = root
+						}
+					}
+					if = { limit = { root = { any_owned_design = { is_ship_size = cruiser } } }
+						while = {
+							count = 3
+							create_ship = {
+								name = random
+								prefix = no
+								random_existing_design = cruiser
+								graphical_culture = root
+							}
+						}
+					}
+				}
 			}
 
 			assign_leader = last_created_leader
@@ -169,6 +205,7 @@ create_marauder_fleet = {
 			can_change_composition = no
 		}
 	}
+	last_created_fleet = { set_owner = event_target:raider_khanate }
 }
 
 create_small_marauder_auxiliaries = {
@@ -391,7 +428,6 @@ create_first_diadochi = {
 		limit = {
 			exists = event_target:first_diadochi_origin
 		}
-		log = "creating 1st Diadochi country..."
 		create_country = {
 			name_list = random
 			# name = random
@@ -456,7 +492,6 @@ create_second_diadochi = {
 		limit = {
 			exists = event_target:second_diadochi_origin
 		}
-		log = "creating 2nd Diadochi country..."
 		create_country = {
 			name_list = random
 			# name = random
@@ -521,7 +556,6 @@ create_third_diadochi = {
 		limit = {
 			exists = event_target:third_diadochi_origin
 		}
-		log = "creating 3rd Diadochi country..."
 		create_country = {
 			name_list = random
 			# name = random
@@ -586,7 +620,6 @@ create_fourth_diadochi = {
 		limit = {
 			exists = event_target:fourth_diadochi_origin
 		}
-		log = "creating 4th Diadochi country..."
 		create_country = {
 			name_list = random
 			# name = random
@@ -645,7 +678,6 @@ create_fourth_diadochi = {
 		}
 	}
 }
-
 
 # This = Marauder
 get_marauder_species = {
@@ -730,6 +762,101 @@ get_marauder_species = {
 				change_dominant_species = { species = prev }
 				set_built_species = prev
 			}
+		}
+	}
+}
+
+# Scope = event_target:raiding_marauder
+get_marauder_raid_source = {
+	random_planet_within_border = {
+		limit = { is_star = no }
+		weights = {
+			base = 1
+			modifier = { add = 3 has_planet_flag = raid_source }
+			modifier = { add = 1 is_colonizable = yes }
+		}
+		save_event_target_as = raid_source
+	}
+
+	### Rally Point Fallback
+	if = {
+		limit = { NOT = { exists = event_target:raid_source } }
+		switch = {
+			trigger = has_country_flag
+			marauder_1 = {
+				random_system = {
+					limit = { has_star_flag = marauder_capital_1 }
+					random_system_planet = {
+						limit = { is_star = no }
+						weights = {
+							base = 1
+							modifier = { add = 3 has_planet_flag = raid_source }
+							modifier = { add = 1 is_colonizable = yes }
+						}
+						save_event_target_as = raid_source
+					}
+				}
+			}
+			marauder_2 = {
+				random_system = {
+					limit = { has_star_flag = marauder_capital_2 }
+					random_system_planet = {
+						limit = { is_star = no }
+						weights = {
+							base = 1
+							modifier = { add = 3 has_planet_flag = raid_source }
+							modifier = { add = 1 is_colonizable = yes }
+						}
+						save_event_target_as = raid_source
+					}
+				}
+			}
+			marauder_3 = {
+				random_system = {
+					limit = { has_star_flag = marauder_capital_3 }
+					random_system_planet = {
+						limit = { is_star = no }
+						weights = {
+							base = 1
+							modifier = { add = 3 has_planet_flag = raid_source }
+							modifier = { add = 1 is_colonizable = yes }
+						}
+						save_event_target_as = raid_source
+					}
+				}
+			}
+		}
+	}
+
+	### Last Fallback
+	if = {
+		limit = { NOT = { exists = event_target:raid_source } }
+		# ordered_owned_starbase = {
+		random_owned_starbase = {
+			limit = {
+				exists = solar_system
+				solar_system = {
+					any_system_planet = { is_star = no }
+				}
+			}
+			# position = 0
+			# order_by = fleet.trigger:fleet_power
+			solar_system = {
+				random_system_planet = {
+					limit = { is_star = no }
+					weights = {
+						base = 1
+						modifier = { add = 3 has_planet_flag = raid_source }
+						modifier = { add = 1 is_colonizable = yes }
+					}
+					save_event_target_as = raid_source
+				}
+			}
+		}
+	}
+	event_target:raid_source = {
+		solar_system = {
+			save_event_target_as = marauder_system
 		}
 	}
 }

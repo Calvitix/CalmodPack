@@ -22,14 +22,29 @@ hyper_relay = {
 
 	potential = {
 		has_technology = tech_hyper_relays
+		custom_tooltip = {
+			fail_text = "requires_some_ai_fixes_on_players_disabled"
+			if = {
+				limit = {
+					has_global_flag = ai_hyper_relay_construction_flag
+					has_global_flag = ai_and_player_flag
+				}
+				always = no
+			}
+			else_if = {
+				limit = {
+					has_global_flag = ai_hyper_relay_construction_flag
+				}
+				is_ai = no
+			}
+		}
 	}
 
 	possible = {
-		# exists = starbase # OVERWRITE sparsity / wild space support
+		exists = starbase
 		custom_tooltip = {
 			fail_text = "requires_inside_border_or_subject"
 			OR = {
-				mmghyper_is_starless = yes # OVERWRITE sparsity / wild space support
 				is_inside_border = from
 				AND = {
 					exists = owner
@@ -79,38 +94,24 @@ hyper_relay = {
 
 	# root = system
 	# from = country
-	ai_weight = { # OVERWRITE entire AI weight for main functionality of mod
-		# double base factor
-		factor = 10
+	ai_weight = {
+		factor = 5
 
-		# get started in capital very quickly
 		modifier = {
-			factor = 10
+			factor = 3
 			is_capital_system = yes
 		}
 
-		# then expand quickly into capital sector
 		modifier = {
-			factor = 5
-			exists = sector
-			sector.sector_capital = {
-				is_capital = yes
+			factor = 1.5
+			any_neighbor_system = {
+				OR = {
+					has_megastructure = hyper_relay
+					has_megastructure = hyper_relay_restored
+				}
 			}
 		}
 
-		# then prioritize paths to other sectors
-		modifier = {
-			factor = 3
-			has_star_flag = mmghyper_path_to_capital@FROM
-		}
-
-		# then paths within sector
-		modifier = {
-			factor = 2
-			has_star_flag = mmghyper_path_to_sector_capital@FROM
-		}
-
-		# small boost for connecting planets to network
 		modifier = {
 			factor = 1.5
 			any_system_planet = {
@@ -118,12 +119,15 @@ hyper_relay = {
 			}
 		}
 
-		# don't build if not target (on path, etc)
+		# non-gestalt empires will prefer building along trade routes, since those connect colonies to the capital
+		# this may occasionally catch other empire's trade routes that clip our territory, but pirates will eventually appear there so it's fine
 		modifier = {
-			factor = 0
-			NOT = {
-				mmghyper_is_ai_build_target = { COUNTRY = from }
+			factor = 0.2
+			from = {
+				is_gestalt = no
 			}
+			is_capital_system = no
+			has_trade_route = no
 		}
 	}
 
@@ -131,17 +135,8 @@ hyper_relay = {
 	on_build_start = {}
 	on_build_cancel = {}
 	on_build_complete = {
-		if = { # OVERWRITE from won't always exist like it does in vanilla
-			limit = { exists = from }
 		from = {
 			country_event = { id = tutorial.2131 }
-		}
-	}
-		solar_system = { # OVERWRITE
-			system_event = {
-				id = mmghyper.11 # convert starless hyper relay to unowned
-				days = 1 # doing this immediately doesn't seem to work
-			}
 		}
 	}
 }
