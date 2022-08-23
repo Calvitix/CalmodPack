@@ -1,8 +1,8 @@
 # Giga File
 #
-# Calvitix Check 3.4.4
+# Calvitix Check 3.4.5
 #
-# Last Update : 27.06.2022
+# Last Update : 22.08.2022
 #
 #Calvitix trad names
 blokkat_determine_distances = {
@@ -644,13 +644,13 @@ set_blokkat_leader_data = {
 			}
 			add_trait = trait_blokkat_blokkazoi
 			set_leader_flag = unique_blokkat_leader
-			modifier = {
-				factor = 0
-				any_country = { any_owned_leader = { has_leader_flag = blokkazoi_leader } }
-			}
 			modifier = { #Already defined
 				add = 10000
 				has_leader_flag = blokkazoi_leader
+			}
+			modifier = {
+				factor = 0
+				any_country = { any_owned_leader = { has_leader_flag = blokkazoi_leader } }
 			}
 		}
 		#matrx50 (Patreon)
@@ -775,6 +775,24 @@ set_blokkat_leader_data = {
 			modifier = { #Already defined
 				add = 10000
 				has_leader_flag = blokkdog_leader
+			}
+		}
+		#Blokkeff (Patreon)
+		4 = {
+			set_name = "Blokkeff"
+			if = {
+				limit = { NOT = { has_leader_flag = blokkeff_leader } }
+				set_leader_flag = blokkeff_leader
+			}
+			set_leader_flag = unique_blokkat_leader
+			add_trait = trait_blokkat_blokkeff
+			modifier = {
+				factor = 0
+				any_country = { any_owned_leader = { has_leader_flag = blokkeff_leader } }
+			}
+			modifier = { #Already defined
+				add = 10000
+				has_leader_flag = blokkeff_leader
 			}
 		}
 	}
@@ -1077,7 +1095,7 @@ blokkat_movement_queue = {
 	queue_actions = {
 		repeat = {
 			effect = {
-				id = "blokkscoutmovement.1"
+				id = "blokkscoutmovement.1.blokk.1"
 				solar_system = {
 					#set_star_flag = blokk_scout_arrived
 					change_variable = {
@@ -1236,13 +1254,13 @@ blokkat_movement_queue = {
 			}
 			find_random_system = {
 				trigger = {
-					id = "blokkscoutmovement.1"
+					id = "blokkscoutmovement.1.blokk.2"
 					has_star_flag = blokk_scout_moving_here@prev
 				}
 				found_system = {
 					move_to = this
 					effect = {
-						id = "blokkscoutmovement.1"
+						id = "blokkscoutmovement.1.blokk.3"
 						remove_star_flag = blokk_scout_moving_here@prev
 					}
 					wait = {

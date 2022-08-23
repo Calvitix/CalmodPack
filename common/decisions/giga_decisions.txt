@@ -1,8 +1,8 @@
 # Giga File
 #
-# Calvitix Check 3.4.3
+# Calvitix Check 3.4.5
 #
-# Last Update : 25.05.2022
+# Last Update : 19.08.2022
 #
 # Calvitix trad names
 #
@@ -43,6 +43,7 @@ decision_giga_build_orbital_arcology = {
 		OR = {
 		habitable_structure = no
 			is_planet_class = pc_giga_planetary_computer
+			is_regular_giga_maginot_world = yes
 		}
 		NOR = { 
 			has_planet_flag = orbital_arcology 
@@ -699,8 +700,7 @@ decision_harvest_matter_for_planetary_printing = {
 				giga_ai_savings_withdraw = { CATEGORY = resource RESOURCE = alloys AMOUNT = 5000 }
 			}
 			set_planet_flag = getting_harvested_for_printing
-			set_planet_flag = megastructure
-			set_planet_flag = has_megastructure
+			giga_set_has_mega_flag = yes
 			solar_system = {
 				spawn_megastructure = {
 					type = moon_printer_orbital_mass_harvester_0
@@ -1003,5 +1003,372 @@ decision_give_flusion_to_solakia = {
 				}
 			}
 		}
+	}
+}
+
+giga_dismantle_elysium = {
+	owned_planets_only = yes
+
+	enactment_time = 360
+	resources = {
+		category = decisions
+		cost = {
+			influence = 100
+		}
+	}
+
+	potential = {
+		is_planet_class = pc_giga_elysium
+
+		exists = owner
+		owner = {
+			not = { has_origin = origin_elysium } # elysium origin isn't allowed to take them down
+		}
+
+		exists = orbit
+		orbit = {
+			has_planet_flag = has_orbital_elysium
+		}
+	}
+
+	allow = {
+		orbit = {
+			is_colony = yes
+			is_under_colonization = no
+			exists = owner
+			owner = {
+				is_same_empire = root.owner
+			}
+		}
+	}
+
+	effect = {
+		orbit = {
+			# clear planet modifiers
+			remove_modifier = giga_elysium_host_planet
+			hidden_effect = {
+				remove_planet_flag = has_orbital_elysium
+				clear_variable = giga_elysium_admin
+				clear_variable = giga_elysium_stability
+			}
+
+			# restore buildings
+			if = {
+				limit = {
+					owner = {
+						is_hive_empire = yes
+					}
+				}
+				remove_building = building_giga_elysium_host_hive_jobs
+				if = {
+					limit = {
+						has_building = building_giga_elysium_host_hive_major_capital
+					}
+					remove_building = building_giga_elysium_host_hive_major_capital
+					add_building = building_hive_major_capital
+				}
+				else = {
+					remove_building = building_giga_elysium_host_hive_capital
+					add_building = building_hive_capital
+				}
+			}
+			else_if = {
+				limit = {
+					owner = {
+						is_machine_empire = yes
+					}
+				}
+				remove_building = building_giga_elysium_host_machine_jobs
+				if = {
+					limit = {
+						has_building = building_giga_elysium_host_machine_major_capital
+					}
+					remove_building = building_giga_elysium_host_machine_major_capital
+					add_building = building_machine_major_capital
+				}
+				else = {
+					remove_building = building_giga_elysium_host_machine_capital
+					add_building = building_machine_capital
+				}
+			}
+			else = {
+				remove_building = building_giga_elysium_host_jobs
+				if = {
+					limit = {
+						has_building = building_giga_elysium_host_major_capital
+					}
+					remove_building = building_giga_elysium_host_major_capital
+					add_building = building_major_capital
+				}
+				else = {
+					remove_building = building_giga_elysium_host_capital
+					add_building = building_capital
+				}
+			}
+			if = {
+				limit = {
+					has_building = building_giga_elysium_host_booster
+				}
+				remove_building = building_giga_elysium_host_booster
+			}
+			
+			# this will hopefully make the capitals switch if it's meant to be something other than these, and update the planet view
+			validate_planet_buildings_and_districts = yes
+		}
+
+		# get rid of the elysium
+		every_owned_pop = {
+			resettle_pop = {
+				pop = this
+				planet = root.orbit
+			}
+		}
+
+		hidden_effect = {
+			owner = {
+				country_event = {
+					id = giga_elysium.006
+					scopes = {
+						from = root
+						fromfrom = root.orbit
+					}
+				}
+			}
+
+			giga_remove_planet = yes
+			orbit = {
+				giga_clear_has_mega_flag = yes
+			}
+		}
+
+		custom_tooltip = giga_dismantle_elysium_tooltip
+	}
+
+	ai_weight = {
+		weight = 0
+
+		# empires which hate these should seek to take them down
+		modifier = {
+			exists = owner
+			owner = {
+				or = {
+					is_egalitarian = yes
+					is_cooperative = yes
+					has_valid_civic = civic_machine_servitor
+				}
+			}
+
+			weight = 1000
+		}
+	}
+}
+
+# Flood gigas habitats
+@expand_planetary_sea_length = 720
+
+decision_giga_flood_habitat = {
+	owned_planets_only = yes
+	icon = decision_satellite_in_orbit
+
+	enactment_time = @expand_planetary_sea_length
+
+	potential = {
+		# habitat has the vanilla decision, flooding the flat world is just silly
+		nor = {
+			is_planet_class = pc_habitat
+			is_planet_class = pc_flat_world
+		}
+		# but the rest of the gigas habitat types are fair game
+		# yes that includes the frameworld, though you can't do that with the origin as you can't take aquatic
+		is_giga_habitat = yes		
+
+		exists = owner
+		owner = {
+			has_ascension_perk = ap_hydrocentric
+		}
+		NOT = {
+			has_modifier = flooded_habitat
+		}
+	}
+
+	allow = {
+		custom_tooltip = {
+			fail_text = requires_free_ice_mining_station
+			owner = {
+				any_owned_starbase = {
+					has_starbase_building = ice_mining_station
+					solar_system = {
+						NOT = { has_star_flag = ice_mining_in_progress }
+					}
+				}
+			}
+		}
+	}
+
+	resources = {
+		category = decisions
+		cost = {
+			influence = 50
+			energy = 1000
+		}
+	}
+
+	on_queued = {
+		set_variable = {
+			which = decision_length
+			value = @expand_planetary_sea_length
+		}
+		export_modifier_to_variable = {
+			modifier = planet_decision_enact_speed_mult
+			variable = decision_mult_var
+		}
+		change_variable = {
+			which = decision_mult_var
+			value = 1
+		}
+		divide_variable = {
+			which = decision_length
+			value = decision_mult_var
+		}
+		change_variable = { #ideally, may as well refer to this in the final effect
+			which = decision_length
+			value = 1
+		}
+
+		owner = {
+			random_owned_starbase = {
+				limit = {
+					has_starbase_building = ice_mining_station
+					solar_system = {
+						NOT = { has_star_flag = ice_mining_in_progress }
+					}
+				}
+				solar_system = {
+					set_timed_star_flag = {
+						flag = ice_mining_in_progress
+						days = root.decision_length
+					}
+					set_timed_star_flag = {
+						flag = ice_mining@root
+						days = root.decision_length
+					}
+				}
+			}
+		}
+		clear_variable = decision_length
+		clear_variable = decision_mult_var
+	}
+
+	abort_trigger = {
+		NOT = {
+			owner = {
+				any_owned_starbase = {
+					has_starbase_building = ice_mining_station
+				}
+			}
+		}
+	}
+
+	on_unqueued = {
+		owner = {
+			random_owned_starbase = {
+				limit = {
+					solar_system = {
+						has_star_flag = ice_mining@root
+					}
+				}
+				solar_system = {
+					remove_star_flag = ice_mining@root
+					remove_star_flag = ice_mining_in_progress
+				}
+			}
+		}
+	}
+
+	abort_effect = {
+		owner = {
+			random_owned_starbase = {
+				limit = {
+					solar_system = {
+						has_star_flag = ice_mining@root
+					}
+				}
+				solar_system = {
+					remove_star_flag = ice_mining@root
+					remove_star_flag = ice_mining_in_progress
+				}
+			}
+		}
+		create_message = {
+			type = ICE_MINING_INTERRUPTED
+			localization = ICE_MINING_INTERRUPTED_HABITAT_DESC
+			days = 20
+			target = root
+		}
+	}
+
+	effect = {
+		custom_tooltip = decision_flood_habitat_tooltip
+
+		if = {
+			limit = {
+				is_planet_class = pc_giga_elysium
+			}
+			custom_tooltip = decision_giga_flood_habitat_elysium
+		}
+
+		hidden_effect = {
+			add_modifier = {
+				modifier = flooded_habitat
+				days = -1
+			}
+			ice_mining_depletion_effect = yes
+
+			if = {
+				limit = {
+					has_planet_flag = temp_ice_mine_exhausted_flag
+				}
+				event_target:mined_system.starbase = {
+					remove_starbase_building = {
+						building = ice_mining_station
+					}
+				}
+				create_message = {
+					type = ICE_MINING_HABITAT_SUCCESS
+					localization = ICE_MINING_HABITAT_SUCCESS_BUT_EXHAUSTED_DESC
+					days = 20
+					target = root
+					variable = {
+						type = name
+						localization = SYSTEM
+						scope = event_target:mined_system
+					}
+				}
+			}
+			else = {
+				create_message = {
+					type = ICE_MINING_HABITAT_SUCCESS
+					localization = ICE_MINING_HABITAT_SUCCESS_DESC
+					days = 20
+					target = root
+					variable = {
+						type = name
+						localization = SYSTEM
+						scope = event_target:mined_system
+					}
+				}
+			}
+			change_variable = {
+				which = ice_dumping_happened
+				value = 1
+			}
+
+			# special effects per hab type
+
+			# TODO: orbital entity swap for ocean planet texture
+		}
+	}
+	ai_weight = {
+		weight = 2
 	}
 }

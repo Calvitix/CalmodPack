@@ -2,7 +2,7 @@
 #
 # Calvitix Check 3.4.5  
 #
-# Last Update : 01.07.2022
+# Last Update : 22.08.2022
 #
 # trad names
 namespace = giga_blokkat
@@ -141,7 +141,7 @@ event = {
 
 #Something big: Global event, starts a countdown.
 
-event = {
+country_event = {
 	id = giga_blokkat.1000
 	hide_window = yes
 	is_triggered_only = yes
@@ -243,7 +243,7 @@ country_event = {
 }
 
 #Popup about this big thing
-event = {
+country_event = {
 	id = giga_blokkat.1001
 	title = "giga_blokkat.1001.name"
 	desc = "giga_blokkat.1001.desc"
@@ -2190,14 +2190,20 @@ country_event = {
 	option = { #Uh oh
 		name = "giga_blokkat.5010.coexist"
 		response_text = "giga_blokkat.5010.coexist.response"
+		trigger = {
 		NOT = { has_country_flag = giga_blokk_protokols_initiated }
+		}
+		
 		is_dialog_only = yes
 	}
 
 	option = { #Uh oh
 		name = "giga_blokkat.5010.nogalaxytravel"
 		response_text = "giga_blokkat.5010.nogalaxytravel.response"
+		trigger = {
 		NOT = { has_country_flag = giga_blokk_protokols_initiated }
+		}
+		
 		is_dialog_only = yes
 	}
 
@@ -3297,8 +3303,7 @@ country_event = {
 				remove_megastructure = THIS
 				solar_system = {
 					star = {
-						remove_planet_flag = megastructure
-						remove_planet_flag = has_megastructure
+						giga_clear_has_mega_flag = yes
 					}
 				}
 			}
@@ -3528,7 +3533,7 @@ country_event = {
 	desc = "giga_blokkat.1044.desc"
 	is_triggered_only = yes
 
-	is_triggered_only = yes
+	
 	show_sound = event_machinery
 	picture = GFX_evt_ship_travel
 
@@ -5337,7 +5342,9 @@ country_event = {
 	is_triggered_only = yes
 	show_sound = event_sensor_ping
 	picture = GFX_evt_analyzing_artifacts
-
+	immediate = {
+		set_country_flag = blokkat_scrap_possible
+	}
 	option = { #kk
 		name = "giga_blokkat.3082.a"
 		custom_tooltip = cant_do_another_blokkat_project_tech_tooltip
@@ -5352,6 +5359,7 @@ country_event = {
 		name = "giga_blokkat.3020.b"
 		hidden_effect = {
 			country_event = { id = giga_blokkat.3000 }
+			remove_country_flag = blokkat_scrap_possible
 		}
 	}
 }
@@ -6438,7 +6446,9 @@ country_event = {
 
 	picture = GFX_evt_surreal_visions
 	show_sound = event_laboratory_sound
-
+	immediate = {
+		set_country_flag = blokkat_history_possible
+	}
 	option = { #kk
 		name = "giga_blokkat.3323.a"
 		add_research_option = giga_tech_blokkat_history
@@ -6587,7 +6597,9 @@ country_event = {
 	is_triggered_only = yes
 	show_sound = event_sensor_ping
 	picture = GFX_evt_clocks
-
+	immediate = {
+		set_country_flag = destabiliser_stage_4_possible
+	}
 	option = { #kk
 		name = "giga_blokkat.3329.a"
 		custom_tooltip = "giga_blokkat.3329.a.tooltip"
@@ -6602,6 +6614,7 @@ country_event = {
 		name = "giga_blokkat.3020.b"
 		hidden_effect = {
 			country_event = { id = giga_blokkat.3000 }
+			remove_country_flag = giga_tech_blokkat_mega_stage_4
 		}
 	}
 }
@@ -6823,6 +6836,7 @@ country_event = {
 
 	immediate = {
 		set_country_flag = can_research_blokkat_star_repair
+		set_country_flag = blokkat_system_repair_possible
 	}
 
 	option = { #bye
@@ -6840,6 +6854,7 @@ country_event = {
 		name = "giga_blokkat.3020.b"
 		hidden_effect = {
 			country_event = { id = giga_blokkat.3000 }
+			remove_country_flag = blokkat_system_repair_possible
 		}
 	}
 }
@@ -7215,7 +7230,9 @@ country_event = {
 	show_sound = event_mystic_reveal
 
 	picture = GFX_evt_ship_travel
-
+	immediate = {
+		set_country_flag = blokkat_laser_possible
+	}
 	option = { #kk
 		name = "giga_blokkat.3091.a"
 		add_research_option = giga_tech_blokkat_laser
@@ -7232,7 +7249,9 @@ country_event = {
 	show_sound = event_mystic_reveal
 
 	picture = GFX_evt_black_hole
-
+	immediate = {
+		set_country_flag = blokkat_missile_possible
+	}
 	option = { #kk
 		name = "giga_blokkat.3091.a"
 		add_research_option = giga_tech_blokkat_missile
@@ -7249,7 +7268,9 @@ country_event = {
 	show_sound = event_mystic_reveal
 
 	picture = GFX_evt_machine_space_battle
-
+	immediate = {
+		set_country_flag = blokkat_strikecraft_possible
+	}
 	option = { #kk
 		name = "giga_blokkat.3091.a"
 		add_research_option = giga_tech_blokkat_strikecraft
@@ -7266,7 +7287,9 @@ country_event = {
 	show_sound = event_mystic_reveal
 
 	picture = GFX_evt_megastructure_construction
-
+	immediate = {
+		set_country_flag = blokkat_armor_possible
+	}
 	option = { #kk
 		name = "giga_blokkat.3094.a"
 		add_research_option = giga_tech_blokkat_armor
@@ -7283,7 +7306,9 @@ country_event = {
 	show_sound = event_mystic_reveal
 
 	picture = GFX_evt_physics_research
-
+	immediate = {
+		set_country_flag = blokkat_shield_possible
+	}
 	option = { #kk
 		name = "giga_blokkat.3095.a"
 		add_research_option = giga_tech_blokkat_shield
@@ -7300,7 +7325,9 @@ country_event = {
 	show_sound = event_mystic_reveal
 
 	picture = GFX_evt_sentry_guns
-
+	immediate = {
+		set_country_flag = blokkat_pd_possible
+	}
 	option = { #kk
 		name = "giga_blokkat.3096.a"
 		add_research_option = giga_tech_blokkat_pd
@@ -7317,7 +7344,9 @@ country_event = {
 	show_sound = event_mystic_reveal
 
 	picture = GFX_evt_planet_beam
-
+	immediate = {
+		set_country_flag = blokkat_plasma_possible
+	}
 	option = { #kk
 		name = "giga_blokkat.3097.a"
 		add_research_option = giga_tech_blokkat_plasma
@@ -7334,14 +7363,16 @@ country_event = {
 	show_sound = event_mystic_reveal
 
 	picture = GFX_evt_physics_research
-
+	immediate = {
+		set_country_flag = blokkat_emitter_possible
+	}
 	option = { #kk
 		name = "giga_blokkat.3098.a"
 		add_research_option = giga_tech_blokkat_emitter
 	}
 }
 
-#PD
+#Obliterator
 country_event = {
 	id = giga_blokkat.3099
 	title = "giga_blokkat.3099.name"
@@ -7351,7 +7382,9 @@ country_event = {
 	show_sound = event_mystic_reveal
 
 	picture = GFX_evt_supernova
-
+	immediate = {
+		set_country_flag = blokkat_obliterator_possible
+	}
 	option = { #kk
 		name = "giga_blokkat.3099.a"
 		add_research_option = giga_tech_blokkat_obliterator
@@ -7368,7 +7401,9 @@ country_event = {
 	show_sound = event_mystic_reveal
 
 	picture = GFX_evt_laser_grid
-
+	immediate = {
+		set_country_flag = blokkat_booster_possible
+	}
 	option = { #kk
 		name = "giga_blokkat.3100.a"
 		add_research_option = giga_tech_blokkat_booster
@@ -7385,7 +7420,9 @@ country_event = {
 	show_sound = event_mystic_reveal
 
 	picture = GFX_evt_machine_space_battle
-
+	immediate = {
+		set_country_flag = blokkat_afterburner_possible
+	}
 	option = { #kk
 		name = "giga_blokkat.3101.a"
 		add_research_option = giga_tech_blokkat_afterburner
@@ -7402,7 +7439,9 @@ country_event = {
 	show_sound = event_mystic_reveal
 
 	picture = GFX_evt_robot_assembly_plant
-
+	immediate = {
+		set_country_flag = blokkat_hull_repair_possible
+	}
 	option = { #kk
 		name = "giga_blokkat.3102.a"
 		add_research_option = giga_tech_blokkat_hullrepair
@@ -7419,7 +7458,9 @@ country_event = {
 	show_sound = event_mystic_reveal
 
 	picture = GFX_evt_binary_stars
-
+	immediate = {
+		set_country_flag = blokkat_ftl_possible
+	}
 	option = { #kk
 		name = "giga_blokkat.3103.a"
 		add_research_option = giga_tech_blokkat_ftl
@@ -7436,7 +7477,9 @@ country_event = {
 	show_sound = event_mystic_reveal
 
 	picture = GFX_evt_physics_research
-
+	immediate = {
+		set_country_flag = blokkat_reactor_possible
+	}
 	option = { #kk
 		name = "giga_blokkat.3104.a"
 		add_research_option = giga_tech_blokkat_reactor
@@ -7453,7 +7496,9 @@ country_event = {
 	show_sound = event_mystic_reveal
 
 	picture = GFX_evt_sapient_AI
-
+	immediate = {
+		set_country_flag = blokkat_computer_possible
+	}
 	option = { #kk
 		name = "giga_blokkat.3105.a"
 		add_research_option = giga_tech_blokkat_computer
@@ -7470,7 +7515,9 @@ country_event = {
 	show_sound = event_mystic_reveal
 
 	picture = GFX_evt_mysterious_signal
-
+	immediate = {
+		set_country_flag = blokkat_sensors_possible
+	}
 	option = { #kk
 		name = "giga_blokkat.3106.a"
 		add_research_option = giga_tech_blokkat_sensors
@@ -7587,7 +7634,9 @@ country_event = {
 
 	show_sound = event_mystic_reveal_light
 	picture = GFX_evt_alien_abduction
-
+	immediate = {
+		set_country_flag = blokkat_snare_possible
+	}
 	option = { #kk
 		name = "giga_blokkat.3201.a"
 		custom_tooltip = "giga_blokkat.3201.a.tooltip"
@@ -7602,6 +7651,7 @@ country_event = {
 		name = "giga_blokkat.3201.b"
 		hidden_effect = {
 			country_event = { id = giga_blokkat.3000 }
+			remove_country_flag = blokkat_snare_possible
 		}
 	}
 }
@@ -8001,8 +8051,7 @@ country_event = {
 		event_target:blokkat_prison_with_breach = {
 			remove_megastructure_flag = blokkat_prison_has_breach
 			planet = {
-				remove_planet_flag = megastructure
-				remove_planet_flag = has_megastructure
+				giga_clear_has_mega_flag = { MEGA = prev }
 			}
 			solar_system = {
 				create_fleet = { #Spawn some Escort ships
@@ -8491,6 +8540,13 @@ country_event = {
 										any_country = { any_owned_leader = { has_leader_flag = blokkitae_leader } }
 									}
 								}
+								10 = { 
+									set_leader_flag = blokkeff_leader
+									modifier = { #Only 1 Blokkeff
+										factor = 0
+										any_country = { any_owned_leader = { has_leader_flag = blokkeff_leader } }
+									}
+								}
 								90 = {}
 							}
 						}
@@ -8574,7 +8630,7 @@ country_event = {
 								}
 								10 = { 
 									set_leader_flag = blokkdog_leader
-									modifier = { #Only 1 Blokksauna
+									modifier = { #Only 1 Blokkdog
 										factor = 0
 										any_country = { any_owned_leader = { has_leader_flag = blokkdog_leader } }
 									}
@@ -8680,6 +8736,11 @@ country_event = {
 						add_trait = trait_blokkat_blokkdog
 						modifier = { add = 1000 has_leader_flag = blokkdog_leader }
 					}
+					0 = {
+						set_leader_flag = blokkat_is_blokkeff
+						add_trait = trait_blokkat_blokkeff
+						modifier = { add = 1000 has_leader_flag = blokkeff_leader }
+					}
 				}
 				#Behavior
 				random_list = {
@@ -8700,6 +8761,7 @@ country_event = {
 						set_leader_flag = blokkat_is_cooperative
 						modifier = { add = 1000 has_leader_flag = blokksauna_leader }
 						modifier = { add = 1000 has_leader_flag = blokkdog_leader }
+						modifier = { add = 1000 has_leader_flag = blokkeff_leader }
 					}
 				}
 				save_event_target_as = newest_blokkat_prisoner
@@ -8757,6 +8819,10 @@ country_event = {
 			if = {
 				limit = { last_created_leader = { has_leader_flag = blokkat_is_blokkdog } }
 				set_megastructure_flag = blokkdog_blokkat
+			}
+			if = {
+				limit = { last_created_leader = { has_leader_flag = blokkat_is_blokkeff } }
+				set_megastructure_flag = blokkeff_blokkat
 			}
 			set_megastructure_flag = prison_has_blokkat
 			save_event_target_as = newest_blokkat_prison
@@ -8898,7 +8964,9 @@ country_event = {
 	show_sound = event_laboratory_sound
 
 	is_triggered_only = yes
-	
+	immediate = {
+		set_country_flag = blokkat_reprogram_possible
+	}
 	option = { #lets go
 		name = "giga_blokkat.3231.a"
 		custom_tooltip = cant_do_another_blokkat_project_tech_tooltip
@@ -8913,6 +8981,7 @@ country_event = {
 		name = "giga_blokkat.3231.b"
 		hidden_effect = {
 			country_event = { id = giga_blokkat.3000 }
+			remove_country_flag = blokkat_reprogram_possible
 		}
 	}
 }
@@ -9614,7 +9683,9 @@ country_event = {
 	is_triggered_only = yes
 	show_sound = event_sensor_ping
 	picture = GFX_evt_megastructure_construction
-
+	immediate = {
+		set_country_flag = destabiliser_stage_0_possible
+	}
 	option = { #kk
 		name = "giga_blokkat.3060.a"
 		custom_tooltip = cant_do_another_blokkat_project_tech_tooltip
@@ -9629,6 +9700,7 @@ country_event = {
 		name = "giga_blokkat.3020.b"
 		hidden_effect = {
 			country_event = { id = giga_blokkat.3000 }
+			remove_country_flag = destabiliser_stage_0_possible
 		}
 	}
 }
@@ -9672,7 +9744,9 @@ country_event = {
 	is_triggered_only = yes
 	show_sound = event_sensor_ping
 	picture = GFX_evt_black_hole
-
+	immediate = {
+		set_country_flag = destabiliser_stage_1_possible
+	}
 	option = { #kk
 		name = "giga_blokkat.3062.a"
 		custom_tooltip = cant_do_another_blokkat_project_tech_tooltip
@@ -9687,6 +9761,7 @@ country_event = {
 		name = "giga_blokkat.3020.b"
 		hidden_effect = {
 			country_event = { id = giga_blokkat.3000 }
+			remove_country_flag = destabiliser_stage_1_possible
 		}
 	}
 }
@@ -9715,7 +9790,9 @@ country_event = {
 	is_triggered_only = yes
 	show_sound = event_sensor_ping
 	picture = GFX_evt_zro_3
-
+	immediate = {
+		set_country_flag = destabiliser_stage_2_possible
+	}
 	option = { #kk
 		name = "giga_blokkat.3064.a"
 		custom_tooltip = cant_do_another_blokkat_project_tech_tooltip
@@ -9730,6 +9807,7 @@ country_event = {
 		name = "giga_blokkat.3020.b"
 		hidden_effect = {
 			country_event = { id = giga_blokkat.3000 }
+			remove_country_flag = giga_tech_blokkat_mega_stage_2
 		}
 	}
 }
@@ -9758,7 +9836,9 @@ country_event = {
 	is_triggered_only = yes
 	show_sound = event_sensor_ping
 	picture = GFX_evt_l-gateway
-
+	immediate = {
+		set_country_flag = destabiliser_stage_3_possible
+	}
 	option = { #kk
 		name = "giga_blokkat.3066.a"
 		custom_tooltip = cant_do_another_blokkat_project_tech_tooltip
@@ -9773,6 +9853,7 @@ country_event = {
 		name = "giga_blokkat.3020.b"
 		hidden_effect = {
 			country_event = { id = giga_blokkat.3000 }
+			remove_country_flag = destabiliser_stage_3_possible
 		}
 	}
 }
@@ -10187,7 +10268,9 @@ country_event = {
 	is_triggered_only = yes
 	show_sound = event_sensor_ping
 	picture = GFX_evt_machine_sapience
-
+	immediate = {
+		set_country_flag = blokkat_sociology_possible
+	}
 	option = { #kk
 		name = "giga_blokkat.3020.a"
 		custom_tooltip = cant_do_another_blokkat_project_tech_tooltip
@@ -10202,6 +10285,7 @@ country_event = {
 		name = "giga_blokkat.3020.b"
 		hidden_effect = {
 			country_event = { id = giga_blokkat.3000 }
+			remove_country_flag = blokkat_sociology_possible
 		}
 	}
 }
@@ -10246,7 +10330,9 @@ country_event = {
 	is_triggered_only = yes
 	show_sound = event_sensor_ping
 	picture = GFX_evt_wormhole
-
+	immediate = {
+		set_country_flag = blokkat_dimensions_possible
+	}
 	option = { #kk
 		name = "giga_blokkat.3030.a"
 		custom_tooltip = cant_do_another_blokkat_project_tech_tooltip
@@ -10261,6 +10347,7 @@ country_event = {
 		name = "giga_blokkat.3020.b"
 		hidden_effect = {
 			country_event = { id = giga_blokkat.3000 }
+			remove_country_flag = blokkat_dimensions_possible
 		}
 	}
 }
@@ -10304,7 +10391,9 @@ country_event = {
 	is_triggered_only = yes
 	show_sound = event_sensor_ping
 	picture = GFX_evt_engineering_research
-
+	immediate = {
+		set_country_flag = blokkat_armor_study_possible
+	}
 	option = { #kk
 		name = "giga_blokkat.3050.a"
 		custom_tooltip = cant_do_another_blokkat_project_tech_tooltip
@@ -10319,7 +10408,9 @@ country_event = {
 		name = "giga_blokkat.3020.b"
 		hidden_effect = {
 			country_event = { id = giga_blokkat.3000 }
+			remove_country_flag = blokkat_armor_study_possible
 		}
+		
 	}
 }
 

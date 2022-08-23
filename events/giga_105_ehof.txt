@@ -535,7 +535,9 @@ country_event = {
 		if = {
 			limit = {
 				any_planet_within_border = {
-					solar_system = { NOT = { has_star_flag = empire_home_system } }
+					solar_system = { NOR = { has_star_flag = empire_home_system 
+					is_capital_system = yes
+				} }
 					is_planet_habitable = no
 					is_star = no
 					is_asteroid = no
@@ -548,7 +550,11 @@ country_event = {
 			}
 			random_planet_within_border = {
 				limit = {
-					solar_system = { NOT = { has_star_flag = empire_home_system } }
+					solar_system = { NOR = { has_star_flag = empire_home_system 
+					is_capital_system = yes
+				} 
+				
+				}
 					is_planet_habitable = no
 					is_star = no
 					is_asteroid = no
@@ -2343,12 +2349,14 @@ country_event = {
 			random_system_within_border = {
 				limit = { has_an_active_ehof = yes }
 				remove_star_flag = ehof_megastructure_system@root
-				every_system_megastructure = { limit = { is_any_ehof = yes } remove_megastructure = this }
-				every_system_planet = {
+				every_system_megastructure = { 
+					limit = { is_any_ehof = yes }
+					planet = {
+						giga_clear_has_mega_flag = { MEGA = prev }
 					remove_planet_flag = cant_target_this_planet
 					remove_planet_flag = cant_build_here
-					remove_planet_flag = has_megastructure
-					remove_planet_flag = megastructure
+					}
+					remove_megastructure = this 
 				}
 				star = { change_pc = pc_black_hole }
 			}

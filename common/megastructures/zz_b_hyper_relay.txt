@@ -80,7 +80,16 @@ hyper_relay = {
 	# root = system
 	# from = country
 	ai_weight = {
-		factor = 5
+		weight = 1 #Calvitix disabled value:giga_ai_base_kilo
+
+		modifier = {
+			check_variable_arithmetic = {
+				which = event_target:global_event_country.giga_one
+				multiply = from.value:giga_ai_relay_fraction
+				value < 0.5
+			}
+			factor = 2 #200 #000
+		}
 
 		modifier = {
 			factor = 3
@@ -162,6 +171,7 @@ hyper_relay_restored = {
 	}
 	upgrade_from = {
 		hyper_relay_ruined
+		giga_hyper_relay_ai_site
 	}
 	build_time = 180
 	resources = {
@@ -190,4 +200,15 @@ hyper_relay_restored = {
 			}
 		}
 	}
+}
+
+giga_hyper_relay_ai_site = {
+	entity = ""
+	construction_blocks_and_blocked_by = none
+	portrait = "GFX_megastructure_construction_background"
+	place_entity_on_planet_plane = no
+	build_outside_gravity_well = yes
+
+	potential = { always = no }
+	possible = { always = no }
 }

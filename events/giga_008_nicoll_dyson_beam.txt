@@ -2085,6 +2085,10 @@ planet_event = {
 				}
 				every_neighbor_system = { remove_hyperlane = { from = prev to = this } }
 				set_star_class = sc_neutron_star
+				every_fleet_in_system = {
+					limit = { owner = { NOT = { is_immune_to_giga_hyperweapon = yes } } } 
+					destroy_fleet = this 
+				}
 				if = {
 					limit = {
 						any_system_planet = { has_planet_flag = gigaflusion }
@@ -2106,10 +2110,7 @@ planet_event = {
 					remove_megastructure = this
 				}
 				set_asteroid_belt = { radius = 0 }
-				every_fleet_in_system = {
-					limit = { owner = { NOT = { is_immune_to_giga_hyperweapon = yes } } } 
-					destroy_fleet = this 
-				}
+				
 				giga_remove_system_debris = yes
 				every_system_planet = {
 					limit = { is_star = yes NOT = { is_planet_class = pc_black_hole } }
@@ -2184,7 +2185,6 @@ planet_event = {
 				else_if = {
 					limit = {
 						is_giga_habitat = yes
-						NOT = { is_planet_class = pc_gigaorbital_ring } # this has a ruined version that can be used, the others do not
 					}
 					giga_remove_planet = yes
 				}

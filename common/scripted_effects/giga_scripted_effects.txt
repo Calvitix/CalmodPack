@@ -100,12 +100,53 @@ katzenland_clear_districts = {
 # since 3.3 removing a planet which has a colony on it causes a crash
 # so here's a little effect to shorten stuff - TTFTCUTS
 giga_remove_planet = {
+	set_planet_flag = giga_remove_planet
 	if = { 
 		limit = { is_colony = yes }
 		every_owned_pop = { kill_pop = yes }
 		destroy_colony = yes	
-	}
+
+		set_planet_flag = has_megastructure
+		set_planet_flag = megastructure
+
+		change_pc = pc_giga_empty_space_asteroid
+
 	planet_event = { id = giga_mega.8500 days = 1 }
+	}
+	else = {
+		solar_system = {
+			every_fleet_in_system = {
+				limit = {
+					any_owned_ship = {
+						is_ship_class = shipclass_constructor
+					}
+					controller = {
+						is_ai = yes
+					}
+					is_fleet_idle = yes
+				}
+
+				set_fleet_flag = giga_remove_planet
+				every_owned_ship = {
+					set_disabled = yes
+				}
+			}
+		}
+
+		remove_planet = yes
+
+		solar_system = {
+			every_fleet_in_system = {
+				limit = {
+					has_fleet_flag = giga_remove_planet
+				}
+				every_owned_ship = {
+					set_disabled = no
+				}
+				remove_fleet_flag = giga_remove_planet
+			}
+		}
+	}
 }
 
 #################################
@@ -2235,7 +2276,7 @@ giga_start_ai_colony_if_safe = {
 			# make sure it's after the game start because otherwise it fucks over the gamers
 			years_passed >= 1
 			# make sure this is an AI and not a "one planet" play style
-			from = {
+			root.from = {
 				is_ai = yes
 				not = { is_giga_one_planet_origin = yes }
 			}
@@ -2247,21 +2288,143 @@ giga_start_ai_colony_if_safe = {
 				exists = starbase.controller
 				starbase.controller = {
 					is_same_empire = owner
-					is_same_empire = from
+					is_same_empire = root.from
 				}
 				# prevent if hostiles are around
 				not = {
 					any_fleet_in_system = {
 						controller = {
-							is_hostile_to = from
+							is_hostile_to = root.from
 						}
 					}
 				}
 			}
 		}
-		start_colony = {
-			owner = from
+		giga_get_species_for_colony = {
+			TARGET = this
+			WHO = root.from
 		}
+		start_colony = {
+			owner = root.from
+			species = event_target:giga_colony_species
+		}
+	}
+}
+
+# save an appropriate species for a colony to event_target:giga_colony_species
+# WHO = country for the colony
+# TARGET = planet to be colonised
+giga_get_species_for_colony = {
+	$WHO$ = {
+		save_event_target_as = giga_source_country
+	}
+	$TARGET$ = {
+		save_event_target_as = giga_target_planet
+	}
+
+	# try to find the best candidate species
+	event_target:giga_source_country = {
+		ordered_owned_pop_species = {
+			position = 0
+
+			# make sure they're allowed to be the rulers
+			limit = {
+				can_think = yes
+
+				# necrophage origin -> necrophages only
+				if = {
+					limit = {
+						event_target:giga_source_country = {
+							has_origin = origin_necrophage
+						}
+					}
+					has_trait = trait_necrophage
+				}
+
+				# "citizenship" check
+				if = {
+					limit = {
+						event_target:giga_source_country = {
+							is_machine_empire = yes
+						}
+					}
+					has_citizenship_type = {
+						type = citizenship_full_machine
+						country = event_target:giga_source_country
+					}
+				}
+				else = {
+					has_citizenship_type = {
+						type = citizenship_full
+						country = event_target:giga_source_country
+					}
+					
+				}
+
+				# only if colonisation is allowed for this species
+				has_colonization_control = {
+					value = no
+					country = event_target:giga_source_country
+				}
+			}
+
+			order_by = value:giga_get_species_for_colony_habitability
+
+			save_event_target_as = giga_colony_species
+		}
+	}
+
+	# primary species fallback
+	if = {
+		limit = {
+			not = { exists = event_target:giga_colony_species }
+		}
+
+		event_target:giga_source_country = {
+			species = {
+				save_event_target_as = giga_colony_species
+			}
+		}
+	}
+}
+
+giga_set_has_mega_flag = {
+	set_planet_flag = has_megastructure
+}
+
+giga_clear_has_mega_flag = {
+	if = {
+		limit = {
+			has_planet_flag = has_megastructure
+			nor = {
+				# any mega is attached to this planet
+				any_system_megastructure = {
+					if = {
+						limit = {
+							exists = $MEGA|fromfrom$
+							$MEGA|fromfrom$ = {
+								is_scope_type = megastructure
+							}
+						}
+						not = { is_same_value = $MEGA|fromfrom$ }
+					}
+
+					# check planet
+					exists = planet
+					planet = {
+						is_same_value = prevprev
+					}
+				}
+				# any habitable mega is attached to this planet
+				any_moon = {
+					has_planet_flag = megastructure
+					not = { has_planet_flag = giga_planet_mega }
+					not = { has_planet_flag = giga_remove_planet }
+				}
+			}
+		}
+
+		remove_planet_flag = has_megastructure
 	}
 }
 
@@ -2293,5 +2456,61 @@ giga_clear_orbital_arcology_modifiers = {
 	if = {
 		limit = { has_modifier = orbital_arcology_modifier_3 }
 		remove_modifier = orbital_arcology_modifier_3
+	}
+}
+
+# set buildings for elysium host planets
+giga_set_elysium_buildings = {
+	remove_all_buildings = yes
+			
+	if = {
+		limit = {
+			owner = { is_gestalt = no }
+		}
+		add_building = building_giga_elysium_host_capital
+		add_building = building_giga_elysium_host_jobs
+	}
+	else_if = {
+		limit = {
+			owner = { is_hive_empire = yes }
+		}
+		add_building = building_giga_elysium_host_hive_capital
+		add_building = building_giga_elysium_host_hive_jobs
+	}
+	else_if = {
+		limit = {
+			owner = { is_machine_empire = yes }
+		}
+		add_building = building_giga_elysium_host_machine_capital
+		add_building = building_giga_elysium_host_machine_jobs
+	}
+
+	validate_planet_buildings_and_districts = yes
+}
+
+giga_apply_stellar_ring_bonus = {
+	if = {
+		limit = {
+			is_a_habitable_planet_megastructure = yes
+		}
+		if = {
+			limit = {
+				not = {
+					has_deposit = d_giga_orbital_effects
+				}
+			}
+			add_deposit = d_giga_orbital_effects
+		}
+	}
+	else = {
+		remove_deposit = d_giga_orbital_effects
+	}
+}
+
+giga_apply_stellar_ring_bonus_to_system = {
+	solar_system = {
+		every_system_planet = {
+			giga_apply_stellar_ring_bonus = yes
+		}
 	}
 }

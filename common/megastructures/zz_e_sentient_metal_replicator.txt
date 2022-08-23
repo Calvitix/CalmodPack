@@ -13,7 +13,7 @@ ehof_sm_forge_phase0 = {
 	resources = {
 		category = giga_megastructures
 		cost = {
-			influence = 300
+			unity = @giga_big_mega_start_unity_cost # 300
 			alloys = 5000
 		}
 		upkeep = {
@@ -21,7 +21,7 @@ ehof_sm_forge_phase0 = {
 		}
 	}
 
-	prerequisites = { "tech_sm_megastructure" }
+	prerequisites = { tech_sm_megastructure }
 	potential = { NOT = { any_owned_megastructure = { has_megastructure_flag = sm_forge } } }
 
 	possible = {
@@ -57,15 +57,23 @@ ehof_sm_forge_phase0 = {
 	}
 
 	ai_weight = {
-		factor = 5
+		# factor = 5
 
-		modifier = {
-			factor = 0.1
-			any_neighbor_system = {
-				exists = owner
-				NOT = { owner = { is_same_value = from } }
-			}
-		}
+		# modifier = {
+		# 	factor = 0.1
+		# 	any_neighbor_system = {
+		# 		exists = owner
+		# 		NOT = { owner = { is_same_value = from } }
+		# 	}
+		# }
+
+		weight = value:giga_ai_base_mega
+		mult = 20 # kind of a big deal if you have access to it
+
+		mult = value:giga_ai_upkeep|RESOURCE|energy|AMOUNT|200|MIN|0.5|
+		mult = value:giga_ai_upkeep|RESOURCE|alloys|AMOUNT|100|MIN|0.1|
+		mult = value:giga_ai_output|RESOURCE|ehof_sr_sentient_metal|AMOUNT|2000|MIN|0.5|
+		mult = value:giga_ai_output|RESOURCE|ehof_sr_negative_mass|AMOUNT|1500|MIN|0.5|
 	}
 
 	on_build_complete = {
@@ -82,8 +90,7 @@ ehof_sm_forge_phase0 = {
 		fromfrom.planet = {
 			save_event_target_as = giga_planet
 			if = { limit = { exists = orbital_station } orbital_station = { dismantle = yes } }
-			set_planet_flag = megastructure			# Vanilla uses to check if a megastrucure can be built here
-			set_planet_flag = has_megastructure		# Vanilla uses to check if an orbital station can be built here
+			giga_set_has_mega_flag = yes
 		}
 		from = {
 			country_event = { id = giga_dialog.11101 }	# Notification
@@ -329,6 +336,7 @@ ehof_sm_forge_phase4 = {
 			planet = { save_event_target_as = giga_planet }
 		}
 		from = {
+			set_country_flag = has_built_or_repaired_gigastructure # unlocks gigastructural constructs
 			country_event = { id = giga_dialog.11105 }	# Notification
 		}
 	}

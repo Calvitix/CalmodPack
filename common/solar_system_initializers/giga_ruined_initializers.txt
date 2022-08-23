@@ -98,8 +98,6 @@ giga_system_one_init_05 = {
 			giga_field_debris = yes
 			set_planet_flag = forbid_guillis_planet_modifiers
 			set_planet_flag = hot_zone				# Real Space (Prevents Rings)
-			set_planet_flag = megastructure			# Vanilla uses to check if a megastrucure can be built here
-			set_planet_flag = has_megastructure		# Vanilla uses to check if an orbital station can be built here
 		}
 	}
 
@@ -173,8 +171,7 @@ giga_system_one_init_04 = {
 			giga_field_debris = yes
 			save_event_target_as = neutroniumgigaforge_star
 			set_planet_flag = hot_zone				# Real Space (Prevents Rings)
-			set_planet_flag = megastructure			# Vanilla uses to check if a megastrucure can be built here
-			set_planet_flag = has_megastructure		# Vanilla uses to check if an orbital station can be built here
+			giga_set_has_mega_flag = yes
 		}
 	}
 
@@ -227,8 +224,47 @@ giga_system_one_init_04 = {
 			save_event_target_as = testsite_planet
 			giga_field_debris = yes
 			set_planet_flag = hot_zone				# Real Space (Prevents Rings)
-			set_planet_flag = megastructure			# Vanilla uses to check if a megastrucure can be built here
-			set_planet_flag = has_megastructure		# Vanilla uses to check if an orbital station can be built here
+			giga_set_has_mega_flag = yes
+		}
+		}
+
+	planet = {
+		class = pc_giga_orbital
+		size = 20
+		orbit_distance = 25
+		orbit_angle = { min = 90 max = 270 }
+		init_effect = {
+			giga_field_debris = yes
+			set_planet_flag = hot_zone
+			set_planet_flag = megastructure
+
+			while = {
+				count = 3
+				add_blocker = {
+					type = d_city_ruins
+				}
+			}
+			while = {
+				count = 4
+				add_blocker = {
+					type = d_ruined_arcology
+				}
+			}
+			while = {
+				count = 3
+				add_blocker = {
+					type = d_radioactive_wasteland
+				}
+			}
+			add_blocker = {
+				type = d_dangerous_wildlife_blocker
+			}
+			while = {
+				count = 2
+				add_blocker = {
+					type = d_dense_jungle
+				}
+			}
 		}
 	}
 
@@ -253,21 +289,6 @@ giga_system_one_init_04 = {
 			orbit_distance = 5
 			orbit_angle = { min = 90 max = 270 }
 			has_ring = no
-		}
-	}
-
-	planet = {
-		class = pc_gigaorbital_ring
-		orbit_distance = 0
-		has_ring = no
-		orbit_angle = 0
-		size = 16
-
-		init_effect = {
-			set_planet_flag = giga_elysium
-			set_planet_flag = hot_zone				# Real Space (Prevents Rings)
-			set_planet_flag = megastructure			# Vanilla uses to check if a megastrucure can be built here
-			set_planet_flag = has_megastructure		# Vanilla uses to check if an orbital station can be built here
 		}
 	}
 
@@ -317,8 +338,9 @@ giga_system_one_init_03 = {
 			save_event_target_as = thirdyggdrasil_orchid_planet
 			giga_field_debris = yes
 			set_planet_flag = hot_zone				# Real Space (Prevents Rings)
-			set_planet_flag = megastructure			# Vanilla uses to check if a megastrucure can be built here
-			set_planet_flag = has_megastructure		# Vanilla uses to check if an orbital station can be built here
+			set_planet_flag = megastructure
+			set_planet_flag = giga_planet_mega
+			giga_set_has_mega_flag = yes
 		}
 
 		moon = {
@@ -338,8 +360,7 @@ giga_system_one_init_03 = {
 			save_event_target_as = orbital_artificial_eco_planet
 			giga_field_debris = yes
 			set_planet_flag = hot_zone				# Real Space (Prevents Rings)
-			set_planet_flag = megastructure			# Vanilla uses to check if a megastrucure can be built here
-			set_planet_flag = has_megastructure		# Vanilla uses to check if an orbital station can be built here
+			giga_set_has_mega_flag = yes
 		}
 	}
 
@@ -413,8 +434,9 @@ giga_system_one_init_02 = {
 			save_event_target_as = yggdrasil_orchid_planet
 			giga_field_debris = yes
 			set_planet_flag = hot_zone				# Real Space (Prevents Rings)
-			set_planet_flag = megastructure			# Vanilla uses to check if a megastrucure can be built here
-			set_planet_flag = has_megastructure		# Vanilla uses to check if an orbital station can be built here
+			set_planet_flag = megastructure
+			set_planet_flag = giga_planet_mega
+			giga_set_has_mega_flag = yes
 		}
 	}
 
@@ -435,29 +457,16 @@ giga_system_one_init_02 = {
 	}
 
 	planet = {
-		class = pc_broken
+		class = pc_giga_orbital_site
 		orbit_distance = 25
-		size = 20
+		size = 1
 		has_ring = no
 		orbit_angle = { min = 90 max = 270 }
-	}
-
-	planet = {
-		name = "Habitat Corinthe III"
-		class = pc_gigaorbital_ring_ruined
-		orbit_distance = 0
-		size = 16
-		has_ring = no
-		orbit_angle = 0
 
 		init_effect = {
-			set_planet_flag = giga_elysium
-			set_planet_flag = hot_zone				# Real Space (Prevents Rings)
-			set_planet_flag = megastructure			# Vanilla uses to check if a megastrucure can be built here
-			set_planet_flag = has_megastructure		# Vanilla uses to check if an orbital station can be built here
+			save_event_target_as = orbital_planet
 		}
 	}
-
 
 	planet = {
 		class = pc_nuked
@@ -488,22 +497,6 @@ giga_system_one_init_02 = {
 	}
 
 	planet = {
-		name = "Habitat Corinthe V"
-		class = pc_gigaorbital_ring_ruined
-		orbit_distance = 0
-		size = 16
-		has_ring = no
-		orbit_angle = 0
-
-		init_effect = {
-			set_planet_flag = giga_elysium
-			set_planet_flag = hot_zone				# Real Space (Prevents Rings)
-			set_planet_flag = megastructure			# Vanilla uses to check if a megastrucure can be built here
-			set_planet_flag = has_megastructure		# Vanilla uses to check if an orbital station can be built here
-		}
-	}
-
-	planet = {
 		class = pc_barren
 		orbit_distance = 25
 		orbit_angle = { min = 90 max = 270 }
@@ -523,7 +516,7 @@ giga_system_one_init_02 = {
 	}
 
 	planet = {
-		name = "Corinthe Prime"
+		name = "Corinth Prime"
 		class = pc_desert
 		orbit_distance = 25
 		orbit_angle = { min = 90 max = 270 }
@@ -540,7 +533,7 @@ giga_system_one_init_02 = {
 	}
 
 	planet = {
-		name = "Corinthe VIII"
+		name = "Corinth VIII"
 		class = pc_gas_giant
 		orbit_distance = 25
 		has_ring = yes
@@ -569,8 +562,7 @@ giga_system_one_init_02 = {
 			giga_field_debris = yes
 			save_event_target_as = kugelbliztwo_planet
 			set_planet_flag = hot_zone				# Real Space (Prevents Rings)
-			set_planet_flag = megastructure			# Vanilla uses to check if a megastrucure can be built here
-			set_planet_flag = has_megastructure		# Vanilla uses to check if an orbital station can be built here
+			giga_set_has_mega_flag = yes
 		}
 	}
 
@@ -637,6 +629,8 @@ giga_system_one_init_02 = {
 		giga_field_system_debris = yes
 		spawn_megastructure = { type = "kugelblitz_ruined" coords_from = event_target:kugelbliztwo_planet }
 		spawn_megastructure = { type = "yggdrasil_orchid_ruined"		coords_from = event_target:yggdrasil_orchid_planet }
+		spawn_megastructure = { type = stellar_ring_habitat_ruined 	coords_from = event_target:orbital_planet 			}
+		event_target:orbital_planet = { giga_remove_planet = yes }
 	}
 }
 
@@ -685,8 +679,7 @@ giga_system_one_init_01 = {
 			save_event_target_as = kugelblitz_planet
 			giga_field_debris = yes
 			set_planet_flag = hot_zone				# Real Space (Prevents Rings)
-			set_planet_flag = megastructure			# Vanilla uses to check if a megastrucure can be built here
-			set_planet_flag = has_megastructure		# Vanilla uses to check if an orbital station can be built here
+			giga_set_has_mega_flag = yes
 		}
 	}
 
@@ -811,8 +804,7 @@ orbital_ecosystem_init_01 = {
 			save_event_target_as = orbitalsystem_planet
 			giga_field_debris = yes
 			set_planet_flag = hot_zone				# Real Space (Prevents Rings)
-			set_planet_flag = megastructure			# Vanilla uses to check if a megastrucure can be built here
-			set_planet_flag = has_megastructure		# Vanilla uses to check if an orbital station can be built here
+			giga_set_has_mega_flag = yes
 		}
 	}
 
@@ -862,8 +854,7 @@ engineering_test_site_init_01 = {
 			save_event_target_as = engineeringsite_planet
 			giga_field_debris = yes
 			set_planet_flag = hot_zone				# Real Space (Prevents Rings)
-			set_planet_flag = megastructure			# Vanilla uses to check if a megastrucure can be built here
-			set_planet_flag = has_megastructure		# Vanilla uses to check if an orbital station can be built here
+			giga_set_has_mega_flag = yes
 		}
 	}
 
@@ -896,8 +887,7 @@ accelerator_init_01 = {
 			save_event_target_as = giga_acc_star
 			giga_field_debris = yes
 			set_planet_flag = hot_zone				# Real Space (Prevents Rings)
-			set_planet_flag = megastructure			# Vanilla uses to check if a megastrucure can be built here
-			set_planet_flag = has_megastructure		# Vanilla uses to check if an orbital station can be built here
+			giga_set_has_mega_flag = yes
 		}
 	}
 
@@ -953,8 +943,7 @@ ring_world_titanic_init_01 = {
 	init_effect = {
 		set_star_flag = ring_world_built_one
 		star = {
-			set_planet_flag = megastructure			# Vanilla uses to check if a megastrucure can be built here
-			set_planet_flag = has_megastructure		# Vanilla uses to check if an orbital station can be built here
+			giga_set_has_mega_flag = yes
 		}
 		spawn_megastructure = { type = "ring_world_ruined"				orbit_angle = 0		orbit_distance = 45 }
 		spawn_megastructure = { type = "ring_world_ruined"				orbit_angle = 90	orbit_distance = 45 }
@@ -999,8 +988,7 @@ ring_world_behemoth_init_01 = {
 		set_star_flag = ring_world_built_one
 		set_star_flag = ring_world_built_two
 		star = {
-			set_planet_flag = megastructure			# Vanilla uses to check if a megastrucure can be built here
-			set_planet_flag = has_megastructure		# Vanilla uses to check if an orbital station can be built here
+			giga_set_has_mega_flag = yes
 		}
 		spawn_megastructure = { type = "ring_world_ruined"				orbit_angle = 0		orbit_distance = 45 }
 		spawn_megastructure = { type = "ring_world_ruined"				orbit_angle = 90	orbit_distance = 45 }
@@ -1050,8 +1038,7 @@ ring_world_gargantuan_init_01 = {
 		set_star_flag = ring_world_built_two
 		set_star_flag = ring_world_built_three
 		star = {
-			set_planet_flag = megastructure			# Vanilla uses to check if a megastrucure can be built here
-			set_planet_flag = has_megastructure		# Vanilla uses to check if an orbital station can be built here
+			giga_set_has_mega_flag = yes
 		}
 		spawn_megastructure = { type = "ring_world_ruined"				orbit_angle = 0		orbit_distance = 45 }
 		spawn_megastructure = { type = "ring_world_ruined"				orbit_angle = 90	orbit_distance = 45 }

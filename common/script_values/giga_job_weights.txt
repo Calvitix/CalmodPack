@@ -1,3 +1,9 @@
+# Giga file
+#
+#Calvitix trad names
+#
+# update 22.08.2022
+#
 ############################################################################
 # Base weight categories
 
@@ -110,10 +116,10 @@ giga_specialist_weight = {
 giga_specialist_triple_weight = {
 	weight = value:giga_specialist_no_resource_weight|JOB|$JOB$|[[AMENITIES]AMENITIES|yes|][[TRADE]TRADE|yes|][[STICKY]STICKY|$STICKY$|][[INDENTURED]INDENTURED|$INDENTURED$|]
 
-	multiply = value:giga_specialist_triple_weight_calc|RESOURCE1|$RESOURCE1$|WEIGHT1|$WEIGHT1$|RESOURCE2|$RESOURCE2$|WEIGHT2|$WEIGHT2$|RESOURCE3|$RESOURCE3$|WEIGHT3|$WEIGHT3$|
+	multiply = value:giga_specialist_triple_weight_calc|JOB|$JOB$|RESOURCE1|$RESOURCE1$|WEIGHT1|$WEIGHT1$|RESOURCE2|$RESOURCE2$|WEIGHT2|$WEIGHT2$|RESOURCE3|$RESOURCE3$|WEIGHT3|$WEIGHT3$|
 }
 
-giga_complex_drone_triple_weight_calc = {
+giga_specialist_triple_weight_calc = {
 
 	complex_trigger_modifier = {
 		trigger = check_economic_production_modifier_for_job
@@ -135,19 +141,19 @@ giga_complex_drone_triple_weight_calc = {
 		owner = {
 			has_deficit = $RESOURCE1$
 		}
-		mult = @\[ 10 * $WEIGHT1$ ]
+		multiply = @\[ 10 * $WEIGHT1$ ]
 	}
 	modifier = {
 		owner = {
 			has_deficit = $RESOURCE2$
 		}
-		mult = @\[ 10 * $WEIGHT2$ ]
+		multiply = @\[ 10 * $WEIGHT2$ ]
 	}
 	modifier = {
 		owner = {
 			has_deficit = $RESOURCE3$
 		}
-		mult = @\[ 10 * $WEIGHT3$ ]
+		multiply = @\[ 10 * $WEIGHT3$ ]
 	}
 }
 
@@ -324,7 +330,7 @@ giga_menial_drone_weight = {
 }
 
 giga_complex_drone_weight = {
-	weight = value:giga_complex_drone_no_resource_weight|JOB|$JOB$|[[AMENITIES]AMENITIES|yes|][[DEFICIT]DEFICIT|$DEFICIT$|][[STICKY]STICKY|$STICKY$|][[FACTOR]FACTOR|$FACTOR$|]
+	weight = value:giga_complex_drone_no_resource_weight|JOB|$JOB$|[[AMENITIES]AMENITIES|yes|][[STICKY]STICKY|$STICKY$|][[FACTOR]FACTOR|$FACTOR$|]
 
 	# split resources
 	[[RESOURCE2] 
@@ -338,9 +344,9 @@ giga_complex_drone_weight = {
 }
 
 giga_complex_drone_triple_weight = {
-	weight = value:giga_complex_drone_no_resource_weight|JOB|$JOB$|[[AMENITIES]AMENITIES|yes|][[DEFICIT]DEFICIT|$DEFICIT$|][[STICKY]STICKY|$STICKY$|][[FACTOR]FACTOR|$FACTOR$|]
+	weight = value:giga_complex_drone_no_resource_weight|JOB|$JOB$|[[AMENITIES]AMENITIES|yes|][[STICKY]STICKY|$STICKY$|][[FACTOR]FACTOR|$FACTOR$|]
 
-	multiply = value:giga_complex_drone_triple_weight_calc|RESOURCE1|$RESOURCE1$|WEIGHT1|$WEIGHT1$|RESOURCE2|$RESOURCE2$|WEIGHT2|$WEIGHT2$|RESOURCE3|$RESOURCE3$|WEIGHT3|$WEIGHT3$|
+	multiply = value:giga_complex_drone_triple_weight_calc|JOB|$JOB$|RESOURCE1|$RESOURCE1$|WEIGHT1|$WEIGHT1$|RESOURCE2|$RESOURCE2$|WEIGHT2|$WEIGHT2$|RESOURCE3|$RESOURCE3$|WEIGHT3|$WEIGHT3$|
 }
 
 giga_complex_drone_triple_weight_calc = {
@@ -366,19 +372,19 @@ giga_complex_drone_triple_weight_calc = {
 		owner = {
 			has_deficit = $RESOURCE1$
 		}
-		mult = @\[ 10 * $WEIGHT1$ ]
+		multiply = @\[ 10 * $WEIGHT1$ ]
 	}
 	modifier = {
 		owner = {
 			has_deficit = $RESOURCE2$
 		}
-		mult = @\[ 10 * $WEIGHT2$ ]
+		multiply = @\[ 10 * $WEIGHT2$ ]
 	}
 	modifier = {
 		owner = {
 			has_deficit = $RESOURCE3$
 		}
-		mult = @\[ 10 * $WEIGHT3$ ]
+		multiply = @\[ 10 * $WEIGHT3$ ]
 	}
 }
 
@@ -402,19 +408,6 @@ giga_complex_drone_no_resource_weight = {
 		modifier = {
 			factor = $STICKY$
 			has_job = $JOB$
-		}
-	]
-
-	[[DEFICIT]
-		modifier = {
-			factor = $DEFICIT$
-			OR = {
-				has_job = $JOB$
-				AND = {
-					exists = owner
-					owner = { has_deficit = $RESOURCE$ }
-				}
-			}
 		}
 	]
 }
@@ -554,6 +547,8 @@ giga_army_weight = {
 
 # weight mult for jobs considered priests to give them spiritualist alignment
 giga_priest_weight = {
+	base = 1
+
 	modifier = {
 		factor = 2
 		exists = owner
@@ -564,6 +559,8 @@ giga_priest_weight = {
 
 # weight mult for spiritualust aligned jobs (included in giga_priest_weight)
 giga_spiritualist_weight = {
+	base = 1
+
 	modifier = {
 		factor = 1.2
 		has_ethic = ethic_spiritualist # pop ethics, not country, so no fanatic
@@ -577,6 +574,8 @@ giga_spiritualist_weight = {
 
 # weight mult for militartist aligned jobs
 giga_militarist_weight = {
+	base = 1
+	
 	modifier = {
 		factor = 1.2
 		has_ethic = ethic_militarist # pop ethics, not country, so no fanatic

@@ -12,7 +12,12 @@ maginot_create_orbital_defence_fleet = {
 	save_event_target_as = maginot_world_location
 	create_fleet = {
 		name = "Commande de défense planétaire"
-		settings = { spawn_debris = no }
+		settings = {
+			spawn_debris = no
+			can_change_composition = no
+			can_change_leader = no
+			can_disband = no
+		}
 		effect = {
 			set_formation_scale = 4 # keep distance between platforms
 			set_owner = event_target:maginot_world_location.planet_owner
@@ -102,7 +107,7 @@ maginot_check_upgrade_points = {
 	## max points
 	# offensive
 	if = {
-		limit = { planet_owner = { is_regular_empire = yes } }
+		limit = { planet_owner = { is_gestalt = no } }
 		export_trigger_value_to_variable = {
 			trigger = num_assigned_jobs
 			parameters = { job = maginot_planetary_cannon_operator }
@@ -122,7 +127,7 @@ maginot_check_upgrade_points = {
 
 	# defensive
 	if = {
-		limit = { planet_owner = { is_regular_empire = yes } }
+		limit = { planet_owner = { is_gestalt = no } }
 		export_trigger_value_to_variable = {
 			trigger = num_assigned_jobs
 			parameters = { job = maginot_shield_generator_operator }
@@ -214,6 +219,12 @@ maginot_check_upgrade_points = {
 	subtract_variable = {
 		which = maginot_defensive_upgrade_points_current
 		value = maginot_defensive_upgrade_points_used
+	}
+
+	# count of bunkers on the world
+	set_variable = {
+		which = maginot_bunker_count
+		value = value:maginot_bunker_count
 	}
 }
 

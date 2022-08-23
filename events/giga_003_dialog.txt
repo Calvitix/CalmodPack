@@ -1982,18 +1982,22 @@ country_event = {
 				if = {
 					limit = { root = { has_country_flag = giga_interstellar_east } }
 					spawn_system = { hyperlane = yes min_distance >= 5 max_distance <= 5 min_orientation_angle = 0	max_orientation_angle = 0	initializer = "spacehabitat_init" }
+					root = { remove_country_flag = giga_interstellar_east }
 				}
 				else_if = {
 					limit = { root = { has_country_flag = giga_interstellar_north } }
 					spawn_system = { hyperlane = yes min_distance >= 5 max_distance <= 5 min_orientation_angle = 90	max_orientation_angle = 90	initializer = "spacehabitat_init" }
+					root = { remove_country_flag = giga_interstellar_north }
 				}
 				else_if = {
 					limit = { root = { has_country_flag = giga_interstellar_west } }
 					spawn_system = { hyperlane = yes min_distance >= 5 max_distance <= 5 min_orientation_angle = 180	max_orientation_angle = 180	initializer = "spacehabitat_init" }
+					root = { remove_country_flag = giga_interstellar_west }
 				}
 				else_if = {
 					limit = { root = { has_country_flag = giga_interstellar_south } }
 					spawn_system = { hyperlane = yes min_distance >= 5 max_distance <= 5 min_orientation_angle = 270	max_orientation_angle = 270	initializer = "spacehabitat_init" }
+					root = { remove_country_flag = giga_interstellar_south }
 				}
 				last_created_system = {
 					create_starbase = {
@@ -2159,7 +2163,9 @@ country_event = {
 		portrait = event_target:garyx_species
 		room = garyx_room
 	}
-
+	immediate = {
+		set_country_flag = squareworld_tech_possible
+	}
 	option = {
 		name = "giga_dialog.3007.a"
 		add_research_option = giga_tech_event_squareworld
@@ -2574,6 +2580,9 @@ country_event = {
 					destroy_fleet = this 
 				}
 				star = { change_pc = pc_neutron_star }
+				set_asteroid_belt = {
+					radius = 0
+				}
 
 				# remove planets and change types
 				every_system_planet = {
@@ -2581,23 +2590,25 @@ country_event = {
 					if = {
 						limit = {
 							OR = {
-								is_planet_class = pc_asteroid
-								is_planet_class = pc_gigaorbital_ring
-								is_planet_class = pc_gigaorbital_ring_ruined
-								is_planet_class = pc_flat_world
+								is_asteroid = yes
+								is_giga_habitat = yes
 							}
 						}
-						giga_remove_planet = yes
+						random_list = {
+							0 = { modifier = { add = 1 is_asteroid = yes } }
+							4 = { set_planet_flag = giga_suppressor_remove }
+						}
 					}
 					if = { limit = { is_planet_class = pc_gas_giant }	set_planet_size = 5 change_pc = pc_molten }
+					else_if = { limit = { is_planet_class = pc_ice_asteroid } 	set_planet_size = 1 change_pc = pc_asteroid }
 					else_if = { limit = { planet_size <7 }						set_planet_size = 2 change_pc = pc_asteroid }
 					else_if = { limit = { planet_size <= 10 planet_size >= 7 }	change_planet_size = -5 change_pc = pc_asteroid }
 					else_if = { limit = { planet_size > 10 } 					change_planet_size = -5 }
 					if = {
 						limit = {
 							NOR = {
+								is_asteroid = yes
 								is_planet_class = pc_gas_giant
-								is_planet_class = pc_asteroid
 								is_planet_class = pc_molten
 								is_planet_class = pc_shattered
 								is_planet_class = pc_broken
@@ -2607,9 +2618,32 @@ country_event = {
 					}
 				}
 
+				# if every target is going to be removed, save one!
+				if = {
+					limit = {
+						# if every prospective planet has a science deposit
+						not = {
+							any_system_planet = {
+								is_star = no
+								not = { has_planet_flag = giga_suppressor_remove }
+							}
+						}
+					}
+					random_system_planet = {
+						limit = {
+							is_star = no
+							has_planet_flag = giga_suppressor_remove
+						}
+						remove_planet_flag = giga_suppressor_remove
+					}
+				}
+
 				# set deposits
 				every_system_planet = {
-					limit = { is_star = no }
+					limit = { 
+						is_star = no 
+						not = { has_planet_flag = giga_suppressor_remove }
+					}
 					clear_deposits = yes
 
 					random_list = {
@@ -2643,6 +2677,7 @@ country_event = {
 						not = {
 							any_system_planet = {
 								is_star = no
+								not = { has_planet_flag = giga_suppressor_remove }
 								not = {
 									has_deposit_for = shipclass_research_station
 								}
@@ -2653,6 +2688,7 @@ country_event = {
 					random_system_planet = {
 						limit = {
 							is_star = no
+							not = { has_planet_flag = giga_suppressor_remove }
 						}
 						clear_deposits = yes
 					}
@@ -2664,12 +2700,21 @@ country_event = {
 					random_system_planet = {
 						limit = {
 							is_star = no
+							not = { has_planet_flag = giga_suppressor_remove }
 							not = {
 								has_deposit_for = shipclass_research_station
 							}
 						}
 						add_deposit = d_iodizium_deposit_1
 					}
+				}
+
+				# remove the marked planets
+				every_system_planet = {
+					limit = { 
+						has_planet_flag = giga_suppressor_remove
+					}
+					giga_remove_planet = yes
 				}
 
 				# kaboom!
@@ -3886,5 +3931,119 @@ planet_event = {
 			}
 		}
 		planet_event = { id = giga_dialog.13503 days = 2700 random = 3600 }
+	}
+}
+
+####################################################
+### Stellar Ring Habitat ###########################
+####################################################
+country_event = {
+	id = giga_dialog.13601
+	title = "giga_dialog.13601.name"
+	desc = "giga_dialog.13601.desc"
+	picture = GFX_evt_megastructure_construction
+	show_sound = event_dyson_sphere_build_start
+	location = event_target:giga_planet
+	is_triggered_only = yes
+	option = { name = "giga_dialog.13601.a" }
+}
+
+country_event = {
+	id = giga_dialog.13602
+	title = "giga_dialog.13602.name"
+	desc = "giga_dialog.13602.desc"
+	picture = GFX_evt_mining_station
+	show_sound = event_dyson_sphere_build_upgrade_panel
+	location = event_target:giga_planet
+	is_triggered_only = yes
+	option = { name = "giga_dialog.13602.a" }
+}
+
+country_event = {
+	id = giga_dialog.13603
+	title = "giga_dialog.13603.name"
+	desc = "giga_dialog.13603.desc"
+	picture = GFX_evt_ringworld
+	show_sound = event_dyson_sphere_build_upgrade_panel
+	location = event_target:giga_planet
+	is_triggered_only = yes
+	option = { name = EXCELLENT }
+}
+
+country_event = {
+	id = giga_dialog.13604
+	title = "giga_dialog.13604.name"
+	desc = {
+		trigger = {
+			not = { has_civic = civic_machine_servitor }
+		}
+		text = "giga_dialog.13604.desc"
+	}
+	desc = {
+		trigger = {
+			has_civic = civic_machine_servitor
+		}
+		text = "giga_dialog.13604.desc.servitor"
+	}
+	picture = GFX_evt_ringworld
+	show_sound = event_dyson_sphere_build_complete
+	location = event_target:giga_planet
+	is_triggered_only = yes
+	option = { default_hide_option = yes name = MARVELOUS }
+	option = { 
+		trigger = {
+			has_civic = civic_machine_servitor
+		} 
+		name = giga_dialog.13604.servitor 
+	}
+}
+
+# Ruined orbital
+ship_event = {
+	id = giga_dialog.13605
+	title = "giga_dialog.13605.name"
+	desc = "giga_dialog.13605.desc"
+	picture = GFX_evt_space_debris
+	show_sound = event_radio_chatter
+	location = from
+	is_triggered_only = yes
+
+	trigger = {
+		owner = { NOT = { has_country_flag = encountered_ruined_orbital } }
+		from = { any_system_megastructure = { is_megastructure_type = stellar_ring_habitat_ruined } }
+	}
+
+	immediate = { owner = { set_country_flag = encountered_ruined_orbital } }
+	option = { default_hide_option = yes name = FASCINATING }
+	option = { 
+		trigger = {
+			owner = {
+				or = {
+					check_variable = {
+						which = giga_current_stellar_ring
+						value > 0
+					}
+					any_planet_within_border = {
+						is_planet_class = pc_giga_orbital
+					}
+				}
+			}
+		}
+		name = "giga_dialog.13605.a" 
+	}
+}
+
+# Repaired orbital
+country_event = {
+	id = giga_dialog.13606
+	title = "giga_dialog.13606.name"
+	desc = "giga_dialog.13606.desc"
+	picture = GFX_evt_ringworld
+	show_sound = event_dyson_sphere_build_complete
+	location = event_target:giga_planet
+	is_triggered_only = yes
+	option = {
+		name = EXCELLENT
+		hidden_effect = { set_timed_country_flag = { flag = giga_repaired_mega_no_dialog days = 10 } }
 	}
 }

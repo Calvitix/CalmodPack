@@ -20,6 +20,18 @@ event = {
 		set_global_flag = gigastructures_enabled
 		set_global_flag = already_warned_about_new_megas
 
+		# math basis stuff
+		event_target:global_event_country = {
+			set_variable = {
+				which = giga_zero
+				value = 0
+			}
+			set_variable = {
+				which = giga_one
+				value = 1
+			}
+		}
+
 		random_list = {
 			40 = {}
 			# titanic Ring System
@@ -159,13 +171,83 @@ country_event = {
 	}
 }
 
+# change planet capitals on colony complete
+# fired before vanilla on_actions over in 000_giga_early_on_actions.txt
+# this could be done in country_customization, but this is theoretically more compatible and not really expensive
+# *should* be reasonably stable given it's done before other events
+# also sets elysium planet buildings on colonise
+planet_event = {
+	id = giga_mega.003
+	is_triggered_only = yes
+	hide_window = yes
+
+	trigger = {
+		exists = owner
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				has_planet_flag = has_orbital_elysium
+			}
+
+			giga_set_elysium_buildings = yes
+		}
+		else = {
+			remove_all_buildings = yes
+			switch = {
+				trigger = is_planet_class
+
+				pc_giga_elysium = {
+					add_building = building_hab_capital
+				}
+				pc_giga_orbital = {
+					add_building = building_hab_capital
+				}
+			}
+			validate_planet_buildings_and_districts = yes
+		}
+	}
+}
+
 planet_event = {
 	id = giga_mega.8500
 	hide_window = yes
 	is_triggered_only = yes
 
 	immediate = {
+		solar_system = {
+			every_fleet_in_system = {
+				limit = {
+					any_owned_ship = {
+						is_ship_class = shipclass_constructor
+					}
+					controller = {
+						is_ai = yes
+					}
+					is_fleet_idle = yes
+				}
+	
+				set_fleet_flag = giga_remove_planet
+				every_owned_ship = {
+					set_disabled = yes
+				}
+			}
+		}
+	
 		remove_planet = yes
+	
+		solar_system = {
+			every_fleet_in_system = {
+				limit = {
+					has_fleet_flag = giga_remove_planet
+				}
+				every_owned_ship = {
+					set_disabled = no
+				}
+				remove_fleet_flag = giga_remove_planet
+			}
+		}
 	}
 }
 
@@ -381,8 +463,7 @@ planet_event = {
 			}
 			change_pc = pc_barren
 			add_deposit = d_succ_deposit
-			remove_planet_flag = has_megastructure
-			remove_planet_flag = megastructure
+			giga_clear_has_mega_flag = yes
 			solar_system = {
 				random_system_megastructure = {
 					limit = { 
@@ -445,16 +526,25 @@ planet_event = {
 		if = {
 			limit = { planet_size = 5 }
 			set_planet_flag = reached_inner_core
+			if = {
+				limit = {
+					exists = solar_system.owner
+				}
 			solar_system.owner = { country_event = { id = giga_dialog.3304 days = 1 } }
+		}
 		}
 
 		if = {
 			limit = { planet_size = 2 }
 			change_pc = pc_core_mined
 			set_planet_flag = depletedstripmine
-			remove_planet_flag = has_megastructure
-			remove_planet_flag = megastructure
+			giga_clear_has_mega_flag = yes
+			if = {
+				limit = {
+					exists = solar_system.owner
+				}
 			solar_system.owner = { country_event = { id = giga_dialog.3305 days = 1 } }
+		}
 		}
 		else_if = {
 			limit = { planet_size > 2 }
@@ -735,8 +825,7 @@ planet_event = {
 
 			# Explosion
 			star = {
-				remove_planet_flag = has_megastructure
-				remove_planet_flag = megastructure
+				giga_clear_has_mega_flag = yes
 				while = {
 					count = 4
 					create_ambient_object = {
@@ -1717,6 +1806,8 @@ country_event = {
 				is_megastructure_type = yggdrasil_orchid_restored
 				is_megastructure_type = the_vat_4
 				is_megastructure_type = r_square_world_restored
+				is_megastructure_type = stellar_ring_habitat_3
+				is_megastructure_type = stellar_ring_habitat_restored
 			}
 		}
 	}
@@ -1768,6 +1859,32 @@ country_event = {
 	option = {
 		name = "giga_mega.500.a"
 		custom_tooltip = "giga_mega.500.a.tooltip"
+	}
+}
+
+# Update event for newly habitable worlds to give them location dependent effects
+# e.g. disco moon, stellar ring influence
+planet_event = {
+	id = giga_mega.1000
+	is_triggered_only = yes
+	hide_window = yes
+
+	immediate = {
+		# check for this being among a disco moon system and apply modifier if so
+		apply_disco_moon_modifiers_to_new_moon = yes
+
+		# apply orbital ring effects
+		if = {
+			limit = {
+				solar_system = {
+					any_system_planet = {
+						is_planet_class = pc_giga_orbital
+					}
+				}
+				not = { has_deposit = d_giga_orbital_effects }
+			}
+			add_deposit = d_giga_orbital_effects
+		}
 	}
 }
 
@@ -2187,8 +2304,7 @@ planet_event = {
 			}
 			remove_modifier = planetary_drive_yard_fortress_modifier
 			remove_modifier = planetary_drive_yard_fortress_modifier_gestalt
-			remove_planet_flag = has_megastructure
-			remove_planet_flag = megastructure
+			
 			remove_planet_flag = giga_drive_yard
 			remove_planet_flag = defense_nexus_deploy_system
 			remove_planet_flag = defense_nexus_deploy_bombard
@@ -2215,10 +2331,19 @@ planet_event = {
 			giga_drive_yard_reset_variables = yes
 			solar_system = {
 				random_system_megastructure = {
-					limit = { planet = { is_same_value = ROOT } }
+					limit = { 
+						or = {
+							is_megastructure_type = planetary_drive_yard_1
+							is_megastructure_type = planetary_drive_yard_1_fortress
+							is_megastructure_type = planetary_drive_yard_1_shipyard
+						}
+						planet = { is_same_value = ROOT } 
+					}
 					remove_megastructure = THIS
 				}
 			}
+
+			giga_clear_has_mega_flag = yes
 		}
 	}
 
