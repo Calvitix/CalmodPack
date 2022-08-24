@@ -50,6 +50,7 @@
 #		primitive_age = "STONE_AGE"			#if primitive = yes, localization string. Remember that these values are dynamic and this value will most likely be overwritten instantly by the same event that created the country. This field can probably be left empty
 #		hostile_when_attacked = yes			#toggles if country turns hostile against attacker.
 #		show_borders_in_us = yes			#if no, borders for countries of this type will not be shown if in uncharted space
+#		intel_effects_surveyed = yes			# toggle if the intel system is allowed to change any surveyed planets to unsurveyed depending on intel level with this country
 #	}
 #
 #	ai = {								#block of AI settings
@@ -60,13 +61,20 @@
 #		modification = yes					#should AI genemod & terraform? default yes
 #		construction = yes					#should AI build ships and buildings? default yes
 #		tech = yes							#should AI advance its technology? default yes
-#		ship_data							#highest fleet slot size first for military ship sizes
+#		espionage = yes					#should AI use espionage? default yes
 #
 #		modules = {							#List of diferent ai modules this country type should have
 #			military_minister_module
 #			foreign_minister_module
 #			interior_minister_module
 #		}
+#	}
+#
+#	fleet_manager = {								#block of Country Fleet Manager settings
+#		on_contract_started = {						#effect fired when fleet owned by country is hired
+#		}											#Scope - Fleet, From - Country that hired the fleet
+#		on_contract_broken = {						#effect fired when hire contract of a fleet owned by country is broken
+#		}											#Scope - Fleet, From - Country that hired the fleet
 #	}
 #
 #	modules = {							#List of modules countries of this should have.
@@ -76,6 +84,7 @@
 #		standard_economy_module = {}
 #		standard_leader_module = {}
 #		standard_diplomacy_module = {}
+#				#contact_rule: auto (default: has first contact sites formed upon); does_first_contact_sites (uses first contact sites on others); on_action_only (no first contact site on this country, only on_first_contact event); never; always (fires on_first_contact immediately, but no site formed)
 #		standard_technology_module = {}
 #		standard_trade_routes_module = {}
 #		standard_pop_factions_module = {}
@@ -99,6 +108,8 @@ ark = {
 	relations = yes
 	observable = yes
 	can_use_invalid_technology = no
+	can_receive_envoys = yes
+	ownership_limits = default
 	
 	faction = {
 		auto_delete = yes
@@ -109,12 +120,13 @@ ark = {
 		enabled = yes
 		declare_war = yes
 		min_navy_for_wars = 0.5
-		min_assault_armies_for_wars = 6
+		min_assault_armies_for_wars = @armies_for_declaring_war
 		colonizer = yes
 		internal_policies = yes
 		modification = yes
 		government = yes
 		traditions = yes
+		ascension_perks = yes
 		construction = yes
 		follow = yes
 		can_use_market = yes
@@ -122,6 +134,8 @@ ark = {
 			military_minister_module
 			foreign_minister_module
 			interior_minister_module
+			mercenary_buyer_minister_module
+			enclave_founder_minister_module
 		}
 
 		ship_data = {
@@ -390,7 +404,7 @@ ark = {
 		standard_event_module = {}
 		standard_economy_module = {}
 		standard_leader_module = {}
-		standard_diplomacy_module = {}
+		standard_diplomacy_module = { contact_rule = does_first_contact_sites }
 		standard_technology_module = {}
 		standard_trade_routes_module = {}
 		standard_pop_factions_module = {}

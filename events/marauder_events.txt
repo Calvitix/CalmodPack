@@ -2918,7 +2918,7 @@ country_event = {
 			}
 		}
 		event_target:marauder_raiding_country = {
-			every_country = { establish_communications_no_message = event_target:marauder_raiding_country }
+			every_country = { limit = { has_communications = event_target:raiding_marauder } establish_communications_no_message = prev }
 			event_target:raiding_marauder = {
 				set_country_flag = parent_of@event_target:marauder_raiding_country
 				set_faction_hostility = {
@@ -2926,6 +2926,9 @@ country_event = {
 					set_hostile = no
 					set_neutral = no
 					set_friendly = yes
+				}
+				if = { limit = { has_global_flag = pirate_waves_active }
+					set_pirates_difficulty = yes
 				}
 			}
 			create_leader = {
@@ -2952,24 +2955,24 @@ country_event = {
 					set_aggro_range = 150
 					set_fleet_flag = hired_raiding_fleet
 					set_fleet_flag = raiding_fleet
-					assign_leader = last_created_leader
 				}
 			}
 			set_faction_hostility = {
-				target = event_target:marauder_target
+				target = root
 				set_hostile = yes
 				set_neutral = no
 				set_friendly = no
 			}
 			last_created_fleet = {
 				set_owner = prev	# Real owner
+				assign_leader = last_created_leader
 					closest_system = {
 						limit = {
 						has_owner = yes
-						is_owned_by = event_target:marauder_target
+						is_owned_by = root
 							any_system_planet = {
 								has_owner = yes
-								is_owned_by = event_target:marauder_target
+							is_owned_by = root
 								num_pops > 0
 							}
 							# prev = { can_access_system = prev }
@@ -2977,7 +2980,7 @@ country_event = {
 						random_system_planet = {
 							limit = {
 								has_owner = yes
-								is_owned_by = event_target:marauder_target
+							is_owned_by = root
 								num_pops > 0
 							}
 							save_event_target_as = raid_planet
@@ -2990,7 +2993,7 @@ country_event = {
 						}
 					auto_move_to_planet = { target = event_target:raid_planet clear_auto_move_on_arrival = no }
 					} else = {
-						fleet_event = { id = marauder.29 scopes = { from = event_target:marauder_target } }
+					fleet_event = { id = marauder.29 scopes = { from = root } }
 					}
 				}
 			}
@@ -3658,7 +3661,16 @@ country_event = {
 	}
 	is_triggered_only = yes
 	trigger = { exists = from }
-	immediate = { set_country_flag = marauder_diplomacy_engaged }
+	immediate = {
+		set_country_flag = marauder_diplomacy_engaged
+		if = {
+			limit = {
+				NOT = { exists = event_target:current_marauder_diplomacy }
+				from = { is_country_type = dormant_marauders }
+			}
+			from = { save_event_target_as = current_marauder_diplomacy }
+		}
+	}
 	after = {
 		hidden_effect = { remove_country_flag = marauder_diplomacy_engaged }
 		}
@@ -4609,7 +4621,7 @@ country_event = {
 	}
 }
 
-# Mercenaries Available for Hire
+# Mercenaries Available for Hire (on_yearly_pulse)
 event = {
 	id = marauder.85
 	hide_window = yes
@@ -4660,7 +4672,9 @@ event = {
 						set_country_flag = mercenaries_available_1
 						save_event_target_as = marauder_mercenary_country
 					}
+					random_playable_country = {
 					observer_event = { id = observer.24 }
+					}
 					every_playable_country = {
 						limit = {
 							is_ai = no
@@ -4690,7 +4704,9 @@ event = {
 						set_country_flag = mercenaries_available_2
 						save_event_target_as = marauder_mercenary_country
 					}
+					random_playable_country = {
 					observer_event = { id = observer.25 }
+					}
 					every_playable_country = {
 						limit = {
 							is_ai = no
@@ -4720,7 +4736,9 @@ event = {
 						set_country_flag = mercenaries_available_3
 						save_event_target_as = marauder_mercenary_country
 					}
+					random_playable_country = {
 					observer_event = { id = observer.26 }
+					}
 					every_playable_country = {
 						limit = {
 							is_ai = no
@@ -4982,7 +5000,7 @@ country_event = {
 			}
 		}
 		event_target:marauder_raiding_country = {
-			every_country = { establish_communications_no_message = event_target:marauder_raiding_country }
+			every_country = { limit = { has_communications = event_target:raiding_marauder } establish_communications_no_message = prev }
 			event_target:raiding_marauder = {
 				set_country_flag = parent_of@event_target:marauder_raiding_country
 				set_faction_hostility = {
@@ -4990,6 +5008,9 @@ country_event = {
 					set_hostile = no
 					set_neutral = no
 					set_friendly = yes
+				}
+				if = { limit = { has_global_flag = pirate_waves_active }
+					set_pirates_difficulty = yes
 				}
 			}
 			create_leader = {
@@ -5004,9 +5025,6 @@ country_event = {
 					trait = leader_trait_mercenary_warrior
 				}
 			}
-			if = { limit = { has_global_flag = pirate_waves_active }
-				set_pirates_difficulty = yes
-			}
 			create_fleet = {
 				name = "NAME_Raiding_Fleet"
 				effect = {
@@ -5018,7 +5036,6 @@ country_event = {
 					set_aggro_range_measure_from = self
 					set_aggro_range = 150
 					set_fleet_flag = raiding_fleet
-					assign_leader = last_created_leader
 				}
 			}
 			set_faction_hostility = {
@@ -5029,6 +5046,7 @@ country_event = {
 			}
 			last_created_fleet = {
 				set_owner = prev	# Real owner
+				assign_leader = last_created_leader
 					closest_system = {
 						limit = {
 						has_owner = yes
@@ -6855,7 +6873,7 @@ event = {
 					}
 				}
 				event_target:marauder_raiding_country = {
-					every_country = { establish_communications_no_message = event_target:marauder_raiding_country }
+					every_country = { limit = { has_communications = event_target:raiding_marauder } establish_communications_no_message = prev }
 					event_target:raiding_marauder = {
 						set_country_flag = parent_of@event_target:marauder_raiding_country
 						set_faction_hostility = {
@@ -6864,19 +6882,6 @@ event = {
 							set_neutral = no
 							set_friendly = yes
 						}
-					}
-					create_leader = {
-						class = admiral
-						species = event_target:marauder_species
-						name = random
-						skill = 3
-						leader_age_min = 25
-						leader_age_max = 45
-						traits = {
-							trait = random_trait
-							trait = leader_trait_mercenary_warrior
-						}
-					}
 					## Dynamic raid costs TODO needs update each effect.
 					if = {
 						limit = { has_global_flag = pirate_waves_active }
@@ -6905,6 +6910,19 @@ event = {
 					} else = {
 						set_variable = { which = raidcost value = 1 }
 					}
+					}
+					create_leader = {
+						class = admiral
+						species = event_target:marauder_species
+						name = random
+						skill = 3
+						leader_age_min = 25
+						leader_age_max = 45
+						traits = {
+							trait = random_trait
+							trait = leader_trait_mercenary_warrior
+						}
+					}
 					create_fleet = {
 						name = "NAME_Raiding_Fleet"
 						effect = {
@@ -6917,7 +6935,6 @@ event = {
 							set_aggro_range = 150
 							set_fleet_flag = hired_raiding_fleet
 							set_fleet_flag = raiding_fleet
-							assign_leader = last_created_leader
 						}
 					}
 					set_faction_hostility = {
@@ -6928,6 +6945,7 @@ event = {
 					}
 					last_created_fleet = {
 						set_owner = prev	# Real owner
+						assign_leader = last_created_leader
 							closest_system = {
 								use_bypasses = yes
 								limit = {
@@ -6959,11 +6977,13 @@ event = {
 								fleet_event = { id = marauder.29 scopes = { from = event_target:marauder_target } }
 							}
 						}
-					event_target:hired_marauder = {
+					event_target:raiding_marauder = {
+						event_target:hired_marauders = {
 						add_resource = { energy = @raidcost mult = prev.raidcost }
 					}
 					log="raidcost \\[This.raidcost]"
 					clear_variable = raidcost
+				}
 				}
 				event_target:marauder_target = {
 					set_country_flag = raid_target_of@event_target:raiding_marauder
@@ -8462,7 +8482,10 @@ country_event = {
 			### Create Marauder Pops
 			save_event_target_as = conquered_planet
 			planet_event = { id = marauder.105 }			# (Slaves)
-			set_owner = event_target:raider_khanate			# Root not subjects
+			# Added due 3.4 bug
+			set_owner = from
+			# Removed due 3.4 bug
+			# set_owner = event_target:raider_khanate			# Root not subjects
 			set_controller = event_target:raider_khanate			# Root not subjects
 			set_variable = { which = CmtVarTemp value = 4 }
 			if = {
@@ -9031,8 +9054,12 @@ country_event = {
 			set_origin = "origin_khan_successor"
 			event_target:raider_khanate = {
 				every_subject = {
-					# limit = { has_modifier = "satrapy_of_horde" }
-					country_event = { id = marauder.671 }					# Do it immediately as raider_khanate should exists.
+					limit = {
+						# has_modifier = "satrapy_of_horde"
+						# any_agreement = { agreement_preset = preset_satrapy }
+						is_subject_of_khan = yes
+					}
+					country_event = { id = marauder.671 days = -1 } # Do it immediately as raider_khanate should exists.
 					set_subject_of = { who = none }
 					# remove_modifier = "satrapy_of_horde"
 				}
@@ -9516,7 +9543,129 @@ country_event = {
 		create_marauder_fleet = yes
 		country_event = { id = marauder.520 days = 340 }
 	}
-	}
+		# Minor checks: no high frequent needed
+		## ReinforceKhan himself
+		if = {
+			limit = {
+				exists = event_target:great_khan
+				exists = event_target:great_khan.fleet
+				event_target:great_khan.fleet = {
+					fleet_power < 36000
+					exists = solar_system
+				}
+			}
+			event_target:great_khan.fleet = {
+				# Reinforce Khan himself
+				if = { limit = { fleet_power < 12000 }
+					create_dyn_marauder_fleet = { OUTRIDER = 20 LANCER = 10 CHAMPION = 6 GLORY = 1 }
+				} else_if = { limit = { fleet_power < 21000 }
+					create_dyn_marauder_fleet = { OUTRIDER = 18 LANCER = 8 CHAMPION = 3 }
+				} else = {
+					create_dyn_marauder_fleet = { OUTRIDER = 14 LANCER = 6 CHAMPION = 1 VARIANT = "_4" }
+				}
+			}
+		}
+
+		## Re-assing idle Admirals
+		if = {
+			limit = {
+				any_owned_fleet = {
+					is_mobile = yes
+					is_civilian = no
+					NOT = { exists = leader }
+				}
+				any_owned_leader = {
+					leader_class = admiral
+					is_event_leader = no
+					NOT = { exists = fleet }
+				}
+			}
+			random_owned_fleet = {
+				limit = {
+					is_mobile = yes
+					is_civilian = no
+					NOT = { exists = leader }
+				}
+				root = {
+					random_owned_leader = {
+						limit = {
+							leader_class = admiral
+							is_event_leader = no
+							NOT = { exists = fleet }
+						}
+						prevprev = { assign_leader = prev }
+					}
+				}
+			}
+		}
+		## Re-assing idle Generals
+		if = {
+			limit = {
+				any_controlled_planet = {
+					has_army = yes
+					NOR = {
+						has_ground_combat = yes
+						planet_garrison_strength < 510
+						any_planet_army = { exists = leader }
+					}
+				}
+				any_owned_leader = {
+					leader_class = general
+					is_event_leader = no
+					is_idle = yes
+					NOT = { exists = fleet }
+				}
+			}
+			# Fleet prior
+			random_owned_fleet = {
+				limit = {
+					exists = solar_system
+					is_mobile = yes
+					NOT = { exists = leader }
+					any_owned_ship = { is_ship_class = shipclass_transport }
+					fleet_power > 510
+				}
+				root = {
+					random_owned_leader = {
+						limit = {
+							leader_class = general
+							is_idle = yes
+							NOT = { exists = fleet }
+						}
+						prevprev = {
+							assign_leader = prev
+							if = { limit = { NOT = { has_fleet_order = aggressive_stance_fleet_order } }
+								random = { chance = 30 set_fleet_stance = aggressive }
+							}
+						}
+					}
+				}
+			}
+			# Planet
+			random_controlled_planet = {
+				limit = {
+					has_army = yes
+					NOR = {
+						has_ground_combat = yes
+						planet_garrison_strength < 510
+						any_planet_army = { exists = leader }
+					}
+				}
+				root = {
+					random_owned_leader = {
+						limit = {
+							leader_class = general
+							is_idle = yes
+							NOT = { exists = fleet }
+						}
+						prevprev = {
+							random_planet_army = { assign_leader = prevprev }
+							}
+						}
+					}
+				}
+			}
+		}
 }
 
 # Return of the Great Khan (HIDDEN) (due .505 timer)
@@ -9582,9 +9731,10 @@ country_event = {
 			if = {
 				limit = {
 					exists = event_target:great_khan
-					event_target:great_khan = { has_relic = r_khans_throne }
+					exists = event_target:raider_khanate
+					event_target:raider_khanate = { has_relic = r_khans_throne }
 				}
-				event_target:great_khan = { remove_relic = r_khans_throne }
+				event_target:raider_khanate = { remove_relic = r_khans_throne }
 			}
 		}
 	}
@@ -11046,8 +11196,7 @@ country_event = {
 			# }
 			ethos = {
 				ethic = ethic_fanatic_militarist
-				ethic = ethic_xenophobe
-				ethic = ethic_authoritarian
+				ethic = ethic_authoritarian # ethic_xenophobe
 			}
 			ignore_initial_colony_error = yes
 			# exclude_day_zero_contact = root
@@ -12434,6 +12583,6 @@ country_event = {
 }
 
 ## Workaround for Irony compare
-namespace = crisis
-namespace = emperor
-namespace = pirate
+# namespace = crisis
+# namespace = emperor
+# namespace = pirate
