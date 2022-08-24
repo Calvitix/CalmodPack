@@ -6,134 +6,17 @@ country_event = {
 	hide_window = yes
 	is_triggered_only = yes
 	immediate = {
-		every_controlled_planet = {
-			limit = {
-				exists = solar_system # sometimes context switch to solar_system fails... why?
-				solar_system.starbase.controller = { is_hostile = prevprev }
-			}
-			set_planet_flag = mmgsiege_under_siege
-			if = {
-				limit = { is_variable_set = mmgsiege_under_siege_months }
-				change_variable = {
-					which = mmgsiege_under_siege_months
-					value = 1
-				}
-			}
-			else = {
-				set_variable = {
-					which = mmgsiege_under_siege_months
-					value = 1
-				}
-			}
+		every_owned_planet = {
+			limit = { mmgsiege_is_under_siege = yes }
 			mmgsiege_check_for_and_update_resource_shortage = { RESOURCE = food }
 			mmgsiege_check_for_and_update_resource_shortage = { RESOURCE = minerals }
 			mmgsiege_check_for_and_update_resource_shortage = { RESOURCE = energy }
 			mmgsiege_check_for_and_update_resource_shortage = { RESOURCE = consumer_goods }
-
-
-			# check for surrender
-			if = {
-				limit = {
-					# under siege for at least 1 year
-					check_variable = {
-						which = mmgsiege_under_siege_months
-						value >= 12
-					}
-					# controller checks
-					controller = {
-						is_homicidal = no # homicidals never surrender
-						is_gestalt = no # gestalts never surrender
-						NAND = { # capitals never surrender (if controlled by owner)
-							is_country = prev.owner
-							prev = { is_capital = yes }
-						}
-					}
-					# avoid edgecases: make sure there's a war, but not a total war
-					controller = {
-						any_war = {
-							is_total_war = no
-							any_war_participant = { is_country = prevprevprev.solar_system.starbase.controller }
-						}
-					}
-					# no one surrenders to homicidals or crisis
-					solar_system.starbase.controller = {
-						is_homicidal = no
-						is_crisis_faction = no
-						NOT = { has_ascension_perk = ap_become_the_crisis }
-					}
-					# don't surrender if the starbase is in combat
-					solar_system.starbase.fleet = {
-						is_in_combat = no
-					}
-					# don't surrender if there's ongoing ground combat
-					has_ground_combat = no
-					
-				}
-				# 1% chance to surrender for each stability below 40
-				set_variable = {
-					which = mmgsiege_surrender_chance
-					value = 40
-				}
-				subtract_variable = {
-					which = mmgsiege_surrender_chance
-					value = trigger:planet_stability
-				}
-				if = {
-					limit = {
-						check_variable = {
-							which = mmgsiege_surrender_chance
-							value > 0
-						}
-					}
-					if = {
-						limit = { NOT = { has_modifier = mmgsiege_considering_surrender } }
-						add_modifier = {
-							modifier = mmgsiege_considering_surrender
-						}
-					}
-					random = {
-						chance = mmgsiege_surrender_chance
-						every_planet_army = {
-							remove_army = yes
-						}
-						set_controller = solar_system.starbase.controller
-						clear_variable = mmgsiege_surrender_chance
-						clear_variable = mmgsiege_under_siege_months
-						remove_modifier = mmgsiege_considering_surrender
-						root = {
-							country_event = {
-								id = mmgsiege.2
-								scopes = {
-									from = prev
-									fromfrom = prev.solar_system.starbase.controller
-								}
-							}
-						}
-						solar_system.starbase.controller = {
-							country_event = {
-								id = mmgsiege.3
-								scopes = {
-									from = prev
-									fromfrom = root
-								}
-							}
-						}
-					}
-				}
-				else = {
-					remove_modifier = mmgsiege_considering_surrender
-				}
-			}
-			else = {
-				if = {
-					limit = { is_variable_set = mmgsiege_surrender_chance }
-					clear_variable = mmgsiege_surrender_chance
-				}
-				remove_modifier = mmgsiege_considering_surrender
-			}
+			mmgsiege_create_or_remove_shortage_modifiers = yes
+			mmgsiege_update_planet_status = yes
 		}
 
-		every_controlled_planet = {
+		every_owned_planet = {
 			limit = {
 				OR = {
 					has_planet_flag = mmgsiege_food_shortage
@@ -142,22 +25,14 @@ country_event = {
 					has_planet_flag = mmgsiege_consumer_goods_shortage
 					has_planet_flag = mmgsiege_under_siege
 				}
-				controller = { is_country = prev.solar_system.starbase.controller }
+				mmgsiege_is_under_siege = no
 			}
-			remove_planet_flag = mmgsiege_under_siege
-			if = {
-				limit = { is_variable_set = mmgsiege_under_siege_months }
-				clear_variable = mmgsiege_under_siege_months
-			}
-			if = {
-				limit = { is_variable_set = mmgsiege_surrender_chance }
-				clear_variable = mmgsiege_surrender_chance
-			}
-			remove_modifier = mmgsiege_considering_surrender
 			mmgsiege_check_for_and_update_resource_shortage_no_siege = { RESOURCE = food }
 			mmgsiege_check_for_and_update_resource_shortage_no_siege = { RESOURCE = minerals }
 			mmgsiege_check_for_and_update_resource_shortage_no_siege = { RESOURCE = energy }
 			mmgsiege_check_for_and_update_resource_shortage_no_siege = { RESOURCE = consumer_goods }
+			mmgsiege_create_or_remove_shortage_modifiers = yes
+			mmgsiege_update_planet_status = yes
 		}
 	}
 }
@@ -170,8 +45,11 @@ country_event = {
 	is_triggered_only = yes
 	title = "mmgsiege_planet_surrendered_to_enemy_title"
 	desc = "mmgsiege_planet_surrendered_to_enemy_desc"
-	picture = GFX_evt_burning_city
+	picture = GFX_evt_surrender
 	location = from
+	option = {
+		name = CLOSE
+	}
 }
 
 # notify the surrender receiver
@@ -184,4 +62,198 @@ country_event = {
 	desc = "mmgsiege_enemy_planet_surrendered_desc"
 	picture = GFX_evt_victorious_army
 	location = from
+	option = {
+		name = CLOSE
+	}
+}
+
+# stockpile events
+# calc stockpile max
+planet_event = {
+	id = mmgsiege.11
+	is_triggered_only = yes
+	hide_window = yes
+	immediate = {
+		mmgsiege_calculate_stockpile_maximum = yes
+	}
+}
+
+# init stockpile vars
+planet_event = {
+	id = mmgsiege.12
+	hide_window = yes
+	is_triggered_only = yes
+	immediate = {
+		if = {
+			limit = { NOT = { is_variable_set = mmgsiege_energy_stockpile } }
+			set_variable = {
+				which = mmgsiege_energy_stockpile
+				value = 0
+			}
+		}
+		if = {
+			limit = { NOT = { is_variable_set = mmgsiege_minerals_stockpile } }
+			set_variable = {
+				which = mmgsiege_minerals_stockpile
+				value = 0
+			}
+		}
+		if = {
+			limit = { NOT = { is_variable_set = mmgsiege_food_stockpile } }
+			set_variable = {
+				which = mmgsiege_food_stockpile
+				value = 0
+			}
+		}
+		if = {
+			limit = { NOT = { is_variable_set = mmgsiege_consumer_goods_stockpile } }
+			set_variable = {
+				which = mmgsiege_consumer_goods_stockpile
+				value = 0
+			}
+		}
+	}
+}
+
+event = {
+	id = mmgsiege.13
+	hide_window = yes
+	is_triggered_only = yes
+	immediate = {
+		every_country = {
+			every_owned_planet = {
+				planet_event = { id = mmgsiege.11 } # init stockpile maximum
+				planet_event = { id = mmgsiege.12 } # init stockpile resources
+			}
+		}
+	}
+}
+
+situation_event = {
+	id = mmgsiege.21
+	hide_window = yes
+	is_triggered_only = yes
+	immediate = {
+		situation_event = {
+			id = mmgsiege.22
+			days = 1
+		}
+	}
+}
+
+situation_event = {
+	id = mmgsiege.22
+	hide_window = yes
+	is_triggered_only = yes
+	immediate = {
+		target = {
+			if = {
+				limit = {
+					any_targeting_situation = {
+						is_situation_type = mmgsiege_siege_surrender_attacker_situation
+					}
+				}
+				random_targeting_situation = {
+					limit = {
+						is_situation_type = mmgsiege_siege_surrender_attacker_situation
+					}
+					set_variable = {
+						which = mmgsiege_sync_progress
+						value = root.trigger:situation_progress
+					}
+					subtract_variable = {
+						which = mmgsiege_sync_progress
+						value = trigger:situation_progress
+					}
+					add_situation_progress = mmgsiege_sync_progress
+					clear_variable = mmgsiege_sync_progress
+				}
+			}
+		}
+	}
+}
+
+# update planet status on_system_controller_changed
+system_event = {
+	id = mmgsiege.31
+	hide_window = yes
+	is_triggered_only = yes
+	immediate = {
+		every_system_planet = {
+			limit = { is_colony = yes }
+			mmgsiege_update_planet_status = yes
+		}
+	}
+}
+
+# update planet status on_planet_transfer on_planet_occupied
+planet_event = {
+	id = mmgsiege.32
+	hide_window = yes
+	is_triggered_only = yes
+	immediate = {
+		mmgsiege_update_planet_status = yes
+	}
+}
+
+# clean up siege/shortage modifiers and features on_planet_ownerless on_colony_destroyed
+planet_event = {
+	id = mmgsiege.33
+	hide_window = yes
+	is_triggered_only = yes
+	immediate = {
+		mmgsiege_remove_siege_modifier = yes
+		while = {
+			count = 4
+			mmgsiege_decrease_resource_shortage = { RESOURCE = energy }
+			mmgsiege_decrease_resource_shortage = { RESOURCE = minerals }
+			mmgsiege_decrease_resource_shortage = { RESOURCE = food }
+			mmgsiege_decrease_resource_shortage = { RESOURCE = consumer_goods }
+		}
+		mmgsiege_create_or_remove_shortage_modifiers = yes
+	}
+}
+
+# update planet status on_planet_attackers_win
+country_event = {
+	id = mmgsiege.34
+	hide_window = yes
+	is_triggered_only = yes
+	immediate = {
+		fromfrom = {
+			mmgsiege_update_planet_status = yes
+		}
+	}
+}
+
+# fallback to occasionally clean up ownerless planets if various on_actions don't catch it
+country_event = {
+	id = mmgsiege.35
+	hide_window = yes
+	is_triggered_only = yes
+	immediate = {
+		every_galaxy_planet = {
+			limit = {
+				has_planet_flag = mmgsiege_under_siege
+				NOT = { exists = owner }
+			}
+			mmgsiege_update_planet_status = yes
+			planet_event = { id = mmgsiege.33 }
+		}
+	}
+}
+
+# delay wrapper for the above
+event = {
+	id = mmgsiege.36
+	hide_window = yes
+	is_triggered_only = yes
+	immediate = {
+		event_target:global_event_country = {
+			country_event = {
+				id = mmgsiege.35
+				days = 10
+			}
+		}
+	}
 }
