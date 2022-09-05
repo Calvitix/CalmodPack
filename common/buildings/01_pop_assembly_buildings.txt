@@ -1,8 +1,8 @@
 # Original File
 #
-# Calvitix Check 3.4.4  21.06.2022
+# Calvitix Check 3.4.5  21.06.2022
 #
-# Merge with Starnet AI 29.07.2022
+# Merge with Starnet AI 05.09.2022
 # Merge with PDiv.
 # Calvitix ressources balances
 #
@@ -111,7 +111,7 @@ building_robot_assembly_plant = {
 			AND = {
 				owner = { is_ai = yes }
 				free_district_slots = 0
-				free_building_slots = 0
+					free_building_slots <= 1
 				free_housing <= 0
 				free_jobs <= 0		
 			}
@@ -123,7 +123,7 @@ building_robot_assembly_plant = {
 ###STARNET AI
 			owner = {
 				is_ai = yes
-				num_pops > 1500
+				num_pops > 1500 #1000
 			}
 ###
 		}
@@ -275,6 +275,7 @@ building_machine_assembly_plant = {
 	}
 	
 	prerequisites = {
+
 	}
 	
 	triggered_desc = {
@@ -311,7 +312,6 @@ building_machine_assembly_complex = {
 	
 
 	destroy_trigger = {
-		free_building_slots < 1 #Calvitix 
 		exists = owner
 		OR = {
 			buildings_no_crystals = yes
@@ -321,7 +321,7 @@ building_machine_assembly_complex = {
 			AND = {
 				owner = { is_ai = yes }
 				free_district_slots = 0
-				free_building_slots = 0
+				free_building_slots < 1 #Calvitix 
 				free_housing <= 0
 				free_jobs <= 0
 			}
@@ -892,13 +892,13 @@ building_clone_vats = {
 	potential = {
 		exists = owner
 #STARNET AI
-		#	OR = {
-		#		owner = { is_ai = no }
-		#		and = {
-		#			free_building_slots > 0
-		#			owner = { num_pops < 1000 }
-		#		}
-		#	}
+			OR = {
+				owner = { is_ai = no }
+				and = {
+					free_building_slots > 0
+					owner = { is_ai = yes num_pops < 1000 }
+				}
+			}
 ###
 		owner = { has_ascension_perk = ap_engineered_evolution }
 		NOT = { has_modifier = resort_colony }
@@ -928,11 +928,16 @@ building_clone_vats = {
 				free_housing <= 0
 				free_jobs <= 0
 			}
-			NOT = { owner = { has_ascension_perk = ap_engineered_evolution } }
 ###STARNET AI
-			#	and = {
-			#		owner = { is_ai = yes num_pops > 1500 }
-			#	}
+			NOT = {
+				owner = {
+					has_ascension_perk = ap_engineered_evolution
+				}
+			}
+			owner = {
+				is_ai = yes
+				num_pops > 1000
+			}
 ###
 		}
 	}
@@ -1223,9 +1228,16 @@ building_posthumous_employment_center = {
 		exists = owner
 		OR = {
 			owner = { is_ai = no }
-			NOT = { exists = assembling_species }
+			OR = {			
+				NOT = {
+					exists = assembling_species
+				}
+				AND = {
+					exists = assembling_species
 					assembling_species = { is_organic_species = yes }
 				}
+			}
+		}
 		OR = {
 			owner = { is_ai = no }
 			NAND = {

@@ -1,8 +1,8 @@
 # Planetary Diversity File
 #
-# Calvitix Check 3.3.4
+# Calvitix Check 3.4.5
 #
-# Update 30.03.2022
+# Update 05.09.2022
 #
 ##########################################################################
 # Decisions
@@ -36,12 +36,12 @@ decision_engineered_environment_gaia = {
 		is_pd_robot_arcology = no
 		is_pd_unique = no
 		is_pd_gaia = no
-		NOT = { is_planet_class = pc_pdshroud }
+		is_pd_machine = no
+		is_pd_shroud_world = no
 		NOT = { is_planet_class = pc_gaia }
 		NOT = { is_planet_class = pc_relic }
 		NOT = { is_planet_class = pc_milarc_relic }
 		NOT = { is_planet_class = pc_hive }
-		NOT = { is_planet_class = pc_machine }
 		NOT = { is_planet_class = pc_pdhive1 }
 		NOT = { is_planet_class = pc_pdhive2 }
 		NOT = { has_modifier = engineered_environment_gaia }
@@ -99,13 +99,12 @@ decision_removeocean = {
 		NOT = { is_planet_class = pc_relic }
 		NOT = { is_planet_class = pc_milarc_relic }
 		NOT = { is_planet_class = pc_city }
-		NOT = { is_planet_class = pc_pdshroud }
+		is_pd_shroud_world = no
 		NOT = { is_planet_class = pc_ecocity }
 		NOT = { is_planet_class = pc_corpoarc }
 		NOT = { is_planet_class = pc_palacearc }
 		NOT = { is_planet_class = pc_capitalarc }
 		NOT = { is_planet_class = pc_necropolis }
-		NOT = { is_planet_class = pc_machine_necropolis }
 		NOT = { is_planet_class = pc_necrohive }
 		NOT = { is_planet_class = pc_pd_gas_giant_hab }
 		NOT = { is_planet_class = pc_pd_barren_hab }
@@ -122,6 +121,7 @@ decision_removeocean = {
 		NOT = { is_planet_class = pc_shroudmilarc }
 		NOT = { is_planet_class = pc_shroudcorpoarc }
 		NOT = { is_planet_class = pc_milarc }
+		is_pd_machine = no
 		is_artificial = no
 		has_planet_flag = pdaquapicture
 	}
@@ -166,6 +166,7 @@ decision_removeocean = {
 			IF = { limit = { is_planet_class = pc_geothermal } set_planet_entity = { picture = pc_geothermal } }
 			IF = { limit = { is_planet_class = pc_superhabitable } set_planet_entity = { picture = pc_superhabitable } }
 			IF = { limit = { is_planet_class = pc_tidallylocked } set_planet_entity = { picture = pc_tidallylocked } }
+			IF = { limit = { is_planet_class = pc_wettidallylocked } set_planet_entity = { picture = pc_wettidallylocked } }
 			IF = { limit = { is_planet_class = pc_supercon } set_planet_entity = { picture = pc_supercon } }
 			IF = { limit = { is_planet_class = pc_biolumen } set_planet_entity = { picture = pc_biolumen } }
 			IF = { limit = { is_planet_class = pc_primal } set_planet_entity = { picture = pc_primal } }
@@ -202,7 +203,7 @@ decision_oceancapital = {
 	
 	potential = {
 		owner = { has_trait = trait_aquatic }
-		NOT = { is_planet_class = pc_pdshroud }
+		is_pd_shroud_world = no
 		NOT = { is_planet_class = pc_aquatic }
 		NOT = { has_planet_flag = pdaquapicture }
 		NOT = { is_planet_class = pc_relic }
@@ -213,7 +214,6 @@ decision_oceancapital = {
 		NOT = { is_planet_class = pc_palacearc }
 		NOT = { is_planet_class = pc_capitalarc }
 		NOT = { is_planet_class = pc_necropolis }
-		NOT = { is_planet_class = pc_machine_necropolis }
 		NOT = { is_planet_class = pc_necrohive }
 		NOT = { is_planet_class = pc_habitat }
 		NOT = { is_planet_class = pc_pd_gas_giant_hab }
@@ -231,8 +231,14 @@ decision_oceancapital = {
 		NOT = { is_planet_class = pc_shroudmilarc }
 		NOT = { is_planet_class = pc_shroudcorpoarc }
 		NOT = { is_planet_class = pc_milarc }
+		NOT = { is_planet_class = pc_crucible }
+		NOT = { is_planet_class = pc_shroud_crucible }
+		NOT = { is_planet_class = pc_clean_crucible }
+		NOT = { is_planet_class = pc_archive }
 		NOT = { is_dry = yes }
+		is_pd_machine = no
 		is_artificial = no
+
 	}
 
 	effect = {
@@ -250,6 +256,7 @@ decision_oceancapital = {
 			IF = { limit = { is_planet_class = pc_city } set_planet_entity = { picture = pc_aquaticcity } set_planet_flag = pdaquapicture }
 			IF = { limit = { is_planet_class = pc_hadesert } set_planet_entity = { picture = pc_aquatic } set_planet_flag = pdaquapicture }
 			IF = { limit = { is_planet_class = pc_tidallylocked } set_planet_entity = { picture = pc_aquatic } set_planet_flag = pdaquapicture }
+			IF = { limit = { is_planet_class = pc_wettidallylocked } set_planet_entity = { picture = pc_aquatic } set_planet_flag = pdaquapicture }
 			IF = { limit = { is_planet_class = pc_supercon } set_planet_entity = { picture = pc_aquatic } set_planet_flag = pdaquapicture }
 			IF = { limit = { is_planet_class = pc_karst } set_planet_entity = { picture = pc_aquatickarst_uw } set_planet_flag = pdaquapicture }
 			IF = { limit = { is_planet_class = pc_reef } set_planet_entity = { picture = pc_aquatic } set_planet_flag = pdaquapicture }
@@ -300,6 +307,7 @@ decision_oceancapital = {
 			IF = { limit = { is_planet_class = pc_primal } set_planet_entity = { picture = pc_aquatichot_uw } set_planet_flag = pdaquapicture }
 			#Shroud
 			IF = { limit = { is_planet_class = pc_pdshroud } set_planet_entity = { picture = pc_aquaticshroud_uw } set_planet_flag = pdaquapicture }
+			IF = { limit = { is_planet_class = pc_tidallyshroud } set_planet_entity = { picture = pc_aquaticshroud_uw } set_planet_flag = pdaquapicture }
 		}
 	}
 	
@@ -342,6 +350,7 @@ decision_pd_transplant_tree = {
 		IF = {
 			limit = { 
 				is_pd_unique = no
+				is_pd_machine = no
 				NOT = { has_planet_flag = pd_tol1 }
 				NOT = { has_planet_flag = pd_tol2 }
 				NOT = { has_planet_flag = pd_tol3 }
@@ -351,7 +360,6 @@ decision_pd_transplant_tree = {
 				NOT = { is_planet_class = pc_palacearc }
 				NOT = { is_planet_class = pc_capitalarc }
 				NOT = { is_planet_class = pc_necropolis }
-				NOT = { is_planet_class = pc_machine_necropolis }
 				NOT = { is_planet_class = pc_necrohive }
 				NOT = { is_planet_class = pc_milarc }
 				NOT = { is_planet_class = pc_shroudcity }

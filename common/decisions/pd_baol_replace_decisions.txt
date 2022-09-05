@@ -1,8 +1,8 @@
 # Planetary Diversity
 #
-# Calvitix Check 3.3.4
+# Calvitix Check 3.4.5
 #
-# Last Planetary Diversity update 19.03.2022
+# Last Planetary Diversity update 05.09.2022
 #
 
 ##########################################################################
@@ -20,23 +20,17 @@ decision_baol_life_seed = {
 	#enactment_time = 20
 	
 	potential = {
-		if = {
-			limit = { has_global_flag = planetarydiversity }
-			NOR = {
-				is_planet_class = pc_pdshroud
+		NOR = {
 				is_planet_class = pc_city
-				is_planet_class = pc_machine
 				is_planet_class = pc_relic
 				is_planet_class = pc_milarc_relic
-				is_planet_class = pc_hive
-			}
 		}
+		is_pd_shroud_world = no
+		is_pd_hive_world = no
 		is_artificial = no
-		if = {
-			limit = { has_global_flag = planetarydiversity }
 		is_pd_unique = no
 		is_pd_arcology = no
-		}
+		is_pd_machine = no
 		gpm_is_planet_class_city = no
 		gpm_is_planet_class_hive = no
 		gpm_is_planet_class_machine = no
@@ -52,13 +46,11 @@ decision_baol_life_seed = {
 		custom_tooltip = decision_baol_life_seed_effects
 		hidden_effect = {
 			owner = { remove_country_flag = relic_last_baol_activated }
-			# Planetary Diversity compatiability
-			if = {
-				limit = { has_global_flag = planetarydiversity }
 			if = {
 				limit = { 
 					OR = {
 						is_planet_class = pc_tidallylocked
+						is_planet_class = pc_wettidallylocked
 						is_planet_class = pc_eyeball
 					}
 				}
@@ -70,16 +62,6 @@ decision_baol_life_seed = {
 				}
 				change_pc = pc_gaia
 			}
-			}
-			#
-
-			# standard
-			if = {
-				limit = { NOT = { has_global_flag = planetarydiversity } }
-				change_pc = pc_gaia
-			}
-			#
-
 			if = {
 				limit = { NOT = { exists = event_target:nu_baol_species } }
 				create_nu_baol_effect = yes
@@ -93,13 +75,10 @@ decision_baol_life_seed = {
 					}
 				}
 			}
-
-			# Planetary Diversity compatiability
-			if = {
-				limit = { has_global_flag = planetarydiversity }
 			pd_remove_special_deposits_modifiers = yes
 			remove_deposit = d_pdgaia
 			add_deposit = d_pdgaia
+			planet_event = { id = ancrel.2025 } #Notification event
 			if = {
 				limit = { 
 					has_planet_flag = planet_earth
@@ -133,9 +112,8 @@ decision_baol_life_seed = {
 				remove_planet_flag = pdaquapicture
 			}
 		}
-			planet_event = { id = ancrel.2025 } #Notification event
-			planet_event = { id = gpm_terraform.78871 } # guilli
-		}
+		planet_event = { id = ancrel.2025 } #Notification event
+		planet_event = { id = gpm_terraform.78871 } # guilli
 	}
 	
 	ai_weight = {

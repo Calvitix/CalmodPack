@@ -26,8 +26,17 @@
 starnet_default_plan = {
 
 	income = {
-		energy = @energy_target
-		minerals = @minerals_target
+		energy = @str_early_default_plan_income_energy
+		minerals = @str_early_default_plan_income_minerals
+		alloys = @str_early_default_plan_income_alloys
+
+		physics_research = @str_early_default_plan_income_physics_research
+		society_research = @str_early_default_plan_income_society_research
+		engineering_research = @str_early_default_plan_income_engineering_research
+
+		exotic_gases = @str_early_default_plan_income_exotic_gases
+		volatile_motes = @str_early_default_plan_income_volatile_motes
+		rare_crystals = @str_early_default_plan_income_rare_crystals
 	}
 
 	subplan = {
@@ -312,6 +321,11 @@ starnet_default_plan = {
 	}
 ####################
 
+	subplan = {
+		set_name = "Str - Science pour la Capitale"
+		potential = { has_country_flag = str_fill_homeworld_with_science_pls }
+		income = { physics_research = 2000 society_research = 2000 engineering_research = 2000 }
+	}
 
 	subplan = {
 		set_name = "Str - crise Nourr. niv.0"
@@ -1395,7 +1409,63 @@ str_boom_plan = {
 		no_emergency = yes
 	}
 
-	#empire_size = 1.1
+	subplan = {
+		scaling = yes
+		set_name = "Str ? Echelle générale"
+		potential = {
+			has_monthly_income = { resource = energy value > 100 }			
+			has_monthly_income = { resource = minerals value > 100 }			
+		}
+
+		income = {
+			alloys = 10
+			minerals = 5
+			energy = 10
+			physics_research = 5
+			society_research = 5
+			engineering_research = 5
+		}
+	}
+
+	#####################################################################################################################
+	##### GIGAS SPECIFIC
+
+	# supertensiles production so they can make megas while the job option is selected
+	subplan = {
+		#optional = yes
+		set_name = "Gigas supertensiles"
+		potential = {
+			has_global_flag = gigastructures_enabled
+			has_global_flag = @giga_amb_flag
+			has_technology = giga_tech_amb_supertensiles
+			has_monthly_income = { resource = alloys value > @alloy_target }
+			has_monthly_income = { resource = unity value > 10 }
+		}
+
+		income = {
+			giga_sr_amb_megaconstruction = 20
+		}
+	}
+
+	subplan = {
+		#optional = yes
+		set_name = "Gigas supertensiles origin boost"
+		potential = {
+			has_global_flag = gigastructures_enabled
+			has_global_flag = @giga_amb_flag
+			has_technology = giga_tech_amb_supertensiles
+			giga_has_amb_important_origin = yes
+			has_monthly_income = { resource = alloys value > @alloy_target }
+			has_monthly_income = { resource = unity value > 10 }
+		}
+
+		income = {
+			giga_sr_amb_megaconstruction = 20 # an extra emphasis for empires which need megas early
+		}
+	}
+
+	pops = 8000
+	# empire_size = 1
 
 	ai_weight = {
 		weight = 1000
