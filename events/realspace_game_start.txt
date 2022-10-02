@@ -2166,6 +2166,15 @@ country_event = {
 		}
 	}
 	
+	#Planetary Stations Settings
+	option = {
+		name = "realspace.219.planetarystations_settings"
+		trigger = { has_global_flag = has_planetary_stations_mod }
+		hidden_effect = {
+			country_event = { id = realspace.242 }
+		}
+	}
+	
 	#inhabitable worlds Settings
 	option = {
 		name = "realspace.219.inhabitable_worlds_no_reduced"
@@ -3172,11 +3181,19 @@ country_event = {
 	id = realspace.232
 	title = "realspace.232.name"
 	desc = "realspace.232.desc"
-	picture = GFX_evt_planetaryexploration_menu
+	picture = GFX_evt_planetarystations_menu
 	show_sound = event_radio_chatter
 	location = ROOT
 	
 	is_triggered_only = yes
+
+	#Planetary Stations Settings
+	option = {
+		name = "realspace.232.planetarystations_settings"
+		hidden_effect = {
+			country_event = { id = realspace.242 }
+		}
+	}
 
 	option = {
 		name = "realspace.addons"
@@ -3719,6 +3736,85 @@ country_event = {
 		name = "realspace.close"
 		hidden_effect = {
 			country_event = { id = realspace.1000 }
+		}
+	}
+}
+
+#Planetary Stations Settings
+country_event = {
+	id = realspace.242
+	title = "realspace.242.name"
+	desc = "realspace.242.desc"
+	picture = GFX_evt_planetarystations_menu
+	show_sound = event_radio_chatter
+	location = ROOT
+	
+	is_triggered_only = yes
+
+	#Stations Build
+	option = {
+		name = "realspace.242.stations_build_on"
+		trigger = { 
+			NOT = { has_global_flag = no_stations_build }
+		}
+		hidden_effect = {
+			country_event = { id = realspace.243 }
+		}
+	}
+	option = {
+		name = "realspace.242.stations_build_off"
+		trigger = { 
+			has_global_flag = no_stations_build
+		}
+		hidden_effect = {
+			country_event = { id = realspace.243 }
+		}
+	}
+	
+	option = {
+		name = "realspace.realspace_menu"
+		hidden_effect = {
+			country_event = { id = realspace.206 }
+		}
+	}
+	option = {
+		name = "realspace.close"
+		hidden_effect = {
+			country_event = { id = realspace.1000 }
+		}
+	}
+}
+
+#Planetary Stations - Stations Build
+country_event = {
+	id = realspace.243
+	title = "realspace.243.name"
+	desc = "realspace.243.desc"
+	picture = GFX_evt_planetarystations_menu
+	show_sound = event_radio_chatter
+	location = ROOT
+	
+	is_triggered_only = yes
+
+	#Stations Build
+	option = {
+		name = "realspace.243.stations_build_off"
+		trigger = { 
+			NOT = { has_global_flag = no_stations_build }
+		}
+		hidden_effect = {
+			set_global_flag = hyperspace_storm_disabled
+			country_event = { id = realspace.242 }
+		}
+	}
+	option = {
+		name = "realspace.243.stations_build_on"
+		trigger = { 
+			has_global_flag = no_stations_build
+		}
+		hidden_effect = {
+			remove_global_flag = hyperspace_storm_disabled
+			country_event = { id = realspace.242 }
 		}
 	}
 }

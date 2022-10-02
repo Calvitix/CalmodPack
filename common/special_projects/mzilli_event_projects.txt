@@ -720,3 +720,328 @@ special_project = {
 	on_fail = {
 	}
 }
+
+special_project = {
+	key = "ROBOT_WAR_BOMBARDMENT_PROJECT"
+	cost = 0
+	days_to_research = 180
+	#tech_department = physics_technology
+	picture = GFX_evt_death_from_above
+
+	event_scope = ship_event
+
+	requirements = {
+		shipclass_military = 6
+	}
+	
+	on_success = {
+		random_list = {
+			80 = { set_planet_flag = minimal_damage }
+			20 = {
+				set_planet_flag = maximum_damage
+				if = {
+					limit = { NOT = { is_planet_class = pc_nuked } }
+					change_pc = pc_nuked
+					set_planet_flag = nuked_again
+				}
+			}
+		}
+		ship_event = { id = mzilli_anomaly_events.104 }
+	}
+}
+
+special_project = {
+	key = "ASCEND_PRIMITIVES_PROJECT"
+	cost = 0
+	days_to_research = 180
+	tech_department = society_technology
+	picture = GFX_evt_hive_mind
+
+	event_scope = ship_event
+
+	requirements = {
+		shipclass_science_ship = 1
+	}
+	
+	on_success = {
+		random_list = {
+			80 = { ship_event = { id = mzilli_anomaly_events.94 } }
+			20 = {
+				FROM = { owner_species = { save_global_event_target_as = lost_to_shroud_species } }
+				ship_event = { id = mzilli_anomaly_events.95 }
+			}
+		}
+	}
+}
+
+special_project = {
+	key = "ABSORB_PRIMITIVES_PROJECT"
+	cost = 0
+	days_to_research = 180
+	tech_department = society_technology
+	picture = GFX_evt_hive_mind
+
+	event_scope = ship_event
+
+	requirements = {
+		shipclass_science_ship = 1
+	}
+	
+	on_success = {
+		FROM = {
+			owner = {
+				modify_species = {
+					species = this
+					remove_trait = trait_latent_psionic
+					add_trait = trait_hive_mind
+				}
+			}
+		}
+		random_list = {
+			80 = { ship_event = { id = mzilli_anomaly_events.96 } }
+			20 = { ship_event = { id = mzilli_anomaly_events.97 } }
+		}
+	}
+}
+
+special_project = {
+	key = "ROBOT_WAR_DDOS_PROJECT"
+	cost = 0
+	days_to_research = 180
+	tech_department = physics_technology
+	picture = GFX_evt_decryption
+
+	event_scope = ship_event
+
+	requirements = {
+		shipclass_science_ship = 1
+	}
+	
+	on_success = {
+		random_list = {
+			80 = { ship_event = { id = mzilli_anomaly_events.105 } }
+			20 = {
+				from = {
+					remove_modifier = mzilli_robot_war_modifier
+					clear_planet_modifiers = yes
+					create_species = {
+						name = random
+						class = MACHINE
+						portrait = random
+						homeworld = THIS
+						traits = {
+							trait = trait_machine_unit
+							trait = random_traits
+						}
+					}
+					random_list = {
+						10 = {
+							destroy_colony = yes
+							create_country = {
+								name = random
+								authority = random
+								civics = {
+									civic = civic_machine_terminator
+									civic = civic_machine_warbots
+								}
+								species = last_created_species
+								ethos = { ethic = ethic_gestalt_consciousness }
+								type = default
+							}
+						}
+						10 = {
+							create_country = {
+								name = random
+								authority = random
+								civics = {
+									civic = civic_machine_servitor
+									civic = civic_machine_warbots
+								}
+								species = last_created_species
+								ethos = { ethic = ethic_gestalt_consciousness }
+								type = default
+							}
+						}
+						10 = {
+							create_country = {
+								name = random
+								authority = random
+								civics = {
+									civic = civic_machine_assimilator
+									civic = civic_machine_warbots
+								}
+								species = last_created_species
+								ethos = { ethic = ethic_gestalt_consciousness }
+								type = default
+							}
+						}
+					}
+					last_created_country = {
+						effect = {
+							save_global_event_target_as = robotic_war_country
+							species = {
+								save_global_event_target_as = robotic_war_species
+							}
+							if = {
+								limit = { any_country = { graphical_culture = machine_01 } }
+								set_graphical_culture = machine_01
+							}
+							else = { set_graphical_culture = nemesis_01 }
+							establish_communications_no_message = root
+
+							##Copy technology
+							IF = {
+								LIMIT = {
+									any_neighbor_country = {
+										exists = this
+										is_country_type = default
+									}
+								}
+								random_neighbor_country = {
+									limit = { is_country_type = default }
+									save_event_target_as = tech_country
+								}
+								copy_techs_from = {
+									target = event_target:tech_country
+									except = {
+										# Horizon Signal
+										tech_akx_worm_1
+										tech_akx_worm_2
+										tech_akx_worm_3
+									}
+								}
+							}
+							ELSE_IF = {
+								LIMIT = {
+									any_country = {
+										is_ai = no
+									}
+								}
+								random_country = {
+									limit = { is_ai = no }
+									save_event_target_as = tech_country
+								}
+								copy_techs_from = {
+									target = event_target:tech_country
+									except = {
+										# Horizon Signal
+										tech_akx_worm_1
+										tech_akx_worm_2
+										tech_akx_worm_3
+									}
+								}
+							}
+							ELSE = {
+								random_country = {
+									limit = { is_country_type = default }
+									save_event_target_as = tech_country
+								}
+								copy_techs_from = {
+									target = event_target:tech_country
+									except = {
+										# Horizon Signal
+										tech_akx_worm_1
+										tech_akx_worm_2
+										tech_akx_worm_3
+									}
+								}
+							}
+							##Add some new technologies
+							inverted_switch = {
+								trigger = has_technology
+								tech_starbase_2 = { give_technology = { tech = tech_starbase_2 } }
+								tech_starbase_3 = { give_technology = { tech = tech_starbase_3 } }
+								tech_starbase_4 = { give_technology = { tech = tech_starbase_4 } }
+								tech_starbase_5 = { give_technology = { tech = tech_starbase_5 } }
+								tech_power_plant_4 = { give_technology = { tech = tech_power_plant_4 } }
+								tech_mining_3 = { give_technology = { tech = tech_mining_3 } }
+								tech_power_hub_1 = { give_technology = { tech = tech_power_hub_1 } }
+							}
+
+							##Add resources
+							add_resource = { minerals = 10000 }
+							add_resource = { energy = 10000 }
+							add_resource = { food = 3000 }
+							add_resource = { consumer_goods = 3000 }
+							add_resource = { alloys = 7000 }
+							add_resource = { influence = 1000 }
+							add_resource = { unity = 27000 }
+
+							create_fleet = {
+								effect = {
+									set_owner = event_target:robotic_war_country
+									while = {
+										count = 10
+										create_ship = {
+											name = random
+											random_existing_design = corvette
+										}
+									}
+								}
+							}
+						}
+					}
+					set_owner = event_target:robotic_war_country
+					set_capital = yes
+					while = {
+						count = 52
+						create_pop = {
+							species = event_target:robotic_war_species
+						}
+					}
+					while = {
+						count = 3
+						add_district_and_planet_size_if_needed_effect = {
+							district = district_city
+						}
+					}
+					while = {
+						count = 4
+						add_district_and_planet_size_if_needed_effect = {
+							district = district_industrial
+						}
+					}
+					while = {
+						count = 4
+						add_district_and_planet_size_if_needed_effect = {
+							district = district_farming
+						}
+					}
+					while = {
+						count = 4
+						add_district_and_planet_size_if_needed_effect = {
+							district = district_mining
+						}
+					}
+					while = {
+						count = 5
+						add_district_and_planet_size_if_needed_effect = {
+							district = district_generator
+						}
+					}
+					add_building = building_system_capital
+					add_building = building_research_lab_1
+					add_building = building_foundry_1
+					add_building = building_food_processing_facility
+					add_building = building_energy_grid
+					add_building = building_mineral_purification_plant
+					add_building = building_bureaucratic_1
+					add_building = building_bureaucratic_1
+
+					while = {
+						count = 10
+						create_army = {
+							name = random
+							owner = event_target:robotic_war_country
+							species = event_target:robotic_war_species
+							type = defense_army
+						}
+					}
+					solar_system = { starbase = { set_owner = event_target:robotic_war_country } }
+				}
+				owner = { establish_communications_no_message = last_created_country }
+				ship_event = { id = mzilli_anomaly_events.106 }
+			}
+		}
+	}
+}

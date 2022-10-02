@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check  3.4.4  26.06.2022
+# Calvitix Check  3.5 Check 22.09.2022
 #
 # Merge with Skalla Ai's Overhaul
 # Merge with Starnet AI 26.06.2022
@@ -21,7 +21,7 @@ alloys_expenditure_buffer = { # Buffer, will not be spent
 		always = no
 	}
 
-	fraction = {
+	weight = {
 		weight = 0
 	}
 }
@@ -35,10 +35,10 @@ alloys_expenditure_trade = {
 		years_passed > 15
 	}
 	
-	fraction = {
+	weight = {
 		weight = 0.5
 	}
-	static_min = {
+	desired_min = {
 		base = 0
 		modifier = {
 			add = 500
@@ -88,10 +88,10 @@ alloys_expenditure_ships_rush ={
 			}
 		}
 	}
-	fraction = {
+	weight = {
 		weight = 0.5
 	}
-	static_min = {
+	desired_min = {
 		base = 500
 	}
 }
@@ -107,10 +107,10 @@ alloys_expenditure_earlyships ={
 			has_country_flag = str_disable_corvettes
 		}
 	}
-	fraction = {
+	weight = {
 		weight = 0.4
 	}
-	static_min = {
+	desired_min = {
 		base = 0
 		modifier = {
 			add = 100
@@ -133,7 +133,7 @@ alloys_expenditure_ships = {
 		can_you_please_stop_building_ships = no
 	}
 
-	fraction = {
+	weight = {
 		weight = 0.6
 
 		# spend more alloys building ships while at war
@@ -144,6 +144,7 @@ alloys_expenditure_ships = {
 				is_at_war = yes
 			}
 		}
+
 		# If we want to colonize and are at peace then prio that
 		modifier = {
 			factor = 0.25
@@ -173,7 +174,7 @@ alloys_expenditure_ships = {
 		}
 	}
 
-	static_min = {
+	desired_min = {
 		base = 0
 		modifier = {
 			add = 140
@@ -248,10 +249,10 @@ alloys_expenditure_ships_neighbour = {
 		can_you_please_stop_building_ships = no
 	}
 	
-	fraction = {
+	weight = {
 		weight = 0.7
 	}	
-	static_min = {
+	desired_min = {
 		base = 1000
 		modifier = {
 			add = 2000
@@ -283,10 +284,10 @@ alloys_expenditure_ships_wartime = {
 		}
 	}
 
-	fraction = {
+	weight = {
 		weight = 0.7
 		}
-	static_min = {
+	desired_min = {
 		base = 10000
 	}
 }
@@ -302,10 +303,10 @@ alloys_expenditure_ships_later = {
 		can_you_please_stop_building_ships = no
 	}
 	
-	fraction = {
+	weight = {
 		weight = 0.3
 	}	
-	static_min = {
+	desired_min = {
 		base = 800
 	}
 }
@@ -321,10 +322,10 @@ alloys_expenditure_ships_latefleet = {
 	can_you_please_stop_building_ships = no
 				}
 	
-	fraction = {
+	weight = {
 		weight = 0.7
 				}
-	static_min = {
+	desired_min = {
 		base = 3000
 			}		
 }
@@ -340,10 +341,10 @@ alloys_expenditure_ships_battleships = {
 		can_you_please_stop_building_ships = no
 	}
 	
-	fraction = {
+	weight = {
 		weight = 0.3
 		}
-	static_min = {
+	desired_min = {
 		base = 5000
 	}
 }
@@ -357,10 +358,10 @@ alloys_expenditure_ships_battleships = {
 		#years_passed < 5
 	#}
 	
-	#fraction = {
+	#weight = {
 		#weight = 0
 	#}	
-	#static_min = {
+	#desired_min = {
 		#base = 0
 		#modifier = {
 			#add = 60
@@ -400,6 +401,10 @@ alloys_expenditure_ship_upgrades = {
 
 	potential = {
 		is_at_war = no
+		any_owned_fleet = {
+			controller = { is_same_value = root }
+			can_be_upgraded = yes
+		}
 		nor = {
 			any_relation = { is_crisis_faction = yes }
 			has_global_flag = ai_invasion_ongoing
@@ -409,17 +414,17 @@ alloys_expenditure_ship_upgrades = {
 		} 
 	}
 
-	fraction = {
+	weight = {
 		weight = 0.2
 
 		# spend more on ship upgrades if at capacity
 		modifier = {
-			factor = 4
+			factor = 2.5
 			used_naval_capacity_percent >= 1.0
 		}
 	}
 	
-	static_min = {
+	desired_min = {
 		base = 0
 		modifier = {
 			add = 600
@@ -463,16 +468,16 @@ alloys_expenditure_planets = {
 		always = yes
 	}
 
-	fraction = {
-		weight = 0.25  #0.5 in Starnet
+	weight = {
+		weight = 0.25  #0.5 in Starnet #0.1 ori
 	}
 
-	static_min = {
-		base = 1500 # 4500 #150 in 3.3b
+	desired_min = {
+		base = 1500 # 4500 #150 in 3.5
 	}
 
-	#Ori 3.3b 
-	#static_max = {
+	#Ori 3.5 
+	#desired_max = {
 	#	base = 450
 	#}
 }
@@ -504,11 +509,12 @@ alloys_expenditure_starbases = {
 		}
 	}
 
-	fraction = {
+	weight = {
 		weight = 0.3
-		#Ori 3.3b spend more on starbase upgrades if at fleet cap
+
+		# spend more on starbase upgrades if at fleet cap
 		modifier = {
-			factor = 4
+			factor = 2
 			used_naval_capacity_percent >= 1.0
 		}
 
@@ -517,13 +523,35 @@ alloys_expenditure_starbases = {
 			factor = 0.25
 			ai_colonize_plans > 0
 		}
+		modifier = {
+			factor = 1.5
+			used_starbase_capacity_percent < 1
+			any_owned_starbase = {
+				can_be_upgraded = yes
+			}
+		}
+		modifier = {
+			factor = 1.5
+			OR = {
+				any_owned_starbase = {
+					NOT = { has_starbase_size = starbase_outpost }
+					can_be_upgraded = yes
+				}
+				any_owned_nonprimary_starbase = {
+					can_be_upgraded = yes
+				}
+			}
+		}
+		
 	}
-	static_min = {
+	
+#Starnet AI	
+	desired_min = {
 		base = 120
 		modifier = {
 			add = 300
 			or = {
-			has_country_flag = ferocious_rusher
+				has_country_flag = ferocious_rusher
 				ai_colonize_plans < 1
 			}
 			years_passed > 8
@@ -531,7 +559,7 @@ alloys_expenditure_starbases = {
 		modifier = {
 			add = 500
 			or = {
-			has_country_flag = ferocious_rusher
+				has_country_flag = ferocious_rusher
 				ai_colonize_plans < 1
 			}
 			years_passed > 13
@@ -540,14 +568,14 @@ alloys_expenditure_starbases = {
 			add = 700
 			resource_stockpile_compare = {
 				resource = alloys
-				value > 500
+				value > 1500 #500
 			}
 		}
 		modifier = {
 			add = 1500
 			resource_stockpile_compare = {
 				resource = alloys
-				value > 2000
+				value > 5000 #2000
 			}
 		}
 		modifier = {
@@ -559,12 +587,12 @@ alloys_expenditure_starbases = {
 			add = 4000
 			resource_stockpile_compare = {
 				resource = alloys
-				value > 4000
+				value > 14000 #4000
 			}
 		}
 		modifier = {
 			add = 1000
-			num_ascension_perks > 2
+			num_ascension_perks > 3 # 2
 		}
 		modifier = {
 			add = 700
@@ -575,6 +603,11 @@ alloys_expenditure_starbases = {
 			years_passed > 22
 		}
 	}
+###	
+	# ori 3.5
+	#desired_max = {
+	#	base = 12000
+	#}	
 }
 
 alloys_expenditure_starbases_fallen_empires = {
@@ -586,7 +619,7 @@ alloys_expenditure_starbases_fallen_empires = {
 		is_country_type = fallen_empire
 	}
 
-	fraction = {
+	weight = {
 		weight = 0.2
 	}
 }
@@ -611,11 +644,11 @@ alloys_expenditure_starbases_expand = {
 		has_resource = { type = influence amount > 75 }
 	}
 
-	fraction = {
+	weight = {
 		weight = 1.2  #0.2  #Calvitix
 	}
 
-	static_min = {  #3.3b
+	desired_min = {  #3.5
 		base = 150
 	}
 }
@@ -633,10 +666,10 @@ alloys_expenditure_starbases_excess = {
 		str_save_alloys_against_rush = no
 	}
 	
-	fraction = {
+	weight = {
 		weight = 0
 	}	
-	static_min = {
+	desired_min = {
 		base = 1000
 		modifier = {
 			add = 2000
@@ -656,7 +689,7 @@ alloys_expenditure_starbases_excess = {
 #		always = yes
 #	}
 	
-#	fraction = {
+#	weight = {
 #		weight = 0.15
 #	}	
 #}
@@ -670,7 +703,7 @@ alloys_expenditure_starbases_excess = {
 #		has_ai_expansion_plan = no
 #	}
 #	
-#	fraction = {
+#	weight = {
 #		weight = 0.25
 #	}	
 #}
@@ -705,15 +738,15 @@ alloys_expenditure_colonies = {
 		}
 	}
 
-	fraction = {
+	weight = {
 		weight = 1
 	}
 
-	static_min = {
+	desired_min = {
 		base = 400
 	}
 
-	static_max = {
+	desired_max = {
 		base = 450
 	}
 }
@@ -725,7 +758,10 @@ alloys_expenditure_colonies_expand = {
 
 	potential = {
 		is_machine_empire = no
+		OR = {
 		is_at_war = no
+			mid_game_years_passed > 0
+		}
 		ai_colonize_plans > 0
 		OR = {
 			AND = {
@@ -747,15 +783,15 @@ alloys_expenditure_colonies_expand = {
 		}
 	}
 
-	fraction = {
+	weight = {
 		weight = 0.5
 	}
 
-	static_min = {
+	desired_min = {
 		base = 200
 	}
 
-	static_max = {
+	desired_max = {
 		base = 250
 	}
 }
@@ -767,19 +803,22 @@ alloys_expenditure_colonies_expand_machine = {
 
 	potential = {
 		is_machine_empire = yes
+		OR = {
 		is_at_war = no
+			mid_game_years_passed > 0
+		}
 		ai_colonize_plans > 0
 	}
 
-	fraction = {
+	weight = {
 		weight = 0.5
 	}
 
-	static_min = {
+	desired_min = {
 		base = 400
 	}
 
-	static_max = {
+	desired_max = {
 		base = 450
 	}
 }
@@ -791,7 +830,10 @@ alloys_expenditure_megastructures = {
 
 	potential = {
 		is_country_type = default
-		is_at_war = no
+		OR = {
+			is_at_war = no
+			used_naval_capacity_percent > 0.95
+		}
 		#can_build_megastructures = yes
 		or = {
 			has_galactic_wonders = yes
@@ -802,11 +844,13 @@ alloys_expenditure_megastructures = {
 		str_ai_should_build_megastructures = yes
 	}
 
-	fraction = {
+	weight = {
 		weight = 0.4
+
 		# increase budget if megastructures are unfinished
 		modifier = {
 			factor = 3
+			used_naval_capacity_percent > 0.8
 			any_owned_megastructure = {
 				NOR = {
 					is_megastructure_type = dyson_sphere_5
@@ -833,11 +877,12 @@ alloys_expenditure_megastructures = {
 		}
 	}
 
-	static_min = {
+	desired_min = {
 		base = 30000 # current max alloy cost for a stage
 	}
-	
-#	static_max = {
+
+# ori 3.5	
+#	desired_max = {
 #		base = 20000 # current max alloy cost for a stage
 #	}
 }
@@ -852,14 +897,14 @@ alloys_expenditure_habitats = {
 		str_ai_should_build_habitats = yes
 	}
 
-	fraction = {
+	weight = {
 		weight = 0.2
 		modifier = {
 			factor = 2.5
 			has_origin = origin_void_dwellers
 		}
 		modifier = {
-			factor = 5
+			factor = 2 #(5?)
 			has_origin = origin_void_dwellers
 			count_owned_planet = {
 				limit = { is_planet_class = pc_habitat }
@@ -879,15 +924,33 @@ alloys_expenditure_habitats = {
 			}
 			count_owned_planet = {
 				limit = { is_planet_class = pc_habitat }
-				count < 12
+				count < 12 #6 ori
 			}
+		}
+		modifier = {
+			factor = 5
+			mid_game_years_passed > 0
+			num_owned_planets < 12
+		}
+		modifier = {
+			factor = 0.5
+			has_trait = trait_aquatic
+		}
+		modifier = { #Build fortress habitats
+			factor = 2
+			used_naval_capacity_percent > 0.95
+			used_starbase_capacity_percent >= 1
+		}
+		modifier = {
+			factor = 0.5
+			is_at_war = yes
 		}
 	}
 
-	static_min = {
+	desired_min = {
 		base = 1000
 	}
-	static_max = {
+	desired_max = {
 		base = 1500
 	}
 }
@@ -921,11 +984,11 @@ alloys_expenditure_decisions = {
 			amount > 5000
 		}
 	}
-	fraction = {
+	weight = {
 		weight = 0.20
 	}
 	# based on habitat / restore ring
-	static_max = {
+	desired_max = {
 		base = 2000
 		modifier = {
 			add = 1000
@@ -958,7 +1021,7 @@ alloys_upkeep_buffer = {	# Buffer, will not be spent
 		always = yes
 	}
 
-	fraction = {
+	weight = {
 		weight = 0.3
 	}
 }
@@ -980,8 +1043,18 @@ alloys_upkeep_ships = {
 		} 
 	}
 
-	fraction = {
-		weight = 1
+	weight = {
+		weight = 0.5
+		modifier = {
+			factor = 1.5
+			OR = {
+				is_at_war = yes
+				resource_income_compare = {
+					resource = alloys
+					value > 800
+				}
+			}
+		}
 	}
 }
 
@@ -994,11 +1067,12 @@ alloys_upkeep_planets = {
 		always = yes
 	}
 
-	fraction = {
-		weight = 0.30
+	weight = {
+		weight = 0.30 #0.2
 	}
 }
 
+##Mod Armies food
 alloys_upkeep_armies = {
 	resource = alloys
 	type = upkeep
@@ -1021,7 +1095,7 @@ alloys_upkeep_armies = {
 		}
 	}
 
-	fraction = {
+	weight = {
 		weight = 0.25
 	}
 }
@@ -1035,7 +1109,7 @@ alloys_expenditure_armies = {
 		is_lithoid_empire = no
 	}
 
-	fraction = {
+	weight = {
 		weight = 0.01
 
 		modifier = {
@@ -1074,7 +1148,7 @@ alloys_expenditure_armies_threatened = {
 		is_lithoid_empire = no
 	}
 
-	fraction = {
+	weight = {
 		weight = 0.10
 	}
 }

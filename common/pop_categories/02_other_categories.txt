@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.4.2  15.05.2022
+# Calvitix Check 3.5  22.09.2022
 #
 # Merge with Plentiful Perks 19.05.2022
 # Merge with Skalla Ai's Overhaul
@@ -159,6 +159,22 @@ slave = {
 		planet_pop_assembly_organic_add = @plantoid_budding_rate
 	}
 
+	triggered_pop_modifier = {
+		potential = {
+			NOT = { has_trait = trait_noxious }
+		}
+		pop_happiness = 1
+		mult = modifier:pop_non_noxious_happiness
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			has_trait = trait_noxious
+		}
+		custom_tooltip = noxious_bastards
+		pop_non_noxious_happiness = @noxious_happiness_penalty
+	}
+
 	resources = {
 		category = pop_category_slave
 
@@ -173,7 +189,9 @@ slave = {
 		}
 		upkeep = {
 			trigger = {
+				is_organic_species = yes
 				is_phototrophic = yes
+				is_lithoid = no
 			}
 			food = @living_standard_phototrophic_normal
 		}
@@ -188,9 +206,19 @@ slave = {
 		upkeep = {
 			trigger = {
 				is_organic_species = yes
+				is_phototrophic = no
 				is_lithoid = yes
 			}
 			minerals = @living_standard_food_normal
+		}
+
+		upkeep = {
+			trigger = {
+				is_organic_species = yes
+				is_phototrophic = yes
+				is_lithoid = yes
+			}
+			minerals = @living_standard_phototrophic_normal
 		}
 
 		# Robotic Upkeep
@@ -199,6 +227,15 @@ slave = {
 				is_robotic_species = yes
 			}
 			energy = @living_standard_energy_normal
+		}
+
+		# Exotic Metabolism Upkeep
+		upkeep = {
+			trigger = {
+				is_organic_species = yes
+				has_trait = trait_exotic_metabolism
+			}
+			exotic_gases = @exotic_metabolism
 		}
 
 		# Resource Production
@@ -225,6 +262,13 @@ slave = {
 			}
 			volatile_motes = @lithoid_trait_resource_production
 		}
+		produces = {
+			trigger = {
+				is_organic_species = yes
+				has_trait = trait_inorganic_breath
+			}
+			exotic_gases = @inorganic_breath
+		}
 	}
 }
 
@@ -249,6 +293,22 @@ bio_trophy = {
 	resettlement_cost = {
 		energy = 100
 		unity = 25
+	}
+
+	triggered_pop_modifier = {
+		potential = {
+			NOT = { has_trait = trait_noxious }
+		}
+		pop_happiness = 1
+		mult = modifier:pop_non_noxious_happiness
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			has_trait = trait_noxious
+		}
+		custom_tooltip = noxious_bastards
+		pop_non_noxious_happiness = @noxious_happiness_penalty
 	}
 
 	triggered_planet_modifier = {
@@ -277,7 +337,9 @@ bio_trophy = {
 		}
 		upkeep = {
 			trigger = {
+				is_organic_species = yes
 				is_phototrophic = yes
+				is_lithoid = no
 			}
 			food = @living_standard_phototrophic_normal
 		}
@@ -292,9 +354,28 @@ bio_trophy = {
 		upkeep = {
 			trigger = {
 				is_organic_species = yes
+				is_phototrophic = no
 				is_lithoid = yes
 			}
 			minerals = @living_standard_food_normal
+		}
+
+		upkeep = {
+			trigger = {
+				is_organic_species = yes
+				is_phototrophic = yes
+				is_lithoid = yes
+			}
+			minerals = @living_standard_phototrophic_normal
+		}
+		
+		# Exotic Metabolism Upkeep
+		upkeep = {
+			trigger = {
+				is_organic_species = yes
+				has_trait = trait_exotic_metabolism
+			}
+			exotic_gases = @exotic_metabolism
 		}
 
 		# Resource Production
@@ -320,6 +401,14 @@ bio_trophy = {
 				has_trait = trait_lithoid_volatile_excretions
 			}
 			volatile_motes = @lithoid_trait_resource_production
+		}
+		
+		produces = {
+			trigger = {
+				is_organic_species = yes
+				has_trait = trait_inorganic_breath
+			}
+			exotic_gases = @inorganic_breath
 		}
 	}
 
@@ -404,6 +493,22 @@ criminal = {
 		mult = value:scripted_modifier_mult|MODIFIER|pop_lifestyle_trade_mult|
 	}
 
+	triggered_pop_modifier = {
+		potential = {
+			NOT = { has_trait = trait_noxious }
+		}
+		pop_happiness = 1
+		mult = modifier:pop_non_noxious_happiness
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			has_trait = trait_noxious
+		}
+		custom_tooltip = noxious_bastards
+		pop_non_noxious_happiness = @noxious_happiness_penalty
+	}
+
 	should_apply_unemployment_penalties = {
 		NOR = {
 			has_very_high_living_standard_type = yes
@@ -435,7 +540,9 @@ criminal = {
 		}
 		upkeep = {
 			trigger = {
+				is_organic_species = yes
 				is_phototrophic = yes
+				is_lithoid = no
 			}
 			food = @living_standard_phototrophic_normal
 		}
@@ -450,9 +557,19 @@ criminal = {
 		upkeep = {
 			trigger = {
 				is_organic_species = yes
+				is_phototrophic = no
 				is_lithoid = yes
 			}
 			minerals = @living_standard_food_normal
+		}
+
+		upkeep = {
+			trigger = {
+				is_organic_species = yes
+				is_phototrophic = yes
+				is_lithoid = yes
+			}
+			minerals = @living_standard_phototrophic_normal
 		}
 
 		# Robotic Upkeep
@@ -532,7 +649,9 @@ deviant_drone = {
 		}
 		upkeep = {
 			trigger = {
+				is_organic_species = yes
 				is_phototrophic = yes
+				is_lithoid = no
 			}
 			food = @living_standard_phototrophic_normal
 		}
@@ -547,9 +666,19 @@ deviant_drone = {
 		upkeep = {
 			trigger = {
 				is_organic_species = yes
+				is_phototrophic = no
 				is_lithoid = yes
 			}
 			minerals = @living_standard_food_normal
+		}
+
+		upkeep = {
+			trigger = {
+				is_organic_species = yes
+				is_phototrophic = yes
+				is_lithoid = yes
+			}
+			minerals = @living_standard_phototrophic_normal
 		}
 
 		# Robotic Upkeep
@@ -646,7 +775,9 @@ corrupt_drone = {
 		}
 		upkeep = {
 			trigger = {
+				is_organic_species = yes
 				is_phototrophic = yes
+				is_lithoid = no
 			}
 			food = @living_standard_phototrophic_normal
 		}
@@ -661,9 +792,19 @@ corrupt_drone = {
 		upkeep = {
 			trigger = {
 				is_organic_species = yes
+				is_phototrophic = no
 				is_lithoid = yes
 			}
 			minerals = @living_standard_food_normal
+		}
+
+		upkeep = {
+			trigger = {
+				is_organic_species = yes
+				is_phototrophic = yes
+				is_lithoid = yes
+			}
+			minerals = @living_standard_phototrophic_normal
 		}
 
 		# Robotic Upkeep
@@ -768,6 +909,7 @@ precursor = {
 		upkeep = {
 			trigger = {
 				is_organic_species = yes
+				is_phototrophic = no
 				is_lithoid = yes
 				exists = owner
 				owner = {
@@ -781,6 +923,7 @@ precursor = {
 		upkeep = {
 			trigger = {
 				is_organic_species = yes
+				is_phototrophic = no
 				is_lithoid = yes
 				exists = owner
 				owner = {
@@ -812,6 +955,22 @@ xeno_ward = {
 		pop_amenities_usage_base = 1
 	}
 
+	triggered_pop_modifier = {
+		potential = {
+			NOT = { has_trait = trait_noxious }
+		}
+		pop_happiness = 1
+		mult = modifier:pop_non_noxious_happiness
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			has_trait = trait_noxious
+		}
+		custom_tooltip = noxious_bastards
+		pop_non_noxious_happiness = @noxious_happiness_penalty
+	}
+
 	# scope: pop to be resettled
 	allow_resettlement = {
 		always = no
@@ -840,7 +999,9 @@ xeno_ward = {
 		}
 		upkeep = {
 			trigger = {
+				is_organic_species = yes
 				is_phototrophic = yes
+				is_lithoid = no
 			}
 			food = @living_standard_phototrophic_normal
 			consumer_goods = @living_standard_luxuries_very_high
@@ -850,9 +1011,20 @@ xeno_ward = {
 		upkeep = {
 			trigger = {
 				is_organic_species = yes
+				is_phototrophic = no
 				is_lithoid = yes
 			}
 			minerals = @living_standard_food_normal
+			consumer_goods = @living_standard_luxuries_very_high
+		}
+
+		upkeep = {
+			trigger = {
+				is_organic_species = yes
+				is_phototrophic = yes
+				is_lithoid = yes
+			}
+			minerals = @living_standard_phototrophic_normal
 			consumer_goods = @living_standard_luxuries_very_high
 		}
 
@@ -877,6 +1049,22 @@ pre_sapients = {
 	}
 	weight = {
 		weight = 9000
+	}
+
+	triggered_pop_modifier = {
+		potential = {
+			NOT = { has_trait = trait_noxious }
+		}
+		pop_happiness = 1
+		mult = modifier:pop_non_noxious_happiness
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			has_trait = trait_noxious
+		}
+		custom_tooltip = noxious_bastards
+		pop_non_noxious_happiness = @noxious_happiness_penalty
 	}
 
 	pop_modifier = {

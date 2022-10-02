@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.4.5  15.05.2022
+# Calvitix Check 3.5 22.09.2022
 #
 # Merge with Arisphaos Unofficial patch
 # Merge with NSC   28.11.2021
@@ -49,6 +49,14 @@ ap_lord_of_war = {
 		modifier = {
 			factor = 2
 			has_authority = auth_corporate
+		}
+		modifier = {
+			factor = 0
+			is_pacifist = yes
+		}
+		modifier = {
+			factor = 0.25
+			is_xenophile = yes
 		}
 	}
 }
@@ -202,12 +210,14 @@ ap_hydrocentric = {
 		has_aquatics = yes
 		NOT = { has_ascension_perk = ap_hydrocentric }
 		OR = {
+			owner = { has_origin = origin_pd_hycean_aquatic } #PD
 			has_trait = trait_pc_ocean_preference
 			has_trait = trait_pc_aquatic_preference #PD
 			has_trait = trait_pc_desertislands_preference
 			has_trait = trait_pc_subarctic_preference
 			has_trait = trait_pc_reef_preference
 			has_trait = trait_pc_storm_preference
+			has_trait = trait_pc_pd_iceberg_preference
 			AND = {
 				any_owned_pop = { has_trait = trait_aquatic }
 				OR = {
@@ -219,6 +229,7 @@ ap_hydrocentric = {
 	}
 	possible = {
 		OR = {
+			owner = { has_origin = origin_pd_hycean_aquatic }
 		has_trait = trait_aquatic
 			AND = {
 				any_owned_pop = { has_trait = trait_aquatic }
@@ -1445,11 +1456,11 @@ ap_grasp_the_void = {
 
 	modifier = {
 		country_starbase_capacity_add = 5 # 10 #starnet 5
-		ship_interstellar_speed_mult = 0.30
-		science_ship_survey_speed = 0.30
-		ship_anomaly_research_speed_mult = 0.30
-		ship_archaeological_site_excavation_speed_mult = 0.30
-		planet_sensor_range_add = 2
+		ship_interstellar_speed_mult = 0.15
+		science_ship_survey_speed = 0.15
+		ship_anomaly_research_speed_mult = 0.15
+		ship_archaeological_site_excavation_speed_mult = 0.15
+		#planet_sensor_range_add = 2 #deleted
 	}
 
 	potential = {
@@ -1518,11 +1529,11 @@ ap_eternal_vigilance = {
 ###
 
 	modifier = {
-		shipclass_starbase_damage_mult = 0.25
-		shipclass_starbase_hull_mult = 0.25
-		shipclass_military_station_damage_mult = 0.25
-		starbase_defense_platform_capacity_add = 10
-		country_starbase_capacity_add = 15 # 25  #mod ?
+		shipclass_starbase_damage_mult = 0.50
+		shipclass_starbase_hull_mult = 0.50
+		shipclass_military_station_damage_mult = 0.50
+		starbase_defense_platform_capacity_mult = 0.25
+		country_starbase_capacity_add = 10
 	}
 
 	potential = {
@@ -2637,5 +2648,37 @@ ap_universal_transactions = {
 
 	ai_weight = {
 		factor = 20
+	}
+}
+
+#################
+# TOXIC ASCENSION PERKS
+#################
+
+ap_detox = {
+	potential = {
+		host_has_dlc = "Toxoids Species Pack"
+		NOT = {
+			has_ascension_perk = ap_detox
+		}
+	}
+
+	possible = {
+		custom_tooltip = {
+			fail_text = "requires_technology_tech_climate_restoration"
+			has_technology = tech_climate_restoration
+		}
+	}
+
+	on_enabled = {
+		custom_tooltip = "detox_tox_worlds"
+	}
+
+	ai_weight = {
+		factor = 20
+		modifier = {
+			factor = 100
+			toxoids_portrait = yes
+		}
 	}
 }

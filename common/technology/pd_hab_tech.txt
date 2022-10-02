@@ -1,7 +1,7 @@
 ##################
 ### TECH COSTS ###
 ##################
-#If you change any of these, use replace in files so the values are the same across all files
+#If you change any of these, use replace ins so the values are the same across alls
 
 @tier1cost1 = 500
 @tier1cost2 = 750
@@ -55,12 +55,12 @@ tech_pdhabitat_1 = {
 	area = engineering
 	category = { voidcraft }
 	tier = 3
-	prerequisites = { tech_hydroponics} #Calvitix Requirement addition
+	prerequisites = { tech_starbase_2 tech_hydroponics} #Calvitix Requirement addition
 	weight = @tier3weight1
 
 	# unlocks PD Level 1 Habs
 	weight_modifier = {
-	# unlocks Habitats
+	# unlocks Habitats  Calvitix addition
 		modifier = {
 			factor = 0.1
 			NOT = { years_passed > 50 }
@@ -105,7 +105,7 @@ tech_pdhabitat_1 = {
 				has_trait = "leader_trait_expertise_voidcraft"
 			}
 		}
-		modifier = {
+		modifier = {  ##calvitix
 			factor = 10
 			or = {
 				has_tradition = tr_expansion_finish
@@ -114,7 +114,7 @@ tech_pdhabitat_1 = {
 				has_ascension_perk = ap_voidborn				
 			}
 		}	
-		modifier = {
+		modifier = {  #Calvitix
 			factor = 10
 			years_passed > 50
 		}		
@@ -164,7 +164,7 @@ tech_pdhabitat_2 = {
 				has_trait = "leader_trait_expertise_voidcraft"
 			}
 		}
-		modifier = {
+		modifier = { #Calvitix
 			factor = 10
 			or = {
 				has_tradition = tr_expansion_finish
@@ -193,3 +193,43 @@ tech_pdhabitat_2 = {
 		}
 	}
 }
+
+# Military Colonies
+tech_military_habitats = {
+	cost = @tier3cost1
+	area = society
+	tier = 3
+	category = { military_theory }
+	prerequisites = { "tech_centralized_command" }
+	weight = @tier3weight1
+	is_rare = yes
+
+	weight_modifier = {
+		modifier = {
+			factor = 2
+			is_militarist = yes
+		}
+		modifier = {
+			factor = value:tech_weight_likelihood
+			research_leader = {
+				area = society
+				has_trait = "leader_trait_expertise_military_theory"
+			}
+		}
+	}
+
+	ai_weight = {
+		modifier = {
+			factor = 2
+			is_militarist = yes
+		}
+		modifier = {
+			factor = 1.25
+			research_leader = {
+				area = society
+				has_trait = "leader_trait_expertise_military_theory"
+			}
+		}
+	}
+}
+

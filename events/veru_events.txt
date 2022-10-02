@@ -18,7 +18,7 @@ country_event = {
 		every_subject = {
 			limit = {
 				NOR = {
-					is_country_type = exile_country
+					# is_country_type = exile_country
 					any_agreement = {
 						agreement_preset = preset_protectorate
 						agreement_preset = preset_auto_state
@@ -259,23 +259,36 @@ country_event = {
 
 	picture_event_data = {
 		portrait = event_target:chosen_subject.ruler
-		planet_background = event_target:chosen_subject
-		graphical_culture = event_target:chosen_subject
-		city_level = event_target:chosen_subject.capital_scope
-		room = event_target:chosen_subject.ruler
+		planet_background = root.capital_scope
+		graphical_culture = root
+		city_level = root
+		room = root.ruler
 	}
 
 	desc = {
 		text = veru.2050.loyal.desc
 		trigger = {
-			event_target:chosen_subject = { is_loyal_to = prev }
+			event_target:chosen_subject = {
+				is_loyal_to = prev
+				NOT = { is_country_type = exile_country }
+			}
 		}
 	}
 
 	desc = {
 		text = veru.2050.disloyal.desc
 		trigger = {
-			event_target:chosen_subject = { is_disloyal_to = prev }
+			event_target:chosen_subject = {
+				is_disloyal_to = prev
+				NOT = { is_country_type = exile_country }
+			}
+		}
+	}
+
+	desc = {
+		text = veru.2050.exile.desc
+		trigger = {
+			event_target:chosen_subject = { is_country_type = exile_country }
 		}
 	}
 
@@ -285,6 +298,9 @@ country_event = {
 	# Install New Leader
 	option = {
 		name = veru.2050.leader
+		trigger = {
+			event_target:chosen_subject = { NOT = { is_country_type = exile_country } }
+		}
 		allow = {
 			custom_tooltip = {
 				fail_text = veru_contract_fail
@@ -305,6 +321,9 @@ country_event = {
 	# Alter Government Type
 	option = {
 		name = veru.2050.gov
+		trigger = {
+			event_target:chosen_subject = { NOT = { is_country_type = exile_country } }
+		}
 		allow = {
 			custom_tooltip = {
 				fail_text = veru_contract_fail
@@ -322,6 +341,9 @@ country_event = {
 	# Relocate Capital
 	option = {
 		name = veru.2050.cap
+		trigger = {
+			event_target:chosen_subject = { NOT = { is_country_type = exile_country } }
+		}
 		allow = {
 			custom_tooltip = {
 				fail_text = veru_contract_fail
@@ -332,9 +354,7 @@ country_event = {
 			custom_tooltip = {
 				fail_text = veru_tree_of_life_fail
 				event_target:chosen_subject = {
-					NOT = {
-						has_origin = origin_tree_of_life
-					}
+					NOT = { has_origin = origin_tree_of_life }
 				}
 			}
 		}
@@ -351,6 +371,7 @@ country_event = {
 		name = veru.2050.proxy
 		trigger = {
 			event_target:chosen_subject = {
+				NOT = { is_country_type = exile_country }
 				any_agreement = {
 					OR = {
 						agreement_preset = preset_verpuppet
@@ -371,6 +392,9 @@ country_event = {
 	option = {
 		name = veru.2050.name_change
 		custom_tooltip = veru.2050.name_change.tooltip
+		trigger = {
+			event_target:chosen_subject = { NOT = { is_country_type = exile_country } }
+		}
 		allow = {
 			custom_tooltip = {
 				fail_text = influencefail_text_veru
@@ -396,6 +420,9 @@ country_event = {
 	option = {
 		name = veru.2050.tech
 		custom_tooltip = veru.2050.tech.tooltip
+		trigger = {
+			event_target:chosen_subject = { NOT = { is_country_type = exile_country } }
+		}
 		allow = {
 			custom_tooltip = {
 				fail_text = influencefail_text_veru_200
@@ -407,6 +434,25 @@ country_event = {
 			event_target:chosen_subject = {
 				copy_techs_from = { target = root }
 			}
+		}
+	}
+
+	# Grant Land to Government-in-Exile
+	option = {
+		name = veru.2050.exile
+		custom_tooltip = veru.2050.exile.tooltip
+		trigger = {
+			event_target:chosen_subject = { is_country_type = exile_country }
+		}
+		allow = {
+			custom_tooltip = {
+				fail_text = influencefail_text_veru_200
+				has_resource = { type = influence amount >= 200 }
+			}
+		}
+		hidden_effect = {
+			get_gift_planets = yes
+			country_event = { id = veru.7100 }
 		}
 	}
 }
@@ -478,10 +524,10 @@ country_event = {
 
 	picture_event_data = {
 		portrait = event_target:chosen_subject.ruler
-		planet_background = event_target:chosen_subject
-		graphical_culture = event_target:chosen_subject
-		city_level = event_target:chosen_subject.capital_scope
-		room = event_target:chosen_subject.ruler
+		planet_background = root.capital_scope
+		graphical_culture = root
+		city_level = root
+		room = root.ruler
 	}
 
 	desc = {
@@ -818,10 +864,10 @@ country_event = {
 
 	picture_event_data = {
 		portrait = event_target:chosen_subject.ruler
-		planet_background = event_target:chosen_subject
-		graphical_culture = event_target:chosen_subject
-		city_level = event_target:chosen_subject.capital_scope
-		room = event_target:chosen_subject.ruler
+		planet_background = root.capital_scope
+		graphical_culture = root
+		city_level = root
+		room = root.ruler
 	}
 
 	desc = {
@@ -1042,9 +1088,11 @@ country_event = {
 		hidden_effect = {
 			event_target:chosen_subject = {
 				get_ethics_check_fan = yes
+				get_remove_civics = yes
 				change_government = {
 					authority = auth_corporate
 					remove_invalid_civics = yes
+					civics = random
 					cooldown = no
 				}
 			}
@@ -1099,10 +1147,10 @@ country_event = {
 
 	picture_event_data = {
 		portrait = event_target:chosen_subject.ruler
-		planet_background = event_target:chosen_subject
-		graphical_culture = event_target:chosen_subject
-		city_level = event_target:chosen_subject.capital_scope
-		room = event_target:chosen_subject.ruler
+		planet_background = root.capital_scope
+		graphical_culture = root
+		city_level = root
+		room = root.ruler
 	}
 
 	desc = {
@@ -1151,10 +1199,10 @@ country_event = {
 
 	picture_event_data = {
 		portrait = event_target:chosen_subject.ruler
-		planet_background = event_target:chosen_subject
-		graphical_culture = event_target:chosen_subject
-		city_level = event_target:chosen_subject.capital_scope
-		room = event_target:chosen_subject.ruler
+		planet_background = root.capital_scope
+		graphical_culture = root
+		city_level = root
+		room = root.ruler
 	}
 
 	desc = {
@@ -1251,11 +1299,12 @@ country_event = {
 
 	picture_event_data = {
 		portrait = root.ruler
-		planet_background = event_target:chosen_subject
-		graphical_culture = event_target:chosen_subject
-		city_level = event_target:chosen_subject.capital_scope
-		room = event_target:chosen_subject.ruler
+		planet_background = root.capital_scope
+		graphical_culture = root
+		city_level = root
+		room = root.ruler
 	}
+
 
 	desc = {
 		text = veru.5000.loyal.desc
@@ -1353,10 +1402,10 @@ country_event = {
 
 	picture_event_data = {
 		portrait = event_target:chosen_subject.ruler
-		planet_background = event_target:chosen_subject
-		graphical_culture = event_target:chosen_subject
-		city_level = event_target:chosen_subject.capital_scope
-		room = event_target:chosen_subject.ruler
+		planet_background = root.capital_scope
+		graphical_culture = root
+		city_level = root
+		room = root.ruler
 	}
 
 	desc = {
@@ -1579,10 +1628,10 @@ country_event = {
 
 	picture_event_data = {
 		portrait = event_target:chosen_subject.ruler
-		planet_background = event_target:chosen_subject
-		graphical_culture = event_target:chosen_subject
-		city_level = event_target:chosen_subject.capital_scope
-		room = event_target:chosen_subject.ruler
+		planet_background = root.capital_scope
+		graphical_culture = root
+		city_level = root
+		room = root.ruler
 	}
 
 	desc = {
@@ -1805,10 +1854,10 @@ country_event = {
 
 	picture_event_data = {
 		portrait = event_target:chosen_subject.ruler
-		planet_background = event_target:chosen_subject
-		graphical_culture = event_target:chosen_subject
-		city_level = event_target:chosen_subject.capital_scope
-		room = event_target:chosen_subject.ruler
+		planet_background = root.capital_scope
+		graphical_culture = root
+		city_level = root
+		room = root.ruler
 	}
 
 	desc = {
@@ -2031,10 +2080,10 @@ country_event = {
 
 	picture_event_data = {
 		portrait = event_target:chosen_subject.ruler
-		planet_background = event_target:chosen_subject
-		graphical_culture = event_target:chosen_subject
-		city_level = event_target:chosen_subject.capital_scope
-		room = event_target:chosen_subject.ruler
+		planet_background = root.capital_scope
+		graphical_culture = root
+		city_level = root
+		room = root.ruler
 	}
 
 	desc = {
@@ -2259,10 +2308,10 @@ country_event = {
 
 	picture_event_data = {
 		portrait = root.ruler
-		planet_background = event_target:chosen_subject
-		graphical_culture = event_target:chosen_subject
-		city_level = event_target:chosen_subject.capital_scope
-		room = event_target:chosen_subject.ruler
+		planet_background = root.capital_scope
+		graphical_culture = root
+		city_level = root
+		room = root.ruler
 	}
 
 	desc = {
@@ -2515,10 +2564,10 @@ country_event = {
 
 	picture_event_data = {
 		portrait = root.ruler
-		planet_background = event_target:chosen_subject
-		graphical_culture = event_target:chosen_subject
-		city_level = event_target:chosen_subject.capital_scope
-		room = event_target:chosen_subject.ruler
+		planet_background = root.capital_scope
+		graphical_culture = root
+		city_level = root
+		room = root.ruler
 	}
 
 	desc = {
@@ -2771,10 +2820,10 @@ country_event = {
 
 	picture_event_data = {
 		portrait = root.ruler
-		planet_background = event_target:chosen_subject
-		graphical_culture = event_target:chosen_subject
-		city_level = event_target:chosen_subject.capital_scope
-		room = event_target:chosen_subject.ruler
+		planet_background = root.capital_scope
+		graphical_culture = root
+		city_level = root
+		room = root.ruler
 	}
 
 	desc = {
@@ -3027,10 +3076,10 @@ country_event = {
 
 	picture_event_data = {
 		portrait = root.ruler
-		planet_background = event_target:chosen_subject
-		graphical_culture = event_target:chosen_subject
-		city_level = event_target:chosen_subject.capital_scope
-		room = event_target:chosen_subject.ruler
+		planet_background = root.capital_scope
+		graphical_culture = root
+		city_level = root
+		room = root.ruler
 	}
 
 	desc = {
@@ -3320,6 +3369,7 @@ country_event = {
 
 	immediate = {
 		set_variable = { which = num_border_subjects value = 0 }
+		save_event_target_as = buffer_zone_opponent
 		every_subject = {
 			limit = {
 				any_system_within_border = {
@@ -3330,7 +3380,7 @@ country_event = {
 								OR = {
 									is_same_value = event_target:buffer_zone_mother
 									AND = {
-										has_overlord = yes
+										has_any_overlord = yes
 										overlord = { is_same_value = event_target:buffer_zone_mother }
 									}
 								}
@@ -3349,7 +3399,8 @@ country_event = {
 			random_subject = {
 				limit = { has_country_flag = border_subject }
 				remove_country_flag = border_subject
-				save_global_event_target_as = chosen_border_subject
+				set_country_flag = chosen_border_subject_@event_target:buffer_zone_mother
+				event_target:buffer_zone_mother = { set_country_flag = chosen_border_subject_link_@prev }
 			}
 		}
 		if = {
@@ -3436,13 +3487,11 @@ country_event = {
 
 	after = {
 		if = {
-			limit = {
-				check_variable = { which = num_border_subjects value > 1 }
-			}
-			event_target:buffer_zone_mother = {
-				country_event = { id = veru.6100 }
-			}
+			limit = { check_variable = { which = num_border_subjects value > 1 } }
+			event_target:buffer_zone_mother = { country_event = { id = veru.6100 } }
 		}
+
+		clear_global_event_target = buffer_zone_mother
 	}
 }
 
@@ -3473,10 +3522,7 @@ country_event = {
 			from = { check_variable = { which = num_border_subjects value >= 1 } }	
 		}
 		hidden_effect = {
-			event_target:border_subject_1 = {
-				save_global_event_target_as = chosen_border_subject
-				set_country_flag = chosen_border_subject@root
-			}
+			event_target:border_subject_1 = { set_country_flag = chosen_border_subject_@root }
 		}
 	}
 	option = {
@@ -3485,10 +3531,7 @@ country_event = {
 			from = { check_variable = { which = num_border_subjects value >= 2 } }	
 		}
 		hidden_effect = {
-			event_target:border_subject_2 = {
-				save_global_event_target_as = chosen_border_subject
-				set_country_flag = chosen_border_subject@root
-			}
+			event_target:border_subject_2 = { set_country_flag = chosen_border_subject_@root }
 		}
 	}
 	option = {
@@ -3497,10 +3540,7 @@ country_event = {
 			from = { check_variable = { which = num_border_subjects value >= 3 } }	
 		}
 		hidden_effect = {
-			event_target:border_subject_3 = {
-				save_global_event_target_as = chosen_border_subject
-				set_country_flag = chosen_border_subject@root
-			}
+			event_target:border_subject_3 = { set_country_flag = chosen_border_subject_@root }
 		}
 	}
 	option = {
@@ -3509,10 +3549,7 @@ country_event = {
 			from = { check_variable = { which = num_border_subjects value >= 4 } }	
 		}
 		hidden_effect = {
-			event_target:border_subject_4 = {
-				save_global_event_target_as = chosen_border_subject
-				set_country_flag = chosen_border_subject@root
-			}
+			event_target:border_subject_4 = { set_country_flag = chosen_border_subject_@root }
 		}
 	}
 	option = {
@@ -3521,10 +3558,7 @@ country_event = {
 			from = { check_variable = { which = num_border_subjects value >= 5 } }	
 		}
 		hidden_effect = {
-			event_target:border_subject_5 = {
-				save_global_event_target_as = chosen_border_subject
-				set_country_flag = chosen_border_subject@root
-			}
+			event_target:border_subject_5 = { set_country_flag = chosen_border_subject_@root }
 		}
 	}
 	option = {
@@ -3533,10 +3567,7 @@ country_event = {
 			from = { check_variable = { which = num_border_subjects value >= 6 } }	
 		}
 		hidden_effect = {
-			event_target:border_subject_6 = {
-				save_global_event_target_as = chosen_border_subject
-				set_country_flag = chosen_border_subject@root
-			}
+			event_target:border_subject_6 = { set_country_flag = chosen_border_subject_@root }
 		}
 	}
 	option = {
@@ -3545,10 +3576,7 @@ country_event = {
 			from = { check_variable = { which = num_border_subjects value >= 7 } }	
 		}
 		hidden_effect = {
-			event_target:border_subject_7 = {
-				save_global_event_target_as = chosen_border_subject
-				set_country_flag = chosen_border_subject@root
-			}
+			event_target:border_subject_7 = { set_country_flag = chosen_border_subject_@root }
 		}
 	}
 	option = {
@@ -3557,10 +3585,7 @@ country_event = {
 			from = { check_variable = { which = num_border_subjects value >= 8 } }	
 		}
 		hidden_effect = {
-			event_target:border_subject_8 = {
-				save_global_event_target_as = chosen_border_subject
-				set_country_flag = chosen_border_subject@root
-			}
+			event_target:border_subject_8 = { set_country_flag = chosen_border_subject_@root }
 		}
 	}
 	option = {
@@ -3569,10 +3594,7 @@ country_event = {
 			from = { check_variable = { which = num_border_subjects value >= 9 } }	
 		}
 		hidden_effect = {
-			event_target:border_subject_9 = {
-				save_global_event_target_as = chosen_border_subject
-				set_country_flag = chosen_border_subject@root
-			}
+			event_target:border_subject_9 = { set_country_flag = chosen_border_subject_@root }
 		}
 	}
 	option = {
@@ -3581,43 +3603,13 @@ country_event = {
 			from = { check_variable = { which = num_border_subjects value >= 10 } }	
 		}
 		hidden_effect = {
-			event_target:border_subject_10 = {
-				save_global_event_target_as = chosen_border_subject
-				set_country_flag = chosen_border_subject@root
-			}
-		}
-	}
-
-	after = {
-		hidden_effect = {
-			random_war = {
-				limit = {
-					using_war_goal = {
-						type = wg_claim_subject
-						owner = prev
-					}
-				}
-				every_war_participant = {
-					prev = {
-						remove_war_participant = prev
-					}
-				}
-			}
-			declare_war = {
-				target = from
-				name = {
-					key = "NAME_veru_buffer_war"
-					variable_string = "[event_target:chosen_border_subject.GetName]"
-				}
-				attacker_war_goal = "wg_claim_subject"
-			}
-			country_event = { id = veru.6300 days = 5 }
+			event_target:border_subject_10 = { set_country_flag = chosen_border_subject_@root }
 		}
 	}
 }
 
 #################
-# War Events
+# Buffer Zone War Events, called via wargoal
 
 # War Won - Switch subject overlord
 country_event = {
@@ -3626,22 +3618,24 @@ country_event = {
 	is_triggered_only = yes
 
 	immediate = {
+
+		event_target:buffer_zone_transition = { save_event_target_as = buffer_zone_winner }
+		clear_global_event_target = buffer_zone_transition
+
 		random_subject = {
-			limit = {
-				has_country_flag = chosen_border_subject@event_target:buffer_zone_winner
-			}
-			remove_country_flag = chosen_border_subject@event_target:buffer_zone_winner
+			limit = { has_country_flag = chosen_border_subject_@event_target:buffer_zone_winner }
+			remove_country_flag = chosen_border_subject_@event_target:buffer_zone_winner
 			set_subject_of = {
 				who = event_target:buffer_zone_winner
 				preset = preset_vassal
 			}
-			save_global_event_target_as = chosen_subject
+			save_event_target_as = chosen_subject
 		}
 	}
 
 	after = {
 		event_target:buffer_zone_winner = {
-			country_event = { id = veru.6400 days = 2 }
+			country_event = { id = veru.6400 days = 3 }
 		}
 	}
 }
@@ -3654,10 +3648,10 @@ country_event = {
 
 	immediate = {
 		random_subject = {
-			limit = {
-				has_country_flag = chosen_border_subject@event_target:buffer_zone_loser
-			}
-			remove_country_flag = chosen_border_subject@event_target:buffer_zone_loser
+			limit = { has_country_flag = chosen_border_subject_@event_target:buffer_zone_loser }
+			remove_country_flag = chosen_border_subject_@event_target:buffer_zone_loser
+
+			get_clear_buffer_event_target = yes
 		}
 	}
 
@@ -3673,32 +3667,20 @@ country_event = {
 	is_triggered_only = yes
 
 	immediate = {
-		save_global_event_target_as = buffer_zone_loser
+		save_event_target_as = buffer_zone_loser
 		from = {
 			random_subject = {
-				limit = {
-					has_country_flag = chosen_border_subject@event_target:buffer_zone_loser
-				}
-				remove_country_flag = chosen_border_subject@event_target:buffer_zone_loser
+				limit = { has_country_flag = chosen_border_subject_@event_target:buffer_zone_loser }
+				remove_country_flag = chosen_border_subject_@event_target:buffer_zone_loser
+
+				get_clear_buffer_event_target = yes
 			}
 		}
-		
 	}
 
-	after = {
-		clear_global_event_target = buffer_zone_loser
-	}
-}
-
-# Get Subjects in buffer zone war
-country_event = {
-	id = veru.6300
-	hide_window = yes
-	is_triggered_only = yes
-
-	immediate = {
-		clear_global_event_target = chosen_border_subject
-	}
+	# after = {
+	# 	clear_global_event_target = buffer_zone_loser
+	# }
 }
 
 ###############################
@@ -3723,9 +3705,9 @@ country_event = {
 		room = event_target:chosen_subject.ruler
 	}
 
-	immediate = {
-		clear_global_event_target = buffer_zone_winner
-	}
+	# immediate = {
+	# 	clear_global_event_target = buffer_zone_winner
+	# }
 
 	# Choose one of their leaders
 	option = {
@@ -3844,11 +3826,11 @@ country_event = {
 	diplomatic = yes
 
 	picture_event_data = {
-		portrait = root.ruler
-		planet_background = event_target:chosen_subject
-		graphical_culture = event_target:chosen_subject
-		city_level = event_target:chosen_subject.capital_scope
-		room = event_target:chosen_subject.ruler
+		portrait = event_target:chosen_subject.ruler
+		planet_background = root.capital_scope
+		graphical_culture = root
+		city_level = root
+		room = root.ruler
 	}
 
 	option = {
@@ -4024,11 +4006,11 @@ country_event = {
 	diplomatic = yes
 
 	picture_event_data = {
-		portrait = root.ruler
-		planet_background = event_target:chosen_subject
-		graphical_culture = event_target:chosen_subject
-		city_level = event_target:chosen_subject.capital_scope
-		room = event_target:chosen_subject.ruler
+		portrait = event_target:chosen_subject.ruler
+		planet_background = root.capital_scope
+		graphical_culture = root
+		city_level = root
+		room = root.ruler
 	}
 
 	option = {
@@ -4204,11 +4186,11 @@ country_event = {
 	diplomatic = yes
 
 	picture_event_data = {
-		portrait = root.ruler
-		planet_background = event_target:chosen_subject
-		graphical_culture = event_target:chosen_subject
-		city_level = event_target:chosen_subject.capital_scope
-		room = event_target:chosen_subject.ruler
+		portrait = event_target:chosen_subject.ruler
+		planet_background = root.capital_scope
+		graphical_culture = root
+		city_level = root
+		room = root.ruler
 	}
 
 	option = {
@@ -4384,11 +4366,11 @@ country_event = {
 	diplomatic = yes
 
 	picture_event_data = {
-		portrait = root.ruler
-		planet_background = event_target:chosen_subject
-		graphical_culture = event_target:chosen_subject
-		city_level = event_target:chosen_subject.capital_scope
-		room = event_target:chosen_subject.ruler
+		portrait = event_target:chosen_subject.ruler
+		planet_background = root.capital_scope
+		graphical_culture = root
+		city_level = root
+		room = root.ruler
 	}
 
 	option = {
@@ -4567,10 +4549,10 @@ country_event = {
 
 	picture_event_data = {
 		portrait = root.ruler
-		planet_background = event_target:chosen_subject
-		graphical_culture = event_target:chosen_subject
-		city_level = event_target:chosen_subject.capital_scope
-		room = event_target:chosen_subject.ruler
+		planet_background = root.capital_scope
+		graphical_culture = root
+		city_level = root
+		room = root.ruler
 	}
 
 	# Choose one of our Governors
@@ -4622,11 +4604,11 @@ country_event = {
 	diplomatic = yes
 
 	picture_event_data = {
-		portrait = event_target:chosen_subject.ruler
-		planet_background = event_target:chosen_subject
-		graphical_culture = event_target:chosen_subject
-		city_level = event_target:chosen_subject.capital_scope
-		room = event_target:chosen_subject.ruler
+		portrait = root.ruler
+		planet_background = root.capital_scope
+		graphical_culture = root
+		city_level = root
+		room = root.ruler
 	}
 
 	option = {
@@ -4762,11 +4744,11 @@ country_event = {
 	diplomatic = yes
 
 	picture_event_data = {
-		portrait = event_target:chosen_subject.ruler
-		planet_background = event_target:chosen_subject
-		graphical_culture = event_target:chosen_subject
-		city_level = event_target:chosen_subject.capital_scope
-		room = event_target:chosen_subject.ruler
+		portrait = root.ruler
+		planet_background = root.capital_scope
+		graphical_culture = root
+		city_level = root
+		room = root.ruler
 	}
 
 	option = {
@@ -4902,11 +4884,11 @@ country_event = {
 	diplomatic = yes
 
 	picture_event_data = {
-		portrait = event_target:chosen_subject.ruler
-		planet_background = event_target:chosen_subject
-		graphical_culture = event_target:chosen_subject
-		city_level = event_target:chosen_subject.capital_scope
-		room = event_target:chosen_subject.ruler
+		portrait = root.ruler
+		planet_background = root.capital_scope
+		graphical_culture = root
+		city_level = root
+		room = root.ruler
 	}
 
 	option = {
@@ -5042,11 +5024,11 @@ country_event = {
 	diplomatic = yes
 
 	picture_event_data = {
-		portrait = event_target:chosen_subject.ruler
-		planet_background = event_target:chosen_subject
-		graphical_culture = event_target:chosen_subject
-		city_level = event_target:chosen_subject.capital_scope
-		room = event_target:chosen_subject.ruler
+		portrait = root.ruler
+		planet_background = root.capital_scope
+		graphical_culture = root
+		city_level = root
+		room = root.ruler
 	}
 
 	option = {
@@ -5185,10 +5167,10 @@ country_event = {
 
 	picture_event_data = {
 		portrait = event_target:chosen_subject.ruler
-		planet_background = event_target:chosen_subject
-		graphical_culture = event_target:chosen_subject
-		city_level = event_target:chosen_subject.capital_scope
-		room = event_target:chosen_subject.ruler
+		planet_background = root.capital_scope
+		graphical_culture = root
+		city_level = root
+		room = root.ruler
 	}
 
 	desc = {
@@ -5529,6 +5511,496 @@ country_event = {
 			}
 		}
 		event_target:chosen_subject = { event_target:relocation_planet_20 = { set_capital = yes } }
+		ai_chance = { factor = 1 }
+	}
+}
+
+################
+# Land Grant
+
+# Choose which system to grant them
+country_event = {
+	id = veru.7100
+	title = veru.3000.name
+	desc = veru.7100.desc
+	location = event_target:chosen_subject
+	hide_window = no
+	is_triggered_only = yes
+
+	diplomatic = yes
+
+	picture_event_data = {
+		portrait = event_target:chosen_subject.ruler
+		planet_background = root.capital_scope
+		graphical_culture = root
+		city_level = root
+		room = root.ruler
+	}
+
+	# Back
+	option = { name = veru.2000.back }
+
+	option = {
+		add_resource = { influence = -200 }
+		name = veru.7100.gift_system_1
+		trigger = {
+			check_variable = { which = total_gift_systems value >= 1 }
+		}
+		allow = {
+			custom_tooltip = {
+				fail_text = influencefail_text_veru_200
+				has_resource = { type = influence amount >= 200 }
+			}
+		}
+		event_target:gift_system_1 = {
+			every_system_planet = {
+				limit = { is_owned_by = root }
+				set_owner = event_target:chosen_subject
+			}
+			starbase = { set_owner = event_target:chosen_subject }
+		}
+		event_target:chosen_subject = { country_event = { id = civnat.1343 } }
+		ai_chance = { factor = 1 }
+	}
+
+	option = {
+		add_resource = { influence = -200 }
+		name = veru.7100.gift_system_2
+		trigger = {
+			check_variable = { which = total_gift_systems value >= 2 }
+		}
+		allow = {
+			custom_tooltip = {
+				fail_text = influencefail_text_veru_200
+				has_resource = { type = influence amount >= 200 }
+			}
+		}
+		event_target:gift_system_2 = {
+			every_system_planet = {
+				limit = { is_owned_by = root }
+				set_owner = event_target:chosen_subject
+			}
+			starbase = { set_owner = event_target:chosen_subject }
+		}
+		event_target:chosen_subject = { country_event = { id = civnat.1343 } }
+		ai_chance = { factor = 1 }
+	}
+
+	option = {
+		add_resource = { influence = -200 }
+		name = veru.7100.gift_system_3
+		trigger = {
+			check_variable = { which = total_gift_systems value >= 3 }
+		}
+		allow = {
+			custom_tooltip = {
+				fail_text = influencefail_text_veru_200
+				has_resource = { type = influence amount >= 200 }
+			}
+		}
+		event_target:gift_system_3 = {
+			every_system_planet = {
+				limit = { is_owned_by = root }
+				set_owner = event_target:chosen_subject
+			}
+			starbase = { set_owner = event_target:chosen_subject }
+		}
+		event_target:chosen_subject = { country_event = { id = civnat.1343 } }
+		ai_chance = { factor = 1 }
+	}
+
+	option = {
+		add_resource = { influence = -200 }
+		name = veru.7100.gift_system_4
+		trigger = {
+			check_variable = { which = total_gift_systems value >= 4 }
+		}
+		allow = {
+			custom_tooltip = {
+				fail_text = influencefail_text_veru_200
+				has_resource = { type = influence amount >= 200 }
+			}
+		}
+		event_target:gift_system_4 = {
+			every_system_planet = {
+				limit = { is_owned_by = root }
+				set_owner = event_target:chosen_subject
+			}
+			starbase = { set_owner = event_target:chosen_subject }
+		}
+		event_target:chosen_subject = { country_event = { id = civnat.1343 } }
+		ai_chance = { factor = 1 }
+	}
+
+	option = {
+		add_resource = { influence = -200 }
+		name = veru.7100.gift_system_5
+		trigger = {
+			check_variable = { which = total_gift_systems value >= 5 }
+		}
+		allow = {
+			custom_tooltip = {
+				fail_text = influencefail_text_veru_200
+				has_resource = { type = influence amount >= 200 }
+			}
+		}
+		event_target:gift_system_5 = {
+			every_system_planet = {
+				limit = { is_owned_by = root }
+				set_owner = event_target:chosen_subject
+			}
+			starbase = { set_owner = event_target:chosen_subject }
+		}
+		event_target:chosen_subject = { country_event = { id = civnat.1343 } }
+		ai_chance = { factor = 1 }
+	}
+
+	option = {
+		add_resource = { influence = -200 }
+		name = veru.7100.gift_system_6
+		trigger = {
+			check_variable = { which = total_gift_systems value >= 6 }
+		}
+		allow = {
+			custom_tooltip = {
+				fail_text = influencefail_text_veru_200
+				has_resource = { type = influence amount >= 200 }
+			}
+		}
+		event_target:gift_system_6 = {
+			every_system_planet = {
+				limit = { is_owned_by = root }
+				set_owner = event_target:chosen_subject
+			}
+			starbase = { set_owner = event_target:chosen_subject }
+		}
+		event_target:chosen_subject = { country_event = { id = civnat.1343 } }
+		ai_chance = { factor = 1 }
+	}
+
+	option = {
+		add_resource = { influence = -200 }
+		name = veru.7100.gift_system_7
+		trigger = {
+			check_variable = { which = total_gift_systems value >= 7 }
+		}
+		allow = {
+			custom_tooltip = {
+				fail_text = influencefail_text_veru_200
+				has_resource = { type = influence amount >= 200 }
+			}
+		}
+		event_target:gift_system_7 = {
+			every_system_planet = {
+				limit = { is_owned_by = root }
+				set_owner = event_target:chosen_subject
+			}
+			starbase = { set_owner = event_target:chosen_subject }
+		}
+		event_target:chosen_subject = { country_event = { id = civnat.1343 } }
+		ai_chance = { factor = 1 }
+	}
+
+	option = {
+		add_resource = { influence = -200 }
+		name = veru.7100.gift_system_8
+		trigger = {
+			check_variable = { which = total_gift_systems value >= 8 }
+		}
+		allow = {
+			custom_tooltip = {
+				fail_text = influencefail_text_veru_200
+				has_resource = { type = influence amount >= 200 }
+			}
+		}
+		event_target:gift_system_8 = {
+			every_system_planet = {
+				limit = { is_owned_by = root }
+				set_owner = event_target:chosen_subject
+			}
+			starbase = { set_owner = event_target:chosen_subject }
+		}
+		event_target:chosen_subject = { country_event = { id = civnat.1343 } }
+		ai_chance = { factor = 1 }
+	}
+
+	option = {
+		add_resource = { influence = -200 }
+		name = veru.7100.gift_system_9
+		trigger = {
+			check_variable = { which = total_gift_systems value >= 9 }
+		}
+		allow = {
+			custom_tooltip = {
+				fail_text = influencefail_text_veru_200
+				has_resource = { type = influence amount >= 200 }
+			}
+		}
+		event_target:gift_system_9 = {
+			every_system_planet = {
+				limit = { is_owned_by = root }
+				set_owner = event_target:chosen_subject
+			}
+			starbase = { set_owner = event_target:chosen_subject }
+		}
+		event_target:chosen_subject = { country_event = { id = civnat.1343 } }
+		ai_chance = { factor = 1 }
+	}
+
+	option = {
+		add_resource = { influence = -200 }
+		name = veru.7100.gift_system_10
+		trigger = {
+			check_variable = { which = total_gift_systems value >= 10 }
+		}
+		allow = {
+			custom_tooltip = {
+				fail_text = influencefail_text_veru_200
+				has_resource = { type = influence amount >= 200 }
+			}
+		}
+		event_target:gift_system_10 = {
+			every_system_planet = {
+				limit = { is_owned_by = root }
+				set_owner = event_target:chosen_subject
+			}
+			starbase = { set_owner = event_target:chosen_subject }
+		}
+		event_target:chosen_subject = { country_event = { id = civnat.1343 } }
+		ai_chance = { factor = 1 }
+	}
+
+	######
+	######
+	######
+
+	option = {
+		add_resource = { influence = -200 }
+		name = veru.7100.gift_system_11
+		trigger = {
+			check_variable = { which = total_gift_systems value >= 11 }
+		}
+		allow = {
+			custom_tooltip = {
+				fail_text = influencefail_text_veru_200
+				has_resource = { type = influence amount >= 200 }
+			}
+		}
+		event_target:gift_system_11 = {
+			every_system_planet = {
+				limit = { is_owned_by = root }
+				set_owner = event_target:chosen_subject
+			}
+			starbase = { set_owner = event_target:chosen_subject }
+		}
+		event_target:chosen_subject = { country_event = { id = civnat.1343 } }
+		ai_chance = { factor = 1 }
+	}
+
+	option = {
+		add_resource = { influence = -200 }
+		name = veru.7100.gift_system_12
+		trigger = {
+			check_variable = { which = total_gift_systems value >= 12 }
+		}
+		allow = {
+			custom_tooltip = {
+				fail_text = influencefail_text_veru_200
+				has_resource = { type = influence amount >= 200 }
+			}
+		}
+		event_target:gift_system_12 = {
+			every_system_planet = {
+				limit = { is_owned_by = root }
+				set_owner = event_target:chosen_subject
+			}
+			starbase = { set_owner = event_target:chosen_subject }
+		}
+		event_target:chosen_subject = { country_event = { id = civnat.1343 } }
+		ai_chance = { factor = 1 }
+	}
+
+	option = {
+		add_resource = { influence = -200 }
+		name = veru.7100.gift_system_13
+		trigger = {
+			check_variable = { which = total_gift_systems value >= 13 }
+		}
+		allow = {
+			custom_tooltip = {
+				fail_text = influencefail_text_veru_200
+				has_resource = { type = influence amount >= 200 }
+			}
+		}
+		event_target:gift_system_13 = {
+			every_system_planet = {
+				limit = { is_owned_by = root }
+				set_owner = event_target:chosen_subject
+			}
+			starbase = { set_owner = event_target:chosen_subject }
+		}
+		event_target:chosen_subject = { country_event = { id = civnat.1343 } }
+		ai_chance = { factor = 1 }
+	}
+
+	option = {
+		add_resource = { influence = -200 }
+		name = veru.7100.gift_system_14
+		trigger = {
+			check_variable = { which = total_gift_systems value >= 14 }
+		}
+		allow = {
+			custom_tooltip = {
+				fail_text = influencefail_text_veru_200
+				has_resource = { type = influence amount >= 200 }
+			}
+		}
+		event_target:gift_system_14 = {
+			every_system_planet = {
+				limit = { is_owned_by = root }
+				set_owner = event_target:chosen_subject
+			}
+			starbase = { set_owner = event_target:chosen_subject }
+		}
+		event_target:chosen_subject = { country_event = { id = civnat.1343 } }
+		ai_chance = { factor = 1 }
+	}
+
+	option = {
+		add_resource = { influence = -200 }
+		name = veru.7100.gift_system_15
+		trigger = {
+			check_variable = { which = total_gift_systems value >= 15 }
+		}
+		allow = {
+			custom_tooltip = {
+				fail_text = influencefail_text_veru_200
+				has_resource = { type = influence amount >= 200 }
+			}
+		}
+		event_target:gift_system_15 = {
+			every_system_planet = {
+				limit = { is_owned_by = root }
+				set_owner = event_target:chosen_subject
+			}
+			starbase = { set_owner = event_target:chosen_subject }
+		}
+		event_target:chosen_subject = { country_event = { id = civnat.1343 } }
+		ai_chance = { factor = 1 }
+	}
+
+	option = {
+		add_resource = { influence = -200 }
+		name = veru.7100.gift_system_16
+		trigger = {
+			check_variable = { which = total_gift_systems value >= 16 }
+		}
+		allow = {
+			custom_tooltip = {
+				fail_text = influencefail_text_veru_200
+				has_resource = { type = influence amount >= 200 }
+			}
+		}
+		event_target:gift_system_16 = {
+			every_system_planet = {
+				limit = { is_owned_by = root }
+				set_owner = event_target:chosen_subject
+			}
+			starbase = { set_owner = event_target:chosen_subject }
+		}
+		event_target:chosen_subject = { country_event = { id = civnat.1343 } }
+		ai_chance = { factor = 1 }
+	}
+
+	option = {
+		add_resource = { influence = -200 }
+		name = veru.7100.gift_system_17
+		trigger = {
+			check_variable = { which = total_gift_systems value >= 17 }
+		}
+		allow = {
+			custom_tooltip = {
+				fail_text = influencefail_text_veru_200
+				has_resource = { type = influence amount >= 200 }
+			}
+		}
+		event_target:gift_system_17 = {
+			every_system_planet = {
+				limit = { is_owned_by = root }
+				set_owner = event_target:chosen_subject
+			}
+			starbase = { set_owner = event_target:chosen_subject }
+		}
+		event_target:chosen_subject = { country_event = { id = civnat.1343 } }
+		ai_chance = { factor = 1 }
+	}
+
+	option = {
+		add_resource = { influence = -200 }
+		name = veru.7100.gift_system_18
+		trigger = {
+			check_variable = { which = total_gift_systems value >= 18 }
+		}
+		allow = {
+			custom_tooltip = {
+				fail_text = influencefail_text_veru_200
+				has_resource = { type = influence amount >= 200 }
+			}
+		}
+		event_target:gift_system_18 = {
+			every_system_planet = {
+				limit = { is_owned_by = root }
+				set_owner = event_target:chosen_subject
+			}
+			starbase = { set_owner = event_target:chosen_subject }
+		}
+		event_target:chosen_subject = { country_event = { id = civnat.1343 } }
+		ai_chance = { factor = 1 }
+	}
+
+	option = {
+		add_resource = { influence = -200 }
+		name = veru.7100.gift_system_19
+		trigger = {
+			check_variable = { which = total_gift_systems value >= 19 }
+		}
+		allow = {
+			custom_tooltip = {
+				fail_text = influencefail_text_veru_200
+				has_resource = { type = influence amount >= 200 }
+			}
+		}
+		event_target:gift_system_19 = {
+			every_system_planet = {
+				limit = { is_owned_by = root }
+				set_owner = event_target:chosen_subject
+			}
+			starbase = { set_owner = event_target:chosen_subject }
+		}
+		event_target:chosen_subject = { country_event = { id = civnat.1343 } }
+		ai_chance = { factor = 1 }
+	}
+
+	option = {
+		add_resource = { influence = -200 }
+		name = veru.7100.gift_system_20
+		trigger = {
+			check_variable = { which = total_gift_systems value >= 20 }
+		}
+		allow = {
+			custom_tooltip = {
+				fail_text = influencefail_text_veru_200
+				has_resource = { type = influence amount >= 200 }
+			}
+		}
+		event_target:gift_system_20 = {
+			every_system_planet = {
+				limit = { is_owned_by = root }
+				set_owner = event_target:chosen_subject
+			}
+			starbase = { set_owner = event_target:chosen_subject }
+		}
+		event_target:chosen_subject = { country_event = { id = civnat.1343 } }
 		ai_chance = { factor = 1 }
 	}
 }

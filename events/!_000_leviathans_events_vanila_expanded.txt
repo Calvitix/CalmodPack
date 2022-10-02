@@ -1,9 +1,9 @@
 # Expanded Events File
 #
-# Calvitix Check 3.2
+# Calvitix Check 3.5
 #
 #
-# Merge in original leviathans_events file  10.12.2021
+# Merge in original leviathans_events file  28.09.2022
 # 
 #
 #################################
@@ -598,18 +598,8 @@ country_event = {
 	custom_gui = "enclave_curator_window"
 
 	picture_event_data = {
-		portrait = event_target:curators
+		portrait = event_target:curator_enclave_country
 		room = enclave_curator_room
-	}
-
-	immediate = {
-		set_country_flag = curator_enclave_diplomacy_engaged
-	}
-
-	after = {
-		hidden_effect = {
-			remove_country_flag = curator_enclave_diplomacy_engaged
-		}
 	}
 
 	# "Find" option
@@ -640,7 +630,7 @@ country_event = {
 		}
 		add_resource = { energy = -300 }
 		hidden_effect = {
-			event_target:curators = {
+			event_target:curator_enclave_country = {
 				add_trust = {
 					who = root
 					amount = 10
@@ -913,9 +903,9 @@ country_event = {
 			country_event = { id = leviathans.556 }
 		}
 	}
+	# Infinity Machine (Pantagruel outcome)
 	option = {
 		name = leviathans.500.g
-		custom_gui = "enclave_curator_option"
 		trigger = {
 			has_country_flag = pantagruel
 			has_country_flag = asked_about_infinity_machine
@@ -925,16 +915,35 @@ country_event = {
 			country_event = { id = leviathans.4000 }
 		}
 	}
-	option = { # Back
-		name = leviathans.506.d
-		custom_gui = "enclave_curator_option"
+	# Toxic God
+	option = {
+		name = leviathans.508.m
+		trigger = {
+			OR = {
+				AND = {
+					has_origin = origin_toxic_knights
+					NOT = { has_global_flag = toxic_god_spawned }
+				}
+				any_country = {
+					is_country_type = guardian_toxic_god
+					has_communications = root
+				}
+			}
+		}
 		hidden_effect = {
-			country_event = { id = leviathans.505 }
+			country_event = { id = leviathans.558 }
 		}
 	}
-	option = { # Sign Off
-		name = leviathans.506.e
+	# Back to main menu
+	option = {
+		name = leviathans.506.d
+		hidden_effect = {
+			country_event = { id = leviathans.500 }
+		}
+	}
+	# Goodbye
+	option = {
+		name = GOODBYE
 		default_hide_option = yes
-		custom_gui = "enclave_curator_option"
 	}
 }

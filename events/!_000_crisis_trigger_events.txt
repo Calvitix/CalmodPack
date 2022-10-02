@@ -1,6 +1,6 @@
 # Expanded Events File
 #
-# Calvitix Check 3.3.4  25.04.2021
+# Calvitix Check 3.5.2  25.04.2021
 #
 #
 # Merge with Expanded Events  19.03.2022
@@ -22,15 +22,19 @@ event = {
 
 	trigger = {
 		is_crises_allowed = yes
-		end_game_years_passed >= 0
 		OR = {
-			end_game_years_passed >= 50
+			has_global_flag = endgame_crisis_early_start
+		end_game_years_passed >= 0
+		}
+		OR = {
+			has_global_flag = endgame_crisis_early_start
+			end_game_years_passed >= 25
 			default_endgame_early_start_triggers = yes
 			any_country = {
 				OR = {
 					is_country_type = default
-					is_country_type = ascended_empire
-					is_country_type = lost_empire
+					#is_country_type = ascended_empire
+					#is_country_type = lost_empire
 				}
 				OR = {
 					has_technology = tech_jump_drive_1
@@ -44,7 +48,18 @@ event = {
 			}
 			is_active_resolution = resolution_galacticstudies_extradimensional_experimentation
 		}
+		OR = {
 		NOT = { has_global_flag = galactic_crisis_happened }
+			AND = {
+				allowed_crisis_type = all
+				NOR = {
+					has_global_flag = galactic_crisis_recently_fired #because some might take a while to arrive, we don't want two at once
+					any_country = {
+						is_crisis_faction = yes
+					}
+				}
+			}
+		}
 	}
 
 	immediate = {
@@ -53,8 +68,9 @@ event = {
 			
 			if = {
 				limit = { #got to be someone doing jump drives in this case
-					end_game_years_passed < 50
+					end_game_years_passed < 25
 					default_endgame_early_start_triggers = no
+					NOT = { has_global_flag = endgame_crisis_early_start }
 				}
 				set_timed_country_flag = {
 					flag = no_prethoryn_this_time
@@ -153,23 +169,27 @@ event = {
 					}
 					# Prethoryns have few special modifiers like the other crisis types
 					modifier = {
-						factor = 1.5
-						end_game_years_passed >= 100
-					}
-					modifier = {
-						factor = 1.5
+						factor = 2
 						end_game_years_passed >= 125
 					}
 					modifier = {
-						factor = 1.5
+						factor = 2
 						end_game_years_passed >= 150
 					}
 					modifier = {
-						factor = 2
+						factor = 3
 						has_global_flag = atomic_clock_swarm
+					}
+					modifier = {
+						factor = 3
+						has_global_flag = swarm_star_charts
 					}
 					country_event = { id = crisis.10 days = 200 random = 800 }
 					set_global_flag = galactic_crisis_happened
+					set_timed_global_flag = {
+						flag = galactic_crisis_recently_fired
+						years = 12
+					}
 					every_country = {
 						limit = {
 							OR = { is_country_type = default is_country_type = ascended_empire is_country_type = lost_empire }
@@ -193,7 +213,7 @@ event = {
 						has_country_flag = only_contingency_this_time
 					}
 					modifier = {
-						factor = 3
+						factor = 3.75
 						allowed_crisis_type = unbidden
 					}
 					modifier = {
@@ -242,17 +262,18 @@ event = {
 						has_global_flag = atomic_clock_invader
 					}
 					modifier = {
-						factor = 1.9
+						factor = 2
 						has_global_flag = warp_breach_researched_global
 					}
 					modifier = {
-						factor = 1.9
+						factor = 2
 						has_global_flag = fumongus_active
 					}
 					modifier = {
 						factor = 0
 						NOT = { allowed_crisis_type = unbidden }
 						NOR = {
+							has_global_flag = endgame_crisis_early_start
 							has_global_flag = atomic_clock_invader
 							has_global_flag = fumongus_active
 							is_active_resolution = "resolution_galacticstudies_extradimensional_experimentation"
@@ -267,6 +288,8 @@ event = {
 									has_megastructure = crisis_sphere_1
 									has_megastructure = crisis_sphere_2
 									has_megastructure = crisis_sphere_3
+									has_modifier = covenant_eater_of_worlds
+									has_modifier = covenant_end_of_the_cycle
 								}							
 							}						
 						}
@@ -278,6 +301,10 @@ event = {
 					country_event = { id = crisis.1000 days = 200 random = 800 }
 					country_event = { id = megaexpanded.5 }
 					set_global_flag = galactic_crisis_happened
+					set_timed_global_flag = {
+						flag = galactic_crisis_recently_fired
+						years = 12
+					}
 				}
 
 				### Contingency (AI)
@@ -341,25 +368,25 @@ event = {
 					}
 							# Possible class-30 singularity?
 					modifier = {
-						factor = 2
+						factor = 5
 						any_country = {
 								has_megastructure = crisis_sphere_0
 						}
 					}
 					modifier = {
-						factor = 3
+						factor = 10
 						any_country = {
 								has_megastructure = crisis_sphere_1
 						}
 					}
 					modifier = {
-						factor = 4
+						factor = 20
 						any_country = {
 								has_megastructure = crisis_sphere_2
 						}
 					}
 					modifier = {
-						factor = 8
+						factor = 40
 						any_country = {
 								has_megastructure = crisis_sphere_3
 						}
@@ -394,6 +421,7 @@ event = {
 						factor = 0
 						NOT = { allowed_crisis_type = contingency }
 						NOR = {
+							has_global_flag = endgame_crisis_early_start
 							has_global_flag = atomic_clock_synth
 							has_global_flag = graveyard_nexus_contingency
 							any_country = {
@@ -428,6 +456,10 @@ event = {
 					}
 					country_event = { id = crisis.2005 days = 200 random = 800 }
 					set_global_flag = galactic_crisis_happened
+					set_timed_global_flag = {
+						flag = galactic_crisis_recently_fired
+						years = 12
+					}
 					every_country = {
 						limit = {
 							OR = { is_country_type = default is_country_type = ascended_empire is_country_type = lost_empire }
@@ -448,7 +480,12 @@ event = {
 				}
 
 				### Nothing
-				125 = {}
+				125 = {
+					modifier = {
+						subtract = 119
+						has_global_flag = endgame_crisis_early_start
+					}
+				}
 			}
 		}
 	}

@@ -2365,18 +2365,19 @@ building_hab_capital = {
 	category = government
 
 	potential = {
+		uses_habitat_capitals = yes
 ###PD
-		OR = {
-			is_planet_class = pc_habitat
-			is_planet_class = pc_pd_gas_giant_hab
-			is_planet_class = pc_pd_barren_hab
-			is_planet_class = pc_pd_barren_cold_hab
-			is_planet_class = pc_pd_frozen_hab
-			is_planet_class = pc_pd_molten_hab
-			is_planet_class = pc_pd_toxic_hab
-			is_planet_class = pc_pd_hothouse_hab
-			is_planet_class = pc_pd_asteroid_hab
-		}		
+#		OR = {
+#			is_planet_class = pc_habitat
+#			is_planet_class = pc_pd_gas_giant_hab
+#			is_planet_class = pc_pd_barren_hab
+#			is_planet_class = pc_pd_barren_cold_hab
+#			is_planet_class = pc_pd_frozen_hab
+#			is_planet_class = pc_pd_molten_hab
+#			is_planet_class = pc_pd_toxic_hab
+#			is_planet_class = pc_pd_hothouse_hab
+#			is_planet_class = pc_pd_asteroid_hab
+#		}		
 ###		
 		exists = owner
 		owner = { is_fallen_empire = no }
@@ -2638,19 +2639,7 @@ building_hab_major_capital = {
 	category = government
 
 	potential = {
-###PD
-		OR = {
-			is_planet_class = pc_habitat
-			is_planet_class = pc_pd_gas_giant_hab
-			is_planet_class = pc_pd_barren_hab
-			is_planet_class = pc_pd_barren_cold_hab
-			is_planet_class = pc_pd_frozen_hab
-			is_planet_class = pc_pd_molten_hab
-			is_planet_class = pc_pd_toxic_hab
-			is_planet_class = pc_pd_hothouse_hab
-			is_planet_class = pc_pd_asteroid_hab
-		}
-###
+		uses_habitat_capitals = yes
 		exists = owner
 		owner = { is_fallen_empire = no }
 	}
@@ -2712,21 +2701,6 @@ building_hab_major_capital = {
 		}
 	}
 
-#Starnet AI
-	triggered_planet_modifier = {
-		potential = {
-			exists = owner
-			owner = { is_regular_empire = yes }
-			or = { #Starnet AI
-				owner = { is_ai = no }
-				num_pops > 20
-				has_branch_office = yes
-				has_modifier = criminal_underworld
-			}
-		}
-		job_enforcer_add = 1
-	}
-###
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
@@ -2784,12 +2758,41 @@ building_hab_major_capital = {
 					has_civic = civic_science_syndicate #megacorp_mod
 				}
 			}
+			OR = {
+				NOT = { has_planet_flag = toxic_knights_habitat }
+				NOT = { owner = { has_origin = origin_toxic_knights } }
+			}
 		}
 		modifier = {
 			job_politician_add = 2
 		}
 	}
 
+	triggered_planet_modifier = {
+		potential = {
+			has_planet_flag = toxic_knights_habitat
+			exists = owner
+			owner = {
+				has_origin = origin_toxic_knights
+			}
+		}
+		modifier = {
+			job_knight_commander_add = 1
+			job_knight_add = 1
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			NOT = { has_planet_flag = toxic_knights_habitat }
+			exists = owner
+			owner = { has_authority = auth_corporate }
+		}
+		modifier = {
+			job_executive_add = 2
+		}
+	}
+	
 	triggered_planet_modifier = {
 		potential = {
 			exists = owner
@@ -2830,6 +2833,10 @@ building_hab_major_capital = {
 		potential = {
 			exists = owner
 			owner = { has_civic = civic_exalted_priesthood }
+			OR = {
+				NOT = { has_planet_flag = toxic_knights_habitat }
+				NOT = { owner = { has_origin = origin_toxic_knights } }
+			}
 		}
 		modifier = {
 			job_politician_add = 1
@@ -2841,6 +2848,10 @@ building_hab_major_capital = {
 		potential = {
 			exists = owner
 			owner = { has_civic = civic_aristocratic_elite }
+			OR = {
+				NOT = { has_planet_flag = toxic_knights_habitat }
+				NOT = { owner = { has_origin = origin_toxic_knights } }
+			}
 		}
 		modifier = {
 			job_politician_add = 1
@@ -2852,6 +2863,10 @@ building_hab_major_capital = {
 		potential = {
 			exists = owner
 			owner = { has_civic = civic_technocracy }
+			OR = {
+				NOT = { has_planet_flag = toxic_knights_habitat }
+				NOT = { owner = { has_origin = origin_toxic_knights } }
+			}
 		}
 		modifier = {
 			job_head_researcher_add = 1
@@ -2863,11 +2878,23 @@ building_hab_major_capital = {
 		potential = {
 			exists = owner
 			owner = { has_civic = civic_merchant_guilds }
+			OR = {
+				NOT = { has_planet_flag = toxic_knights_habitat }
+				NOT = { owner = { has_origin = origin_toxic_knights } }
+			}
 		}
 		modifier = {
 			job_politician_add = 1
 			job_merchant_add = 1
 		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_regular_empire = yes }
+		}
+		job_enforcer_add = 1
 	}
 
 	triggered_planet_modifier = {
@@ -2897,6 +2924,10 @@ building_hab_major_capital = {
 			owner = {
 				has_civic = civic_exalted_priesthood
 			}
+			OR = {
+				NOT = { has_planet_flag = toxic_knights_habitat }
+				NOT = { owner = { has_origin = origin_toxic_knights } }
+			}
 		}
 		text = job_high_priest_effect_desc
 	}
@@ -2905,6 +2936,10 @@ building_hab_major_capital = {
 			exists = owner
 			owner = {
 				has_civic = civic_aristocratic_elite
+			}
+			OR = {
+				NOT = { has_planet_flag = toxic_knights_habitat }
+				NOT = { owner = { has_origin = origin_toxic_knights } }
 			}
 		}
 		text = job_noble_effect_desc
@@ -2932,6 +2967,10 @@ building_hab_major_capital = {
 					has_civic = civic_bancorp #megacorp_mod
 				}
 			}
+			OR = {
+				NOT = { has_planet_flag = toxic_knights_habitat }
+				NOT = { owner = { has_origin = origin_toxic_knights } }
+			}
 		}
 		text = job_merchant_effect_desc
 	}
@@ -2942,8 +2981,55 @@ building_hab_major_capital = {
 				NOT = { has_authority = auth_corporate }
 				is_regular_empire = yes
 			}
+			OR = {
+				NOT = { has_planet_flag = toxic_knights_habitat }
+				NOT = { owner = { has_origin = origin_toxic_knights } }
+			}
 		}
 		text = job_politician_effect_desc
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = {
+				has_origin = origin_toxic_knights
+				NOR = {
+					has_country_flag = toxoids_7011_b
+					has_country_flag = toxoids_7040_b
+					has_country_flag = toxoids_7130_b
+				}
+			}
+			has_planet_flag = toxic_knights_habitat
+		}
+		text = job_knight_commander_effect_desc
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = {
+				has_origin = origin_toxic_knights
+				OR = {
+					has_country_flag = toxoids_7011_b
+					has_country_flag = toxoids_7040_b
+					has_country_flag = toxoids_7130_b
+				}
+			}
+			has_planet_flag = toxic_knights_habitat
+		}
+		text = job_knight_commander_research_effect_desc
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = {
+				has_origin = origin_toxic_knights
+			}
+			has_planet_flag = toxic_knights_habitat
+		}
+		text = job_knight_effect_desc
 	}
 
 	triggered_desc = {
@@ -2959,6 +3045,10 @@ building_hab_major_capital = {
 			exists = owner
 			owner = {
 				has_authority = auth_corporate
+			}
+			OR = {
+				NOT = { has_planet_flag = toxic_knights_habitat }
+				NOT = { owner = { has_origin = origin_toxic_knights } }
 			}
 		}
 		text = job_executive_effect_desc
@@ -3023,7 +3113,10 @@ building_resort_capital = {
 	category = government
 
 	potential = {
+		OR = {
 		has_modifier = resort_colony
+			has_modifier = resort_colony_pd_hab
+		}
 	}
 
 	convert_to = {
@@ -3048,8 +3141,6 @@ building_resort_capital = {
 		planet_max_buildings_add = 5
 		planet_max_branch_office_buildings_add = 2 # 1 #UnlockmoreBuildingSlots
 	}
-
-
 
 	triggered_planet_modifier = {
 		potential = {
@@ -3083,7 +3174,7 @@ building_resort_capital = {
 				NOT = { has_authority = auth_corporate }
 			}
 		}
-		job_politician_add = 1 #Ori3.3B
+		job_politician_add = 1
 	}
 
 	triggered_planet_modifier = {
@@ -3117,7 +3208,7 @@ building_resort_capital = {
 				NOT = { has_authority = auth_corporate }
 			}
 		}
-		text = job_politician_effect_desc #Ori3.3B
+		text = job_politician_effect_desc
 	}
 
 	triggered_desc = {
@@ -3158,7 +3249,10 @@ building_resort_major_capital = {
 	category = government
 
 	potential = {
+		OR = {
 		has_modifier = resort_colony
+			has_modifier = resort_colony_pd_hab
+		}
 	}
 
 	convert_to = {
@@ -3190,8 +3284,6 @@ building_resort_major_capital = {
 		planet_max_buildings_add = 11
 		planet_max_branch_office_buildings_add = 4 #2 UnlockmoreBuildingsSlotmod
 	}
-
-
 
 	triggered_planet_modifier = {
 		potential = {
@@ -3255,7 +3347,7 @@ building_resort_major_capital = {
 				NOT = { has_authority = auth_corporate }
 			}
 		}
-		text = job_politician_effect_desc #Ori3.3B
+		text = job_politician_effect_desc
 	}
 
 	triggered_desc = {

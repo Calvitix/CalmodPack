@@ -10,7 +10,15 @@ ship_event = {
 	location = FROM
 	is_triggered_only = yes
 
-	trigger = { FROM = { has_star_flag = mzilli_events_multiplanetary_primitives } }
+	trigger = {
+		FROM = {
+			has_star_flag = mzilli_events_multiplanetary_primitives
+			any_system_planet = {
+				exists = owner
+				owner = { is_country_type = primitive }
+			}
+		}
+	}
 
 	option = { name = REMARKABLE }
 }
@@ -24,7 +32,13 @@ planet_event = {
 	immediate = {
 		solar_system = {
 			if = {
-				limit = { exists = space_owner }
+				limit = {
+					exists = space_owner
+					any_system_planet = {
+						exists = owner
+						owner = { is_country_type = primitive }
+					}
+				}
 				if = {
 					limit = { exists = event_target:multiplanet_civ_2 }
 					event_target:multiplanet_civ_2 = { save_global_event_target_as = multiplan_civ_target }

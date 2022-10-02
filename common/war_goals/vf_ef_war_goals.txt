@@ -15,12 +15,14 @@ wg_empire = {
 	potential = {
 		has_total_war_cb = no
 	}
+	
 	possible = {
 		custom_tooltip = {
 			fail_text = has_claimed_all_systems
 			from = {
+				is_subject = no
 				or = {
-					is_country_type = default
+					is_country_type_with_subjects = yes
 					is_country_type = ascended_empire
 					is_country_type = lost_empire
 				}
@@ -43,17 +45,16 @@ wg_empire = {
 					amount = 0.5
 				}
 				if = {
-					limit = {
-						has_global_flag = gf_veru_activated
-			}
-					set_subject_of = { who = root 				preset = preset_vervassal }
-		}
-				else = {
-			set_subject_of = { who = root 				preset = preset_vassal }
+					limit = { is_overlord = yes }
+					every_subject = {
+						limit = { is_country_type_with_subjects = yes }
+						join_alliance = { who = root override_requirements = yes }
+					}
 				}
-			join_alliance = { who = root override_requirements = yes }
+				set_subject_of = { who = root 				preset = preset_vassal }
+				join_alliance = { who = root override_requirements = yes }
+			}
 		}
-	}
 	}
 
 	on_status_quo = {
@@ -74,90 +75,5 @@ wg_empire = {
 
 	ai_weight = {
 		weight = 10
-	}
-}
-
-wg_independence = {  #Removed in last update 22.01.2022, why ?
-	casus_belli = cb_subject
-
-	hide_if_no_cb = yes
-	set_defender_wargoal = wg_assert_overlordship
-
-	potential = {
-		always = yes
-	}
-	possible = {
-		custom_tooltip = {
-			fail_text = cannot_use_against_emperor
-			OR = {
-				from = { is_galactic_emperor = no }
-				is_galactic_community_member = no
-			}
-		}
-		custom_tooltip = {
-			fail_text = pax_galactica_active
-			NAND = {
-				is_active_resolution = resolution_emperor_pax_galactica
-				is_galactic_community_member = yes
-				from = { is_galactic_community_member = yes }
-			}
-		}
-	}
-
-	allowed_peace_offers = {
-		status_quo
-		surrender
-		demand_surrender
-	}
-
-	on_status_quo = {
-		custom_tooltip = wg_independence_status_quo
-		hidden_effect = {
-			set_subject_of = {
-				who = none
-			}
-			if = {
-				limit = {
-					has_federation = yes
-					federation = { has_federation_type = vf_ef_federation }
-				}
-				leave_alliance = { override_requirements = yes }
-			}
-		}
-	}
-
-	on_accept = {
-		custom_tooltip = wg_independence_accept
-		hidden_effect = {
-			set_subject_of = {
-				who = none
-			}
-			if = {
-				limit = {
-					has_federation = yes
-					federation = { has_federation_type = vf_ef_federation }
-				}
-				leave_alliance = { override_requirements = yes }
-			}
-			every_system_within_border = {
-				limit = {
-					from = { has_claim = prev }
-				}
-				remove_claims = { who = from }
-			}
-		}
-	}
-
-	on_wargoal_set = {
-		every_system_within_border = {
-			limit = {
-				NOT = { from = { has_claim = prev } }
-			}
-			add_claims = { who = from }
-		}
-	}
-
-	ai_weight = {
-		weight = 100
 	}
 }

@@ -1,8 +1,8 @@
-# Planetary Habitats File
+# Planetary Diversity File
 #
-# Calvitix Check 3.0.1  18.04.2021
+# Calvitix Check 3.5.2  23.09.2022
 #
-# Merge with PD Habitats Update 18.05.2022
+# Last PD Habitats Update 23.09.2022
 # 
 # #Calvitix Add Random Blocker Size (3 -> 5)
 # see README.txt for example
@@ -12,6 +12,7 @@ pd_barren_hab_0 = {
 	construction_entity = ""
 	portrait = "GFX_megastructure_construction_background"
 	place_entity_on_planet_plane = yes
+	show_galactic_map_icon = no
 	build_time = 900
 
 	resources = {
@@ -25,7 +26,7 @@ pd_barren_hab_0 = {
 	construction_blocks_and_blocked_by = none
 
 	potential = { 
-		has_technology = tech_pdhabitat_1 
+		has_technology = tech_pdhabitat_1 #Calvitix addition (was disabled)
 	}
 
 	possible = {
@@ -54,7 +55,7 @@ pd_barren_hab_0 = {
 				#can_build_megastructure_on_planet = yes
 				NOR = {
 					has_planet_flag = megastructure
-					has_planet_flag = has_megastructure
+					#has_planet_flag = has_megastructure
 					solar_system = {
 						has_star_flag = ring_world_built
 					}
@@ -73,11 +74,11 @@ pd_barren_hab_0 = {
 				fail_text = "requires_not_minor_planetary_body"
 				NOT = {	is_asteroid = yes }
 			}
-            custom_tooltip = {
-                fail_text = "requires_different_size"
-                planet_size <= 25
-                planet_size >= 2
-            }
+            #custom_tooltip = {
+            #    fail_text = "requires_different_size"
+            #    planet_size <= 25
+            #    planet_size >= 2
+            #}
 			custom_tooltip = {
 				fail_text = "is_barrenorcold"
 				OR = {
@@ -105,12 +106,8 @@ pd_barren_hab_0 = {
 		modifier = {
 			factor = 0
 			any_system_planet = {
-				OR = {
-					is_planet_class = pc_habitat
 					is_pd_habitat = yes
 				}
-				is_colony = no
-			}
 		}
 
 		modifier = {
@@ -122,20 +119,10 @@ pd_barren_hab_0 = {
 		}
 		modifier = {
 			factor = 2
-			any_neighbor_system = {
-				exists = owner
-				is_same_value = owner.capital_scope.solar_system
+			exists = sector
+			sector = { has_sector_type = core_sector }
 			}
 		}
-
-		modifier = {
-			factor = 0.1
-			any_neighbor_system = {
-				exists = owner
-				owner = { NOT = { is_same_value = from } }
-			}
-		}
-	}
 	
 	on_build_start = {}
 	on_build_cancel = {}
@@ -258,6 +245,22 @@ pd_barren_hab_0 = {
 					set_planet_entity = {
 						entity = chthonianhab_planet_01_entity
 					}
+				}
+			}
+			if = {
+				limit = {
+					planet_size > 25
+				}
+				add_modifier = {
+					modifier = high_gravity days = -1
+				}
+			}
+			if = {
+				limit = {
+					planet_size < 10
+				}
+				add_modifier = {
+					modifier = low_gravity days = -1
 				}
 			}
 			if = {
@@ -666,14 +669,12 @@ pd_barren_hab_0 = {
 				ELSE_IF = { limit = { has_planet_flag = pd_hab_d1 } set_planet_flag = pd_hab_d2 }
 			}
 			if = {
-				limit = {
-					fromfrom.planet = { has_modifier = terraforming_candidate }
-				}
-				set_planet_flag = pd_science_hab
-				IF = { limit = { NOT = { has_planet_flag = pd_hab_d1 } } set_planet_flag = pd_hab_d1 }
-				ELSE_IF = { limit = { has_planet_flag = pd_hab_d1 } set_planet_flag = pd_hab_d2 }
+				limit = { fromfrom.planet = { has_modifier = terraforming_candidate } }
 				remove_modifier = terraforming_candidate
 				add_modifier = { modifier = hab_terraforming_candidate days = -1 }
+				reroll_deposits = yes
+				clear_blockers = yes
+				remove_deposit = d_prospectorium_strip_mine
 			}
 			IF = {
 				limit = {
@@ -714,188 +715,10 @@ pd_barren_hab_0 = {
                     entity = "pdcmoon_planet_luna_entity"
                 }
 			}
-			IF = {
-				limit = {
-					planet_size = 25
+			add_modifier = {
+				modifier = pdhablevel1
+				days = -1
 				}
-				add_deposit = d_bblock15
-				add_deposit = d_bblock3
-				#add_deposit = d_bblock1
-			}
-			IF = {
-				limit = {
-					planet_size = 24
-				}
-				add_deposit = d_bblock15
-				add_deposit = d_bblock3
-			}
-			IF = {
-				limit = {
-					planet_size = 23
-				}
-				add_deposit = d_bblock15
-				add_deposit = d_bblock2
-			}
-			IF = {
-				limit = {
-					planet_size = 22
-				}
-				add_deposit = d_bblock15
-				add_deposit = d_bblock1
-			}
-			IF = {
-				limit = {
-					planet_size = 21
-				}
-				add_deposit = d_bblock15
-				#add_deposit = d_bblock2
-			}
-			IF = {
-				limit = {
-					planet_size = 20
-				}
-				add_deposit = d_bblock10
-				add_deposit = d_bblock4
-			}
-			IF = {
-				limit = {
-					planet_size = 19
-				}
-				add_deposit = d_bblock10
-				add_deposit = d_bblock3				
-			}
-			IF = {
-				limit = {
-					planet_size = 18
-				}
-				add_deposit = d_bblock10
-				add_deposit = d_bblock2
-			}
-			IF = {
-				limit = {
-					planet_size = 17
-				}
-				add_deposit = d_bblock10
-				add_deposit = d_bblock1
-			}
-			IF = {
-				limit = {
-					planet_size = 16
-				}
-				add_deposit = d_bblock10
-			}
-			IF = {
-				limit = {
-					planet_size = 15
-				}
-				add_deposit = d_bblock5
-				add_deposit = d_bblock4
-			}
-			IF = {
-				limit = {
-					planet_size = 14
-				}
-				add_deposit = d_bblock5
-				add_deposit = d_bblock3			}
-			IF = {
-				limit = {
-					planet_size = 13
-				}
-				add_deposit = d_bblock5
-				add_deposit = d_bblock3
-			}
-			IF = {
-				limit = {
-					planet_size = 12
-				}
-				add_deposit = d_bblock5
-				add_deposit = d_bblock2
-			}
-			IF = {
-				limit = {
-					planet_size = 11
-				}
-				add_deposit = d_bblock5
-				add_deposit = d_bblock1
-			}
-			IF = {
-				limit = {
-					planet_size = 10
-					is_moon = no
-				}
-				add_deposit = d_bblock5
-				#add_deposit = d_bblock1
-			}
-			IF = {
-				limit = {
-					planet_size = 10
-					is_moon = yes
-				}
-				add_deposit = d_bblock5
-				add_deposit = d_bblock3
-			}
-			IF = {
-				limit = {
-					planet_size = 9
-					is_moon = yes
-				}
-				add_deposit = d_bblock5
-				add_deposit = d_bblock2
-			}
-			IF = {
-				limit = {
-					planet_size = 8
-					is_moon = yes
-				}
-				add_deposit = d_bblock5
-				add_deposit = d_bblock1
-			}
-			IF = {
-				limit = {
-					planet_size = 7
-					is_moon = yes
-				}
-				add_deposit = d_bblock5
-			}
-			IF = {
-				limit = {
-					planet_size = 6
-					is_moon = yes
-				}
-				add_deposit = d_bblock4
-			}
-			IF = {
-				limit = {
-					planet_size = 5
-					is_moon = yes
-				}
-				add_deposit = d_bblock3
-			}
-			IF = {
-				limit = {
-					planet_size = 4
-					is_moon = yes
-				}
-				add_deposit = d_bblock2
-			}
-			IF = {
-				limit = {
-					planet_size = 3
-					is_moon = yes
-				}
-				add_deposit = d_bblock1
-			}
-			IF = {
-				limit = {
-					is_moon = no
-				}
-				random_list = {
-					20 = { }
-					5 = { add_deposit = d_bblock1 }
-					1 = { add_deposit = d_bblock2 }
-				}
-			}			
-			
 		}
 		remove_megastructure = fromfrom
 		from = { country_event =  { id = moonbase.00 } }

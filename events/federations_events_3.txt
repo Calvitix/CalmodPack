@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.4.2  18.05.2022
+# Calvitix Check 3.5 22.09.2022
 #
 # Merge with JL PICARD 19.05.2022
 #
@@ -94,7 +94,7 @@ ship_event = { #Conclusion to the anomaly (WENKWORT_CAT) of Wenkwort Artem's gar
 		hidden_effect = {
 			create_species = {
 				name = "NAME_Wenkwort_Keeper"
-				plural = "NAME_Wenkwort_Keepers"
+				plural = "NAME_Wenkwort_Keeper_plural"
 				adjective = "NAME_Wenkwort_Keeper" # Correction de bug
 				class = ROBOT
 				portrait = "sd_art_robot"
@@ -123,7 +123,7 @@ ship_event = { #Conclusion to the anomaly (WENKWORT_CAT) of Wenkwort Artem's gar
 					set_friendly = no
 				}
 				create_fleet = {
-					name = "NAME_Gardener_Drones"
+					name = "NAME_Gardener_Drone_plural"
 					effect = {
 						set_owner = event_target:gardener_country
 						create_ship_design = { design = "NAME_Gardener_Drone" }
@@ -372,7 +372,7 @@ planet_event = { #Wenkwort's enforcer fleet is about to arrive
 					}
 					create_species = {
 						name = "NAME_Wenkwort_Keeper"
-						plural = "NAME_Wenkwort_Keepers"
+						plural = "NAME_Wenkwort_Keeper_plural"
 						adjective = "NAME_Wenkwort_Keeper" # Correction de bug
 						class = ROBOT
 						portrait = "sd_art_robot"
@@ -409,7 +409,7 @@ planet_event = { #Wenkwort's enforcer fleet is about to arrive
 					set_hostile = yes
 				}
 				create_fleet = {
-					name = "NAME_Wenkwort_Enforcers"
+					name = "NAME_Wenkwort_Enforcer_plural"
 					effect = {
 						set_owner = event_target:gardener_country
 						while = {
@@ -1728,7 +1728,20 @@ fleet_event = {
 
 	option = {
 		name = DIG
+		if = {
+			limit = { has_ancrel = yes}
 		small_artifact_reward = yes
+	}
+		else = {
+			owner = {
+				add_monthly_resource_mult = {
+					resource = engineering_research
+					value = @tier1researchreward
+					min = @tier1researchmin
+					max = @tier1researchmax
+				}
+			}
+		}
 	}
 }
 
@@ -1779,7 +1792,20 @@ fleet_event = {
 
 	option = {
 		name = UNDERSTOOD
+		if = {
+			limit = { has_ancrel = yes}
 		small_artifact_reward = yes
+	}
+		else = {
+			owner = {
+				add_monthly_resource_mult = {
+					resource = physics_research
+					value = @tier1researchreward
+					min = @tier1researchmin
+					max = @tier1researchmax
+				}
+			}
+		}
 	}
 }
 
@@ -1811,7 +1837,20 @@ fleet_event = {
 
 	option = {
 		name = GOOD
+		if = {
+			limit = { has_ancrel = yes}
 		medium_artifact_reward = yes
+	}
+		else = {
+			owner = {
+				add_monthly_resource_mult = {
+					resource = engineering_research
+					value = @tier2researchreward
+					min = @tier2researchmin
+					max = @tier2researchmax
+				}
+			}
+		}
 	}
 }
 
@@ -1864,7 +1903,20 @@ fleet_event = {
 
 	option = {
 		name = INTERESTING
+		if = {
+			limit = { has_ancrel = yes}
 		small_artifact_reward = yes
+	}
+		else = {
+			owner = {
+				add_monthly_resource_mult = {
+					resource = society_research
+					value = @tier1researchreward
+					min = @tier1researchmin
+					max = @tier1researchmax
+				}
+			}
+		}
 	}
 }
 
@@ -1895,7 +1947,20 @@ fleet_event = {
 
 	option = {
 		name = KEEP_SEARCHING
+		if = {
+			limit = { has_ancrel = yes}
 		medium_artifact_reward = yes
+	}
+		else = {
+			owner = {
+				add_monthly_resource_mult = {
+					resource = engineering_research
+					value = @tier1researchreward
+					min = @tier1researchmin
+					max = @tier1researchmax
+				}
+			}
+		}
 	}
 }
 
@@ -1936,7 +2001,20 @@ fleet_event = {
 
 	option = {
 		name = FASCINATING
+		if = {
+			limit = { has_ancrel = yes}
 		medium_artifact_reward = yes
+	}
+		else = {
+			owner = {
+				add_monthly_resource_mult = {
+					resource = society_research
+					value = @tier2researchreward
+					min = @tier2researchmin
+					max = @tier2researchmax
+				}
+			}
+		}
 	}
 }
 
@@ -2068,7 +2146,10 @@ country_event = {
 	option = {
 		name = FASCINATING
 		tooltip = { federation = { add_cohesion = 40 } }
+		if = {
+			limit = { has_ancrel = yes }
 		add_resource = { minor_artifacts = 6 }
+		}
 		add_modifier = {
 			modifier = "leylines_mod_knowing"
 			days = 7200
@@ -2101,7 +2182,10 @@ country_event = {
 	option = {
 		name = FASCINATING
 		tooltip = { federation = { add_cohesion = 25 } }
+		if = {
+			limit = { has_ancrel = yes }
 		add_resource = { minor_artifacts = 3 }
+		}
 		add_modifier = {
 			modifier = "leylines_mod_lagom"
 			days = 7200
@@ -2134,6 +2218,9 @@ country_event = {
 	option = {
 		name = OK
 		tooltip = { federation = { add_cohesion = 25 } }
+		if = {
+			limit = { has_ancrel = yes }
 		add_resource = { minor_artifacts = 1 }
+	}
 	}
 }

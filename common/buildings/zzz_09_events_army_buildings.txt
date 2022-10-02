@@ -1,118 +1,95 @@
 #############
 # Army buildings
 #############
+building_planetary_shield_generator = {
+	base_buildtime = @b3_time
+	base_cap_amount = 1
+	position_priority = 100
 
-# building_planetary_shield_generator = {
-	# base_buildtime = @b3_time	
-	# base_cap_amount = 1
-	# position_priority = 100
+	category = army
+	
+	potential = {
+		NOT = { has_global_flag = mem_more_events_mod }
+	}
 
-	# category = army
-	
-	# allow = {
-		# has_upgraded_capital = yes
-		# NOT = { has_global_flag = mem_more_events_mod }
-	# }
-	
-	# destroy_trigger = {
-		# exists = owner
-	# }
-	
-	# planet_modifier = {
-		# planet_orbital_bombardment_damage = -0.5
-	# }
-	
-	# triggered_planet_modifier = {
-		# potential = {
-			# exists = owner
-			# owner = { has_country_flag = moon_bump_shield_completed }
-		# }
-		# modifier = {
-			# planet_orbital_bombardment_damage = -0.25
-		# }
-	# }
-	
-	# triggered_planet_modifier = {
-		# potential = {
-			# exists = owner
-			# owner = { is_regular_empire = yes }
-		# }
-		# modifier = {
-			# job_researcher_add = 1
-		# }
-	# }
-	
-	# triggered_planet_modifier = {
-		# potential = {
-			# exists = owner
-			# owner = { is_hive_empire = yes }
-		# }
-		# modifier = {
-			# job_brain_drone_add = 1
-		# }
-	# }
-	
-	# triggered_planet_modifier = {
-		# potential = {
-			# exists = owner
-			# owner = { is_machine_empire = yes }
-		# }
-		# modifier = {
-			# job_calculator_add = 1
-		# }
-	# }
+	allow = {
+		has_upgraded_capital = yes
+		#hidden_trigger = { owner = { is_ai = no } }
+	}
 
-	# resources = {
-		# category = planet_buildings
-# #Calvitix Ressources balance
-		# cost = { 
-			# trigger = {
-				# from = {
-					# is_ai = no
-				# }
-			# }
-		# alloys = 50 minerals = @b2_minerals}
-		# cost = {
-			# trigger = {
-				# from = {
-					# is_ai = yes
-				# }
-			# }
-			# minerals = @b2_minerals
-		# }			
-		# upkeep = {
-			# energy = @b2_upkeep
-		# }
-	# }
-	
-	# triggered_desc = {
-		# trigger = { 
-			# exists = owner
-			# owner = { is_regular_empire = yes } 
-		# }
-		# text = job_researcher_effect_desc
-	# }
+	#destroy_trigger = {
+	#	exists = owner
+	#	owner = { is_ai = yes }
+	#}
 
-	# triggered_desc = {
-		# trigger = { 
-			# exists = owner
-			# owner = { is_hive_empire = yes } 
-		# }
-		# text = job_brain_drone_effect_desc
-	# }
-
-	# triggered_desc = {
-		# trigger = { 
-			# exists = owner
-			# owner = { is_machine_empire = yes } 
-		# }
-		# text = job_calculator_effect_desc
-	# }
+	planet_modifier = {
+		planet_orbital_bombardment_damage = -0.5
+	}
 	
-	# prerequisites = {
-		# "tech_planetary_shield_generator"
-	# }
-# }
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_country_flag = moon_bump_shield_completed }
+		}
+		modifier = {
+			planet_orbital_bombardment_damage = -0.25
+		}
+	}
+
+	resources = {
+		category = planet_buildings
+		produces = {
+			physics_research = 5
+			engineering_research = 5
+		}
+		cost = {
+			minerals = @b2_minerals
+		}
+		upkeep = {
+			energy = @b2_upkeep
+		}
+	}
+
+	prerequisites = {
+		"tech_planetary_shield_generator"
+	}
+	
+	show_tech_unlock_if = {
+		NOT = { has_global_flag = mem_more_events_mod }
+	}
+	
+	ai_resource_production = {
+		trigger = { always = yes }
+		physics_research = 1
+		society_research = 1
+		engineering_research = 1
+	}
+	# ai should build these to protect against locusts
+	ai_resource_production = {
+		alloys = 8
+		minerals = 8
+		food = 8
+		society_research = 10
+		engineering_research = 10
+		physics_research = 10
+		trigger = {
+			solar_system = {
+				any_neighbor_system = { has_star_flag = space_locusts_current_location }
+			}
+		}
+	}
+	ai_resource_production = {
+		alloys = 16
+		minerals = 16
+		food = 16
+		society_research = 20
+		engineering_research = 20
+		physics_research = 20
+		trigger = {
+			solar_system = { has_star_flag = space_locusts_current_location }
+		}
+	}
+}
 
 # mem shield generator
 building_mem_planetary_shield_generator = {
@@ -137,77 +114,13 @@ building_mem_planetary_shield_generator = {
 		}
 	}
 
-#Expanded events
-	triggered_planet_modifier = {
-		potential = {
-			exists = owner
-			owner = { is_regular_empire = yes }
-		}
-		modifier = {
-			job_researcher_add = 1
-		}
-	}
-	
-	triggered_planet_modifier = {
-		potential = {
-			exists = owner
-			owner = { is_hive_empire = yes }
-		}
-		modifier = {
-			job_brain_drone_add = 1
-		}
-	}
-	
-	triggered_planet_modifier = {
-		potential = {
-			exists = owner
-			owner = { is_machine_empire = yes }
-		}
-		modifier = {
-			job_calculator_add = 1
-		}
-	}
-	
-	triggered_desc = {
-		trigger = { 
-			exists = owner
-			owner = { is_regular_empire = yes } 
-		}
-		text = job_researcher_effect_desc
-	}
-
-	triggered_desc = {
-		trigger = { 
-			exists = owner
-			owner = { is_hive_empire = yes } 
-		}
-		text = job_brain_drone_effect_desc
-	}
-
-	triggered_desc = {
-		trigger = { 
-			exists = owner
-			owner = { is_machine_empire = yes } 
-		}
-		text = job_calculator_effect_desc
-	}
-
 	resources = {
 		category = planet_buildings
-#Calvitix Ressources balance
+		produces = {
+			physics_research = 5
+			engineering_research = 5
+		}
 		cost = {
-			trigger = {
-				from = {
-					is_ai = no
-				}
-			}
-		alloys = 50 minerals = 500}
-		cost = {
-			trigger = {
-				from = {
-					is_ai = yes
-				}
-			}
 			minerals = 500
 		}			
 		upkeep = {
@@ -239,14 +152,14 @@ building_mem_planetary_shield_generator = {
 	}
 
 	triggered_desc = {
-		trigger = { 
+		trigger = {
 			exists = owner
 			owner = { is_gestalt = yes }
 		}
 		text = job_warrior_drone_effect_desc
 	}
 	triggered_desc = {
-		trigger = { 
+		trigger = {
 			exists = owner
 			owner = { is_gestalt = no }
 		}
@@ -274,6 +187,10 @@ building_mem_planetary_shield_generator = {
 		"tech_planetary_shield_generator"
 	}
 	
+	show_tech_unlock_if = {
+		has_global_flag = mem_more_events_mod
+	}
+
 	ai_resource_production = {
 		trigger = { always = yes }
 		physics_research = 1
@@ -317,10 +234,6 @@ building_mem_planetary_shield_generator_heavy = {
 
 	category = army
 
-	potential = {
-		has_global_flag = mem_more_events_mod
-	}
-
 	allow = {
 		has_upgraded_capital = yes
 	}
@@ -337,60 +250,6 @@ building_mem_planetary_shield_generator_heavy = {
 		modifier = {
 			planet_orbital_bombardment_damage = -0.25
 		}
-	}
-
-	triggered_planet_modifier = {
-		potential = {
-			exists = owner
-			owner = { is_regular_empire = yes }
-		}
-		modifier = {
-			job_researcher_add = 1
-		}
-	}
-	
-	triggered_planet_modifier = {
-		potential = {
-			exists = owner
-			owner = { is_hive_empire = yes }
-		}
-		modifier = {
-			job_brain_drone_add = 1
-		}
-	}
-	
-	triggered_planet_modifier = {
-		potential = {
-			exists = owner
-			owner = { is_machine_empire = yes }
-		}
-		modifier = {
-			job_calculator_add = 1
-		}
-	}
-
-	triggered_desc = {
-		trigger = { 
-			exists = owner
-			owner = { is_regular_empire = yes } 
-		}
-		text = job_researcher_effect_desc
-	}
-
-	triggered_desc = {
-		trigger = { 
-			exists = owner
-			owner = { is_hive_empire = yes } 
-		}
-		text = job_brain_drone_effect_desc
-	}
-
-	triggered_desc = {
-		trigger = { 
-			exists = owner
-			owner = { is_machine_empire = yes } 
-		}
-		text = job_calculator_effect_desc
 	}
 
 	triggered_planet_modifier = {
@@ -413,20 +272,11 @@ building_mem_planetary_shield_generator_heavy = {
 
 	resources = {
 		category = planet_buildings
-#calvitix cost changes
+		produces = {
+			physics_research = 5
+			engineering_research = 5
+		}
 		cost = {
-			trigger = {
-				from = {
-					is_ai = no
-				}
-			}
-		alloys = 50 minerals = 800 rare_crystals = 50}
-		cost = {
-			trigger = {
-				from = {
-					is_ai = yes
-				}
-			}
 			minerals = 800
 			rare_crystals = 50
 		}	
@@ -441,20 +291,20 @@ building_mem_planetary_shield_generator_heavy = {
 	}
 
 	triggered_desc = {
-		trigger = { 
+		trigger = {
 			exists = owner
 			owner = { is_gestalt = yes }
 		}
 		text = job_warrior_drone_effect_desc
 	}
 	triggered_desc = {
-		trigger = { 
+		trigger = {
 			exists = owner
 			owner = { is_gestalt = no }
 		}
 		text = job_soldier_effect_desc
 	}
-	
+
 	ai_resource_production = {
 		trigger = { always = yes }
 		physics_research = 1
@@ -496,10 +346,6 @@ building_mem_planetary_shield_generator_orila = {
 	position_priority = 100
 
 	category = army
-	
-	potential = {
-		has_global_flag = mem_more_events_mod
-	}
 
 	resources = {
 		category = planet_buildings
@@ -525,14 +371,14 @@ building_mem_planetary_shield_generator_orila = {
 	}
 
 	triggered_desc = {
-		trigger = { 
+		trigger = {
 			exists = owner
 			owner = { is_gestalt = yes }
 		}
 		text = job_warrior_drone_effect_desc
 	}
 	triggered_desc = {
-		trigger = { 
+		trigger = {
 			exists = owner
 			owner = { is_gestalt = no }
 		}
@@ -552,61 +398,7 @@ building_mem_planetary_shield_generator_orila = {
 			planet_orbital_bombardment_damage = -0.25
 		}
 	}
-	
-	triggered_planet_modifier = {
-		potential = {
-			exists = owner
-			owner = { is_regular_empire = yes }
-		}
-		modifier = {
-			job_researcher_add = 1
-		}
-	}
-	
-	triggered_planet_modifier = {
-		potential = {
-			exists = owner
-			owner = { is_hive_empire = yes }
-		}
-		modifier = {
-			job_brain_drone_add = 1
-		}
-	}
-	
-	triggered_planet_modifier = {
-		potential = {
-			exists = owner
-			owner = { is_machine_empire = yes }
-		}
-		modifier = {
-			job_calculator_add = 1
-		}
-	}
-	
-	triggered_desc = {
-		trigger = { 
-			exists = owner
-			owner = { is_regular_empire = yes } 
-		}
-		text = job_researcher_effect_desc
-	}
 
-	triggered_desc = {
-		trigger = { 
-			exists = owner
-			owner = { is_hive_empire = yes } 
-		}
-		text = job_brain_drone_effect_desc
-	}
-
-	triggered_desc = {
-		trigger = { 
-			exists = owner
-			owner = { is_machine_empire = yes } 
-		}
-		text = job_calculator_effect_desc
-	}
-	
 	ai_resource_production = {
 		trigger = { always = yes }
 		physics_research = 1

@@ -95,6 +95,11 @@ event = {
 								OR = {
 									has_megastructure = hyper_relay
 									has_megastructure = hyper_relay_restored
+									AND = {
+										# check for lotor's upgraded hyper relay
+										mmgtrade_is_lotor = yes
+										has_megastructure = hyper_relay_2
+									}
 								}
 								is_system_connected_to_relay_network = yes
 							}
@@ -126,6 +131,17 @@ event = {
 							divide_variable = {
 								which = mmgtrade_proposed_relative_network_size
 								value = owner.trigger:trade_income
+							}
+						}
+						# relative network size max of 10x
+						if = {
+							limit = { check_variable = {
+								which = mmgtrade_proposed_relative_network_size
+								value > 10
+							} }
+							set_variable = {
+								which = mmgtrade_proposed_relative_network_size
+								value = 10
 							}
 						}
 						# use new proposed relative network size if bigger
@@ -221,13 +237,8 @@ event = {
 							value = 1
 						}
 					}
-					if = {
-						limit = {
-							check_variable = {
-								which = mmgtrade_consecutive_cbt_months
-								value >= 12
-							}
-						}
+
+					# calculate and set multiplier
 						set_variable = {
 							which = mmgtrade_long_term_cbt_multiplier
 							value = mmgtrade_consecutive_cbt_months
@@ -250,7 +261,6 @@ event = {
 								value = 200
 							}
 						}
-					}
 
 					# final math to relative network size, for display
 					multiply_variable = {

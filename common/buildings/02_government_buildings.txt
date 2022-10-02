@@ -1,9 +1,9 @@
 # Original File
 #
-# Calvitix Check 3.4.4  21.06.2022
+# Calvitix Check 3.5 22.09.2022
 #
 # Merge with Plentiful traditions 19.05.2022
-# Merge with Starnet OK 05.03.2022
+# Merge with Starnet OK 25.09.2022
 # Merge with Aripath 19.11.2021
 #############
 # Government buildings
@@ -29,10 +29,12 @@ building_noble_estates = {
 
 	allow = {
 		has_upgraded_capital = yes
-		exists = owner
-		or = {
-		num_pops > 40
-		owner = { is_ai = no }	
+		hidden_trigger = {
+			exists = owner
+			OR = {
+				owner = { is_ai = no }
+				num_pops > 40
+			}
 		}
 	}
 
@@ -254,10 +256,7 @@ building_hall_judgment = {
 
 	destroy_trigger = {
 		exists = owner
-		OR = {
-			buildings_no_motes = yes
-			NOT = { owner = { is_regular_empire = yes } }
-		}
+		owner = { is_regular_empire = no }
 	}
 
 	planet_modifier = {
@@ -289,7 +288,6 @@ building_hall_judgment = {
 	}
 }
 
-
 building_sentinel_posts = {
 	base_buildtime = @b1_time
 
@@ -306,7 +304,6 @@ building_sentinel_posts = {
 			OR = {
 				owner = { is_ai = no }
 				AND = {
-					#buildings_simple_allow = yes
 					num_buildings = { type = building_sentinel_posts value < 4 } #Calvitix
 					#NOT = { has_building = building_sentinel_posts }
 					planet_crime > 25
@@ -349,6 +346,124 @@ building_sentinel_posts = {
 	}
 }
 
+building_order_keep = {
+	base_buildtime = 180
+
+	can_demolish = no
+	can_be_disabled = no
+
+	empire_limit = {
+	 	base = 1
+	}
+
+	potential = {
+		owner = { has_origin = origin_toxic_knights }
+		has_planet_flag = toxic_knights_habitat
+		owner = { NOT = { has_country_flag = quest_abandoned } }
+	}
+
+	destroy_trigger = {
+		OR = {
+			NOT = { exists = owner }
+			NOT = { owner = { has_origin = origin_toxic_knights } }
+		}
+	}
+
+	planet_modifier = {
+		job_squire_add = 1
+		job_knight_add = 1
+		job_knight_per_pop = 0.05 # 1 for every 10 pop while quest active. 1 for 20 after quest.
+
+		planet_immigration_pull_add = 5
+		planet_resettlement_unemployed_destination_mult = 1
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			owner = { has_country_flag = toxoids_7060_A }
+		}
+		modifier = { job_knight_add = 1 }
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			owner = { NOT = { has_country_flag = quest_over } }
+		}
+		modifier = {
+			job_knight_add = 1
+			job_knight_per_pop = 0.05
+		}
+	}
+
+
+	resources = {
+		cost = {
+			minerals = 1000
+		}
+		category = planet_buildings
+	}
+
+	triggered_desc = {
+		text = building_order_keep_effect
+	}
+
+	triggered_desc = {
+		text = job_knight_effect_desc
+	}
+
+	triggered_desc = {
+		text = job_squire_effect_desc
+	}
+}
+
+building_order_castle = {
+	icon = building_order_holding
+	base_buildtime = 180
+	can_demolish = no
+	can_be_disabled = no
+	can_build = no
+
+	destroy_trigger = {
+		OR = {
+			NOT = { exists = owner }
+			NOT = { owner = { has_origin = origin_toxic_knights } }
+		}
+	}
+
+	planet_modifier = {
+		job_squire_add = 1
+		job_knight_add = 1
+
+		planet_immigration_pull_add = 1
+		planet_resettlement_unemployed_destination_mult = 0.2
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			owner = { NOT = { has_country_flag = quest_over } }
+		}
+		modifier = {
+			job_knight_add = 1
+		}
+	}
+
+	resources = {
+		category = planet_buildings
+	}
+
+	triggered_desc = {
+		text = building_order_keep_effect
+	}
+
+	triggered_desc = {
+		text = job_knight_effect_desc
+	}
+
+	triggered_desc = {
+		text = job_squire_effect_desc
+	}
+}
+
 #############
 # Ascension perks
 #############
@@ -367,6 +482,7 @@ building_psi_corps = {
 			OR = {
 				has_ascension_perk = ap_mind_over_matter
 				has_origin = origin_shroudwalker_apprentice
+				has_origin = origin_pd_shroud
 			}
 		}
 		NOT = { has_modifier = resort_colony }
@@ -375,7 +491,6 @@ building_psi_corps = {
 
 	allow = {
 		has_major_upgraded_capital = yes
-		buildings_simple_allow = yes
 	}
 
 	destroy_trigger = {
@@ -385,6 +500,7 @@ building_psi_corps = {
 				OR = {
 					has_ascension_perk = ap_mind_over_matter 
 					has_origin = origin_shroudwalker_apprentice
+					has_origin = origin_pd_shroud
 				}
 			}
 		}
@@ -407,6 +523,201 @@ building_psi_corps = {
 
 	triggered_desc = {
 		text = job_telepath_effect_desc
+	}
+}
+
+#Biological path
+building_clone_vats = {
+	base_buildtime = @b1_time
+
+	category = pop_assembly
+
+	base_cap_amount = 1
+
+	potential = {
+		exists = owner
+		owner = { has_ascension_perk = ap_engineered_evolution }
+		NOT = { has_modifier = resort_colony }
+		OR = {
+			owner = { is_ai = no }
+			NOT = { exists = assembling_species }
+			assembling_species = { is_organic_species = yes }
+		}
+		OR = {
+			owner = { is_ai = no }
+			NAND = {
+				free_district_slots = 0
+				free_building_slots <= 1
+				free_housing <= 0
+				free_jobs <= 0
+			}
+		}
+	}
+
+	destroy_trigger = {
+		exists = owner
+		OR = {
+			AND = {
+				owner = { is_ai = yes }
+				free_district_slots = 0
+				free_building_slots = 0
+				free_housing <= 0
+				free_jobs <= 0
+			}
+			NOT = { owner = { has_ascension_perk = ap_engineered_evolution } }
+		}
+	}
+
+	planet_modifier = {
+		planet_pop_assembly_organic_add = 3
+	}
+	
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				has_ascension_perk = ap_total_assimilation
+			}
+		}
+		modifier = {
+			planet_pop_assembly_organic_add = 1
+		}
+	}
+
+	resources = {
+		category = planet_buildings
+
+		# Base cost
+		cost = {
+			minerals = 500
+		}
+		# Org/Lith cost
+		cost = {
+			trigger = {
+				exists = owner
+				owner = { is_lithoid_empire = no }
+				NOT = {
+					owner = { has_ascension_perk = ap_plentiful_traditions_vast_slave_procreation }
+					OR = {
+						has_building = building_plentiful_traditions_advanced_slave_processing
+						has_building = building_slave_processing
+					}
+				}
+			}
+			food = 500
+		}
+		cost = {
+			trigger = {
+				exists = owner
+				owner = { is_lithoid_empire = yes }
+				NOT = {
+					owner = { has_ascension_perk = ap_plentiful_traditions_vast_slave_procreation }
+					OR = {
+						has_building = building_plentiful_traditions_advanced_slave_processing
+						has_building = building_slave_processing
+					}
+				}
+			}
+			energy = 500
+		}
+		
+				# Org/Lith cost mit Perk etc.
+		cost = {
+			trigger = {
+				exists = owner
+				owner = { is_lithoid_empire = no }
+				owner = { has_ascension_perk = ap_plentiful_traditions_vast_slave_procreation }
+				OR = {
+					has_building = building_plentiful_traditions_advanced_slave_processing
+					has_building = building_slave_processing
+				}
+			}
+			food = 250
+		}
+		cost = {
+			trigger = {
+				exists = owner
+				owner = { is_lithoid_empire = yes }
+				owner = { has_ascension_perk = ap_plentiful_traditions_vast_slave_procreation }
+				OR = {
+					has_building = building_plentiful_traditions_advanced_slave_processing
+					has_building = building_slave_processing
+				}
+			}
+			energy = 250
+		}
+
+		# Base upkeep
+		upkeep = {
+			energy = 2
+		}
+		# Org/Lith upkeep
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = { is_lithoid_empire = no }
+				NOT = {
+					owner = { has_ascension_perk = ap_plentiful_traditions_vast_slave_procreation }
+					OR = {
+						has_building = building_plentiful_traditions_advanced_slave_processing
+						has_building = building_slave_processing
+					}
+				}
+			}
+			food = 30
+		}
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = { is_lithoid_empire = yes }
+				NOT = {
+					owner = { has_ascension_perk = ap_plentiful_traditions_vast_slave_procreation }
+					OR = {
+						has_building = building_plentiful_traditions_advanced_slave_processing
+						has_building = building_slave_processing
+					}
+				}
+			}
+			minerals = 30
+		}
+		# Org/Lith upkeep mit Perk
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = { is_lithoid_empire = no }
+				owner = { has_ascension_perk = ap_plentiful_traditions_vast_slave_procreation }
+				OR = {
+					has_building = building_plentiful_traditions_advanced_slave_processing
+					has_building = building_slave_processing
+				}
+			}
+			food = 15
+		}
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = { is_lithoid_empire = yes }
+				owner = { has_ascension_perk = ap_plentiful_traditions_vast_slave_procreation }
+				OR = {
+					has_building = building_plentiful_traditions_advanced_slave_processing
+					has_building = building_slave_processing
+				}
+			}
+			minerals = 15
+		}
+	}
+
+	triggered_desc = {
+		trigger = {
+			OR = {
+				has_building = building_robot_assembly_plant
+				AND = {
+					exists = assembling_species
+					assembling_species = { is_robotic_species = yes }
+				}
+			}
+		}
+		text = tooltip_organic_and_artificial_assembly_warning
 	}
 }
 
@@ -433,7 +744,6 @@ building_embassy = {
 
 	allow = {
 		has_upgraded_capital = yes
-		buildings_simple_allow = yes
 	}
 
 	destroy_trigger = {
@@ -443,7 +753,6 @@ building_embassy = {
 				owner = { is_regular_empire = no }
 			}
 			planet = { is_capital = no }
-			buildings_no_crystals = yes
 		}
 	}
 
@@ -498,7 +807,6 @@ building_grand_embassy = {
 				owner = { is_regular_empire = no }
 			}
 			planet = { is_capital = no }
-			buildings_no_crystals = yes
 		}
 	}
 
@@ -556,222 +864,6 @@ building_gaiaseeders_1 = {
 	}
 
 	allow = {
-		if = { 
-			limit = {
-				owner = { 
-					OR = {
-						ideal_planet_class = pc_continental 
-						ideal_planet_class = pc_retinal 
-						ideal_planet_class = pc_tepid 
-						ideal_planet_class = pc_forest
-						ideal_planet_class = pc_lake
-						ideal_planet_class = pc_superhabitable
-						ideal_planet_class = pc_megaflora
-					}
-				}
-			}
-			OR = {
-				is_planet_class = pc_continental 
-				is_planet_class = pc_retinal 
-				is_planet_class = pc_tepid 
-				is_planet_class = pc_forest
-				is_planet_class = pc_lake
-				is_planet_class = pc_superhabitable
-				is_planet_class = pc_megaflora
-			}
-		}
-		if = { 
-			limit = {
-				owner = { 
-					OR = {
-						ideal_planet_class = pc_tropical 
-						ideal_planet_class = pc_hajungle 
-						ideal_planet_class = pc_desertislands 
-						ideal_planet_class = pc_mangrove
-						ideal_planet_class = pc_cenote
-						ideal_planet_class = pc_biolumen
-						ideal_planet_class = pc_geothermal
-					}
-				}
-			}
-			OR = {
-				is_planet_class = pc_tropical 
-				is_planet_class = pc_hajungle 
-				is_planet_class = pc_desertislands 
-				is_planet_class = pc_mangrove
-				is_planet_class = pc_cenote
-				is_planet_class = pc_biolumen
-				is_planet_class = pc_geothermal
-			}
-		}
-		if = { 
-			limit = {
-				owner = { 
-					OR = {
-						ideal_planet_class = pc_ocean 
-						ideal_planet_class = pc_cascadian 
-						ideal_planet_class = pc_wetswamp 
-						ideal_planet_class = pc_subarctic
-						ideal_planet_class = pc_fog
-						ideal_planet_class = pc_karst
-						ideal_planet_class = pc_reef
-					}
-				}
-			}
-			OR = {
-				is_planet_class = pc_ocean 
-				is_planet_class = pc_cascadian 
-				is_planet_class = pc_wetswamp 
-				is_planet_class = pc_subarctic
-				is_planet_class = pc_fog
-				is_planet_class = pc_karst
-				is_planet_class = pc_reef
-			}
-		}
-		if = { 
-			limit = {
-				owner = { 
-					OR = {
-						ideal_planet_class = pc_desert 
-						ideal_planet_class = pc_sandsea 
-						ideal_planet_class = pc_oasis 
-						ideal_planet_class = pc_outback
-						ideal_planet_class = pc_coastal
-						ideal_planet_class = pc_salt
-						ideal_planet_class = pc_aquifer
-					}
-				}
-			}
-			OR = {
-				is_planet_class = pc_desert 
-				is_planet_class = pc_sandsea 
-				is_planet_class = pc_oasis 
-				is_planet_class = pc_outback
-				is_planet_class = pc_coastal
-				is_planet_class = pc_salt
-				is_planet_class = pc_aquifer
-			}
-		}
-		if = { 
-			limit = {
-				owner = { 
-					OR = {
-						ideal_planet_class = pc_arid 
-						ideal_planet_class = pc_mesa 
-						ideal_planet_class = pc_hadesert 
-						ideal_planet_class = pc_med
-						ideal_planet_class = pc_badlands
-						ideal_planet_class = pc_coral
-						ideal_planet_class = pc_primal
-					}
-				}
-			}
-			OR = {
-				is_planet_class = pc_arid 
-				is_planet_class = pc_mesa 
-				is_planet_class = pc_hadesert 
-				is_planet_class = pc_med
-				is_planet_class = pc_badlands
-				is_planet_class = pc_coral
-				is_planet_class = pc_primal
-			}
-		}
-		if = { 
-			limit = {
-				owner = { 
-					OR = {
-						ideal_planet_class = pc_savannah 
-						ideal_planet_class = pc_steppe 
-						ideal_planet_class = pc_prairie 
-						ideal_planet_class = pc_veld
-						ideal_planet_class = pc_semiarid
-						ideal_planet_class = pc_tidallylocked
-						ideal_planet_class = pc_supercon
-					}
-				}
-			}
-			OR = {
-				is_planet_class = pc_savannah 
-				is_planet_class = pc_steppe 
-				is_planet_class = pc_prairie 
-				is_planet_class = pc_veld
-				is_planet_class = pc_semiarid
-				is_planet_class = pc_tidallylocked
-				is_planet_class = pc_supercon
-			}
-		}
-		if = { 
-			limit = {
-				owner = { 
-					OR = {
-						ideal_planet_class = pc_arctic 
-						ideal_planet_class = pc_frozen_desert 
-						ideal_planet_class = pc_glacial 
-						ideal_planet_class = pc_antarctic
-						ideal_planet_class = pc_aeolian
-						ideal_planet_class = pc_storm
-						ideal_planet_class = pc_eyeball
-					}
-				}
-			}
-			OR = {
-				is_planet_class = pc_arctic 
-				is_planet_class = pc_frozen_desert 
-				is_planet_class = pc_glacial 
-				is_planet_class = pc_antarctic
-				is_planet_class = pc_aeolian
-				is_planet_class = pc_storm
-				is_planet_class = pc_eyeball
-			}
-		}
-		if = { 
-			limit = {
-				owner = { 
-					OR = {
-						ideal_planet_class = pc_alpine 
-						ideal_planet_class = pc_boreal 
-						ideal_planet_class = pc_snow 
-						ideal_planet_class = pc_highland
-						ideal_planet_class = pc_duneforest
-						ideal_planet_class = pc_glacio
-						ideal_planet_class = pc_lanthanide
-					}
-				}
-			}
-			OR = {
-				is_planet_class = pc_alpine 
-				is_planet_class = pc_boreal 
-				is_planet_class = pc_snow 
-				is_planet_class = pc_highland
-				is_planet_class = pc_duneforest
-				is_planet_class = pc_glacio
-				is_planet_class = pc_lanthanide
-			}
-		}
-		if = { 
-			limit = {
-				owner = { 
-					OR = {
-						ideal_planet_class = pc_tundra 
-						ideal_planet_class = pc_swamp 
-						ideal_planet_class = pc_mushroom 
-						ideal_planet_class = pc_mud
-						ideal_planet_class = pc_basalt
-						ideal_planet_class = pc_rogue
-						ideal_planet_class = pc_lichen
-					}
-				}
-			}
-			OR = {
-				is_planet_class = pc_tundra 
-				is_planet_class = pc_swamp 
-				is_planet_class = pc_mushroom 
-				is_planet_class = pc_mud
-				is_planet_class = pc_basalt
-				is_planet_class = pc_rogue
-				is_planet_class = pc_lichen
-			}
-		}
 		has_upgraded_capital = yes
 	}
 
@@ -781,8 +873,8 @@ building_gaiaseeders_1 = {
 			is_planet_class = pc_cold_gaia
 			is_planet_class = pc_hot_gaia
 			is_planet_class = pc_city
-			is_planet_class = pc_hive
-			is_planet_class = pc_machine
+			is_pd_hive_world = yes
+			is_pd_machine = yes
 			is_planet_class = pc_relic
 			NOT = { exists = owner }
 			owner = {
@@ -791,9 +883,6 @@ building_gaiaseeders_1 = {
 					has_valid_civic = civic_hive_idyllic_bloom
 				}
 			}
-			is_pd_arcology = yes
-			is_pd_hive_arcology = yes
-			is_pd_robot_arcology = yes
 		}
 	}
 
@@ -839,8 +928,8 @@ building_gaiaseeders_2 = {
 			is_planet_class = pc_cold_gaia
 			is_planet_class = pc_hot_gaia
 			is_planet_class = pc_city
-			is_planet_class = pc_hive
-			is_planet_class = pc_machine
+			is_pd_hive_world = yes
+			is_pd_machine = yes
 			NOT = { exists = owner }
 			owner = {
 				NOR = {
@@ -848,9 +937,6 @@ building_gaiaseeders_2 = {
 					has_valid_civic = civic_hive_idyllic_bloom
 				}
 			}
-			is_pd_arcology = yes
-			is_pd_hive_arcology = yes
-			is_pd_robot_arcology = yes
 		}
 	}
 
@@ -890,8 +976,8 @@ building_gaiaseeders_3 = {
 			is_planet_class = pc_cold_gaia
 			is_planet_class = pc_hot_gaia
 			is_planet_class = pc_city
-			is_planet_class = pc_hive
-			is_planet_class = pc_machine
+			is_pd_hive_world = yes
+			is_pd_machine = yes
 			NOT = { exists = owner }
 			owner = {
 				NOR = {
@@ -899,9 +985,6 @@ building_gaiaseeders_3 = {
 					has_valid_civic = civic_hive_idyllic_bloom
 				}
 			}
-			is_pd_arcology = yes
-			is_pd_hive_arcology = yes
-			is_pd_robot_arcology = yes
 		}
 	}
 
@@ -923,8 +1006,8 @@ building_gaiaseeders_4 = {
 	destroy_trigger = {
 		OR = {
 			is_planet_class = pc_city
-			is_planet_class = pc_hive
-			is_planet_class = pc_machine
+			is_pd_hive_world = yes
+			is_pd_machine = yes
 			NOT = { exists = owner }
 			owner = {
 				NOR = {
@@ -932,9 +1015,6 @@ building_gaiaseeders_4 = {
 					has_valid_civic = civic_hive_idyllic_bloom
 				}
 			}
-			is_pd_arcology = yes
-			is_pd_hive_arcology = yes
-			is_pd_robot_arcology = yes
 		}
 	}
 

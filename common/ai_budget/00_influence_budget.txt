@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.4.2  13.05.2022
+# Calvitix Check 3.5 22.09.2022
 #
 # Merge with STARNET AI    26.06.2022
 #
@@ -20,7 +20,7 @@ influence_expenditure_buffer = { # Buffer, will not be spent
 		always = yes
 	}
 
-	fraction = {
+	weight = {
 		weight = 0.0
 	}
 }
@@ -46,7 +46,7 @@ influence_expenditure_decisions = {
 ###
 	}
 
-	fraction = { #3.2
+	weight = { #3.2
 		weight = 0.20
 		modifier = {
 			factor = 2
@@ -81,7 +81,7 @@ influence_expenditure_decisions = {
 			}
 		}
 	}
-	static_min = {
+	desired_min = {
 		base = 300
 	}
 }
@@ -100,17 +100,17 @@ influence_expenditure_resolutions = {
 		}
 	}
 
-	fraction = {
+	weight = {
 		weight = 0.15
 	}
 
 	# min/max resolution proposal costs defined in resolutions.txt
 
-	static_min = {
+	desired_min = {
 		base = 100
 	}
 
-	static_max = {
+	desired_max = {
 		base = 300
 	}
 }
@@ -125,7 +125,7 @@ influence_expenditure_agreement_proposals = {
 		ai_wants_to_negotiate_agreement = yes
 	}
 
-	fraction = {
+	weight = {
 		weight = 1000
 	}
 }
@@ -142,11 +142,11 @@ influence_expenditure_edicts_initial = {
 		}
 	}
 
-	fraction = {
+	weight = {
 		weight = 0.2
 	}
 
-	static_min = {
+	desired_min = {
 		base = 800
 	}
 }
@@ -165,11 +165,11 @@ influence_expenditure_important_edicts = {
 		}
 	}
 
-	fraction = {
+	weight = {
 		weight = 0.2
 	}
 
-	static_min = {
+	desired_min = {
 		base = 800
 	}
 }
@@ -190,15 +190,15 @@ influence_expenditure_edicts = {
 		has_sacrificial_edict = no
 	}
 
-	fraction = {
+	weight = {
 		weight = 0.5 #0.25
 	}
 
-	static_min = {
+	desired_min = {
 		base = 500 #100 #Calvitix, has lower importance since 3.3.1
 	}
 
-	#static_max = {
+	#desired_max = {
 	#	base = 100
 	#}	
 }
@@ -244,12 +244,12 @@ influence_expenditure_stations = {
 	}
 	}
 
-	fraction = {
+	weight = {
 		weight = 0.2 #0.5
 	}
 
 	# min is 1 jump away
-	static_min = {
+	desired_min = {
 		base = 0 #75
 ###Starnet AI
 		modifier = {
@@ -311,7 +311,7 @@ influence_expenditure_stations_save_for_edicts = {
 		}
 	}
 
-	fraction = {
+	weight = {
 		weight = 0.2
 	}
 }
@@ -332,7 +332,7 @@ influence_expenditure_stations_wartime = {
 		not = { has_country_flag = saving_influence_arcology }
 	}
 	
-	fraction = {
+	weight = {
 		weight = 0.2
 	}	
 }
@@ -362,10 +362,10 @@ influence_expenditure_claims_late = {
 		}
 	}
 
-	fraction = {
+	weight = {
 		weight = 0.75
 	}
-	static_min = {
+	desired_min = {
 		base = 500
 	}
 }
@@ -391,10 +391,10 @@ influence_expenditure_claims_while_preparing = {
 	}
 	}
 	
-	fraction = {
+	weight = {
 		weight = 0.4
 	}
-	static_min = {
+	desired_min = {
 		base = 400
 	}
 }
@@ -411,7 +411,7 @@ influence_expenditure_claims_fanatic_militarist = {
 		has_potential_claims = yes
 	}
 
-	fraction = {
+	weight = {
 		weight = 0.10
 	}
 }
@@ -435,12 +435,12 @@ influence_expenditure_megastructures = {
 		}
 	}
 
-	fraction = {
+	weight = {
 		weight = 0.1
 	}
 
 	# only used by construction sites, base cost is 300
-	static_min = {
+	desired_min = {
 		base = 75
 		modifier = {
 			add = 225
@@ -450,7 +450,7 @@ influence_expenditure_megastructures = {
 			}
 		}
 	}
-	static_max = {
+	desired_max = {
 		base = 75
 		modifier = {
 			add = 225
@@ -469,14 +469,14 @@ influence_expenditure_habitats = {
 		str_ai_should_build_habitats = yes
 	}
 
-	fraction = {
+	weight = {
 		weight = 0.1
 		modifier = {
 			factor = 2
 			has_origin = origin_void_dwellers
 		}
 		modifier = {
-			factor = 5
+			factor = 5 #2
 			has_origin = origin_void_dwellers
 			count_owned_planet = {
 				limit = { is_planet_class = pc_habitat }
@@ -499,13 +499,116 @@ influence_expenditure_habitats = {
 				count < 12
 			}
 		}
+		modifier = {
+			factor = 5
+			mid_game_years_passed > 0
+			num_owned_planets < 12
+		}
+		modifier = {
+			factor = 0.5
+			has_trait = trait_aquatic
+		}
+		modifier = { #Build fortress habitats
+			factor = 2
+			used_naval_capacity_percent > 0.95
+			used_starbase_capacity_percent >= 1
+		}		
 	}
 
-	static_min = {
+	desired_min = {
 		base = 150
 	}
-	static_max = {
+	desired_max = {
 		base = 350 #150
+	}
+}
+
+influence_expenditure_starbases = {
+	resource = influence
+	type = expenditure
+	category = starbases
+
+	potential = {
+		count_owned_nonprimary_starbase = {
+			count > 0
+		}
+	}
+
+	weight = {
+		base = 0
+
+		modifier = {
+			add = 0.2
+			has_technology = tech_housing_2
+			any_owned_nonprimary_starbase = {
+				exists = planet
+				OR = {
+					AND = {
+						has_starbase_size = orbital_ring_tier_1
+						count_starbase_modules = { count < 2 }
+					}
+					AND = {
+						has_starbase_size = orbital_ring_tier_2
+						count_starbase_modules = { count < 3 }
+					}
+					AND = {
+						has_starbase_size = orbital_ring_tier_3
+						count_starbase_modules = { count < 4 }
+					}
+				}
+			}
+		}
+		modifier = {
+			add = 0.3
+			has_technology = tech_starbase_4
+			any_owned_nonprimary_starbase = {
+				has_starbase_size = orbital_ring_tier_1
+				exists = planet
+				count_starbase_modules = {
+					count = 2
+				}
+			}
+		}
+		modifier = {
+			add = 0.3
+			has_technology = tech_starbase_5
+			any_owned_nonprimary_starbase = {
+				has_starbase_size = orbital_ring_tier_2
+				exists = planet
+				planet = {
+					OR = {
+						has_planetary_ascension_tier >= 3
+						has_major_upgraded_capital = yes
+					}
+				}
+				count_starbase_modules = {
+					count = 3
+				}
+				count_starbase_buildings = {
+					count = 1
+				}
+			}
+		}
+	}
+	desired_min = {
+		base = 50
+	}
+	desired_max = {
+		base = 100
+		modifier = {
+			factor = 1.5
+			has_technology = tech_starbase_5
+			any_owned_nonprimary_starbase = {
+				has_starbase_size = orbital_ring_tier_2
+				exists = planet
+				planet = {
+					OR = {
+						has_planetary_ascension_tier >= 3
+						has_major_upgraded_capital = yes
+					}
+				}
+			}
+		}
 	}
 }
 
@@ -528,7 +631,7 @@ influence_expenditure_operations = {
 		}
 	}
 
-	fraction = {
+	weight = {
 		weight = 0.05
 
 		modifier = {
@@ -562,12 +665,12 @@ influence_expenditure_operations = {
 	}
 
 	# based on gather information op
-	static_min = {
+	desired_min = {
 		base = 20
 	}
 
 	# based on crisis beacon op
-	static_max = {
+	desired_max = {
 		base = 320
 	}
 }

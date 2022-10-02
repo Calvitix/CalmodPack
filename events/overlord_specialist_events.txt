@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.4.2  18.05.2022
+# Calvitix Check 3.5  22.09.2022
 #
 # Merge with JL PICARD 19.05.2022
 #
@@ -68,6 +68,8 @@ country_event = {
 	is_triggered_only = yes
 
 	immediate = {
+		if = { # checks if a new owner exists 
+			limit = { exists = FROMFROM }
 		if = {
 			limit = {
 				is_specialist_subject_type = { TYPE = bulwark }
@@ -92,6 +94,17 @@ country_event = {
 					NOT = { any_agreement = { specialist_tier = 3 } }
 				}
 			}
+			FROM = {
+				if = {
+					limit = { exists = starbase }
+					starbase = {
+						remove_disintegrator_field = yes
+					}
+				}
+			}
+		}
+	}
+		else = { # if no new owner, always remove the disintegrator field (just a failsafe, systems with no onwer shouldn't have a starbase)
 			FROM = {
 				if = {
 					limit = { exists = starbase }

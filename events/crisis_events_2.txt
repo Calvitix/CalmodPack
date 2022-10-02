@@ -191,6 +191,8 @@ country_event = {
 							set_faction_hostility = {
 								target = event_target:portal_holder_1
 								set_hostile = no
+							set_neutral = yes
+							set_friendly = no
 							}
 							set_graphical_culture = extra_dimensional_01
 							save_event_target_as = extradimensionals
@@ -224,8 +226,16 @@ country_event = {
 								fleet_event = { id = crisis.1003 days = 550 } # Tenth Fleet Arrives
 								fleet_event = { id = crisis.1006 days = 20 } # First Constructor Arrives
 								fleet_event = { id = crisis.1006 days = 25 } # Second Constructor Arrives
-								fleet_event = { id = crisis.1006 days = 160 } # Third Constructor Arrives
-								fleet_event = { id = crisis.1006 days = 310 } # Fourth Constructor Arrives
+							fleet_event = { id = crisis.1006 days = 30 } # Third Constructor Arrives
+							fleet_event = { id = crisis.1006 days = 60 } # Fourth Constructor Arrives
+							fleet_event = { id = crisis.1006 days = 120 } # Fifth Constructor Arrives
+							fleet_event = { id = crisis.1006 days = 180 } # Sixth Constructor Arrives
+							#fleet_event = { id = crisis.1006 days = 240 } # Seventh Constructor Arrives
+							#fleet_event = { id = crisis.1006 days = 360 } # Eighth Constructor Arrives
+							#fleet_event = { id = crisis.1006 days = 480 } # Ninth Constructor Arrives
+							#fleet_event = { id = crisis.1006 days = 600 } # Tenth Constructor Arrives
+							#fleet_event = { id = crisis.1006 days = 720 } # Eleventh Constructor Arrives
+							#fleet_event = { id = crisis.1006 days = 720 } # Twelfth Constructor Arrives
 								event_target:extradimensionals = { country_event = { id = crisis.1260 days = 350 } } # Spawn Cycle starts
 								#set_owner = event_target:portal_holder_1 #when first anchor built
 							}
@@ -864,6 +874,8 @@ country_event = {
 	picture = GFX_evt_wormhole
 	show_sound = event_ex_started
 
+	location = event_target:extradimensional_system
+
 	is_triggered_only = yes
 
 	immediate = {
@@ -1218,6 +1230,7 @@ country_event = {
 				if = {
 					limit = { is_ai = no }
 					country_event = { id = crisis.1250 days = 10 random = 10 }
+					set_country_flag = with_great_power_achievement
 				}
 			}
 			observer_event = { id = observer.35 }
@@ -2042,6 +2055,7 @@ country_event = {
 					from = { is_ai = no }
 				}
 				country_event = { id = crisis.1250 days = 10 random = 10 }
+				set_country_flag = with_great_power_achievement
 			}
 			every_country = {
 				limit = {
@@ -2609,6 +2623,7 @@ country_event = {
 					from = { is_ai = no }
 				}
 				country_event = { id = crisis.1250 days = 10 random = 10 }
+				set_country_flag = with_great_power_achievement
 			}
 			every_country = {
 				limit = {
@@ -2750,7 +2765,7 @@ event = {
 						any_controlled_ship = { is_ship_size = dimensional_portal_ed }
 						any_country = {
 							is_country_type = portal_holder
-							any_controlled_ship = { is_ship_size = dimensional_portal_ed }
+							any_owned_ship = { is_ship_size = dimensional_portal_ed }
 						}
 					}
 
@@ -3724,9 +3739,6 @@ country_event = {
 
 	immediate = {
 		observer_event = { id = observer.40 }
-		# Crisis reward is handled through Galactic Focus if the community exists
-		if = {
-			limit = { NOT = { has_global_flag = galactic_community_formed } }
 			every_country = {
 				limit = {
 					OR = {
@@ -3736,7 +3748,6 @@ country_event = {
 				}
 				country_event = { id = crisis.1271 }
 			}
-		}
 		set_global_flag = extradimensional_invasion_defeated
 		end_crisis = yes
 	}

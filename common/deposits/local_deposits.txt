@@ -103,20 +103,18 @@ d_local_production = {
 		}
 		planet_jobs_alloys_produces_mult = 0.1
 	}
-	triggered_planet_modifier = {
-		potential = { 
-			has_owner = yes
-			owner = { is_gestalt = yes }
-			planet_resource_compare = {
-				resource = minerals
-				value >=10
-				type = balance
-			}
-		}
-		planet_jobs_complex_drone_physics_research_produces_mult = 0.05
-		planet_jobs_complex_drone_society_research_produces_mult = 0.05
-		planet_jobs_complex_drone_engineering_research_produces_mult = 0.05
-	}
+	# triggered_planet_modifier = {
+	# 	potential = { 
+	# 		has_owner = yes
+	# 		owner = { is_gestalt = yes }
+	# 		planet_resource_compare = {
+	# 			resource = minerals
+	# 			value >=10
+	# 			type = balance
+	# 		}
+	# 	}
+	# 	planet_researchers_produces_mult = 0.05
+	# }
 	#Mineral Big Surplus
 	triggered_planet_modifier = {
 		potential = { 
@@ -136,7 +134,11 @@ d_local_production = {
 			has_owner = yes
 			exists = starbase
 			starbase = {
-				NOT = { has_starbase_building = warp_fluctuator }
+				NOR = { 
+					has_starbase_building = warp_fluctuator
+					has_starbase_building = local_synapse_relay
+					has_starbase_building = local_machine_relay 
+				}
 			}
 			planet_resource_compare = {
 				resource = minerals
@@ -153,7 +155,11 @@ d_local_production = {
 			owner = { is_catalytic_empire = no }
 			exists = starbase
 			starbase = {
-				NOT = { has_starbase_building = warp_fluctuator }
+				NOR = { 
+					has_starbase_building = warp_fluctuator
+					has_starbase_building = local_synapse_relay
+					has_starbase_building = local_machine_relay 
+				}
 			}
 			planet_resource_compare = {
 				resource = minerals
@@ -163,24 +169,22 @@ d_local_production = {
 		}
 		planet_jobs_alloys_produces_mult = -0.1
 	}
-	triggered_planet_modifier = {
-		potential = { 
-			has_owner = yes
-			owner = { is_gestalt = yes }
-			exists = starbase
-			starbase = {
-				NOT = { has_starbase_building = warp_fluctuator }
-			}
-			planet_resource_compare = {
-				resource = minerals
-				value <=-10
-				type = balance
-			}
-		}
-		planet_jobs_complex_drone_physics_research_produces_mult = -0.05
-		planet_jobs_complex_drone_society_research_produces_mult = -0.05
-		planet_jobs_complex_drone_engineering_research_produces_mult = -0.05
-	}
+	# triggered_planet_modifier = {
+	# 	potential = { 
+	# 		has_owner = yes
+	# 		owner = { is_gestalt = yes }
+	# 		exists = starbase
+	# 		starbase = {
+	# 			NOT = { has_starbase_building = warp_fluctuator }
+	# 		}
+	# 		planet_resource_compare = {
+	# 			resource = minerals
+	# 			value <=-10
+	# 			type = balance
+	# 		}
+	# 	}
+	# 	planet_researchers_produces_mult = -0.05
+	# }
 
 	#Energy Surplus
 	triggered_planet_modifier = {
@@ -245,17 +249,7 @@ d_local_production = {
 				value <=-10
 				type = balance
 			}
-			OR = {
-				AND = {
-					solar_system = {
-					has_collected_system_trade_value <50
-					}
-					planet_resource_compare = {
-						resource = energy
-						value <=-10
-						type = balance
-					}
-				}
+			NOR = {
 				AND = {
 					solar_system = {
 					has_collected_system_trade_value >=50
@@ -263,7 +257,7 @@ d_local_production = {
 					}
 					planet_resource_compare = {
 						resource = energy
-						value <=-20
+						value >=-20
 						type = balance
 					}
 				}
@@ -274,7 +268,7 @@ d_local_production = {
 					}
 					planet_resource_compare = {
 						resource = energy
-						value <=-30
+						value >=-30
 						type = balance
 					}
 				}
@@ -285,7 +279,7 @@ d_local_production = {
 					}
 					planet_resource_compare = {
 						resource = energy
-						value <=-40
+						value >=-40
 						type = balance
 					}
 				}
@@ -295,7 +289,7 @@ d_local_production = {
 					}
 					planet_resource_compare = {
 						resource = energy
-						value <=-50
+						value >=-50
 						type = balance
 					}
 				}
@@ -303,6 +297,7 @@ d_local_production = {
 		}
 		planet_jobs_specialist_produces_mult = -0.05
 	}
+	
 	triggered_planet_modifier = {
 		potential = { 
 			has_owner = yes

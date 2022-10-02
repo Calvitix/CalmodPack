@@ -706,7 +706,7 @@ planet_event = {
 	hide_window = yes
 	
 	trigger = {
-		is_planet = event_target:landlocked_planet
+		is_same_value = event_target:landlocked_planet
 		has_observation_outpost = yes
 		NOR = {
 			has_anomaly = yes
@@ -1027,8 +1027,7 @@ event = {
 		exists = event_target:landlocked_planet
 		event_target:landlocked_planet = {
 			OR = {
-				is_planet_class = pc_nuked
-				is_planet_class = pc_toxic
+				has_planet_flag = primitives_nuked_themselves
 				AND = {
 					exists = owner
 					owner = { has_country_flag = early_space_age }
@@ -2720,8 +2719,8 @@ ship_event = {
 							is_star = yes
 							any_moon = {
 								OR = {
-									is_planet = FROM
-									any_moon = { is_planet = FROM }
+									is_same_value = FROM
+									any_moon = { is_same_value = FROM }
 								}
 							}
 						}
@@ -2731,8 +2730,8 @@ ship_event = {
 							is_star = yes
 							any_moon = {
 								OR = {
-									is_planet = FROM
-									any_moon = { is_planet = FROM }
+									is_same_value = FROM
+									any_moon = { is_same_value = FROM }
 								}
 							}
 						}
@@ -4045,3 +4044,270 @@ ship_event = {
 		}
 	}
 }
+
+### Latent Psionic Primitives
+ship_event = {
+	id = mzilli_anomaly_events.93
+	title = "mzilli_anomaly_events.93.name"
+	desc = "mzilli_anomaly_events.93.desc"
+	picture = GFX_evt_hive_mind
+	show_sound = event_mystic_reveal
+	location = FROM
+	
+	is_triggered_only = yes
+
+	option = {
+		name = REMARKABLE
+		owner = {
+			add_monthly_resource_mult = {
+				resource = society_research
+				value = @tier3researchreward
+				min = @tier3researchmin
+				max = @tier3researchmax
+			}
+		}
+	}
+	option = {
+		name =  mzilli_anomaly_events.93.psi
+		trigger = { leader = { has_trait = leader_trait_scientist_psionic } }
+		FROM = {
+			enable_special_project = {
+				name = "ASCEND_PRIMITIVES_PROJECT"
+				location = this
+				owner = root
+			}
+		}
+	}
+	option = {
+		name =  mzilli_anomaly_events.93.hive
+		trigger = { owner = { has_trait = trait_hive_mind } }
+		FROM = {
+			enable_special_project = {
+				name = "ABSORB_PRIMITIVES_PROJECT"
+				location = this
+				owner = root
+			}
+		}
+	}
+}
+
+# Psionic Transcendance
+ship_event = {
+	id = mzilli_anomaly_events.94
+	title = "mzilli_anomaly_events.94.name"
+	desc = "mzilli_anomaly_events.94.desc"
+	picture = GFX_evt_psionics
+	show_sound = event_mystic_reveal
+	location = FROMFROM
+	
+	is_triggered_only = yes
+
+	immediate = {
+		FROMFROM = {
+			owner = {
+				modify_species = {
+					species = this
+					remove_trait = trait_latent_psionic
+					add_trait = trait_psionic
+				}
+				random_owned_pop = { prev = { change_dominant_species = { species = prev } } } 
+				if = {
+					limit = { has_country_flag = stone_age }
+					remove_country_flag = stone_age
+				}
+				if = {
+					limit = { has_country_flag = bronze_age }
+					remove_country_flag = bronze_age
+				}
+				if = {
+					limit = { has_country_flag = iron_age }
+					remove_country_flag = iron_age
+				}
+				if = {
+					limit = { has_country_flag = late_medieval_age }
+					remove_country_flag = late_medieval_age
+				}
+				if = {
+					limit = { has_country_flag = renaissance_age }
+					remove_country_flag = renaissance_age
+				}
+				if = {
+					limit = { has_country_flag = steam_age }
+					remove_country_flag = steam_age
+				}
+				change_government = {
+					civics = {
+						civic = civic_increasing_urbanization
+						civic = civic_atmospheric_pollution
+					}
+				}
+				set_primitive_age_effect = { primitive_age = industrial_age }
+				change_country_flag = {
+					icon = {
+						category = "special"
+						file = "primitive.dds"
+					}
+					background= {
+						category = "backgrounds"
+						file = "new_dawn.dds"
+					}
+					colors={
+						"beige"
+						"yellow"
+						"null"
+						"null"
+					}
+				}
+				remove_country_flag = recently_advanced
+			}
+		}
+	}
+
+	option = {
+		name = mzilli_anomaly_events.94.a
+		owner = {
+			add_monthly_resource_mult = {
+				resource = society_research
+				value = @tier4researchreward
+				min = @tier4researchmin
+				max = @tier4researchmax
+			}
+		}
+		custom_tooltip = mzilli_anomaly_events.94.tooltip
+	}
+}
+
+# Eaten by the Shroud
+ship_event = {
+	id = mzilli_anomaly_events.95
+	title = "mzilli_anomaly_events.95.name"
+	desc = "mzilli_anomaly_events.95.desc"
+	picture = GFX_evt_zro_3
+	show_sound = event_mystic_reveal
+	location = FROMFROM
+	
+	is_triggered_only = yes
+
+	immediate = {
+		FROMFROM = {
+			destroy_colony = yes
+			change_pc = pc_shrouded
+		}
+	}
+
+	option = {
+		name = OOPS
+		custom_tooltip = mzilli_anomaly_events.95.tooltip
+		hidden_effect = { clear_global_event_target = lost_to_shroud_species }
+	}
+}
+
+# Assimilated
+ship_event = {
+	id = mzilli_anomaly_events.96
+	title = "mzilli_anomaly_events.96.name"
+	desc = "mzilli_anomaly_events.96.desc"
+	picture = GFX_evt_conclave
+	show_sound = event_mystic_reveal
+	location = FROMFROM
+	
+	is_triggered_only = yes
+
+	immediate = {
+		FROMFROM = {
+			set_owner = root.owner
+			random_pop = {
+				species = {
+					set_citizenship_type = {
+						country = root.owner
+						type = citizenship_full
+						cooldown = no
+					}
+				}
+			}
+		}
+	}
+
+	option = {
+		name = mzilli_anomaly_events.96.a
+		custom_tooltip = mzilli_anomaly_events.96.tooltip
+	}
+}
+
+# Devouring Swarm
+ship_event = {
+	id = mzilli_anomaly_events.97
+	title = "mzilli_anomaly_events.97.name"
+	desc = "mzilli_anomaly_events.97.desc"
+	picture = GFX_evt_progenitor_throne
+	show_sound = event_mystic_reveal
+	location = FROMFROM
+	
+	is_triggered_only = yes
+
+	immediate = {
+		FROMFROM = {
+			owner = { random_owned_pop = { species = { save_global_event_target_as = new_swarm_species } } }
+			create_country = {
+				name = random
+				adjective = random
+				type = default
+				name_list = HIVE2
+				ship_prefix = ""
+				authority = auth_hive_mind
+				civics = {
+					civic = civic_hive_devouring_swarm
+					civic = civic_hive_subsumed_will
+				}
+				species = event_target:new_swarm_species
+				flag = random
+				ethos = { ethic = ethic_gestalt_consciousness }
+				effect = {
+					copy_techs_from = { target = root.owner }
+					establish_communications = root.owner
+				}
+			}
+			set_owner = last_created_country
+			generate_start_buildings_and_districts = yes
+			solar_system = {
+				if = {
+					limit = { exists = starbase }
+					starbase = { destroy_ship = this }
+				}
+			}
+		}
+	}
+
+	option = {
+		name = OOPS
+		custom_tooltip = mzilli_anomaly_events.97.tooltip
+	}
+}
+
+### To Whatever End
+#ship_event = {
+#	id = mzilli_anomaly_events.93
+#	title = "mzilli_anomaly_events.93.name"
+#	desc = "mzilli_anomaly_events.93.desc"
+#	picture = GFX_evt_ground_combat
+#	show_sound = event_ground_battle
+#	location = FROM
+#	
+#	is_triggered_only = yes
+#
+#	immediate = {
+#		FROM = {
+#			add_modifier = { modifier = mzilli_robot_war_modifier }
+#			planet_event = {  # 2-3 years
+#				id = mzilli_anomaly_events.94
+#				days = 720
+#				random = 360
+#			}
+#		}
+#	}
+#
+#	option = {
+#		name = FASCINATING
+#		custom_tooltip = mzilli_anomaly_events.93.tooltip
+#	}
+#}

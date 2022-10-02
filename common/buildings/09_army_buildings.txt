@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.4.4  21.06.2022
+# Calvitix Check 3.5  22.09.2022
 #
 # Merge with Starnet AI 30.10.2021
 # Merge with Mem_planetary
@@ -16,17 +16,38 @@ building_military_academy = {
 	category = army
 	
 	potential = {
-		buildings_simple_allow = yes
 		exists = owner
 		owner = { NOT = { has_valid_civic = civic_reanimated_armies } }
 	}
 	
+	allow = {
+		if = {
+			limit = {
+				exists = owner
+				owner = { is_ai = yes }
+			}
+			OR = {
+				has_building = building_stronghold
+				has_building = building_fortress
+			}
+		}
+	}
+
 	destroy_trigger = {
 		exists = owner
 		owner = {
 			OR = {
 				#is_ai = yes  #CALVITIX not destroy by AI
 				has_valid_civic = civic_reanimated_armies
+				AND = {
+					is_ai = yes
+					prev = {
+						NOR = {
+							has_building = building_stronghold
+							has_building = building_fortress
+						}
+					}
+				}
 			}
 		}
 	}
@@ -103,7 +124,6 @@ building_dread_encampment = {
 	category = army
 	
 	potential = {
-		buildings_simple_allow = yes
 		exists = owner
 		owner = { has_valid_civic = civic_reanimated_armies }
 	}
@@ -117,11 +137,11 @@ building_dread_encampment = {
 	}
 	
 	army_modifier = {
-		army_starting_experience_add = 100 #3.1.1
+		army_starting_experience_add = 100
 	}
 	
 	planet_modifier = {
-		job_necromancer_add = 2 #3.1.1
+		job_necromancer_add = 2
 	}
 
 	resources = {
@@ -147,6 +167,7 @@ building_stronghold = {
 	position_priority = 100
 
 	category = army
+	exempt_from_ai_planet_specialization = no
 	
 	potential = {
 		#buildings_simple_allow = yes

@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.4.2  13.05.2022
+# Calvitix Check 3.5 22.09.2022
 #
 # Merge with STARNET AI    26.06.2022
 #
@@ -22,7 +22,7 @@ volatile_motes_expenditure_planets = {
 		always = yes
 	}
 
-	fraction = {
+	weight = {
 		weight = 0.2
 	}
 }
@@ -36,12 +36,12 @@ volatile_motes_expenditure_ships = {
 		always = yes
 	}
 
-	fraction = {
+	weight = {
 		weight = 1
 	}
 	
 #Starnet AI
-	static_min = {
+	desired_min = {
 		base = 50
 	}	
 ###
@@ -56,7 +56,7 @@ volatile_motes_expenditure_upgrade = {
 		always = yes
 	}
 
-	fraction = {
+	weight = {
 		base = 0.1
 	}
 }
@@ -70,8 +70,48 @@ volatile_motes_expenditure_trade = {
 		always = yes
 	}
 
-	fraction = {
+	weight = {
+		weight = 0.2 #0.1
+	}
+}
+
+volatile_motes_expenditure_starbases = {
+	resource = volatile_motes
+	type = expenditure
+	category = starbases
+
+	potential = {
+		any_owned_nonprimary_starbase = {
+			has_starbase_size >= orbital_ring_tier_2
+			exists = planet
+		}
+	}
+
+	weight = {
 		weight = 0.2
+
+		modifier = {
+			factor = 0
+			NOT = {
+				any_owned_nonprimary_starbase = {
+					exists = planet
+					OR = {
+						AND = {
+							has_starbase_size = orbital_ring_tier_2
+							count_starbase_buildings = {
+								count = 0
+							}
+						}
+						AND = {
+							has_starbase_size = orbital_ring_tier_3
+							count_starbase_buildings = {
+								count < 2
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 }
 
@@ -84,10 +124,10 @@ volatile_motes_expenditure_planets = {
 		always = yes
 	}
 	
-	fraction = {
+	weight = {
 		weight = 0.5
 	}	
-	static_min = {
+	desired_min = {
 		base = 500
 	}
 }
@@ -102,7 +142,7 @@ volatile_motes_expenditure_planets = {
 #		always = yes
 #	}
 #	
-#	fraction = {
+#	weight = {
 		#weight = 1
 	#}	
 #}
@@ -116,7 +156,7 @@ volatile_motes_upgrade_ships = {
 		always = yes
 	}
 	
-	fraction = {
+	weight = {
 		weight = 1
 	}	
 }
@@ -132,7 +172,7 @@ volatile_motes_expenditure_edicts = {
 		}
 	}
 	
-	fraction = {
+	weight = {
 		weight = 1
 	}	
 }
@@ -148,7 +188,7 @@ volatile_motes_expenditure_rareedicts = {
 		}
 	}
 	
-	fraction = {
+	weight = {
 		weight = 1
 	}	
 }
@@ -164,10 +204,10 @@ volatile_motes_expenditure_shipedicts = {
 		}
 	}
 	
-	fraction = {
+	weight = {
 		weight = 1
 	}	
-	static_min = {
+	desired_min = {
 		base = 0
 		modifier = {
 			add = 1000
@@ -187,7 +227,7 @@ volatile_motes_upkeep_planets = {
 		always = yes
 	}
 
-	fraction = {
+	weight = {
 		weight = 0.9
 	}
 }
@@ -201,7 +241,7 @@ volatile_motes_upkeep_ships = {
 		always = yes
 	}
 
-	fraction = {
+	weight = {
 		weight = 0.1
 	}
 }
@@ -215,7 +255,7 @@ volatile_motes_upkeep_edicts = {
 		always = yes
 	}
 
-	fraction = {
+	weight = {
 		base = 0.25
 	}
 }
@@ -230,7 +270,24 @@ volatile_motes_upkeep_hyper_relays = {
 		str_ai_should_build_megastructures = yes
 	}
 
-	fraction = {
+	weight = {
+		weight = 0.1
+	}
+}
+
+volatile_motes_upkeep_starbases = {
+	resource = volatile_motes
+	type = upkeep
+	category = starbases
+
+	potential = {
+		any_owned_nonprimary_starbase = {
+			has_starbase_size >= orbital_ring_tier_2
+			exists = planet
+		}
+	}
+
+	weight = {
 		weight = 0.1
 	}
 }

@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.3.1  23.02.2022
+# Calvitix Check 3.5  22.09.2022
 #
 # Merge with Arisphaos Unofficial patch
 # Merge with Expanded Stellaris Ascension Perks 19.12.2021
@@ -14,6 +14,7 @@ buffer = {
 
 country = {
 	hidden = yes
+	use_for_ai_budget = yes
 	generate_mult_modifiers = {
 		produces
 		cost
@@ -22,6 +23,8 @@ country = {
 	generate_add_modifiers = {
 		produces
 	}
+	#modifier category: economic_unit is fine
+	
 }
 
 # Base income of country
@@ -33,16 +36,18 @@ country_base = {
     generate_mult_modifiers = {
 		produces
 	}
+	modifier_category = country	
 }
 
 trade = {
+	use_for_ai_budget = yes
 }
 
 trade_routes = {
 	parent = trade
 }
 
-situations = { #Ori3.3b
+situations = {
 	parent = country
 }
 
@@ -54,16 +59,35 @@ resolutions = {
 edicts = {
 	use_for_ai_budget = yes
 	parent = country
+	ai_use_parent_for_resources_upkeep = {
+		energy
+		food
+		minerals
+	}
 	generate_mult_modifiers = {
+		produces 
 		cost
 		upkeep
 	}
+	generate_add_modifiers = {
+		produces
+		cost
+		upkeep
+	}
+	modifier_category = country
 }
 
 rare_edicts = {
 	use_for_ai_budget = no
 	parent = edicts
-	generate_mult_modifiers = { #Ori3.3b removed
+	
+	generate_mult_modifiers = {
+		produces 
+		cost
+	}
+
+	generate_add_modifiers = {
+		produces
 		cost
 	}
 }
@@ -76,7 +100,13 @@ ship_edicts = {
 campaigns = {
 	use_for_ai_budget = no
 	parent = edicts
-	generate_mult_modifiers = { #Ori3.3b removed
+	generate_mult_modifiers = {
+		produces 
+		cost
+	}
+
+	generate_add_modifiers = {
+		produces
 		cost
 	}
 }
@@ -84,7 +114,13 @@ campaigns = {
 decisions = {
 	use_for_ai_budget = yes
 	parent = country
-	 generate_mult_modifiers = { #Ori3.3b removed
+    generate_mult_modifiers = {
+		produces 
+		cost
+	}
+
+	generate_add_modifiers = {
+		produces
 		cost
 	}
 }
@@ -106,6 +142,7 @@ megastructures = {
 		produces
 		upkeep
 	}
+	modifier_category = megastructure
 }
 
 megastructures_habitat = {
@@ -121,6 +158,7 @@ megastructures_habitat = {
 		produces
 		upkeep
 	}
+	modifier_category = megastructure
 }
 
 megastructures_hyper_relay = {
@@ -133,6 +171,7 @@ megastructures_hyper_relay = {
 	generate_add_modifiers = {
 		upkeep
 	}
+	modifier_category = megastructure
 }
 
 ships = {
@@ -152,6 +191,7 @@ ships = {
 	}
 
 	parent = country
+	modifier_category = ship
 
 	triggered_cost_modifier = {
 		key = starbase_shipyard_build
@@ -345,7 +385,7 @@ ships = {
 	}
 
 	triggered_cost_modifier = {
-		key = shipsize_military_station_small #ship only in 3.4.4 ?
+		key = ship_military_station_small
 		use_parent_icon = yes
 		modifier_types = {
 			mult
@@ -762,6 +802,7 @@ colonies = {
 	ai_use_parent_for_resources_upkeep = {
 		energy
 	}
+	modifier_category = ship
 
 	triggered_cost_modifier = {
 		key = ship_colonizer
@@ -860,6 +901,7 @@ stations = {
 	}
 
 	parent = country
+	modifier_category = deposit #it applies to the planet
 }
 
 station_gatherers = {
@@ -875,6 +917,7 @@ station_gatherers = {
 		cost
 		upkeep
 	}
+	modifier_category = deposit #it applies to the planet
 }
 
 station_researchers = {
@@ -890,6 +933,7 @@ station_researchers = {
 		cost
 		upkeep
 	}
+	modifier_category = deposit #it applies to the planet
 }
 
 station_observers = {
@@ -935,10 +979,12 @@ starbases = {
 	}
 
 	parent = country
+	modifier_category = starbase
 }
 
 starbase_stations = {
 	parent = starbases
+	modifier_category = starbase
 
 	triggered_cost_modifier = {
 		key = starbase_outpost
@@ -1000,6 +1046,7 @@ starbase_constructions = {
 		upkeep
 		produces
 	}
+	modifier_category = starbase
 }
 
 starbase_buildings = {
@@ -1015,6 +1062,7 @@ starbase_buildings = {
 		upkeep
 		produces
 	}
+	modifier_category = starbase
 }
 
 starbase_modules = {
@@ -1030,6 +1078,7 @@ starbase_modules = {
 		upkeep
 		produces
 	}
+	modifier_category = starbase
 }
 
 terraforming = {
@@ -1039,6 +1088,7 @@ terraforming = {
 	generate_mult_modifiers = {
 		cost
 	}
+	modifier_category = planet
 }
 
 terraforming_ocean = {
@@ -1047,6 +1097,7 @@ terraforming_ocean = {
 	generate_mult_modifiers = {
 		cost
 	}
+	modifier_category = planet
 }
 
 planets = {
@@ -1080,6 +1131,7 @@ planet_structures = {
 		upkeep
 		produces
 	}
+	modifier_category = planet
 }
 
 planet_buildings = {
@@ -1095,6 +1147,7 @@ planet_buildings = {
 		upkeep
 		produces
 	}
+	modifier_category = planet
 }
 
 planet_buildings_strongholds = {
@@ -1124,6 +1177,7 @@ planet_branch_offices = {
 		upkeep
 		produces
 	}
+	modifier_category = planet
 }
 
 planet_buildings_hab_capital = {
@@ -1132,6 +1186,7 @@ planet_buildings_hab_capital = {
 	generate_mult_modifiers = {
 		upkeep
 	}
+	modifier_category = planet
 }
 
 planet_branch_office_buildings = {
@@ -1166,6 +1221,7 @@ planet_districts = {
 		upkeep
 		produces
 	}
+	modifier_category = planet
 }
 
 planet_districts_cities = {
@@ -1368,6 +1424,10 @@ planet_districts_hab_leisure = {
 		upkeep
 		produces
 	}
+}
+
+planet_districts_orders_demesne = {
+	parent = planet_districts
 }
 
 planet_jobs = {
@@ -1875,6 +1935,7 @@ planet_jobs_productive = { #this should contain all categories that primarily pr
 		produces
 		upkeep
 	}
+	modifier_category = pop
 }
 
 planet_bio_trophies = {
@@ -1887,6 +1948,7 @@ planet_bio_trophies = {
 		produces
 		upkeep
 	}
+	modifier_category = pop
 }
 
 planet_pop_assemblers = {
@@ -1899,6 +1961,7 @@ planet_pop_assemblers = {
 		produces
 		upkeep
 	}
+	modifier_category = pop
 }
 
 planet_farmers = {
@@ -1911,6 +1974,7 @@ planet_farmers = {
 		produces
 		upkeep
 	}
+	modifier_category = pop
 }
 
 planet_miners = {
@@ -1924,6 +1988,7 @@ planet_miners = {
 		produces
 		upkeep
 	}
+	modifier_category = pop
 }
 
 planet_sr_miners = { #added because we don't want miners_minerals_produces_add to apply to these
@@ -1934,6 +1999,7 @@ planet_sr_miners = { #added because we don't want miners_minerals_produces_add t
 	generate_mult_modifiers = {
 		produces
 	}
+	modifier_category = pop
 }
 planet_livestock = {
 	parent = planet_jobs_productive
@@ -1945,6 +2011,7 @@ planet_livestock = {
 		produces
 		upkeep
 	}
+	modifier_category = pop
 }
 
 planet_technician = {
@@ -1957,6 +2024,7 @@ planet_technician = {
 		produces
 		upkeep
 	}
+	modifier_category = pop
 }
 
 planet_politicians = { #Ori3.3b
@@ -2010,6 +2078,7 @@ planet_administrators = { #Ori3.3, administrators replace bureaucrats
 		produces
 		upkeep
 	}
+	modifier_category = pop
 }
 
 planet_executives = {
@@ -2022,6 +2091,7 @@ planet_executives = {
 		produces
 		upkeep
 	}
+	modifier_category = pop
 }
 
 planet_managers = {
@@ -2034,6 +2104,7 @@ planet_managers = {
 		produces
 		upkeep
 	}
+	modifier_category = pop
 }
 
 planet_researchers = {
@@ -2047,6 +2118,7 @@ planet_researchers = {
 		produces
 		upkeep
 	}
+	modifier_category = pop
 }
 
 planet_metallurgists = {
@@ -2060,10 +2132,11 @@ planet_metallurgists = {
 		produces
 		upkeep
 	}
+	modifier_category = pop
 }
 
 planet_culture_workers = { #Ori3.3, not used anymore
-	parent = planet_jobs_productive
+	parent = planet_administrators
 	generate_add_modifiers = {
 		produces			### Added in EST-ESAP ###
         upkeep				### Added in EST-ESAP ###
@@ -2074,13 +2147,13 @@ planet_culture_workers = { #Ori3.3, not used anymore
 }
 
 planet_evaluators = {
-	parent = planet_jobs_productive
+	parent = planet_administrators
 	generate_mult_modifiers = {
 	}
 }
 
 planet_synapse_drones = {
-	parent = planet_jobs_productive
+	parent = planet_administrators
 	generate_add_modifiers = {
 		produces			### Added in EST-ESAP ###
         upkeep				### Added in EST-ESAP ###
@@ -2147,6 +2220,12 @@ planet_soldiers = {
 		produces
 		upkeep
 	}
+	modifier_category = pop
+	
+}
+
+planet_squires = {
+	parent = planet_jobs
 }
 
 planet_necromancers = {
@@ -2159,6 +2238,7 @@ planet_necromancers = {
 		produces
 		upkeep
 	}
+	modifier_category = pop	
 }
 
 planet_priests = {
@@ -2171,6 +2251,7 @@ planet_priests = {
 		produces
 		upkeep
 	}
+	modifier_category = pop
 }
 
 planet_enforcers = {
@@ -2183,6 +2264,7 @@ planet_enforcers = {
 		produces
 		upkeep
 	}
+	modifier_category = pop
 }
 
 planet_telepaths = {
@@ -2195,6 +2277,7 @@ planet_telepaths = {
 		produces
 		upkeep
 	}
+	modifier_category = pop
 }
 
 planet_doctors = {
@@ -2219,6 +2302,7 @@ planet_refiners = {
 		produces
 		upkeep
 	}
+	modifier_category = pop
 }
 
 planet_translucers = {
@@ -2231,6 +2315,7 @@ planet_translucers = {
 		produces
 		upkeep
 	}
+	modifier_category = pop
 }
 
 planet_chemists = {
@@ -2243,6 +2328,7 @@ planet_chemists = {
 		produces
 		upkeep
 	}
+	modifier_category = pop
 }
 
 planet_artisans = {
@@ -2256,6 +2342,30 @@ planet_artisans = {
 		produces
 		upkeep
 	}
+	modifier_category = pop
+}
+
+planet_bath_attendants = {
+	icon = "job_bath_attendant"
+	parent = planet_jobs
+}
+
+planet_bath_attendants_hive = {
+	icon = "job_bath_attendant"
+	parent = planet_jobs
+}
+
+planet_bath_attendants_machine = {
+	icon = "job_bath_attendant"
+	parent = planet_jobs
+}
+
+#DO NOT ASSIGN A PARENT TO THIS.
+#It is a special hack. The normal job modifiers apply via knights_unity/research_output_modifier script values in the jobs
+knights_independent_category = {
+	generate_mult_modifiers = {
+		produces
+	}
 }
 
 planet_pops = {
@@ -2263,6 +2373,7 @@ planet_pops = {
 	generate_mult_modifiers = {
 		upkeep
 	}
+	modifier_category = pop
 
 	triggered_upkeep_modifier = {
 		key = planet_pops_robotics
@@ -2307,6 +2418,8 @@ unemployment_resources = {
 	generate_mult_modifiers = {
 		upkeep
 	}
+	modifier_category = pop
+	
 }
 
 pop_category_precursor = {
@@ -2367,6 +2480,7 @@ pop_category_bio_trophy = {
         produces
 		upkeep
 	}
+	modifier_category = pop
 }
 
 pop_category_slave = {
@@ -2379,6 +2493,7 @@ pop_category_slave = {
 		produces
 		upkeep
 	}
+	modifier_category = pop
 }
 
 pop_category_robot = {
@@ -2415,6 +2530,7 @@ pop_category_workers = {
 		produces
 		upkeep
 	}
+	modifier_category = pop
 }
 
 pop_category_specialists = {
@@ -2427,6 +2543,7 @@ pop_category_specialists = {
 		produces
 		upkeep
 	}
+	modifier_category = pop
 }
 
 pop_category_rulers = {
@@ -2439,6 +2556,7 @@ pop_category_rulers = {
 		produces
 		upkeep
 	}
+	modifier_category = pop
 }
 
 pop_category_assimilation = {
@@ -2491,6 +2609,7 @@ deposit_blockers = {
 	generate_mult_modifiers = {
 		cost
 	}
+	modifier_category = deposit
 
 	ai_use_parent_for_resources_upkeep = {
 		energy
@@ -2503,6 +2622,7 @@ deposit_blockers_natural = {
 	generate_add_modifiers = {
 		produces
 	}
+	modifier_category = deposit
 
 	parent = deposit_blockers
 }
@@ -2517,6 +2637,7 @@ armies = {
 		cost
 		upkeep
 	}
+	modifier_category = army
 
 	ai_use_parent_for_resources_upkeep = {
 		energy
@@ -2535,6 +2656,7 @@ leaders = {
 		cost
 		upkeep
 	}
+	modifier_category = leader
 
 	ai_use_parent_for_resources_upkeep = {
 		energy
@@ -2599,6 +2721,7 @@ diplomacy = {
 		produces
 		upkeep
 	}
+	modifier_category = country
 }
 
 # Country wide modifier collection
@@ -2626,6 +2749,7 @@ country_monuments = {
 	generate_add_modifiers = {
 		produces
 	}
+	modifier_category = country
 }
 
 country_ambition = {
@@ -2633,6 +2757,7 @@ country_ambition = {
 	generate_add_modifiers = {
 		produces
 	}
+	modifier_category = country
 }
 
 country_federation_perks = {
@@ -2640,6 +2765,7 @@ country_federation_perks = {
 	generate_add_modifiers = {
 		produces
 	}
+	modifier_category = country
 }
 
 country_civics = {
@@ -2648,6 +2774,7 @@ country_civics = {
 		upkeep
 		produces
 	}
+	modifier_category = country
 }
 
 country_ai_uprising = {
@@ -2655,6 +2782,7 @@ country_ai_uprising = {
 	generate_add_modifiers = {
 		produces
 	}
+	modifier_category = country
 }
 
 country_covenant = {
@@ -2662,6 +2790,7 @@ country_covenant = {
 	generate_add_modifiers = {
 		produces
 	}
+	modifier_category = country
 }
 
 country_dessanu = {
@@ -2669,6 +2798,7 @@ country_dessanu = {
 	generate_add_modifiers = {
 		produces
 	}
+	modifier_category = country
 }
 
 country_extended_payout = {
@@ -2676,6 +2806,7 @@ country_extended_payout = {
 	generate_add_modifiers = {
 		produces
 	}
+	modifier_category = country
 }
 
 country_shoulders = {
@@ -2683,6 +2814,7 @@ country_shoulders = {
 	generate_add_modifiers = {
 		produces
 	}
+	modifier_category = country
 }
 
 country_galactic_standard = {
@@ -2690,6 +2822,7 @@ country_galactic_standard = {
 	generate_add_modifiers = {
 		produces
 	}
+	modifier_category = country
 }
 
 country_concessions = {
@@ -2697,6 +2830,7 @@ country_concessions = {
 	generate_add_modifiers = {
 		produces
 	}
+	modifier_category = country
 }
 
 country_first_contact = {
@@ -2704,6 +2838,7 @@ country_first_contact = {
 	generate_add_modifiers = {
 		produces
 	}
+	modifier_category = country
 }
 
 country_custodian = {
@@ -2711,6 +2846,7 @@ country_custodian = {
 	generate_add_modifiers = {
 		produces
 	}
+	modifier_category = country
 }
 
 country_tech = {
@@ -2718,6 +2854,7 @@ country_tech = {
 	generate_add_modifiers = {
 		produces
 	}
+	modifier_category = country
 }
 
 country_traditions = {
@@ -2725,6 +2862,7 @@ country_traditions = {
 	generate_add_modifiers = {
 		produces
 	}
+	modifier_category = country
 }
 
 country_ruler = {
@@ -2732,6 +2870,7 @@ country_ruler = {
 	generate_add_modifiers = {
 		produces
 	}
+	modifier_category = country
 }
 
 country_ethic = {
@@ -2739,6 +2878,7 @@ country_ethic = {
 	generate_add_modifiers = {
 		produces
 	}
+	modifier_category = country
 }
 
 country_first_league_homeworld = {
@@ -2746,6 +2886,7 @@ country_first_league_homeworld = {
 	generate_add_modifiers = {
 		produces
 	}
+	modifier_category = country
 }
 
 country_power_projection = {
@@ -2756,6 +2897,7 @@ country_power_projection = {
 	generate_mult_modifiers = {
 		produces
 	}
+	modifier_category = country
 }
 
 pop_factions = {
@@ -2767,6 +2909,8 @@ pop_factions = {
 	generate_add_modifiers = {
 		produces
 	}
+	modifier_category = country #pop factions category currently unused
+	
 }
 
 subjects = {
@@ -2778,6 +2922,7 @@ federation = {
 	generate_add_modifiers = {
 		produces
 	}
+	modifier_category = country
 }
 
 rivalries = {
@@ -2851,6 +2996,7 @@ monthly_trades = {
 	generate_mult_modifiers = {
 		produces
 	}
+	modifier_category = country	
 }
 
 claims = {
@@ -2934,10 +3080,12 @@ operations = {
 		upkeep
 	}
 	parent = country
+	modifier_category = espionage
 }
 
 country_situations = {
 	generate_add_modifiers = {
 		produces
 	}
+	modifier_category = country
 }

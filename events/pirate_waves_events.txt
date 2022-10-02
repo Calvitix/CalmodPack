@@ -13,6 +13,7 @@ namespace = pirate_waves
 #################################################
 
 # TODO: Maybe convert global flags to global country flags for performance reason!?
+# MENU
 country_event = {
 	id = pirate_waves.0
 	title = pirate_waves.0.title
@@ -1238,7 +1239,7 @@ country_event = {
 						has_star_flag = hostile_system
 						any_fleet_in_system = {
 							exists = owner
-							owner = { is_pirate_country = yes }
+							owner = { is_pirate = yes }
 							}
 						}
 					any_system_planet = { is_pirate_waves_base_planet = yes }
@@ -1254,7 +1255,7 @@ country_event = {
 							has_star_flag = hostile_system
 						any_fleet_in_system = {
 								exists = owner
-							owner = { is_pirate_country = yes }
+							owner = { is_pirate = yes }
 								}
 							}
 					any_system_planet = { is_pirate_waves_base_planet = yes }
@@ -1275,7 +1276,7 @@ country_event = {
 							has_star_flag = hostile_system
 						any_fleet_in_system = {
 								exists = owner
-							owner = { is_pirate_country = yes }
+							owner = { is_pirate = yes }
 								}
 							}
 					any_system_planet = { is_pirate_waves_base_planet = yes }
@@ -1290,9 +1291,9 @@ country_event = {
 	}
 }
 
-# LEGACY: merged in pirate_waves.1
+# LEGACY: # on_monthly_pulse merged in pirate_waves.1
 # Create Pirate Countries (HIDDEN)
-# on_monthly_pulse
+# # No scope: on_game_start, on_single_player_save_game_load
 # event = {
 # 	id = pirate_waves.5
 # 	hide_window = yes
@@ -1305,6 +1306,25 @@ country_event = {
 # 	}
 # 	immediate = { create_pirate_waves_countries = yes }
 # }
+## Auto activate Pirate Waves.
+# on_single_player_save_game_load
+event = {
+	id = pirate_waves.5
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		NOR = {
+			has_global_flag = pirate_waves_active
+			exists = event_target:pirate_waves_country
+		}
+	}
+	immediate = {
+		random_playable_country = {
+			limit = { is_ai = no is_pirate_waves_player = no }
+			country_event = { id = pirate_waves.0 }
+		}
+	}
+}
 
 # Manage Pirate Stations of this country (HIDDEN)
 # Called by pirate_waves.1 (on_monthly_pulse)
@@ -1393,7 +1413,7 @@ country_event = {
 	is_triggered_only = yes
 	trigger = {
 		OR = {
-			is_pirate_country = yes
+			is_pirate = yes
 			is_country_type = awakened_marauders
 			is_country_type = marauder_raiders
 		}
@@ -1485,7 +1505,7 @@ country_event = {
 			limit = {
 				from = {
 					OR = {
-						is_pirate_country = yes
+						is_pirate = yes
 						is_country_type = awakened_marauders
 						is_country_type = marauder_raiders
 					}
@@ -1525,7 +1545,7 @@ country_event = {
 	is_triggered_only = yes
 	trigger = {
 		OR = {
-			is_pirate_country = yes
+			is_pirate = yes
 			is_country_type = awakened_marauders
 			is_country_type = marauder_raiders
 		}
@@ -1552,7 +1572,7 @@ country_event = {
 				NOT = {
 					from = {
 						OR = {
-							is_pirate_country = yes
+							is_pirate = yes
 							is_country_type = awakened_marauders
 							is_country_type = marauder_raiders
 						}
@@ -2456,7 +2476,7 @@ event = {
 							limit = {
 								exists = owner
 								OR = {
-									owner = { is_pirate_country = yes }
+									owner = { is_pirate = yes }
 									AND = {
 										is_mobile = no
 										owner = { merg_is_default_empire = yes }
@@ -2550,7 +2570,7 @@ event = {
 								limit = {
 									exists = owner
 									OR = {
-										owner = { is_pirate_country = yes }
+										owner = { is_pirate = yes }
 										AND = {
 											is_mobile = no
 											owner = { merg_is_default_empire = yes }

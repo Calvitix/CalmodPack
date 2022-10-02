@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.4.5
+# Calvitix Check 3.5   22.09.2022
 #
 # Merge with Arisphaos Unofficial patch
 # Merge with STARNET AI 21.05.2021
@@ -298,6 +298,8 @@ is_fe_cluster = {
 		is_in_cluster = fe3_cluster
 		is_in_cluster = fe4_cluster
 		is_in_cluster = fe_mach_cluster
+		is_in_cluster = scion_fe1_cluster
+		is_in_cluster = scion_fe2_cluster
 	}
 }
 
@@ -360,6 +362,10 @@ has_overlord_dlc = {
 	host_has_dlc = "Overlord"
 }
 
+has_toxoids = {
+	host_has_dlc = "Toxoids Species Pack"
+}
+
 uninhabitable_regular_planet = {
 	OR = {
 		is_planet_class = pc_molten
@@ -396,6 +402,7 @@ colonizable_planet = {
 		is_planet_class = pc_machine
 		is_planet_class = pc_machinetidallylocked
 		is_artificial = yes
+		is_pd_habitat = yes
 		habitable_planet = yes
 		is_planet_class = pc_irradiated
 	}
@@ -410,6 +417,15 @@ is_pd_necro_world = {
 
 habitable_planet = {
 	OR = {
+		habitable_planet_not_urban = yes
+		is_planet_class = pc_relic
+		is_planet_class = pc_city
+		is_pd_arcology = yes
+	}
+}
+
+habitable_planet_not_urban = {
+	OR = {
 		is_planet_class = pc_desert
 		is_planet_class = pc_tropical
 		is_planet_class = pc_arid
@@ -422,9 +438,9 @@ habitable_planet = {
 		is_planet_class = pc_gaia
 		is_planet_class = pc_hot_gaia
 		is_planet_class = pc_cold_gaia
+#PD
 		is_planet_class = pc_relic
 		is_planet_class = pc_city
-#PD
 		is_planet_class = pc_pdshroud
 		is_planet_class = pc_cascadian
 		is_planet_class = pc_desertislands
@@ -458,6 +474,7 @@ habitable_planet = {
 		is_planet_class = pc_sulfur
 		is_planet_class = pc_acid
 		is_planet_class = pc_methane
+		is_planet_class = pc_pd_hycean
 		is_planet_class = pc_geothermal
 		is_planet_class = pc_superhabitable
 		is_planet_class = pc_tidallylocked
@@ -490,6 +507,7 @@ habitable_planet = {
 		is_planet_class = pc_aquifer
 		is_planet_class = pc_coral
 		is_planet_class = pc_storm
+		is_planet_class = pc_pd_iceberg
 		is_planet_class = pc_rogue
 		is_planet_class = pc_cryoflora
 		is_planet_class = pc_lichen
@@ -498,6 +516,7 @@ habitable_planet = {
 		is_planet_class = pc_lanthanide
 		is_planet_class = pc_megaflora
 		is_planet_class = pc_megaflorahive
+		is_planet_class = pc_megaflorahivetl	
 		is_planet_class = pc_megafloratol
 		is_planet_class = pc_pdhive1
 		is_planet_class = pc_pdhive2
@@ -558,6 +577,7 @@ can_have_habitable_deposits = {
 		is_planet_class = pc_sulfur
 		is_planet_class = pc_acid
 		is_planet_class = pc_methane
+		is_planet_class = pc_pd_hycean
 		is_planet_class = pc_geothermal
 		is_planet_class = pc_superhabitable
 		is_planet_class = pc_irradiated
@@ -590,6 +610,7 @@ can_have_habitable_deposits = {
 		is_planet_class = pc_aquifer
 		is_planet_class = pc_coral
 		is_planet_class = pc_storm
+		is_planet_class = pc_pd_iceberg
 		is_planet_class = pc_rogue
 		is_planet_class = pc_cryoflora
 		is_planet_class = pc_lichen
@@ -598,10 +619,16 @@ can_have_habitable_deposits = {
 		is_planet_class = pc_lanthanide
 		is_planet_class = pc_megaflora
 		is_planet_class = pc_megaflorahive
+		is_planet_class = pc_megaflorahivetl	
 		is_planet_class = pc_megafloratol
 		is_planet_class = pc_aquatic
 		is_planet_class = pc_shrouded
-		#Added Calvitix
+		is_planet_class = pc_pd_toxic_hab
+		is_planet_class = pc_pd_hothouse_hab
+		is_planet_class = pc_pd_barren_cold_hab
+		is_planet_class = pc_pd_barren_hab
+		is_planet_class = pc_pd_frozen_hab
+		is_planet_class = pc_pd_molten_hab		#Added Calvitix
 		is_planet_class = pc_sterile  #NF Compatibility 
 		is_planet_class = pc_hollow  #NF Compatibility 
 	}
@@ -1374,10 +1401,12 @@ is_oligarchy = { #Power of few
 }
 
 is_democracy = { #Power of many
-	has_authority = auth_democratic
-	AND = {
-		has_authority = auth_corporate
-		is_egalitarian = yes
+	OR = {
+		has_authority = auth_democratic
+		AND = {
+			has_authority = auth_corporate
+			is_egalitarian = yes
+		}
 	}
 }
 
@@ -1578,6 +1607,7 @@ has_no_non_gate_megastructure = {
 	OR = {
 		has_any_megastructure = no
 		NOT = {
+			has_star_flag = ring_world_built
 			any_system_megastructure = { # exclude gateways
 				OR = {
 					is_megastructure_type = dyson_sphere_0
@@ -1673,7 +1703,6 @@ has_no_non_gate_megastructure = {
 				}
 			}
 		}
-		NOT = { has_star_flag = ring_world_built }
 	}
 }
 
@@ -1736,6 +1765,10 @@ has_distar = {
 	host_has_dlc = "Distant Stars Story Pack"
 }
 
+#########################################
+# Planetary body triggers (planet scope)
+#########################################
+
 is_wet = {
 	OR = {
 		has_climate = wet
@@ -1795,6 +1828,14 @@ is_dry = {
 		is_planet_class = pc_primal
 		is_planet_class = pc_tidallylocked
 		is_planet_class = pc_supercon
+	}
+}
+
+is_barren = {
+	OR = {
+		is_planet_class = pc_barren
+		is_planet_class = pc_barren_cold
+		is_planet_class = pc_asteroid
 	}
 }
 
@@ -1865,6 +1906,7 @@ is_pd_rare = {
 		is_planet_class = pc_aquifer
 		is_planet_class = pc_coral
 		is_planet_class = pc_storm
+		is_planet_class = pc_pd_iceberg
 		is_planet_class = pc_cryoflora
 		is_planet_class = pc_lichen
 		is_planet_class = pc_eyeball
@@ -1981,6 +2023,7 @@ is_pd_exotic = {
 		is_planet_class = pc_sulfur
 		is_planet_class = pc_acid
 		is_planet_class = pc_methane
+		is_planet_class = pc_pd_hycean
 		is_planet_class = pc_ash
 		is_planet_class = pc_rogue
 	}
@@ -2860,6 +2903,26 @@ aquatics_portrait = { #To establish default rooms and VO weights
 	}
 }
 
+toxoids_portrait = { #To establish default rooms and VO weights
+	OR = {
+		species_portrait = tox1
+		species_portrait = tox2
+		species_portrait = tox3
+		species_portrait = tox4
+		species_portrait = tox5
+		species_portrait = tox6
+		species_portrait = tox7
+		species_portrait = tox8
+		species_portrait = tox9
+		species_portrait = tox10
+		species_portrait = tox11
+		species_portrait = tox12
+		species_portrait = tox13
+		species_portrait = tox14
+		species_portrait = tox15
+	}
+}
+
 is_owner_ethic_pop_faction = {
 	switch = {
 		trigger = is_pop_faction_type
@@ -2953,6 +3016,7 @@ is_valid_drone_expansion_destination_system = {
 		has_star_flag = hostile_system
 		has_star_flag = guardian
 		has_star_flag = tiyanki_home_system
+		has_star_flag = tiyanki_graveyard_system
 		has_star_flag = amoeba_home_system
 		has_star_flag = lcluster
 		has_star_flag = sealed_system
@@ -2972,6 +3036,7 @@ is_valid_crystal_splitter_system = {
 		has_star_flag = hostile_system
 		has_star_flag = guardian
 		has_star_flag = tiyanki_home_system
+		has_star_flag = tiyanki_graveyard_system
 		has_star_flag = amoeba_home_system
 		has_star_flag = lcluster
 		has_star_flag = sealed_system
@@ -3030,7 +3095,21 @@ default_endgame_early_start_triggers = {
 
 valid_curators_intel_trade_target = {
 	is_country_type = default
-	NOT = { is_same_value = root }
+	NOR = {
+		is_same_value = root
+		AND = {
+			exists = event_target:curator_customer_1
+			is_same_value = event_target:curator_customer_1
+		}
+		AND = {
+			exists = event_target:curator_customer_2
+			is_same_value = event_target:curator_customer_2
+		}
+		AND = {
+			exists = event_target:curator_customer_3
+			is_same_value = event_target:curator_customer_3
+		}
+	}
 	root = {
 		has_communications = prev
 		NOR = {
@@ -3044,17 +3123,17 @@ valid_curators_intel_trade_target = {
 	OR = { # AI doesn't use Curators, but players can get protection against this by not using them
 		AND = {
 			is_ai = yes
-			has_communications = event_target:curators
+			has_communications = event_target:curator_enclave_country
 			OR = {
 				is_galactic_community_member = yes
 				any_system_within_border = {
 					any_fleet_in_system = {
-						is_owned_by = event_target:curators
+						is_owned_by = event_target:curator_enclave_country
 					}
 				}
 			}
 		}
-		event_target:curators = {
+		event_target:curator_enclave_country = {
 			trust = { 
 				who = prev
 				value >= 50
@@ -3154,6 +3233,7 @@ is_phototrophic = {
 		has_trait = trait_plantoid_phototrophic
 		has_trait = trait_plantoid_radiotrophic
 		has_trait = trait_harvested_radiotrophic
+		has_trait = trait_lithoid_radiotrophic
 	}
 }
 
@@ -3164,6 +3244,7 @@ has_phototrophic_energy_upkeep = {
 			OR = {
 			has_trait = trait_plantoid_radiotrophic
 				has_trait = trait_harvested_radiotrophic
+				has_trait = trait_lithoid_radiotrophic
 			}
 			NOT = { planet = { is_planet_class = pc_nuked } }
 			NOT = { planet = { is_planet_class = pc_irradiated } } #PD
@@ -3171,8 +3252,29 @@ has_phototrophic_energy_upkeep = {
 	}
 }
 
+has_budding_trait = {
+	OR = {
+		has_trait = trait_plantoid_budding
+		has_trait = trait_lithoid_budding
+	}
+}
+
+empire_has_good_habitability_on_tomb_worlds = {
+	OR = {
+		is_lithoid = yes
+		has_trait = trait_survivor
+		has_trait = trait_pc_nuked_preference
+		has_trait = trait_plantoid_radiotrophic
+		has_trait = trait_harvested_radiotrophic
+		has_trait = trait_lithoid_radiotrophic
+		has_trait = trait_cybernetic
+		has_trait = trait_mechanical
+		has_trait = trait_machine_unit
+	}
+}
+
 can_assemble_budding_pop = {
-	has_trait = trait_plantoid_budding
+	has_budding_trait = yes
 	planet = {
 		OR = {
 			NOT = { exists = assembling_species }
@@ -3180,7 +3282,7 @@ can_assemble_budding_pop = {
 				exists = assembling_species
 				assembling_species = {
 					OR = {
-						has_trait = trait_plantoid_budding
+						has_budding_trait = yes
 						is_robotic = yes
 					}
 				}
@@ -3425,6 +3527,17 @@ is_dragon_breeder_country = {
 	}
 }
 
+is_dragon = {
+	OR = {
+		is_ship_size = space_dragon_origin
+		is_ship_size = space_dragon_origin_baby
+		is_ship_size = nanite_space_dragon_baby
+		is_ship_size = space_dragon_red
+		is_ship_size = space_dragon_baby
+		is_ship_size = space_dragon_blue
+	}
+}
+
 values_others = {
 	OR = {
 		is_xenophile = yes
@@ -3544,6 +3657,13 @@ is_memorialist_empire = {
 	}
 }
 
+is_relentless_industrialist_empire = {
+	OR = {
+		has_valid_civic = civic_relentless_industrialists
+		has_valid_civic = civic_corporate_relentless_industrialists
+	}
+}
+
 uses_standard_ship_sizes = {
 	OR = {
 		is_country_type = default
@@ -3561,6 +3681,7 @@ is_organic_controllable_ship = {
 		is_ship_size = space_amoeba_centenarian
 		is_ship_size = large_ship_swarm #Brood-Queen relic
 		is_ship_size = small_ship_swarm #Brood-Queen relic
+		is_ship_size = large_ship_carrier_swarm #Brood-Queen relic
 		#Not currently controllable, but potentially valid:
 		# is_ship_size = large_ship_carrier_swarm
 		# is_ship_size = queen_swarm
@@ -3573,14 +3694,20 @@ is_organic_controllable_ship = {
 
 ai_should_build_habitats = {
 	is_country_type = default
-	is_at_war = no
+	OR = {
+		is_at_war = no
+		mid_game_years_passed > 0
+	}
 	has_technology = tech_habitat_1
 	if = {
 		limit = {
 			NOT = { has_origin = origin_void_dwellers } #VDs should build habitats even if there are other planets available
 		}
 		ai_colonize_plans <= 0
-		NOT = { has_trait = trait_aquatic }
+		OR = {
+			NOT = { has_trait = trait_aquatic }
+			has_ascension_perk = ap_hydrocentric
+		}
 	}
 	NOT = {
 		any_planet_within_border = {
@@ -3634,6 +3761,10 @@ has_any_generator_district_or_building = {
 		has_building = eb_energy2
 		has_building = eb_energy3
 	}
+}
+
+uses_habitat_capitals = {
+	uses_district_set = habitat
 }
 
 # Scope: Country
@@ -3754,6 +3885,15 @@ has_specialist_subject_leader_trait = {
 	}
 }
 
+has_toxic_baths = {
+		OR = {
+			has_valid_civic = civic_toxic_baths
+			has_valid_civic = civic_corporate_toxic_baths
+			has_valid_civic = civic_hive_toxic_baths
+			has_valid_civic = civic_machine_toxic_baths
+		}
+}
+
 is_human_species = {
 	OR = {
 		species_portrait = human
@@ -3771,6 +3911,72 @@ has_fallen_empire_subject_preset = {
 	}
 }
 
+is_overtuned = {
+	OR = {
+		has_trait = trait_spliced_adaptability
+		has_trait = trait_juiced_power
+		has_trait = trait_farm_hands
+		has_trait = trait_crack_miner
+		has_trait = trait_technical_skill
+		has_trait = trait_crafted_smiles
+		has_trait = trait_low_maintenance
+		has_trait = trait_artificial_intelligence
+		has_trait = trait_gene_mentorship
+		has_trait = trait_expressed_tradition
+		has_trait = trait_elevated_synapses
+		has_trait = trait_preplanned_growth
+		has_trait = trait_excessive_endurance
+	}
+}
+
+is_non_hostile_to_wraith = {
+	OR = {
+		is_country_type = nomad
+		is_country_type = dormant_marauders
+		is_country_type = ruined_marauders
+		is_country_type = awakened_marauders
+		is_country_type = enclave
+		is_country_type = tiyanki
+		is_country_type = tiyanki_garrison
+		is_country_type = amoeba
+		is_country_type = amoeba_borderless
+		is_country_type = amoeba_garrison
+		is_country_type = amoeba_faction
+		is_country_type = crystal
+		is_country_type = crystal_faction
+		is_country_type = drone
+		is_country_type = drone_faction
+		is_country_type = cloud
+		is_country_type = marauder_raiders
+		is_country_type = enigmatic_cache
+		is_country_type = vluur
+	}
+}
+
+can_remove_beneficial_traits = {
+	hidden_trigger = { exists = from }
+	from = {
+		has_technology = tech_genetic_resequencing
+	}
+}
+
+can_remove_overtuned_traits = {
+	hidden_trigger = { exists = from }
+	from = {
+		OR = {
+			has_technology = tech_genetic_resequencing
+			has_origin = origin_overtuned
+		}
+	}
+}
+
+is_scavenger = {
+	OR = {
+		has_valid_civic = civic_scavengers
+		has_valid_civic = civic_corporate_scavengers
+	}
+}
+
 ## PDiversity 
 has_phototrophic_energy_upkeep = {
 	OR = {
@@ -3779,6 +3985,7 @@ has_phototrophic_energy_upkeep = {
 			OR = {
 				has_trait = trait_plantoid_radiotrophic
 				has_trait = trait_harvested_radiotrophic
+				has_trait = trait_lithoid_radiotrophic
 				has_trait = trait_radiotrophic_mutants
 			}
 			NOT = { planet = { is_planet_class = pc_nuked } }
@@ -3811,20 +4018,16 @@ is_pd_planet_class_all = {
 	is_planet_class = pc_cold_gaia
 	is_planet_class = pc_coral
 	is_planet_class = pc_corpoarc
-	is_planet_class = pc_crucible
-	is_planet_class = pc_crystal
 	is_planet_class = pc_desertislands
 	is_planet_class = pc_duneforest
 	is_planet_class = pc_ecocity
 	is_planet_class = pc_eyeball
-	is_planet_class = pc_floating
 	is_planet_class = pc_fog
 	is_planet_class = pc_forest
 	is_planet_class = pc_frozen_desert
 	is_planet_class = pc_geothermal
 	is_planet_class = pc_glacial
 	is_planet_class = pc_glacio
-	is_planet_class = pc_graveyard
 	is_planet_class = pc_hadesert
 	is_planet_class = pc_hajungle
 	is_planet_class = pc_highland
@@ -3845,9 +4048,11 @@ is_pd_planet_class_all = {
 	is_planet_class = pc_megafloraforge
 	is_planet_class = pc_megaflorafort
 	is_planet_class = pc_megaflorahive
+		is_planet_class = pc_megaflorahivetl	
 	is_planet_class = pc_megafloratol
 	is_planet_class = pc_mesa
 	is_planet_class = pc_methane
+		is_planet_class = pc_pd_hycean
 	is_planet_class = pc_milarc
 	is_planet_class = pc_mud
 	is_planet_class = pc_mushroom
@@ -3885,6 +4090,7 @@ is_pd_planet_class_all = {
 	is_planet_class = pc_snow
 	is_planet_class = pc_steppe
 	is_planet_class = pc_storm
+		is_planet_class = pc_pd_iceberg
 	is_planet_class = pc_subarctic
 	is_planet_class = pc_sulfur
 	is_planet_class = pc_supercon
@@ -3919,6 +4125,7 @@ is_planetary_diversity_ringworld = {
 	OR = {
 		is_planet_class = pc_ashring
 		is_planet_class = pc_methanering
+		is_planet_class = pc_hyceanring
 		is_planet_class = pc_sulfurring
 		is_planet_class = pc_ammoniaring
 	}
@@ -4017,6 +4224,7 @@ is_pd_tundra = {
 is_pd_bad_exotic = {
 	OR = {
 		is_planet_class = pc_methane
+		is_planet_class = pc_pd_hycean
 		is_planet_class = pc_ash
 		is_planet_class = pc_ammonia
 		is_planet_class = pc_sulfur
@@ -4107,6 +4315,7 @@ is_phototrophic = {
 		has_trait = trait_plantoid_phototrophic
 		has_trait = trait_plantoid_radiotrophic
 		has_trait = trait_harvested_radiotrophic
+		has_trait = trait_lithoid_radiotrophic
 		has_trait = trait_radiotrophic_mutants
 	}
 }
@@ -4122,5 +4331,28 @@ has_phototrophic_energy_upkeep = {
 			}
 			NOT = { planet = { is_planet_class = pc_nuked } }
 		}
+	}
+}
+
+uses_habitat_capitals = {
+	OR = {
+		uses_district_set = habitat
+		uses_district_set = pdplanethab
+	}
+}
+
+empire_has_good_habitability_on_tomb_worlds = {
+	OR = {
+		is_lithoid = yes
+		has_trait = trait_survivor
+		has_trait = trait_pc_nuked_preference
+		has_trait = trait_pc_irradiated_preference
+		has_trait = trait_plantoid_radiotrophic
+		has_trait = trait_harvested_radiotrophic
+		has_trait = trait_lithoid_radiotrophic
+		has_trait = trait_cybernetic
+		has_trait = trait_mechanical
+		has_trait = trait_machine_unit
+		has_trait = trait_radiotrophic_mutants
 	}
 }

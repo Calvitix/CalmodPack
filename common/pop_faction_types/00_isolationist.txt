@@ -1,9 +1,9 @@
 # Original File
 #
-# Calvitix Check 3.4.4  21.06.2022
+# Calvitix Check 3.5.2  28.09.2022
 #
 # Merge with Banned  17.01.2022
-#
+# Merge with Viable Feudalism 28.09.2022
 #
 ##############################
 # Isolationist Faction
@@ -24,7 +24,11 @@ isolationist = {
 	}
 
 	is_potential = {
+		years_passed > 10
+		has_encountered_other_species = yes
 		is_faction_allowed = yes
+		NOT = { has_ethic = ethic_gestalt_consciousness }
+		NOT = { has_country_flag = suppress_vanilla_factions }
 		
 		NOT = { has_modifier = banned_xenophobe }																
 	}
@@ -158,7 +162,7 @@ isolationist = {
 			owner = {
 				any_relation = {
 					has_communications = root.owner
-					is_country_type = default
+					is_country_type_with_subjects = yes
 					NOT = { exists = overlord }
 				}
 			}
@@ -214,7 +218,15 @@ isolationist = {
 		
 		trigger = {
 			owner = {
-				has_federation = no
+				OR = {
+					AND = {
+						has_federation = yes
+						federation = {
+							has_federation_type = vf_ef_federation
+						}
+					}
+					has_federation = no
+				}
 			}
 		}
 	}
@@ -260,7 +272,7 @@ isolationist = {
 		unfulfilled_title = "ISOLATIONIST_FEW_NON_AGGRESSION1"
 		desc = "ISOLATIONIST_NON_AGGRESSION_DESC1"
 		
-		fulfilled_effect = 5
+		fulfilled_effect = 7
 		unfulfilled_effect = -0.001
 		
 		potential = {
@@ -281,20 +293,22 @@ isolationist = {
 		
 		trigger = {
 			owner = {
+				any_country = {
 					OR = {
-					num_non_aggression_pacts > 0
-					exists = associated_federation
+						has_non_aggression_pact = root.owner
+						has_association_status = root.owner
 					}
 				}
 			}
 		}
+	}
 
 	demand = {
 		title = "ISOLATIONIST_NON_AGGRESSION2"
 		unfulfilled_title = "ISOLATIONIST_FEW_NON_AGGRESSION2"
 		desc = "ISOLATIONIST_NON_AGGRESSION_DESC2"
 		
-		fulfilled_effect = 10
+		fulfilled_effect = 14
 		unfulfilled_effect = -0.001
 		
 		potential = {
@@ -342,7 +356,7 @@ isolationist = {
 		unfulfilled_title = "ISOLATIONIST_FEW_NON_AGGRESSION3"
 		desc = "ISOLATIONIST_NON_AGGRESSION_DESC3"
 		
-		fulfilled_effect = 15
+		fulfilled_effect = 21
 		unfulfilled_effect = -0.001
 		
 		potential = {
@@ -381,7 +395,7 @@ isolationist = {
 		unfulfilled_title = "ISOLATIONIST_NO_PEACE1"
 		desc = "ISOLATIONIST_PEACE_DESC1"
 		
-		fulfilled_effect = 5
+		fulfilled_effect = 10
 		unfulfilled_effect = -0.001
 		
 		potential = {
@@ -405,7 +419,7 @@ isolationist = {
 		unfulfilled_title = "ISOLATIONIST_NO_PEACE2"
 		desc = "ISOLATIONIST_PEACE_DESC2"
 		
-		fulfilled_effect = 10
+		fulfilled_effect = 15
 		unfulfilled_effect = -0.001
 		
 		potential = {
@@ -432,7 +446,7 @@ isolationist = {
 		unfulfilled_title = "ISOLATIONIST_NO_PEACE3"
 		desc = "ISOLATIONIST_PEACE_DESC3"
 		
-		fulfilled_effect = 15
+		fulfilled_effect = 20
 		unfulfilled_effect = -0.001
 		
 		potential = {
@@ -466,7 +480,7 @@ isolationist = {
 			exists = owner
 			owner = {
 				is_homicidal = no
-				is_country_type = default
+				is_country_type_with_subjects = yes
 				is_megacorp = no
 			}
 		}
@@ -528,7 +542,7 @@ isolationist = {
 			description = "EMBRACE_FACTION_DESC"
 			
 			cost = {
-				unity = 5000
+				influence = 500
 			}
 			
 			potential = {
@@ -536,7 +550,11 @@ isolationist = {
 				owner = {
 					OR = {
 						is_subject = no
-						NOT = { any_agreement = { agreement_preset = preset_dominion } }
+						NOT = {
+							any_agreement = {
+								agreement_preset = preset_dominion
+							}
+						}
 					}
 				}
 			}
@@ -576,7 +594,7 @@ isolationist = {
 						every_relation = {
 							limit = {
 								is_ai = no
-								is_country_type = default			
+								is_country_type_with_subjects = yes
 								has_communications = prev
 								has_intel_level = {
 									who = prev

@@ -28,46 +28,28 @@ wg_claim_subject = {
 		custom_tooltip = wg_independence_status_quo
 		hidden_effect = {
 			save_global_event_target_as = buffer_zone_loser
-			from = {
-				country_event = { id = veru.6210 days = 1 }
+			from = { country_event = { id = veru.6210 } }
 			}
 		}
-	}
 
 	on_accept = {
 		custom_tooltip = chosen_subject_text
 		hidden_effect = {
-			save_global_event_target_as = buffer_zone_winner
-			from = {
-				country_event = { id = veru.6200 days = 1 }
-			}
-		}
-	}
-
-	on_surrender = {
-		random_subject = {
-			limit = {
-				has_country_flag = chosen_border_subject@event_target:buffer_zone_winner
-			}
-			remove_country_flag = chosen_border_subject@event_target:buffer_zone_winner
-			set_subject_of = {
-				who = event_target:buffer_zone_winner
-				preset = preset_vassal
-			}
+			save_global_event_target_as = buffer_zone_transition
+			from = { country_event = { id = veru.6200 } }
 		}
 	}
 
 	on_wargoal_set = {
-		save_event_target_as = buffer_zone_mother
+		save_global_event_target_as = buffer_zone_mother
 		if = {
 			limit = { 
-				NOT = { exists = event_target:chosen_border_subject }
+				NOT = { any_country = { has_country_flag = chosen_border_subject_@event_target:buffer_zone_mother } }
+				# NOT = { exists = event_target:chosen_border_subject }
 			}
-			from = {
-				country_event = { id = veru.6000 }
+			from = { country_event = { id = veru.6000 } }
 			}
 		}
-	}
 
 	ai_weight = {
 		weight = 100

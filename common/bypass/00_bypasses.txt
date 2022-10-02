@@ -74,47 +74,10 @@ gateway = {
 			}
 		}
 	}
-	country_can_use = {
-		custom_tooltip = {
-			fail_text = GATEWAY_COUNTRY_CANNOT_USE
-			OR = {
-				NOT = { exists = from }
-				AND = {
-					exists = from #calvitix debug
-					exists = root #calvitix debug
-					OR = { #ari_bypass
-						from = { is_same_value = root }
-						from = { is_in_federation_with = root }
-						from = { is_overlord_to = root }
-						root = { is_overlord_to = from }
-						AND = {
-							root = { is_galactic_emperor = yes }
-							from = { is_galactic_community_member = yes }
-						}					
-						from = {
-							NOR = {
-								has_closed_borders = root
-								is_hostile = root
-							}
-						}
-					}
-					NOR = { 
-						is_country_type = amoeba
-						is_country_type = amoeba_borderless
-						is_country_type = caravaneer_fleet
-						is_country_type = crystal
-						is_country_type = feral_prethoryn
-						is_country_type = guardian
-						is_country_type = guardian_dragon
-						is_country_type = tiyanki
-						is_country_type = vluur
-					}
-					NOT = { is_country_type = tiyanki }
-					NOT = { is_country_type = amoeba }
-				}
-			}
-		}
-	}
+
+	respect_closed_borders = yes
+	block_access_if_hostile = yes
+
 	on_action = "on_entering_gateway"
 }
 
@@ -242,23 +205,8 @@ relay_bypass = {
 	ftl_ship_effect = "gateway_ftl_ship_effect_entity"
 	ftl_bypass_effect = "gateway_ftl_bypass_effect_entity"
 
-	country_can_use = {
-		custom_tooltip = {
-			fail_text = HYPER_RELAY_COUNTRY_CANNOT_USE
-			OR = {
-				NOT = { exists = from }
-				AND = {
-					exists = from
-					from = {
-						NOR = {
-							has_closed_borders = root
-							is_hostile = root
-						}
-					}
-				}
-			}
-		}
-	}
+	respect_closed_borders = yes
+	block_access_if_hostile = yes
 }
 
 quantum_catapult = {

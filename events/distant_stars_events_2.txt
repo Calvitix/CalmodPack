@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.4.2  18.05.2022
+# Calvitix Check 3.5  22.09.2022
 #
 # Merge with JL PICARD 19.05.2022
 #
@@ -3013,10 +3013,11 @@ country_event = {
 			add_experience = 200
 		}
 		event_target:anomalous_star = {
-			random_deposit = {
-				limit = { #none
+			hidden_effect = {
+				if = {
+					limit = { NOT = { has_deposit_for = shipclass_mining_station } }
+					clear_deposits = yes
 				}
-				remove_deposit = yes
 			}
 			add_deposit = d_energy_8
 		}
@@ -3150,6 +3151,12 @@ country_event = {
 		#	}
 		#}
 		random_owned_planet = {
+			limit = {
+				num_buildings = {
+					type = any
+					value > 0
+				}
+			}
 			weights = {
 				base = 1
 				modifier = {
@@ -4201,7 +4208,7 @@ country_event = {
 				}
 			}
 			create_country = {
-				name = "NAME_Prikkiki-Ti"
+				name = "NAME_Prikkiki_Ti"
 				adjective = "NAME_Prikki_singular" # Correction de bug
 				authority = random
 				civics = {
@@ -4530,7 +4537,7 @@ country_event = {
 				homeworld = this
 			}
 			create_country = {
-				name = "NAME_Prikkiki-Ti"
+				name = "NAME_Prikkiki_Ti"
 				authority = random
 				civics = {
 					civic = civic_fanatic_purifiers
@@ -7472,9 +7479,6 @@ country_event = { # First words
 
 		hidden_effect = {
 			create_nivlac_effect = yes
-			event_target:nivlac_species = {
-				remove_species_flag = nivlac_no_procreation # checked in can_species_procreate game rule
-			}
 			event_target:nivlac_joint_planet = {
 				while = {
 					count = new_pops
@@ -7504,7 +7508,7 @@ country_event = { # First words
 		hidden_effect = {
 			create_nivlac_effect = yes
 			event_target:nivlac_species = {
-				remove_species_flag = nivlac_no_procreation # checked in can_species_procreate game rule
+				set_species_flag = nivlac_no_procreation # checked in can_species_procreate game rule
 			}
 			event_target:nivlac_joint_planet = {
 				while = {

@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.1.1  15.09.2021
+# Calvitix Check 3.5  22.09.2022
 #
 # Merge with Arisphaos Unofficial patch
 #
@@ -171,20 +171,16 @@ country_event = {
 			factor = 10
 			modifier = {
 				factor = 0
+				OR = {
 				check_variable = {
 					which = owned_cc_var
 					value < 7000
 				}
+					has_country_flag = buying_boxes #Lets stop the AI from funneling its entire economy into boxes
+				}
 			}
 		}
 		allow = {
-			custom_tooltip = {
-				fail_text = too_many_lootboxes
-				check_variable = {
-					which = num_lootboxes
-					value < 6
-				}
-			}
 			custom_tooltip = {
 				fail_text = too_recently_lootboxed
 				NOT = { has_country_flag = lootboxed_recently }
@@ -192,51 +188,6 @@ country_event = {
 		}
 		hidden_effect = {
 			country_event = { id = cara.300 }
-			if = {
-				limit = {
-					check_variable = {
-						which = num_lootboxes
-						value = 1
-					}
-				}
-				custom_tooltip = 5_lootboxes_remaining
-			}
-			else_if = {
-				limit = {
-					check_variable = {
-						which = num_lootboxes
-						value = 2
-					}
-				}
-				custom_tooltip = 4_lootboxes_remaining
-			}
-			else_if = {
-				limit = {
-					check_variable = {
-						which = num_lootboxes
-						value = 3
-					}
-				}
-				custom_tooltip = 3_lootboxes_remaining
-			}
-			else_if = {
-				limit = {
-					check_variable = {
-						which = num_lootboxes
-						value = 4
-					}
-				}
-				custom_tooltip = 2_lootboxes_remaining
-			}
-			else_if = {
-				limit = {
-					check_variable = {
-						which = num_lootboxes
-						value = 5
-					}
-				}
-				custom_tooltip = 1_lootboxes_remaining
-			}
 		}
 	}
 
@@ -786,6 +737,9 @@ country_event = {
 		custom_gui = "enclave_caravaneer_option"
 		name = cara_home_lootbox_buy
 		custom_tooltip = cara_home_lootbox_buy.tooltip
+		trigger = {
+			NOT = { has_country_flag = buying_boxes }
+		}
 		allow = {
 			custom_tooltip = {
 				fail_text = lootbox_buy_allow_fail
@@ -800,6 +754,32 @@ country_event = {
 			change_variable = {
 				which = owned_cc_var
 				value = -6194.21
+			}
+		}
+	}
+
+	option = {
+		custom_gui = "enclave_caravaneer_option"
+		name = cara_home_lootbox_buy_energy
+		custom_tooltip = cara_home_lootbox_buy_energy.tooltip
+		trigger = {
+			has_country_flag = buying_boxes
+		}
+		allow = {
+			resource_stockpile_compare = {
+				resource = energy
+				value >= box_cost
+			}
+		}
+		add_resource = {
+			energy = -1
+			multiplier = box_cost
+		}
+		hidden_effect = {
+			country_event = { id = cara.310 }
+			multiply_variable = { 
+				which = box_cost
+				value = 1.05
 			}
 		}
 	}
@@ -835,6 +815,13 @@ country_event = {
 country_event = {
 	id = cara.310
 	title = cara_home_lootbox.title
+	desc = {
+		trigger = {
+			has_country_flag = buying_boxes_desc
+			NOT = { has_country_flag = recent_galatron }
+		}
+		text = buying_boxes_desc
+	}
 	desc = {
 		trigger = { has_country_flag = recent_empty_lootbox }
 		text = openedlootboxdesc1
@@ -914,6 +901,15 @@ country_event = {
 	}
 
 	immediate = {
+		if = {
+			limit = {
+				check_variable = {
+					which = num_lootboxes
+					value = 5
+				}
+			}
+			set_country_flag = buying_boxes_desc
+		}
 		random_list = {
 			# Galatron
 			1 = {
@@ -1018,6 +1014,17 @@ country_event = {
 			}
 			if = {
 				limit = {
+					has_country_flag = buying_boxes_desc
+				}
+				remove_country_flag = buying_boxes_desc
+				set_country_flag = buying_boxes
+				set_variable = {
+					which = box_cost
+					value = 8450
+				}
+			}
+			if = {
+				limit = {
 					has_country_flag = recent_galatron
 					NOT = { has_modifier = galatron_modifier }
 				}
@@ -1035,10 +1042,16 @@ country_event = {
 		name = OK
 
 		hidden_effect = {
+			if = {
+				limit = {
+					NOT = { has_country_flag = buying_boxes }
+				}
 			set_timed_country_flag = {
 				flag = lootboxed_recently
 				days = 500
 			}
+			}
+
 			if = {
 				limit = {
 					has_country_flag = recent_galatron
@@ -4765,7 +4778,11 @@ country_event = {
 		}
 	
 		event_target:pleased_planet = {
-			create_half_species = { species_one = event_target:party_host species_two = event_target:party_goer.species }
+			create_half_species = {
+				species_one = event_target:party_host
+				species_two = event_target:party_goer.species
+				country = root
+			}
 			while = {
 				count = 2
 				create_pop = {
@@ -4801,7 +4818,11 @@ country_event = {
 	after = {
 		tooltip = {
 			event_target:pleased_planet = {
-				create_half_species = { species_one = event_target:party_host species_two = event_target:party_goer.species }
+				create_half_species = {
+					species_one = event_target:party_host
+					species_two = event_target:party_goer.species
+					country = root
+				}
 				hidden_effect = {
 					while = {
 						count = 3

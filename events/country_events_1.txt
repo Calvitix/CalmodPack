@@ -181,6 +181,7 @@ fleet_event = {
 	is_triggered_only = yes
 
 	trigger = {
+		exists = owner
 		owner = {
 			has_event_chain = "sublight_probes_chain"
 			FROM = {
@@ -1378,9 +1379,12 @@ country_event = {
 		NOT = { has_country_flag = completed_habitable_worlds_survey }
 	}
 
-	mean_time_to_happen = {
-		days = 1
-	}
+	# Risa fix: no point to use mtth, when the event's trigger counter is altered by only one source (country.52)
+	# let this event be called there directly instead
+	#mean_time_to_happen = {
+	#	days = 1
+	#}
+	is_triggered_only = yes
 
 	immediate = {
 		set_country_flag = completed_habitable_worlds_survey
@@ -1426,6 +1430,7 @@ ship_event = {
 				is_planet_class = pc_alpine
 				is_planet_class = pc_savannah
 				is_planet_class = pc_gaia
+				is_planet_class = pc_relic
 			}
 		}
 	}
@@ -1436,6 +1441,29 @@ ship_event = {
 				event_chain = "survey_habitable_worlds_chain"
 				counter = "habitable_worlds_surveyed"
 				amount = 1
+			}
+		}
+	}
+}
+
+# So we can avoid
+ship_event = {
+	id = country.5200
+	hide_window = yes
+
+	is_triggered_only = yes
+
+	immediate = {
+		owner = {
+			if = {
+				limit = {
+					has_completed_event_chain_counter = {
+						event_chain = "survey_habitable_worlds_chain"
+						counter = "habitable_worlds_surveyed"
+					}
+					NOT = { has_country_flag = completed_habitable_worlds_survey }
+				}
+				country_event = { id = country.51 days = 1 }
 			}
 		}
 	}
@@ -2211,10 +2239,11 @@ country_event = {
 					species = owner_main_species
 					name = random
 					skill = 2
-					traits = {
-						trait = random_trait
-						trait = random_trait
-					}
+					# Risa fix: Conflicted with traits granted by on_leader_spawned events, also two random_trait not working
+					#traits = {
+					#	trait = random_trait
+					#	trait = random_trait
+					#}
 				}
 				create_fleet = {
 					name = "NAME_Hijacked_Fleet"
@@ -2518,6 +2547,7 @@ fleet_event = {
 	is_triggered_only = yes
 
 	trigger = {
+		exists = owner
 		owner = {
 			has_country_flag = searching_for_cultists
 			NOT = { has_country_flag = cultists_sighted_1 }
@@ -2549,10 +2579,10 @@ fleet_event = {
 					species = owner_main_species
 					name = random
 					skill = 2
-					traits = {
-						trait = random_trait
-						trait = random_trait
-					}
+					#traits = {
+					#	trait = random_trait
+					#	trait = random_trait
+					#}
 				}
 				create_fleet = {
 					name = "NAME_Cultist_Marauders"
@@ -2702,6 +2732,7 @@ fleet_event = {
 	is_triggered_only = yes
 
 	trigger = {
+		exists = owner
 		owner = {
 			has_country_flag = searching_for_cultists
 			NOT = { has_country_flag = cultists_sighted_2 }
@@ -2733,10 +2764,10 @@ fleet_event = {
 					species = owner_main_species
 					name = random
 					skill = 2
-					traits = {
-						trait = random_trait
-						trait = random_trait
-					}
+					#traits = {
+					#	trait = random_trait
+					#	trait = random_trait
+					#}
 				}
 				create_fleet = {
 					name = "NAME_Cultist_Marauders"
@@ -2791,6 +2822,7 @@ fleet_event = {
 	is_triggered_only = yes
 
 	trigger = {
+		exists = owner
 		owner = {
 			has_country_flag = searching_for_cultists
 			NOT = { has_country_flag = cultists_sighted_3 }
@@ -2821,10 +2853,10 @@ fleet_event = {
 				species = owner_main_species
 				name = random
 				skill = 2
-				traits = {
-					trait = random_trait
-					trait = random_trait
-				}
+				#traits = {
+				#	trait = random_trait
+				#	trait = random_trait
+				#}
 			}
 			create_fleet = {
 				name = "NAME_Cultist_Marauders"
@@ -2985,10 +3017,10 @@ country_event = {
 					species = owner_main_species
 					name = random
 					skill = 2
-					traits = {
-						trait = random_trait
-						trait = random_trait
-					}
+					#traits = {
+					#	trait = random_trait
+					#	trait = random_trait
+					#}
 				}
 				create_fleet = {
 					name = "NAME_Cult_Defense_Fleet"
@@ -3291,6 +3323,7 @@ ship_event = {
 
 	trigger = {
 		has_ship_flag = cultist_flagship
+		exists = owner
 		owner = { has_country_flag = cultist_rebels_of@from.owner }
 	}
 
@@ -3433,6 +3466,7 @@ country_event = {
 	trigger = {
 		is_ai = no
 		has_country_flag = human_2
+		species_portrait = human
 		NOT = { has_country_flag = hyacinth_started }
 		any_system = {
 			is_surveyed = {
@@ -3600,9 +3634,32 @@ planet_event = {
 
 	trigger = {
 		NOT = { exists = fromfrom } #Checks it didn't get surveyed by a ship
+		from = {
+			is_ai = no
+			has_event_chain = "hunting_hyacinth"
+		}
+		solar_system = {
+			OR = {
+				has_star_flag = hyacinth_system_1
+				has_star_flag = hyacinth_system_2
+				has_star_flag = hyacinth_system_3
+			}
+			NOR = {
+				has_star_flag = event_sent
+				any_system_planet = {
+					is_surveyed = {
+						who = from
+						status = no
+					}
+				}
+			}
+		}
 	}
 
 	immediate = {
+		solar_system = {
+			set_star_flag = event_sent
+		}
 		from = { #from is the country
 			country_event = { id = country.260 }
 		}
@@ -3628,33 +3685,7 @@ country_event = {
 
 	is_triggered_only = yes
 
-	trigger = {
-		is_ai = no
-		has_event_chain = "hunting_hyacinth"
-		from = {
-			solar_system = {
-				OR = {
-					has_star_flag = hyacinth_system_1
-					has_star_flag = hyacinth_system_2
-					has_star_flag = hyacinth_system_3
-				}
-				NOT = {
-					has_star_flag = event_sent
-					any_system_planet = {
-						is_surveyed = {
-							who = from
-							status = no
-						}
-					}
-				}
-			}
-		}
-	}
-
 	immediate = {
-		from.solar_system = {
-			set_star_flag = event_sent
-		}
 		save_event_target_as = star_chart_owner
 		from = {
 			solar_system = {
@@ -3866,6 +3897,7 @@ fleet_event = {
 	is_triggered_only = yes
 
 	trigger = {
+		exists = owner
 		owner = {
 			is_ai = no
 			has_event_chain = "hunting_hyacinth"

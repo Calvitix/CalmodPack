@@ -1,9 +1,9 @@
 # Original File
 #
-# Calvitix Check 3.4.2  18.05.2022
+# Calvitix Check 3.5  22.09.2022
 #
 # Merge with Arisphaos Unofficial patch
-# Merge with Planetary Div. 19.05.2022
+# Merge with Planetary Div. 25.09.2022
 #
 
 # species_potential_add = {}
@@ -15,6 +15,8 @@
 # allow to remove the trait when genemodding.
 # Scopes are this = species, from = country performing the modification.
 # default = always=yes
+
+@pdbadhab = -5.0
 
 trait_hive_mind = {
 	cost = 0
@@ -183,6 +185,7 @@ trait_aquatic = {
 		pc_desertislands
 		pc_subarctic
 		pc_storm
+		pc_pd_iceberg
 	}
 
 	species_possible_remove = {
@@ -236,6 +239,7 @@ trait_aquatic = {
 					is_planet_class = pc_desertislands
 					is_planet_class = pc_subarctic
 					is_planet_class = pc_storm
+					is_planet_class = pc_pd_iceberg
 				}
 			}
 		}
@@ -256,6 +260,7 @@ trait_aquatic = {
 					is_planet_class = pc_desertislands
 					is_planet_class = pc_subarctic
 					is_planet_class = pc_storm
+					is_planet_class = pc_pd_iceberg
 				}
 				exists = owner
 				owner = { has_ascension_perk = ap_hydrocentric }
@@ -274,6 +279,7 @@ trait_aquatic = {
 					has_climate = wet
 					has_modifier = flooded_habitat
 					is_planet_class = pc_storm
+					is_planet_class = pc_pd_iceberg
 				}
 				is_ideal = no
 			}
@@ -288,6 +294,7 @@ trait_aquatic = {
 					has_climate = wet
 					has_modifier = flooded_habitat
 					is_planet_class = pc_storm
+					is_planet_class = pc_pd_iceberg
 				}
 				is_ideal = no
 				exists = owner
@@ -303,6 +310,7 @@ trait_aquatic = {
 				has_climate = wet
 				has_modifier = flooded_habitat
 				is_planet_class = pc_storm
+				is_planet_class = pc_pd_iceberg
 			}
 			is_ideal = no
 		}
@@ -314,6 +322,7 @@ trait_aquatic = {
 				has_climate = wet
 				has_modifier = flooded_habitat
 				is_planet_class = pc_storm
+				is_planet_class = pc_pd_iceberg
 			}
 			is_ideal = no
 			exists = owner
@@ -333,6 +342,7 @@ trait_aquatic = {
 		pc_desertislands_habitability = 0.1
 		pc_subarctic_habitability = 0.1
 		pc_storm_habitability = 0.1
+		pc_pd_iceberg_habitability = 0.1
 		pc_aquatic_habitability = 0.8
 		pc_tidallyaquatic_habitability = 0.8
 	}
@@ -343,7 +353,7 @@ trait_aquatic = {
 trait_necrophage = {
 	cost = 0
 	potential_crossbreeding_chance = 0
-	opposites = { "trait_plantoid_budding" }
+	opposites = { "trait_plantoid_budding" "trait_lithoid_budding" }
 	sorting_priority = 20
 
 	initial = no
@@ -385,7 +395,7 @@ trait_necrophage = {
 trait_clone_soldier_infertile = {
 	cost = 0
 	potential_crossbreeding_chance = 0
-	opposites = { "trait_slow_breeders" "trait_rapid_breeders" "trait_plantoid_budding" }
+	opposites = { "trait_slow_breeders" "trait_rapid_breeders" "trait_plantoid_budding" "trait_lithoid_budding" }
 	sorting_priority = 20
 
 	initial = no
@@ -428,7 +438,7 @@ trait_clone_soldier_infertile = {
 trait_clone_soldier_infertile_full_potential = {
 	cost = 0
 	potential_crossbreeding_chance = 0
-	opposites = { "trait_slow_breeders" "trait_rapid_breeders" "trait_plantoid_budding" }
+	opposites = { "trait_slow_breeders" "trait_rapid_breeders" "trait_plantoid_budding" "trait_lithoid_budding" }
 	sorting_priority = 20
 
 	initial = no
@@ -539,7 +549,6 @@ trait_cave_dweller = {
 	icon = "gfx/interface/icons/traits/trait_cave_dweller.dds"
 	custom_tooltip_with_modifiers = trait_cave_dweller_tooltip
 	modifier = {
-		mod_habitability_floor_add = 0.5
 		planet_jobs_minerals_produces_mult = 0.15
 		species_empire_size_mult = 0.10
 	}
@@ -553,6 +562,11 @@ trait_cave_dweller = {
 		}
 		pop_growth_speed = -0.20
 	}
+	triggered_planet_growth_habitability_modifier = {
+		potential = { planet = { is_pd_bad_exotic = no } }
+		habitability_floor_add = 0.5
+	}
+	
 	slave_cost = {
 		energy = 500
 	}

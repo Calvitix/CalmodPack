@@ -18,30 +18,3 @@ planet_event = {
 		change_variable = { which = xvcv_mdlc_world_machines_districts_current_output_for_display_var value = -30 } #change this as well
 	}
 }
-#until the 'on_spynetwork_formed' on_action trigger is fixed #stellaris v3.4.2
-#https://forum.paradoxplaza.com/forum/threads/stellaris-the-on_spynetwork_formed-on_action-trigger-is-broken.1525048/
-event = {
-	id = xvcv_mdlc_temp_fix.20
-	hide_window = yes
-	is_triggered_only = yes
-
-	trigger = {
-		any_country = { has_valid_civic = xvcv_mdlc_civic_malware_machine }
-	}
-
-	immediate = {
-		every_country = {
-			limit = { has_valid_civic = xvcv_mdlc_civic_malware_machine }
-			every_spynetwork = {
-				limit = {
-					owner = {
-						has_valid_civic = xvcv_mdlc_civic_malware_machine
-						any_envoy = { exists = spynetwork spynetwork = { is_same_value = prevprevprev } } #only when the spynetwork is formed
-					}
-					NOT = { has_espionage_asset = xvcv_mdlc_asset_malware }
-				}
-				create_espionage_asset = { type = xvcv_mdlc_asset_malware }
-			}
-		}
-	}
-}

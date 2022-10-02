@@ -2431,37 +2431,6 @@ planet_event = {
 	}
 }
 
-### Terraforming Candidate ###
-ship_event = {
-	id = colonyexpanded.310
-	title = "anomaly.2575.name"
-	desc = {
-		text = anomaly.2575.desc.1
-		trigger = { 
-			NOT = { 
-				owner = { has_technology = "tech_climate_restoration" } 
-			}
-		}
-	}
-	desc = {
-		text = anomaly.2575.desc.2
-		trigger = { 
-			owner = { has_technology = "tech_climate_restoration" }
-		}
-	}
-	picture = GFX_evt_drilling_for_gas
-	location = FROM
-	
-	is_triggered_only = yes
-	
-	trigger = { FROM = { has_modifier = "terraforming_candidate" } }
-	
-	option = {
-		name = FASCINATING
-		custom_tooltip = TERRAFORMING_CANDIDATE_EFFECT
-	}
-}
-
 ### colony discovered to have presapients ###
 planet_event = {
 	id = colonyexpanded.312
@@ -6613,6 +6582,41 @@ planet_event = {
 			name = "DPORTAL_PROJECT_ROCKS"
 			location = this
 			owner = root
+		}
+	}
+	
+	option = {
+		name = colony.3006.knights
+		trigger = {
+			owner = {
+				has_origin = origin_toxic_knights
+			}
+		}
+		hidden_effect = {
+			owner = {
+				create_leader = {
+					class = general
+					species = owner_main_species
+					name = random
+					traits = {
+						trait = leader_trait_general_chosen
+						trait = leader_trait_butcher
+					}
+				}
+				last_created_leader = {
+					exile_leader_as = doomslayer_knight
+					save_event_target_as = doomslayer_knight
+					set_immortal = yes
+					save_global_event_target_as = doomslayer_knight@prev
+				}
+			}
+			reroll_random = yes
+			random_list = {
+				15 = { }
+				25 = { planet_event = { id = colony.3050 days = 3600 random = 900 } }
+				20 = { planet_event = { id = colony.3060 days = 3600 random = 900 } }
+				40 = { planet_event = { id = colony.3055 days = 3600 random = 900 } }
+			}
 		}
 	}
 	

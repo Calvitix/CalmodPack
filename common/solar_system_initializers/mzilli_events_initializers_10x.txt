@@ -780,3 +780,137 @@ mzilli_multiplanetary_primitives_10x = {
 
 	init_effect = { setup_multiplanetary_system = yes }
 }
+
+# Psionic Primitives system
+mzilli_events_psionic_primitives_system = {
+	class = "sc_f"
+	asteroid_belt = {
+		type = rocky_asteroid_belt
+		radius = 50
+	}
+
+	usage = misc_system_init
+	usage_odds = {
+		base = 90000
+		modifier = {
+			factor = 0
+			is_fe_cluster = yes
+		}
+		modifier = {
+			factor = 2
+			has_star_flag = empire_cluster
+		}
+		modifier = {
+			factor = 0
+			NOT = { any_system = { has_star_flag = primitive_system } }
+		}
+		modifier = {
+			factor = 0
+			NOT = { has_global_flag = mzilli_10x }
+		}
+	}
+	scaled_spawn_chance = 8
+	max_instances = 1
+
+	flags = { mzilli_events_psionic_primitives_system primitive_system }
+
+	planet = {
+        	count = 1
+        	class = star
+        	orbit_distance = 0
+        	orbit_angle = { min = 90 max = 270 }
+        	size = { min = 25 max = 30 }
+        	has_ring = no
+    	}
+
+	planet = {
+		class = pc_shattered_2
+		orbit_distance = 50
+		count = 1
+		orbit_angle = { min = 90 max = 270 }
+		has_ring = no
+	}
+
+	planet = {
+		class = random_non_colonizable
+		orbit_distance = 25
+		count = { min = 1 max = 2 }
+		orbit_angle = { min = 90 max = 270 }
+
+		change_orbit = 2
+
+		moon = {
+			class = random_non_colonizable
+			orbit_distance = 1
+			count = { min = 0 max = 2 }
+			orbit_angle = { min = 90 max = 270 }
+		}
+	}
+
+	planet = {
+		orbit_distance = 25
+		class = pc_continental
+		orbit_angle = { min = 90 max = 270 }
+		size = { min = 14 max = 18 }
+		anomaly = MZILLI_PSIONIC_PRIMITIVES
+		entity = "continental_planet_04_entity"
+		has_ring = yes
+		
+		init_effect = {
+			create_species = {
+				name = random
+				class = random_non_machine
+				portrait = random
+				homeworld = THIS
+				traits = {
+					trait = trait_latent_psionic
+					trait = random_traits
+				}
+			}
+			create_early_primitive_empire = yes
+			setup_primitive_planet = yes
+			last_created_country = { set_country_flag = recently_advanced }
+			set_name = random
+		}
+
+		change_orbit = 2
+
+		moon = {
+			orbit_distance = 1
+			orbit_angle = { min = 90 max = 270 }
+			size = 5
+			class = pc_barren_cold
+		}
+
+		moon = {
+			orbit_distance = 1
+			orbit_angle = { min = 90 max = 270 }
+			size = 6
+			class = pc_molten
+		}
+	}
+
+	planet = {
+		class = pc_frozen
+		orbit_distance = 25
+		count = { min = 0 max = 2 }
+		orbit_angle = { min = 90 max = 270 }
+
+		change_orbit = 2
+
+		moon = {
+			class = pc_frozen
+			orbit_distance = 1
+			count = { min = 0 max = 2 }
+			orbit_angle = { min = 90 max = 270 }
+		}
+	}
+
+	init_effect = {
+		generate_home_system_resources = yes
+		random_system_planet = {
+			limit = { is_planet_class = pc_shattered_2 }
+			set_deposit = d_minerals_6
+		}
+	}
+}

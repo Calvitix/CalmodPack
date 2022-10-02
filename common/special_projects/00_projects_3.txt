@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.4.2  18.05.2022
+# Calvitix Check 3.5  22.09.2022
 #
 # Merge with Arisphaos Unofficial patch
 #
@@ -1633,8 +1633,50 @@ special_project = {
 	on_success = {
 		ship_event = { id = anomaly.6792 }
 	}
+}
+
+special_project = {
+	key = "GHOST_SHIP_PROJECT_02"
+	cost = 2000
+	tech_department = physics_technology
+	picture = GFX_evt_mining_station
+
+	event_scope = country_event
+
+	on_success = {
+		country_event = { id = anomaly.6794 }
+	}
+}
+
+special_project = {
+	key = "TIYANKI_LURE"
+	event_chain = "tiyanki_graveyard_chain"
+	days_to_research = 180
+	tech_department = engineering_technology
+	icon = "gfx/interface/icons/situation_log/situation_log_quest.dds"
+	picture = GFX_evt_atmospheric_flight
+	location = yes
+
+	event_scope = ship_event
+
+	requirements = {
+		shipclass_constructor = 1
+	}
+
+	on_success = {
+		owner = { country_event = { id = galactic_features.389 } }
+	}
 
 	on_fail = {
+	}
+
+	abort_trigger = {
+		owner = {
+			OR = {
+				has_global_flag = tiyanki_graveyard_access
+				has_global_flag = tiyanki_extinct
+			}
+		}
 	}
 }
 
@@ -1667,5 +1709,37 @@ special_project = {
 
 	on_success = {
 		country_event = { id = syndaw.555 }	# Wipe systems.
+	}
+}
+
+special_project = {
+	key = "RELENTLESS_INDUSTRIALISTS_STUDY_PROJECT"
+	cost = 10000
+	tech_department = society_technology
+	timelimit = -1
+	picture = GFX_evt_ancient_databank
+	icon = "gfx/interface/icons/situation_log/situation_log_tick.dds"
+	event_scope = country_event
+
+	abort_trigger = {
+		NOT = { has_policy_flag = relentless_industrialists_study }
+	}
+
+	on_success = {
+		country_event = { id = toxoids.45 }
+	}
+}
+
+special_project = {
+	key = "ANCIENT_MANUFACTORIUM_PROJECT"
+	cost = 2000
+	tech_department = engineering_technology
+	timelimit = -1
+	picture = GFX_evt_ancient_databank
+	icon = "gfx/interface/icons/situation_log/situation_log_tick.dds"
+	event_scope = planet_event
+
+	on_success = {
+		planet_event = { id = colony.9251 }
 	}
 }

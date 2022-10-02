@@ -93,7 +93,7 @@ country_event = {
 		merg_is_default_empire = yes # merg_is_default_empire = yes
 		NOR = {
 			has_country_flag = birth_of_piracy
-			has_ethic = ethic_gestalt_consciousness
+			is_gestalt = yes
 		}
 		exists = capital_scope
 		any_system_within_border = {
@@ -374,10 +374,10 @@ ship_event = {
 	immediate = {
 		if = {
 			limit = {
-				from.owner = { is_pirate_country = yes }
+				from.owner = { is_pirate = yes }
 				owner = {
 					OR = {
-						is_pirate_country = yes
+						is_pirate = yes
 						is_country_type = rebel
 					}
 				}
@@ -394,7 +394,7 @@ ship_event = {
 				from.owner = { is_country_type_with_subjects = yes }
 				owner = {
 					OR = {
-						is_pirate_country = yes
+						is_pirate = yes
 						is_country_type = rebel
 					}
 				}
@@ -421,7 +421,7 @@ ship_event = {
 				}
 			}
 		} else_if = {
-			limit = { owner = { is_pirate_country = yes } }
+			limit = { owner = { is_pirate = yes } }
 			starbase = { destroy_fleet = fleet }
 			# log="destroy pirate station"
 		}
@@ -438,7 +438,7 @@ ship_event = {
 		exists = owner
 		owner = {
 			OR = {
-				is_pirate_country = yes
+				is_pirate = yes
 				is_country_type = rebel
 			}
 		}
@@ -540,7 +540,7 @@ ship_event = {
 					space_owner = {
 						NOR = {
 							has_country_flag = pirates_spawned # <- timed flag from on_pirate_spawn
-							has_ethic = ethic_gestalt_consciousness
+							is_gestalt = yes
 							any_situation = { is_situation_type = situation_planetary_revolt }
 						}
 						any_system_within_border = {
@@ -556,8 +556,7 @@ ship_event = {
 						}
 						any_system_within_border = {
 							is_capital_system = no
-							any_system_planet = {
-								is_colony = yes
+							any_system_colony = {
 								is_under_colonization = no
 								planet_stability < 80
 								NOT = { has_planet_flag = pirate_invasion }
@@ -576,8 +575,7 @@ ship_event = {
 							is_owned_by = space_owner
 							is_civilian = no							# is_ship_class = shipclass_military
 						}
-						any_system_planet = {
-							has_owner = yes
+						any_system_colony = {
 							NOR = {
 								is_owned_by = from.owner
 								is_controlled_by = from.owner
@@ -591,8 +589,7 @@ ship_event = {
 						limit = {
 							is_owned_by = root
 							is_capital_system = no
-							any_system_planet = {
-								is_colony = yes
+							any_system_colony = {
 								is_under_colonization = no
 								planet_stability < 80
 							}
@@ -637,7 +634,7 @@ ship_event = {
 # 			any_fleet_in_system = { is_ship_size = pirate_station }
 # 			any_fleet_in_system = {
 # 				is_ship_class = shipclass_military
-# 				owner = { is_pirate_country = yes }
+# 				owner = { is_pirate = yes }
 # 			}
 # 		}
 # 		owner = {

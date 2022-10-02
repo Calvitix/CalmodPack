@@ -9010,11 +9010,62 @@ ship_event = {
 	}
 }
 
+### Uplifting Toxoids
+ship_event = {
+	id = anomalymod.295
+	title = anomalymod.290.name
+	desc = anomalymod.290.desc
+	picture = GFX_evt_ship_in_orbit
+	location = from
+
+	is_triggered_only = yes
+
+	immediate = {
+		owner = {
+			set_country_flag = found_presapients
+			country_event = { id = tutorial.57 days = 5 }
+			country_event = { id = story.4 days = 30 }
+		}
+		from = {
+			uplift_planet_mod_clear = yes
+			if = {
+				limit = { has_toxoids = yes }
+				create_species = {
+					name = random
+					class = PRE_TOX
+					portrait = pre_aqu9
+					traits = { trait = trait_presapient_irradiated }
+					homeworld = from
+					sapient = no
+					effect = { save_event_target_as = latest_presapient }
+				}
+			}
+			else = {
+				create_generic_presapient_species = { UPLIFT_TO = ART }
+			}
+			while = {
+				count = 3
+				create_pop = { species = event_target:latest_presapient }
+			}
+			set_planet_flag = roachoid_planet
+		}
+	}
+	option = {
+		name = uplift.6000.a
+		trigger = { owner = { has_technology = tech_epigenetic_triggers } }
+	}
+
+	option = {
+		name = uplift.6000.b
+		trigger = { owner = { NOT = { has_technology = tech_epigenetic_triggers } } }
+	}
+}
+
 ### Uplifting Alpine Success
 planet_event = {
-	id = anomalymod.295
+	id = anomalymod.299
 	title = "uplift.6051.name"
-	desc = "anomalymod.294.desc"
+	desc = "anomalymod.299.desc"
 	picture = GFX_evt_society_research
 	location = root
 	show_sound = notification_uplift
@@ -9645,6 +9696,76 @@ ship_event = {
 				min = @tier3researchmin
 				max = @tier3researchmax
 			}
+		}
+	}
+}
+
+# Ancient Star Map
+ship_event = {
+	id = anomalymod.411
+	title = "anomalymod.411.name"
+	desc = "anomalymod.411.desc"
+	picture = GFX_evt_alien_ruins
+	show_sound = event_radio_chatter
+	location = FROM
+	
+	is_triggered_only = yes
+	
+	immediate = {
+		set_global_flag = swarm_star_charts
+	}
+
+	option = {
+		name = anomalymod.409.a
+		FROM = {
+			add_deposit = d_physics_3
+			add_deposit = d_society_3
+		}
+		owner = {
+			capital_scope = {
+				enable_special_project = {
+					name = "SWARM_CRYSTAL_PROJECT"
+					location = this
+					owner = root.owner
+				}
+			}
+		}
+	}
+}
+
+country_event = {
+	id = anomalymod.412
+	title = "PROJECT_COMPLETE"
+	desc = anomalymod.412
+	picture = GFX_evt_physics_research
+	show_sound = event_mystic_reveal
+	location = root.capital_scope
+	
+	is_triggered_only = yes
+	
+	immediate = {
+		random_owned_leader = {
+			limit = {
+				is_researching_area = physics
+			}
+			save_event_target_as = paranoid_scientist
+		}
+		if = {
+			limit = { NOT = { exists = event_target:paranoid_scientist } }
+			random_owned_leader = {
+				limit = {
+					leader_class = scientist
+				}
+				save_event_target_as = paranoid_scientist
+			}
+		}
+	}
+	
+	option = {
+		name = WORRYING
+		add_modifier = { modifier = ancient_star_charts days = -1 }
+		event_target:paranoid_scientist = {
+			add_trait = leader_trait_paranoid
 		}
 	}
 }

@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.4.2  19.05.2022
+# Calvitix Check 3.5  22.09.2022
 #
 # Merge with Planet. Diversity
 # Merge with Starnet OK  28.06.2022    
@@ -61,17 +61,19 @@ building_autochthon_monument = {
 		cost = {
 			minerals = @b1_minerals
 		}
-		#upkeep = {
-		#	energy = @b1_upkeep
-		#}
 	}
 
 	planet_modifier = {
 		planet_jobs_unity_produces_mult = 0.05
+		job_culture_worker_add = @b1_jobs
 	}
 
 	triggered_desc = {
 		text = building_autochthon_monument_effect
+	}
+
+	triggered_desc = {
+		text = job_culture_worker_effect_desc
 	}
 
 	prerequisites = {
@@ -153,10 +155,15 @@ building_heritage_site = {
 
 	planet_modifier = {
 		planet_jobs_unity_produces_mult = 0.10
+		job_culture_worker_add = @b2_jobs
 	}
 
 	triggered_desc = {
 		text = building_heritage_site_effect
+	}
+
+	triggered_desc = {
+		text = job_culture_worker_effect_desc
 	}
 
 	prerequisites = {
@@ -231,10 +238,15 @@ building_hypercomms_forum = {
 
 	planet_modifier = {
 		planet_jobs_unity_produces_mult = 0.15
+		job_culture_worker_add = @b3_jobs
 	}
 
 	triggered_desc = {
 		text = building_hypercomms_forum_effect
+	}
+
+	triggered_desc = {
+		text = job_culture_worker_effect_desc
 	}
 
 	prerequisites = {
@@ -255,7 +267,7 @@ building_hypercomms_forum = {
 building_bureaucratic_1 = {
 	base_buildtime = @b1_time
 
-	category = government
+	category = unity
 
 	potential = {
 		exists = owner
@@ -359,7 +371,7 @@ building_bureaucratic_2 = {
 	base_buildtime = @b2_time
 	can_build = no
 
-	category = government
+	category = unity
 
 	potential = {
 		exists = owner
@@ -375,7 +387,6 @@ building_bureaucratic_2 = {
 	destroy_trigger = {
 		exists = owner
 		OR = {
-			buildings_no_crystals = yes
 			owner = { is_regular_empire = no }
 			owner = { is_spiritualist = yes }
 		}
@@ -468,7 +479,7 @@ building_bureaucratic_3 = {
 	base_buildtime = @b3_time
 	can_build = no
 
-	category = government
+	category = unity
 
 	potential = {
 		exists = owner
@@ -483,10 +494,11 @@ building_bureaucratic_3 = {
 
 	destroy_trigger = {
 		exists = owner
+		owner = {
 		OR = {
-			buildings_no_crystals = yes
-			owner = { is_regular_empire = no }
-			owner = { is_spiritualist = yes }
+				is_regular_empire = no
+				is_spiritualist = yes
+			}
 		}
 	}
 
@@ -687,7 +699,6 @@ building_holotemple = {
 					is_spiritualist = no
 			}
 			has_modifier = slave_colony
-			buildings_no_crystals = yes
 		}
 	}
 
@@ -784,7 +795,6 @@ building_sacred_nexus = {
 					is_spiritualist = no
 				}
 			has_modifier = slave_colony
-			buildings_no_crystals = yes
 		}
 	}
 
@@ -860,7 +870,7 @@ building_uplink_node = {
 	base_buildtime = @b1_time
 	icon = building_autochthon_monument
 
-	category = government
+	category = unity
 
 	potential = {
 		exists = owner
@@ -886,7 +896,6 @@ building_uplink_node = {
 		building_bureaucratic_1
 		building_temple
 		building_hive_node
-		building_sensorium_1
 	}
 
 	resources = {
@@ -943,7 +952,7 @@ building_network_junction = {
 	can_build = no
 	icon = building_heritage_site
 
-	category = government
+	category = unity
 
 	potential = {
 		exists = owner
@@ -961,8 +970,6 @@ building_network_junction = {
 
 	destroy_trigger = {
 		exists = owner
-		OR = {
-			buildings_no_crystals = yes
 			owner = {
 				OR = {
 					is_machine_empire = no
@@ -970,13 +977,11 @@ building_network_junction = {
 				}
 			}
 		}
-	}
 
 	convert_to = {
 		building_bureaucratic_2
 		building_holotemple
 		building_hive_cluster
-		building_sensorium_2
 	}
 
 	resources = {
@@ -1035,7 +1040,7 @@ building_system_conflux = {
 	can_build = no
 	icon = building_hypercomms_forum
 
-	category = government
+	category = unity
 
 	potential = {
 		exists = owner
@@ -1053,8 +1058,6 @@ building_system_conflux = {
 
 	destroy_trigger = {
 		exists = owner
-		OR = {
-			buildings_no_crystals = yes
 			owner = {
 				OR = {
 					is_machine_empire = no
@@ -1062,13 +1065,11 @@ building_system_conflux = {
 				}
 			}
 		}
-	}
 
 	convert_to = {
 		building_bureaucratic_3
 		building_sacred_nexus
 		building_hive_confluence
-		building_sensorium_3
 	}
 
 	resources = {
@@ -1231,11 +1232,8 @@ building_hive_cluster = {
 
 	destroy_trigger = {
 		exists = owner
-			OR = {
-			buildings_no_exotic_gases = yes
 			owner = { is_hive_empire = no }
 			}
-		}
 
 	convert_to = {
 		building_bureaucratic_2
@@ -1332,11 +1330,8 @@ building_hive_confluence = {
 
 	destroy_trigger = {
 		exists = owner
-		OR = {
-			buildings_no_exotic_gases = yes
 			owner = { is_hive_empire = no }
 		}
-	}
 
 	convert_to = {
 		building_bureaucratic_3
@@ -1518,10 +1513,7 @@ building_sacrificial_temple_2 = {
 	destroy_trigger = {
 		exists = owner
 		OR = {
-			buildings_no_exotic_gases = yes
-			owner = {
-				is_death_cult_empire = no
-			}
+			owner = { is_death_cult_empire = no }
 			has_modifier = slave_colony
 		}
 	}
@@ -1620,20 +1612,16 @@ building_sacrificial_temple_3 = {
 	destroy_trigger = {
 		exists = owner
 		OR = {
-			buildings_no_exotic_gases = yes
-			owner = {
-				 is_death_cult_empire = no
-			}
+			owner = { is_death_cult_empire = no }
 			has_modifier = slave_colony
 		}
 	}
 
 	convert_to = {
-		building_hypercomms_forum
-		building_hive_confluence
-		building_simulation_3
-		building_corporate_forum
+		building_bureaucratic_3
 		building_sacred_nexus
+		building_system_conflux
+		building_hive_confluence
 	}
 
 	resources = {
@@ -1841,7 +1829,6 @@ building_galactic_memorial_2 = {
 		exists = owner
 		OR = {
 			has_modifier = slave_colony
-			buildings_no_exotic_gases = yes
 			owner = {
 				is_memorialist_empire = no
 			}
@@ -1970,12 +1957,9 @@ building_galactic_memorial_3 = {
 		exists = owner
 		OR = {
 			has_modifier = slave_colony
-			buildings_no_exotic_gases = yes
-			owner = {
-				is_memorialist_empire = no
+			owner = { is_memorialist_empire = no }
 			}
 		}
-	}
 
 	convert_to = {
 		building_hypercomms_forum
@@ -2119,10 +2103,15 @@ building_simulation_1 = {
 
 	planet_modifier = {
 		planet_jobs_unity_produces_mult = 0.05
+		job_evaluator_add = @b1_jobs
 	}
 
 	triggered_desc = {
 		text = building_autochthon_monument_effect
+	}
+
+	triggered_desc = {
+		text = job_evaluator_effect_desc
 	}
 
 	prerequisites = {
@@ -2200,10 +2189,15 @@ building_simulation_2 = {
 
 	planet_modifier = {
 		planet_jobs_unity_produces_mult = 0.10
+		job_evaluator_add = @b2_jobs
 	}
 
 	triggered_desc = {
 		text = building_heritage_site_effect
+	}
+
+	triggered_desc = {
+		text = job_evaluator_effect_desc
 	}
 
 	prerequisites = {
@@ -2274,10 +2268,16 @@ building_simulation_3 = {
 
 	planet_modifier = {
 		planet_jobs_unity_produces_mult = 0.15
+		job_evaluator_add = @b3_jobs
 	}
 
 	triggered_desc = {
 		text = building_hypercomms_forum_effect
+	}
+
+
+	triggered_desc = {
+		text = job_evaluator_effect_desc
 	}
 
 	prerequisites = {
@@ -2341,10 +2341,15 @@ building_corporate_monument = {
 
 	planet_modifier = {
 		planet_jobs_unity_produces_mult = 0.05
+		job_culture_worker_add = @b1_jobs
 	}
 
 	triggered_desc = {
 		text = building_autochthon_monument_effect
+	}
+
+	triggered_desc = {
+		text = job_culture_worker_effect_desc
 	}
 
 	prerequisites = {
@@ -2411,10 +2416,15 @@ building_corporate_site = {
 
 	planet_modifier = {
 		planet_jobs_unity_produces_mult = 0.10
+		job_culture_worker_add = @b2_jobs
 	}
 
 	triggered_desc = {
 		text = building_heritage_site_effect
+	}
+
+	triggered_desc = {
+		text = job_culture_worker_effect_desc
 	}
 
 	prerequisites = {
@@ -2480,10 +2490,15 @@ building_corporate_forum = {
 
 	planet_modifier = {
 		planet_jobs_unity_produces_mult = 0.15
+		job_culture_worker_add = @b3_jobs
 	}
 
 	triggered_desc = {
 		text = building_hypercomms_forum_effect
+	}
+
+	triggered_desc = {
+		text = job_culture_worker_effect_desc
 	}
 
 	prerequisites = {
@@ -2541,10 +2556,15 @@ building_sensorium_1 = {
 
 	planet_modifier = {
 		planet_jobs_unity_produces_mult = 0.05
+		job_evaluator_add = @b1_jobs
 	}
 
 	triggered_desc = {
 		text = building_autochthon_monument_effect
+	}
+
+	triggered_desc = {
+		text = job_evaluator_effect_desc
 	}
 
 	prerequisites = {
@@ -2622,10 +2642,15 @@ building_sensorium_2 = {
 
 	planet_modifier = {
 		planet_jobs_unity_produces_mult = 0.10
+		job_evaluator_add = @b2_jobs
 	}
 
 	triggered_desc = {
 		text = building_heritage_site_effect
+	}
+
+	triggered_desc = {
+		text = job_evaluator_effect_desc
 	}
 
 	prerequisites = {
@@ -2696,10 +2721,15 @@ building_sensorium_3 = {
 
 	planet_modifier = {
 		planet_jobs_unity_produces_mult = 0.15
+		job_evaluator_add = @b3_jobs
 	}
 
 	triggered_desc = {
 		text = building_hypercomms_forum_effect
+	}
+
+	triggered_desc = {
+		text = job_evaluator_effect_desc
 	}
 
 	prerequisites = {
@@ -2739,7 +2769,6 @@ building_autocurating_vault = {
 		exists = owner
 		OR = {
 			has_modifier = slave_colony
-			buildings_no_crystals = yes
 			owner = {
 				OR = {
 					is_machine_empire = yes
@@ -2807,7 +2836,6 @@ building_citadel_of_faith = {
 		OR = {
 			owner = { is_spiritualist = no }
 			has_modifier = slave_colony
-			buildings_no_crystals = yes
 		}
 	}
 
@@ -2871,7 +2899,6 @@ building_corporate_vault = {
 		exists = owner
 		OR = {
 			has_modifier = slave_colony
-			buildings_no_crystals = yes
 			owner = {
 				OR = {
 					is_megacorp = no
@@ -2934,10 +2961,7 @@ building_alpha_hub = {
 
 	destroy_trigger = {
 		exists = owner
-		OR = {
 			owner = { is_machine_empire = no }
-			buildings_no_crystals = yes
-		}
 	}
 
 	convert_to = {

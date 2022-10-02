@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.3b 21.01.2022
+# Calvitix Check 3.5 22.09.2022
 #
 # Merge with Gigastructural
 # Merge with Starnet AI
@@ -39,7 +39,16 @@ mega_shipyard_0 = {
 		}
 		custom_tooltip = {
 			fail_text = "requires_no_existing_megastructure"
-			from = { NOT = { has_country_flag = built_mega_shipyard_site } }
+			from = {
+				OR = {
+					has_relic = r_contingency_core
+					NOT = { has_country_flag = built_mega_shipyard_site }
+				}
+			}
+		}
+		custom_tooltip = {
+			fail_text = "requires_no_existing_megastructure"
+			from = { NOT = { has_country_flag = built_mega_shipyard_site_contingency } }
 		}
 		custom_tooltip = {
 			fail_text = "requires_surveyed_system"
@@ -144,7 +153,16 @@ mega_shipyard_0 = {
 	}
 ###STARNET END
 	on_build_complete = {
-		from = { set_country_flag = built_mega_shipyard_site }
+		from = {
+			if = {
+				limit = {
+					has_relic = r_contingency_core
+					has_country_flag = built_mega_shipyard_site
+				}
+				set_country_flag = built_mega_shipyard_site_contingency
+			}
+			set_country_flag = built_mega_shipyard_site
+		}
 		fromfrom.planet = {
 			IF = {
 				limit = { has_orbital_station = yes }
@@ -352,6 +370,7 @@ mega_shipyard_permanently_ruined = {
 	portrait = "GFX_megastructure_construction_background"
 	place_entity_on_planet_plane = no
 	entity_offset = { x = -27 y = -27 }
+	show_galactic_map_icon = no
 	upgrade_from = {
 	}
 

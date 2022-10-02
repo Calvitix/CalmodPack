@@ -1,6 +1,6 @@
 # Original File
 #
-# Calvitix Check 3.4.4  22.01.2022
+# Calvitix Check 3.5  22.09.2022
 #
 # Merge with Arisphaos Unofficial patch 24.11.2021
 # Merge with Carry cap.
@@ -3447,13 +3447,11 @@ country_event = {
 	immediate = {
 		stop_crisis_sound = yes
 		end_crisis = yes
+		from = { set_country_flag = with_great_power_achievement }
 		remove_global_flag = ongoing_prethoryn_invasion
 		set_global_flag = prethoryn_invasion_defeated
 		observer_event = { id = observer.33 }
 
-		# Crisis reward is handled through Galactic Focus if the community exists
-		if = {
-			limit = { NOT = { has_global_flag = galactic_community_formed } }
 			every_country = {
 				limit = {
 					OR = {
@@ -3464,7 +3462,6 @@ country_event = {
 				}
 				country_event = { id = crisis.211 }
 			}
-		}
 
 		random_country = {
 			limit = { is_country_type = global_event }
@@ -4000,7 +3997,7 @@ country_event = {
 					effect = {
 						set_owner = root
 						while = {
-							count = 12
+							count = 36
 							create_ship = {
 								name = random
 								prefix = no
@@ -4009,7 +4006,16 @@ country_event = {
 							}
 						}
 						while = {
-							count = 32
+							count = 10
+							create_ship = {
+								name = random
+								prefix = no
+								design = "NAME_Swarm_Carrier"
+								graphical_culture = "swarm_01"
+							}
+						}
+						while = {
+							count = 54
 							create_ship = {
 								name = random
 								prefix = no
@@ -4028,6 +4034,21 @@ country_event = {
 						uses_naval_capacity = no
 						can_disband = yes
 					}
+				}
+			}
+			if = { #Backup if you get the relic through some odd way
+				limit = {
+					NOT = { is_variable_set = brood_usage }
+				}
+				set_variable = {
+					which = brood_usage
+					value = 1
+				}
+			}
+			else = {
+				change_variable = {
+					which = brood_usage
+					value = 1
 				}
 			}
 		}
@@ -4080,6 +4101,17 @@ country_event = {
 	option = {
 		name = EXCELLENT
 		add_relic = "r_prethoryn_queen"
+		hidden_effect = {
+			if = {
+				limit = {
+					NOT = { is_variable_set = brood_usage }
+				}
+				set_variable = {
+					which = brood_usage
+					value = 0
+				}
+			}
+		}
 	}
 }
 
@@ -4143,7 +4175,7 @@ starbase_event = {
 
 	trigger = {
 		from.owner = { is_country_type = swarm }
-		NOT = {
+		NOT = { #Aripatch
 			solar_system = {
 				any_system_planet = { is_colony = yes } # For populated systems, they need to invade first
 			}

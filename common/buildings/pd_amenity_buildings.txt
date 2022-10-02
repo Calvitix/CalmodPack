@@ -1,6 +1,6 @@
 # Planetary Diversity File
 #
-# Calvitix Check 3.4.2  18.05.2022
+# Calvitix Check 3.5.2  23.09.2022
 #
 # Merge Venture megacorp 20.04.2021
 #
@@ -18,13 +18,7 @@
 			# NOT = { 
 				# OR = {
 					# is_planet_class = pc_habitat
-					# is_planet_class = pc_pd_barren_cold_hab
-					# is_planet_class = pc_pd_barren_hab
-					# is_planet_class = pc_pd_frozen_hab
-					# is_planet_class = pc_pd_gas_giant_hab
-					# is_planet_class = pc_pd_hothouse_hab
-					# is_planet_class = pc_pd_toxic_hab
-					# is_planet_class = pc_pd_molten_hab
+					# is_pd_habitat = yes
 				# }
 			# }
 			# has_planet_flag = advanced_habitat
@@ -33,17 +27,8 @@
 		# exists = owner
 		# owner = {
 			# is_regular_empire = yes
-			# NOT = { 
-				# OR = {
-						# has_valid_civic = civic_shared_burden 
-						# has_valid_civic = civic_employee_ownership #megacorp
-				# } 
-			# }
+			# NOT = { has_valid_civic = civic_shared_burden }
 		# }
-	# }
-
-	# allow = {
-		# buildings_simple_allow = yes
 	# }
 
 	# destroy_trigger = {
@@ -58,12 +43,7 @@
 				# }
 			# }
 			# owner = { is_regular_empire = no }
-			# owner = { 
-				# OR = {
-						# has_valid_civic = civic_shared_burden 
-						# has_valid_civic = civic_employee_ownership #megacorp
-				# }
-			# }
+			# owner = { has_valid_civic = civic_shared_burden }
 			# has_modifier = slave_colony
 		# }
 	# }
@@ -104,27 +84,6 @@
 	# upgrades = {
 		# "building_paradise_dome"
 	# }
-
-	# ai_weight = {
-		# weight = 0
-		# modifier = {
-			# weight = 100 #High weight to gurantee that if the below is true then the AI should build it
-			# free_housing < 2 #Prevents the AI from running out of residences when nearly out of tiles
-			# OR = {
-				# free_jobs > 0 #prevents spamming of residence buildings when no jobs are open
-				# AND = {
-					# free_housing < 0 #Prevents the AI from running out of residences when nearly out of tiles
-					# NOT = { any_owned_pop = { is_unemployed = yes } }
-				# }
-			# }
-			# free_district_slots = 0 #Do not build when city districts can still be built
-		# }
-		# modifier = {
-			# factor = 0
-			# has_building = building_luxury_residence
-			# owner = { has_technology = tech_paradise_dome }
-		# }
-	# }
 # }
 
 # building_paradise_dome = {
@@ -139,13 +98,7 @@
 			# NOT = { 
 				# OR = {
 					# is_planet_class = pc_habitat
-					# is_planet_class = pc_pd_barren_cold_hab
-					# is_planet_class = pc_pd_barren_hab
-					# is_planet_class = pc_pd_frozen_hab
-					# is_planet_class = pc_pd_gas_giant_hab
-					# is_planet_class = pc_pd_hothouse_hab
-					# is_planet_class = pc_pd_toxic_hab
-					# is_planet_class = pc_pd_molten_hab
+					# is_pd_habitat = yes
 				# }
 			# }
 			# AND = {
@@ -166,13 +119,7 @@
 		# exists = owner
 		# OR = {
 			# owner = { is_regular_empire = no }
-			# owner = { 
-				# OR = { 
-					# has_valid_civic = civic_shared_burden 
-					# has_valid_civic = civic_employee_ownership #megacorp
-				# }
-			# }
-			# buildings_no_crystals = yes
+			# owner = { has_valid_civic = civic_shared_burden }
 			# has_modifier = slave_colony
 		# }
 	# }
@@ -220,46 +167,9 @@
 	# show_tech_unlock_if = {
 		# owner = {
 			# is_regular_empire = yes
-			# NOR = { 
-				# has_valid_civic = civic_shared_burden 
-				# has_valid_civic = civic_employee_ownership #megacorp
-			# }
+			# NOT = { has_valid_civic = civic_shared_burden }
 		# }
 	# }
-
-	# ai_weight = {
-		# weight = 0
-		# modifier = {
-			# weight = 1
-			# buildings_has_crystals = yes
-		# }
-		# modifier = {
-			# factor = 10
-			# free_housing < 0
-		# }
-	# }
-	
-# ###megacorp		
-	# on_queued = {
-		# IF = {
-			# limit = {
-				# owner = { has_technology = tech_construction_templates }
-			# }
-			# owner = { set_timed_country_flag = { flag = buildings_new_crystal_building days = 270 } }
-		# }
-		# ELSE_IF = {
-			# limit = {
-				# owner = { has_technology = tech_assembly_pattern }
-			# }
-			# owner = { set_timed_country_flag = { flag = buildings_new_crystal_building days = 390 } }
-		# }
-		# else = {
-			# planet = { 
-				# owner = { set_timed_country_flag = { flag = buildings_new_crystal_building days = 510 } }
-			# }
-		# }
-	# }
-# ###		
 # }
 
 # building_communal_housing = {
@@ -273,32 +183,18 @@
 			# NOT = { 
 				# OR = {
 					# is_planet_class = pc_habitat
-					# is_planet_class = pc_pd_barren_cold_hab
-					# is_planet_class = pc_pd_barren_hab
-					# is_planet_class = pc_pd_frozen_hab
-					# is_planet_class = pc_pd_gas_giant_hab
-					# is_planet_class = pc_pd_hothouse_hab
-					# is_planet_class = pc_pd_toxic_hab
-					# is_planet_class = pc_pd_molten_hab
+					# is_pd_habitat = yes
 				# }
 			# }
 			# has_planet_flag = advanced_habitat
 		# }
 		# NOT = { has_modifier = slave_colony }
 		# exists = owner
-		# owner = { 
+		# owner = {
 			# is_regular_empire = yes
-			# OR = { 
-				# has_valid_civic = civic_shared_burden 
-				# has_valid_civic = civic_employee_ownership #megacorp
-			# }
+			# has_valid_civic = civic_shared_burden
 		# }
 	# }
-
-	# #disabled by megacorp / activ by pd
-	# #allow = {
-	# #	buildings_simple_allow = yes
-	# #}
 
 	# destroy_trigger = {
 		# exists = owner
@@ -359,27 +255,6 @@
 	# upgrades = {
 		# "building_communal_housing_large"
 	# }
-
-	# ai_weight = {
-		# weight = 0
-		# modifier = {
-			# weight = 100 #High weight to gurantee that if the below is true then the AI should build it
-			# free_housing < 3 #Prevents the AI from running out of residences when nearly out of tiles
-			# OR = {
-				# free_jobs > 0 #prevents spamming of residence buildings when no jobs are open
-				# AND = {
-					# free_housing < 0 #Prevents the AI from running out of residences when nearly out of tiles
-					# NOT = { any_owned_pop = { is_unemployed = yes } }
-				# }
-			# }
-			# free_district_slots = 0 #Do not build when city districts can still be built
-		# }
-		# modifier = {
-			# factor = 0
-			# has_building = building_communal_housing
-			# owner = { has_technology = tech_paradise_dome }
-		# }
-	# }
 # }
 
 # building_communal_housing_large = {
@@ -395,13 +270,7 @@
 				# NOT = { 
 					# OR = {
 						# is_planet_class = pc_habitat
-						# is_planet_class = pc_pd_barren_cold_hab
-						# is_planet_class = pc_pd_barren_hab
-						# is_planet_class = pc_pd_frozen_hab
-						# is_planet_class = pc_pd_gas_giant_hab
-						# is_planet_class = pc_pd_hothouse_hab
-						# is_planet_class = pc_pd_toxic_hab
-						# is_planet_class = pc_pd_molten_hab
+						# is_pd_habitat = yes
 					# }
 				# }
 			# AND = {
@@ -420,19 +289,13 @@
 
 	# destroy_trigger = {
 		# exists = owner
-		# OR = {
-			# has_modifier = slave_colony
-			# buildings_no_crystals = yes
-		# }
+		# has_modifier = slave_colony
 	# }
 
 	# show_tech_unlock_if = {
 		# owner = {
 			# is_regular_empire = yes
-			# OR = { 
-				# has_valid_civic = civic_shared_burden 
-				# has_valid_civic = civic_employee_ownership #megacorp 
-			# }
+			# has_valid_civic = civic_shared_burden
 		# }
 	# }
 
@@ -471,50 +334,104 @@
 		# }
 	# }
 
-# ###megacorp
-	# show_tech_unlock_if = {
-		# OR = { 
-				# has_valid_civic = civic_shared_burden 
-				# has_valid_civic = civic_employee_ownership 
-			# }
-	# }
-# ###	
-
 	# prerequisites = {
 		# "tech_paradise_dome"
 	# }
-
-	# ai_weight = {
-		# weight = 0
-		# modifier = {
-			# weight = 1
-			# buildings_has_crystals = yes
-		# }
-		# modifier = {
-			# factor = 10
-			# free_housing < 0
-		# }
-	# }
-
-# ###megacorp	
-	# on_queued = {
-		# IF = {
-			# limit = {
-				# owner = { has_technology = tech_construction_templates }
-			# }
-			# owner = { set_timed_country_flag = { flag = buildings_new_crystal_building days = 270 } }
-		# }
-		# ELSE_IF = {
-			# limit = {
-				# owner = { has_technology = tech_assembly_pattern }
-			# }
-			# owner = { set_timed_country_flag = { flag = buildings_new_crystal_building days = 390 } }
-		# }
-		# else = {
-			# planet = {
-				# owner = { set_timed_country_flag = { flag = buildings_new_crystal_building days = 510 } }
-			# }
-		# }
-	# }	
-# ###	
 # }
+
+building_pd_hab_barracks = {
+	base_buildtime = @b1_time
+
+	category = amenity
+
+	potential = {
+		has_modifier = military_pd_habitat_reg
+	}
+
+	destroy_trigger = {
+		NOT = { has_modifier = military_pd_habitat_reg }
+	}
+
+	planet_modifier = {
+		planet_housing_add = 6
+		planet_amenities_add = 2
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				has_active_tradition = tr_domination_imperious_architecture
+			}
+		}
+		modifier = {
+			planet_housing_add = 1
+		}
+	}
+
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = @b1_minerals
+		}
+		upkeep = {
+			energy = 2
+		}
+	}
+
+	upgrades = {
+		"building_pd_hab_barrack_large"
+	}
+}
+
+building_pd_hab_barrack_large = {
+	base_buildtime = @b2_time
+	can_build = no
+
+	category = amenity
+
+	potential = {
+		has_modifier = military_pd_habitat_reg
+	}
+
+	allow = {
+		has_upgraded_capital = yes
+	}
+
+	destroy_trigger = {
+		NOT = { has_modifier = military_pd_habitat_reg }
+	}
+
+	planet_modifier = {
+		planet_housing_add = 12
+		planet_amenities_add = 4
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				has_active_tradition = tr_domination_imperious_architecture
+			}
+		}
+		modifier = {
+			planet_housing_add = 1
+		}
+	}
+
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = @b2_minerals
+			rare_crystals = @b2_rare_cost
+		}
+		upkeep = {
+			energy = 3
+			rare_crystals = @b2_rare_upkeep
+		}
+	}
+
+	prerequisites = {
+		"tech_paradise_dome"
+	}
+}

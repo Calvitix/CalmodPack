@@ -37,6 +37,120 @@ mmgsiege_export_planet_balance_and_upkeep = {
 			value = owner.value:mmgsiege_country_base_production_$RESOURCE$
 		}
 	}
+
+	if = { # handle Occupied Resources that gives production/upkeep to occupier
+		limit = {
+			has_deposit = d_occupier_capital
+			exists = owner
+			owner = { is_at_war = yes }
+		}
+		if = { # remove deposit production from balance
+			limit = {
+				is_variable_set = occupation_$RESOURCE$
+				check_variable = {
+					which = occupation_$RESOURCE$
+					value > 0
+				}
+			}
+			subtract_variable = {
+				which = mmgsiege_$RESOURCE$_balance
+				value = occupation_$RESOURCE$
+			}
+		}
+		if = { # add deposit upkeep to balance and remove from upkeep
+			limit = {
+				is_variable_set = occupation_$RESOURCE$_u
+				check_variable = {
+					which = occupation_$RESOURCE$_u
+					value > 0
+				}
+			}
+			change_variable = {
+				which = mmgsiege_$RESOURCE$_balance
+				value = occupation_$RESOURCE$_u
+			}
+			subtract_variable = {
+				which = mmgsiege_$RESOURCE$_upkeep
+				value = occupation_$RESOURCE$_u
+			}
+		}
+	}
+
+	if = { # handle Occupied Resources deposit that removes production/upkeep from occupied
+		limit = {
+			has_deposit = d_occupied_capital
+			exists = owner
+			owner = { is_at_war = yes }
+		}
+		if = { # remove deposit production from balance
+			limit = {
+				is_variable_set = occupied_$RESOURCE$_u
+				check_variable = {
+					which = occupied_$RESOURCE$_u
+					value > 0
+				}
+			}
+			subtract_variable = {
+				which = mmgsiege_$RESOURCE$_balance
+				value = occupied_$RESOURCE$_u
+			}
+		}
+		if = { # add deposit upkeep to balance and remove from upkeep
+			limit = {
+				is_variable_set = occupied_$RESOURCE$
+				check_variable = {
+					which = occupied_$RESOURCE$
+					value > 0
+				}
+			}
+			change_variable = {
+				which = mmgsiege_$RESOURCE$_balance
+				value = occupied_$RESOURCE$
+			}
+			subtract_variable = {
+				which = mmgsiege_$RESOURCE$_upkeep
+				value = occupied_$RESOURCE$
+			}
+		}
+	}
+
+	if = { # handle Occupied Resources deposit that removes production/upkeep from sieged
+		limit = {
+			has_deposit = d_siege_capital
+			exists = owner
+			owner = { is_at_war = yes }
+		}
+		if = { # remove deposit production from balance
+			limit = {
+				is_variable_set = $RESOURCE$_siege_cap_u
+				check_variable = {
+					which = $RESOURCE$_siege_cap_u
+					value > 0
+				}
+			}
+			subtract_variable = {
+				which = mmgsiege_$RESOURCE$_balance
+				value = $RESOURCE$_siege_cap_u
+			}
+		}
+		if = { # add deposit upkeep to balance and remove from upkeep
+			limit = {
+				is_variable_set = $RESOURCE$_siege_cap
+				check_variable = {
+					which = $RESOURCE$_siege_cap_p
+					value > 0
+				}
+			}
+			change_variable = {
+				which = mmgsiege_$RESOURCE$_balance
+				value = $RESOURCE$_siege_cap_p
+			}
+			subtract_variable = {
+				which = mmgsiege_$RESOURCE$_upkeep
+				value = $RESOURCE$_siege_cap_p
+			}
+		}
+	}
 }
 
 mmgsiege_check_for_and_update_resource_shortage = {
@@ -150,12 +264,11 @@ mmgsiege_check_for_and_update_resource_shortage = {
 			mmgsiege_increase_resource_shortage = { RESOURCE = $RESOURCE$ }
 		}
 	}
-	# positive balance, reset progress and decrease or remove modifier
-	else = {
+	else = { # positive balance, reset progress and decrease or remove modifier
 		mmgsiege_decrease_resource_shortage = { RESOURCE = $RESOURCE$ }
 	}
 
-	# save copy of balance, unmodified by stockpile, so we can reset it
+	# restore copy of balance, unmodified by stockpile
 	set_variable = {
 		which = mmgsiege_$RESOURCE$_balance
 		value = mmgsiege_$RESOURCE$_balance_copy
@@ -177,9 +290,17 @@ mmgsiege_increase_resource_shortage = {
 			value = 0
 		}
 	}
+	if = {
+		limit = {
+			check_variable = {
+				which = mmgsiege_$RESOURCE$_shortage_level
+				value < 4
+			}
+		}
 	change_variable = {
 		which = mmgsiege_$RESOURCE$_shortage_level
 		value = 1
+	}
 	}
 	set_variable = {
 		which = mmgsiege_$RESOURCE$_shortage_progress
@@ -851,6 +972,7 @@ mmgsiege_remove_siege_modifier = {
 }
 
 mmgsiege_update_planet_status = {
+	mmgsiege_fix_invalid_shortage_levels = yes
 	if = {
 		limit = { mmgsiege_is_under_siege = yes }
 		set_planet_flag = mmgsiege_under_siege
@@ -974,7 +1096,7 @@ mmgsiege_create_or_remove_shortage_modifiers = {
 			exists = owner
 			OR = {
 				has_planet_flag = mmgsiege_energy_shortage
-				has_planet_flag = mmgsiege_minerals_shortange
+				has_planet_flag = mmgsiege_minerals_shortage
 				has_planet_flag = mmgsiege_food_shortage
 				has_planet_flag = mmgsiege_consumer_goods_shortage
 			}
@@ -998,4 +1120,27 @@ mmgsiege_create_or_remove_shortage_modifiers = {
 			remove_deposit = mmgsiege_shortage_feature
 		}
 	}
+}
+
+mmgsiege_fix_invalid_resource_shortage_level = {
+	if = {
+		limit = {
+			is_variable_set = mmgsiege_$RESOURCE$_shortage_level
+			check_variable = {
+				which = mmgsiege_$RESOURCE$_shortage_level
+				value > 4
+			}
+		}
+		set_variable = {
+			which = mmgsiege_$RESOURCE$_shortage_level
+			value = 4
+		}
+	}
+}
+
+mmgsiege_fix_invalid_shortage_levels = {
+	mmgsiege_fix_invalid_resource_shortage_level = { RESOURCE = energy }
+	mmgsiege_fix_invalid_resource_shortage_level = { RESOURCE = minerals }
+	mmgsiege_fix_invalid_resource_shortage_level = { RESOURCE = food }
+	mmgsiege_fix_invalid_resource_shortage_level = { RESOURCE = consumer_goods }
 }

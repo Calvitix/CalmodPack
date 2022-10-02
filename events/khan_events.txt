@@ -142,16 +142,19 @@ system_event = {
 			# 		set_variable = { which = has_pirate_01 value = 1 }
 			# 	}
 			# }
-			log="create starbase_citadel"
+			# TODO Trying to create a starbase with an invalid starbase design sik'El'Re for ship size starbase_citadel (note: starbases cannot have components that allow them to move or go FTL)
+			log="Try create starbase_citadel"
 			event_target:raider_khanate = {
 				if = {
 					limit = {
 						NOR = {
+							has_technology = tech_starbase_2
 							has_technology = tech_starbase_3
 							has_technology = tech_starbase_4
 							has_technology = tech_starbase_5
 						}
 					}
+					give_technology = { tech = tech_starbase_2 message = no }
 					give_technology = { tech = tech_starbase_3 message = no }
 					give_technology = { tech = tech_starbase_4 message = no }
 					give_technology = { tech = tech_starbase_5 message = no }
@@ -254,13 +257,16 @@ starbase_event = {
 			}
 			set_starbase_module = { slot = 4 module = "gun_battery" }
 			}
-		if = { limit = { NOT = { has_starbase_building = "resource_silo" } }
-			set_starbase_building = { slot = 1 building = "resource_silo" }
+		if = {
+			limit = { NOT = { has_starbase_building = "fleet_academy" } }
+			set_starbase_building = { slot = 1 building = "fleet_academy" }
 		}
-		if = { limit = { NOT = { has_starbase_building = "listening_post" } }
-			set_starbase_building = { slot = 2 building = "listening_post" }
+		if = {
+			limit = { NOT = { has_starbase_building = "resource_silo" } }
+			set_starbase_building = { slot = 2 building = "resource_silo" }
 		}
-		if = { limit = { has_starbase_size > starbase_starfortress }
+		if = {
+			limit = { has_starbase_size > starbase_starfortress }
 		if = {
 			limit = {
 					count_starbase_modules = { type = "shipyard" count < 3 }
@@ -285,6 +291,10 @@ starbase_event = {
 				limit = { NOT = { has_starbase_building = "target_uplink_computer" } }
 				set_starbase_building = { slot = 4 building = "target_uplink_computer" }
 		}
+			# if = {
+			# 	limit = { NOT = { has_starbase_building = "listening_post" } }
+			# 	set_starbase_building = { slot = 5 building = "listening_post" }
+			# }
 			}
 		while = { count = 4
 			create_ship = { name = random design = "NAME_Warrior_Freehold" }
@@ -293,6 +303,7 @@ starbase_event = {
 			set_event_locked = no
 			every_owned_ship = { set_disabled = no reduce_hp_percent = 98 }
 		}
+
 		# fleet = {
 		# 	every_owned_ship = { set_disable_at_health = -1 } # Needed as they get not conquered.
 		# }
@@ -444,8 +455,7 @@ ship_event = {
 				if = {
 					limit = {
 						NOT = {
-							any_system_planet = {
-								has_owner = yes
+							any_system_colony = {
 								is_owned_by = from.owner
 							}
 						}
@@ -509,8 +519,7 @@ ship_event = {
 						}
 					} else_if = {
 						limit = {
-							any_system_planet = {
-								has_owner = yes
+							any_system_colony = {
 								is_colony = yes
 								NOT = { is_owned_by = root.owner }
 								NAND = {
@@ -519,9 +528,8 @@ ship_event = {
 								}
 							}
 						}
-						random_system_planet = {
+						random_system_colony = {
 							limit = {
-								has_owner = yes
 								is_colony = yes
 								NOT = { is_owned_by = root.owner }
 								NAND = {
@@ -569,8 +577,8 @@ ship_event = {
 	is_triggered_only = yes
 	trigger = {
 		is_ship_class = shipclass_starbase
-		exists = owner
-		owner = { is_country_type = awakened_marauders }
+		has_global_flag = marauder_crisis_ongoing
+		exists = event_target:raider_khanate
 		NOR = {
 			is_ship_size = starbase_marauder
 			solar_system = {
@@ -589,21 +597,43 @@ ship_event = {
 		# fleet = { every_owned_ship = { set_disable_at_health = -1 set_disabled = no } }
 		if = {
 			limit = {
+				exists = owner
+				exists = solar_system
 				solar_system = {
 					any_fleet_in_system = {
 						exists = owner
+						is_civilian = no
+						is_mobile = yes
 						NOT = { is_owned_by = root.owner }
 						owner = { is_hostile = root.owner }
-						is_civilian = no
 					}
 				}
 			}
-			log = "destroy starbase marauder"
+			if = {
+				limit = {
+					OR = {
+						owner = { is_country_type = awakened_marauders }
+						solar_system = {
+							any_fleet_in_system = {
+								exists = owner
+						is_civilian = no
+								is_mobile = yes
+								owner = {
+									NOT = { is_same_empire = root.owner }
+									is_hostile = root.owner
+									is_country_type = awakened_marauders
+					}
+				}
+			}
+					}
+				}
+				log="destroy starbase marauder"
 			fleet = {
 				every_owned_ship = { destroy_ship = this }
 			}
 			destroy_fleet = fleet
 		}
+	}
 	}
 }
 
@@ -986,14 +1016,10 @@ system_event = {
 	immediate = {
 		# system_owner does not exists
 		# log="test khan.310 \\[former_starbase_owner.GetName] or \\[Fromfrom.Owner.GetName]"
-		if = {
-			limit = {
-				exists = starbase
-				has_owner = yes
-			}
+		if = { limit = { exists = starbase has_owner = yes }
 			delete_fleet = starbase.fleet
 			# if = { limit = { NOT = { has_star_flag = starbase_destroyed } }
-			# 	system_event = { id = khan.310 days = 1 scopes = { fromfrom = fromfrom } }
+			# 	system_event = { id = khan.310 days = 2 scopes = { fromfrom = fromfrom } }
 			# 	set_timed_star_flag = { flag = starbase_destroyed days = 5 }
 			# 	log="khan.310 exists = starbase \\[former_starbase_owner.GetName] or \\[Fromfrom.Owner.GetName]"
 			# }
@@ -1077,6 +1103,110 @@ planet_event = {
 				root.sector = {
 					assign_leader = prev
 				}
+			}
+		}
+	}
+}
+
+# Submit to Khan (Pre-Helper)
+# Used also for marauder.555 and marauder.551
+# This = new subject
+country_event = {
+	id = khan.559
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = { is_subject_of_khan = no }
+	immediate = {
+		## If has_federation give Horde malus partial back.
+		if = {
+			limit = { exists = capital_scope }
+			capital_scope = { save_event_target_as = capital_planet }
+		} else = {
+			ordered_owned_planet = {
+				limit = { is_colony = yes }
+				position = 0
+				order_by = trigger:num_pops
+				save_event_target_as = capital_planet
+			}
+		}
+		event_target:capital_planet = {
+			set_variable = { which = "planets_lost_to_marauder" value = 1 } # temp. only
+			if = { limit = { root = { has_federation = yes } }
+				change_variable = { which = "planets_lost_to_marauder" value = 1 }
+				if = { limit = { root = { is_federation_leader = yes } }
+					change_variable = { which = "planets_lost_to_marauder" value = 1 }
+				}
+				root.federation = {
+					every_member = {
+						change_variable = { which = "planets_lost_to_marauder" value = prevprev.planets_lost_to_marauder }
+					}
+				}
+			}
+			if = { limit = { root = { num_defensive_pacts > 0 } }
+				every_playable_country = {
+					limit = { has_defensive_pact = root }
+					change_variable = { which = "planets_lost_to_marauder" value = 1 }
+					change_variable = { which = "planets_lost_to_marauder" value = prev.planets_lost_to_marauder }
+				}
+			}
+		}
+		if = { limit = { check_variable = { which = "planets_lost_to_marauder" value < 6 } }
+			set_variable = { which = "planets_lost_to_marauder" value = 6 }
+		}
+		divide_variable = { which = "planets_lost_to_marauder" value = 2 }
+
+		if = { limit = { is_overlord = yes }
+			every_subject = {
+				limit = { merg_is_standard_empire = yes }
+				set_subject_of = { who = none }
+				change_variable = { which = "planets_lost_to_marauder" value = 1 }
+				if = {
+					limit = {
+						OR = {
+							is_ai = no
+							fleet_power < 24000
+							check_variable = { which = "planets_lost_to_marauder" value > 22 }
+							num_owned_planets < 3
+						}
+						NOT = { has_active_event = { marauder.551 } }
+					}
+					country_event = { id = marauder.551 } # Submit Dialog
+				}
+			}
+			leave_alliance = { override_requirements = yes }
+		} else_if = { limit = { is_subject = yes exists = overlord }
+			overlord = { # Much less likely
+				change_variable = { which = "planets_lost_to_marauder" value = 2 }
+			}
+			leave_alliance = { override_requirements = yes }
+		}
+
+		if = { limit = { is_galactic_community_member = yes }
+			remove_from_galactic_community = yes
+		}
+
+		# Can't rebel for a year after submitting.
+		set_timed_country_flag = { flag = rebellion_cooldown days = @CmtConstKhanLifespan_5e }
+		save_event_target_as = new_satrapy
+		every_playable_country = { # Notify
+			limit = {
+				is_ai = no
+				has_communications = root
+				NOT = { is_same_empire = root }
+			}
+			country_event = { id = marauder.552 days = 2 }
+		}
+		observer_event = { id = observer.19 }
+		country_event = { id = marauder.553 days = 12 } # Init base
+		# add_modifier = { modifier = "satrapy_of_horde" }
+
+		event_target:raider_khanate = {
+			copy_random_tech_from = { who = prev area = physics }
+			add_resource = { influence = 100 }
+		}
+		event_target:capital_planet = {
+			if = { limit = { is_variable_set = planets_lost_to_marauder }
+				clear_variable = planets_lost_to_marauder
 			}
 		}
 	}
@@ -1177,13 +1307,28 @@ country_event = {
 					limit = {
 						any_owned_starbase = { has_starbase_size < starbase_starhold }
 					}
-					count = 2
-					random_owned_starbase = {
-						limit = { has_starbase_size < starbase_starhold }
+					count = 3
+					random_system_within_border = {
+						limit = {
+							exists = starbase
+							starbase = { has_starbase_size < starbase_starhold }
+						}
+						weights = {
+							base = 1
+							modifier = { add = 1 is_inside_nebula = yes }
+							modifier = { add = 2 has_natural_wormhole = yes }
+							modifier = { factor = 3 is_bottleneck_system = yes }
+							modifier = {
+								factor = 5
+								any_system_colony = { is_under_colonization = no }
+							}
+						}
+						starbase = {
 						set_starbase_size = starbase_starhold
 						starbase_event = { id = khan.302 days = 2 }
 					}
 				}
+			}
 			}
 			# Survey Own Space
 			every_planet_within_border = {
@@ -1511,6 +1656,7 @@ system_event = {
 					has_planet_flag = has_megastructure
 				}
 				is_ringworld = no
+
 			}
 			weights = { base = 1 modifier = { add = 2 is_a_planet = yes } }
 			# log = "--- Habitat build site chosen on planet \\[This.GetName], proceeding..."
@@ -1520,8 +1666,9 @@ system_event = {
 					type = "habitat_0"
 					planet = prev
 					owner = from					# space_owner
-					graphical_culture = mammalian_01
+					graphical_culture = "mammalian_01"
 				}
+				# set_star_flag = marauder_habitat_placed
 			}
 			# Populate marauder habitat
 			random_moon = {
@@ -1531,15 +1678,28 @@ system_event = {
 					is_colony = no
 					is_colonizable = yes
 				}
+
+				# log = "--- Habitat \\[This.GetName] is being populated..."
+				# space_owner = {
+				# 	save_event_target_as = colony_country
+				# 	species = { save_event_target_as = colony_species }
+				# }
+				# TODO: Force-set to random/mining habitat?
+				# random_list = { # Hackely hack! ^_^
+				# 	3 = { set_planet_flag = mining_habitat }
+				# 	2 = { set_planet_flag = research_habitat }
+				# 	3 = { set_planet_flag = energy_habitat }
+				# }
 				while = {
-					count = 8
+					count = 7
 					create_pop = {
-						species = from.species
-						ethos = { ethic = "ethic_militarist" }
+						species = from.owner_main_species
+						ethos = { ethic = "ethic_militarist" } # ethic = "ethic_egalitarian"
 					}
 				}
-				set_controller = from # space_owner
 				# set_owner = space_owner
+				set_controller = from # space_owner
+				set_name = random # TODO more variations?
 				add_building = building_hab_major_capital				# 3 jobs
 				# add_building = building_foundry_1			# 2
 				# add_building = building_foundry_1			# 2
@@ -1547,8 +1707,7 @@ system_event = {
 				# add_building = building_hydroponics_farm	# 3
 				add_district = district_hab_housing
 				add_district = district_hab_cultural				# 3
-				if = {
-					# 6 jobs
+				if = { # 6 jobs
 					limit = { has_planet_flag = mining_habitat }
 					add_district = district_hab_mining
 					add_district = district_hab_mining
@@ -1571,7 +1730,7 @@ system_event = {
 				# TODO: Add negative modifier that needs to be removed with expensive decision?
 				start_colony = {
 					owner = from
-					species = from.species
+					species = from.owner_main_species
 					# ethos = random
 				} # "Unexpected token:  (everything after scope start_colony)
 			}
@@ -1581,7 +1740,7 @@ system_event = {
 			random_planet_within_border = {
 				limit = {
 					is_colonizable = yes
-					habitability = { who = prev.species value > 0.65 }
+					habitability = { who = prev.owner_main_species value > 0.65 }
 				}
 				weights = {
 					base = 1
@@ -1595,7 +1754,7 @@ system_event = {
 				}
 				start_colony = {
 					owner = prev
-					species = prev.species
+					species = prev.owner_main_species
 					# ethos = owner
 				}
 			}
