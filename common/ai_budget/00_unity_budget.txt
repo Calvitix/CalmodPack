@@ -17,12 +17,12 @@ unity_expenditure_edicts = {
 	category = edicts
 
 	potential = {
-		always = yes		
-		#has_technology = tech_ascension_theory
+		str_ai_budget_potential_unity_expenditure_edicts = yes
+		has_technology = tech_ascension_theory
 	}
 
 	weight = {
-		weight = 1 # 0.2 #Ori3.3.1,  Starnet Value = 1
+		weight = 0.2
 	}
 }
 
@@ -32,6 +32,7 @@ unity_expenditure_traditions = {
 	category = traditions
 
 	potential = {
+		str_ai_budget_potential_unity_expenditure_traditions = yes
 		has_unlocked_all_traditions = no
 	}
 
@@ -46,6 +47,7 @@ unity_expenditure_megastructures = {
 	category = megastructures
 
 	potential = {
+		str_ai_budget_potential_unity_expenditure_megastructures = yes
 		is_at_war = no
 		can_build_unity_megastructures = yes
 
@@ -53,7 +55,6 @@ unity_expenditure_megastructures = {
 			type = unity
 			amount > 7500
 		}
-		str_ai_should_build_megastructures = yes
 	}
 
 	weight = {
@@ -72,7 +73,7 @@ unity_expenditure_decisions = {
 	category = decisions
 
 	potential = {
-		always = yes
+		str_ai_budget_potential_unity_expenditure_decisions = yes
 	}
 
 	weight = {
@@ -90,6 +91,7 @@ unity_expenditure_missing_scientist = {
 	category = leaders
 
 	potential = {
+		str_ai_budget_potential_unity_expenditure_missing_scientist = yes
 		OR = {
 			scientist_count < 4
 
@@ -116,7 +118,8 @@ unity_expenditure_missing_scientist = {
 	}
 
 	desired_max = {
-		base = 1500
+		base = 1.25
+		mult = value:leader_cost #will cap at 25% more than it costs to buy a leader
 	}
 }
 
@@ -126,7 +129,7 @@ unity_expenditure_leaders = {
 	category = leaders
 
 	potential = {
-		always = yes
+		str_ai_budget_potential_unity_expenditure_leaders = yes
 	}
 
 	weight = {
@@ -136,6 +139,10 @@ unity_expenditure_leaders = {
 			years_passed < 50	# Important for scientists
 		}
 	}
+
+	desired_min = {
+		base = 200
+	}
 }
 
 unity_upkeep_country = {
@@ -144,7 +151,7 @@ unity_upkeep_country = {
 	category = country
 
 	potential = {
-		always = yes
+		str_ai_budget_potential_unity_upkeep_country = yes
 	}
 
 	weight = {
@@ -162,23 +169,37 @@ unity_upkeep_leaders = {
 	category = leaders
 
 	potential = {
-		always = yes
+		str_ai_budget_potential_unity_upkeep_leaders = yes
 	}
 
 	weight = {
 		weight = 0.3
 		modifier = {
-			add = 15
-			years_passed < 50	# Important for scientists
+			factor = 1.25
+			OR = {
+				scientist_count < 4
+
+				NOT = {
+					research_leader = {
+						area = physics
+					}
+				}
+				NOT = {
+					research_leader = {
+						area = society
+					}
+				}
+				NOT = {
+					research_leader = {
+						area = engineering
+					}
+				}
+			}
 		}
 	}
 
-	desired_min = {
-		base = 20
-	}
-
 	desired_max = {
-		base = 200
+		base = 50
 	}
 }
 
@@ -188,7 +209,7 @@ unity_upkeep_edicts = {
 	category = edicts
 
 	potential = {
-		always = yes
+		str_ai_budget_potential_unity_upkeep_edicts = yes
 	}
 
 	weight = {

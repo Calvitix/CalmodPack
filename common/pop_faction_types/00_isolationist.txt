@@ -162,7 +162,7 @@ isolationist = {
 			owner = {
 				any_relation = {
 					has_communications = root.owner
-					is_country_type_with_subjects = yes
+					is_country_type = default
 					NOT = { exists = overlord }
 				}
 			}
@@ -272,7 +272,7 @@ isolationist = {
 		unfulfilled_title = "ISOLATIONIST_FEW_NON_AGGRESSION1"
 		desc = "ISOLATIONIST_NON_AGGRESSION_DESC1"
 		
-		fulfilled_effect = 7
+		fulfilled_effect = 5
 		unfulfilled_effect = -0.001
 		
 		potential = {
@@ -293,22 +293,20 @@ isolationist = {
 		
 		trigger = {
 			owner = {
-				any_country = {
 					OR = {
-						has_non_aggression_pact = root.owner
-						has_association_status = root.owner
+					num_non_aggression_pacts > 0
+					exists = associated_federation
 					}
 				}
 			}
 		}
-	}
 
 	demand = {
 		title = "ISOLATIONIST_NON_AGGRESSION2"
 		unfulfilled_title = "ISOLATIONIST_FEW_NON_AGGRESSION2"
 		desc = "ISOLATIONIST_NON_AGGRESSION_DESC2"
 		
-		fulfilled_effect = 14
+		fulfilled_effect = 10
 		unfulfilled_effect = -0.001
 		
 		potential = {
@@ -356,7 +354,7 @@ isolationist = {
 		unfulfilled_title = "ISOLATIONIST_FEW_NON_AGGRESSION3"
 		desc = "ISOLATIONIST_NON_AGGRESSION_DESC3"
 		
-		fulfilled_effect = 21
+		fulfilled_effect = 15
 		unfulfilled_effect = -0.001
 		
 		potential = {
@@ -395,7 +393,7 @@ isolationist = {
 		unfulfilled_title = "ISOLATIONIST_NO_PEACE1"
 		desc = "ISOLATIONIST_PEACE_DESC1"
 		
-		fulfilled_effect = 10
+		fulfilled_effect = 5
 		unfulfilled_effect = -0.001
 		
 		potential = {
@@ -419,7 +417,7 @@ isolationist = {
 		unfulfilled_title = "ISOLATIONIST_NO_PEACE2"
 		desc = "ISOLATIONIST_PEACE_DESC2"
 		
-		fulfilled_effect = 15
+		fulfilled_effect = 10
 		unfulfilled_effect = -0.001
 		
 		potential = {
@@ -446,7 +444,7 @@ isolationist = {
 		unfulfilled_title = "ISOLATIONIST_NO_PEACE3"
 		desc = "ISOLATIONIST_PEACE_DESC3"
 		
-		fulfilled_effect = 20
+		fulfilled_effect = 15
 		unfulfilled_effect = -0.001
 		
 		potential = {
@@ -480,7 +478,7 @@ isolationist = {
 			exists = owner
 			owner = {
 				is_homicidal = no
-				is_country_type_with_subjects = yes
+				is_country_type = default
 				is_megacorp = no
 			}
 		}
@@ -542,7 +540,7 @@ isolationist = {
 			description = "EMBRACE_FACTION_DESC"
 			
 			cost = {
-				influence = 500
+				unity = 5000
 			}
 			
 			potential = {
@@ -550,14 +548,10 @@ isolationist = {
 				owner = {
 					OR = {
 						is_subject = no
-						NOT = {
-							any_agreement = {
-								agreement_preset = preset_dominion
+						NOT = { any_agreement = { agreement_preset = preset_dominion } }
 							}
 						}
 					}
-				}
-			}
 			
 			valid = {
 				custom_tooltip = {
@@ -594,7 +588,7 @@ isolationist = {
 						every_relation = {
 							limit = {
 								is_ai = no
-								is_country_type_with_subjects = yes
+								is_country_type = default
 								has_communications = prev
 								has_intel_level = {
 									who = prev

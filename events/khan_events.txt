@@ -159,6 +159,7 @@ system_event = {
 					give_technology = { tech = tech_starbase_4 message = no }
 					give_technology = { tech = tech_starbase_5 message = no }
 				}
+				# FIXME Trying to create a starbase with an invalid starbase design
 				if = {
 					limit = { NOT = { has_existing_ship_design = starbase_citadel } }
 					create_ship_design = { design = "NAME_Marauder_Citadel" }
@@ -230,8 +231,14 @@ starbase_event = {
 	id = khan.302
 	hide_window = yes
 	is_triggered_only = yes
+	# trigger = { }
 	immediate = {
-		if = { limit = { NOT = { is_owned_by = event_target:raider_khanate } }
+		if = {
+			limit = {
+				exists = event_target:raider_khanate
+				NOT = { is_owned_by = event_target:raider_khanate }
+				has_global_flag = marauder_crisis_ongoing
+			}
 			set_owner = event_target:raider_khanate
 		}
 		# TODO needs free slot check somehow: "Building slot is invalid."
@@ -1212,6 +1219,40 @@ country_event = {
 	}
 }
 
+# Remove old Marauder
+# Remove old Marauder
+country_event = {
+	id = khan.606
+	hide_window = yes
+	is_triggered_only = yes
+	immediate = {
+		if = { limit = { exists = event_target:raider_khanate }
+			clear_global_event_target = raider_khanate
+		}
+		if = { limit = { exists = event_target:marauder_precursor }
+			clear_global_event_target = marauder_precursor
+		}
+		if = { limit = { exists = event_target:marauder_rally_point }
+			clear_global_event_target = marauder_rally_point
+		}
+		destroy_country = yes
+		if = { limit = { exists = event_target:marauders_garrison_1 }
+			event_target:marauders_garrison_1 = {
+				every_controlled_fleet = {
+					limit = {
+						OR = {
+							has_fleet_flag = satrapy_garrison
+							has_fleet_flag = satrapy_garrison_fleet
+						}
+					}
+					destroy_fleet = this
+				}
+				destroy_country = yes
+			}
+		}
+	}
+}
+
 # Handover parts of marauder country for Diadochi (HIDDEN)
 # Via marauder.601 and marauder.609
 # this = Diadochi
@@ -1255,8 +1296,10 @@ country_event = {
 					# 	modifier = { add = 2 fleet_power > 11000 }
 					# 	modifier = { add = 3 fleet_power > 22000 }
 					# }
-					set_owner = root
+					if = { limit = { exists = leader }
 					leader = { set_owner = root }
+				}
+					set_owner = root
 				}
 			}
 			random_owned_fleet = {
@@ -1294,6 +1337,7 @@ country_event = {
 					}
 				}
 				add_500_unity_per_year_passed = yes
+
 				# Normalize Starbases
 				every_owned_starbase = {
 					limit = { has_starbase_size = starbase_marauder }					# Maybe all?
@@ -1378,6 +1422,7 @@ country_event = {
 			add_ship_design = last_created_design
 			create_ship_design = { design = "NAME_Outrider" }
 			add_ship_design = last_created_design
+
 			### Dynamic Empire fleet_power
 			set_variable = { which = "successor_fleet_power" value = 40000 }
 			# Store each fleet_power to var.
@@ -1449,8 +1494,100 @@ country_event = {
 				establish_communications_no_message = root
 			}
 		}
-		country_event = { id = khan.612 days = 7 }
-		# Build Habitats
+		country_event = { id = khan.612 days = 7 } # Build Habitats
+
+		if = { limit = { NOT = { has_civic = civic_slaver_guilds } }
+			force_add_civic = civic_slaver_guilds
+		}
+		if = { limit = { NOT = { has_civic = civic_warrior_culture } }
+			force_add_civic = civic_warrior_culture
+		} else_if = { limit = { NOT = { has_civic = civic_shared_burden } }
+			force_add_civic = civic_shared_burden
+		}
+
+		# Find better capital
+		ordered_owned_planet = {
+			limit = {
+				exists = owner
+				exists = starbase
+				any_owned_species = {
+					prev = { is_majority_species = prev }
+					species_can_be_necrophaged = yes
+					NOR = {
+						is_archetype = LITHOID
+						is_species_class = PLANT
+						is_species_class = FUN
+					}
+				}
+			}
+			position = 1
+			order_by = trigger:num_pops
+			set_capital = yes
+		}
+
+		# Find better dominant species
+		random_list = {
+			25 = {
+				modifier = {
+					factor = 0
+					NAND = {
+						exists = capital_scope
+						capital_scope = {
+							any_owned_species = {
+								prev = { is_majority_species = prev }
+								OR = {
+									species_can_be_necrophaged = yes
+									is_same_species = prev.owner_species
+								}
+								NOR = {
+									is_archetype = LITHOID
+									is_species_class = PLANT
+									is_species_class = FUN
+								}
+							}
+						}
+					}
+				}
+				capital_scope = {
+					random_owned_species = {
+						limit = {
+							prev = { is_majority_species = prev }
+							OR = {
+								species_can_be_necrophaged = yes
+								is_same_species = prev.owner_species
+							}
+							NOR = {
+								is_archetype = LITHOID
+								is_species_class = PLANT
+								is_species_class = FUN
+							}
+						}
+						root = { change_dominant_species = { species = prev } }
+						save_event_target_as = marauder_species
+						# log="TAKE CAPITAL SPECIES"
+					}
+				}
+			}
+			25 = {
+				modifier = {
+					factor = 0.01
+					pop_percentage = {
+						percentage > 0.34
+						limit = { is_same_species = root.owner_species }
+					}
+				}
+				if = { limit = { exists = event_target:marauder_species }
+					no_scope = { save_global_event_target_as = marauder_species }
+					clear_global_event_target = marauder_species
+				}
+				reroll_random = yes
+				# log = "RECHECK MARAUDER SPECIES"
+				get_marauder_species = yes
+			}
+			1 = {
+				# log="OLD MARAUDER SPECIES"
+			}
+		}
 		# # event_target:second_diadochi_origin
 		# random_owned_planet = {
 		# 	prev = { CmtEffectCreateAdmiral_MarauderStandard = yes }

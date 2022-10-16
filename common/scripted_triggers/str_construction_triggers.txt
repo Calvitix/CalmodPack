@@ -143,6 +143,7 @@ str_bureaucratic_destroy = {
 }
 
 str_foundry_allow = {
+	hidden_trigger = {
 	str_vanilla_buildings_allow_compatibility = yes
 	or = {
         owner = {
@@ -214,6 +215,7 @@ str_foundry_allow = {
 			str_extra_switcher = no
 			num_pops > 8
 		}
+	}
 	}
 }
 
@@ -1246,6 +1248,7 @@ resettlement_cheesy_disable = {
 
 
 str_hydroponics_allow = {
+	hidden_trigger = {
 	str_vanilla_buildings_allow_compatibility = yes
     or = {
 		owner = { not = { has_global_flag = str_planet_economic_modul_flag } }
@@ -1262,6 +1265,7 @@ str_hydroponics_allow = {
 			free_jobs < 6
 		}
 		free_building_slots > 1		
+	}
 	}
 }
 
@@ -1343,6 +1347,7 @@ str_mineral_purification_destroy = {
 
 
 str_energy_grid_allow = {
+	hidden_trigger = {
 	str_vanilla_buildings_allow_compatibility = yes
 	or = {
 		owner = { not = { has_global_flag = str_planet_economic_modul_flag } }
@@ -1351,6 +1356,7 @@ str_energy_grid_allow = {
 			is_ai=no
 		}
 		free_building_slots > 1		
+	}
 	}
 }
 
@@ -1412,15 +1418,19 @@ str_industrial_switcher = {
 str_city_district_potential = {
 	str_city_district_allow = yes
 }
+
 str_industrial_district_potential = {
 	str_industrial_district_allow = yes
 }
+
 str_energy_district_potential = {
 	str_energy_district_allow = yes
 }
+
 str_mineral_district_potential = {
 	str_mineral_district_allow = yes
 }
+
 str_food_district_potential = {
 	str_food_district_allow = yes
 }
@@ -1672,6 +1682,19 @@ str_ai_should_build_megastructures = {
 			AND = {
 				has_country_flag = str_country_ai_should_not_build_megastructures
 				str_is_megastructures_empire = no 		# Megastructures empires should build megastructures anyway.
+			}
+		}
+		OR = {
+			is_at_war = no
+			any_war = {
+				any_war_participant = {
+					is_hostile = prevprev
+					relative_power = {
+						who = prevprev
+						category = fleet
+						value < equivalent
+					}
+				}
 			}
 		}
 	}

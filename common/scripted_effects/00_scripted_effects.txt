@@ -102,6 +102,7 @@ create_subterranean_nation = {
 		log = "creating subterran Nation country..."
 		create_country = {
 			name = "NAME_Subterranean_Nation"
+			adjective = "SUBTERRANEAN" # Correction de bug
 			species = last_created_species
 			type = adversary
 			ethos = random
@@ -2125,7 +2126,14 @@ make_unleashed_messenger = {
 		}
 		else = { modify_species = { portrait = aqu7 } }
 	}
-	#TODO_TOX handle them
+	else_if = {
+		limit = { root = { is_species_class = TOX } }
+		if = {
+			limit = { NOT = { root = { species_portrait = tox5 } } }
+			modify_species = { portrait = tox5 }
+		}
+		else = { modify_species = { portrait = tox8 } }
+	}
 }
 
 make_leashed_messenger = {
@@ -2217,7 +2225,14 @@ make_leashed_messenger = {
 		}
 		else = { modify_species = { portrait = aqu7 } }
 	}
-	#TODO_TOX handle them
+	else_if = {
+		limit = { root = { is_species_class = TOX } }
+		if = {
+			limit = { NOT = { root = { species_portrait = tox5 } } }
+			modify_species = { portrait = tox5 }
+		}
+		else = { modify_species = { portrait = tox8 } }
+	}
 }
 
 wipe_pop_ethos = {
@@ -6115,6 +6130,7 @@ create_nivlac_effect = {
 		create_species = {
 			name = "NAME_Nivlac"
 			plural = "NAME_Nivlacs"
+			adjective = "NAME_Nivlac" # Correction de bug
 			class = FUN
 			portrait = "fun15"
 			namelist = "FUN4"
@@ -6136,6 +6152,7 @@ create_nivlac_effect = {
 		create_species = {
 			name = "NAME_Nivlac"
 			plural = "NAME_Nivlacs"
+			adjective = "NAME_Nivlac" # Correction de bug
 			class = FUN
 			portrait = "fun15"
 			namelist = "FUN4"
@@ -6158,7 +6175,8 @@ create_nu_baol_effect = {
 		}
 		create_species = {
 			name = "NAME_Nu_Baol"
-			plural = "NAME_Nu_Baol"
+			plural = "NAME_Nu_Baol_plural" # Correction de bug
+			adjective = "NAME_Nu_Baol" # Correction de bug
 			class = "PLANT"
 			portrait = pla16_baol
 			namelist = "PLANT2"
@@ -6181,12 +6199,67 @@ create_nu_baol_effect = {
 	else = {
 		create_species = {
 			name = "NAME_Nu_Baol"
-			plural = "NAME_Nu_Baol"
+			plural = "NAME_Nu_Baol_plural" # Correction de bug
+			adjective = "NAME_Nu_Baol" # Correction de bug
 			class = "PLANT"
 			portrait = pla16_baol
 			namelist = "PLANT2"
-			extra_trait_points = 3
+			extra_trait_points = 4
 			traits = {
+				trait = "trait_agrarian"
+				trait = "trait_communal"
+				trait = "trait_venerable"
+				trait = "trait_delicious"
+				trait = "trait_slow_breeders"
+				trait = "trait_pc_gaia_preference"
+			}
+			effect = {
+				save_global_event_target_as = nu_baol_species
+			}
+		}
+	}
+}
+
+create_hive_nu_baol_effect = {
+	if = {
+		limit = {
+			host_has_dlc = "Plantoids Species Pack"
+		}
+		create_species = {
+			name = "NAME_Nu_Baol"
+			plural = "NAME_Nu_Baol_plural" # Correction de bug
+			adjective = "NAME_Nu_Baol"
+			class = "PLANT"
+			portrait = pla16_baol
+			namelist = "PLANT2"
+			extra_trait_points = 4
+			traits = {
+				trait = "trait_hive_mind"
+				trait = "trait_plantoid_phototrophic"
+				trait = "trait_agrarian"
+				trait = "trait_communal"
+				trait = "trait_venerable"
+				trait = "trait_delicious"
+				trait = "trait_slow_breeders"
+				trait = "trait_pc_gaia_preference"
+			}
+			effect = {
+				save_global_event_target_as = nu_baol_species
+			}
+		}
+	}
+
+	else = {
+		create_species = {
+			name = "NAME_Nu_Baol"
+			plural = "NAME_Nu_Baol_plural" # Correction de bug
+			adjective = "NAME_Nu_Baol"
+			class = "PLANT"
+			portrait = pla16_baol
+			namelist = "PLANT2"
+			extra_trait_points = 4
+			traits = {
+				trait = "trait_hive_mind"
 				trait = "trait_agrarian"
 				trait = "trait_communal"
 				trait = "trait_venerable"
@@ -7311,7 +7384,8 @@ central_crystal_spawn_effect = {
 central_crystal_country_spawn_effect = {
 	create_species = {
 		name = "NAME_Central_Crystal_Species"
-		plural = "NAME_Central_Crystal_Species"
+		plural = "NAME_Central_Crystal_Species_Plural" # Correction de bug
+		adjective = "NAME_Central_Crystal_Species" # Correction de bug
 		class = PRE_ART
 		portrait = art20
 		namelist = "ART4"
@@ -7719,6 +7793,50 @@ set_origin_effect = {
 	else = {
 		set_origin = origin_default
 	}
+
+	# Fix hive/machine
+	if = {
+		limit = {
+			is_machine_empire = yes
+			NOT = { has_trait = trait_machine_unit }
+		}
+		country_remove_ethic = ethic_gestalt_consciousness
+		shift_ethic = ethic_xenophobe
+		change_government = random
+	}
+	else_if = {
+		limit = {
+			is_hive_empire = yes
+			NOT = { has_trait = trait_hive_mind }
+		}
+		country_remove_ethic = ethic_gestalt_consciousness
+		shift_ethic = ethic_xenophobe
+		change_government = random
+	}
+	else_if = {
+		limit = {
+			is_machine_empire = no
+			has_trait = trait_machine_unit
+		}
+		shift_ethic = ethic_gestalt_consciousness
+		change_government = {
+			authority = auth_machine_intelligence
+			cooldown = no
+			remove_invalid_civics = yes
+		}
+	}
+	else_if = {
+		limit = {
+			is_hive_empire = no
+			has_trait = trait_hive_mind
+		}
+		shift_ethic = ethic_gestalt_consciousness
+		change_government = {
+			authority = auth_hive_mind
+			cooldown = no
+			remove_invalid_civics = yes
+		}
+	}
 }
 
 set_merchant_government_effect = {
@@ -7791,6 +7909,7 @@ create_demon_species_effect = {
 		}
 		create_species = {
 			name = "NAME_Demon_Refugees"
+			adjective = "NAME_Demon_Refugees" # Correction de bug
 			plural = "NAME_Demon_Refugee_pl"
 			class = MAM
 			namelist = random
@@ -7809,6 +7928,7 @@ create_demon_species_effect = {
 	else = {
 		create_species = {
 			name = "NAME_Demon_Refugees"
+			adjective = "NAME_Demon_Refugees" # Correction de bug
 			plural = "NAME_Demon_Refugee_pl"
 			class = MAM
 			namelist = random

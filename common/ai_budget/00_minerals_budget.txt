@@ -17,53 +17,53 @@ minerals_expenditure_buffer = { # Buffer, will not be spent
 	category = buffer
 
 	potential = {
-		always = yes
+		str_ai_budget_potential_minerals_expenditure_buffer = yes
 	}
 
 	weight = {
-		weight = 0.0
+		weight = 0.05
 	}
 }
 
-minerals_expenditure_planets = {
+minerals_expenditure_planets_low = {
 	resource = minerals
 	type = expenditure
 	category = planets
 
 	potential = {
-		always = yes
+		str_ai_budget_potential_minerals_expenditure_planets_low = yes
+		resource_stockpile_compare = { resource = minerals value < 1000 }
 	}
 
 	weight = {
-		weight = 0.80
+		weight = 1.0
 	}	
-	desired_min = {
-		base = 50000
-	}
 }
 
-minerals_expenditure_stations = {
+minerals_expenditure_planets_med = {
 	resource = minerals
 	type = expenditure
-	category = stations
+	category = planets
 
 	potential = {
-		years_passed < 4
+		str_ai_budget_potential_minerals_expenditure_planets_med = yes
+		resource_stockpile_compare = { resource = minerals value >= 1000 }
+		resource_stockpile_compare = { resource = minerals value < 2000	}
 	}
 
 	weight = {
-		weight = 0.25
+		weight = 0.8
 	}
 }
 
-minerals_expenditure_stations_later = {
+minerals_expenditure_planets_high = {
 	resource = minerals
 	type = expenditure
-	category = stations
+	category = planets
 
 	potential = {
-		years_passed < 13
-		years_passed > 3
+		str_ai_budget_potential_minerals_expenditure_planets_high = yes
+		resource_stockpile_compare = { resource = minerals value >= 2000 }
 	}
 
 	weight = {
@@ -71,147 +71,14 @@ minerals_expenditure_stations_later = {
 	}
 }
 
-minerals_expenditure_stations_later2 = {
+minerals_expenditure_stations_low = {
 	resource = minerals 
 	type = expenditure
 	category = stations
 	
 	potential = {
-		years_passed > 12
-	}
-	
-	weight = {
-		weight = 0.4
-	}	
-	desired_min = {
-		base = 2000
-	}
-}
-
-minerals_expenditure_decisions = {
-	resource = minerals 
-	type = expenditure
-	category = decisions
-	
-	potential = {
-		always = yes
-	}
-	
-	weight = {
-		weight = 0
-	}
-	desired_min = {
-		base = 25000
-	}
-}
-
-minerals_expenditure_ships = {
-	resource = minerals 
-	type = expenditure
-	category = ships
-	
-	potential = {
-		has_ascension_perk = ap_become_the_crisis
-		has_crisis_level = crisis_level_3
-	}
-	
-	weight = {
-		weight = 0.25
-	}
-}
-
-minerals_expenditure_ships_excess = {
-	resource = minerals 
-	type = expenditure
-	category = ships
-	
-	potential = {
-		has_ascension_perk = ap_become_the_crisis
-		has_crisis_level = crisis_level_3
-		resource_stockpile_compare = {
-			resource = minerals
-			value > 2000
-		}
-	}
-	
-	weight = {
-		weight = 0.9
-	}
-}
-
-
-
-minerals_expenditure_trade = {
-	resource = minerals
-	type = expenditure
-	category = trade
-	
-	potential = {
-		always = yes
-	}
-	
-	weight = {
-		weight = 0
-	}	
-	desired_min = {
-		base = 0
-		modifier = {
-				add = 100
-				resource_stockpile_compare = {
-					resource = energy
-					value < 1000
-				}
-				resource_stockpile_compare = {
-					resource = minerals
-					value > 4000
-				}
-				resource_income_compare = {
-					resource = minerals
-					value > 200
-				}
-		}
-		modifier = {
-				add = 400
-				resource_stockpile_compare = {
-					resource = energy
-					value < 1000
-				}
-				resource_stockpile_compare = {
-					resource = minerals
-					value > 10000
-				}
-				resource_income_compare = {
-					resource = minerals
-					value > 200
-				}
-		}
-	}
-}
-
-minerals_expenditure_stations_2 = {
-	resource = minerals 
-	type = expenditure
-	category = stations
-	
-	potential = {
-		always = yes
-		resource_stockpile_compare = { resource = minerals value >= 800 }
-		resource_stockpile_compare = { resource = minerals value < 1200 }
-	}
-	
-	weight = {
-		weight = 0.25
-	}	
-}
-
-minerals_expenditure_stations_3 = {
-	resource = minerals
-	type = expenditure
-	category = stations
-
-	potential = {
-		always = yes
-		resource_stockpile_compare = { resource = minerals value >= 1200 }
+		str_ai_budget_potential_minerals_expenditure_stations_low = yes
+		resource_stockpile_compare = { resource = minerals value < 1000 }
 	}
 
 	weight = {
@@ -219,33 +86,107 @@ minerals_expenditure_stations_3 = {
 	}
 }
 
-#Starnet AI
-minerals_expenditure_relic_origin = {
+minerals_expenditure_stations_med = {
 	resource = minerals
 	type = expenditure
-	category = deposit_blockers
+	category = stations
+
 	potential = {
-		years_passed > 5
-		resource_stockpile_compare = {
+		str_ai_budget_potential_minerals_expenditure_stations_med = yes
+		resource_stockpile_compare = { resource = minerals value >= 1000 }
+		resource_stockpile_compare = { resource = minerals value < 2000 }
+	}
+
+	weight = {
+		weight = 0.1
+	}
+}
+
+minerals_expenditure_stations_high = {
 	resource = minerals
-			value > 600
+	type = expenditure
+	category = stations
+
+	potential = {
+		str_ai_budget_potential_minerals_expenditure_stations_high = yes
+		resource_stockpile_compare = { resource = minerals value >= 2000 }
+	}
+
+	weight = {
+		weight = 0.05
+	}
+}
+
+minerals_expenditure_armies = {
+	resource = minerals
+	type = expenditure
+	category = armies
+
+	potential = {
+		str_ai_budget_potential_minerals_expenditure_armies = yes
+	}
+
+	weight = {
+		weight = 0.01
+
+		modifier = {
+			factor = 10
+			NOT = {
+				count_owned_army = {
+					count >= @armies_for_declaring_war
+					limit = {
+						is_defensive_army = no
+					}
 				}
-		resource_income_compare = {
-			resource = physics_research
-			value > 80
 			}
 		}
 
+		modifier = {
+			factor = 2
+			OR = {
+				any_neighbor_country = {
+					has_ascension_perk = ap_become_the_crisis
+				}
+				any_country = {
+					is_crisis_faction = yes
+				}
+			}
+		}
+
+	}
+}
+
+minerals_expenditure_armies_threatened = {
+	resource = minerals
+	type = expenditure
+	category = armies
+
+	potential = {
+		str_ai_budget_potential_minerals_expenditure_armies_threatened = yes
+		highest_threat > 20
+				}
+
 	weight = {
-		weight = 0.7
+		weight = 0.10
+			}
+}
+
+minerals_expenditure_stations_expand = {
+	resource = minerals
+	type = expenditure
+	category = stations
+
+	potential = {
+		str_ai_budget_potential_minerals_expenditure_stations_expand = yes
+		exploitable_planets >= 1
+		}
+
+	weight = {
+		weight = 0.05
 	}
 
 	desired_min = {
-		base = 0
-		modifier = {
-			add = 900
-			years_passed > 3
-		}
+		base = 100
 	}
 }
 
@@ -255,10 +196,10 @@ minerals_expenditure_colonies_lithoid_expand = {
 	category = colonies
 
 	potential = {
+		str_ai_budget_potential_minerals_expenditure_colonies_lithoid_expand = yes
 		is_machine_empire = no
 		is_lithoid_empire = yes
 		ai_colonize_plans > 0
-		#Ori 3.3b removed has_resource = { type = minerals amount > 400 }
 		has_monthly_income = {
 			resource = minerals
 			value > 0
@@ -270,13 +211,12 @@ minerals_expenditure_colonies_lithoid_expand = {
 	}
 
 	desired_min = {
-		base = 550 #200 Ori3.3b
+		base = 200
 	}
 
-	#Ori, disabled by Starnet
-	#desired_max = {
-	#	base = 550
-	#}	
+	desired_max = {
+		base = 550
+	}
 }
 
 minerals_expenditure_armies = {
@@ -566,7 +506,7 @@ minerals_upkeep_buffer = {	# Buffer, will not be spent
 	category = buffer
 
 	potential = {
-		always = yes
+		str_ai_budget_potential_minerals_upkeep_buffer = yes
 	}
 
 	weight = {
@@ -580,7 +520,7 @@ minerals_upkeep_planets = {
 	category = planets
 
 	potential = {
-		always = yes
+		str_ai_budget_potential_minerals_upkeep_planets = yes
 	}
 
 	weight = {
@@ -594,6 +534,7 @@ minerals_expenditure_decisions = {
 	category = decisions
 
 	potential = {
+		str_ai_budget_potential_minerals_expenditure_decisions = yes
 		OR = {
 			AND = {
 				has_technology = tech_housing_2
@@ -626,7 +567,7 @@ minerals_expenditure_decisions = {
 		# only consider these kinds of decisions when "wealthy"
 		has_resource = {
 			type = minerals
-			amount > 8000
+			amount > 25000
 		}
 	}
 
@@ -648,6 +589,7 @@ minerals_expenditure_deposit_blockers = {
 	category = deposit_blockers
 
 	potential = {
+		str_ai_budget_potential_minerals_expenditure_deposit_blockers = yes
 		any_owned_planet = {
 			OR = {
 				has_deposit = d_ruined_arcology
@@ -732,6 +674,7 @@ minerals_upkeep_ships = {
 	category = ships
 
 	potential = {
+		str_ai_budget_potential_minerals_upkeep_ships = yes
 		has_ascension_perk = ap_become_the_crisis
 		has_crisis_level = crisis_level_2
 		resource_income_compare = {

@@ -6,29 +6,42 @@
 # Merge with Starnet AI for NSC 02.05.2021
 # Merge with last Starnet AI update 24.11.2021
 #
-prepare_for_war = {
+str_prepare_for_war = {
     years_passed > 12
     #Alchemy code used to see if there is any country WE are hostile towards
-
     #The reason we even ask this question is the following:
     #If ai behavior is already hostile (I can't mod the behaviors sadly)
     #that means ai will claim and declare war as soon as it has the influence
     #so saving influence won't be wasted
+	OR = {
+		is_at_war = yes
     any_neighbor_country = {
+			OR = {
         is_country_type = default
+				merg_is_default_empire = yes
+				has_ascension_perk = ap_become_the_crisis
+			}
         prev = {
-            or = {
+				OR = {
             is_hostile_to = prev
             is_unfriendly_to = prev
             }
+				# relative_power = {
+				# 	who = prev
+				# 	category = all
+				# 	value >= equivalent
+				# }
+			}
         }
     }
-
     resource_stockpile_compare = {
         resource = minerals
         value > 1500
     }
-	resource_income_compare = { resource = minerals value > 40}
+	resource_income_compare = {
+		resource = minerals
+		value > 40
+	}
     str_raw_ecocrisis_level_0 = no
     and = {
         used_naval_capacity_integer > 25
@@ -38,8 +51,11 @@ prepare_for_war = {
                 has_ascension_perk = ap_executive_vigor
                 has_edict = capacity_subsidies
             }
-            and = { num_ascension_perks > 1 has_tradition = tr_supremacy_adopt }
+			and = {
+				num_ascension_perks > 1
+				has_tradition = tr_supremacy_adopt
         }
+		}
         resource_stockpile_compare = {
             resource = alloys
             value > 1000
@@ -349,58 +365,28 @@ needs_shipyard = { #country scope
     }
 }
 
-
 has_ecumen = {
     any_owned_planet = {
         is_planet_class = pc_city
     }
 }
 
-
-can_you_please_stop_building_ships = {
-    or = {
-        and = {
-        years_passed < 80
-        used_naval_capacity_percent > 2
-        resource_income_compare = {
-            resource = energy
-            value < 150
+str_strategic_stop_building_ships = {
+	optimize_memory
+	AND = {
+		resource_stockpile_compare = {
+			resource = $UPKEEP_RESOURCE_NAME$			# Check stockpile of this upkeep resource.
+			value < $UPKEEP_RESOURCE_STOCKPILE_COMPARE$			# Stockpile value.
         }
-        }
-        and = {
-        years_passed < 100
-        used_naval_capacity_percent > 1.5
-        resource_income_compare = {
-            resource = energy
-            value < 50
-        }
-        }
-    and = {
-    years_passed < 150
-    used_naval_capacity_percent > 1.5
-    resource_income_compare = {
-        resource = energy
-        value < 0
-    }
-    }
-    and = {
-        used_naval_capacity_percent > 1
-        ai_colonize_plans > 0
-    }
-    and = {
-        years_passed > 80
-        resource_income_compare = {
-            resource = energy
-            value < -100
-        }
-    }
-    and = {
-        years_passed > 80
-        used_naval_capacity_integer < 1000
-        resource_income_compare = {
-            resource = energy
-            value < -50
-        }
-    }
+			resource_income_compare = {
+			resource = $UPKEEP_RESOURCE_NAME$
+			value < $UPKEEP_RESOURCE_INCOME_COMPARE$			# Income value.
+		}
+		AND = {
+			resource_income_to_expenditure_balance_ratio = {
+				resource = $UPKEEP_RESOURCE_NAME$
+				value < $UPKEEP_RESOURCE_INCOME_TO_EXPENDITURE_BALANCE_RATIO$				# Inflow to outflow ratio.
+			}
+		}
     }
 }

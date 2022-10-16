@@ -1985,6 +1985,38 @@ planet_event = {
 	}
 }
 
+# Deluged a holy world
+planet_event = {
+	id = planet_destruction.607
+	hide_window = yes
+
+	is_triggered_only = yes
+
+	trigger = {
+		has_modifier = holy_planet
+		any_country = {
+			has_ai_personality_behaviour = holy_planets # not awakened
+			NOT = { is_at_war_with = from.owner }
+		}
+	}
+
+	immediate = {
+		random_country = {
+			limit = {
+				has_ai_personality_behaviour = holy_planets # not awakened
+				NOT = { is_at_war_with = from.owner }
+			}
+			save_event_target_as = outraged_FE
+		}
+		from.owner = {
+			set_country_flag = holy_water_achievement
+			save_event_target_as = FE_outrager
+			country_event = { id = planet_destruction.615 days = 5 }
+		}
+		remove_modifier = holy_planet
+	}
+}
+
 country_event = {
 	id = planet_destruction.610
 	title = planet_destruction.610.name
@@ -2944,7 +2976,7 @@ country_event = {
 			has_observation_outpost = yes
 		}
 	}
-	location = from # BUG : manquant
+	location = from # Correction de bug - manquant
 
 	is_triggered_only = yes
 
