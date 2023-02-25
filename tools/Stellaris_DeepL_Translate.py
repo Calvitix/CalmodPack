@@ -258,6 +258,7 @@ def FrenchTranslate (mySearchString):
     i = 0
     myfound = ''
     tooMany = False
+    waitneeded = False
     while i < 5 and myfound == '':
 
         try:
@@ -270,7 +271,8 @@ def FrenchTranslate (mySearchString):
             #mywaittimeinms = 0.1 + round(random.random(),3)
             if tooMany:
                 mywaittimeinms = mywaittimeinms * 200
-            time.sleep(mywaittimeinms)
+            if waitneeded:
+                time.sleep(mywaittimeinms)
             myfound = ''
             #translator = Translator(service_urls=[
             #    'translate.google.com',
@@ -402,30 +404,35 @@ def FrenchTranslate (mySearchString):
                 from subprocess import Popen, PIPE
                 
                 #print(mySearchString)
-                
-                with Popen('deepl english french -t "' + mySearchString + '"',
-                           stdout=PIPE, stderr=PIPE) as p:
-                    output, errors = p.communicate()
-                try :
-                    myfound = output.decode('utf-8')#.splitlines()
-                    myerrors = errors.decode('utf-8')  #utf-8
-                except Exception as e:
-                    myfound = output.decode('latin-1')#.splitlines()
-                    myerrors = errors.decode('latin-1')  #utf-8
+                if mySearchString == '[===_1]':
+                    myfound = mySearchString
+                    myerrors = ''
+                    waitneeded = False
+                else:    
+                    waitneeded = True
+                    with Popen('deepl english french -t "' + mySearchString + '"',
+                               stdout=PIPE, stderr=PIPE) as p:
+                        output, errors = p.communicate()
+                    try :
+                        myfound = output.decode('utf-8')#.splitlines()
+                        myerrors = errors.decode('utf-8')  #utf-8
+                    except Exception as e:
+                        myfound = output.decode('latin-1')#.splitlines()
+                        myerrors = errors.decode('latin-1')  #utf-8
 
                     
-                #myfound = str(output)
-                #myerrors = str(errors)
-                if myerrors :
-                    raise Exception(myerrors) 
-                
-
-                ###translation = translator.translate(mySearchString,dest ='fr')
-                #myfound = translation.text    
-                #for translation in translations:
-                #print(translation.origin, ' -> ', translation.text)
-                myfound = StellarisImproveText(myfound,True)
-                #print(myfound)
+                    #myfound = str(output)
+                    #myerrors = str(errors)
+                    if myerrors :
+                        raise Exception(myerrors) 
+                    
+    
+                    ###translation = translator.translate(mySearchString,dest ='fr')
+                    #myfound = translation.text    
+                    #for translation in translations:
+                    #print(translation.origin, ' -> ', translation.text)
+                    myfound = StellarisImproveText(myfound,True)
+                    #print(myfound)
 
                 for item in donottranslate:
                     myfound = myfound.replace(item[1],item[0],1)
@@ -477,7 +484,8 @@ def FrenchTranslate (mySearchString):
             stre.find('Too many requests')
             if stre.find('Too many requests') > 0 :
                 tooMany = True
-            
+            waitneeded = True
+
 
         finally:
             i=i+1
@@ -1052,6 +1060,12 @@ def BtnScanErrorLog():
             myCountLocalisationError6 = line.find(u'but not localized')
             myCountLocalisationError7 = line.find(u'localization string')
             myCountLocalisationError8 = line.find(u'but not localized')
+            myCountLocalisationError9 = line.find(u'is not localized!')
+            myCountLocalisationError10 = line.find(u'lacking a custom description')
+            myCountLocalisationError11 = line.find(u'is already set for law')
+            
+                        
+
 
             
 
@@ -1075,6 +1089,9 @@ def BtnScanErrorLog():
             myCountknownErrors9 = line.find('is using an invalid edict key')
             myCountknownErrors10 = line.find('Invalid government authority type')
             myCountknownErrors11 = line.find('cannot find deposit with key:')
+            myCountknownErrors12 = line.find('member_of_faction using invalid pop')
+            myCountknownErrors13 = line.find('cannot find deposit with key:')
+            
 
             myCountMissingElements1 = line.find(u'cannot find technology with the key')
             myCountMissingElements2 = line.find(u'referring to a non-existent opinion modifier')
@@ -1314,6 +1331,12 @@ def BtnScanErrorLog():
                 print ('Ignoring')
             elif myCountLocalisationError8 > -1:
                 print ('Ignoring')
+            elif myCountLocalisationError9 > -1:
+                print ('Ignoring')
+            elif myCountLocalisationError10 > -1:
+                print ('Ignoring')
+            elif myCountLocalisationError11 > -1:
+                print ('Ignoring')
 
 
 
@@ -1341,6 +1364,10 @@ def BtnScanErrorLog():
             elif myCountknownErrors10 > -1:
                 print ('Ignoring')
             elif myCountknownErrors11 > -1:
+                print ('Ignoring')
+            elif myCountknownErrors12 > -1:
+                print ('Ignoring')
+            elif myCountknownErrors13 > -1:
                 print ('Ignoring')
 
 
@@ -1450,7 +1477,7 @@ def BtnTBD(StringToSearch='',StringReplace=''):
     while findyml > -1:
         new_filename = filename[:findyml]+'_new.'+ filename[findyml+1:]
         findyml = filename.find('.',findyml+1)
-    new_filename = new_filename.replace('.log','.xls')
+    new_filename = new_filename.replace('.log','.csv')
 
 
     with open(filename, encoding='utf8') as f:
@@ -1462,15 +1489,15 @@ def BtnTBD(StringToSearch='',StringReplace=''):
     already_labeled = list()
     nberror = 0
     nbaddedlines = 0
-    my_dest_list.append('Texte' + '\t'+ 'Category' + '\t' + 'Game Date' + '\t' + 'Target' + '\t' + 'Planete' + '\n')
+    my_dest_list.append('Texte' + ';'+ 'Category' + ';' + 'Game Date' + ';' + 'Target' + ';' + 'Planete' + '\n')
     try:    
         for line in content :
             print (line)
             line = line.strip('\n')
-            idx = line.find('\x11')
+            idx = line.find(u'\x11')
             while idx > -1 :
-                line= line.replace('\x11','§')
-                idx = line.find('\x11')
+                line= line.replace(u'\x11','§')
+                idx = line.find(u'\x11')
 
             #enlever l'heure
             mygamedate =''
@@ -1534,6 +1561,8 @@ def BtnTBD(StringToSearch='',StringReplace=''):
             myCountPirates = line.find(u'Pirate Waves :')
             myCountGiga = line.find(u'Giga event :')
             myCountEHOF = line.find(u'EHOF event :')
+            myCountStats = line.find(u'CivilStats :')
+            myCountMStats = line.find(u'MilitStats :')
             
             myCountMandates = line.find(u'Mandates :')
             
@@ -1562,6 +1591,11 @@ def BtnTBD(StringToSearch='',StringReplace=''):
                 mycategorie += ';EDAI Ressources Trade'
             if myCountHemo > -1:                
                 mycategorie += ';Hemo Difficulty'
+            if myCountStats > -1:                
+                mycategorie += ';CivilStats'
+                line = line.replace('.',',')
+            if myCountMStats > -1:                
+                mycategorie += ';MilitStats'
 
             if myCountGPM > -1:                
                 mycategorie += ';Guillis PM'
@@ -1595,7 +1629,7 @@ def BtnTBD(StringToSearch='',StringReplace=''):
             else:
                 mycategorie = 'No Cat'
             #If Not known Error : Keep in Error.log    
-            my_dest_list.append(line + '\t'+mycategorie + '\t' + mygamedate + '\t' + mytarget + '\t' + myplanet + '\n')
+            my_dest_list.append(line + ';'+mycategorie + ';' + mygamedate + ';' + mytarget + ';' + myplanet + '\n')
             nberror+=1
 
 
@@ -1617,6 +1651,254 @@ def BtnTBD(StringToSearch='',StringReplace=''):
     print("Scan Completed : " + str(nberror) + " lignes de logs.")  
 
 
+
+#def BtnAnalyseSave():
+
+    #print('Button Scan Game Log')
+
+    #filename = values['-TXTFILE-'].rstrip('\n')
+    #filenameref = values['-TXTDESTFILE-'].rstrip('\n')
+    #if not filename :
+        #filename = u'S:\\Hubic\\personnel\\Jeux\\Stellaris Trad\\gamestate'
+        ##filename = u'C:\\data\hub\\personnel\\Jeux\\Stellaris Trad\\gamestate'
+        ##filename = u'C:\\Personnel\\Github\\Stellaris-French-Translation-Pack\\localisation\\l_french_dpe_diplo_events.yml'
+    ##if not filenameref :
+        ##   filenameref = u'D:\\Documents\\Paradox Interactive\\Stellaris\\mod\\frenchtranslationpack2.6\\localisation\\replace\\dummy.yml'
+        ##filenameref = u'D:\\Documents\\Paradox Interactive\\Stellaris\\mod\\frenchtranslationpack2.6\\localisation\\french\\l_french.yml'
+    ##searchcontent = values['-TXTDESTFILE-']
+    #new_filename = 'new.txt'
+    #findyml = filename.find('.')
+    #if filename.find('gamestate') > -1 and findyml < 0 :
+        #new_filename = filename + '.txt'
+        #import shutil
+        #shutil.copyfile(filename, new_filename)
+        #filename = new_filename
+
+    #findyml = filename.find('.')
+    #while findyml > -1:
+        #new_filename = filename[:findyml]+'_new.'+ filename[findyml+1:]
+        #findyml = filename.find('.',findyml+1)
+
+
+
+        
+
+    #my_dest_list = list()
+    #already_labeled = list()
+    #StoreLine = list()
+    #nberror = 0
+    #nbaddedlines = 0
+    #countlines = 0
+    #line = ''
+    #try:    
+
+        #with open(filename, encoding='utf8') as f:
+            ##content = f.readlines()
+            #nblines = 0
+            #countlines = 0
+            #mylastplanetnum = -1
+            #level = 0 #niveau d'imbrication dans les données
+            #Levellist = list()
+            #lastline = ''
+            #linebackup = list() ##lorsque lignes fusionnées
+            #while 1:
+            
+                #getnextnum = False
+                #insidemyplanete = False
+            
+                #lines = f.readlines(100000)
+                #nbnextlines = nblines + 100000
+                ##print('lecture lignes : '+str(nblines)+' à '+ str(nbnextlines))
+                #nblines = nbnextlines
+            
+                #if not lines:
+            
+                    #break
+            
+                #for fileline in lines:
+            
+                    #mynum = -1
+                    #myVariable = ''
+                    #myValue = ''
+                    #ignoreleveldiff = False
+                    #countlines = countlines + 1
+                    
+                    
+                    
+                    
+                    #line = fileline
+
+                    ##search for multiple lines
+                    #myEgalidx = line.find(u'=')
+                    #myOpenBracet = line.find(u'{')
+                    #myCloseBracet = line.find(u'}')
+                    
+                    ##something wrong
+                    #if myEgalidx > -1 and (myOpenBracet > myEgalidx+1 or myCloseBracet > myEgalidx+1) :
+                        #myidxright = line.rfind(u'\t\t\t')
+                        #myidxleft = line.find(u'\t\t\t')
+                        #if line[myidxleft+2:myidxright].strip('\t').strip('\t').strip('\t').strip('\t').strip('\t').strip('\t').strip('\n').strip('\t').strip('\t') :
+                            #while myidxleft+3  < myidxright :
+                                #linebackup.append(line[myidxright:])
+                                #line = line[:myidxright]
+                                #myidxright = line.rfind(u'\t\t\t')
+                                #myidxleft = line.find(u'\t\t\t')
+                    
+                    
+                    #while line :
+                    
+                        
+                        
+                        
+                        ##findlevel
+                        #level = 0
+                        #if line.find(u'\t\t\t\t\t\t\t\t') > -1 :
+                            #level = 8
+                        #elif line.find(u'\t\t\t\t\t\t\t') > -1 :
+                            #level = 7
+                        #elif line.find(u'\t\t\t\t\t\t') > -1 :
+                            #level = 6
+                        #elif line.find(u'\t\t\t\t\t') > -1 :
+                            #level = 5
+                        #elif line.find(u'\t\t\t\t\t') > -1 :
+                            #level = 5
+                        #elif line.find(u'\t\t\t\t') > -1 :
+                            #level = 4
+                        #elif line.find(u'\t\t\t') > -1 :
+                            #level = 3
+                        #elif line.find(u'\t\t') > -1 :
+                            #level = 2
+                        #elif line.find(u'\t') > -1 :
+                            #level = 1
+    
+                        #if line.strip(' ').strip('\n') == '' :
+                            #level = 0
+                        #else :
+                            
+                            
+                            #if line.strip(' ').strip('\n') == '{' or (len(line) > 0 and line[0]=='"') :
+                                #ignoreleveldiff = True
+                            
+                            
+                            #myEgalidx = line.find(u'=')
+                            #myOpenBracet = line.find(u'{')
+                            #myCloseBracet = line.find(u'}')
+                            
+                            #if myEgalidx == 0 :
+                                #line = lastline+line
+                                #ignoreleveldiff = True
+                                #myEgalidx = line.find(u'=')
+                                #myOpenBracet = line.find(u'{')
+                                #myCloseBracet = line.find(u'}')
+                                
+                            
+                            #if myEgalidx > 0 :
+                                #mytextbefore = line[:myEgalidx].strip('\t').strip('\t').strip('\t').strip('\t').strip('\t').strip('\t').strip('\t').strip('\t')
+                                #mytextafter = line[myEgalidx+1:].strip('\n')
+                            #elif myCloseBracet == -1 and myOpenBracet == -1 :
+                                #myVariable = ''
+                                #myValue = line.strip('\t').strip('\t').strip('\t').strip('\t').strip('\t').strip('\t').strip('\n').strip('\t').strip('\t')
+                            #elif myOpenBracet > -1 : ## sans_nom, sans ID
+                                #mytextbefore = 'NO_ID'
+                                
+                            
+                            
+                            #### nouveau niveau
+                            #if myOpenBracet > -1 and myCloseBracet == -1 :
+                                #Levellist.append(mytextbefore)
+                                #level = level +1
+                                ##print('Start of : '+mytextbefore)
+                            
+                            #### fermeture d'un niveau
+                            #elif myCloseBracet > -1 and myOpenBracet == -1 :
+                                ##print('End of : '+ Levellist[-1])
+                                #Levellist.pop()
+                                ##level = level - 1
+
+                            #elif myOpenBracet > -1 and myCloseBracet > -1 :
+                                #myValue = mytextafter.strip('}').strip('{')
+                                
+                            #### sinon (même niveau)
+                            #else :
+                                #myVariable = mytextbefore
+                                #myValue = mytextafter
+                                
+                            
+                            
+                            
+                            ##
+        
+                            #if len(Levellist) < 2 and myOpenBracet > -1 : #myVariable == 'name' or myVariable == 'date' :
+                                #my_dest_list.append(line)
+                                #print(line)
+                    
+                    
+                            ##liste des planètes : a trouvé un début de planète
+                            #if len(Levellist) == 3 and Levellist[0] == 'planets' :
+                                #if myVariable == 'name' or myVariable == 'planet_class' or myVariable == 'planet_size' :
+                                    #StoreLine.append(myVariable + '=' + myValue)
+                                    ##print(line)
+                                    
+                            
+                            ##listes des deposits
+                            #if len(Levellist) == 3 and Levellist[0] == 'deposits' :
+                                #if myVariable == 'name' or myVariable == 'planet_class' or myVariable == 'planet_size' :
+                                    #StoreLine.append(myVariable + '=' + myValue)
+                                    #print(line)
+                            
+                            
+                            #if level > 0 and level < 8 and level != len(Levellist) and not ignoreleveldiff :
+                                #print('Erreur comptage : ' + str(level) + ' / ' + str(len(Levellist)) + ' levelList = ' + str(Levellist) + ' line :' + line + " line nb : " + countlines)
+                    
+                    
+                            #pass # do something**strong text**        
+                        #lastline = line.strip(' ').strip('\n')
+                    
+                        #if (len(linebackup) > 0) :
+                            #line = linebackup[-1]
+                            #linebackup.pop()
+                            #ignoreleveldiff = True
+                        #else :
+                            #line =''
+                    
+                    
+            ##lines = [line.rstrip('\n') for line in f]
+            #f.close
+    
+    
+                ##enlever l'heure
+                ##mydatecount = line.find(u']')
+                ##if mydatecount > -1:
+                    ##line = line[mydatecount+1:]
+    
+    
+                ##myindex = line.find(u'Log command triggered from effect in file:')
+                ##if myindex > -1:
+                    ##line = line[myindex+42:]
+    
+                ##myindex = line.find(u'line:')
+                ##if myindex > -1:
+                    ##line = line[myindex+5:]
+    
+    
+                   ##my_dest_list.append(line)
+
+    #except Exception as Err :
+        #print('Erreur lors du processus, ligne '+ str(countlines) +' : \n'+ line +'\n', Err) 
+
+
+    #finally:
+        #TxtDest = str(my_dest_list)
+
+        #fdest = open(new_filename,'w', encoding='utf8')
+        #fdest.writelines(["%s" % item  for item in my_dest_list])
+        #fdest.close
+
+        #print("  ")
+        #print("  ")
+        #print("  ")
+    #print("  ")
+    #print("Scan Completed : " + str(nberror) + " lignes d'erreurs.")  
 
 def BtnAnalyseSave():
 
@@ -2024,7 +2306,7 @@ def BtnTranslate(StringToSearch='',StringReplace=''):
         
         if not exists(filename) :
             filename = u'C:\\Users\\Francois\\Desktop\\Translate.txt'
-            
+
         if not exists(filename) :
             filename = u'Translate.txt'
             
@@ -2035,18 +2317,18 @@ def BtnTranslate(StringToSearch='',StringReplace=''):
     #searchcontent = values['-TXTDESTFILE-']
     if exists(filename) :
         
-    new_filename = 'new.txt'
-    findyml = filename.find('.')
-    while findyml > -1:
-        new_filename = filename[:findyml]+'_deepltrn.'+ filename[findyml+1:]
-        findyml = filename.find('.',findyml+1)
-
-
-
-    with open(filename, encoding='utf8') as f:
-        content = f.readlines()
-    #lines = [line.rstrip('\n') for line in f]
-    f.close
+        new_filename = 'new.txt'
+        findyml = filename.find('.')
+        while findyml > -1:
+            new_filename = filename[:findyml]+'_deepltrn.'+ filename[findyml+1:]
+            findyml = filename.find('.',findyml+1)
+    
+    
+    
+        with open(filename, encoding='utf8') as f:
+            content = f.readlines()
+        #lines = [line.rstrip('\n') for line in f]
+        f.close
     else:
         content = filename.splitlines() 
 
